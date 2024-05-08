@@ -1,25 +1,25 @@
 # Summary
 |||
 |:---|:---|
-| Generated on: | 4/05/2024 - 11:27:04 PM |
-| Coverage date: | 4/05/2024 - 11:12:31 PM - 4/05/2024 - 11:26:39 PM |
+| Generated on: | 8/05/2024 - 3:44:41 PM |
+| Coverage date: | 8/05/2024 - 3:33:52 PM - 8/05/2024 - 3:44:25 PM |
 | Parser: | MultiReport (69x Cobertura) |
 | Assemblies: | 21 |
-| Classes: | 499 |
-| Files: | 504 |
-| **Line coverage:** | 99.1% (15056 of 15178) |
-| Covered lines: | 15056 |
-| Uncovered lines: | 122 |
-| Coverable lines: | 15178 |
-| Total lines: | 37130 |
-| **Branch coverage:** | 96.1% (2672 of 2779) |
-| Covered branches: | 2672 |
-| Total branches: | 2779 |
+| Classes: | 500 |
+| Files: | 505 |
+| **Line coverage:** | 99.2% (15161 of 15281) |
+| Covered lines: | 15161 |
+| Uncovered lines: | 120 |
+| Coverable lines: | 15281 |
+| Total lines: | 37317 |
+| **Branch coverage:** | 96.2% (2694 of 2800) |
+| Covered branches: | 2694 |
+| Total branches: | 2800 |
 | **Method coverage:** | [Feature is only available for sponsors](https://reportgenerator.io/pro) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**AllOverIt**|**5887**|**74**|**5961**|**16500**|**98.7%**|**1051**|**1078**|**97.4%**|
+|**AllOverIt**|**5889**|**72**|**5961**|**16500**|**98.7%**|**1053**|**1078**|**97.6%**|
 |AllOverIt.Aspects.InterceptorBase`1|81|1|82|170|98.7%|12|12|100%|
 |AllOverIt.Aspects.InterceptorFactory|24|0|24|61|100%|4|4|100%|
 |AllOverIt.Aspects.InterceptorMethodHandlerAsyncBase|16|0|16|212|100%|0|0||
@@ -31,7 +31,7 @@
 |AllOverIt.Aspects.MethodInterceptor`1|23|0|23|61|100%|2|2|100%|
 |AllOverIt.Async.AsyncLazy`1|9|0|9|34|100%|0|0||
 |AllOverIt.Async.BackgroundTask|82|2|84|159|97.6%|13|14|92.8%|
-|AllOverIt.Async.BackgroundTask`1|77|2|79|157|97.4%|16|18|88.8%|
+|AllOverIt.Async.BackgroundTask`1|79|0|79|157|100%|17|18|94.4%|
 |AllOverIt.Async.CompositeAsyncDisposable|50|0|50|87|100%|6|6|100%|
 |AllOverIt.Async.RepeatingTask|84|62|146|256|57.5%|0|0||
 |AllOverIt.Async.RepeatingTaskOptions|5|0|5|23|100%|0|0||
@@ -107,7 +107,7 @@
 |AllOverIt.Helpers.ExceptionAggregator|15|0|15|41|100%|4|4|100%|
 |AllOverIt.Helpers.HashCodeHelper|11|0|11|30|100%|2|2|100%|
 |AllOverIt.Helpers.ProgressReport.ProgressState|2|0|2|13|100%|0|0||
-|AllOverIt.Helpers.ProgressReport.ProgressUpdater|48|0|48|81|100%|14|18|77.7%|
+|AllOverIt.Helpers.ProgressReport.ProgressUpdater|48|0|48|81|100%|15|18|83.3%|
 |AllOverIt.Helpers.PropertyNavigation.Extensions.PropertyNodeExtensions|4|0|4|18|100%|0|0||
 |AllOverIt.Helpers.PropertyNavigation.Extensions.PropertyNodesExtensions|32|0|32|78|100%|2|2|100%|
 |AllOverIt.Helpers.PropertyNavigation.PropertyNavigator|3|0|3|16|100%|0|0||
@@ -346,9 +346,9 @@
 |AllOverIt.Evaluator.Variables.VariableLookup|25|0|25|58|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistry|52|0|52|113|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistryBuilder|127|0|127|253|100%|18|18|100%|
-|**AllOverIt.Filtering**|**639**|**1**|**640**|**1583**|**99.8%**|**123**|**134**|**91.7%**|
+|**AllOverIt.Filtering**|**639**|**1**|**640**|**1583**|**99.8%**|**122**|**134**|**91%**|
 |AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|158|100%|19|24|79.1%|
-|AllOverIt.Filtering.Builders.FilterSpecificationBuilder`2|212|1|213|401|99.5%|52|58|89.6%|
+|AllOverIt.Filtering.Builders.FilterSpecificationBuilder`2|212|1|213|401|99.5%|51|58|87.9%|
 |AllOverIt.Filtering.Exceptions.NullNotSupportedException|9|0|9|26|100%|0|0||
 |AllOverIt.Filtering.Extensions.FilterExtensions|12|0|12|41|100%|2|2|100%|
 |AllOverIt.Filtering.Extensions.FilterSpecificationExtensions|5|0|5|28|100%|2|2|100%|
@@ -450,13 +450,14 @@
 |AllOverIt.Reactive.Extensions.PropertyNotifyExtensions|24|0|24|58|100%|0|0||
 |AllOverIt.Reactive.ObservableObject|32|0|32|102|100%|12|12|100%|
 |AllOverIt.Reactive.ObservableProxy`1|23|0|23|90|100%|8|8|100%|
-|**AllOverIt.ReactiveUI**|**304**|**0**|**304**|**752**|**100%**|**53**|**54**|**98.1%**|
+|**AllOverIt.ReactiveUI**|**407**|**0**|**407**|**939**|**100%**|**74**|**75**|**98.6%**|
 |AllOverIt.ReactiveUI.ActivatableViewModel|12|0|12|39|100%|0|0||
 |AllOverIt.ReactiveUI.CommandPipeline.ReactiveCommandPipelineBuilder|5|0|5|24|100%|0|0||
 |AllOverIt.ReactiveUI.CommandPipeline.ReactiveCommandPipelineStep`2|8|0|8|25|100%|1|2|50%|
 |AllOverIt.ReactiveUI.CountdownTimer|91|0|91|165|100%|16|16|100%|
 |AllOverIt.ReactiveUI.Extensions.PipelineBuilderAsyncExtensions|6|0|6|30|100%|0|0||
 |AllOverIt.ReactiveUI.Extensions.ReactiveCommandExtensions|5|0|5|27|100%|0|0||
+|AllOverIt.ReactiveUI.Factories.CommandFactory|103|0|103|187|100%|21|21|100%|
 |AllOverIt.ReactiveUI.Factories.ViewFactory|7|0|7|25|100%|0|0||
 |AllOverIt.ReactiveUI.ReactiveProxy`1|23|0|23|92|100%|8|8|100%|
 |AllOverIt.ReactiveUI.ViewRegistry.Events.ViewRegistryEventArgs|9|0|9|34|100%|0|0||
