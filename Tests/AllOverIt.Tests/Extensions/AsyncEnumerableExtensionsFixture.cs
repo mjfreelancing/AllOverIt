@@ -87,7 +87,7 @@ namespace AllOverIt.Tests.Extensions
                         {
                             IAsyncEnumerable<IEnumerable<IEnumerable<bool>>> items = null;
 
-                            await items.SelectManyAsync(item => item).ToListAsync();
+                            await items.SelectManyAsync((item, token) => item).ToListAsync();
                         })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -105,7 +105,7 @@ namespace AllOverIt.Tests.Extensions
                         {
                             var items = AsAsyncEnumerable(new[] { new[] { true } });
 
-                            await items.SelectManyAsync(item => item, cts.Token).ToListAsync();
+                            await items.SelectManyAsync((item, token) => item, cts.Token).ToListAsync();
                         })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -133,12 +133,12 @@ namespace AllOverIt.Tests.Extensions
                 {
                     using (var cts = new CancellationTokenSource())
                     {
-                        actual = await AsAsyncEnumerable(values).SelectManyAsync(item => item, cts.Token).ToListAsync();
+                        actual = await AsAsyncEnumerable(values).SelectManyAsync((item, token) => item, cts.Token).ToListAsync();
                     }
                 }
                 else
                 {
-                    actual = await AsAsyncEnumerable(values).SelectManyAsync(item => item).ToListAsync();
+                    actual = await AsAsyncEnumerable(values).SelectManyAsync((item, token) => item).ToListAsync();
                 }
 
                 expected.Should().BeEquivalentTo(actual);
