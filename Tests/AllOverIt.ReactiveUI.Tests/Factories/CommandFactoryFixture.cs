@@ -35,7 +35,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("cancelCommand");
+                .WithNamedMessageWhenNull("cancelObservable");
             }
 
             [Fact]
@@ -116,7 +116,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("cancelCommand");
+                .WithNamedMessageWhenNull("cancelObservable");
             }
 
             [Fact]
@@ -209,7 +209,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("cancelCommand");
+                .WithNamedMessageWhenNull("cancelObservable");
             }
 
             [Fact]
@@ -303,7 +303,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("cancelCommand");
+                .WithNamedMessageWhenNull("cancelObservable");
             }
 
             [Fact]
