@@ -10,6 +10,7 @@
   plus the ability to resolve the same instance for multiple interfaces, and handle open generics.
 * Update / replace how Throw<> works to save on string allocations
 * Throw<> => add overloads that support params for string formatting
+* Update EnrichedEnumModelBindingDemo so it is based on minimal API and the built-in problem details
 
 
 ### Applicable to all packages
