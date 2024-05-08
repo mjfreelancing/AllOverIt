@@ -83,7 +83,7 @@
 * Amazon.CDK.Lib v2.110.0
 * Amazon.CDK.Lib v2.140.0
 * Amazon.JSII.Runtime v1.98.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.425
+* Cdklabs.AwsCdkAppsyncUtils v0.0.428
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -116,7 +116,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* CsvHelper v32.0.1
+* CsvHelper v32.0.2
 
 <br>
 
