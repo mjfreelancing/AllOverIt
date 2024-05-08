@@ -2,7 +2,7 @@
 {
     public sealed class WeatherReport
     {
-        public string Title { get; set; }
-        public IEnumerable<WeatherForecast> Forecast { get; set; }
+        public required string Title { get; set; }
+        public required WeatherForecast[] Forecast { get; set; }
     }
 }

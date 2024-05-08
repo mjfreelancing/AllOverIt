@@ -33,9 +33,11 @@ namespace AllOverIt.AspNetCore.ModelBinders
             {
                 try
                 {
+                    var stringValue = value[0]!;
+
                     var array = new TArray
                     {
-                        Values = SplitRegex.Split(value[0]).SelectAsReadOnlyCollection(item => item.As<TType>())
+                        Values = SplitRegex.Split(stringValue).SelectToArray(item => item.As<TType>())!
                     };
 
                     bindingContext.Result = ModelBindingResult.Success(array);

@@ -23,17 +23,17 @@ namespace EnrichedEnumModelBindingDemo.Controllers
         [HttpGet]
         public WeatherReport Get([FromQuery] WeatherRequest request)
         {
-            return GetWeatherReport(request.Period);
+            return GetWeatherReport(request.Period!);
         }
 
         // Tests model binding on query string of ForecastPeriodArray which is a ValueArray<ForecastPeriod>, where ForecastPeriod is an EnrichedEnum
         // Sample requests: http://localhost:5000/weatherforecast/multi?periods=today,tomorrow,nextweek
         [HttpGet("multi")]
-        public IReadOnlyCollection<WeatherReport> GetMulti([FromQuery] WeatherRequestMulti request, [FromServices] ILifetimeValidationInvoker validationInvoker)
+        public WeatherReport[] GetMulti([FromQuery] WeatherRequestMulti request, [FromServices] ILifetimeValidationInvoker validationInvoker)
         {
             validationInvoker.AssertValidation(request);
 
-            return request.Periods.Values.SelectAsReadOnlyCollection(GetWeatherReport);
+            return request.Periods!.Values!.SelectToArray(GetWeatherReport) ?? [];
         }
 
         // Test this by sending a Postman request with a body like this:
@@ -43,7 +43,7 @@ namespace EnrichedEnumModelBindingDemo.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] WeatherRequest request)
         {
-            if (request.Period == null)
+            if (request.Period is null)
             {
                 return NoContent();
             }
@@ -84,7 +84,7 @@ namespace EnrichedEnumModelBindingDemo.Controllers
                 Title = period.Name,
                 Forecast = Enumerable
                     .Range(dayOffset, dayCount)
-                    .SelectAsReadOnlyCollection(index => new WeatherForecast
+                    .SelectToArray(index => new WeatherForecast
                     {
                         Date = DateTime.Now.AddDays(index),
                         TemperatureC = _random.Next(-20, 55),

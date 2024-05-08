@@ -14,7 +14,7 @@ namespace EnrichedEnumModelBindingDemo.Problems
         {
             {
                 typeof(ValidationException),
-                exception => new ValidationProblem(exception as ValidationException)
+                exception => new ValidationProblem((exception as ValidationException)!)
             }
         };
 
@@ -35,7 +35,7 @@ namespace EnrichedEnumModelBindingDemo.Problems
             // the "catch all" mapping - must be the last in the list
             options.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
 
-            // need to re-throw unhandled exceptions so bugsnag can report it
+            // need to re-throw unhandled exceptions
             options.Rethrow((_, exception) =>
             {
                 var exceptionType = exception.GetType();
