@@ -384,7 +384,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
-                .WithMessage("At least one observable is required. (Parameter 'canExecutes')");
+                .WithMessage("At least one observable is required. (Parameter 'observables')");
             }
 
             [Fact]
@@ -396,7 +396,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
                 })
                 .Should()
                 .Throw<ArgumentException>()
-                .WithMessage("At least one observable is required. (Parameter 'canExecutes')");
+                .WithMessage("At least one observable is required. (Parameter 'observables')");
             }
 
             [Theory]

@@ -94,13 +94,13 @@ namespace AllOverIt.ReactiveUI.Factories
         }
 
         /// <summary>Creates a <see cref="ReactiveCommand{Unit, Unit}"/> that can be used to cancel one or more other commands.</summary>
-        /// <param name="canExecutes">One or more observables that, individually, determine if the returned command can be executed.</param>
+        /// <param name="observables">One or more observables that, individually, determine if the returned command can be executed.</param>
         /// <returns>A <see cref="ReactiveCommand{Unit, Unit}"/> that can be used to cancel one or more other commands.</returns>
-        public static ReactiveCommand<Unit, Unit> CreateCancelCommand(params IObservable<bool>[] canExecutes)
+        public static ReactiveCommand<Unit, Unit> CreateCancelCommand(params IObservable<bool>[] observables)
         {
-            _ = canExecutes.WhenNotNullOrEmpty(nameof(canExecutes), errorMessage: "At least one observable is required.");
+            _ = observables.WhenNotNullOrEmpty(nameof(observables), errorMessage: "At least one observable is required.");
 
-            var obs = canExecutes.SelectToArray(canExecute => canExecute.StartWith(false));
+            var obs = observables.SelectToArray(canExecute => canExecute.StartWith(false));
 
             var canExecute = obs.Length switch
             {
