@@ -9,7 +9,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers
     {
         /// <summary>The resolver type that provides the required request and response handler details.
         /// This type must inherit <see cref="IResolverRuntime"/>.</summary>
-        public Type ResolverType { get; }
+        public Type? ResolverType { get; }
 
         /// <summary>Constructor. Used when the resolver type is registered in code.</summary>
         protected GraphqlResolverAttribute()

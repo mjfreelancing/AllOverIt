@@ -2,6 +2,7 @@
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Aws.Cdk.AppSync.Resolvers;
 using Amazon.CDK.AWS.AppSync;
+
 using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync
@@ -29,7 +30,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
         internal GraphqlSchema GetGraphqlSchema()
         {
-            return Definition.Schema as GraphqlSchema;
+            return (Definition!.Schema as GraphqlSchema)!;
         }
     }
 }

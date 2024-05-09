@@ -9,19 +9,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
     /// <summary>A registry of AppSync resolver runtime handlers.</summary>
     public sealed class ResolverRegistry
     {
-        private sealed class VtlHandler : IVtlRuntime
-        {
-            public string RequestMapping { get; init; }
-            public string ResponseMapping { get; init; }
-        }
-
-        private sealed class CodeHandler : IJsRuntime
-        {
-            public string Code { get; init; }
-
-            public FunctionRuntime FunctionRuntime { get; init; }
-        }
-
+        // IResolverRuntime could be a IVtlRuntime or IJsRuntime
         private readonly Dictionary<string, IResolverRuntime> _resolvers = [];
 
         /// <summary>Registers an <see cref="IResolverRuntime"/> instance with a specified key. This method is

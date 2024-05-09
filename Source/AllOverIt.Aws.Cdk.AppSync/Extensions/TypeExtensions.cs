@@ -96,16 +96,16 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             return new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Scalar, elementType!.Name);
         }
 
-        public static Directive[] GetAuthDirectivesOrDefault(this SystemType type)
+        public static Directive[]? GetAuthDirectivesOrDefault(this SystemType type)
         {
             var attributes = type
                 .GetCustomAttributes<AuthDirectiveBaseAttribute>(true)
-                .AsReadOnlyCollection();
+                .ToArray();
 
             return attributes.GetAuthDirectivesOrDefault();
         }
 
-        private static string GetNamespaceBasedName(string typeNamespace, string? excludeNamespacePrefix, string name)
+        private static string? GetNamespaceBasedName(string typeNamespace, string? excludeNamespacePrefix, string? name)
         {
             excludeNamespacePrefix ??= string.Empty;
 

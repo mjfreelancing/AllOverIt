@@ -103,11 +103,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             }
         }
 
-        public static Directive[] GetAuthDirectivesOrDefault(this MethodInfo methodInfo)
+        public static Directive[]? GetAuthDirectivesOrDefault(this MethodInfo methodInfo)
         {
             var attributes = methodInfo
                 .GetCustomAttributes<AuthDirectiveBaseAttribute>(true)
-                .AsReadOnlyCollection();
+                .ToArray();
 
             return attributes.GetAuthDirectivesOrDefault();
         }

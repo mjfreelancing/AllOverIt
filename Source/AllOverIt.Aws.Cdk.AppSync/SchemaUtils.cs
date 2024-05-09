@@ -2,6 +2,7 @@
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using System.Reflection;
+
 using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync
@@ -16,7 +17,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
         public static void AssertNoProperties(SystemType type)
         {
             var elementType = type.IsArray
-              ? type.GetElementType()
+              ? type.GetElementType()!
               : type;
 
             CheckForProperties(elementType);
@@ -44,9 +45,9 @@ namespace AllOverIt.Aws.Cdk.AppSync
             {
                 if (type.IsInterface)
                 {
-                    foreach (var intf in type.GetInterfaces())
+                    foreach (var @interface in type.GetInterfaces())
                     {
-                        CheckForProperties(intf);
+                        CheckForProperties(@interface);
                     }
                 }
 

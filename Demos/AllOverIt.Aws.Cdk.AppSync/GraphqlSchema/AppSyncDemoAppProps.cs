@@ -2,8 +2,8 @@
 {
     internal sealed class AppSyncDemoAppProps
     {
-        public string StackName { get; set; }
-        public string AppName { get; set; }
-        public int Version { get; set; }
+        public required string StackName { get; set; }
+        public required string AppName { get; set; }
+        public required int Version { get; set; }
     }
 }

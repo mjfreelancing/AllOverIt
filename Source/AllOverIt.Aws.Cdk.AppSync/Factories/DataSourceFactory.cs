@@ -26,7 +26,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
-        public BaseDataSource CreateDataSource(GraphqlResolverAttribute attribute)
+        public BaseDataSource? CreateDataSource(GraphqlResolverAttribute attribute)
         {
             if (attribute is UnitResolverAttribute unitResolverAttribute)
             {
@@ -78,7 +78,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             return Regex.Replace(value, @"[^\w]", "", RegexOptions.None);
         }
 
-        private LambdaDataSource CreateLambdaDataSource(string dataSourceId, string functionName, string description)
+        private LambdaDataSource CreateLambdaDataSource(string dataSourceId, string functionName, string? description)
         {
             var stack = Stack.Of(_graphQlApi);
 
@@ -92,7 +92,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             });
         }
 
-        private HttpDataSource CreateHttpDataSource(string dataSourceId, string datasourceName, string endpoint, string description)
+        private HttpDataSource CreateHttpDataSource(string dataSourceId, string datasourceName, string endpoint, string? description)
         {
             var stack = Stack.Of(_graphQlApi);
 
@@ -106,7 +106,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         }
 
         // Applicable to NONE and Subscription DataSources
-        private NoneDataSource CreateNoneDataSource(string dataSourceId, string dataSourceName, string description)
+        private NoneDataSource CreateNoneDataSource(string dataSourceId, string dataSourceName, string? description)
         {
             var stack = Stack.Of(_graphQlApi);
 

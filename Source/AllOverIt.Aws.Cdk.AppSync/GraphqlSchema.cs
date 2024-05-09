@@ -5,9 +5,9 @@ namespace AllOverIt.Aws.Cdk.AppSync
 {
     internal sealed class GraphqlSchema : CodeFirstSchema
     {
-        private ObjectType _query;
-        private ObjectType _mutation;
-        private ObjectType _subscription;
+        private ObjectType? _query;
+        private ObjectType? _mutation;
+        private ObjectType? _subscription;
 
         private bool HasQuery => _query is not null;
         private bool HasMutation => _mutation is not null;
@@ -100,6 +100,5 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
             return builder.ToString();
         }
-
     }
 }

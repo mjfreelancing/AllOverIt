@@ -1,5 +1,7 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Exceptions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Aws.Cdk.AppSync.Resolvers;
+using AllOverIt.Extensions;
 using SystemType = System.Type;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Factories
@@ -79,8 +81,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                 return _inheritedResolverRegistry[baseType].Invoke(resolverType);
             }
 
-            // Assume there is default constructor.
-            return (IResolverRuntime) Activator.CreateInstance(resolverType);
+            var runtime = Activator.CreateInstance(resolverType);
+
+            Throw<SchemaException>.WhenNull(runtime, $"The resolver type '{resolverType.GetFriendlyName()}' requires a default constructor.");
+
+            return (IResolverRuntime) runtime;
         }
     }
 }
