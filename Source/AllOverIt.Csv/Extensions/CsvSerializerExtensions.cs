@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Csv.Exceptions;
-using AllOverIt.Extensions;
 
 namespace AllOverIt.Csv.Extensions
 {
@@ -61,7 +60,7 @@ namespace AllOverIt.Csv.Extensions
         /// <exception cref="CsvSerializerException">When the number of values returned does not match the number of header names.</exception>
         public static void AddDynamicFields<TCsvData, TField, TFieldId>(this ICsvSerializer<TCsvData> serializer, IEnumerable<TCsvData> data,
             Func<TCsvData, TField> fieldSelector, Func<TField, IEnumerable<FieldIdentifier<TFieldId>>> fieldIdentifiers,
-            Func<TField, FieldIdentifier<TFieldId>, IEnumerable<object>> valuesResolver)
+            Func<TField, FieldIdentifier<TFieldId>, object?[]> valuesResolver) where TFieldId : notnull
         {
             _ = serializer.WhenNotNull(nameof(serializer));
             var csvData = data.WhenNotNull(nameof(data));
@@ -76,21 +75,19 @@ namespace AllOverIt.Csv.Extensions
 
             foreach (var identifier in uniqueIdentifiers)
             {
-                var columnCount = identifier.Names.Count;
+                var columnCount = identifier.Names.Length;
 
                 serializer.AddFields(identifier.Names, row =>
                 {
                     var field = fieldSelector.Invoke(row);
 
-                    var values = valuesResolver
-                        .Invoke(field, identifier)
-                        ?.AsReadOnlyCollection();
+                    var values = valuesResolver.Invoke(field, identifier);
 
-                    values ??= Enumerable.Repeat((object) null, identifier.Names.Count).ToList();
+                    values ??= Enumerable.Repeat((object?) null, identifier.Names.Length).ToArray();
 
-                    if (values.Count != columnCount)
+                    if (values.Length != columnCount)
                     {
-                        throw new CsvSerializerException($"Column count mismatch. Expected {columnCount}, found {values.Count}.");
+                        throw new CsvSerializerException($"Column count mismatch. Expected {columnCount}, found {values.Length}.");
                     }
 
                     return values;
