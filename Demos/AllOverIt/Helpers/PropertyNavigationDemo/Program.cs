@@ -59,11 +59,12 @@ namespace PropertyNavigationDemo
 
             var leafNodeType = member.Member.GetMemberType();
 
-            Type elementType = null;
+            Type? elementType = null;
 
             if (leafNodeType.IsArray)
             {
-                elementType = leafNodeType.GetElementType();
+                elementType = leafNodeType.GetElementType()!;
+
                 Console.WriteLine($"with a leaf node of type {elementType.GetFriendlyName()}[].");
             }
 
@@ -72,6 +73,7 @@ namespace PropertyNavigationDemo
                 if (leafNodeType.IsGenericType)
                 {
                     elementType = leafNodeType.GetGenericArguments()[0];
+
                     Console.WriteLine($"with a leaf node of type IEnumerable<{elementType.GetFriendlyName()}>.");
                 }
             }

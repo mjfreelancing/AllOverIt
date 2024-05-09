@@ -622,6 +622,30 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
             }
 
             [Fact]
+            public void Should_Throw_When_Value_Null()
+            {
+                Invoking(() =>
+                {
+                    _writerFake.FakedObject.WriteEnum(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("value");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Value_Not_Enum()
+            {
+                Invoking(() =>
+                {
+                    _writerFake.FakedObject.WriteEnum(Create<int>());
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithMessage("Int32 is not an enum type. (Parameter 'value')");
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var value = Create<DummyEnum>();

@@ -138,11 +138,20 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
         /// <see cref="EnrichedBinaryReaderExtensions.ReadEnum(IEnrichedBinaryReader)"/> to read the value and create the appropriate enum type.</remarks>
         public static void WriteEnum(this IEnrichedBinaryWriter writer, object value)
         {
+            _ = value.WhenNotNull(nameof(value));
+
+            var valueType = value.GetType();
+
+            if (!valueType!.IsEnum)
+            {
+                throw new ArgumentException($"{valueType.GetFriendlyName()} is not an enum type.", nameof(value));
+            }
+
             // Need the string representation of the value in order to convert it back to the original Enum type.
             // Convert.ChangeType() cannot convert an integral type to an Enum type.
             writer
                 .WhenNotNull(nameof(writer))
-                .Write(value.GetType().AssemblyQualifiedName);
+                .Write(valueType.AssemblyQualifiedName!);
 
             writer.Write($"{value}");
         }
@@ -219,7 +228,7 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
             // Due to the above potential edge cases this code is not using enumerableType.IsGenericEnumerableType()
             // as this does not (intentionally) cater for anything other than arrays and IEnumerable types.
 
-            Type elementType = default;         // Passed to WriteEnumerable() when enumerableType is IEnumerable
+            Type? elementType = default;         // Passed to WriteEnumerable() when enumerableType is IEnumerable
 
             if (enumerableType.IsArray)
             {
