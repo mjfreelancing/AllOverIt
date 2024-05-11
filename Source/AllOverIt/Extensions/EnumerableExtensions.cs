@@ -93,6 +93,129 @@ namespace AllOverIt.Extensions
             }
         }
 
+        /// <summary>Asynchronously projects and flattens a provided sequence to a new asynchronous sequence.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>An enumerator that provides asynchronous iteration over a sequence of elements.</returns>
+        public static async IAsyncEnumerable<TResult> SelectManyAsync<TType, TResult>(this IEnumerable<TType> items,
+            Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
+
+            foreach (var item in items)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var results = await selector.Invoke(item, cancellationToken).ConfigureAwait(false);
+
+                foreach (var result in results)
+                {
+                    yield return result;
+                }
+            }
+        }
+
+        /// <summary>Projects and flattens a provided sequence to an array.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <returns>An array containing a flattened list of projected items.</returns>
+        public static TResult[] SelectManyToArray<TType, TResult>(this IEnumerable<TType> items, Func<TType, IEnumerable<TResult>> selector)
+        {
+            _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
+
+            return items.SelectMany(selector).ToArray();
+        }
+
+        /// <summary>Projects and flattens a provided sequence to a <see cref="List{T}"/>.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <returns>A <see cref="List{T}"/> containing a flattened list of projected items.</returns>
+        public static List<TResult> SelectManyToList<TType, TResult>(this IEnumerable<TType> items, Func<TType, IEnumerable<TResult>> selector)
+        {
+            _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
+
+            return items.SelectMany(selector).ToList();
+        }
+
+        /// <summary>Projects and flattens a provided sequence to a <see cref="ReadOnlyCollection{T}"/>.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <returns>A <see cref="ReadOnlyCollection{T}"/> containing a flattened list of projected items.</returns>
+        public static ReadOnlyCollection<TResult> SelectManyToReadOnlyCollection<TType, TResult>(this IEnumerable<TType> items, Func<TType, IEnumerable<TResult>> selector)
+        {
+            _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
+
+            return items.SelectMany(selector).ToList().AsReadOnly();
+        }
+
+        /// <summary>Asynchronously projects and flattens a provided sequence to an array.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <returns>An array containing a flattened list of projected items.</returns>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>An array containing a flattened list of projected items.</returns>
+        public static Task<TResult[]> SelectManyToArrayAsync<TType, TResult>(this IEnumerable<TType> items,
+            Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, CancellationToken cancellationToken = default)
+        {
+            _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
+
+            return items
+                .SelectManyAsync(selector, cancellationToken)
+                .ToArrayAsync(cancellationToken);
+        }
+
+        /// <summary>Asynchronously projects and flattens a provided sequence to a <see cref="List{T}"/>.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>A <see cref="List{T}"/> containing a flattened list of projected items.</returns>
+        public static Task<List<TResult>> SelectManyToListAsync<TType, TResult>(this IEnumerable<TType> items,
+            Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, CancellationToken cancellationToken = default)
+        {
+            _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
+
+            return items
+                .SelectManyAsync(selector, cancellationToken)
+                .ToListAsync(cancellationToken);
+        }
+
+        /// <summary>Asynchronously projects and flattens a provided sequence to a <see cref="ReadOnlyCollection{T}"/>.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>A <see cref="ReadOnlyCollection{T}"/> containing a flattened list of projected items.</returns>
+        public static Task<ReadOnlyCollection<TResult>> SelectManyToReadOnlyCollectionAsync<TType, TResult>(this IEnumerable<TType> items,
+            Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, CancellationToken cancellationToken = default)
+        {
+            _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
+
+            return items
+                .SelectManyAsync(selector, cancellationToken)
+                .ToReadOnlyCollectionAsync(cancellationToken);
+        }
+
         /// <summary>Asynchronously projects each item within a sequence, interleaved in parallel, using a specified
         /// maximum degree of parallelism.</summary>
         /// <typeparam name="TType">The type of each element to be projected.</typeparam>

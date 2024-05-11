@@ -1,3 +1,20 @@
+#  Version 7.12.0
+## XX May 2024
+
+### AllOverIt
+* Updates to EnumerableExtensions
+  - Added SelectManyToArray(), SelectManyToList(), and SelectManyToReadOnlyCollection()
+  - Added SelectManyAsync(), SelectManyToArrayAsync(), SelectManyToListAsync(), and SelectManyToReadOnlyCollectionAsync()
+
+* Updates to AsyncEnumerableExtensions
+  - Breaking: Corrected signature of SelectManyAsync() selector to return Task<IEnumerable<TResult>>, instead of IEnumerable<TResult>.
+  - Breaking: Updated SelectAsync(), SelectToArrayAsync(), SelectToListAsync(), and SelectToReadOnlyCollectionAsync() to forward
+              the CancellationToken to the selector.
+  - Added ToReadOnlyCollectionAsync(), SelectManyToArrayAsync(), SelectManyToListAsync(), and SelectManyToReadOnlyCollectionAsync()
+
+---
+
+
 #  Version 7.11.0
 ## 08 May 2024
 
