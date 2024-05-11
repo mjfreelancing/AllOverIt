@@ -380,6 +380,529 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        public class SelectManyAsync : EnumerableExtensionsFixture
+        {
+            private sealed class DummyParent
+            {
+                public DummyChild[] Children { get; set; }
+            }
+
+            private sealed class DummyChild
+            {
+                public string ChildName { get; set; }
+            }
+
+            private readonly DummyParent[] _parents;
+
+            public SelectManyAsync()
+            {
+                _parents = CreateMany<DummyParent>().ToArray();
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Items_Null()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<DummyParent> parents = null;
+
+                        await parents
+                            .SelectManyAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()))
+                            .ToListAsync();
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Selector_Null()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        await _parents
+                            .SelectManyAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>) null)
+                            .ToListAsync();
+                    })
+                  .Should()
+                  .ThrowAsync<ArgumentNullException>()
+                  .WithNamedMessageWhenNull("selector");
+            }
+
+            [Fact]
+            public async Task Should_Cancel_Iteration()
+            {
+                var cts = new CancellationTokenSource();
+                cts.Cancel();
+
+                await Invoking(
+                    async () =>
+                    {
+                        await _parents
+                            .SelectManyAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()), cts.Token)
+                            .ToListAsync();
+                    })
+                  .Should()
+                  .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Iterate_Collection()
+            {
+                var actual = await _parents
+                    .SelectManyAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()))
+                    .ToListAsync();
+
+                var expected = _parents.SelectMany(parent => parent.Children);
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+        }
+
+        public class SelectManyToArray : EnumerableExtensionsFixture
+        {
+            private sealed class DummyParent
+            {
+                public DummyChild[] Children { get; set; }
+            }
+
+            private sealed class DummyChild
+            {
+                public string ChildName { get; set; }
+            }
+
+            private readonly DummyParent[] _parents;
+
+            public SelectManyToArray()
+            {
+                _parents = CreateMany<DummyParent>().ToArray();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Items_Null()
+            {
+                Invoking(() =>
+                {
+                    IEnumerable<DummyParent> parents = null;
+
+                    parents.SelectManyToArray(parent => parent.Children.AsEnumerable());
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Selector_Null()
+            {
+                Invoking(() =>
+                    {
+                        _parents.SelectManyToArray((Func<DummyParent, IEnumerable<DummyChild>>) null);
+                    })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("selector");
+            }
+
+            [Fact]
+            public void Should_Project_To_Array()
+            {
+                var actual = _parents.SelectManyToArray(parent => parent.Children);
+
+                actual.Should().BeOfType<DummyChild[]>();
+            }
+
+            [Fact]
+            public void Should_Iterate_Collection()
+            {
+                var actual = _parents.SelectManyToArray(parent => parent.Children);
+
+                var expected = _parents.SelectMany(parent => parent.Children);
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+        }
+
+        public class SelectManyToList : EnumerableExtensionsFixture
+        {
+            private sealed class DummyParent
+            {
+                public DummyChild[] Children { get; set; }
+            }
+
+            private sealed class DummyChild
+            {
+                public string ChildName { get; set; }
+            }
+
+            private readonly DummyParent[] _parents;
+
+            public SelectManyToList()
+            {
+                _parents = CreateMany<DummyParent>().ToArray();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Items_Null()
+            {
+                Invoking(() =>
+                {
+                    IEnumerable<DummyParent> parents = null;
+
+                    parents.SelectManyToList(parent => parent.Children.AsEnumerable());
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Selector_Null()
+            {
+                Invoking(() =>
+                {
+                    _parents.SelectManyToList((Func<DummyParent, IEnumerable<DummyChild>>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("selector");
+            }
+
+            [Fact]
+            public void Should_Project_To_List()
+            {
+                var actual = _parents.SelectManyToList(parent => parent.Children);
+
+                actual.Should().BeOfType<List<DummyChild>>();
+            }
+
+            [Fact]
+            public void Should_Iterate_Collection()
+            {
+                var actual = _parents.SelectManyToList(parent => parent.Children);
+
+                var expected = _parents.SelectMany(parent => parent.Children);
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+        }
+
+        public class SelectManyToReadOnlyCollection : EnumerableExtensionsFixture
+        {
+            private sealed class DummyParent
+            {
+                public DummyChild[] Children { get; set; }
+            }
+
+            private sealed class DummyChild
+            {
+                public string ChildName { get; set; }
+            }
+
+            private readonly DummyParent[] _parents;
+
+            public SelectManyToReadOnlyCollection()
+            {
+                _parents = CreateMany<DummyParent>().ToArray();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Items_Null()
+            {
+                Invoking(() =>
+                {
+                    IEnumerable<DummyParent> parents = null;
+
+                    parents.SelectManyToReadOnlyCollection(parent => parent.Children.AsEnumerable());
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Selector_Null()
+            {
+                Invoking(() =>
+                {
+                    _parents.SelectManyToReadOnlyCollection((Func<DummyParent, IEnumerable<DummyChild>>) null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("selector");
+            }
+
+            [Fact]
+            public void Should_Project_To_Collection()
+            {
+                var actual = _parents.SelectManyToReadOnlyCollection(parent => parent.Children);
+
+                actual.Should().BeOfType<ReadOnlyCollection<DummyChild>>();
+            }
+
+            [Fact]
+            public void Should_Iterate_Collection()
+            {
+                var actual = _parents.SelectManyToReadOnlyCollection(parent => parent.Children);
+
+                var expected = _parents.SelectMany(parent => parent.Children);
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+        }
+
+
+
+
+
+
+
+
+        public class SelectManyToArrayAsync : EnumerableExtensionsFixture
+        {
+            private sealed class DummyParent
+            {
+                public DummyChild[] Children { get; set; }
+            }
+
+            private sealed class DummyChild
+            {
+                public string ChildName { get; set; }
+            }
+
+            private readonly DummyParent[] _parents;
+
+            public SelectManyToArrayAsync()
+            {
+                _parents = CreateMany<DummyParent>().ToArray();
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Items_Null()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<DummyParent> parents = null;
+
+                        await parents.SelectManyToArrayAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
+                    })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Selector_Null()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        await _parents.SelectManyToArrayAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>) null);
+                    })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("selector");
+            }
+
+            [Fact]
+            public async Task Should_Cancel_Iteration()
+            {
+                var cts = new CancellationTokenSource();
+                cts.Cancel();
+
+                await Invoking(
+                    async () =>
+                    {
+                        await _parents.SelectManyToArrayAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()), cts.Token);
+                    })
+                    .Should()
+                    .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Project_To_Array()
+            {
+                var actual = await _parents.SelectManyToArrayAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
+
+                actual.Should().BeOfType<DummyChild[]>();
+            }
+
+            [Fact]
+            public async Task Should_Iterate_Collection()
+            {
+                var actual = await _parents.SelectManyToArrayAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
+
+                var expected = _parents.SelectMany(parent => parent.Children);
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+        }
+
+        public class SelectManyToListAsync : EnumerableExtensionsFixture
+        {
+            private sealed class DummyParent
+            {
+                public DummyChild[] Children { get; set; }
+            }
+
+            private sealed class DummyChild
+            {
+                public string ChildName { get; set; }
+            }
+
+            private readonly DummyParent[] _parents;
+
+            public SelectManyToListAsync()
+            {
+                _parents = CreateMany<DummyParent>().ToArray();
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Items_Null()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<DummyParent> parents = null;
+
+                        await parents.SelectManyToListAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
+                    })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Selector_Null()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        await _parents.SelectManyToListAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>) null);
+                    })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("selector");
+            }
+
+            [Fact]
+            public async Task Should_Cancel_Iteration()
+            {
+                var cts = new CancellationTokenSource();
+                cts.Cancel();
+
+                await Invoking(
+                    async () =>
+                    {
+                        await _parents.SelectManyToListAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()), cts.Token);
+                    })
+                    .Should()
+                    .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Project_To_List()
+            {
+                var actual = await _parents.SelectManyToListAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
+
+                actual.Should().BeOfType<List<DummyChild>>();
+            }
+
+            [Fact]
+            public async Task Should_Iterate_Collection()
+            {
+                var actual = await _parents.SelectManyToListAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
+
+                var expected = _parents.SelectMany(parent => parent.Children);
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+        }
+
+        public class SelectManyToReadOnlyCollectionAsync : EnumerableExtensionsFixture
+        {
+            private sealed class DummyParent
+            {
+                public DummyChild[] Children { get; set; }
+            }
+
+            private sealed class DummyChild
+            {
+                public string ChildName { get; set; }
+            }
+
+            private readonly DummyParent[] _parents;
+
+            public SelectManyToReadOnlyCollectionAsync()
+            {
+                _parents = CreateMany<DummyParent>().ToArray();
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Items_Null()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        IEnumerable<DummyParent> parents = null;
+
+                        await parents.SelectManyToReadOnlyCollectionAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
+                    })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Selector_Null()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        await _parents.SelectManyToReadOnlyCollectionAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>) null);
+                    })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("selector");
+            }
+
+            [Fact]
+            public async Task Should_Cancel_Iteration()
+            {
+                var cts = new CancellationTokenSource();
+                cts.Cancel();
+
+                await Invoking(
+                    async () =>
+                    {
+                        await _parents.SelectManyToReadOnlyCollectionAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()), cts.Token);
+                    })
+                    .Should()
+                    .ThrowAsync<OperationCanceledException>();
+            }
+
+            [Fact]
+            public async Task Should_Project_To_Collection()
+            {
+                var actual = await _parents.SelectManyToReadOnlyCollectionAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
+
+                actual.Should().BeOfType<ReadOnlyCollection<DummyChild>>();
+            }
+
+            [Fact]
+            public async Task Should_Iterate_Collection()
+            {
+                var actual = await _parents.SelectManyToReadOnlyCollectionAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
+
+                var expected = _parents.SelectMany(parent => parent.Children);
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+        }
+
         public class SelectAsParallelAsync_DegreeOfParallelism : EnumerableExtensionsFixture
         {
             [Fact]
@@ -525,7 +1048,7 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Return_Projected_List()
+            public void Should_Return_Projected_Array()
             {
                 var source = CreateMany<int>();
                 var expected = source.Select(item => item * 2);
@@ -603,7 +1126,7 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Return_Projected_List()
+            public void Should_Return_Projected_Collection()
             {
                 var source = CreateMany<int>();
                 var expected = source.Select(item => item * 2);
@@ -750,7 +1273,7 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Return_Projected_List()
+            public void Should_Return_Projected_Collection()
             {
                 var source = CreateMany<int>();
                 var expected = source.Select(item => item * 2);
@@ -804,7 +1327,7 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public async Task Should_Return_Projected_List()
+            public async Task Should_Return_Projected_Array()
             {
                 var source = CreateMany<int>();
                 var expected = source.Select(item => item * 2);
@@ -912,7 +1435,7 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public async Task Should_Return_Projected_List()
+            public async Task Should_Return_Projected_Collection()
             {
                 var source = CreateMany<int>();
                 var expected = source.Select(item => item * 2);
@@ -1020,7 +1543,7 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public async Task Should_Return_Projected_List()
+            public async Task Should_Return_Projected_Collection()
             {
                 var source = CreateMany<int>();
                 var expected = source.Select(item => item * 2);
