@@ -15,4 +15,5 @@
     <ItemGroup>
         <ProjectReference Include="..\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
     </ItemGroup>
+    
 </Project>
