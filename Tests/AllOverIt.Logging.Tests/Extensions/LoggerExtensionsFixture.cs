@@ -4,6 +4,7 @@ using AllOverIt.Logging.Extensions;
 using AllOverIt.Logging.Testing;
 using AllOverIt.Logging.Testing.Extensions;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 
 using ILogger = Microsoft.Extensions.Logging.ILogger;
@@ -114,7 +115,7 @@ namespace AllOverIt.Logging.Tests.Extensions
                 _loggerFake.AssertStaticLogCall(() =>
                 {
                     _logTester.LogStaticCallWithNoArguments();
-                }, nameof(LogTester.LogStaticCallWithNoArguments));
+                }, nameof(LogTester.LogStaticCallWithNoArguments), LogLevel.Information);
             }
 
             [Fact]
@@ -123,7 +124,7 @@ namespace AllOverIt.Logging.Tests.Extensions
                 _loggerFake.AssertLogCall<LogTester>(() =>
                 {
                     _logTester.LogCallWithNoArguments();
-                }, nameof(LogTester.LogCallWithNoArguments));
+                }, nameof(LogTester.LogCallWithNoArguments), LogLevel.Information);
             }
 
             [Fact]
@@ -132,7 +133,7 @@ namespace AllOverIt.Logging.Tests.Extensions
                 _loggerFake.AssertStaticLogCall(() =>
                 {
                     _logTester.LogStaticCallWithNoArguments();
-                }, nameof(LogTester.LogStaticCallWithNoArguments));
+                }, nameof(LogTester.LogStaticCallWithNoArguments), LogLevel.Information);
             }
 
             [Fact]
@@ -144,7 +145,7 @@ namespace AllOverIt.Logging.Tests.Extensions
                 _loggerFake.AssertLogCallWithArguments<LogTester>(() =>
                 {
                     _logTester.LogCallWithArguments(arg1, arg2);
-                }, nameof(LogTester.LogCallWithArguments), new { arg1, arg2 });
+                }, nameof(LogTester.LogCallWithArguments), new { arg1, arg2 }, LogLevel.Information);
             }
         }
 
@@ -190,11 +191,11 @@ namespace AllOverIt.Logging.Tests.Extensions
                     LoggerExtensions.LogException(_loggerFake, _exception);
                 });
 
-                var states = actual.States;
+                var states = actual.Entries;
 
                 states.Should().BeEquivalentTo(
                 [
-                    LogCallExpectation.GetExpectedLogEntryWithTemplateAndArguments(
+                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsEntries(
                         LogCallOptions.Instance.LogExceptionTemplate,
                         new
                         {
@@ -214,11 +215,11 @@ namespace AllOverIt.Logging.Tests.Extensions
                     LoggerExtensions.LogException(_loggerFake, _exception, template, _exception.Message, otherArg);
                 });
 
-                var states = actual.States;
+                var states = actual.Entries;
 
                 states.Should().BeEquivalentTo(
                 [
-                    LogCallExpectation.GetExpectedLogEntryWithTemplateAndArguments(
+                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsEntries(
                         template,
                         new
                         {
@@ -275,25 +276,25 @@ namespace AllOverIt.Logging.Tests.Extensions
                     LoggerExtensions.LogAllExceptions(_loggerFake, _exception);
                 });
 
-                var states = actual.States;
+                var states = actual.Entries;
 
                 states.Should().BeEquivalentTo(
                 [
-                    LogCallExpectation.GetExpectedLogEntryWithTemplateAndArguments(
+                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsEntries(
                         LogCallOptions.Instance.LogExceptionTemplate,
                         new
                         {
                             ErrorMessage = _innerException2.Message
                         }),
 
-                    LogCallExpectation.GetExpectedLogEntryWithTemplateAndArguments(
+                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsEntries(
                         LogCallOptions.Instance.LogExceptionTemplate,
                         new
                         {
                             ErrorMessage = _innerException1.Message
                         }),
 
-                    LogCallExpectation.GetExpectedLogEntryWithTemplateAndArguments(
+                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsEntries(
                         LogCallOptions.Instance.LogExceptionTemplate,
                         new
                         {
@@ -313,25 +314,25 @@ namespace AllOverIt.Logging.Tests.Extensions
                     LoggerExtensions.LogAllExceptions(_loggerFake, _exception, template, _exception.Message, otherArg);
                 });
 
-                var states = actual.States;
+                var states = actual.Entries;
 
                 states.Should().BeEquivalentTo(
                 [
-                    LogCallExpectation.GetExpectedLogEntryWithTemplateAndArguments(
+                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsEntries(
                         LogCallOptions.Instance.LogExceptionTemplate,
                         new
                         {
                             ErrorMessage = _innerException2.Message
                         }),
 
-                    LogCallExpectation.GetExpectedLogEntryWithTemplateAndArguments(
+                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsEntries(
                         LogCallOptions.Instance.LogExceptionTemplate,
                         new
                         {
                             ErrorMessage = _innerException1.Message
                         }),
 
-                    LogCallExpectation.GetExpectedLogEntryWithTemplateAndArguments(
+                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsEntries(
                         template,
                         new
                         {
