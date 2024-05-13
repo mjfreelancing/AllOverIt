@@ -50,29 +50,29 @@ namespace AllOverIt.Logging.Testing.Extensions
             actual.AssertLogCallWithArgumentsEntry<TCaller>(0, callerMethodName, arguments, logLevel);
         }
 
-        public static MethodCallsWithArguments CaptureLogCalls(this ILogger loggerFake, Action action)
+        public static MethodCallContext CaptureLogCalls(this ILogger loggerFake, Action action)
         {
-            // The MethodCallsWithArguments will be populated as the logger's methods are invoked
-            var actualLogCallArgs = PrepareMethodCallsWithArguments(loggerFake);
+            // The methodCallContext will be populated as the logger's methods are invoked
+            var methodCallContext = PrepareMethodCallsWithArguments(loggerFake);
 
             action.Invoke();
 
-            return actualLogCallArgs;
+            return methodCallContext;
         }
 
-        public static async Task<MethodCallsWithArguments> CaptureLogCallsAsync(this ILogger loggerFake, Func<Task> action)
+        public static async Task<MethodCallContext> CaptureLogCallsAsync(this ILogger loggerFake, Func<Task> action)
         {
-            // The MethodCallsWithArguments will be populated as the logger's methods are invoked
-            var actualLogCallArgs = PrepareMethodCallsWithArguments(loggerFake);
+            // The methodCallContext will be populated as the logger's methods are invoked
+            var methodCallContext = PrepareMethodCallsWithArguments(loggerFake);
 
             await action.Invoke();
 
-            return actualLogCallArgs;
+            return methodCallContext;
         }
 
-        private static MethodCallsWithArguments PrepareMethodCallsWithArguments(ILogger loggerFake)
+        private static MethodCallContext PrepareMethodCallsWithArguments(ILogger loggerFake)
         {
-            var actualLogCallArgs = new MethodCallsWithArguments();
+            var actualLogCallArgs = new MethodCallContext();
 
             loggerFake
                 .When(call => call.Log(Arg.Any<LogLevel>(),
@@ -84,7 +84,7 @@ namespace AllOverIt.Logging.Testing.Extensions
                 {
                     lock (actualLogCallArgs)
                     {
-                        var callContext = new MethodCallContext
+                        var callContext = new MethodCallContext.Item
                         {
                             LogLevel = args.ArgAt<LogLevel>(0),
                             Entries = args.ArgAt<IReadOnlyList<KeyValuePair<string, object>>>(2).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),

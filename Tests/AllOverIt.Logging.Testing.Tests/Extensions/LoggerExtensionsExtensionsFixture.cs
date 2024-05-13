@@ -213,12 +213,12 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
 
                 Invoking(() =>
                 {
-                    var methodCallsWithArguments = _loggerFake.CaptureLogCalls(() =>
+                    var methodCallContext = _loggerFake.CaptureLogCalls(() =>
                     {
                         _dummyClass.LogDebugMethod(message);
                     });
 
-                    methodCallsWithArguments.AssertMessageEntry(0, message, LogLevel.Debug);
+                    methodCallContext.AssertMessageEntry(0, message, LogLevel.Debug);
                 })
                     .Should()
                     .NotThrow();
@@ -234,12 +234,12 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
 
                 Invoking(() =>
                 {
-                    var methodCallsWithArguments = _loggerFake.CaptureLogCalls(() =>
+                    var methodCallContext = _loggerFake.CaptureLogCalls(() =>
                     {
                         _dummyClass.LogInformationMethodWithArguments(logTemplate, value1, value2);
                     });
 
-                    methodCallsWithArguments.AssertMessageWithArgumentsEntry(
+                    methodCallContext.AssertMessageWithArgumentsEntry(
                         0,
                         logTemplate,
                         new { Value1 = value1, Value2 = value2 },
@@ -258,25 +258,25 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                     var value2 = Create<string>();
                     var exception = new Exception(Create<string>());
 
-                    var methodCallsWithArguments = _loggerFake.CaptureLogCalls(() =>
+                    var methodCallContext = _loggerFake.CaptureLogCalls(() =>
                     {
                         _dummyClass.CallMethod();
                         _dummyClass.CallMethodWithArguments(value1, value2);
                         _dummyClass.CallMethodWithException(exception);
                     });
 
-                    methodCallsWithArguments.AssertLogCallEntry<DummyClass>(
+                    methodCallContext.AssertLogCallEntry<DummyClass>(
                         0,
                         nameof(DummyClass.CallMethod),
                         LogLevel.Information);
 
-                    methodCallsWithArguments.AssertLogCallWithArgumentsEntry<DummyClass>(
+                    methodCallContext.AssertLogCallWithArgumentsEntry<DummyClass>(
                         1,
                         nameof(DummyClass.CallMethodWithArguments),
                         new { value1, value2 },
                         LogLevel.Information);
 
-                    methodCallsWithArguments.AssertExceptionLogEntry(2, exception);
+                    methodCallContext.AssertExceptionLogEntry(2, exception);
                 })
                     .Should()
                     .NotThrow();
@@ -294,25 +294,25 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                     var value2 = Create<string>();
                     var exception = new Exception(Create<string>());
 
-                    var methodCallsWithArguments = await _loggerFake.CaptureLogCallsAsync(async () =>
+                    var methodCallContext = await _loggerFake.CaptureLogCallsAsync(async () =>
                     {
                         await _dummyClass.CallMethodAsync();
                         await _dummyClass.CallMethodWithArgumentsAsync(value1, value2);
                         _dummyClass.CallMethodWithException(exception);
                     });
 
-                    methodCallsWithArguments.AssertLogCallEntry<DummyClass>(
+                    methodCallContext.AssertLogCallEntry<DummyClass>(
                         0,
                         nameof(DummyClass.CallMethodAsync),
                         LogLevel.Information);
 
-                    methodCallsWithArguments.AssertLogCallWithArgumentsEntry<DummyClass>(
+                    methodCallContext.AssertLogCallWithArgumentsEntry<DummyClass>(
                         1,
                         nameof(DummyClass.CallMethodWithArgumentsAsync),
                         new { value1, value2 },
                         LogLevel.Information);
 
-                    methodCallsWithArguments.AssertExceptionLogEntry(2, exception);
+                    methodCallContext.AssertExceptionLogEntry(2, exception);
                 })
                     .Should()
                     .NotThrowAsync();
