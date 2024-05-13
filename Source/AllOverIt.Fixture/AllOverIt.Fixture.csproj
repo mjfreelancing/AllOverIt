@@ -2,13 +2,14 @@
 
     <PropertyGroup>
         <TargetFrameworks>net9.0;net8.0;netstandard2.1</TargetFrameworks>
-        <Description>This package contains a base fixture class with numerous helper methods to assist with scaffolding unit tests. Utilizes AutoFixture to do most of the hard work.</Description>
+        <Description>This package contains a base fixture class with numerous helper methods to assist with scaffolding unit tests.</Description>
         <PackageTags>AllOverIt;Utilities;UnitTesting;Fakes;Faking;Mocks;Mocking;Stubs;Stubbing;TDD;BDD;NUnit</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoFixture" Version="4.18.1" />
         <PackageReference Include="FluentAssertions" Version="6.12.0" />
+        <PackageReference Include="NSubstitute" Version="5.1.0" />
     </ItemGroup>
 
     <ItemGroup>

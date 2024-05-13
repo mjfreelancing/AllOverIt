@@ -1,25 +1,25 @@
 # Summary
 |||
 |:---|:---|
-| Generated on: | 8/05/2024 - 3:44:41 PM |
-| Coverage date: | 8/05/2024 - 3:33:52 PM - 8/05/2024 - 3:44:25 PM |
-| Parser: | MultiReport (69x Cobertura) |
-| Assemblies: | 21 |
-| Classes: | 500 |
-| Files: | 505 |
-| **Line coverage:** | 99.2% (15161 of 15281) |
-| Covered lines: | 15161 |
+| Generated on: | 13/05/2024 - 9:58:50 AM |
+| Coverage date: | 13/05/2024 - 9:56:20 AM - 13/05/2024 - 9:58:41 AM |
+| Parser: | MultiReport (75x Cobertura) |
+| Assemblies: | 23 |
+| Classes: | 506 |
+| Files: | 511 |
+| **Line coverage:** | 99.2% (15484 of 15604) |
+| Covered lines: | 15484 |
 | Uncovered lines: | 120 |
-| Coverable lines: | 15281 |
-| Total lines: | 37317 |
-| **Branch coverage:** | 96.2% (2694 of 2800) |
-| Covered branches: | 2694 |
-| Total branches: | 2800 |
+| Coverable lines: | 15604 |
+| Total lines: | 37946 |
+| **Branch coverage:** | 96.1% (2716 of 2824) |
+| Covered branches: | 2716 |
+| Total branches: | 2824 |
 | **Method coverage:** | [Feature is only available for sponsors](https://reportgenerator.io/pro) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**AllOverIt**|**5889**|**72**|**5961**|**16500**|**98.7%**|**1053**|**1078**|**97.6%**|
+|**AllOverIt**|**5962**|**72**|**6034**|**16686**|**98.8%**|**1059**|**1086**|**97.5%**|
 |AllOverIt.Aspects.InterceptorBase`1|81|1|82|170|98.7%|12|12|100%|
 |AllOverIt.Aspects.InterceptorFactory|24|0|24|61|100%|4|4|100%|
 |AllOverIt.Aspects.InterceptorMethodHandlerAsyncBase|16|0|16|212|100%|0|0||
@@ -30,8 +30,8 @@
 |AllOverIt.Aspects.InterceptorState`1|2|0|2|40|100%|0|0||
 |AllOverIt.Aspects.MethodInterceptor`1|23|0|23|61|100%|2|2|100%|
 |AllOverIt.Async.AsyncLazy`1|9|0|9|34|100%|0|0||
-|AllOverIt.Async.BackgroundTask|82|2|84|159|97.6%|13|14|92.8%|
-|AllOverIt.Async.BackgroundTask`1|79|0|79|157|100%|17|18|94.4%|
+|AllOverIt.Async.BackgroundTask|84|0|84|159|100%|14|14|100%|
+|AllOverIt.Async.BackgroundTask`1|77|2|79|157|97.4%|16|18|88.8%|
 |AllOverIt.Async.CompositeAsyncDisposable|50|0|50|87|100%|6|6|100%|
 |AllOverIt.Async.RepeatingTask|84|62|146|256|57.5%|0|0||
 |AllOverIt.Async.RepeatingTaskOptions|5|0|5|23|100%|0|0||
@@ -71,13 +71,13 @@
 |AllOverIt.Expressions.Strings.StringComparisonMode|12|0|12|48|100%|0|0||
 |AllOverIt.Expressions.Strings.StringComparisonUtils|150|0|150|327|100%|22|22|100%|
 |AllOverIt.Extensions.AsyncDisposableExtensions|10|0|10|37|100%|0|0||
-|AllOverIt.Extensions.AsyncEnumerableExtensions|103|0|103|299|100%|24|30|80%|
+|AllOverIt.Extensions.AsyncEnumerableExtensions|127|0|127|361|100%|24|30|80%|
 |AllOverIt.Extensions.ComparableExtensions|18|0|18|66|100%|0|0||
 |AllOverIt.Extensions.ComparerExtensions|28|0|28|73|100%|4|4|100%|
 |AllOverIt.Extensions.DictionaryExtensions|16|0|16|51|100%|8|8|100%|
 |AllOverIt.Extensions.DoubleExtensions|12|0|12|52|100%|0|0||
 |AllOverIt.Extensions.EndianExtensions|140|0|140|333|100%|36|36|100%|
-|AllOverIt.Extensions.EnumerableExtensions|376|0|376|873|100%|44|48|91.6%|
+|AllOverIt.Extensions.EnumerableExtensions|425|0|425|996|100%|50|56|89.2%|
 |AllOverIt.Extensions.ExceptionExtensions|21|0|21|46|100%|14|14|100%|
 |AllOverIt.Extensions.ExpressionExtensions|89|0|89|184|100%|37|38|97.3%|
 |AllOverIt.Extensions.ListExtensions|30|0|30|75|100%|4|4|100%|
@@ -89,7 +89,7 @@
 |AllOverIt.Extensions.StreamExtensions|14|0|14|37|100%|0|0||
 |AllOverIt.Extensions.StringExtensions|58|0|58|150|100%|20|20|100%|
 |AllOverIt.Extensions.TaskExtensions|16|0|16|34|100%|4|4|100%|
-|AllOverIt.Extensions.TypeExtensions|317|3|320|740|99%|56|58|96.5%|
+|AllOverIt.Extensions.TypeExtensions|317|3|320|741|99%|56|58|96.5%|
 |AllOverIt.Extensions.TypeInfoExtensions|56|0|56|118|100%|24|24|100%|
 |AllOverIt.Formatters.Objects.Exceptions.ObjectPropertyFilterException|9|0|9|26|100%|0|0||
 |AllOverIt.Formatters.Objects.Exceptions.SelfReferenceException|9|0|9|26|100%|0|0||
@@ -347,8 +347,8 @@
 |AllOverIt.Evaluator.Variables.VariableRegistry|52|0|52|113|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistryBuilder|127|0|127|253|100%|18|18|100%|
 |**AllOverIt.Filtering**|**639**|**1**|**640**|**1583**|**99.8%**|**122**|**134**|**91%**|
-|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|158|100%|19|24|79.1%|
-|AllOverIt.Filtering.Builders.FilterSpecificationBuilder`2|212|1|213|401|99.5%|51|58|87.9%|
+|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|158|100%|18|24|75%|
+|AllOverIt.Filtering.Builders.FilterSpecificationBuilder`2|212|1|213|401|99.5%|52|58|89.6%|
 |AllOverIt.Filtering.Exceptions.NullNotSupportedException|9|0|9|26|100%|0|0||
 |AllOverIt.Filtering.Extensions.FilterExtensions|12|0|12|41|100%|2|2|100%|
 |AllOverIt.Filtering.Extensions.FilterSpecificationExtensions|5|0|5|28|100%|2|2|100%|
@@ -385,6 +385,14 @@
 |AllOverIt.Fixture.Extensions.ExceptionAssertionsExtensions|58|0|58|209|100%|32|32|100%|
 |AllOverIt.Fixture.FixtureBase|258|0|258|533|100%|64|64|100%|
 |**AllOverIt.Fixture.FakeItEasy**|**0**|**0**|**0**|**0**|****|**0**|**0**|****|
+|**AllOverIt.Logging**|**105**|**0**|**105**|**203**|**100%**|**16**|**16**|**100%**|
+|AllOverIt.Logging.Extensions.LoggerExtensions|35|0|35|68|100%|4|4|100%|
+|AllOverIt.Logging.LogCallOptions|70|0|70|135|100%|12|12|100%|
+|**AllOverIt.Logging.Testing**|**145**|**0**|**145**|**240**|**100%**|**0**|**0**|****|
+|AllOverIt.Logging.Testing.Extensions.LoggerExtensions|72|0|72|107|100%|0|0||
+|AllOverIt.Logging.Testing.LogCallExpectation|46|0|46|72|100%|0|0||
+|AllOverIt.Logging.Testing.MethodCallsWithArguments|2|0|2|10|100%|0|0||
+|AllOverIt.Logging.Testing.MethodCallsWithArgumentsExtensions|25|0|25|51|100%|0|0||
 |**AllOverIt.Mapping**|**528**|**1**|**529**|**1069**|**99.8%**|**107**|**110**|**97.2%**|
 |AllOverIt.Mapping.Exceptions.ObjectMapperException|9|0|9|26|100%|0|0||
 |AllOverIt.Mapping.Extensions.ObjectMapperExtensions|18|0|18|49|100%|2|2|100%|

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net9.0;net8.0;netstandard2.1</TargetFrameworks>
+        <Description>This package contains helper methods that assist with asserting logger calls.</Description>
+        <PackageTags>AllOverIt;Utilities;Testing;Logging</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="6.12.0" />
+        <PackageReference Include="NSubstitute" Version="5.1.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\AllOverIt.Logging\AllOverIt.Logging.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="AllOverIt.Logging.Tests"/>
+    </ItemGroup>
+
+</Project>

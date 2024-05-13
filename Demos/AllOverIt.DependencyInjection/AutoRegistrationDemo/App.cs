@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.GenericHost;
+using AllOverIt.Logging.Extensions;
 using ExternalDependencies;
 using Microsoft.Extensions.Logging;
 
@@ -19,13 +20,9 @@ namespace AutoRegistrationDemo
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("StartAsync");
+            _logger.LogCall(this);
 
-            foreach (var _ in Enumerable.Range(1, 10))
-            {
-                // The repository is decorated with a logger - so this will do all of the logging
-                _repository.GetRandomName();
-            }
+            GetRandomNames(10);
 
             ExitCode = 0;
 
@@ -45,6 +42,18 @@ namespace AutoRegistrationDemo
         public override void OnStopped()
         {
             _logger.LogInformation("App is stopped");
+        }
+
+        private void GetRandomNames(int count)
+        {
+            // Just here to test logging calls
+            _logger.LogCall(this, new { count });
+
+            foreach (var _ in Enumerable.Range(1, 10))
+            {
+                // The repository is decorated with a logger - so this will do all of the logging
+                _repository.GetRandomName();
+            }
         }
     }
 }

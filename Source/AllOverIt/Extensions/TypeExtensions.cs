@@ -378,6 +378,7 @@ namespace AllOverIt.Extensions
                 }
 
                 var genericTypeNames = type.GetGenericArguments().Select(GetFriendlyName);
+
                 var stringBuilder = new StringBuilder();
 
                 stringBuilder.Append(typeName);
