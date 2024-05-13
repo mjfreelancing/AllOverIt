@@ -43,7 +43,7 @@ namespace AllOverIt.Cryptography.AES
         public byte[]? IV { get; private set; }
 
         /// <summary>Constructor. Uses a default configuration (see <see cref="IAesEncryptorConfiguration"/>) with
-        /// a random secrey key and initialization vector.</summary>
+        /// a random secret key and initialization vector.</summary>
         public AesEncryptorConfiguration()
         {
             _keySize = 256;                     // Using _keySize to avoid the Key being generated
@@ -51,7 +51,7 @@ namespace AllOverIt.Cryptography.AES
         }
 
         /// <summary>Constructor. Uses a default configuration (see <see cref="IAesEncryptorConfiguration"/>) with
-        /// the provided secrey key and initialization vector. The key size will be updated to match the length of
+        /// the provided secret key and initialization vector. The key size will be updated to match the length of
         /// the secret key.</summary>
         public AesEncryptorConfiguration(byte[] key, byte[] iv)
         {

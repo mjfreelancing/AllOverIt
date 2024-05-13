@@ -46,6 +46,10 @@
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Compile Include="..\DotNetAttributes.cs" Link="DotNetAttributes.cs" />
+    </ItemGroup>
+
     <PropertyGroup>
         <!--IDE0290 - use primary constructor-->
         <!--CS0618 - 'member' is obsolete-->
