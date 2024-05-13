@@ -12,6 +12,12 @@
               the CancellationToken to the selector.
   - Added ToReadOnlyCollectionAsync(), SelectManyToArrayAsync(), SelectManyToListAsync(), and SelectManyToReadOnlyCollectionAsync()
 
+### AllOverIt.Logging :new:
+* A new package containing extension methods to provide additional logging functionality.
+
+### AllOverIt.Logging.Testing :new:
+* A new package containing helper methods that assist with asserting logger calls.
+
 ---
 
 

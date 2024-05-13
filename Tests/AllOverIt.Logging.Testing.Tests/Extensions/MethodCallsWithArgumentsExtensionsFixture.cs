@@ -71,13 +71,17 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
 
                     methodCallsWithArguments.Should().HaveCount(2);
 
-                    methodCallsWithArguments.States[0].Should().NotBeNull();
-                    methodCallsWithArguments.States[1].Should().NotBeNull();
+                    methodCallsWithArguments.Entries[0].Should().NotBeNull();
+                    methodCallsWithArguments.Entries[1].Should().NotBeNull();
 
                     methodCallsWithArguments.Exceptions[0].Should().BeNull();
                     methodCallsWithArguments.Exceptions[1].Should().NotBeNull();
 
-                    methodCallsWithArguments.AssertStaticLogCallEntry(0, nameof(DummyClass.CallStaticMethod));
+                    methodCallsWithArguments.AssertStaticLogCallEntry(
+                        0,
+                        nameof(DummyClass.CallStaticMethod),
+                        LogLevel.Information);
+
                     methodCallsWithArguments.AssertExceptionLogEntry(1, exception);
                 })
                 .Should()
@@ -103,13 +107,14 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
 
                     methodCallsWithArguments.Should().HaveCount(1);
 
-                    methodCallsWithArguments.States[0].Should().NotBeNull();
+                    methodCallsWithArguments.Entries[0].Should().NotBeNull();
                     methodCallsWithArguments.Exceptions[0].Should().BeNull();
 
                     methodCallsWithArguments.AssertStaticLogCallWithArgumentsEntry(
                         0,
                         nameof(DummyClass.CallStaticMethodWithArguments),
-                        new { value1, value2 });
+                        new { value1, value2 },
+                        LogLevel.Information);
                 })
                 .Should()
                 .NotThrow();
@@ -134,15 +139,18 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
 
                     methodCallsWithArguments.Should().HaveCount(2);
 
-                    methodCallsWithArguments.States[0].Should().NotBeNull();
-                    methodCallsWithArguments.States[1].Should().NotBeNull();
+                    methodCallsWithArguments.Entries[0].Should().NotBeNull();
+                    methodCallsWithArguments.Entries[1].Should().NotBeNull();
 
                     methodCallsWithArguments.Exceptions[0].Should().NotBeNull();
                     methodCallsWithArguments.Exceptions[1].Should().BeNull();
 
                     methodCallsWithArguments.AssertExceptionLogEntry(0, exception);
 
-                    methodCallsWithArguments.AssertLogCallEntry<DummyClass>(1, nameof(DummyClass.CallMethod));
+                    methodCallsWithArguments.AssertLogCallEntry<DummyClass>(
+                        1,
+                        nameof(DummyClass.CallMethod),
+                        LogLevel.Information);
                 })
                 .Should()
                 .NotThrow();
@@ -167,13 +175,14 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
 
                     methodCallsWithArguments.Should().HaveCount(1);
 
-                    methodCallsWithArguments.States[0].Should().NotBeNull();
+                    methodCallsWithArguments.Entries[0].Should().NotBeNull();
                     methodCallsWithArguments.Exceptions[0].Should().BeNull();
 
                     methodCallsWithArguments.AssertLogCallWithArgumentsEntry<DummyClass>(
                         0,
                         nameof(DummyClass.CallMethodWithArguments),
-                        new { value1, value2 });
+                        new { value1, value2 },
+                        LogLevel.Information);
                 })
                 .Should()
                 .NotThrow();

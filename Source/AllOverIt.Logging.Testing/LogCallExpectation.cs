@@ -9,7 +9,7 @@ namespace AllOverIt.Logging.Testing
         private static readonly string MethodNameProperty = LogCallOptions.Instance._methodNameProperty;
         private static readonly string ArgumentsProperty = LogCallOptions.Instance._argumentsProperty;
 
-        public static IDictionary<string, object> GetExpectedStaticLogCall(string callerName)
+        public static IDictionary<string, object> GetExpectedStaticLogCallEntries(string callerName)
         {
             return new Dictionary<string, object>
             {
@@ -18,7 +18,7 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
-        public static IDictionary<string, object> GetExpectedLogCall<TCaller>(string callerName)
+        public static IDictionary<string, object> GetExpectedLogCallEntries<TCaller>(string callerName)
         {
             var callerType = typeof(TCaller);
 
@@ -29,7 +29,7 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
-        public static IDictionary<string, object> GetExpectedStaticLogCallWithArguments(string callerName, object arguments)
+        public static IDictionary<string, object> GetExpectedStaticLogCallWithArgumentsEntries(string callerName, object arguments)
         {
             return new Dictionary<string, object>
             {
@@ -39,7 +39,7 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
-        public static IDictionary<string, object> GetExpectedLogCallWithArguments<TCaller>(string callerName, object arguments)
+        public static IDictionary<string, object> GetExpectedLogCallWithArgumentsEntries<TCaller>(string callerName, object arguments)
         {
             var callerType = typeof(TCaller);
 
@@ -51,7 +51,7 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
-        public static IDictionary<string, object> GetExpectedExceptionLogEntry(Exception exception)
+        public static IDictionary<string, object> GetExpectedExceptionLogEntries(Exception exception)
         {
             return new Dictionary<string, object>
             {
@@ -60,7 +60,15 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
-        public static IDictionary<string, object> GetExpectedLogEntryWithTemplateAndArguments(string logTemplate, object arguments)
+        public static IDictionary<string, object> GetExpectedLogTemplateEntries(string logTemplate)
+        {
+            return new Dictionary<string, object>
+            {
+                { OriginalFormat, logTemplate }
+            };
+        }
+
+        public static IDictionary<string, object> GetExpectedLogTemplateWithArgumentsEntries(string logTemplate, object arguments)
         {
             var dictionary = arguments.ToPropertyDictionary();
 

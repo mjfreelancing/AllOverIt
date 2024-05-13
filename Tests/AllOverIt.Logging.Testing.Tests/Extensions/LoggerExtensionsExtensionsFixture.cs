@@ -56,6 +56,16 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             {
                 _logger.LogException(exception);
             }
+
+            public void LogDebugMethod(string message)
+            {
+                _logger.LogDebug(message);
+            }
+
+            public void LogInformationMethodWithArguments(string template, params object?[] arguments)
+            {
+                _logger.LogInformation(template, arguments);
+            }
         }
 
         private readonly DummyClass _dummyClass;
@@ -78,7 +88,9 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         () =>
                         {
                             DummyClass.CallStaticMethod(_loggerFake);
-                        }, nameof(DummyClass.CallStaticMethod));
+                        },
+                        nameof(DummyClass.CallStaticMethod),
+                        LogLevel.Information);
                 })
                     .Should()
                     .NotThrow();
@@ -99,7 +111,10 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         () =>
                         {
                             DummyClass.CallStaticMethodWithArguments(_loggerFake, value1, value2);
-                        }, nameof(DummyClass.CallStaticMethodWithArguments), new { value1, value2 });
+                        },
+                        nameof(DummyClass.CallStaticMethodWithArguments),
+                        new { value1, value2 },
+                        LogLevel.Information);
                 }).Should().NotThrow();
             }
         }
@@ -115,7 +130,9 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         () =>
                         {
                             _dummyClass.CallMethod();
-                        }, nameof(DummyClass.CallMethod));
+                        },
+                        nameof(DummyClass.CallMethod),
+                        LogLevel.Information);
                 }).Should().NotThrow();
             }
         }
@@ -134,7 +151,10 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         () =>
                         {
                             _dummyClass.CallMethodWithArguments(value1, value2);
-                        }, nameof(DummyClass.CallMethodWithArguments), new { value1, value2 });
+                        },
+                        nameof(DummyClass.CallMethodWithArguments),
+                        new { value1, value2 },
+                        LogLevel.Information);
                 }).Should().NotThrow();
             }
         }
@@ -150,7 +170,9 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         async () =>
                         {
                             await _dummyClass.CallMethodAsync();
-                        }, nameof(DummyClass.CallMethodAsync));
+                        },
+                        nameof(DummyClass.CallMethodAsync),
+                        LogLevel.Information);
                 })
                     .Should()
                     .NotThrowAsync();
@@ -171,7 +193,10 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         async () =>
                         {
                             await _dummyClass.CallMethodWithArgumentsAsync(value1, value2);
-                        }, nameof(DummyClass.CallMethodWithArgumentsAsync), new { value1, value2 });
+                        },
+                        nameof(DummyClass.CallMethodWithArgumentsAsync),
+                        new { value1, value2 },
+                        LogLevel.Information);
 
                 })
                     .Should()
@@ -182,7 +207,50 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
         public class CaptureLogCalls : LoggerExtensionsExtensionsFixture
         {
             [Fact]
-            public void Should_Capture_Log_Calls()
+            public void Should_Log_Message()
+            {
+                var message = Create<string>();
+
+                Invoking(() =>
+                {
+                    var methodCallsWithArguments = _loggerFake.CaptureLogCalls(() =>
+                    {
+                        _dummyClass.LogDebugMethod(message);
+                    });
+
+                    methodCallsWithArguments.AssertMessageEntry(0, message, LogLevel.Debug);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Log_Message_With_Arguments()
+            {
+                var logTemplate = "Message = {Value1} and {Value2}";
+
+                var value1 = Create<int>();
+                var value2 = Create<string>();
+
+                Invoking(() =>
+                {
+                    var methodCallsWithArguments = _loggerFake.CaptureLogCalls(() =>
+                    {
+                        _dummyClass.LogInformationMethodWithArguments(logTemplate, value1, value2);
+                    });
+
+                    methodCallsWithArguments.AssertMessageWithArgumentsEntry(
+                        0,
+                        logTemplate,
+                        new { Value1 = value1, Value2 = value2 },
+                        LogLevel.Information);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Capture_Call_Logs()
             {
                 Invoking(() =>
                 {
@@ -197,19 +265,28 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         _dummyClass.CallMethodWithException(exception);
                     });
 
-                    methodCallsWithArguments.AssertLogCallEntry<DummyClass>(0, nameof(DummyClass.CallMethod));
+                    methodCallsWithArguments.AssertLogCallEntry<DummyClass>(
+                        0,
+                        nameof(DummyClass.CallMethod),
+                        LogLevel.Information);
 
-                    methodCallsWithArguments.AssertLogCallWithArgumentsEntry<DummyClass>(1, nameof(DummyClass.CallMethodWithArguments), new { value1, value2 });
+                    methodCallsWithArguments.AssertLogCallWithArgumentsEntry<DummyClass>(
+                        1,
+                        nameof(DummyClass.CallMethodWithArguments),
+                        new { value1, value2 },
+                        LogLevel.Information);
 
                     methodCallsWithArguments.AssertExceptionLogEntry(2, exception);
-                }).Should().NotThrow();
+                })
+                    .Should()
+                    .NotThrow();
             }
         }
 
         public class CaptureLogCallsAsync : LoggerExtensionsExtensionsFixture
         {
             [Fact]
-            public async Task Should_Capture_Log_Calls()
+            public async Task Should_Capture_Call_Logs()
             {
                 await Invoking(async () =>
                 {
@@ -224,12 +301,16 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         _dummyClass.CallMethodWithException(exception);
                     });
 
-                    methodCallsWithArguments.AssertLogCallEntry<DummyClass>(0, nameof(DummyClass.CallMethodAsync));
+                    methodCallsWithArguments.AssertLogCallEntry<DummyClass>(
+                        0,
+                        nameof(DummyClass.CallMethodAsync),
+                        LogLevel.Information);
 
                     methodCallsWithArguments.AssertLogCallWithArgumentsEntry<DummyClass>(
                         1,
                         nameof(DummyClass.CallMethodWithArgumentsAsync),
-                        new { value1, value2 });
+                        new { value1, value2 },
+                        LogLevel.Information);
 
                     methodCallsWithArguments.AssertExceptionLogEntry(2, exception);
                 })
