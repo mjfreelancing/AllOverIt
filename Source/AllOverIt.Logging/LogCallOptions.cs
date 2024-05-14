@@ -5,6 +5,11 @@ using AllOverIt.Extensions;
 
 namespace AllOverIt.Logging
 {
+    /// <summary>Provides options to customize the messages logged by
+    /// <see cref="Extensions.LoggerExtensions.LogCall(Microsoft.Extensions.Logging.ILogger, object?, Microsoft.Extensions.Logging.LogLevel, string)"/>,
+    /// <see cref="Extensions.LoggerExtensions.LogCall(Microsoft.Extensions.Logging.ILogger, object?, object, Microsoft.Extensions.Logging.LogLevel, string)"/>,
+    /// <see cref="Extensions.LoggerExtensions.LogException(Microsoft.Extensions.Logging.ILogger, Exception, string?, object?[])"/>, and
+    /// <see cref="Extensions.LoggerExtensions.LogAllExceptions(Microsoft.Extensions.Logging.ILogger, Exception, string?, object?[])"/>.</summary>
     public sealed class LogCallOptions
     {
         private string? _logTemplateWithNoArguments = null;     // "Call: {MethodName}";
@@ -18,7 +23,7 @@ namespace AllOverIt.Logging
         internal string _exceptionPrefix = "Error: ";
         internal string _methodNameProperty = "MethodName";
         internal string _argumentsPrefix = "Arguments = ";
-        internal string _argumentsProperty = "Arguments";
+        internal string _argumentsDestructureProperty = "Arguments";
         internal string _exceptionMessageProperty = "ErrorMessage";
 
         internal string LogTemplateWithNoArguments
@@ -35,7 +40,7 @@ namespace AllOverIt.Logging
         {
             get
             {
-                _logTemplateWithArguments ??= $"{_callPrefix}{{{_methodNameProperty}}}, {_argumentsPrefix}{{@{_argumentsProperty}}}";
+                _logTemplateWithArguments ??= $"{_callPrefix}{{{_methodNameProperty}}}, {_argumentsPrefix}{{@{_argumentsDestructureProperty}}}";
 
                 return _logTemplateWithArguments;
             }
@@ -51,67 +56,53 @@ namespace AllOverIt.Logging
             }
         }
 
-        public static LogCallOptions UseCallPrefix(string callPrefix)
+        public static void UseCallPrefix(string callPrefix)
         {
             Instance._callPrefix = callPrefix.WhenNotNullOrEmpty(nameof(callPrefix));
 
             Instance._logTemplateWithNoArguments = null;
             Instance._logTemplateWithArguments = null;
-
-            return Instance;
         }
 
-        public static LogCallOptions UseExceptionPrefix(string exceptionPrefix)
+        public static void UseExceptionPrefix(string exceptionPrefix)
         {
             Instance._exceptionPrefix = exceptionPrefix.WhenNotNullOrEmpty(nameof(exceptionPrefix));
 
             Instance._logExceptionTemplate = null;
-
-            return Instance;
         }
 
-        public static LogCallOptions UseMethodNameProperty(string methodNameProperty)
+        public static void UseMethodNameProperty(string methodNameProperty)
         {
             Instance._methodNameProperty = methodNameProperty.WhenNotNullOrEmpty(nameof(methodNameProperty));
 
             Instance._logTemplateWithNoArguments = null;
             Instance._logTemplateWithArguments = null;
-
-            return Instance;
         }
 
-        public static LogCallOptions UseExceptionMessageProperty(string exceptionMessageProperty)
+        public static void UseExceptionMessageProperty(string exceptionMessageProperty)
         {
             Instance._exceptionMessageProperty = exceptionMessageProperty.WhenNotNullOrEmpty(nameof(exceptionMessageProperty));
 
             Instance._logExceptionTemplate = null;
-
-            return Instance;
         }
 
-        public static LogCallOptions UseArgumentsPrefix(string argumentsPrefix)
+        public static void UseArgumentsPrefix(string argumentsPrefix)
         {
             Instance._argumentsPrefix = argumentsPrefix.WhenNotNullOrEmpty(nameof(argumentsPrefix));
 
             Instance._logTemplateWithArguments = null;
-
-            return Instance;
         }
 
-        public static LogCallOptions UseArgumentsDestructureProperty(string argumentsProperty)
+        public static void UseArgumentsDestructureProperty(string argumentsProperty)
         {
-            Instance._argumentsProperty = argumentsProperty.WhenNotNullOrEmpty(nameof(argumentsProperty));
+            Instance._argumentsDestructureProperty = argumentsProperty.WhenNotNullOrEmpty(nameof(argumentsProperty));
 
             Instance._logTemplateWithArguments = null;
-
-            return Instance;
         }
 
-        public static LogCallOptions IncludeCallerNamespace(bool includeCallerNamespace)
+        public static void IncludeCallerNamespace(bool includeCallerNamespace)
         {
             Instance._includeCallerNamespace = includeCallerNamespace;
-
-            return Instance;
         }
 
         public static string GetCallerFullName(object? caller, string callerName)

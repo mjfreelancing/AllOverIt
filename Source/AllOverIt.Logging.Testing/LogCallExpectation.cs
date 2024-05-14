@@ -7,7 +7,7 @@ namespace AllOverIt.Logging.Testing
         private const string OriginalFormat = "{OriginalFormat}";
 
         private static readonly string MethodNameProperty = LogCallOptions.Instance._methodNameProperty;
-        private static readonly string ArgumentsProperty = LogCallOptions.Instance._argumentsProperty;
+        private static readonly string ArgumentsProperty = LogCallOptions.Instance._argumentsDestructureProperty;
 
         public static IDictionary<string, object> GetExpectedStaticLogCallEntries(string callerName)
         {

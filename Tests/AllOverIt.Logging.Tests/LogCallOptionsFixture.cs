@@ -73,7 +73,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseCallPrefix(null!);
+                    LogCallOptions.UseCallPrefix(null!);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -85,7 +85,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseCallPrefix(string.Empty);
+                    LogCallOptions.UseCallPrefix(string.Empty);
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -97,7 +97,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseCallPrefix("   ");
+                    LogCallOptions.UseCallPrefix("   ");
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -105,22 +105,11 @@ namespace AllOverIt.Logging.Tests
             }
 
             [Fact]
-            public void Should_Return_Same_LogCallOptions()
-            {
-                var actual1 = LogCallOptions.UseCallPrefix(Create<string>());
-                var actual2 = LogCallOptions.UseCallPrefix(Create<string>());
-
-                actual1.Should().BeOfType<LogCallOptions>();
-
-                actual1.Should().BeSameAs(actual2);
-            }
-
-            [Fact]
             public void Should_Update_LogTemplateWithNoArguments()
             {
                 var callPrefix = Create<string>();
 
-                _ = LogCallOptions.UseCallPrefix(callPrefix);
+                LogCallOptions.UseCallPrefix(callPrefix);
 
                 LogCallOptions.Instance.LogTemplateWithNoArguments.Should().Be($"{callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}");
             }
@@ -130,11 +119,11 @@ namespace AllOverIt.Logging.Tests
             {
                 var callPrefix = Create<string>();
 
-                _ = LogCallOptions.UseCallPrefix(callPrefix);
+                LogCallOptions.UseCallPrefix(callPrefix);
 
                 LogCallOptions.Instance.LogTemplateWithArguments
                     .Should()
-                    .Be($"{callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}, {LogCallOptions.Instance._argumentsPrefix}{{@{LogCallOptions.Instance._argumentsProperty}}}");
+                    .Be($"{callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}, {LogCallOptions.Instance._argumentsPrefix}{{@{LogCallOptions.Instance._argumentsDestructureProperty}}}");
             }
         }
 
@@ -146,7 +135,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseExceptionPrefix(null!);
+                    LogCallOptions.UseExceptionPrefix(null!);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -158,7 +147,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseExceptionPrefix(string.Empty);
+                    LogCallOptions.UseExceptionPrefix(string.Empty);
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -170,7 +159,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseExceptionPrefix("   ");
+                    LogCallOptions.UseExceptionPrefix("   ");
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -178,22 +167,11 @@ namespace AllOverIt.Logging.Tests
             }
 
             [Fact]
-            public void Should_Return_Same_LogCallOptions()
-            {
-                var actual1 = LogCallOptions.UseExceptionPrefix(Create<string>());
-                var actual2 = LogCallOptions.UseExceptionPrefix(Create<string>());
-
-                actual1.Should().BeOfType<LogCallOptions>();
-
-                actual1.Should().BeSameAs(actual2);
-            }
-
-            [Fact]
             public void Should_Update_LogExceptionTemplate()
             {
                 var exceptionPrefix = Create<string>();
 
-                _ = LogCallOptions.UseExceptionPrefix(exceptionPrefix);
+                LogCallOptions.UseExceptionPrefix(exceptionPrefix);
 
                 LogCallOptions.Instance.LogExceptionTemplate.Should().Be($"{exceptionPrefix}{{{LogCallOptions.Instance._exceptionMessageProperty}}}");
             }
@@ -207,7 +185,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseMethodNameProperty(null!);
+                    LogCallOptions.UseMethodNameProperty(null!);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -219,7 +197,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseMethodNameProperty(string.Empty);
+                    LogCallOptions.UseMethodNameProperty(string.Empty);
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -231,7 +209,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseMethodNameProperty("   ");
+                    LogCallOptions.UseMethodNameProperty("   ");
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -239,22 +217,11 @@ namespace AllOverIt.Logging.Tests
             }
 
             [Fact]
-            public void Should_Return_Same_LogCallOptions()
-            {
-                var actual1 = LogCallOptions.UseMethodNameProperty(Create<string>());
-                var actual2 = LogCallOptions.UseMethodNameProperty(Create<string>());
-
-                actual1.Should().BeOfType<LogCallOptions>();
-
-                actual1.Should().BeSameAs(actual2);
-            }
-
-            [Fact]
             public void Should_Update_LogTemplateWithNoArguments()
             {
                 var methodNameProperty = Create<string>();
 
-                _ = LogCallOptions.UseMethodNameProperty(methodNameProperty);
+                LogCallOptions.UseMethodNameProperty(methodNameProperty);
 
                 LogCallOptions.Instance.LogTemplateWithNoArguments.Should().Be($"{LogCallOptions.Instance._callPrefix}{{{methodNameProperty}}}");
             }
@@ -264,11 +231,11 @@ namespace AllOverIt.Logging.Tests
             {
                 var methodNameProperty = Create<string>();
 
-                _ = LogCallOptions.UseMethodNameProperty(methodNameProperty);
+                LogCallOptions.UseMethodNameProperty(methodNameProperty);
 
                 LogCallOptions.Instance.LogTemplateWithArguments
                     .Should()
-                    .Be($"{LogCallOptions.Instance._callPrefix}{{{methodNameProperty}}}, {LogCallOptions.Instance._argumentsPrefix}{{@{LogCallOptions.Instance._argumentsProperty}}}");
+                    .Be($"{LogCallOptions.Instance._callPrefix}{{{methodNameProperty}}}, {LogCallOptions.Instance._argumentsPrefix}{{@{LogCallOptions.Instance._argumentsDestructureProperty}}}");
             }
         }
 
@@ -280,7 +247,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseExceptionMessageProperty(null!);
+                    LogCallOptions.UseExceptionMessageProperty(null!);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -292,7 +259,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseExceptionMessageProperty(string.Empty);
+                    LogCallOptions.UseExceptionMessageProperty(string.Empty);
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -304,7 +271,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseExceptionMessageProperty("   ");
+                    LogCallOptions.UseExceptionMessageProperty("   ");
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -312,22 +279,11 @@ namespace AllOverIt.Logging.Tests
             }
 
             [Fact]
-            public void Should_Return_Same_LogCallOptions()
-            {
-                var actual1 = LogCallOptions.UseExceptionMessageProperty(Create<string>());
-                var actual2 = LogCallOptions.UseExceptionMessageProperty(Create<string>());
-
-                actual1.Should().BeOfType<LogCallOptions>();
-
-                actual1.Should().BeSameAs(actual2);
-            }
-
-            [Fact]
             public void Should_Update_LogExceptionTemplate()
             {
                 var exceptionMessageProperty = Create<string>();
 
-                _ = LogCallOptions.UseExceptionMessageProperty(exceptionMessageProperty);
+                LogCallOptions.UseExceptionMessageProperty(exceptionMessageProperty);
 
                 LogCallOptions.Instance.LogExceptionTemplate.Should().Be($"{LogCallOptions.Instance._exceptionPrefix}{{{exceptionMessageProperty}}}");
             }
@@ -341,7 +297,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseArgumentsPrefix(null!);
+                    LogCallOptions.UseArgumentsPrefix(null!);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -353,7 +309,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseArgumentsPrefix(string.Empty);
+                    LogCallOptions.UseArgumentsPrefix(string.Empty);
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -365,7 +321,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseArgumentsPrefix("   ");
+                    LogCallOptions.UseArgumentsPrefix("   ");
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -373,26 +329,15 @@ namespace AllOverIt.Logging.Tests
             }
 
             [Fact]
-            public void Should_Return_Same_LogCallOptions()
-            {
-                var actual1 = LogCallOptions.UseArgumentsPrefix(Create<string>());
-                var actual2 = LogCallOptions.UseArgumentsPrefix(Create<string>());
-
-                actual1.Should().BeOfType<LogCallOptions>();
-
-                actual1.Should().BeSameAs(actual2);
-            }
-
-            [Fact]
             public void Should_Update_LogTemplateWithArguments()
             {
                 var argumentsPrefix = Create<string>();
 
-                _ = LogCallOptions.UseArgumentsPrefix(argumentsPrefix);
+                LogCallOptions.UseArgumentsPrefix(argumentsPrefix);
 
                 LogCallOptions.Instance.LogTemplateWithArguments
                     .Should()
-                    .Be($"{LogCallOptions.Instance._callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}, {argumentsPrefix}{{@{LogCallOptions.Instance._argumentsProperty}}}");
+                    .Be($"{LogCallOptions.Instance._callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}, {argumentsPrefix}{{@{LogCallOptions.Instance._argumentsDestructureProperty}}}");
             }
         }
 
@@ -404,7 +349,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseArgumentsDestructureProperty(null!);
+                    LogCallOptions.UseArgumentsDestructureProperty(null!);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -416,7 +361,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseArgumentsDestructureProperty(string.Empty);
+                    LogCallOptions.UseArgumentsDestructureProperty(string.Empty);
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -428,7 +373,7 @@ namespace AllOverIt.Logging.Tests
             {
                 Invoking(() =>
                 {
-                    _ = LogCallOptions.UseArgumentsDestructureProperty("   ");
+                    LogCallOptions.UseArgumentsDestructureProperty("   ");
                 })
                 .Should()
                 .Throw<ArgumentException>()
@@ -436,22 +381,11 @@ namespace AllOverIt.Logging.Tests
             }
 
             [Fact]
-            public void Should_Return_Same_LogCallOptions()
-            {
-                var actual1 = LogCallOptions.UseArgumentsDestructureProperty(Create<string>());
-                var actual2 = LogCallOptions.UseArgumentsDestructureProperty(Create<string>());
-
-                actual1.Should().BeOfType<LogCallOptions>();
-
-                actual1.Should().BeSameAs(actual2);
-            }
-
-            [Fact]
             public void Should_Update_LogTemplateWithArguments()
             {
                 var argumentsProperty = Create<string>();
 
-                _ = LogCallOptions.UseArgumentsDestructureProperty(argumentsProperty);
+                LogCallOptions.UseArgumentsDestructureProperty(argumentsProperty);
 
                 LogCallOptions.Instance.LogTemplateWithArguments
                     .Should()
@@ -465,7 +399,7 @@ namespace AllOverIt.Logging.Tests
             [Fact]
             public void Should_Include_Namespace()
             {
-                _ = LogCallOptions.IncludeCallerNamespace(true);
+                LogCallOptions.IncludeCallerNamespace(true);
 
                 var callerName = Create<string>();
 
@@ -478,7 +412,7 @@ namespace AllOverIt.Logging.Tests
             [Fact]
             public void Should_Exclude_Namespace()
             {
-                _ = LogCallOptions.IncludeCallerNamespace(false);
+                LogCallOptions.IncludeCallerNamespace(false);
 
                 var callerName = Create<string>();
 
@@ -504,7 +438,7 @@ namespace AllOverIt.Logging.Tests
             [Fact]
             public void Should_Get_CallerName_With_Namespace()
             {
-                _ = LogCallOptions.IncludeCallerNamespace(true);
+                LogCallOptions.IncludeCallerNamespace(true);
 
                 var callerName = Create<string>();
 
@@ -517,7 +451,7 @@ namespace AllOverIt.Logging.Tests
             [Fact]
             public void Should_Get_CallerName_Without_Namespace()
             {
-                _ = LogCallOptions.IncludeCallerNamespace(false);
+                LogCallOptions.IncludeCallerNamespace(false);
 
                 var callerName = Create<string>();
 
@@ -532,7 +466,7 @@ namespace AllOverIt.Logging.Tests
             {
                 typeof(DummyClassNoNamespace).Namespace.Should().BeNull();
 
-                _ = LogCallOptions.IncludeCallerNamespace(true);
+                LogCallOptions.IncludeCallerNamespace(true);
 
                 var callerName = Create<string>();
 
