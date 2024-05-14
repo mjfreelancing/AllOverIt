@@ -11,6 +11,7 @@
 * Update / replace how Throw<> works to save on string allocations
 * Throw<> => add overloads that support params for string formatting
 * Update EnrichedEnumModelBindingDemo so it is based on minimal API and the built-in problem details
+* Deprecate FakeItEasy package. Switch to NSubstitute, including incorporating TestUtils project.
 
 
 ### Applicable to all packages
