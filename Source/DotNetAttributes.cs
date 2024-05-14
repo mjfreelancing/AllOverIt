@@ -43,6 +43,9 @@ namespace System.Runtime.CompilerServices
 
 namespace System.Diagnostics
 {
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable CS1591  // Missing XML comment for publicly visible type or member
+    [ExcludeFromCodeCoverage]
     public sealed class UnreachableException : Exception
     {
         public UnreachableException()
@@ -60,5 +63,7 @@ namespace System.Diagnostics
         {
         }
     }
+#pragma warning restore CS1591
+#pragma warning restore IDE0079 // Remove unnecessary suppression
 }
 #endif

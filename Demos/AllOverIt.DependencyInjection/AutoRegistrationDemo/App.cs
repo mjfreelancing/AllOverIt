@@ -22,7 +22,11 @@ namespace AutoRegistrationDemo
         {
             _logger.LogCall(this);
 
-            GetRandomNames(10);
+            foreach (var _ in Enumerable.Range(1, 10))
+            {
+                // The repository is decorated with a logger - so this will do all of the logging
+                _repository.GetRandomName();
+            }
 
             ExitCode = 0;
 
@@ -36,24 +40,12 @@ namespace AutoRegistrationDemo
 
         public override void OnStopping()
         {
-            _logger.LogInformation("App is stopping");
+            _logger.LogCall(this);
         }
 
         public override void OnStopped()
         {
-            _logger.LogInformation("App is stopped");
-        }
-
-        private void GetRandomNames(int count)
-        {
-            // Just here to test logging calls
-            _logger.LogCall(this, new { count });
-
-            foreach (var _ in Enumerable.Range(1, 10))
-            {
-                // The repository is decorated with a logger - so this will do all of the logging
-                _repository.GetRandomName();
-            }
+            _logger.LogCall(this);
         }
     }
 }
