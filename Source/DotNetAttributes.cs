@@ -43,6 +43,8 @@ namespace System.Runtime.CompilerServices
 
 namespace System.Diagnostics
 {
+#pragma warning disable 1591        // Missing XML comment for publicly visible type or member
+    [ExcludeFromCodeCoverage]
     public sealed class UnreachableException : Exception
     {
         public UnreachableException()
@@ -60,5 +62,6 @@ namespace System.Diagnostics
         {
         }
     }
+#pragma warning restore 1591
 }
 #endif

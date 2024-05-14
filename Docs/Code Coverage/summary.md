@@ -1,25 +1,25 @@
 # Summary
 |||
 |:---|:---|
-| Generated on: | 13/05/2024 - 9:58:50 AM |
-| Coverage date: | 13/05/2024 - 9:56:20 AM - 13/05/2024 - 9:58:41 AM |
+| Generated on: | 14/05/2024 - 11:16:02 PM |
+| Coverage date: | 14/05/2024 - 11:03:06 PM - 14/05/2024 - 11:15:31 PM |
 | Parser: | MultiReport (75x Cobertura) |
 | Assemblies: | 23 |
 | Classes: | 506 |
 | Files: | 511 |
-| **Line coverage:** | 99.2% (15484 of 15604) |
-| Covered lines: | 15484 |
-| Uncovered lines: | 120 |
-| Coverable lines: | 15604 |
-| Total lines: | 37946 |
-| **Branch coverage:** | 96.1% (2716 of 2824) |
-| Covered branches: | 2716 |
+| **Line coverage:** | 99.2% (15520 of 15638) |
+| Covered lines: | 15520 |
+| Uncovered lines: | 118 |
+| Coverable lines: | 15638 |
+| Total lines: | 38170 |
+| **Branch coverage:** | 96.2% (2717 of 2824) |
+| Covered branches: | 2717 |
 | Total branches: | 2824 |
 | **Method coverage:** | [Feature is only available for sponsors](https://reportgenerator.io/pro) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**AllOverIt**|**5962**|**72**|**6034**|**16686**|**98.8%**|**1059**|**1086**|**97.5%**|
+|**AllOverIt**|**5964**|**70**|**6034**|**16686**|**98.8%**|**1060**|**1086**|**97.6%**|
 |AllOverIt.Aspects.InterceptorBase`1|81|1|82|170|98.7%|12|12|100%|
 |AllOverIt.Aspects.InterceptorFactory|24|0|24|61|100%|4|4|100%|
 |AllOverIt.Aspects.InterceptorMethodHandlerAsyncBase|16|0|16|212|100%|0|0||
@@ -31,7 +31,7 @@
 |AllOverIt.Aspects.MethodInterceptor`1|23|0|23|61|100%|2|2|100%|
 |AllOverIt.Async.AsyncLazy`1|9|0|9|34|100%|0|0||
 |AllOverIt.Async.BackgroundTask|84|0|84|159|100%|14|14|100%|
-|AllOverIt.Async.BackgroundTask`1|77|2|79|157|97.4%|16|18|88.8%|
+|AllOverIt.Async.BackgroundTask`1|79|0|79|157|100%|17|18|94.4%|
 |AllOverIt.Async.CompositeAsyncDisposable|50|0|50|87|100%|6|6|100%|
 |AllOverIt.Async.RepeatingTask|84|62|146|256|57.5%|0|0||
 |AllOverIt.Async.RepeatingTaskOptions|5|0|5|23|100%|0|0||
@@ -347,8 +347,8 @@
 |AllOverIt.Evaluator.Variables.VariableRegistry|52|0|52|113|100%|8|8|100%|
 |AllOverIt.Evaluator.Variables.VariableRegistryBuilder|127|0|127|253|100%|18|18|100%|
 |**AllOverIt.Filtering**|**639**|**1**|**640**|**1583**|**99.8%**|**122**|**134**|**91%**|
-|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|158|100%|18|24|75%|
-|AllOverIt.Filtering.Builders.FilterSpecificationBuilder`2|212|1|213|401|99.5%|52|58|89.6%|
+|AllOverIt.Filtering.Builders.FilterBuilder`2|71|0|71|158|100%|19|24|79.1%|
+|AllOverIt.Filtering.Builders.FilterSpecificationBuilder`2|212|1|213|401|99.5%|51|58|87.9%|
 |AllOverIt.Filtering.Exceptions.NullNotSupportedException|9|0|9|26|100%|0|0||
 |AllOverIt.Filtering.Extensions.FilterExtensions|12|0|12|41|100%|2|2|100%|
 |AllOverIt.Filtering.Extensions.FilterSpecificationExtensions|5|0|5|28|100%|2|2|100%|
@@ -385,14 +385,14 @@
 |AllOverIt.Fixture.Extensions.ExceptionAssertionsExtensions|58|0|58|209|100%|32|32|100%|
 |AllOverIt.Fixture.FixtureBase|258|0|258|533|100%|64|64|100%|
 |**AllOverIt.Fixture.FakeItEasy**|**0**|**0**|**0**|**0**|****|**0**|**0**|****|
-|**AllOverIt.Logging**|**105**|**0**|**105**|**203**|**100%**|**16**|**16**|**100%**|
-|AllOverIt.Logging.Extensions.LoggerExtensions|35|0|35|68|100%|4|4|100%|
-|AllOverIt.Logging.LogCallOptions|70|0|70|135|100%|12|12|100%|
-|**AllOverIt.Logging.Testing**|**145**|**0**|**145**|**240**|**100%**|**0**|**0**|****|
-|AllOverIt.Logging.Testing.Extensions.LoggerExtensions|72|0|72|107|100%|0|0||
-|AllOverIt.Logging.Testing.LogCallExpectation|46|0|46|72|100%|0|0||
-|AllOverIt.Logging.Testing.MethodCallsWithArguments|2|0|2|10|100%|0|0||
-|AllOverIt.Logging.Testing.MethodCallsWithArgumentsExtensions|25|0|25|51|100%|0|0||
+|**AllOverIt.Logging**|**98**|**0**|**98**|**225**|**100%**|**16**|**16**|**100%**|
+|AllOverIt.Logging.Extensions.LoggerExtensions|35|0|35|99|100%|4|4|100%|
+|AllOverIt.Logging.LogCallOptions|63|0|63|126|100%|12|12|100%|
+|**AllOverIt.Logging.Testing**|**186**|**0**|**186**|**442**|**100%**|**0**|**0**|****|
+|AllOverIt.Logging.Testing.Extensions.LoggerExtensions|70|0|70|180|100%|0|0||
+|AllOverIt.Logging.Testing.LogCallExpectation|62|0|62|98|100%|0|0||
+|AllOverIt.Logging.Testing.MethodCallContext|6|0|6|25|100%|0|0||
+|AllOverIt.Logging.Testing.MethodCallsWithArgumentsExtensions|48|0|48|139|100%|0|0||
 |**AllOverIt.Mapping**|**528**|**1**|**529**|**1069**|**99.8%**|**107**|**110**|**97.2%**|
 |AllOverIt.Mapping.Exceptions.ObjectMapperException|9|0|9|26|100%|0|0||
 |AllOverIt.Mapping.Extensions.ObjectMapperExtensions|18|0|18|49|100%|2|2|100%|
