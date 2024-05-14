@@ -13,8 +13,6 @@ namespace AutoRegistrationDemo
         {
             _repository = repository;
             _logger = logger;
-
-            logger.LogCall(null);
         }
 
         public string GetRandomName()
