@@ -402,6 +402,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Logging.Testing",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Logging.Testing.Tests", "Tests\AllOverIt.Logging.Testing.Tests\AllOverIt.Logging.Testing.Tests.csproj", "{EA8DB524-CF6B-42AB-A9E3-A250B79A7439}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Logging", "AllOverIt.Logging", "{9FFDB1AF-1649-4260-89A6-77B364544FCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleLoggingDemo", "Demos\AllOverIt.Logging\ConsoleLoggingDemo\ConsoleLoggingDemo.csproj", "{2F1E11F2-62FB-48E4-B700-B09F7678CE95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -968,6 +972,10 @@ Global
 		{EA8DB524-CF6B-42AB-A9E3-A250B79A7439}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA8DB524-CF6B-42AB-A9E3-A250B79A7439}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA8DB524-CF6B-42AB-A9E3-A250B79A7439}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F1E11F2-62FB-48E4-B700-B09F7678CE95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F1E11F2-62FB-48E4-B700-B09F7678CE95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F1E11F2-62FB-48E4-B700-B09F7678CE95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F1E11F2-62FB-48E4-B700-B09F7678CE95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1161,6 +1169,8 @@ Global
 		{95B78FE4-7848-4843-8BDC-578E4D8F31EE} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
 		{BC7D4BF7-923C-48CC-806F-D965C83B2BAD} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
 		{EA8DB524-CF6B-42AB-A9E3-A250B79A7439} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
+		{9FFDB1AF-1649-4260-89A6-77B364544FCC} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
+		{2F1E11F2-62FB-48E4-B700-B09F7678CE95} = {9FFDB1AF-1649-4260-89A6-77B364544FCC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}
