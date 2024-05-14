@@ -81,9 +81,9 @@
 * Amazon.CDK.Asset.KubectlV20 v2.1.2
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.3
 * Amazon.CDK.Lib v2.110.0
-* Amazon.CDK.Lib v2.140.0
+* Amazon.CDK.Lib v2.141.0
 * Amazon.JSII.Runtime v1.98.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.428
+* Cdklabs.AwsCdkAppsyncUtils v0.0.431
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -116,7 +116,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* CsvHelper v32.0.2
+* CsvHelper v32.0.3
 
 <br>
 
@@ -235,8 +235,10 @@
 ### Dependencies
 
 * AutoFixture v4.18.1
+* Castle.Core v5.1.1
 * Fare v2.1.1
 * FluentAssertions v6.12.0
+* NSubstitute v5.1.0
 * System.ComponentModel.Annotations v4.3.0
 * System.Configuration.ConfigurationManager v4.4.0
 
@@ -260,6 +262,7 @@
 * FakeItEasy v8.2.0
 * Fare v2.1.1
 * FluentAssertions v6.12.0
+* NSubstitute v5.1.0
 * System.ComponentModel.Annotations v4.3.0
 * System.Configuration.ConfigurationManager v4.4.0
 
@@ -300,6 +303,45 @@
 * Microsoft.Extensions.Logging.EventLog v8.0.0
 * Microsoft.Extensions.Logging.EventSource v8.0.0
 * Microsoft.Extensions.Options v8.0.0
+
+<br>
+
+---
+
+<br>
+
+## AllOverIt.Logging
+
+![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg) ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg) ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
+
+### Dependencies
+
+* AllOverIt
+* AllOverIt.Assertion
+* Microsoft.Extensions.DependencyInjection.Abstractions v8.0.1
+* Microsoft.Extensions.Logging.Abstractions v8.0.1
+
+<br>
+
+---
+
+<br>
+
+## AllOverIt.Logging.Testing
+
+![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg) ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg) ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
+
+### Dependencies
+
+* AllOverIt
+* AllOverIt.Assertion
+* AllOverIt.Logging
+* Castle.Core v5.1.1
+* FluentAssertions v6.12.0
+* Microsoft.Extensions.DependencyInjection.Abstractions v8.0.1
+* Microsoft.Extensions.Logging.Abstractions v8.0.1
+* NSubstitute v5.1.0
+* System.Configuration.ConfigurationManager v4.4.0
 
 <br>
 

@@ -245,6 +245,32 @@ This package contains generic host helpers and convenience methods for setting u
 ---
 
 
+## AllOverIt.Logging
+
+This package contains extension methods to provide additional logging functionality.
+
+![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
+![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
+![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
+
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Logging?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Logging/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Logging?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Logging/absoluteLatest/)
+
+
+## AllOverIt.Logging.Testing
+
+This package contains helper methods that assist with asserting logger calls.
+
+![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg)
+![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
+![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
+
+[![NuGet](https://img.shields.io/nuget/v/AllOverIt.Logging.Testing?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Logging.Testing/absoluteLatest/)
+[![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Logging.Testing?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Logging.Testing/absoluteLatest/)
+
+
 ## AllOverIt.Mapping
 
 This package contains an object mapper that is mostly configuration free, but also capable of property exclusion, aliasing, null replacement, value conversion, and deep copying.

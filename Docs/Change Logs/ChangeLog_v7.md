@@ -1,3 +1,26 @@
+#  Version 7.12.0
+## 15 May 2024
+
+### AllOverIt
+* Updates to EnumerableExtensions
+  - Added SelectManyToArray(), SelectManyToList(), and SelectManyToReadOnlyCollection()
+  - Added SelectManyAsync(), SelectManyToArrayAsync(), SelectManyToListAsync(), and SelectManyToReadOnlyCollectionAsync()
+
+* Updates to AsyncEnumerableExtensions
+  - Breaking: Corrected signature of SelectManyAsync() selector to return Task<IEnumerable<TResult>>, instead of IEnumerable<TResult>.
+  - Breaking: Updated SelectAsync(), SelectToArrayAsync(), SelectToListAsync(), and SelectToReadOnlyCollectionAsync() to forward
+              the CancellationToken to the selector.
+  - Added ToReadOnlyCollectionAsync(), SelectManyToArrayAsync(), SelectManyToListAsync(), and SelectManyToReadOnlyCollectionAsync()
+
+### AllOverIt.Logging :new:
+* A new package containing extension methods to provide additional logging functionality.
+
+### AllOverIt.Logging.Testing :new:
+* A new package containing helper methods that assist with asserting logger calls.
+
+---
+
+
 #  Version 7.11.0
 ## 08 May 2024
 
@@ -103,7 +126,7 @@
 
 ### AllOverIt
 * Added an AsArray() extension method for IEnumerable.
-* Breaking: Changed return type of GetEnumValues() from IReadonlyCollection<TEnumType> to TEnumType[].
+* Breaking: Changed return type of GetEnumValues() from IReadOnlyCollection<TEnumType> to TEnumType[].
 * Added new methods to extract an array of enum values for a given numerical or Enum mask value;
   GetValuesFromBitMask() and GetValuesFromEnumWithFlags(). NET 7.0 and above.
 
@@ -203,7 +226,7 @@
 
 ### AllOverIt.Serilog :new:
 * Provides a serilog sink that will capture log events and store them in a fixed-size circular buffer. That buffer can be
-  independantly injected elsewhere in the application for the purpose of further diagnostic processing.
+  independently injected elsewhere in the application for the purpose of further diagnostic processing.
 
   Provides a ThreadIEnricher that captures the current ThreadId.
 
@@ -220,7 +243,7 @@
 
 
 ### AllOverIt
-* Added interceptor support to cater for Aspected Oriented Programming (AOP)
+* Added interceptor support to cater for Aspect Oriented Programming (AOP)
 * Added string extension `IsEmpty()`
 * `IAsyncEnumerable` extension updates
 * Added async version of `ChainOfResponsibilityHandler` and `ChainOfResponsibilityComposer`
@@ -233,7 +256,7 @@
 * Added Task extensions `FireAndForget()`
 * Removed unnecessary 'continueOnCapturedContext' argument from `TaskHelper.WhenAll()`
 * Added FileUtils `CreateFileWithContentAsync()`
-* Added commandline argument helper to escape strings
+* Added CommandLine argument helper to escape strings
 * Added `IComparer` extension methods `Reverse()` and `Then()`. The latter allows them to be composed like Chain of Responsibility.
 * Added object extension `GetObjectElements()`
 * Unseal `ReadOnlyCollection`, `ReadOnlyList`, `ReadOnlyDictionary`
@@ -270,11 +293,11 @@
 * Added WhenNotNullOrEmpty() overloads to the static Throw class.
 
 
-### AllOverIt.Aws.Appsync.Client
+### AllOverIt.Aws.AppSync.Client
 * Update to detection of execution timeout due to AWS changes
 
 
-### AllOverIt.Aws.Cdk.Appsync
+### AllOverIt.Aws.Cdk.AppSync
 * Updated from Amazon CDK v1 to Amazon.CDK.Lib v2
 * Added an EndpointSource of type "Lookup" that allows for custom values to be looked up when creating a HttpDataSource
 
@@ -349,12 +372,12 @@
 ### AllOverIt.ReactiveUI
 * Added support for a `ReactiveCommand` based pipeline (with support for chaining other sync / async pipeline steps)
 * Added ReactiveProxy
-* Added ViewRegistry so multiple view instances of various viewmodel types can be created and tracked
+* Added ViewRegistry so multiple view instances of various ViewModel types can be created and tracked
 
 
 ### AllOverIt.ReactiveUI.Wpf :new:
 * Added WpfViewHandler for use with ViewRegistry in AllOverIt.ReactiveUI
-* Added helpers to register ReactiveWindow / ReactiveUserControl and their associated viewmodel with IServiceCollection
+* Added helpers to register ReactiveWindow / ReactiveUserControl and their associated ViewModel with IServiceCollection
 
 
 ### AllOverIt.Serialization.Binary :new:

@@ -37,21 +37,21 @@ namespace AllOverIt.Extensions
         /// <param name="selector">The transform function to be applied to each element.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>An enumerator that provides asynchronous iteration over a sequence of elements.</returns>
-        public static async IAsyncEnumerable<TResult> SelectAsync<TType, TResult>(this IAsyncEnumerable<TType> items, Func<TType, Task<TResult>> selector,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        public static async IAsyncEnumerable<TResult> SelectAsync<TType, TResult>(this IAsyncEnumerable<TType> items,
+            Func<TType, CancellationToken, Task<TResult>> selector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             await foreach (var item in items.WithCancellation(cancellationToken).ConfigureAwait(false))
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                yield return await selector.Invoke(item).ConfigureAwait(false);
+                yield return await selector.Invoke(item, cancellationToken).ConfigureAwait(false);
             }
         }
 
-        /// <summary>Asynchronously projects each item within a sequence to an <see cref="IEnumerable&lt;TResult&gt;"/> and flattens the result to
-        /// to a new sequence.</summary>
+        /// <summary>Asynchronously projects and flattens a provided sequence to a new asynchronous sequence.</summary>
         /// <typeparam name="TType">The type of each element to be projected.</typeparam>
         /// <typeparam name="TResult">The projected result type.</typeparam>
         /// <param name="items">The sequence of elements to be projected.</param>
@@ -59,21 +59,67 @@ namespace AllOverIt.Extensions
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>An enumerator that provides asynchronous iteration over a sequence of elements.</returns>
         public static async IAsyncEnumerable<TResult> SelectManyAsync<TType, TResult>(this IAsyncEnumerable<TType> items,
-            Func<TType, CancellationToken, IEnumerable<TResult>> selector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+            Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
+            _ = selector.WhenNotNull(nameof(selector));
 
             await foreach (var item in items.WithCancellation(cancellationToken).ConfigureAwait(false))
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var results = selector.Invoke(item, cancellationToken);
+                var results = await selector.Invoke(item, cancellationToken).ConfigureAwait(false);
 
                 foreach (var result in results)
                 {
                     yield return result;
                 }
             }
+        }
+
+        /// <summary>Asynchronously projects and flattens a provided sequence to an array.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>An array containing a flattened list of projected items.</returns>
+        public static Task<TResult[]> SelectManyToArrayAsync<TType, TResult>(this IAsyncEnumerable<TType> items,
+            Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, CancellationToken cancellationToken = default)
+        {
+            return items
+                .SelectManyAsync(selector, cancellationToken)
+                .ToArrayAsync(cancellationToken);
+        }
+
+        /// <summary>Asynchronously projects and flattens a provided sequence to a <see cref="List{T}"/>.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>A <see cref="List{T}"/> containing a flattened list of projected items.</returns>
+        public static Task<List<TResult>> SelectManyToListAsync<TType, TResult>(this IAsyncEnumerable<TType> items,
+            Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, CancellationToken cancellationToken = default)
+        {
+            return items
+                .SelectManyAsync(selector, cancellationToken)
+                .ToListAsync(cancellationToken);
+        }
+
+        /// <summary>Asynchronously projects and flattens a provided sequence to a <see cref="ReadOnlyCollection{T}"/>.</summary>
+        /// <typeparam name="TType">The type of each element to be projected.</typeparam>
+        /// <typeparam name="TResult">The projected result type.</typeparam>
+        /// <param name="items">The sequence of elements to be projected.</param>
+        /// <param name="selector">The transform function to be applied to each element.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>A <see cref="ReadOnlyCollection{T}"/> containing a flattened list of projected items.</returns>
+        public static Task<ReadOnlyCollection<TResult>> SelectManyToReadOnlyCollectionAsync<TType, TResult>(this IAsyncEnumerable<TType> items,
+            Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, CancellationToken cancellationToken = default)
+        {
+            return items
+                .SelectManyAsync(selector, cancellationToken)
+                .ToReadOnlyCollectionAsync(cancellationToken);
         }
 
         /// <summary>Iterates over an <see cref="IAsyncEnumerable{T}"/> of type <typeparamref name="TType"/> to create a <typeparamref name="TType"/>[].</summary>
@@ -111,6 +157,22 @@ namespace AllOverIt.Extensions
             }
 
             return listItems;
+        }
+
+        /// <summary>Iterates over an <see cref="IAsyncEnumerable{T}"/> of type <typeparamref name="TType"/> to create a <see cref="ReadOnlyCollection{T}"/>.</summary>
+        /// <typeparam name="TType">The element type.</typeparam>
+        /// <param name="items">The enumerable to convert to a list asynchronously.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
+        /// <returns>A <see cref="ReadOnlyCollection{T}"/> from the source items.</returns>
+        public static async Task<ReadOnlyCollection<TType>> ToReadOnlyCollectionAsync<TType>(this IAsyncEnumerable<TType> items, CancellationToken cancellationToken = default)
+        {
+            _ = items.WhenNotNull(nameof(items));
+
+            var listItems = await items
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return listItems.AsReadOnly();
         }
 
         #region Obsolete
@@ -183,8 +245,8 @@ namespace AllOverIt.Extensions
         /// <param name="selector">The transform function applied to each element.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
         /// <returns>The projected results as a <typeparamref name="TResult"/>[].</returns>
-        public static async Task<TResult[]> SelectToArrayAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items, Func<TSource, Task<TResult>> selector,
-            CancellationToken cancellationToken = default)
+        public static async Task<TResult[]> SelectToArrayAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
+            Func<TSource, CancellationToken, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
 
@@ -200,8 +262,8 @@ namespace AllOverIt.Extensions
         /// <param name="selector">The transform function applied to each element.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
         /// <returns>The projected results as a <c>List&lt;TResult&gt;</c>.</returns>
-        public static async Task<List<TResult>> SelectToListAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items, Func<TSource, Task<TResult>> selector,
-            CancellationToken cancellationToken = default)
+        public static async Task<List<TResult>> SelectToListAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
+            Func<TSource, CancellationToken, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull(nameof(items));
 
@@ -211,7 +273,7 @@ namespace AllOverIt.Extensions
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var result = await selector.Invoke(item).ConfigureAwait(false);
+                var result = await selector.Invoke(item, cancellationToken).ConfigureAwait(false);
 
                 listItems.Add(result);
             }
@@ -227,7 +289,7 @@ namespace AllOverIt.Extensions
         /// <param name="cancellationToken">A cancellation token to cancel the processing.</param>
         /// <returns>The projected results as an <c>ReadOnlyCollection&lt;TResult&gt;</c>.</returns>
         public static async Task<ReadOnlyCollection<TResult>> SelectToReadOnlyCollectionAsync<TSource, TResult>(this IAsyncEnumerable<TSource> items,
-            Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
+            Func<TSource, CancellationToken, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
             var list = await SelectToListAsync(items, selector, cancellationToken).ConfigureAwait(false);
 

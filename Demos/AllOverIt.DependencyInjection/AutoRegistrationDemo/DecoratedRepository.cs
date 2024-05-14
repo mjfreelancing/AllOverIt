@@ -1,4 +1,5 @@
-﻿using ExternalDependencies;
+﻿using AllOverIt.Logging.Extensions;
+using ExternalDependencies;
 using Microsoft.Extensions.Logging;
 
 namespace AutoRegistrationDemo
@@ -16,11 +17,11 @@ namespace AutoRegistrationDemo
 
         public string GetRandomName()
         {
-            _logger.LogInformation("Inside DecoratedRepository");
+            _logger.LogCall(this);
 
             var name = _repository.GetRandomName();
 
-            _logger.LogInformation($"Returning the name '{name}'");
+            _logger.LogInformation("Returning the name '{Name}'", name);
 
             return name;
         }

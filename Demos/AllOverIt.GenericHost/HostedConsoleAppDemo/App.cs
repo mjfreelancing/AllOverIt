@@ -42,17 +42,20 @@ namespace HostedConsoleAppDemo
             Console.WriteLine();
             Console.WriteLine("All Over It (the background worker will continue until a key is pressed).");
             Console.WriteLine();
+
             Console.ReadKey();
         }
 
         public override void OnStopping()
         {
-            _logger.LogInformation("App is stopping");
+            // The logger is not available at this point
+            Console.WriteLine("=> App is stopping");
         }
 
         public override void OnStopped()
         {
-            _logger.LogInformation("App is stopped");
+            // The logger is not available at this point
+            Console.WriteLine("=> App is stopped");
         }
     }
 }

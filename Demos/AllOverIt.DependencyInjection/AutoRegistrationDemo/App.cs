@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.GenericHost;
+using AllOverIt.Logging.Extensions;
 using ExternalDependencies;
 using Microsoft.Extensions.Logging;
 
@@ -19,7 +20,7 @@ namespace AutoRegistrationDemo
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("StartAsync");
+            _logger.LogCall(this);
 
             foreach (var _ in Enumerable.Range(1, 10))
             {
@@ -39,12 +40,12 @@ namespace AutoRegistrationDemo
 
         public override void OnStopping()
         {
-            _logger.LogInformation("App is stopping");
+            _logger.LogCall(this);
         }
 
         public override void OnStopped()
         {
-            _logger.LogInformation("App is stopped");
+            _logger.LogCall(this);
         }
     }
 }
