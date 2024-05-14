@@ -57,6 +57,11 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                 _logger.LogException(exception);
             }
 
+            public void CallMethodWithExceptionAndArguments(Exception exception, string logTemplate, object arg1, object arg2)
+            {
+                _logger.LogException(exception, logTemplate, arg1, arg2);
+            }
+
             public void LogDebugMethod(string message)
             {
                 _logger.LogDebug(message);
@@ -290,6 +295,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             {
                 await Invoking(async () =>
                 {
+                    var logTemplate = "{Value1} and {Value2}";
                     var value1 = Create<int>();
                     var value2 = Create<string>();
                     var exception = new Exception(Create<string>());
@@ -299,7 +305,10 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         await _dummyClass.CallMethodAsync();
                         await _dummyClass.CallMethodWithArgumentsAsync(value1, value2);
                         _dummyClass.CallMethodWithException(exception);
+                        _dummyClass.CallMethodWithExceptionAndArguments(exception, logTemplate, value1, value2);
                     });
+
+                    methodCallContext.Should().HaveCount(4);
 
                     methodCallContext.AssertLogCallEntry<DummyClass>(
                         0,
@@ -313,6 +322,8 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         LogLevel.Information);
 
                     methodCallContext.AssertExceptionLogEntry(2, exception);
+
+                    methodCallContext.AssertExceptionWithArgumentsLogEntry(3, exception, logTemplate, new { Value1 = value1, Value2 = value2 });
                 })
                     .Should()
                     .NotThrowAsync();

@@ -18,6 +18,7 @@
 
     <ItemGroup>
         <InternalsVisibleTo Include="AllOverIt.Logging.Tests"/>
+        <InternalsVisibleTo Include="AllOverIt.Logging.Testing.Tests"/>
     </ItemGroup>
 
 </Project>

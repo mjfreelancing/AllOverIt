@@ -71,8 +71,8 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
 
                     methodCallContext.Should().HaveCount(2);
 
-                    methodCallContext.Entries[0].Should().NotBeNull();
-                    methodCallContext.Entries[1].Should().NotBeNull();
+                    methodCallContext.Metadata[0].Should().NotBeNull();
+                    methodCallContext.Metadata[1].Should().NotBeNull();
 
                     methodCallContext.Exceptions[0].Should().BeNull();
                     methodCallContext.Exceptions[1].Should().NotBeNull();
@@ -82,7 +82,8 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         nameof(DummyClass.CallStaticMethod),
                         LogLevel.Information);
 
-                    methodCallContext.AssertExceptionLogEntry(1, exception);
+                    // Creating another exception instance so it is compared using equivalence and not reference
+                    methodCallContext.AssertExceptionLogEntry(1, new Exception(exception.Message));
                 })
                 .Should()
                 .NotThrow();
@@ -107,7 +108,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
 
                     methodCallContext.Should().HaveCount(1);
 
-                    methodCallContext.Entries[0].Should().NotBeNull();
+                    methodCallContext.Metadata[0].Should().NotBeNull();
                     methodCallContext.Exceptions[0].Should().BeNull();
 
                     methodCallContext.AssertStaticLogCallWithArgumentsEntry(
@@ -139,13 +140,14 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
 
                     methodCallContext.Should().HaveCount(2);
 
-                    methodCallContext.Entries[0].Should().NotBeNull();
-                    methodCallContext.Entries[1].Should().NotBeNull();
+                    methodCallContext.Metadata[0].Should().NotBeNull();
+                    methodCallContext.Metadata[1].Should().NotBeNull();
 
                     methodCallContext.Exceptions[0].Should().NotBeNull();
                     methodCallContext.Exceptions[1].Should().BeNull();
 
-                    methodCallContext.AssertExceptionLogEntry(0, exception);
+                    // Creating another exception instance so it is compared using equivalence and not reference
+                    methodCallContext.AssertExceptionLogEntry(0, new Exception(exception.Message));
 
                     methodCallContext.AssertLogCallEntry<DummyClass>(
                         1,
@@ -175,7 +177,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
 
                     methodCallContext.Should().HaveCount(1);
 
-                    methodCallContext.Entries[0].Should().NotBeNull();
+                    methodCallContext.Metadata[0].Should().NotBeNull();
                     methodCallContext.Exceptions[0].Should().BeNull();
 
                     methodCallContext.AssertLogCallWithArgumentsEntry<DummyClass>(

@@ -1,4 +1,5 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 
 namespace AllOverIt.Logging.Testing
 {
@@ -9,8 +10,10 @@ namespace AllOverIt.Logging.Testing
         private static readonly string MethodNameProperty = LogCallOptions.Instance._methodNameProperty;
         private static readonly string ArgumentsProperty = LogCallOptions.Instance._argumentsDestructureProperty;
 
-        public static IDictionary<string, object> GetExpectedStaticLogCallEntries(string callerName)
+        public static IDictionary<string, object> GetExpectedStaticLogCallMetadata(string callerName)
         {
+            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
+
             return new Dictionary<string, object>
             {
                 { MethodNameProperty, callerName },
@@ -18,8 +21,10 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
-        public static IDictionary<string, object> GetExpectedLogCallEntries<TCaller>(string callerName)
+        public static IDictionary<string, object> GetExpectedLogCallMetadata<TCaller>(string callerName)
         {
+            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
+
             var callerType = typeof(TCaller);
 
             return new Dictionary<string, object>
@@ -29,8 +34,11 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
-        public static IDictionary<string, object> GetExpectedStaticLogCallWithArgumentsEntries(string callerName, object arguments)
+        public static IDictionary<string, object> GetExpectedStaticLogCallWithArgumentsMetadata(string callerName, object arguments)
         {
+            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
+            _ = arguments.WhenNotNull(nameof(arguments));
+
             return new Dictionary<string, object>
             {
                 { MethodNameProperty, callerName},
@@ -39,8 +47,11 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
-        public static IDictionary<string, object> GetExpectedLogCallWithArgumentsEntries<TCaller>(string callerName, object arguments)
+        public static IDictionary<string, object> GetExpectedLogCallWithArgumentsMetadata<TCaller>(string callerName, object arguments)
         {
+            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
+            _ = arguments.WhenNotNull(nameof(arguments));
+
             var callerType = typeof(TCaller);
 
             return new Dictionary<string, object>
@@ -51,8 +62,10 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
-        public static IDictionary<string, object> GetExpectedExceptionLogEntries(Exception exception)
+        public static IDictionary<string, object> GetExpectedExceptionMetadata(Exception exception)
         {
+            _ = exception.WhenNotNull(nameof(exception));
+
             return new Dictionary<string, object>
             {
                 { LogCallOptions.Instance._exceptionMessageProperty, exception.Message },
@@ -60,16 +73,21 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
-        public static IDictionary<string, object> GetExpectedLogTemplateEntries(string logTemplate)
+        public static IDictionary<string, object> GetExpectedLogMessageMetadata(string message)
         {
+            _ = message.WhenNotNullOrEmpty(nameof(message));
+
             return new Dictionary<string, object>
             {
-                { OriginalFormat, logTemplate }
+                { OriginalFormat, message }
             };
         }
 
-        public static IDictionary<string, object> GetExpectedLogTemplateWithArgumentsEntries(string logTemplate, object arguments)
+        public static IDictionary<string, object> GetExpectedLogTemplateWithArgumentsMetadata(string logTemplate, object arguments)
         {
+            _ = logTemplate.WhenNotNullOrEmpty(nameof(logTemplate));
+            _ = arguments.WhenNotNull(nameof(arguments));
+
             var dictionary = arguments.ToPropertyDictionary();
 
             dictionary.Add(OriginalFormat, logTemplate);
