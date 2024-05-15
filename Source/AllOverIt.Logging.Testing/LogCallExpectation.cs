@@ -3,13 +3,17 @@ using AllOverIt.Extensions;
 
 namespace AllOverIt.Logging.Testing
 {
-    internal static class LogCallExpectation
+    /// <summary>Contains helper methods to get expected logging metadata.</summary>
+    public static class LogCallExpectation
     {
         private const string OriginalFormat = "{OriginalFormat}";
 
         private static readonly string MethodNameProperty = LogCallOptions.Instance._methodNameProperty;
         private static readonly string ArgumentsProperty = LogCallOptions.Instance._argumentsDestructureProperty;
 
+        /// <summary>Gets the expected metadata following a call to <see cref="Logging.Extensions.LoggerExtensions.LogCall(Microsoft.Extensions.Logging.ILogger, object?, Microsoft.Extensions.Logging.LogLevel, string)"/>.</summary>
+        /// <param name="callerName">The name of the method expected to call <see cref="Logging.Extensions.LoggerExtensions.LogCall(Microsoft.Extensions.Logging.ILogger, object?, Microsoft.Extensions.Logging.LogLevel, string)"/>.</param>
+        /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedStaticLogCallMetadata(string callerName)
         {
             _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
@@ -21,6 +25,10 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
+        /// <summary>Gets the expected metadata following a call to <see cref="Logging.Extensions.LoggerExtensions.LogCall(Microsoft.Extensions.Logging.ILogger, object?, Microsoft.Extensions.Logging.LogLevel, string)"/>.</summary>
+        /// <typeparam name="TCaller">The object instance calling <see cref="Logging.Extensions.LoggerExtensions.LogCall(Microsoft.Extensions.Logging.ILogger, object?, Microsoft.Extensions.Logging.LogLevel, string)"/>.</typeparam>
+        /// <param name="callerName">The name of the method expected to call <see cref="Logging.Extensions.LoggerExtensions.LogCall(Microsoft.Extensions.Logging.ILogger, object?, Microsoft.Extensions.Logging.LogLevel, string)"/>.</param>
+        /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedLogCallMetadata<TCaller>(string callerName)
         {
             _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
@@ -34,6 +42,10 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
+        /// <summary>Gets the expected metadata following a call to <see cref="Logging.Extensions.LoggerExtensions.LogCall(Microsoft.Extensions.Logging.ILogger, object?, object, Microsoft.Extensions.Logging.LogLevel, string)"/>.</summary>
+        /// <param name="callerName">The name of the method expected to call <see cref="Logging.Extensions.LoggerExtensions.LogCall(Microsoft.Extensions.Logging.ILogger, object?, object, Microsoft.Extensions.Logging.LogLevel, string)"/>.</param>
+        /// <param name="arguments">The arguments expected to be captured.</param>
+        /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedStaticLogCallWithArgumentsMetadata(string callerName, object arguments)
         {
             _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
@@ -47,6 +59,11 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
+        /// <summary>Gets the expected metadata following a call to <see cref="Logging.Extensions.LoggerExtensions.LogCall(Microsoft.Extensions.Logging.ILogger, object?, object, Microsoft.Extensions.Logging.LogLevel, string)"/>.</summary>
+        /// <typeparam name="TCaller">The object instance calling <see cref="Logging.Extensions.LoggerExtensions.LogCall(Microsoft.Extensions.Logging.ILogger, object?, object, Microsoft.Extensions.Logging.LogLevel, string)"/>.</typeparam>
+        /// <param name="callerName">The name of the method expected to call <see cref="Logging.Extensions.LoggerExtensions.LogCall(Microsoft.Extensions.Logging.ILogger, object?, object, Microsoft.Extensions.Logging.LogLevel, string)"/>.</param>
+        /// <param name="arguments">The arguments expected to be captured.</param>
+        /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedLogCallWithArgumentsMetadata<TCaller>(string callerName, object arguments)
         {
             _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
@@ -62,6 +79,9 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
+        /// <summary>Gets the expected metadata following a call to <see cref="Logging.Extensions.LoggerExtensions.LogException(Microsoft.Extensions.Logging.ILogger, Exception, string?, object?[])"/>.</summary>
+        /// <param name="exception">The exception expected to be captured.</param>
+        /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedExceptionMetadata(Exception exception)
         {
             _ = exception.WhenNotNull(nameof(exception));
@@ -73,6 +93,9 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
+        /// <summary>Gets the expected metadata following a call to log a message.</summary>
+        /// <param name="message">The message expected to be captured.</param>
+        /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedLogMessageMetadata(string message)
         {
             _ = message.WhenNotNullOrEmpty(nameof(message));
@@ -83,6 +106,10 @@ namespace AllOverIt.Logging.Testing
             };
         }
 
+        /// <summary>Gets the expected metadata following a call to log a message using a log template with arguments.</summary>
+        /// <param name="logTemplate">The log template expected to be captured.</param>
+        /// <param name="arguments">The arguments expected to be captured.</param>
+        /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedLogTemplateWithArgumentsMetadata(string logTemplate, object arguments)
         {
             _ = logTemplate.WhenNotNullOrEmpty(nameof(logTemplate));

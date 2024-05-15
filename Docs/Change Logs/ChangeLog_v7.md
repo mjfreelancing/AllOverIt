@@ -1,3 +1,13 @@
+#  Version 7.12.1
+## 15 May 2024
+
+### AllOverIt.Logging.Testing
+
+* Changed LogCallExpectation from internal to public
+
+---
+
+
 #  Version 7.12.0
 ## 15 May 2024
 
