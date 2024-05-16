@@ -1,3 +1,14 @@
+#  Version 7.13.0
+## 16 May 2024
+
+### AllOverIt
+
+* Added IAsyncEnumerable extension methods that have a non-async selector: SelectManyAsync(), SelectManyToArrayAsync(), SelectManyToListAsync(),
+  SelectManyToReadOnlyCollectionAsync(), SelectToArrayAsync(), SelectToListAsync(), and SelectToReadOnlyCollectionAsync().
+
+---
+
+
 #  Version 7.12.1
 ## 15 May 2024
 
