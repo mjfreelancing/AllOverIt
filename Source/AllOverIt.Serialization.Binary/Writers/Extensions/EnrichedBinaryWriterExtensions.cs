@@ -199,7 +199,7 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
         {
             _ = array.WhenNotNull(nameof(array));
 
-            writer.WriteEnumerable(array, typeof(TValue));
+            writer.WriteEnumerable(array);
         }
 
         /// <summary>Writes an <see cref="IEnumerable"/> to the current stream. Each value type will be determined by the generic
@@ -354,7 +354,7 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
         /// <param name="dictionary">The IDictionary to be written.</param>
         /// <remarks>This method cannot exist as an overload of <see cref="WriteDictionary(IEnrichedBinaryWriter, IDictionary)"/>
-        /// without becoming ambigious.</remarks>
+        /// without becoming ambiguous.</remarks>
         public static void WriteDictionary<TKey, TValue>(this IEnrichedBinaryWriter writer, IDictionary<TKey, TValue> dictionary)
         {
             _ = writer.WhenNotNull(nameof(writer));

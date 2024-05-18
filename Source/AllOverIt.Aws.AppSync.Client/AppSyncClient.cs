@@ -12,7 +12,7 @@ namespace AllOverIt.Aws.AppSync.Client
     public sealed class AppSyncClient : IAppSyncClient
     {
         /// <summary>The expected <see cref="HttpClient"/> name to be registered with <see cref="IHttpClientFactory"/>.</summary>
-        public static readonly string HttpClientName = typeof(AppSyncClient).FullName;
+        public static readonly string HttpClientName = typeof(AppSyncClient).FullName!;
 
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IAppSyncClientConfiguration _configuration;
@@ -54,7 +54,7 @@ namespace AllOverIt.Aws.AppSync.Client
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA2016")]
-        private async Task<GraphqlHttpResponse<TResponse>> SendRequestAsync<TResponse>(GraphqlQuery query, IAppSyncAuthorization authorization,
+        private async Task<GraphqlHttpResponse<TResponse>> SendRequestAsync<TResponse>(GraphqlQuery query, IAppSyncAuthorization? authorization,
             CancellationToken cancellationToken)
         {
             using (var requestMessage = CreateHttpRequestMessage(query, authorization))
@@ -88,7 +88,7 @@ namespace AllOverIt.Aws.AppSync.Client
 #endif
         }
 
-        private HttpRequestMessage CreateHttpRequestMessage(GraphqlQuery query, IAppSyncAuthorization authorization)
+        private HttpRequestMessage CreateHttpRequestMessage(GraphqlQuery query, IAppSyncAuthorization? authorization)
         {
             var message = new HttpRequestMessage(HttpMethod.Post, _configuration.EndPoint)
             {

@@ -37,7 +37,7 @@ namespace AllOverIt.Helpers
             // Iterate the size of the mask value since:
             // * If it is too big then we'll get an ArgumentOutOfRangeException exception.
             // * We don't care if it is smaller than the enum's underlying type.
-            var bits = Marshal.SizeOf(typeof(TMaskType)) * 8;
+            var bits = Marshal.SizeOf<TMaskType>() * 8;
 
             for (var i = 0; i < bits; i++)
             {

@@ -77,7 +77,7 @@ namespace AllOverIt.Extensions
             if (typeof(TType).IsEnum)
             {
                 // will throw ArgumentException is 'ignoreCase = false' and the value cannot be found
-                return (TType) Enum.Parse(typeof(TType), value, true);
+                return Enum.Parse<TType>(value, true);
             }
 
             // perform this after the enum conversion attempt

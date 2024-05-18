@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Cryptography.AES.Exceptions;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.AES
@@ -88,7 +89,7 @@ namespace AllOverIt.Cryptography.AES
         }
 
         /// <inheritdoc />
-        //[MemberNotNull(nameof(Key), nameof(IV))]
+        [MemberNotNull(nameof(Key), nameof(IV))]
         public void RegenerateKeyAndIV()
         {
             using (var aes = Aes.Create())

@@ -35,6 +35,7 @@
             x:Name="Key"
             Grid.Row="0"
             Grid.Column="1"
+            FontSize="14"
             Text="{Binding Key, Mode=OneTime}"
             TextWrapping="Wrap" />
 
@@ -42,7 +43,8 @@
         <TextBlock
             Grid.Row="1"
             Grid.Column="0"
-            Margin="0,16">
+            Margin="0,16"
+            FontSize="14">
             IV:
         </TextBlock>
 
@@ -51,6 +53,7 @@
             Grid.Row="1"
             Grid.Column="1"
             Margin="0,16"
+            FontSize="14"
             Text="{Binding IV, Mode=OneTime}"
             TextWrapping="Wrap" />
 
@@ -58,7 +61,8 @@
         <TextBlock
             Grid.Row="2"
             Grid.Column="0"
-            Margin="0,16">
+            Margin="0,16"
+            FontSize="14">
             Text to encrypt:
         </TextBlock>
 
@@ -67,6 +71,7 @@
             Grid.Column="1"
             Margin="0,16"
             Background="AliceBlue"
+            FontSize="14"
             FontWeight="Bold"
             Text="{Binding TextInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
@@ -75,7 +80,8 @@
         <TextBlock
             Grid.Row="3"
             Grid.Column="0"
-            Margin="0,16">
+            Margin="0,16"
+            FontSize="14">
             Encrypted:
         </TextBlock>
 
@@ -83,6 +89,7 @@
             Grid.Row="3"
             Grid.Column="1"
             Margin="0,16"
+            FontSize="14"
             Text="{Binding TextEncrypted, Mode=OneWay}"
             TextWrapping="Wrap" />
 
@@ -90,7 +97,8 @@
         <TextBlock
             Grid.Row="4"
             Grid.Column="0"
-            Margin="0,16">
+            Margin="0,16"
+            FontSize="14">
             Decrypted:
         </TextBlock>
 
@@ -98,6 +106,7 @@
             Grid.Row="4"
             Grid.Column="1"
             Margin="0,16"
+            FontSize="14"
             Text="{Binding TextDecrypted, Mode=OneWay}"
             TextWrapping="Wrap" />
 

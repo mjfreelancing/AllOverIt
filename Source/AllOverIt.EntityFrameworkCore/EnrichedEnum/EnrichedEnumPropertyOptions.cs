@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Patterns.Enumeration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 {
@@ -8,19 +9,21 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
     public sealed class EnrichedEnumPropertyOptions
     {
         internal Type TypeConverter { get; private set; }
-        internal Action<PropertyBuilder> PropertyBuilder { get; private set; }
+        internal Action<PropertyBuilder>? PropertyBuilder { get; private set; }
 
         /// <summary>Constructor. The default behaviour is to store the property value as an integer.</summary>
+        [SetsRequiredMembers]
         public EnrichedEnumPropertyOptions()
         {
             AsValue();
         }
 
         /// <summary>Configures the property to be stored as a string.</summary>
-        /// <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.
+        /// <param name="columnType">Optional. When not <see langowrd="null"/>, this configures the data type of the column that the property maps to when targeting a relational database.
         /// This should be the complete type name, including its length.</param>
-        /// <param name="maxLength">Optional. If provided this value specifies the column's maximum length. This parameter is not required if the [MaxLength] attribute is used.</param>
-        public void AsName(string columnType = default, int? maxLength = default)
+        /// <param name="maxLength">Optional. When not <see langowrd="null"/>, this value specifies the column's maximum length. This parameter is not required if the [MaxLength] attribute is used.</param>
+        [MemberNotNull(nameof(TypeConverter))]
+        public void AsName(string? columnType = default, int? maxLength = default)
         {
             TypeConverter = EnrichedEnumModelBuilderTypes.AsNameConverter;
 
@@ -34,8 +37,9 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         }
 
         /// <summary>Configures the property to be stored as an integer.</summary>
-        /// <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.</param>
-        public void AsValue(string columnType = default)
+        /// <param name="columnType">Optional. When not <see langowrd="null"/>, this configures the data type of the column that the property maps to when targeting a relational database.</param>
+        [MemberNotNull(nameof(TypeConverter))]
+        public void AsValue(string? columnType = default)
         {
             TypeConverter = EnrichedEnumModelBuilderTypes.AsValueConverter;
 
@@ -47,17 +51,17 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
             PropertyBuilder = CreateIntegerPropertyBuilder(columnOptions);
         }
 
-        private static Action<PropertyBuilder> CreateStringPropertyBuilder(EnrichedEnumStringColumnOptions columnOptions)
+        private static Action<PropertyBuilder>? CreateStringPropertyBuilder(EnrichedEnumStringColumnOptions? columnOptions)
         {
-            Action<PropertyBuilder> propertyBuilder = null;
+            Action<PropertyBuilder>? propertyBuilder = null;
 
-            if (columnOptions != null)
+            if (columnOptions is not null)
             {
-                if (columnOptions.ColumnType != null || columnOptions.MaxLength.HasValue)
+                if (columnOptions.ColumnType is not null || columnOptions.MaxLength.HasValue)
                 {
                     propertyBuilder = builder =>
                     {
-                        if (columnOptions.ColumnType != null)
+                        if (columnOptions.ColumnType is not null)
                         {
                             builder.HasColumnType(columnOptions.ColumnType);
                         }
@@ -73,9 +77,9 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
             return propertyBuilder;
         }
 
-        private static Action<PropertyBuilder> CreateIntegerPropertyBuilder(EnrichedEnumColumnOptions columnOptions)
+        private static Action<PropertyBuilder>? CreateIntegerPropertyBuilder(EnrichedEnumColumnOptions columnOptions)
         {
-            Action<PropertyBuilder> propertyBuilder = null;
+            Action<PropertyBuilder>? propertyBuilder = null;
 
             if (columnOptions?.ColumnType != null)
             {

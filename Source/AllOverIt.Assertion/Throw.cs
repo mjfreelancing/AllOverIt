@@ -646,7 +646,7 @@ namespace AllOverIt.Assertion
         [DoesNotReturn]
         private static void ThrowException()
         {
-            throw (Exception) Activator.CreateInstance(typeof(TException))!;
+            throw (Exception) Activator.CreateInstance<TException>()!;
         }
 
         [DoesNotReturn]

@@ -11,6 +11,9 @@ namespace AllOverIt.DependencyInjection
         private readonly Dictionary<string, Type> _namedImplementations = [];
         internal IServiceProvider? _provider;        // assigned through field injection
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2263:Prefer generic overload when type is known", Justification = "Would be a recursive call, resulting in a stack overflow")]
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         void INamedServiceRegistration<TService>.Register<TImplementation>(string name)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
