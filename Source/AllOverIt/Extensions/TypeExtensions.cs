@@ -255,7 +255,7 @@ namespace AllOverIt.Extensions
 
         /// <summary>Indicates if the <see cref="Type"/> represents a generic type.</summary>
         /// <param name="type">The type to compare.</param>
-        /// <returns><see langword="True" /> if the <see cref="Type"/> represents a generic type, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the <see cref="Type"/> represents a generic type, otherwise <see langword="False" />.</returns>
         public static bool IsGenericType(this Type type)
         {
             return type.GetTypeInfo().IsGenericType;
@@ -315,7 +315,7 @@ namespace AllOverIt.Extensions
 
         /// <summary>Indicates if the <see cref="Type"/> represents a generic nullable type.</summary>
         /// <param name="type">The type to compare.</param>
-        /// <returns><see langword="True" /> if the <see cref="Type"/> represents a generic nullable type, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the <see cref="Type"/> represents a generic nullable type, otherwise <see langword="False" />.</returns>
         public static bool IsNullableType(this Type type)
         {
             return type.IsGenericType() && (type.GetGenericTypeDefinition() == CommonTypes.NullableGenericType);
@@ -396,7 +396,7 @@ namespace AllOverIt.Extensions
 
         /// <summary>Determines if the provided type inherits from EnrichedEnum&lt;TEnum&gt;.</summary>
         /// <param name="type">The type to be checked.</param>
-        /// <returns><see langword="True" /> if the type inherits from EnrichedEnum&lt;>, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the type inherits from EnrichedEnum&lt;>, otherwise <see langword="False" />.</returns>
         public static bool IsEnrichedEnum(this Type type)
         {
             return type.IsDerivedFrom(CommonTypes.EnrichedEnumGenericType);

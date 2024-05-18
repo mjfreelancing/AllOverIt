@@ -40,7 +40,7 @@ namespace AllOverIt.IO
         /// <summary>Determines if the provided child path is a subfolder of the provided parent path.</summary>
         /// <param name="parentPath">The parent path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <returns><see langword="true" /> if the child path is an immediate subfolder of the parent path.</returns>
+        /// <returns><see langword="True" /> if the child path is an immediate subfolder of the parent path.</returns>
         public static bool PathIsSubFolder(string parentPath, string childPath)
         {
             _ = parentPath.WhenNotNullOrEmpty(nameof(parentPath));
@@ -104,7 +104,7 @@ namespace AllOverIt.IO
         /// <summary>Creates a new file and writes the stream content to it.</summary>
         /// <param name="stream">The stream containing the content to be written to the file.</param>
         /// <param name="fileName">The name of the file to create.</param>
-        /// <param name="leaveOpen"><see langword="true" /> to leave the <paramref name="stream"/> open when the file has been written, otherwise <see langword="false" />.</param>
+        /// <param name="leaveOpen"><see langword="True" /> to leave the <paramref name="stream"/> open when the file has been written, otherwise <see langword="False" />.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>A task that completes when the file has been completely written.</returns>
         [ExcludeFromCodeCoverage]

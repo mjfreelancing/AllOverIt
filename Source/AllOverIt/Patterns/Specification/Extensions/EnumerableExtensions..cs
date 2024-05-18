@@ -19,7 +19,7 @@ namespace AllOverIt.Patterns.Specification.Extensions
         /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         /// <param name="candidates">The elements to apply the specification against.</param>
         /// <param name="specification">The specification to apply against a collection of elements.</param>
-        /// <returns><see langword="true" /> if any of the candidates meet the criteria of the provided specification.</returns>
+        /// <returns><see langword="True" /> if any of the candidates meet the criteria of the provided specification.</returns>
         public static bool Any<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
         {
             return candidates.Any(specification.IsSatisfiedBy);
@@ -29,7 +29,7 @@ namespace AllOverIt.Patterns.Specification.Extensions
         /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         /// <param name="candidates">The elements to apply the specification against.</param>
         /// <param name="specification">The specification to apply against a collection of elements.</param>
-        /// <returns><see langword="true" /> if all of the candidates meet the criteria of the provided specification.</returns>
+        /// <returns><see langword="True" /> if all of the candidates meet the criteria of the provided specification.</returns>
         public static bool All<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
         {
             return candidates.All(specification.IsSatisfiedBy);

@@ -46,7 +46,7 @@ namespace AllOverIt.Validation.Validators
         /// <param name="value">The property value.</param>
         /// <param name="fromValue">The lower limit value to compare to the property value.</param>
         /// <param name="toValue">The upper limit value to compare to the property value.</param>
-        /// <returns><see langword="true" /> if the property value is valid, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the property value is valid, otherwise <see langword="False" />.</returns>
         protected abstract bool IsValid(TProperty value, TProperty fromValue, TProperty toValue);
     }
 }

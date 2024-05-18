@@ -88,7 +88,7 @@ namespace AllOverIt.Patterns.ValueObject
         // <summary>Operator that determines if two ValueObject instances are equal.</summary>
         /// <param name="left">The left operand of the comparison.</param>
         /// <param name="right">The right operand of the comparison.</param>
-        /// <returns><see langword="true" /> if the ValueObject instances are equal, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the ValueObject instances are equal, otherwise <see langword="False" />.</returns>
         public static bool operator ==(ValueObject<TValue, TType> left, ValueObject<TValue, TType> right)
         {
             if (left is null)
@@ -102,31 +102,31 @@ namespace AllOverIt.Patterns.ValueObject
         // <summary>Operator that determines if two ValueObject instances are not equal.</summary>
         /// <param name="left">The left operand of the comparison.</param>
         /// <param name="right">The right operand of the comparison.</param>
-        /// <returns><see langword="true" /> if the ValueObject instances are not equal, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the ValueObject instances are not equal, otherwise <see langword="False" />.</returns>
         public static bool operator !=(ValueObject<TValue, TType> left, ValueObject<TValue, TType> right) => !(left == right);
 
         // <summary>Operator that determines if one ValueObject's value is greater than another.</summary>
         /// <param name="left">The left operand of the comparison.</param>
         /// <param name="right">The right operand of the comparison.</param>
-        /// <returns><see langword="true" /> if the left operand is greater than the right operand, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the left operand is greater than the right operand, otherwise <see langword="False" />.</returns>
         public static bool operator >(ValueObject<TValue, TType> left, ValueObject<TValue, TType> right) => left.CompareTo(right) > 0;
 
         // <summary>Operator that determines if one ValueObject's value is greater than or equal to another.</summary>
         /// <param name="left">The left operand of the comparison.</param>
         /// <param name="right">The right operand of the comparison.</param>
-        /// <returns><see langword="true" /> if the left operand is greater than or equal to the right operand, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the left operand is greater than or equal to the right operand, otherwise <see langword="False" />.</returns>
         public static bool operator >=(ValueObject<TValue, TType> left, ValueObject<TValue, TType> right) => left.CompareTo(right) >= 0;
 
         // <summary>Operator that determines if one ValueObject's value is less than another.</summary>
         /// <param name="left">The left operand of the comparison.</param>
         /// <param name="right">The right operand of the comparison.</param>
-        /// <returns><see langword="true" /> if the left operand is less than the right operand, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the left operand is less than the right operand, otherwise <see langword="False" />.</returns>
         public static bool operator <(ValueObject<TValue, TType> left, ValueObject<TValue, TType> right) => left.CompareTo(right) < 0;
 
         // <summary>Operator that determines if one ValueObject's value is less than or equal to another.</summary>
         /// <param name="left">The left operand of the comparison.</param>
         /// <param name="right">The right operand of the comparison.</param>
-        /// <returns><see langword="true" /> if the left operand is less than or equal to the right operand, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the left operand is less than or equal to the right operand, otherwise <see langword="False" />.</returns>
         public static bool operator <=(ValueObject<TValue, TType> left, ValueObject<TValue, TType> right) => left.CompareTo(right) <= 0;
 
         /// <summary>Implicit operator to convert a ValueObject to its underlying value equivalent.</summary>

@@ -33,7 +33,7 @@ namespace AllOverIt.Process.Extensions
         /// <summary>Creates a new <see cref="ProcessExecutorOptions"/> by cloning the provided <paramref name="options"/> and updating the arguments.</summary>
         /// <param name="options">The options to be cloned.</param>
         /// <param name="arguments">The arguments to be applied to the cloned <see cref="ProcessExecutorOptions"/> instance.</param>
-        /// <param name="escape">When <see langword="true" /> each argument will be escaped if required.</param>
+        /// <param name="escape">When <see langword="True" /> each argument will be escaped if required.</param>
         /// <returns>A new <see cref="ProcessExecutorOptions"/> with updated arguments.</returns>
         public static ProcessExecutorOptions WithArguments(this ProcessExecutorOptions options, IEnumerable<string> arguments, bool escape = true)
         {
@@ -56,7 +56,7 @@ namespace AllOverIt.Process.Extensions
 
         /// <summary>Creates a new <see cref="ProcessExecutorOptions"/> by cloning the provided <paramref name="options"/> and updating the 'NoWindow' option.</summary>
         /// <param name="options">The options to be cloned.</param>
-        /// <returns>A new <see cref="ProcessExecutorOptions"/> with its 'NoWindow' option set to <see langword="true"/>.</returns>
+        /// <returns>A new <see cref="ProcessExecutorOptions"/> with its 'NoWindow' option set to <see langword="True"/>.</returns>
         public static ProcessExecutorOptions WithNoWindow(this ProcessExecutorOptions options)
         {
             return options with { NoWindow = true };

@@ -29,7 +29,7 @@
         /// <param name="object">The object to find an <see cref="ObjectPropertyFilter"/> that can process its properties.</param>
         /// <param name="serializer">If the registry has a registered filter that can process the object's properties then a new serializer configured with
         /// the filter is returned. If there is no suitable filter then a default serializer is returned.</param>
-        /// <returns><see langword="true" /> if a registered filter is found, otherwise <see langword="false" />. If there is no registered serializer
+        /// <returns><see langword="True" /> if a registered filter is found, otherwise <see langword="False" />. If there is no registered serializer
         /// then <paramref name="serializer"/> will be assigned a default serializer.</returns>
         /// <remarks>Serializers and their associated filter are constructed on demand, and they are each treated as a Singleton.</remarks>
         /// 
@@ -38,7 +38,7 @@
         /// <typeparam name="TType">The object type to find an <see cref="ObjectPropertyFilter"/> that can process its properties.</typeparam>
         /// <param name="serializer">If the registry has a registered filter that can process the object's properties then a new serializer configured with
         /// the filter is returned. If there is no suitable filter then a default serializer is returned.</param>
-        /// <returns><see langword="true" /> if a registered filter is found, otherwise <see langword="false" />. If there is no registered serializer then <paramref name="serializer"/>
+        /// <returns><see langword="True" /> if a registered filter is found, otherwise <see langword="False" />. If there is no registered serializer then <paramref name="serializer"/>
         /// will be assigned a default serializer.</returns>
         /// <remarks>Serializers and their associated filter are constructed on demand, and they are each treated as a Singleton.</remarks>
         bool GetObjectPropertySerializer<TType>(out IObjectPropertySerializer serializer);
@@ -47,7 +47,7 @@
         /// <param name="type">The object type to find an <see cref="ObjectPropertyFilter"/> that can process its properties.</param>
         /// <param name="serializer">If the registry has a registered filter that can process the object's properties then a new serializer configured with
         /// the filter is returned. If there is no suitable filter then a default serializer is returned.</param>
-        /// <returns><see langword="true" /> if a registered filter is found, otherwise <see langword="false" />. If there is no registered serializer then <paramref name="serializer"/>
+        /// <returns><see langword="True" /> if a registered filter is found, otherwise <see langword="False" />. If there is no registered serializer then <paramref name="serializer"/>
         /// will be assigned a default serializer.</returns>
         /// <remarks>Serializers and their associated filter are constructed on demand, and they are each treated as a Singleton.</remarks>
         bool GetObjectPropertySerializer(Type type, out IObjectPropertySerializer serializer);

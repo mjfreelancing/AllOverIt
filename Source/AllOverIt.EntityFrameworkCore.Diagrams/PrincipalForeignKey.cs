@@ -12,7 +12,7 @@
         /// <summary>The name of the column on the principal entity.</summary>
         public string ColumnName { get; init; }
 
-        /// <summary>When <see langword="true"/>, indicates the foreign key is one-to-many, otherwise
+        /// <summary>When <see langword="True"/>, indicates the foreign key is one-to-many, otherwise
         /// it is assumed to be one-to-one..</summary>
         public bool IsOneToMany { get; init; }
     }

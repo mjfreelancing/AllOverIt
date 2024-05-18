@@ -24,28 +24,28 @@
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="key">The custom key associated with the value.</param>
         /// <param name="value">The value associated with the key.</param>
-        /// <returns><see langword="true" /> if the key and associated value were added, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the key and associated value were added, otherwise <see langword="False" />.</returns>
         bool TryAdd<TValue>(GenericCacheKeyBase key, TValue? value);
 
         /// <summary>Attempts to get the value associated with a key in the cache.</summary>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="key">The custom key associated with the value.</param>
         /// <param name="value">The value associated with the key.</param>
-        /// <returns><see langword="true" /> if the key was found in the cache, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the key was found in the cache, otherwise <see langword="False" />.</returns>
         bool TryGetValue<TValue>(GenericCacheKeyBase key, out TValue? value);
 
         /// <summary>Attempts to remove a key from the cache and return the value associated with the key if it was found.</summary>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="key">The custom key associated with the value.</param>
         /// <param name="value">The value associated with the key.</param>
-        /// <returns><see langword="true" /> if the key was found in the cache, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the key was found in the cache, otherwise <see langword="False" />.</returns>
         bool TryRemove<TValue>(GenericCacheKeyBase key, out TValue? value);
 
 #if !NETSTANDARD2_1
         /// <summary>Attempts to remove a key and its associated value from the cache.</summary>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="item">The custom key and associated value.</param>
-        /// <returns><see langword="true" /> if the key was found in the cache, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the key was found in the cache, otherwise <see langword="False" />.</returns>
         bool TryRemove<TValue>(KeyValuePair<GenericCacheKeyBase, TValue?> item);
 #endif
 
@@ -55,7 +55,7 @@
         /// <param name="key">The custom key associated with the value.</param>
         /// <param name="newValue">The new value to update to.</param>
         /// <param name="comparisonValue">The value to compare with the current value.</param>
-        /// <returns><see langword="true" /> if the key was found in the cache, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the key was found in the cache, otherwise <see langword="False" />.</returns>
         bool TryUpdate<TValue>(GenericCacheKeyBase key, TValue? newValue, TValue? comparisonValue);
 
         /// <summary>Copies the key and value pairs to a new array.</summary>

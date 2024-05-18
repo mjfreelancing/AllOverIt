@@ -22,7 +22,7 @@ namespace AllOverIt.Wpf.Controls.PreviewTextBox
 
         /// <summary>An event handler that receives a preview of the text to be assigned for the purpose
         /// of validating its content. To accept the value set the event args (of type <see cref="PreviewTextChangedEventArgs"/>)
-        /// <see cref="RoutedEventArgs.Handled"/> property top <see langword="false"/>, otherwise <see langword="true"/>.</summary>
+        /// <see cref="RoutedEventArgs.Handled"/> property top <see langword="False"/>, otherwise <see langword="True"/>.</summary>
         public event PreviewTextChangedEventHandler PreviewTextChanged
         {
             add => AddHandler(PreviewTextChangedEvent, value);
@@ -37,8 +37,8 @@ namespace AllOverIt.Wpf.Controls.PreviewTextBox
                 typeof(PreviewTextBox));
 
         /// <summary>An optional handler that can be used to validate a preview of the text to be assigned.
-        /// If the handler returns <see langword="true"/> from its <see cref="IPreviewHandler.IsValid(string)"/>
-        /// method then the value will be accepted. If <see langword="false"/> is returned then the preview
+        /// If the handler returns <see langword="True"/> from its <see cref="IPreviewHandler.IsValid(string)"/>
+        /// method then the value will be accepted. If <see langword="False"/> is returned then the preview
         /// text value will be forwarded to any assigned <see cref="OnPreviewTextChanged(PreviewTextChangedEventArgs)"/>
         /// event handlers. The event handlers will not be called if the <see cref="PreviewHandler"/> rejects the text.</summary>
         public IPreviewHandler PreviewHandler

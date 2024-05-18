@@ -12,7 +12,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
 
         /// <summary>Returns true if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</summary>
         /// <param name="objectType">The object type.</param>
-        /// <returns><see langword="true" /> if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</returns>
+        /// <returns><see langword="True" /> if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</returns>
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(TEnum);

@@ -30,7 +30,7 @@ namespace AllOverIt.ReactiveUI
         /// <param name="newValue">The new property value to be set.</param>
         /// <param name="setValue">The action to update the value on the wrapped <see cref="Model"/>.</param>
         /// <param name="propertyName">The name of the property that is changing. Optional</param>
-        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="false"/>.</returns>
+        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="False"/>.</returns>
         protected bool RaiseAndSetIfChanged<TProperty>(TProperty oldValue, TProperty newValue, Action<TType, TProperty> setValue,
             [CallerMemberName] string propertyName = "")
         {
@@ -47,7 +47,7 @@ namespace AllOverIt.ReactiveUI
         /// <param name="onChanging">An action to be invoked before the property value is changed. Optional.</param>
         /// <param name="onChanged">An action to be invoked after the property value is changed. Optional.</param>
         /// <param name="propertyName">The name of the property that is changing. Optional</param>
-        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="false"/>.</returns>
+        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="False"/>.</returns>
         protected bool RaiseAndSetIfChanged<TProperty>(TProperty oldValue, TProperty newValue, Action<TType, TProperty> setValue,
             Action onChanging, Action onChanged, [CallerMemberName] string propertyName = "")
         {
@@ -65,7 +65,7 @@ namespace AllOverIt.ReactiveUI
         /// <param name="onChanging">An action to be invoked before the property value is changed. Optional.</param>
         /// <param name="onChanged">An action to be invoked after the property value is changed. Optional.</param>
         /// <param name="propertyName">The name of the property that is changing. Optional</param>
-        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="false"/>.</returns>
+        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="False"/>.</returns>
         protected bool RaiseAndSetIfChanged<TProperty>(TProperty oldValue, TProperty newValue, Action<TType, TProperty> setValue,
             IEqualityComparer<TProperty> comparer, Action onChanging, Action onChanged, [CallerMemberName] string propertyName = "")
         {

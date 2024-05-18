@@ -13,7 +13,7 @@ namespace AllOverIt.Extensions
         /// <summary>Indicates if the source items contains no elements.</summary>
         /// <typeparam name="TType">The type stored in the source collection.</typeparam>
         /// <param name="items">The source of elements.</param>
-        /// <returns><see langword="true" /> if the source items contains no elements, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the source items contains no elements, otherwise <see langword="False" />.</returns>
         public static bool NotAny<TType>(this IEnumerable<TType> items)
         {
             _ = items.WhenNotNull(nameof(items));
@@ -470,7 +470,7 @@ namespace AllOverIt.Extensions
 
         /// <summary>Applicable to strings and collections, this method determines if the instance is null or empty.</summary>
         /// <param name="items">The object of interest.</param>
-        /// <returns><see langword="true" /> if the object is null or empty.</returns>
+        /// <returns><see langword="True" /> if the object is null or empty.</returns>
         public static bool IsNullOrEmpty([NotNullWhen(false)] this IEnumerable? items)
         {
             return items is null || !items.GetEnumerator().MoveNext();
@@ -478,7 +478,7 @@ namespace AllOverIt.Extensions
 
         /// <summary>Applicable to strings and collections, this method determines if the instance is not null or empty.</summary>
         /// <param name="items">The object of interest.</param>
-        /// <returns><see langword="true" /> if the object is not null or not empty.</returns>
+        /// <returns><see langword="True" /> if the object is not null or not empty.</returns>
         public static bool IsNotNullOrEmpty([NotNullWhen(true)] this IEnumerable? items)
         {
             return !IsNullOrEmpty(items);
@@ -597,7 +597,7 @@ namespace AllOverIt.Extensions
         /// <typeparam name="TKey">The key type.</typeparam>
         /// <param name="source">The source collection.</param>
         /// <param name="selector">The key selector.</param>
-        /// <returns><see langword="true" /> when the grouping results in one element per key, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> when the grouping results in one element per key, otherwise <see langword="False" />.</returns>
         public static bool HasDistinctGrouping<TType, TKey>(this IEnumerable<TType> source, Func<TType, TKey> selector)
         {
             return source

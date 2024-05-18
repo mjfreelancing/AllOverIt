@@ -154,7 +154,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             public bool ShowCrowsFoot { get; set; } = true;
 
             /// <summary>Provides the label styling for depicted relationships. To hide the label set its
-            /// <see cref="LabelStyle.IsVisible"/> property to <see langword="false"/>.</summary>
+            /// <see cref="LabelStyle.IsVisible"/> property to <see langword="False"/>.</summary>
             public LabelStyle LabelStyle { get; internal set; } = new();
 
             /// <summary>The label text for one-to-one relationships.</summary>

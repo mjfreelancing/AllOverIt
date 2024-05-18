@@ -87,7 +87,7 @@ namespace AllOverIt.Caching
 
         /// <summary>Determines if the cache contains the provided key.</summary>
         /// <param name="key">The key to lookup.</param>
-        /// <returns><see langword="true" /> if the cache contains the key, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the cache contains the key, otherwise <see langword="False" />.</returns>
         public bool ContainsKey(GenericCacheKeyBase key)
         {
             _ = key.WhenNotNull(nameof(key));
@@ -120,7 +120,7 @@ namespace AllOverIt.Caching
         /// <summary>Attempts to get the value associated with a key in the cache.</summary>
         /// <param name="key">The custom key associated with the value.</param>
         /// <param name="value">The value associated with the key.</param>
-        /// <returns><see langword="true" /> if the key was found in the cache, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the key was found in the cache, otherwise <see langword="False" />.</returns>
         public bool TryGetValue(GenericCacheKeyBase key, out object? value)
         {
             _ = key.WhenNotNull(nameof(key));
@@ -144,7 +144,7 @@ namespace AllOverIt.Caching
 
         /// <summary>Attempts to remove a key and its associated value from the cache.</summary>
         /// <param name="item">The custom key and associated value.</param>
-        /// <returns><see langword="true" /> if the key was found in the cache, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the key was found in the cache, otherwise <see langword="False" />.</returns>
         public bool Remove(KeyValuePair<GenericCacheKeyBase, object?> item)
         {
             return ((IDictionary<GenericCacheKeyBase, object?>) _cache).Remove(item);

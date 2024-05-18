@@ -12,7 +12,7 @@
         /// <summary>Try to get the value of a specified property.</summary>
         /// <param name="propertyName">The property to get the value from.</param>
         /// <param name="value">The current property value.</param>
-        /// <returns><see langword="true" /> if the property exists, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the property exists, otherwise <see langword="False" />.</returns>
         bool TryGetValue(string propertyName, out object value);
 
         /// <summary>Get the value of a specified property.</summary>

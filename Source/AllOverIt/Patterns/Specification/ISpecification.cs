@@ -6,7 +6,7 @@
     {
         /// <summary>Applies a specification against a candidate subject.</summary>
         /// <param name="candidate">The subject to be tested against the specification.</param>
-        /// <returns><see langword="true" /> if the candidate satisfies the specification, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the candidate satisfies the specification, otherwise <see langword="False" />.</returns>
         bool IsSatisfiedBy(TType candidate);
     }
 }

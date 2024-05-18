@@ -15,7 +15,7 @@
         /// <param name="millisecondsTimeout">The timeout period to block the calling thread while trying to acquire the read lock.
         /// A value of 0 indicates the method should return if the lock cannot be immediately acquired.
         /// A value of -1 will result in the calling thread being blocked indefinitely, until the lock is acquired.</param>
-        /// <returns><see langword="true" /> if the lock was acquired, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the lock was acquired, otherwise <see langword="False" />.</returns>
         bool TryEnterReadLock(bool upgradeable, int millisecondsTimeout);
 
         /// <summary>Blocks the calling thread while trying to acquire a read lock within the specified timeout period.</summary>
@@ -23,21 +23,21 @@
         /// <param name="timeout">The timeout period to block the calling thread while trying to acquire the read lock.
         /// A value of 0 indicates the method should return if the lock cannot be immediately acquired.
         /// A value of -1 will result in the calling thread being blocked indefinitely, until the lock is acquired.</param>
-        /// <returns><see langword="true" /> if the lock was acquired, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the lock was acquired, otherwise <see langword="False" />.</returns>
         bool TryEnterReadLock(bool upgradeable, TimeSpan timeout);
 
         /// <summary>Tries to enter the lock in an upgradeable mode within the specified timeout period.</summary>
         /// <param name="millisecondsTimeout">The timeout period to block the calling thread while trying to acquire the read lock.
         /// A value of 0 indicates the method should return if the lock cannot be immediately acquired.
         /// A value of -1 will result in the calling thread being blocked indefinitely, until the lock is acquired.</param>
-        /// <returns><see langword="true" /> if the lock was acquired, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the lock was acquired, otherwise <see langword="False" />.</returns>
         bool TryEnterUpgradeableReadLock(int millisecondsTimeout);
 
         /// <summary>Tries to enter the lock in an upgradeable mode within the specified timeout period.</summary>
         /// <param name="timeout">The timeout period to block the calling thread while trying to acquire the read lock.
         /// A value of 0 indicates the method should return if the lock cannot be immediately acquired.
         /// A value of -1 will result in the calling thread being blocked indefinitely, until the lock is acquired.</param>
-        /// <returns><see langword="true" /> if the lock was acquired, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the lock was acquired, otherwise <see langword="False" />.</returns>
         bool TryEnterUpgradeableReadLock(TimeSpan timeout);
 
         /// <summary>Exists a previously acquired read lock.</summary>
@@ -50,14 +50,14 @@
         /// <param name="millisecondsTimeout">The timeout period to block the calling thread while trying to acquire the write lock.
         /// A value of 0 indicates the method should return if the lock cannot be immediately acquired.
         /// A value of -1 will result in the calling thread being blocked indefinitely, until the lock is acquired.</param>
-        /// <returns><see langword="true" /> if the lock was acquired, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the lock was acquired, otherwise <see langword="False" />.</returns>
         bool TryEnterWriteLock(int millisecondsTimeout);
 
         /// <summary>Blocks the calling thread while trying to acquire a write lock within the specified timeout period.</summary>
         /// <param name="timeout">The timeout period to block the calling thread while trying to acquire the write lock.
         /// A value of 0 indicates the method should return if the lock cannot be immediately acquired.
         /// A value of -1 will result in the calling thread being blocked indefinitely, until the lock is acquired.</param>
-        /// <returns><see langword="true" /> if the lock was acquired, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the lock was acquired, otherwise <see langword="False" />.</returns>
         bool TryEnterWriteLock(TimeSpan timeout);
 
         /// <summary>Exists a previously acquired write lock.</summary>

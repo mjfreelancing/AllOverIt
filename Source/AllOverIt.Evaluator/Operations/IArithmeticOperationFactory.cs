@@ -17,7 +17,7 @@ namespace AllOverIt.Evaluator.Operations
         /// <param name="precedence">The precedence level that determines the order of operations. A lower value indicates a higher precedence.</param>
         /// <param name="argumentCount">The number of required arguments.</param>
         /// <param name="operatorCreator">The factory used to create the operation using the provided arguments (as expressions).</param>
-        /// <returns><see langword="true" /> if the symbol was registered, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the symbol was registered, otherwise <see langword="False" />.</returns>
         bool TryRegisterOperation(string symbol, int precedence, int argumentCount, Func<Expression[], IOperator> operatorCreator);
 
         /// <summary>Registers a new operation in terms of its operator symbol, precedence level and a factory used for creating the

@@ -10,7 +10,7 @@ namespace AllOverIt.Wpf.Controls.PreviewTextBox
         public PreviewTextChangedType Type { get; }
 
         /// <summary>A preview of the text value to be assigned. To accept this value, set the <see cref="RoutedEventArgs.Handled"/>
-        /// property to <see langword="false"/>, otherwise <see langword="true"/>.</summary>
+        /// property to <see langword="False"/>, otherwise <see langword="True"/>.</summary>
         public string Text { get; }
 
         /// <summary>Constructor.</summary>

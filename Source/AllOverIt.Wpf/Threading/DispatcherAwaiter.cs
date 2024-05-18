@@ -11,7 +11,7 @@ namespace AllOverIt.Wpf.Threading
     {
         private readonly Dispatcher _dispatcher;
 
-        /// <summary>Returns <see langword="true"/> when the calling thread is associated with the
+        /// <summary>Returns <see langword="True"/> when the calling thread is associated with the
         /// dispatcher passed to the constructor.</summary>
         public bool IsCompleted => _dispatcher.CheckAccess();
 

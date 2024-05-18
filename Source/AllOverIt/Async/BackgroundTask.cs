@@ -24,7 +24,7 @@ namespace AllOverIt.Async
         /// <param name="action">The action to invoke asynchronously in a background task. Use the <paramref name="cancellationToken"/>
         /// to detect if the action should be cancelled.</param>
         /// <param name="exceptionHandler">An exception handler that is invoked if an exception is raised. The handler must return
-        /// <see langword="true"/> if the exception is handled. If the handler returns <see langword="false"/> the exception will be re-thrown.</param>
+        /// <see langword="True"/> if the exception is handled. If the handler returns <see langword="False"/> the exception will be re-thrown.</param>
         /// <param name="cancellationToken">An optional cancellation token that will cancel the task if cancelled.</param>
         public BackgroundTask(Func<CancellationToken, Task> action, Func<Exception, bool> exceptionHandler, CancellationToken cancellationToken = default)
         {
@@ -61,7 +61,7 @@ namespace AllOverIt.Async
         /// <param name="creationOptions">A <see cref="TaskCreationOptions"/> value that controls the behavior of the created task.</param>
         /// <param name="scheduler">The <see cref="TaskScheduler"/> that is used to schedule the created task.</param>
         /// <param name="exceptionHandler">An exception handler that is invoked if an exception is raised. The handler must return
-        /// <see langword="true"/> if the exception is handled. If the handler returns <see langword="false"/> the exception will be re-thrown.</param>
+        /// <see langword="True"/> if the exception is handled. If the handler returns <see langword="False"/> the exception will be re-thrown.</param>
         /// <param name="cancellationToken">An optional cancellation token that will cancel the task if cancelled.</param>
         public BackgroundTask(Func<CancellationToken, Task> action, TaskCreationOptions creationOptions, TaskScheduler scheduler,
             Func<Exception, bool> exceptionHandler, CancellationToken cancellationToken = default)

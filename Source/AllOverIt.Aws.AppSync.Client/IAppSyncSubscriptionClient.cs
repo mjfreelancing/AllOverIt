@@ -22,12 +22,12 @@ namespace AllOverIt.Aws.AppSync.Client
 
         /// <summary>Opens a WebSocket connection and registers the client with AppSync. Any existing subscriptions from a
         /// previous connection will be re-subscribed.</summary>
-        /// <param name="authorization">The authorization to use for the request. If null is provided then the default authorization provided
+        /// <param name="authorization">The authorization to use for the request. If <see langword="null"/> is provided then the default authorization provided
         /// on the client configuration during construction will be used.</param>
-        /// <returns><see langword="true" /> if the connection was established, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the connection was established, otherwise <see langword="False" />.</returns>
         /// <remarks>Refer to <see cref="DisconnectAsync"/> for more information on how existing subscriptions are retained
         /// if the client is disconnected while there are active subscriptions.</remarks>
-        Task<bool> ConnectAsync(IAppSyncAuthorization authorization = default);
+        Task<bool> ConnectAsync(IAppSyncAuthorization? authorization = default);
 
         /// <summary>Unsubscribes any existing subscriptions and then disconnects the client from AppSync. The subscription
         /// registrations are maintained (not disposed of). If a new connection is later established by calling
@@ -38,10 +38,10 @@ namespace AllOverIt.Aws.AppSync.Client
         /// <typeparam name="TResponse">The response type to be populated when the subscription receives a message.</typeparam>
         /// <param name="query">The subscription query.</param>
         /// <param name="responseAction">The action to invoke when a response is received.</param>
-        /// <param name="authorization">The authorization to use for the request. If null is provided then the default authorization provided
+        /// <param name="authorization">The authorization to use for the request. If <see langword="null"/> is provided then the default authorization provided
         /// on the client configuration during construction will be used.</param>
         /// <returns>A subscription registration. The subscription will be closed when this registration is disposed of.</returns>
         Task<IAppSyncSubscriptionRegistration> SubscribeAsync<TResponse>(SubscriptionQuery query,
-            Action<GraphqlSubscriptionResponse<TResponse>> responseAction, IAppSyncAuthorization authorization = null);
+            Action<GraphqlSubscriptionResponse<TResponse>> responseAction, IAppSyncAuthorization? authorization = null);
     }
 }

@@ -117,7 +117,7 @@ namespace AllOverIt.Patterns.Enumeration
         /// <summary>Attempts to convert the provided value to an enumeration instance.</summary>
         /// <param name="value">The integer value to convert to an equivalent enumeration instance.</param>
         /// <param name="enumeration">The matching enumeration instance if a match is found.</param>
-        /// <returns><see langword="true" /> if the conversion was successful, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the conversion was successful, otherwise <see langword="False" />.</returns>
         public static bool TryFromValue(int value, [MaybeNullWhen(false)] out TEnum enumeration)
         {
             return TryParse(item => item.Value == value, out enumeration);
@@ -126,7 +126,7 @@ namespace AllOverIt.Patterns.Enumeration
         /// <summary>Attempts to convert the provided value to an enumeration instance.</summary>
         /// <param name="name">The name to convert to an equivalent enumeration instance.</param>
         /// <param name="enumeration">The matching enumeration instance if a match is found.</param>
-        /// <returns><see langword="true" /> if the conversion was successful, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the conversion was successful, otherwise <see langword="False" />.</returns>
         public static bool TryFromName(string name, [MaybeNullWhen(false)] out TEnum enumeration)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
@@ -137,7 +137,7 @@ namespace AllOverIt.Patterns.Enumeration
         /// <summary>Attempts to convert the provided value to an enumeration instance.</summary>
         /// <param name="nameOrValue">The string name, or integer value (as a string), to convert to an equivalent enumeration instance.</param>
         /// <param name="enumeration">The matching enumeration instance if a match is found.</param>
-        /// <returns><see langword="true" /> if the conversion was successful, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the conversion was successful, otherwise <see langword="False" />.</returns>
         public static bool TryFromNameOrValue(string nameOrValue, [MaybeNullWhen(false)] out TEnum enumeration)
         {
             _ = nameOrValue.WhenNotNullOrEmpty(nameof(nameOrValue));
@@ -154,7 +154,7 @@ namespace AllOverIt.Patterns.Enumeration
 
         /// <summary>Indicates if the value matches one of the defined enumeration instances.</summary>
         /// <param name="value">The value to compare.</param>
-        /// <returns><see langword="true" /> if the value matches one of the defined enumeration instances, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the value matches one of the defined enumeration instances, otherwise <see langword="False" />.</returns>
         public static bool HasValue(int value)
         {
             return TryFromValue(value, out _);
@@ -162,7 +162,7 @@ namespace AllOverIt.Patterns.Enumeration
 
         /// <summary>Indicates if the name matches one of the defined enumeration instances.</summary>
         /// <param name="name">The value to compare.</param>
-        /// <returns><see langword="true" /> if the name matches one of the defined enumeration instances, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the name matches one of the defined enumeration instances, otherwise <see langword="False" />.</returns>
         public static bool HasName(string name)
         {
             return TryFromName(name, out _);
@@ -170,7 +170,7 @@ namespace AllOverIt.Patterns.Enumeration
 
         /// <summary>Indicates if the name or value (as a string) matches one of the defined enumeration instances.</summary>
         /// <param name="nameOrValue">The name or value to compare.</param>
-        /// <returns><see langword="true" /> if the name or value matches one of the defined enumeration instances, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the name or value matches one of the defined enumeration instances, otherwise <see langword="False" />.</returns>
         public static bool HasNameOrValue(string nameOrValue)
         {
             return TryFromNameOrValue(nameOrValue, out _);
@@ -179,7 +179,7 @@ namespace AllOverIt.Patterns.Enumeration
         // <summary>Operator that determines if two enumerations are equal.</summary>
         /// <param name="left">The left operand of the comparison.</param>
         /// <param name="right">The right operand of the comparison.</param>
-        /// <returns><see langword="true" /> if the enumerations are equal, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the enumerations are equal, otherwise <see langword="False" />.</returns>
         public static bool operator ==(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right)
         {
             if (left is null)
@@ -193,31 +193,31 @@ namespace AllOverIt.Patterns.Enumeration
         // <summary>Operator that determines if two enumerations are not equal.</summary>
         /// <param name="left">The left operand of the comparison.</param>
         /// <param name="right">The right operand of the comparison.</param>
-        /// <returns><see langword="true" /> if the enumerations are not equal, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the enumerations are not equal, otherwise <see langword="False" />.</returns>
         public static bool operator !=(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right) => !(left == right);
 
         // <summary>Operator that determines if one enumeration value is greater than another.</summary>
         /// <param name="left">The left operand of the comparison.</param>
         /// <param name="right">The right operand of the comparison.</param>
-        /// <returns><see langword="true" /> if the left operand is greater than the right operand, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the left operand is greater than the right operand, otherwise <see langword="False" />.</returns>
         public static bool operator >(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right) => left.CompareTo(right) > 0;
 
         // <summary>Operator that determines if one enumeration value is greater than or equal to another.</summary>
         /// <param name="left">The left operand of the comparison.</param>
         /// <param name="right">The right operand of the comparison.</param>
-        /// <returns><see langword="true" /> if the left operand is greater than or equal to the right operand, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the left operand is greater than or equal to the right operand, otherwise <see langword="False" />.</returns>
         public static bool operator >=(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right) => left.CompareTo(right) >= 0;
 
         // <summary>Operator that determines if one enumeration value is less than another.</summary>
         /// <param name="left">The left operand of the comparison.</param>
         /// <param name="right">The right operand of the comparison.</param>
-        /// <returns><see langword="true" /> if the left operand is less than the right operand, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the left operand is less than the right operand, otherwise <see langword="False" />.</returns>
         public static bool operator <(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right) => left.CompareTo(right) < 0;
 
         // <summary>Operator that determines if one enumeration value is less than or equal to another.</summary>
         /// <param name="left">The left operand of the comparison.</param>
         /// <param name="right">The right operand of the comparison.</param>
-        /// <returns><see langword="true" /> if the left operand is less than or equal to the right operand, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the left operand is less than or equal to the right operand, otherwise <see langword="False" />.</returns>
         public static bool operator <=(EnrichedEnum<TEnum> left, EnrichedEnum<TEnum> right) => left.CompareTo(right) <= 0;
 
         /// <summary>Implicit operator to convert an enumeration to its integer equivalent.</summary>

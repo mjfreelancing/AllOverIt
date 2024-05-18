@@ -19,7 +19,7 @@ namespace AllOverIt.Reactive
         /// <param name="backingField">The backing field storing the property value.</param>
         /// <param name="newValue">The new property value to be set.</param>
         /// <param name="propertyName">The name of the property that is changing. Optional</param>
-        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="false"/>.</returns>
+        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="False"/>.</returns>
         protected bool RaiseAndSetIfChanged<TProperty>(ref TProperty? backingField, TProperty? newValue, [CallerMemberName] string propertyName = "")
         {
             return RaiseAndSetIfChanged(ref backingField, newValue, null, null, null, propertyName);
@@ -33,7 +33,7 @@ namespace AllOverIt.Reactive
         /// <param name="onChanging">An action to be invoked before the property value is changed. Optional.</param>
         /// <param name="onChanged">An action to be invoked after the property value is changed. Optional.</param>
         /// <param name="propertyName">The name of the property that is changing. Optional</param>
-        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="false"/>.</returns>
+        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="False"/>.</returns>
         protected bool RaiseAndSetIfChanged<TProperty>(ref TProperty? backingField, TProperty? newValue, Action? onChanging, Action? onChanged,
             [CallerMemberName] string propertyName = "")
         {
@@ -49,7 +49,7 @@ namespace AllOverIt.Reactive
         /// <param name="onChanging">An action to be invoked before the property value is changed. Optional.</param>
         /// <param name="onChanged">An action to be invoked after the property value is changed. Optional.</param>
         /// <param name="propertyName">The name of the property that is changing. Optional</param>
-        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="false"/>.</returns>
+        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="False"/>.</returns>
         protected bool RaiseAndSetIfChanged<TProperty>(ref TProperty backingField, TProperty newValue, IEqualityComparer<TProperty>? comparer,
             Action? onChanging, Action? onChanged, [CallerMemberName] string propertyName = "")
         {
