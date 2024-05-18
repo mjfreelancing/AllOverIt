@@ -8,36 +8,36 @@ namespace AESEncryptionDemo
     {
         private readonly AesEncryptor _encryptor;
 
-        private string _key;
-        public string Key
+        private string? _key;
+        public string? Key
         {
             get => _key;
             private set => RaiseAndSetIfChanged(ref _key, value);
         }
 
-        private string _iv;
-        public string IV
+        private string? _iv;
+        public string? IV
         {
             get => _iv;
             private set => RaiseAndSetIfChanged(ref _iv, value);
         }
 
-        private string _textInput;
-        public string TextInput
+        private string? _textInput;
+        public string? TextInput
         {
             get => _textInput;
             set => RaiseAndSetIfChanged(ref _textInput, value, null, OnTextInputChanged);
         }
 
-        private string _textEncrypted;
-        public string TextEncrypted
+        private string? _textEncrypted;
+        public string? TextEncrypted
         {
             get => _textEncrypted;
             private set => RaiseAndSetIfChanged(ref _textEncrypted, value);
         }
 
-        private string _textDecrypted;
-        public string TextDecrypted
+        private string? _textDecrypted;
+        public string? TextDecrypted
         {
             get => _textDecrypted;
             private set => RaiseAndSetIfChanged(ref _textDecrypted, value);

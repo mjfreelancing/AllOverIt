@@ -7,12 +7,12 @@ namespace AllOverIt.Aws.AppSync.Client.Configuration
     public sealed class AppSyncClientConfiguration : IAppSyncClientConfiguration
     {
         /// <inheritdoc />
-        public string EndPoint { get; init; }
+        public required string EndPoint { get; init; }
 
         /// <inheritdoc />
-        public IJsonSerializer Serializer { get; init; }
+        public required IJsonSerializer Serializer { get; init; }
 
         /// <inheritdoc />
-        public IAppSyncAuthorization DefaultAuthorization { get; init; }
+        public required IAppSyncAuthorization DefaultAuthorization { get; init; }
     }
 }

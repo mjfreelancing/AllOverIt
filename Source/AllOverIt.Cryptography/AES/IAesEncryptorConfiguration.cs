@@ -29,10 +29,10 @@ namespace AllOverIt.Cryptography.AES
         int FeedbackSize { get; }
 
         /// <summary>The secret key for the AES algorithm.</summary>
-        byte[]? Key { get; }
+        byte[] Key { get; }
 
         /// <summary>The initialization vector for the AES algorithm.</summary>
-        byte[]? IV { get; }
+        byte[] IV { get; }
 
         /// <summary>Replaces the current secret key with a new key based on the current <see cref="KeySize"/>.</summary>
         void RegenerateKey();
