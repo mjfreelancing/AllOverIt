@@ -169,6 +169,7 @@ namespace AllOverIt.Aws.AppSync.Client
                                 if (response.Type == ProtocolMessage.Response.Error)
                                 {
                                     var graphqlErrorMessage = response.GetGraphqlErrorFromResponseMessage(_configuration.Serializer);
+
                                     return new AppSyncSubscriptionRegistration(query.Id, graphqlErrorMessage.Payload.Errors);
                                 }
 
