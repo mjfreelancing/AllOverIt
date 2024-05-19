@@ -48,23 +48,22 @@
 
         private void DisposeResources()
         {
-            using (var cancellationTokenSource = new CancellationTokenSource())
-            {
-                Task.Factory.StartNew(async state =>
-                {
-                    try
-                    {
-                        // Dispose should not throw, so it is assumed this will not throw
-                        await DisposeResourcesAsync().ConfigureAwait(false);
-                    }
-                    finally
-                    {
-                        ((CancellationTokenSource) state!).Cancel();
-                    }
-                }, cancellationTokenSource, CancellationToken.None);
+            using var cancellationTokenSource = new CancellationTokenSource();
 
-                cancellationTokenSource.Token.WaitHandle.WaitOne();
-            }
+            Task.Factory.StartNew(async token =>
+            {
+                try
+                {
+                    // Dispose should not throw, so it is assumed this will not throw
+                    await DisposeResourcesAsync().ConfigureAwait(false);
+                }
+                finally
+                {
+                    ((CancellationTokenSource) token!).Cancel();
+                }
+            }, cancellationTokenSource, CancellationToken.None);
+
+            cancellationTokenSource.Token.WaitHandle.WaitOne();
         }
 
         private async Task DisposeResourcesAsync()

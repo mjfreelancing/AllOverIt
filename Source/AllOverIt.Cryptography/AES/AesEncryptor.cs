@@ -42,23 +42,24 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public int GetCipherTextLength(int plainTextLength)
         {
-            using (var aes = _aesFactory.Create(Configuration))
-            {
-                // AES cannot be created for modes other than those listed below
-                return Configuration.Mode switch
-                {
-                    CipherMode.CBC => aes.GetCiphertextLengthCbc(plainTextLength, Configuration.Padding),
-                    CipherMode.CFB => aes.GetCiphertextLengthCfb(plainTextLength, Configuration.Padding),
-                    CipherMode.ECB => aes.GetCiphertextLengthEcb(plainTextLength, Configuration.Padding),
+            using var aes = _aesFactory.Create(Configuration);
 
-                    // Suitable for UnreachableException Net 7 and above
-                    _ => throw new InvalidOperationException($"Unexpected cipher mode '{Configuration.Mode}' for the AES algorithm."),
-                };
-            }
+            // AES cannot be created for modes other than those listed below
+            return Configuration.Mode switch
+            {
+                CipherMode.CBC => aes.GetCiphertextLengthCbc(plainTextLength, Configuration.Padding),
+                CipherMode.CFB => aes.GetCiphertextLengthCfb(plainTextLength, Configuration.Padding),
+                CipherMode.ECB => aes.GetCiphertextLengthEcb(plainTextLength, Configuration.Padding),
+
+                // Suitable for UnreachableException Net 7 and above
+                _ => throw new InvalidOperationException($"Unexpected cipher mode '{Configuration.Mode}' for the AES algorithm."),
+            };
         }
 #endif
 
         /// <inheritdoc />
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0079:Remove unnecessary suppression", Justification = "Silence Code Analysis")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "Code readability")]
         public byte[] Encrypt(byte[] plainText)
         {
             _ = plainText.WhenNotNull(nameof(plainText));
@@ -70,10 +71,9 @@ namespace AllOverIt.Cryptography.AES
                 {
                     var encryptor = aes.CreateEncryptor();
 
-                    using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
-                    {
-                        cryptoStream.Write(plainText, 0, plainText.Length);
-                    }
+                    using var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
+
+                    cryptoStream.Write(plainText, 0, plainText.Length);
                 }
 
                 return memoryStream.ToArray();
@@ -81,6 +81,8 @@ namespace AllOverIt.Cryptography.AES
         }
 
         /// <inheritdoc />
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0079:Remove unnecessary suppression", Justification = "Silence Code Analysis")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "Code readability")]
         public byte[] Decrypt(byte[] cipherText)
         {
             _ = cipherText.WhenNotNullOrEmpty(nameof(cipherText));
@@ -92,10 +94,9 @@ namespace AllOverIt.Cryptography.AES
                 {
                     var decryptor = aes.CreateDecryptor();
 
-                    using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
-                    {
-                        cryptoStream.Write(cipherText, 0, cipherText.Length);
-                    }
+                    using var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write);
+
+                    cryptoStream.Write(cipherText, 0, cipherText.Length);
                 }
 
                 return memoryStream.ToArray();
@@ -103,6 +104,8 @@ namespace AllOverIt.Cryptography.AES
         }
 
         /// <inheritdoc />
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0079:Remove unnecessary suppression", Justification = "Silence Code Analysis")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "Code readability")]
         public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
             _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
@@ -113,14 +116,15 @@ namespace AllOverIt.Cryptography.AES
             {
                 var encryptor = aes.CreateEncryptor();
 
-                using (var cryptoStream = new CryptoStream(cipherTextStream, encryptor, CryptoStreamMode.Write, true))
-                {
-                    plainTextStream.CopyTo(cryptoStream);
-                }
+                using var cryptoStream = new CryptoStream(cipherTextStream, encryptor, CryptoStreamMode.Write, true);
+
+                plainTextStream.CopyTo(cryptoStream);
             }
         }
 
         /// <inheritdoc />
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0079:Remove unnecessary suppression", Justification = "Silence Code Analysis")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "Code readability")]
         public void Decrypt(Stream cipherTextStream, Stream plainTextStream)
         {
             _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
@@ -131,10 +135,9 @@ namespace AllOverIt.Cryptography.AES
             {
                 var decryptor = aes.CreateDecryptor();
 
-                using (var cryptoStream = new CryptoStream(cipherTextStream, decryptor, CryptoStreamMode.Read, true))
-                {
-                    cryptoStream.CopyTo(plainTextStream);
-                }
+                using var cryptoStream = new CryptoStream(cipherTextStream, decryptor, CryptoStreamMode.Read, true);
+
+                cryptoStream.CopyTo(plainTextStream);
             }
         }
     }

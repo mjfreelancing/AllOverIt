@@ -79,12 +79,11 @@ namespace AllOverIt.Cryptography.RSA
 
             if (!_maxInputLength.HasValue)
             {
-                using (var rsa = _rsaFactory.Create())
-                {
-                    rsa.ImportRSAPublicKey(Configuration.Keys.PublicKey, out _);
+                using var rsa = _rsaFactory.Create();
 
-                    _maxInputLength = RsaUtils.GetMaxInputLength(rsa.KeySize, Configuration.Padding);
-                }
+                rsa.ImportRSAPublicKey(Configuration.Keys.PublicKey, out _);
+
+                _maxInputLength = RsaUtils.GetMaxInputLength(rsa.KeySize, Configuration.Padding);
             }
 
             return _maxInputLength.Value;
@@ -97,12 +96,11 @@ namespace AllOverIt.Cryptography.RSA
 
             Throw<RsaException>.WhenNull(Configuration.Keys.PublicKey, "An RSA public key has not been configured.");
 
-            using (var rsa = _rsaFactory.Create())
-            {
-                rsa.ImportRSAPublicKey(Configuration.Keys.PublicKey, out _);
+            using var rsa = _rsaFactory.Create();
 
-                return rsa.Encrypt(plainText, Configuration.Padding);
-            }
+            rsa.ImportRSAPublicKey(Configuration.Keys.PublicKey, out _);
+
+            return rsa.Encrypt(plainText, Configuration.Padding);
         }
 
         /// <inheritdoc />
@@ -112,12 +110,11 @@ namespace AllOverIt.Cryptography.RSA
 
             Throw<RsaException>.WhenNull(Configuration.Keys.PrivateKey, "An RSA private key has not been configured.");
 
-            using (var rsa = _rsaFactory.Create())
-            {
-                rsa.ImportRSAPrivateKey(Configuration.Keys.PrivateKey, out _);
+            using var rsa = _rsaFactory.Create();
 
-                return rsa.Decrypt(cipherText, Configuration.Padding);
-            }
+            rsa.ImportRSAPrivateKey(Configuration.Keys.PrivateKey, out _);
+
+            return rsa.Decrypt(cipherText, Configuration.Padding);
         }
 
         /// <inheritdoc />

@@ -27,7 +27,7 @@ namespace AllOverIt.Cryptography.RSA
         assumption that the effort required to break RSA is about the same as the effort required to perform a brute-force search on a symmetric key.
    */
 
-    /// <summary>A container for an RSA public and provate key.</summary>
+    /// <summary>A container for an RSA public and private key.</summary>
     public sealed class RsaKeyPair
     {
         /// <summary>An RSA public key. This can be <see langword="null"/> if it is not required, such as when performing a decryption operation.</summary>
@@ -141,19 +141,18 @@ namespace AllOverIt.Cryptography.RSA
 
         private int GetKeySize()
         {
-            using (var rsa = RSAAlgorithm.Create())
-            {
-                if (PublicKey is not null)
-                {
-                    rsa.ImportRSAPublicKey(PublicKey, out _);
-                }
-                else
-                {
-                    rsa.ImportRSAPrivateKey(PrivateKey, out _);
-                }
+            using var rsa = RSAAlgorithm.Create();
 
-                return rsa.KeySize;
+            if (PublicKey is not null)
+            {
+                rsa.ImportRSAPublicKey(PublicKey, out _);
             }
+            else
+            {
+                rsa.ImportRSAPrivateKey(PrivateKey, out _);
+            }
+
+            return rsa.KeySize;
         }
 
         private static RSAAlgorithm CreateRsaFromXml(string xmlKeys)

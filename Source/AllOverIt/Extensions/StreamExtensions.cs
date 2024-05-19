@@ -13,11 +13,10 @@ namespace AllOverIt.Extensions
         {
             _ = stream.WhenNotNull(nameof(stream));
 
-            using (var reader = new BinaryReader(stream))
-            {
-                // Will read as much as the stream's length unless the end of the stream is reached
-                return reader.ReadBytes((int) stream.Length);
-            }
+            using var reader = new BinaryReader(stream);
+
+            // Will read as much as the stream's length unless the end of the stream is reached
+            return reader.ReadBytes((int) stream.Length);
         }
 
         /// <summary>Reads the content of a byte array and writes it to a stream at its' current position.</summary>
@@ -28,10 +27,9 @@ namespace AllOverIt.Extensions
             _ = stream.WhenNotNull(nameof(stream));
             _ = bytes.WhenNotNull(nameof(bytes));
 
-            using (var writer = new BinaryWriter(stream, Encoding.UTF8, true))
-            {
-                writer.Write(bytes);
-            }
+            using var writer = new BinaryWriter(stream, Encoding.UTF8, true);
+
+            writer.Write(bytes);
         }
     }
 }

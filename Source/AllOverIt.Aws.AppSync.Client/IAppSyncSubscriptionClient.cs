@@ -42,6 +42,6 @@ namespace AllOverIt.Aws.AppSync.Client
         /// on the client configuration during construction will be used.</param>
         /// <returns>A subscription registration. The subscription will be closed when this registration is disposed of.</returns>
         Task<IAppSyncSubscriptionRegistration> SubscribeAsync<TResponse>(SubscriptionQuery query,
-            Action<GraphqlSubscriptionResponse<TResponse>> responseAction, IAppSyncAuthorization? authorization = null);
+            Action<GraphqlSubscriptionResponse<TResponse>> responseAction, IAppSyncAuthorization? authorization = default);
     }
 }

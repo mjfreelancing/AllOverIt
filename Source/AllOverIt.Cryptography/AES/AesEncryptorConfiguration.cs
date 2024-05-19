@@ -72,32 +72,29 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public void RegenerateKey()
         {
-            using (var aes = Aes.Create())
-            {
-                aes.KeySize = KeySize;          // The aes.Key will be updated if this is not the default
-                Key = aes.Key;
-            }
+            using var aes = Aes.Create();
+
+            aes.KeySize = KeySize;          // The aes.Key will be updated if this is not the default
+            Key = aes.Key;
         }
 
         /// <inheritdoc />
         public void RegenerateIV()
         {
-            using (var aes = Aes.Create())
-            {
-                IV = aes.IV;
-            }
+            using var aes = Aes.Create();
+
+            IV = aes.IV;
         }
 
         /// <inheritdoc />
         [MemberNotNull(nameof(Key), nameof(IV))]
         public void RegenerateKeyAndIV()
         {
-            using (var aes = Aes.Create())
-            {
-                aes.KeySize = KeySize;          // The aes.Key will be updated if this is not the default
-                Key = aes.Key;
-                IV = aes.IV;
-            }
+            using var aes = Aes.Create();
+
+            aes.KeySize = KeySize;          // The aes.Key will be updated if this is not the default
+            Key = aes.Key;
+            IV = aes.IV;
         }
     }
 }

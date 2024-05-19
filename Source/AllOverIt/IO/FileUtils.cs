@@ -113,14 +113,13 @@ namespace AllOverIt.IO
             _ = stream.WhenNotNull(nameof(stream));
             _ = fileName.WhenNotNullOrEmpty(nameof(fileName));
 
-            using (var fileStream = File.Create(fileName))
-            {
-                await stream.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
+            using var fileStream = File.Create(fileName);
 
-                if (!leaveOpen)
-                {
-                    stream.Dispose();
-                }
+            await stream.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
+
+            if (!leaveOpen)
+            {
+                stream.Dispose();
             }
         }
     }

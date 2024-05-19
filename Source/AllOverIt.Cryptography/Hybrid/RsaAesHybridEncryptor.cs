@@ -91,15 +91,12 @@ namespace AllOverIt.Cryptography.Hybrid
         {
             _ = plainText.WhenNotNull(nameof(plainText));
 
-            using (var cipherTextStream = new MemoryStream())
-            {
-                using (var plainTextStream = new MemoryStream(plainText))
-                {
-                    Encrypt(plainTextStream, cipherTextStream);
+            using var cipherTextStream = new MemoryStream();
+            using var plainTextStream = new MemoryStream(plainText);
 
-                    return cipherTextStream.ToArray();
-                }
-            }
+            Encrypt(plainTextStream, cipherTextStream);
+
+            return cipherTextStream.ToArray();
         }
 
         /// <summary>
@@ -119,15 +116,12 @@ namespace AllOverIt.Cryptography.Hybrid
         {
             _ = cipherText.WhenNotNull(nameof(cipherText));
 
-            using (var cipherTextStream = new MemoryStream(cipherText))
-            {
-                using (var plainTextStream = new MemoryStream())
-                {
-                    Decrypt(cipherTextStream, plainTextStream);
+            using var cipherTextStream = new MemoryStream(cipherText);
+            using var plainTextStream = new MemoryStream();
 
-                    return plainTextStream.ToArray();
-                }
-            }
+            Decrypt(cipherTextStream, plainTextStream);
+
+            return plainTextStream.ToArray();
         }
 
         /// <inheritdoc cref="Encrypt(byte[])"/>
@@ -227,26 +221,24 @@ namespace AllOverIt.Cryptography.Hybrid
 
         private byte[] SignHash(byte[] hash)
         {
-            using (var rsa = _rsaFactory.Create())
-            {
-                var rsaPrivateKey = _signingConfiguration.Keys.PrivateKey;
+            using var rsa = _rsaFactory.Create();
 
-                rsa.ImportRSAPrivateKey(rsaPrivateKey, out _);
+            var rsaPrivateKey = _signingConfiguration.Keys.PrivateKey;
 
-                return rsa.SignHash(hash, _signingConfiguration.HashAlgorithmName, _signingConfiguration.Padding);
-            }
+            rsa.ImportRSAPrivateKey(rsaPrivateKey, out _);
+
+            return rsa.SignHash(hash, _signingConfiguration.HashAlgorithmName, _signingConfiguration.Padding);
         }
 
         private void VerifyHashSignature(byte[] plainTextHash, byte[] signature)
         {
-            using (var rsa = _rsaFactory.Create())
-            {
-                rsa.ImportRSAPublicKey(_signingConfiguration.Keys.PublicKey, out _);
+            using var rsa = _rsaFactory.Create();
 
-                var isValid = rsa.VerifyHash(plainTextHash, signature, _signingConfiguration.HashAlgorithmName, _signingConfiguration.Padding);
+            rsa.ImportRSAPublicKey(_signingConfiguration.Keys.PublicKey, out _);
 
-                Throw<RsaAesHybridException>.WhenNot(isValid, "The digital signature is invalid.");
-            }
+            var isValid = rsa.VerifyHash(plainTextHash, signature, _signingConfiguration.HashAlgorithmName, _signingConfiguration.Padding);
+
+            Throw<RsaAesHybridException>.WhenNot(isValid, "The digital signature is invalid.");
         }
 
         private static byte[] ReadFromStream(Stream stream, int length)

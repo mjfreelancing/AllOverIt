@@ -43,12 +43,12 @@ namespace AllOverIt.Cryptography.Extensions
             _ = encryptor.WhenNotNull(nameof(encryptor));
             _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
 
-            using (var cipherTextStream = new MemoryStream())
-            {
-                encryptor.Encrypt(plainTextStream, cipherTextStream);
+            using var cipherTextStream = new MemoryStream();
 
-                return cipherTextStream.ToArray();
-            }
+            encryptor.Encrypt(plainTextStream, cipherTextStream);
+
+            return cipherTextStream.ToArray();
+
         }
 
         /// <summary>Encrypts a source stream containing the 'plain text' data to a base64 encoded string.</summary>
@@ -93,10 +93,9 @@ namespace AllOverIt.Cryptography.Extensions
             _ = plainTextBytes.WhenNotNull(nameof(plainTextBytes));
             _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
 
-            using (var plainTextStream = new MemoryStream(plainTextBytes))
-            {
-                encryptor.Encrypt(plainTextStream, cipherTextStream);
-            }
+            using var plainTextStream = new MemoryStream(plainTextBytes);
+
+            encryptor.Encrypt(plainTextStream, cipherTextStream);
         }
 
         #endregion
@@ -183,7 +182,7 @@ namespace AllOverIt.Cryptography.Extensions
 
         #region Decrypt from stream to ...
 
-        /// <summary>Dencrypts a source stream containing the 'cipher text' data to a byte array.</summary>
+        /// <summary>Decrypts a source stream containing the 'cipher text' data to a byte array.</summary>
         /// <param name="encryptor">The encryptor instance.</param>
         /// <param name="cipherTextStream">The source stream containing the 'cipher text' data to decrypt.</param>
         /// <returns>A byte array containing the 'plain text' content.</returns>
@@ -192,12 +191,11 @@ namespace AllOverIt.Cryptography.Extensions
             _ = encryptor.WhenNotNull(nameof(encryptor));
             _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
 
-            using (var plainTextStream = new MemoryStream())
-            {
-                encryptor.Decrypt(cipherTextStream, plainTextStream);
+            using var plainTextStream = new MemoryStream();
 
-                return plainTextStream.ToArray();
-            }
+            encryptor.Decrypt(cipherTextStream, plainTextStream);
+
+            return plainTextStream.ToArray();
         }
 
         /// <summary>Decrypts a source stream containing the 'cipher text' data to a base64 encoded string.</summary>
@@ -270,10 +268,9 @@ namespace AllOverIt.Cryptography.Extensions
             _ = cipherTextBytes.WhenNotNull(nameof(cipherTextBytes));
             _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
 
-            using (var cipherTextStream = new MemoryStream(cipherTextBytes))
-            {
-                encryptor.Decrypt(cipherTextStream, plainTextStream);
-            }
+            using var cipherTextStream = new MemoryStream(cipherTextBytes);
+
+            encryptor.Decrypt(cipherTextStream, plainTextStream);
         }
 
         #endregion

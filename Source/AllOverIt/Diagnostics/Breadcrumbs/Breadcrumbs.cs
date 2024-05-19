@@ -86,12 +86,11 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             {
                 lock (_syncRoot)
                 {
-                    using (var iterator = _breadcrumbs.GetEnumerator())
+                    using var iterator = _breadcrumbs.GetEnumerator();
+
+                    while (iterator.MoveNext())
                     {
-                        while (iterator.MoveNext())
-                        {
-                            yield return iterator.Current.Value;
-                        }
+                        yield return iterator.Current.Value;
                     }
                 }
             }

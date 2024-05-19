@@ -115,13 +115,10 @@ namespace AllOverIt.Process
                 // Cater for an explicit timeout for the scenario where the provided cancellationToken does not have an associated timeout (via a CancellationTokenSource)
                 if (milliseconds != 0)        // -1 means indefinite
                 {
-                    using (var cts = new CancellationTokenSource(milliseconds))
-                    {
-                        using (var linked = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, cancellationToken))
-                        {
-                            await WaitForProcessAsync(linked.Token).ConfigureAwait(false);
-                        }
-                    }
+                    using var cts = new CancellationTokenSource(milliseconds);
+                    using var linked = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, cancellationToken);
+
+                    await WaitForProcessAsync(linked.Token).ConfigureAwait(false);
                 }
                 else
                 {
