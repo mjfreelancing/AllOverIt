@@ -1,13 +1,41 @@
 ﻿using AllOverIt.Fixture.Exceptions;
+using AllOverIt.Fixture.Extensions;
+using AllOverIt.Patterns.Enumeration;
 using AutoFixture;
 using FluentAssertions;
 
 namespace AllOverIt.Fixture
 {
+    public sealed class EnrichedEnumCustomization<TEnrichedEnum> : ICustomization where TEnrichedEnum : EnrichedEnum<TEnrichedEnum>
+    {
+        private readonly Random _random;
+
+        public EnrichedEnumCustomization()
+        {
+#if NET8_0_OR_GREATER
+            _random = Random.Shared;
+#else
+            _random = new Random((int) DateTime.Now.Ticks);
+#endif
+        }
+
+        public void Customize(IFixture fixture)
+        {
+            fixture.Customize<TEnrichedEnum>(composer => composer.FromFactory(() =>
+            {
+                // Using Names rather than Values just in case someone is using the same value across different names (unlikely, but...)
+                var allNames = EnrichedEnum<TEnrichedEnum>.GetAllNames().ToArray();
+                var index = _random.Next(allNames.Length);
+
+                return EnrichedEnum<TEnrichedEnum>.From(allNames[index]);
+            }));
+        }
+    }
+
     /// <summary>A base class for all fixtures, providing access to a variety of useful methods that help generate automated input values.</summary>
     public abstract class FixtureBase
     {
-        private readonly Random _random = new((int) DateTime.Now.Ticks);
+        private readonly Random _random;
 
         /// <summary> Provides access to the AutoFixture.Fixture being used.</summary>
         protected internal IFixture Fixture { get; }
@@ -22,12 +50,15 @@ namespace AllOverIt.Fixture
         {
             Fixture = fixture;
 
-            // Note: cannot used <double> for the factory as it will result in infinite recursion
-            var rnd = new Random((int) DateTime.Now.Ticks);
+#if NET8_0_OR_GREATER
+            _random = Random.Shared;
+#else
+            _random = new Random((int) DateTime.Now.Ticks);
+#endif
 
-            Fixture.Customize<float>(composer => composer.FromFactory<int>(value => value * (0.5f + (float) rnd.NextDouble())));
-            Fixture.Customize<double>(composer => composer.FromFactory<int>(value => value * (0.5d + rnd.NextDouble())));
-            Fixture.Customize<decimal>(composer => composer.FromFactory<int>(value => value * (0.5m + (decimal) rnd.NextDouble())));
+            Fixture.Customize<float>(composer => composer.FromFactory<int>(value => value * (0.5f + (float) _random.NextDouble())));
+            Fixture.Customize<double>(composer => composer.FromFactory<int>(value => value * (0.5d + _random.NextDouble())));
+            Fixture.Customize<decimal>(composer => composer.FromFactory<int>(value => value * (0.5m + (decimal) _random.NextDouble())));
         }
 
         /// <summary>Constructor that supports customization of AutoFixture's Fixture.</summary>
@@ -38,11 +69,20 @@ namespace AllOverIt.Fixture
             Customize(customization);
         }
 
-        /// <summary>Constructor that supports customization of AutoFixture's Fixture.</summary>
+        /// <summary>Provides support for customization of AutoFixture's Fixture.</summary>
         /// <param name="customization">The customization instance.</param>
         public void Customize(ICustomization customization)
         {
             Fixture.Customize(customization);
+        }
+
+        /// <summary>Cusomtizes AutoFixture's Fixture so that is can create <see cref="EnrichedEnum{TEnum}"/> instances.</summary>
+        /// <typeparam name="TEnrichedEnum">The <see cref="EnrichedEnum{TEnum}"/> type.</typeparam>
+        public void Customize<TEnrichedEnum>() where TEnrichedEnum : EnrichedEnum<TEnrichedEnum>
+        {
+            var customization = new EnrichedEnumCustomization<TEnrichedEnum>();
+
+            Customize(customization);
         }
 
         /// <summary>Provides the ability to invoke an action so it can be chained with assertions provided by FluentAssertions.</summary>
@@ -61,6 +101,38 @@ namespace AllOverIt.Fixture
 
             return action;
         }
+
+
+        protected static void AssertThrowsWhenStringNullOrEmptyOrWhitespace(Action<string> action, string name, string errorMessage = null)
+        {
+            Invoking(() =>
+            {
+                action.Invoke(null);
+            })
+                .Should()
+                .Throw<ArgumentNullException>("the argument should not be null")
+                .WithNamedMessageWhenNull(name, errorMessage);
+
+            Invoking(() =>
+            {
+                action.Invoke(string.Empty);
+            })
+                .Should()
+                .Throw<ArgumentException>("the argument should not be empty")
+                .WithNamedMessageWhenEmpty(name, errorMessage);
+
+            Invoking(() =>
+            {
+                action.Invoke("  ");
+            })
+               .Should()
+               .Throw<ArgumentException>("the argument should not be whitespace")
+               .WithNamedMessageWhenEmpty(name, errorMessage);
+        }
+
+
+
+
 
         /// <summary>Provides the ability to invoke an action that returns a result.</summary>
         /// <typeparam name="TResult">The result type returned by the Func.</typeparam>

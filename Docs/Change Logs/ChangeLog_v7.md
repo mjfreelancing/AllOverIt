@@ -1,3 +1,13 @@
+#  Version 7.14.0
+## 24 May 2024
+
+### AllOverIt.Fixture
+
+* Added support for customizing AutoFixture's Fixture so that is can create EnrichedEnum instances.
+
+---
+
+
 #  Version 7.13.0
 ## 16 May 2024
 
