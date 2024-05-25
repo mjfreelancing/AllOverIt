@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 
 internal sealed class DummyClassNoNamespace
@@ -69,39 +68,13 @@ namespace AllOverIt.Logging.Tests
         public class UseCallPrefix : LogCallOptionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Prefix_Null()
+            public void Should_Throw_When_Prefix_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseCallPrefix(null!);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("callPrefix");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Prefix_Empty()
-            {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseCallPrefix(string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("callPrefix");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Prefix_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseCallPrefix("   ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("callPrefix");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        LogCallOptions.UseCallPrefix(stringValue);
+                    }, "callPrefix");
             }
 
             [Fact]
@@ -131,39 +104,13 @@ namespace AllOverIt.Logging.Tests
         public class UseExceptionPrefix : LogCallOptionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Prefix_Null()
+            public void Should_Throw_When_Prefix_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseExceptionPrefix(null!);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("exceptionPrefix");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Prefix_Empty()
-            {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseExceptionPrefix(string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("exceptionPrefix");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Prefix_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseExceptionPrefix("   ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("exceptionPrefix");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        LogCallOptions.UseExceptionPrefix(stringValue);
+                    }, "exceptionPrefix");
             }
 
             [Fact]
@@ -181,39 +128,13 @@ namespace AllOverIt.Logging.Tests
         public class UseMethodNameProperty : LogCallOptionsFixture
         {
             [Fact]
-            public void Should_Throw_When_MethodName_Null()
+            public void Should_Throw_When_MethodName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseMethodNameProperty(null!);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("methodNameProperty");
-            }
-
-            [Fact]
-            public void Should_Throw_When_MethodName_Empty()
-            {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseMethodNameProperty(string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("methodNameProperty");
-            }
-
-            [Fact]
-            public void Should_Throw_When_MethodName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseMethodNameProperty("   ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("methodNameProperty");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        LogCallOptions.UseMethodNameProperty(stringValue);
+                    }, "methodNameProperty");
             }
 
             [Fact]
@@ -243,39 +164,13 @@ namespace AllOverIt.Logging.Tests
         public class UseExceptionMessageProperty : LogCallOptionsFixture
         {
             [Fact]
-            public void Should_Throw_When_ExceptionMessage_Null()
+            public void Should_Throw_When_ExceptionMessage_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseExceptionMessageProperty(null!);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("exceptionMessageProperty");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ExceptionMessage_Empty()
-            {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseExceptionMessageProperty(string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("exceptionMessageProperty");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ExceptionMessage_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseExceptionMessageProperty("   ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("exceptionMessageProperty");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        LogCallOptions.UseExceptionMessageProperty(stringValue);
+                    }, "exceptionMessageProperty");
             }
 
             [Fact]
@@ -293,39 +188,13 @@ namespace AllOverIt.Logging.Tests
         public class UseArgumentsPrefix : LogCallOptionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Prefix_Null()
+            public void Should_Throw_When_Prefix_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseArgumentsPrefix(null!);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("argumentsPrefix");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Prefix_Empty()
-            {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseArgumentsPrefix(string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("argumentsPrefix");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Prefix_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseArgumentsPrefix("   ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("argumentsPrefix");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        LogCallOptions.UseArgumentsPrefix(stringValue);
+                    }, "argumentsPrefix");
             }
 
             [Fact]
@@ -345,39 +214,13 @@ namespace AllOverIt.Logging.Tests
         public class UseArgumentsDestructureProperty : LogCallOptionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Arguments_Null()
+            public void Should_Throw_When_Arguments_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseArgumentsDestructureProperty(null!);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("argumentsProperty");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Arguments_Empty()
-            {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseArgumentsDestructureProperty(string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("argumentsProperty");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Arguments_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    LogCallOptions.UseArgumentsDestructureProperty("   ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("argumentsProperty");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        LogCallOptions.UseArgumentsDestructureProperty(stringValue);
+                    }, "argumentsProperty");
             }
 
             [Fact]

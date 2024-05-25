@@ -105,30 +105,11 @@ namespace AllOverIt.Evaluator.Tests
         public class CreateExpression_Variable : FormulaExpressionFactoryFixture
         {
             [Fact]
-            public void Should_Throw_When_Variable_Null()
+            public void Should_Throw_When_Variable_Null_Empty_Whitespace()
             {
-                Invoking(() => FormulaExpressionFactory.CreateExpression(null, this.CreateStub<IVariableRegistry>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("variableName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Variable_Empty()
-            {
-                Invoking(() => FormulaExpressionFactory.CreateExpression(string.Empty, this.CreateStub<IVariableRegistry>()))
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("variableName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Variable_Whitespace()
-            {
-                Invoking(() => FormulaExpressionFactory.CreateExpression(" ", this.CreateStub<IVariableRegistry>()))
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("variableName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => FormulaExpressionFactory.CreateExpression(stringValue, this.CreateStub<IVariableRegistry>()),
+                    "variableName");
             }
 
             [Fact]

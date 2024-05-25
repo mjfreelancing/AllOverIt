@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pipes.Anonymous;
 using FluentAssertions;
 using System.IO.Pipes;
@@ -12,47 +11,15 @@ namespace AllOverIt.Pipes.Tests.Anonymous
         public class Start_Handle : AnonymousPipeClientFixture
         {
             [Fact]
-            public void Should_Throw_When_Client_Handle_Null()
+            public void Should_Throw_When_Client_Handle_Null_Empty_Whitespace()
             {
                 using (var client = new AnonymousPipeClient())
                 {
-                    Invoking(() =>
-                    {
-                        client.Start(null);
-                    })
-                   .Should()
-                   .Throw<ArgumentNullException>()
-                   .WithNamedMessageWhenNull("clientHandle");
-                }
-            }
-
-            [Fact]
-            public void Should_Throw_When_Client_Handle_Empty()
-            {
-                using (var client = new AnonymousPipeClient())
-                {
-                    Invoking(() =>
-                    {
-                        client.Start(string.Empty);
-                    })
-                   .Should()
-                   .Throw<ArgumentException>()
-                   .WithNamedMessageWhenEmpty("clientHandle");
-                }
-            }
-
-            [Fact]
-            public void Should_Throw_When_Client_Handle_Whitespace()
-            {
-                using (var client = new AnonymousPipeClient())
-                {
-                    Invoking(() =>
-                    {
-                        client.Start("  ");
-                    })
-                   .Should()
-                   .Throw<ArgumentException>()
-                   .WithNamedMessageWhenEmpty("clientHandle");
+                    AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                        stringValue =>
+                        {
+                            client.Start(stringValue);
+                        }, "clientHandle");
                 }
             }
 
@@ -83,47 +50,15 @@ namespace AllOverIt.Pipes.Tests.Anonymous
         public class Start_Direction_Handle : AnonymousPipeClientFixture
         {
             [Fact]
-            public void Should_Throw_When_Client_Handle_Null()
+            public void Should_Throw_When_Client_Handle_Null_Empty_Whitespace()
             {
                 using (var client = new AnonymousPipeClient())
                 {
-                    Invoking(() =>
-                    {
-                        client.Start(Create<PipeDirection>(), null);
-                    })
-                   .Should()
-                   .Throw<ArgumentNullException>()
-                   .WithNamedMessageWhenNull("clientHandle");
-                }
-            }
-
-            [Fact]
-            public void Should_Throw_When_Client_Handle_Empty()
-            {
-                using (var client = new AnonymousPipeClient())
-                {
-                    Invoking(() =>
-                    {
-                        client.Start(Create<PipeDirection>(), string.Empty);
-                    })
-                   .Should()
-                   .Throw<ArgumentException>()
-                   .WithNamedMessageWhenEmpty("clientHandle");
-                }
-            }
-
-            [Fact]
-            public void Should_Throw_When_Client_Handle_Whitespace()
-            {
-                using (var client = new AnonymousPipeClient())
-                {
-                    Invoking(() =>
-                    {
-                        client.Start(Create<PipeDirection>(), "  ");
-                    })
-                   .Should()
-                   .Throw<ArgumentException>()
-                   .WithNamedMessageWhenEmpty("clientHandle");
+                    AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                        stringValue =>
+                        {
+                            client.Start(Create<PipeDirection>(), stringValue);
+                        }, "clientHandle");
                 }
             }
 

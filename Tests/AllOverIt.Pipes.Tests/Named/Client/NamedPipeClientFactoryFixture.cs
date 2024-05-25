@@ -36,39 +36,13 @@ namespace AllOverIt.Pipes.Tests.Named.Client
         public class CreateNamedPipeClient_PipeName : NamedPipeClientFactoryFixture
         {
             [Fact]
-            public void Should_Throw_When_PipeName_Null()
+            public void Should_Throw_When_PipeName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _factory.CreateNamedPipeClient(null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("pipeName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PipeName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _factory.CreateNamedPipeClient(string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("pipeName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PipeName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _factory.CreateNamedPipeClient("  ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("pipeName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _factory.CreateNamedPipeClient(stringValue);
+                    }, "pipeName");
             }
 
             [Fact]
@@ -95,75 +69,23 @@ namespace AllOverIt.Pipes.Tests.Named.Client
         public class CreateNamedPipeClient_PipeName_ServerName : NamedPipeClientFactoryFixture
         {
             [Fact]
-            public void Should_Throw_When_PipeName_Null()
+            public void Should_Throw_When_PipeName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _factory.CreateNamedPipeClient(null, Create<string>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("pipeName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _factory.CreateNamedPipeClient(stringValue, Create<string>());
+                    }, "pipeName");
             }
 
             [Fact]
-            public void Should_Throw_When_PipeName_Empty()
+            public void Should_Throw_When_ServerName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _factory.CreateNamedPipeClient(string.Empty, Create<string>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("pipeName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PipeName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _factory.CreateNamedPipeClient("  ", Create<string>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("pipeName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ServerName_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = _factory.CreateNamedPipeClient(Create<string>(), null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("serverName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ServerName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _factory.CreateNamedPipeClient(Create<string>(), string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("serverName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ServerName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _factory.CreateNamedPipeClient(Create<string>(), "  ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("serverName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _factory.CreateNamedPipeClient(Create<string>(), stringValue);
+                    }, "serverName");
             }
 
             [Fact]

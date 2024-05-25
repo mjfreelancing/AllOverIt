@@ -76,7 +76,7 @@ namespace AllOverIt.Fixture
             Fixture.Customize(customization);
         }
 
-        /// <summary>Cusomtizes AutoFixture's Fixture so that is can create <see cref="EnrichedEnum{TEnum}"/> instances.</summary>
+        /// <summary>Customizes AutoFixture's Fixture so that is can create <see cref="EnrichedEnum{TEnum}"/> instances.</summary>
         /// <typeparam name="TEnrichedEnum">The <see cref="EnrichedEnum{TEnum}"/> type.</typeparam>
         public void Customize<TEnrichedEnum>() where TEnrichedEnum : EnrichedEnum<TEnrichedEnum>
         {
@@ -102,7 +102,11 @@ namespace AllOverIt.Fixture
             return action;
         }
 
-
+        /// <summary>Provides an <c>Action</c> a <see cref="string"/> value that is <see langword="null"/>, <c>String.Empty</c>, and some whitespace
+        /// for the purpose of asserting an argument will throw an <see cref="ArgumentNullException"/> or <see cref="ArgumentException"/> as expected.</summary>
+        /// <param name="action">The action to be invoked.</param>
+        /// <param name="name">The name of the argument expected to cause an <see cref="ArgumentNullException"/> or <see cref="ArgumentException"/> to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message.</param>
         protected static void AssertThrowsWhenStringNullOrEmptyOrWhitespace(Action<string> action, string name, string errorMessage = null)
         {
             Invoking(() =>
@@ -130,9 +134,38 @@ namespace AllOverIt.Fixture
                .WithNamedMessageWhenEmpty(name, errorMessage);
         }
 
+        /// <summary>Provides a <c>Func&lt;string, Task&gt;</c> a <see cref="string"/> value that is <see langword="null"/>, <c>String.Empty</c>, and some whitespace
+        /// for the purpose of asserting an argument will throw an <see cref="ArgumentNullException"/> or <see cref="ArgumentException"/> as expected.</summary>
+        /// <param name="action">The action to be invoked.</param>
+        /// <param name="name">The name of the argument expected to cause an <see cref="ArgumentNullException"/> or <see cref="ArgumentException"/> to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message.</param>
+        /// <returns>A <see cref="Task"/> that completes when awaited.</returns>
+        protected static async Task AssertThrowsWhenStringNullOrEmptyOrWhitespace(Func<string, Task> action, string name, string errorMessage = null)
+        {
+            await Invoking(async () =>
+            {
+                await action.Invoke(null);
+            })
+                .Should()
+                .ThrowAsync<ArgumentNullException>("the argument should not be null")
+                .WithNamedMessageWhenNull(name, errorMessage);
 
+            await Invoking(async () =>
+            {
+                await action.Invoke(string.Empty);
+            })
+                .Should()
+                .ThrowAsync<ArgumentException>("the argument should not be empty")
+                .WithNamedMessageWhenEmpty(name, errorMessage);
 
-
+            await Invoking(async () =>
+            {
+                await action.Invoke("  ");
+            })
+               .Should()
+               .ThrowAsync<ArgumentException>("the argument should not be whitespace")
+               .WithNamedMessageWhenEmpty(name, errorMessage);
+        }
 
         /// <summary>Provides the ability to invoke an action that returns a result.</summary>
         /// <typeparam name="TResult">The result type returned by the Func.</typeparam>
