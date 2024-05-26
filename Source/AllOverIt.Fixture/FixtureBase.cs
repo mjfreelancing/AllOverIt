@@ -1,4 +1,5 @@
-﻿using AllOverIt.Fixture.Exceptions;
+﻿using AllOverIt.Fixture.Customizations;
+using AllOverIt.Fixture.Exceptions;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using AutoFixture;

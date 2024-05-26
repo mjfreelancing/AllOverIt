@@ -2,7 +2,7 @@
 using AutoFixture;
 using System.Diagnostics.CodeAnalysis;
 
-namespace AllOverIt.Fixture.Cusomizations
+namespace AllOverIt.Fixture.Customizations
 {
     /// <summary>Provides a fixture customization for creating <typeparamref name="TEnrichedEnum"/> instances.</summary>
     /// <typeparam name="TEnrichedEnum">The <see cref="EnrichedEnum{TEnum}"/> type.</typeparam>
