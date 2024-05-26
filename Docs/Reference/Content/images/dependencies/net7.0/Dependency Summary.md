@@ -61,7 +61,7 @@
 * Microsoft.Extensions.Logging v8.0.0
 * Microsoft.Extensions.Logging.Abstractions v8.0.0
 * Microsoft.Extensions.Options v8.0.0
-* System.Reactive v6.0.0
+* System.Reactive v6.0.1
 
 <br>
 
@@ -81,9 +81,9 @@
 * Amazon.CDK.Asset.KubectlV20 v2.1.2
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.3
 * Amazon.CDK.Lib v2.110.0
-* Amazon.CDK.Lib v2.142.0
+* Amazon.CDK.Lib v2.143.0
 * Amazon.JSII.Runtime v1.98.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.434
+* Cdklabs.AwsCdkAppsyncUtils v0.0.442
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -234,6 +234,8 @@
 
 ### Dependencies
 
+* AllOverIt
+* AllOverIt.Assertion
 * AutoFixture v4.18.1
 * Castle.Core v5.1.1
 * Fare v2.1.1
@@ -254,6 +256,8 @@
 
 ### Dependencies
 
+* AllOverIt
+* AllOverIt.Assertion
 * AllOverIt.Fixture
 * AutoFixture v4.18.1
 * AutoFixture.AutoFakeItEasy v4.18.1
@@ -391,7 +395,7 @@
 * AllOverIt.Assertion
 * AllOverIt.Reactive
 * AllOverIt.Serialization.Binary
-* System.Reactive v6.0.0
+* System.Reactive v6.0.1
 
 <br>
 
@@ -407,7 +411,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* System.Reactive v6.0.0
+* System.Reactive v6.0.1
 
 <br>
 
@@ -425,8 +429,8 @@
 * AllOverIt.Assertion
 * DynamicData v8.4.1
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.1
-* ReactiveUI v20.0.1
-* Splat v15.0.1
+* ReactiveUI v20.1.1
+* Splat v15.1.1
 * System.ComponentModel.Annotations v5.0.0
 * System.Text.Json v8.0.3
 
@@ -447,9 +451,9 @@
 * AllOverIt.ReactiveUI
 * DynamicData v8.4.1
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.1
-* ReactiveUI v20.0.1
-* ReactiveUI.WPF v20.0.1
-* Splat v15.0.1
+* ReactiveUI v20.1.1
+* ReactiveUI.WPF v20.1.1
+* Splat v15.1.1
 * System.ComponentModel.Annotations v5.0.0
 * System.Text.Json v8.0.3
 
@@ -515,7 +519,6 @@
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.Serialization.Json.Abstractions
-* System.Runtime.CompilerServices.Unsafe v6.0.0
 * System.Text.Encodings.Web v8.0.0
 * System.Text.Json v8.0.3
 
