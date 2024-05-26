@@ -33,39 +33,13 @@ namespace AllOverIt.Csv.Tests
         public class AddField : CsvSerializerFixture
         {
             [Fact]
-            public void Should_Throw_When_HeaderName_Null()
+            public void Should_Throw_When_HeaderName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
-                        _serializer.AddField(null, _ => null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("headerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_HeaderName_Empty()
-            {
-                Invoking(() =>
-                    {
-                        _serializer.AddField(string.Empty, _ => null);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("headerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_HeaderName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _serializer.AddField("  ", _ => null);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("headerName");
+                        _serializer.AddField(stringValue, _ => null);
+                    }, "headerName");
             }
 
             [Fact]

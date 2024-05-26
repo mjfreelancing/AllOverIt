@@ -1,10 +1,12 @@
 using AllOverIt.Fixture.Exceptions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Fixture.Tests.Dummies;
+using AllOverIt.Patterns.Enumeration;
 using AutoFixture;
 using AutoFixture.Dsl;
 using FakeItEasy;
 using FluentAssertions;
+using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Fixture.Tests
 {
@@ -362,6 +364,19 @@ namespace AllOverIt.Fixture.Tests
 
         public class Create_ : FixtureBaseFixture
         {
+            private class DummyEnrichedEnum : EnrichedEnum<DummyEnrichedEnum>
+            {
+                public static readonly DummyEnrichedEnum One = new(1);
+                public static readonly DummyEnrichedEnum Two = new(2);
+                public static readonly DummyEnrichedEnum Three = new(3);
+                public static readonly DummyEnrichedEnum Four = new(4);
+
+                private DummyEnrichedEnum(int value, [CallerMemberName] string name = null)
+                    : base(value, name)
+                {
+                }
+            }
+
             [Fact]
             public void Should_Create_String()
             {
@@ -382,6 +397,16 @@ namespace AllOverIt.Fixture.Tests
                 }
 
                 (value2 - value1).Should().NotBe(1);
+            }
+
+            [Fact]
+            public void Should_Create_Enriched_Enum()
+            {
+                Customize<DummyEnrichedEnum>();
+
+                var value = Create<DummyEnrichedEnum>();
+
+                value.Should().BeOfType<DummyEnrichedEnum>();
             }
 
             [Fact]

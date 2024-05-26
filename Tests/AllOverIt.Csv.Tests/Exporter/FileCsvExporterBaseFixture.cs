@@ -35,39 +35,12 @@ namespace AllOverIt.Csv.Tests.Exporter
         public class Constructor : FileCsvExporterBaseFixture
         {
             [Fact]
-            public void Should_Throw_When_FilePath_Null()
+            public void Should_Throw_When_FilePath_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(stringValue =>
                 {
-                    _ = new DummyFileCsvExporter(null, Create<FileMode>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("filePath");
-            }
-
-            [Fact]
-            public void Should_Throw_When_FilePath_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = new DummyFileCsvExporter(string.Empty, Create<FileMode>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("filePath");
-            }
-
-            [Fact]
-            public void Should_Throw_When_FilePath_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = new DummyFileCsvExporter("  ", Create<FileMode>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("filePath");
+                    _ = new DummyFileCsvExporter(stringValue, Create<FileMode>());
+                }, "filePath");
             }
 
             // Need a happy path test to get code coverage
@@ -86,39 +59,12 @@ namespace AllOverIt.Csv.Tests.Exporter
         public class Constructor_Configuration : FileCsvExporterBaseFixture
         {
             [Fact]
-            public void Should_Throw_When_FilePath_Null()
+            public void Should_Throw_When_FilePath_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(stringValue =>
                 {
-                    _ = new DummyFileCsvExporter(null, FileMode.Create, new BufferedCsvExporterConfiguration());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("filePath");
-            }
-
-            [Fact]
-            public void Should_Throw_When_FilePath_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = new DummyFileCsvExporter(string.Empty, FileMode.Create, new BufferedCsvExporterConfiguration());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("filePath");
-            }
-
-            [Fact]
-            public void Should_Throw_When_FilePath_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = new DummyFileCsvExporter("  ", FileMode.Create, new BufferedCsvExporterConfiguration());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("filePath");
+                    _ = new DummyFileCsvExporter(stringValue, FileMode.Create, new BufferedCsvExporterConfiguration());
+                }, "filePath");
             }
 
             [Fact]

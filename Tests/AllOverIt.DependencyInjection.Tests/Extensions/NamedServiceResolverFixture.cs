@@ -47,39 +47,12 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public class Register_Typed : Generic
             {
                 [Fact]
-                public void Should_Throw_When_Name_Null()
+                public void Should_Throw_When_Name_Null_Empty_Whitespace()
                 {
-                    Invoking(() =>
+                    AssertThrowsWhenStringNullOrEmptyOrWhitespace(stringValue =>
                     {
-                        _registration.Register<Dummy1>(null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("name");
-                }
-
-                [Fact]
-                public void Should_Throw_When_Name_Empty()
-                {
-                    Invoking(() =>
-                    {
-                        _registration.Register<Dummy1>(string.Empty);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
-                }
-
-                [Fact]
-                public void Should_Throw_When_Name_Whitespace()
-                {
-                    Invoking(() =>
-                    {
-                        _registration.Register<Dummy1>("  ");
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
+                        _registration.Register<Dummy1>(stringValue);
+                    }, "name");
                 }
 
                 [Fact]
@@ -116,39 +89,12 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public class Register_Type : Generic
             {
                 [Fact]
-                public void Should_Throw_When_Name_Null()
+                public void Should_Throw_When_Name_Null_Empty_Whitespace()
                 {
-                    Invoking(() =>
+                    AssertThrowsWhenStringNullOrEmptyOrWhitespace(stringValue =>
                     {
-                        _registration.Register(null, typeof(Dummy1));
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("name");
-                }
-
-                [Fact]
-                public void Should_Throw_When_Name_Empty()
-                {
-                    Invoking(() =>
-                    {
-                        _registration.Register(string.Empty, typeof(Dummy1));
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
-                }
-
-                [Fact]
-                public void Should_Throw_When_Name_Whitespace()
-                {
-                    Invoking(() =>
-                    {
-                        _registration.Register("  ", typeof(Dummy1));
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
+                        _registration.Register(stringValue, typeof(Dummy1));
+                    }, "name");
                 }
 
                 [Fact]
@@ -199,39 +145,12 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             public class GetRequiredNamedService : Generic
             {
                 [Fact]
-                public void Should_Throw_When_Name_Null()
+                public void Should_Throw_When_Name_Null_Empty_Whitespace()
                 {
-                    Invoking(() =>
+                    AssertThrowsWhenStringNullOrEmptyOrWhitespace(stringValue =>
                     {
-                        _ = ((INamedServiceResolver<IDummyInterface>) _serviceResolver).GetRequiredNamedService(null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("name");
-                }
-
-                [Fact]
-                public void Should_Throw_When_Name_Empty()
-                {
-                    Invoking(() =>
-                    {
-                        _ = ((INamedServiceResolver<IDummyInterface>) _serviceResolver).GetRequiredNamedService(string.Empty);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
-                }
-
-                [Fact]
-                public void Should_Throw_When_Name_Whitespace()
-                {
-                    Invoking(() =>
-                    {
-                        _ = ((INamedServiceResolver<IDummyInterface>) _serviceResolver).GetRequiredNamedService("  ");
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
+                        _ = ((INamedServiceResolver<IDummyInterface>) _serviceResolver).GetRequiredNamedService(stringValue);
+                    }, "name");
                 }
 
                 [Fact]
@@ -311,39 +230,12 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 }
 
                 [Fact]
-                public void Should_Throw_When_Name_Null()
+                public void Should_Throw_When_Name_Null_Empty_Whitespace()
                 {
-                    Invoking(() =>
+                    AssertThrowsWhenStringNullOrEmptyOrWhitespace(stringValue =>
                     {
-                        _ = ((INamedServiceResolver) _resolver).GetRequiredNamedService<IDummyInterface>(null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("name");
-                }
-
-                [Fact]
-                public void Should_Throw_When_Name_Empty()
-                {
-                    Invoking(() =>
-                    {
-                        _ = ((INamedServiceResolver) _resolver).GetRequiredNamedService<IDummyInterface>(string.Empty);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
-                }
-
-                [Fact]
-                public void Should_Throw_When_Name_Whitespace()
-                {
-                    Invoking(() =>
-                    {
-                        _ = ((INamedServiceResolver) _resolver).GetRequiredNamedService<IDummyInterface>("  ");
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
+                        _ = ((INamedServiceResolver) _resolver).GetRequiredNamedService<IDummyInterface>(stringValue);
+                    }, "name");
                 }
 
                 [Fact]

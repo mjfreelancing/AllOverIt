@@ -355,45 +355,15 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ParameterName_Null()
+            public void Should_Throw_When_ParameterName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
                         var propInfo = GetPropertyInfo<DummyClass>(nameof(DummyClass.Prop5));
 
-                        PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("parameterName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ParameterName_Empty()
-            {
-                Invoking(() =>
-                    {
-                        var propInfo = GetPropertyInfo<DummyClass>(nameof(DummyClass.Prop5));
-
-                        PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, string.Empty);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("parameterName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ParameterName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        var propInfo = GetPropertyInfo<DummyClass>(nameof(DummyClass.Prop5));
-
-                        PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, "  ");
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("parameterName");
+                        PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, stringValue);
+                    }, "parameterName");
             }
 
             [Fact]

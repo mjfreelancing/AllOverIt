@@ -80,39 +80,13 @@ namespace AllOverIt.Mapping.Tests
         public class ExcludeWhen : PropertyMatcherOptionsFixture
         {
             [Fact]
-            public void Should_Throw_When_SourceName_Null()
+            public void Should_Throw_When_SourceName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _options.ExcludeWhen(null, _ => Create<bool>());
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _options.ExcludeWhen(string.Empty, _ => Create<bool>());
-                })
-                   .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _options.ExcludeWhen("  ", _ => Create<bool>());
-                })
-                   .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _options.ExcludeWhen(stringValue, _ => Create<bool>());
+                    }, "sourceName");
             }
 
             [Fact]
@@ -188,75 +162,23 @@ namespace AllOverIt.Mapping.Tests
         public class WithAlias : PropertyMatcherOptionsFixture
         {
             [Fact]
-            public void Should_Throw_When_SourceName_Null()
+            public void Should_Throw_When_SourceName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _options.WithAlias(null, Create<string>());
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("sourceName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _options.WithAlias(stringValue, Create<string>());
+                    }, "sourceName");
             }
 
             [Fact]
-            public void Should_Throw_When_SourceName_Empty()
+            public void Should_Throw_When_TargetName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _options.WithAlias(string.Empty, Create<string>());
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _options.WithAlias("  ", Create<string>());
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_TargetName_Null()
-            {
-                Invoking(() =>
-                {
-                    _options.WithAlias(Create<string>(), null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("targetName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_TargetName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _options.WithAlias(Create<string>(), string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("targetName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_TargetName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _options.WithAlias(Create<string>(), "  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("targetName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _options.WithAlias(Create<string>(), stringValue);
+                    }, "targetName");
             }
 
             [Fact]
@@ -295,39 +217,13 @@ namespace AllOverIt.Mapping.Tests
             }
 
             [Fact]
-            public void Should_Throw_When_SourceName_Null()
+            public void Should_Throw_When_SourceName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _options.UseWhenNull(null, new { });
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _options.UseWhenNull(string.Empty, new { });
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _options.UseWhenNull("  ", new { });
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _options.UseWhenNull(stringValue, new { });
+                    }, "sourceName");
             }
 
             [Fact]
@@ -385,39 +281,13 @@ namespace AllOverIt.Mapping.Tests
             }
 
             [Fact]
-            public void Should_Throw_When_SourceName_Null()
+            public void Should_Throw_When_SourceName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _options.WithConversion(null, (mapper, value) => value);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _options.WithConversion(string.Empty, (mapper, value) => value);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _options.WithConversion("  ", (mapper, value) => value);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _options.WithConversion(stringValue, (mapper, value) => value);
+                    }, "sourceName");
             }
 
             [Fact]
@@ -460,39 +330,13 @@ namespace AllOverIt.Mapping.Tests
         public class IsExcluded : PropertyMatcherOptionsFixture
         {
             [Fact]
-            public void Should_Throw_When_SourceName_Null()
+            public void Should_Throw_When_SourceName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _options.IsExcluded(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _options.IsExcluded(string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _options.IsExcluded("  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _options.IsExcluded(stringValue);
+                    }, "sourceName");
             }
 
             [Fact]
@@ -525,39 +369,13 @@ namespace AllOverIt.Mapping.Tests
         public class GetAliasName : PropertyMatcherOptionsFixture
         {
             [Fact]
-            public void Should_Throw_When_SourceName_Null()
+            public void Should_Throw_When_SourceName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _options.GetAliasName(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _options.GetAliasName(string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _options.GetAliasName("  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _options.GetAliasName(stringValue);
+                    }, "sourceName");
             }
 
             [Fact]
@@ -600,46 +418,16 @@ namespace AllOverIt.Mapping.Tests
             }
 
             [Fact]
-            public void Should_Throw_When_SourceName_Null()
+            public void Should_Throw_When_SourceName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var mapper = new ObjectMapper();
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var mapper = new ObjectMapper();
 
-                    _options.GetConvertedValue(mapper, null, Create<string>());
+                        _options.GetConvertedValue(mapper, stringValue, Create<string>());
 
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var mapper = new ObjectMapper();
-
-                    _options.GetConvertedValue(mapper, string.Empty, Create<string>());
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_SourceName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    var mapper = new ObjectMapper();
-
-                    _options.GetConvertedValue(mapper, "  ", Create<string>());
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("sourceName");
+                    }, "sourceName");
             }
 
             [Fact]

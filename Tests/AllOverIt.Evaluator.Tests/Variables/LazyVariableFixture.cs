@@ -24,30 +24,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
         public class Constructor : LazyVariableFixture
         {
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() => _variable = new LazyVariable(null, () => _value, Create<bool>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() => _variable = new LazyVariable(string.Empty, () => _value, Create<bool>()))
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() => _variable = new LazyVariable(" ", () => _value, Create<bool>()))
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => _variable = new LazyVariable(stringValue, () => _value, Create<bool>()),
+                    "name");
             }
 
             [Fact]

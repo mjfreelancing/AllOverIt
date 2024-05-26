@@ -10,57 +10,19 @@ namespace AllOverIt.Tests.IO
         public class PathIsSubFolder : FileUtilsFixture
         {
             [Fact]
-            public void Should_Throw_When_Parent_Path_Null()
+            public void Should_Throw_When_Parent_Path_Null_Empty_Whitespace()
             {
-                Invoking(() => FileUtils.PathIsSubFolder(null, Create<string>()))
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("parentPath");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => FileUtils.PathIsSubFolder(stringValue, Create<string>()),
+                    "parentPath");
             }
 
             [Fact]
-            public void Should_Throw_When_Parent_Path_Empty()
+            public void Should_Throw_When_Child_Path_Offset_Null_Empty_Whitespace()
             {
-                Invoking(() => FileUtils.PathIsSubFolder(string.Empty, Create<string>()))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("parentPath");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Parent_Path_Whitespace()
-            {
-                Invoking(() => FileUtils.PathIsSubFolder(" ", Create<string>()))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("parentPath");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Child_Path_Offset_Null()
-            {
-                Invoking(() => FileUtils.PathIsSubFolder(Create<string>(), null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("childPath");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Child_Path_Offset_Empty()
-            {
-                Invoking(() => FileUtils.PathIsSubFolder(Create<string>(), string.Empty))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("childPath");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Child_Path_Offset_Whitespace()
-            {
-                Invoking(() => FileUtils.PathIsSubFolder(Create<string>(), " "))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("childPath");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => FileUtils.PathIsSubFolder(Create<string>(), stringValue),
+                    "childPath");
             }
 
             [Fact]
@@ -83,30 +45,11 @@ namespace AllOverIt.Tests.IO
         public class GetAbsolutePath : FileUtilsFixture
         {
             [Fact]
-            public void Should_Throw_When_Source_Path_Null()
+            public void Should_Throw_When_Source_Path_Null_Empty_Whitespace()
             {
-                Invoking(() => FileUtils.GetAbsolutePath(null, Create<string>()))
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("sourcePath");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Source_Path_Empty()
-            {
-                Invoking(() => FileUtils.GetAbsolutePath(string.Empty, Create<string>()))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("sourcePath");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Source_Path_Whitespace()
-            {
-                Invoking(() => FileUtils.GetAbsolutePath(" ", Create<string>()))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("sourcePath");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => FileUtils.GetAbsolutePath(stringValue, Create<string>()),
+                    "sourcePath");
             }
 
             [Fact]
@@ -150,57 +93,19 @@ namespace AllOverIt.Tests.IO
         public class GetAbsoluteFileName : FileUtilsFixture
         {
             [Fact]
-            public void Should_Throw_When_Source_Name_Null()
+            public void Should_Throw_When_Source_Name_Null_Empty_Whitespace()
             {
-                Invoking(() => FileUtils.GetAbsoluteFileName(null, Create<string>()))
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("sourceFilename");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => FileUtils.GetAbsoluteFileName(stringValue, Create<string>()),
+                    "sourceFilename");
             }
 
             [Fact]
-            public void Should_Throw_When_Source_Name_Empty()
+            public void Should_Throw_When_Relative_Path_Offset_Null_Empty_Whitespace()
             {
-                Invoking(() => FileUtils.GetAbsoluteFileName(string.Empty, Create<string>()))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("sourceFilename");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Source_Name_Whitespace()
-            {
-                Invoking(() => FileUtils.GetAbsoluteFileName(" ", Create<string>()))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("sourceFilename");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Relative_Path_Offset_Null()
-            {
-                Invoking(() => FileUtils.GetAbsoluteFileName(Create<string>(), null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("relativePath");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Relative_Path_Offset_Empty()
-            {
-                Invoking(() => FileUtils.GetAbsoluteFileName(Create<string>(), string.Empty))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("relativePath");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Relative_Path_Offset_Whitespace()
-            {
-                Invoking(() => FileUtils.GetAbsoluteFileName(Create<string>(), " "))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("relativePath");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => FileUtils.GetAbsoluteFileName(Create<string>(), stringValue),
+                    "relativePath");
             }
 
             [Theory]

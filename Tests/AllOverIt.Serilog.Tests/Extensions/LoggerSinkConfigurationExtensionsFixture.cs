@@ -26,48 +26,16 @@ namespace AllOverIt.Serilog.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_OutputTemplate_Null()
+            public void Should_Throw_When_OutputTemplate_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var loggerSinkConfiguration = new LoggerConfiguration().WriteTo;
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var loggerSinkConfiguration = new LoggerConfiguration().WriteTo;
 
-                    AllOverIt.Serilog.Extensions.LoggerSinkConfigurationExtensions
-                        .CircularBuffer(loggerSinkConfiguration, new CircularBufferSinkMessages(1), (string) null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("outputTemplate");
-            }
-
-            [Fact]
-            public void Should_Throw_When_OutputTemplate_Empty()
-            {
-                Invoking(() =>
-                {
-                    var loggerSinkConfiguration = new LoggerConfiguration().WriteTo;
-
-                    AllOverIt.Serilog.Extensions.LoggerSinkConfigurationExtensions
-                        .CircularBuffer(loggerSinkConfiguration, new CircularBufferSinkMessages(1), string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("outputTemplate");
-            }
-
-            [Fact]
-            public void Should_Throw_When_OutputTemplate_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    var loggerSinkConfiguration = new LoggerConfiguration().WriteTo;
-
-                    AllOverIt.Serilog.Extensions.LoggerSinkConfigurationExtensions
-                        .CircularBuffer(loggerSinkConfiguration, new CircularBufferSinkMessages(1), "   ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("outputTemplate");
+                        AllOverIt.Serilog.Extensions.LoggerSinkConfigurationExtensions
+                            .CircularBuffer(loggerSinkConfiguration, new CircularBufferSinkMessages(1), stringValue);
+                    }, "outputTemplate");
             }
 
             [Fact]

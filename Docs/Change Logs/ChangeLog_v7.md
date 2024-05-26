@@ -1,3 +1,15 @@
+#  Version 7.14.0
+## 26 May 2024
+
+### AllOverIt.Fixture
+
+* Added support for customizing AutoFixture's Fixture so that is can create EnrichedEnum instances.
+* Added AssertThrowsWhenStringNullOrEmptyOrWhitespace() to simplify asserting an exception will be thrown when a string argument is null,
+  empty, or whitespace,
+
+---
+
+
 #  Version 7.13.0
 ## 16 May 2024
 

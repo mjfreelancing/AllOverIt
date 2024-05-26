@@ -3,7 +3,7 @@ rmdir /s /q TestCoverage
 
 REM Add '--no-build' to run the tests without building the project
 REM Not using the --framework option as this causes the pipes tests to be excluded, and it's not possible to provide a 'windows' related moniker
-dotnet test AllOverIt.sln /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage" --results-directory TestResults
+dotnet test AllOverIt.sln --configuration Release /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage" --results-directory TestResults
 REM dotnet test AllOverIt.sln --framework net8.0 /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage" --results-directory TestResults
 
 REM Usage: https://reportgenerator.io/usage
@@ -20,4 +20,3 @@ copy ".\TestCoverage\badge_methodcoverage.png" ".\Docs\Code Coverage\badge_metho
 cd TestCoverage
 
 explorer index.html
-

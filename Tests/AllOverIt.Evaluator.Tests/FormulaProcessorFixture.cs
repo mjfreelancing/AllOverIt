@@ -112,30 +112,11 @@ namespace AllOverIt.Evaluator.Tests
             }
 
             [Fact]
-            public void Should_Throw_When_Formula_Null()
+            public void Should_Throw_When_Formula_Null_Empty_Whitespace()
             {
-                Invoking(() => _formulaProcessor.Process(null, _variableRegistryFake.FakedObject))
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("formula");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Formula_Empty()
-            {
-                Invoking(() => _formulaProcessor.Process(string.Empty, _variableRegistryFake.FakedObject))
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("formula");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Formula_Whitespace()
-            {
-                Invoking(() => _formulaProcessor.Process("  ", _variableRegistryFake.FakedObject))
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("formula");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => _formulaProcessor.Process(stringValue, _variableRegistryFake.FakedObject),
+                    "formula");
             }
 
             [Fact]

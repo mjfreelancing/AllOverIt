@@ -17,39 +17,13 @@ namespace AllOverIt.Logging.Testing.Tests
         public class GetExpectedStaticLogCallMetadata : LogCallExpectationExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_CallerName_Null()
+            public void Should_Throw_When_CallerName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedStaticLogCallMetadata(null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_CallerName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedStaticLogCallMetadata(string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_CallerName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedStaticLogCallMetadata("  ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("callerName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = LogCallExpectation.GetExpectedStaticLogCallMetadata(stringValue);
+                    }, "callerName");
             }
 
             [Fact]
@@ -70,39 +44,13 @@ namespace AllOverIt.Logging.Testing.Tests
         public class GetExpectedLogCallMetadata : LogCallExpectationExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_CallerName_Null()
+            public void Should_Throw_When_CallerName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedLogCallMetadata<DummyClass>(null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_CallerName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedLogCallMetadata<DummyClass>(string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_CallerName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedLogCallMetadata<DummyClass>("  ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("callerName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = LogCallExpectation.GetExpectedLogCallMetadata<DummyClass>(stringValue);
+                    }, "callerName");
             }
 
             [Fact]
@@ -125,39 +73,13 @@ namespace AllOverIt.Logging.Testing.Tests
         public class GetExpectedStaticLogCallWithArgumentsMetadata : LogCallExpectationExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_CallerName_Null()
+            public void Should_Throw_When_CallerName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedStaticLogCallWithArgumentsMetadata(null, new { });
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_CallerName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedStaticLogCallWithArgumentsMetadata(string.Empty, new { });
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_CallerName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedStaticLogCallWithArgumentsMetadata("  ", new { });
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("callerName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = LogCallExpectation.GetExpectedStaticLogCallWithArgumentsMetadata(stringValue, new { });
+                    }, "callerName");
             }
 
             [Fact]
@@ -192,39 +114,13 @@ namespace AllOverIt.Logging.Testing.Tests
         public class GetExpectedLogCallWithArgumentsMetadata : LogCallExpectationExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_CallerName_Null()
+            public void Should_Throw_When_CallerName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedLogCallWithArgumentsMetadata<DummyClass>(null, new { });
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_CallerName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedLogCallWithArgumentsMetadata<DummyClass>(string.Empty, new { });
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_CallerName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedLogCallWithArgumentsMetadata<DummyClass>("  ", new { });
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("callerName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = LogCallExpectation.GetExpectedLogCallWithArgumentsMetadata<DummyClass>(stringValue, new { });
+                    }, "callerName");
             }
 
             [Fact]
@@ -290,39 +186,13 @@ namespace AllOverIt.Logging.Testing.Tests
         public class GetExpectedLogMessageMetadata : LogCallExpectationExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Message_Null()
+            public void Should_Throw_When_Message_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedLogMessageMetadata(null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("message");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Message_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedLogMessageMetadata(string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("message");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Message_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedLogMessageMetadata("  ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("message");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = LogCallExpectation.GetExpectedLogMessageMetadata(stringValue);
+                    }, "message");
             }
 
             [Fact]
@@ -342,39 +212,13 @@ namespace AllOverIt.Logging.Testing.Tests
         public class GetExpectedLogTemplateWithArgumentsMetadata : LogCallExpectationExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_LogTemplate_Null()
+            public void Should_Throw_When_LogTemplate_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(null, new { });
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("logTemplate");
-            }
-
-            [Fact]
-            public void Should_Throw_When_LogTemplate_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(string.Empty, new { });
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("logTemplate");
-            }
-
-            [Fact]
-            public void Should_Throw_When_LogTemplate_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata("  ", new { });
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("logTemplate");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(stringValue, new { });
+                    }, "logTemplate");
             }
 
             [Fact]

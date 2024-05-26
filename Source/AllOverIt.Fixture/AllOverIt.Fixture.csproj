@@ -24,4 +24,8 @@
         <InternalsVisibleTo Include="AllOverIt.Fixture.Tests" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\AllOverIt\AllOverIt.csproj" />
+    </ItemGroup>
+
 </Project>

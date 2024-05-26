@@ -126,5 +126,21 @@ namespace AllOverIt.Evaluator.Tests
               string.Format("2 * {0} - {2} * -3.5 - {1}^2 + ROUND({0}+{1}-{2}, 3) - -5E-3", Val1, Val2, _val3),
               () => 2 * Val1 - _val3 * -3.5 - Math.Pow(Val2, 2) + Math.Round(Val1 + Val2 - _val3, 3, MidpointRounding.AwayFromZero) - -5E-3);
         }
+
+        [Fact]
+        public void Should_Calculate_Mixed_7()
+        {
+            AssertFormula(
+              "(2^3-6)^(2+3*4)",
+              () => Math.Pow((Math.Pow(2, 3) - 6), (2 + 3 * 4)));
+        }
+
+        [Fact]
+        public void Should_Calculate_Mixed_8()
+        {
+            AssertFormula(
+              "2+3*(4^5-6)^(7+8*9)-10",
+              () => 2 + 3 * Math.Pow((Math.Pow(4, 5) - 6), (7 + 8 * 9)) - 10);
+        }
     }
 }

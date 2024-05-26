@@ -88,39 +88,13 @@ namespace AllOverIt.Logging.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_CallerName_Null()
+            public void Should_Throw_When_CallerName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _loggerFake.LogCall(this, new { }, callerName: null!);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Caller_Empty()
-            {
-                Invoking(() =>
-                {
-                    _loggerFake.LogCall(this, new { }, callerName: string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Caller_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _loggerFake.LogCall(this, new { }, callerName: " ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("callerName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _loggerFake.LogCall(this, new { }, callerName: stringValue);
+                    }, "callerName");
             }
 
             [Fact]

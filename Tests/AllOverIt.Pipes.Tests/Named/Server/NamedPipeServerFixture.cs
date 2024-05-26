@@ -20,40 +20,14 @@ namespace AllOverIt.Pipes.Tests.Named.Server
         public class Constructor : NamedPipeServerFixture
         {
             [Fact]
-            public void Should_Throw_When_PipeName_Null()
+            public void Should_Throw_When_PipeName_Null_Empty_Whitespace()
             {
 
-                Invoking(() =>
-                {
-                    _ = new NamedPipeServer<DummyMessage>(null, A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("pipeName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PipeName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeServer<DummyMessage>(string.Empty, A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("pipeName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PipeName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeServer<DummyMessage>("  ", A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("pipeName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = new NamedPipeServer<DummyMessage>(stringValue, A.Fake<INamedPipeSerializer<DummyMessage>>());
+                    }, "pipeName");
             }
 
             [Fact]
@@ -210,39 +184,13 @@ namespace AllOverIt.Pipes.Tests.Named.Server
                 }
 
                 [Fact]
-                public async Task Should_Throw_When_PipeName_Null()
+                public async Task Should_Throw_When_PipeName_Null_Empty_Whitespace()
                 {
-                    await Invoking(async () =>
-                    {
-                        await _server.WriteAsync(Create<DummyMessage>(), (string) null);
-                    })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("pipeName");
-                }
-
-                [Fact]
-                public async Task Should_Throw_When_PipeName_Empty()
-                {
-                    await Invoking(async () =>
-                    {
-                        await _server.WriteAsync(Create<DummyMessage>(), string.Empty);
-                    })
-                    .Should()
-                    .ThrowAsync<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("pipeName");
-                }
-
-                [Fact]
-                public async Task Should_Throw_When_PipeName_Whitespace()
-                {
-                    await Invoking(async () =>
-                    {
-                        await _server.WriteAsync(Create<DummyMessage>(), "  ");
-                    })
-                    .Should()
-                    .ThrowAsync<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("pipeName");
+                    await AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                        async stringValue =>
+                        {
+                            await _server.WriteAsync(Create<DummyMessage>(), stringValue);
+                        }, "pipeName");
                 }
 
                 [Fact]

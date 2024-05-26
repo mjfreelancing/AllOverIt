@@ -21,30 +21,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
         public class Constructor : DelegateVariableFixture
         {
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() => _variable = new DelegateVariable(null, () => _value))
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() => _variable = new DelegateVariable(string.Empty, () => _value))
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() => _variable = new DelegateVariable("  ", () => _value))
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => _variable = new DelegateVariable(stringValue, () => _value),
+                    "name");
             }
 
             [Fact]
