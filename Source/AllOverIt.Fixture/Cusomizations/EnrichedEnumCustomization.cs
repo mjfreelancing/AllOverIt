@@ -1,10 +1,12 @@
 ﻿using AllOverIt.Patterns.Enumeration;
 using AutoFixture;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Fixture.Cusomizations
 {
     /// <summary>Provides a fixture customization for creating <typeparamref name="TEnrichedEnum"/> instances.</summary>
     /// <typeparam name="TEnrichedEnum">The <see cref="EnrichedEnum{TEnum}"/> type.</typeparam>
+    [ExcludeFromCodeCoverage]
     public sealed class EnrichedEnumCustomization<TEnrichedEnum> : ICustomization where TEnrichedEnum : EnrichedEnum<TEnrichedEnum>
     {
         private readonly Random _random;
