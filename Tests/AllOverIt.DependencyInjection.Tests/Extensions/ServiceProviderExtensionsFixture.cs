@@ -36,39 +36,12 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(stringValue =>
                 {
-                    _ = ServiceProviderExtensions.GetRequiredNamedService<IDummyInterface>(this.CreateStub<IServiceProvider>(), null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = ServiceProviderExtensions.GetRequiredNamedService<IDummyInterface>(this.CreateStub<IServiceProvider>(), string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = ServiceProviderExtensions.GetRequiredNamedService<IDummyInterface>(this.CreateStub<IServiceProvider>(), "  ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
+                    _ = ServiceProviderExtensions.GetRequiredNamedService<IDummyInterface>(this.CreateStub<IServiceProvider>(), stringValue);
+                }, "name");
             }
 
             [Fact]

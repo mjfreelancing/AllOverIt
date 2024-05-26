@@ -36,39 +36,13 @@ namespace AllOverIt.Pipes.Tests.Named.Server
         public class CreateNamedPipeServer_PipeName : NamedPipeServerFactoryFixture
         {
             [Fact]
-            public void Should_Throw_When_PipeName_Null()
+            public void Should_Throw_When_PipeName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _factory.CreateNamedPipeServer(null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("pipeName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PipeName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _factory.CreateNamedPipeServer(string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("pipeName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PipeName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _factory.CreateNamedPipeServer("  ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("pipeName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _factory.CreateNamedPipeServer(stringValue);
+                    }, "pipeName");
             }
 
             [Fact]

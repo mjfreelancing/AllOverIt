@@ -39,75 +39,23 @@ namespace AllOverIt.Pipes.Tests.Named.Client
             }
 
             [Fact]
-            public void Should_Throw_When_ConnectionId_Null()
+            public void Should_Throw_When_ConnectionId_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClientConnection<DummyMessage>(new DummyStream(), null, Create<string>(), A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("connectionId");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = new NamedPipeClientConnection<DummyMessage>(new DummyStream(), stringValue, Create<string>(), A.Fake<INamedPipeSerializer<DummyMessage>>());
+                    }, "connectionId");
             }
 
             [Fact]
-            public void Should_Throw_When_ConnectionId_Empty()
+            public void Should_Throw_When_ServerName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClientConnection<DummyMessage>(new DummyStream(), string.Empty, Create<string>(), A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("connectionId");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ConnectionId_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClientConnection<DummyMessage>(new DummyStream(), "  ", Create<string>(), A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("connectionId");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ServerName_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClientConnection<DummyMessage>(new DummyStream(), Create<string>(), null, A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("serverName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ServerName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClientConnection<DummyMessage>(new DummyStream(), Create<string>(), string.Empty, A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("serverName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ServerName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClientConnection<DummyMessage>(new DummyStream(), Create<string>(), "  ", A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("serverName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = new NamedPipeClientConnection<DummyMessage>(new DummyStream(), Create<string>(), stringValue, A.Fake<INamedPipeSerializer<DummyMessage>>());
+                    }, "serverName");
             }
 
             [Fact]

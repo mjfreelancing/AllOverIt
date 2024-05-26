@@ -24,39 +24,13 @@ namespace AllOverIt.Evaluator.Tests.Variables
         public class AddConstantVariable : VariableRegistryBuilderFixture
         {
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddConstantVariable(null, Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddConstantVariable(string.Empty, Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddConstantVariable("  ", Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _variableRegistryBuilder.AddConstantVariable(stringValue, Create<double>());
+                    }, "name");
             }
 
             [Fact]
@@ -81,39 +55,13 @@ namespace AllOverIt.Evaluator.Tests.Variables
         public class AddDelegateVariable_Resolver : VariableRegistryBuilderFixture
         {
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(null, () => Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(string.Empty, () => Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddDelegateVariable("  ", () => Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _variableRegistryBuilder.AddDelegateVariable(stringValue, () => Create<double>());
+                    }, "name");
             }
 
             [Fact]
@@ -150,39 +98,13 @@ namespace AllOverIt.Evaluator.Tests.Variables
         public class AddDelegateVariable_Registry_Resolver : VariableRegistryBuilderFixture
         {
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(null, registry => Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(string.Empty, registry => Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddDelegateVariable("  ", registry => Create<double>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _variableRegistryBuilder.AddDelegateVariable(stringValue, registry => Create<double>());
+                    }, "name");
             }
 
             [Fact]
@@ -248,39 +170,13 @@ namespace AllOverIt.Evaluator.Tests.Variables
             }
 
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(null, _formulaCompilerResult);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(string.Empty, _formulaCompilerResult);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddDelegateVariable("  ", _formulaCompilerResult);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _variableRegistryBuilder.AddDelegateVariable(stringValue, _formulaCompilerResult);
+                    }, "name");
             }
 
             [Fact]
@@ -325,39 +221,13 @@ namespace AllOverIt.Evaluator.Tests.Variables
             }
 
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(null, registry => _formulaCompilerResult);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(string.Empty, registry => _formulaCompilerResult);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddDelegateVariable("  ", registry => _formulaCompilerResult);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _variableRegistryBuilder.AddDelegateVariable(stringValue, registry => _formulaCompilerResult);
+                    }, "name");
             }
 
             [Fact]
@@ -413,39 +283,13 @@ namespace AllOverIt.Evaluator.Tests.Variables
         public class AddLazyVariable_Resolver : VariableRegistryBuilderFixture
         {
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable(null, () => Create<double>(), Create<bool>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable(string.Empty, () => Create<double>(), Create<bool>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable("  ", () => Create<double>(), Create<bool>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _variableRegistryBuilder.AddLazyVariable(stringValue, () => Create<double>(), Create<bool>());
+                    }, "name");
             }
 
             [Fact]
@@ -491,39 +335,13 @@ namespace AllOverIt.Evaluator.Tests.Variables
             }
 
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable(null, _formulaCompilerResult);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable(string.Empty, _formulaCompilerResult);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable("  ", _formulaCompilerResult);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _variableRegistryBuilder.AddLazyVariable(stringValue, _formulaCompilerResult);
+                    }, "name");
             }
 
             [Fact]
@@ -568,39 +386,13 @@ namespace AllOverIt.Evaluator.Tests.Variables
             }
 
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable(null, registry => _formulaCompilerResult);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable(string.Empty, registry => _formulaCompilerResult);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddLazyVariable("  ", registry => _formulaCompilerResult);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _variableRegistryBuilder.AddLazyVariable(stringValue, registry => _formulaCompilerResult);
+                    }, "name");
             }
 
             [Fact]
@@ -656,39 +448,13 @@ namespace AllOverIt.Evaluator.Tests.Variables
         public class AddMutableVariable : VariableRegistryBuilderFixture
         {
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddMutableVariable(null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddMutableVariable(string.Empty);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _variableRegistryBuilder.AddMutableVariable("  ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _variableRegistryBuilder.AddMutableVariable(stringValue);
+                    }, "name");
             }
 
             [Fact]

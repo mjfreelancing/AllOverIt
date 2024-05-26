@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 
 namespace AllOverIt.Evaluator.Tests.Variables
@@ -21,30 +20,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
         public class Constructor : MutableVariableFixture
         {
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() => _variable = new MutableVariable(null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() => _variable = new MutableVariable(string.Empty))
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() => _variable = new MutableVariable("  "))
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => _variable = new MutableVariable(stringValue),
+                    "name");
             }
 
             [Fact]

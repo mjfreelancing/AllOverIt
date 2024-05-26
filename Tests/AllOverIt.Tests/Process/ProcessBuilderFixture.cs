@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
 using AllOverIt.Process;
 using FluentAssertions;
 using System.Diagnostics;
@@ -9,39 +8,13 @@ namespace AllOverIt.Tests.Process
     public class ProcessBuilderFixture : FixtureBase
     {
         [Fact]
-        public void Should_Throw_When_Process_FileName_Is_Null()
+        public void Should_Throw_When_Process_FileName_Is_Null_Empty_Whitespace()
         {
-            Invoking(() =>
-            {
-                _ = ProcessBuilder.For(null);
-            })
-            .Should()
-            .Throw<ArgumentNullException>()
-            .WithNamedMessageWhenNull("processFileName");
-        }
-
-        [Fact]
-        public void Should_Throw_When_Process_FileName_Is_Empty()
-        {
-            Invoking(() =>
-            {
-                _ = ProcessBuilder.For(string.Empty);
-            })
-            .Should()
-            .Throw<ArgumentException>()
-            .WithNamedMessageWhenEmpty("processFileName");
-        }
-
-        [Fact]
-        public void Should_Throw_When_Process_FileName_Is_Whitespace()
-        {
-            Invoking(() =>
-            {
-                _ = ProcessBuilder.For("  ");
-            })
-            .Should()
-            .Throw<ArgumentException>()
-            .WithNamedMessageWhenEmpty("processFileName");
+            AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                stringValue =>
+                {
+                    _ = ProcessBuilder.For(stringValue);
+                }, "processFileName");
         }
 
         [Fact]

@@ -18,40 +18,14 @@ namespace AllOverIt.Pipes.Tests.Named.Client
         public class Constructor_PipeName_Serializer : NamedPipeClientFixture
         {
             [Fact]
-            public void Should_Throw_When_PipeName_Null()
+            public void Should_Throw_When_PipeName_Null_Empty_Whitespace()
             {
 
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClient<DummyMessage>(null, A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("pipeName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PipeName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClient<DummyMessage>(string.Empty, A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("pipeName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PipeName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClient<DummyMessage>("  ", A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("pipeName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = new NamedPipeClient<DummyMessage>(stringValue, A.Fake<INamedPipeSerializer<DummyMessage>>());
+                    }, "pipeName");
             }
 
             [Fact]
@@ -71,75 +45,23 @@ namespace AllOverIt.Pipes.Tests.Named.Client
         public class Constructor_PipeName_DomainName_Serializer : NamedPipeClientFixture
         {
             [Fact]
-            public void Should_Throw_When_PipeName_Null()
+            public void Should_Throw_When_PipeName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClient<DummyMessage>(null, Create<string>(), A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("pipeName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = new NamedPipeClient<DummyMessage>(stringValue, Create<string>(), A.Fake<INamedPipeSerializer<DummyMessage>>());
+                    }, "pipeName");
             }
 
             [Fact]
-            public void Should_Throw_When_PipeName_Empty()
+            public void Should_Throw_When_DomainName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClient<DummyMessage>(string.Empty, Create<string>(), A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("pipeName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PipeName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClient<DummyMessage>("  ", Create<string>(), A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("pipeName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_DomainName_Null()
-            {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClient<DummyMessage>(Create<string>(), null, A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("serverName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_DomainName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClient<DummyMessage>(Create<string>(), string.Empty, A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("serverName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_DomainName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = new NamedPipeClient<DummyMessage>(Create<string>(), "  ", A.Fake<INamedPipeSerializer<DummyMessage>>());
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("serverName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = new NamedPipeClient<DummyMessage>(Create<string>(), stringValue, A.Fake<INamedPipeSerializer<DummyMessage>>());
+                    }, "serverName");
             }
 
             [Fact]
@@ -173,7 +95,7 @@ namespace AllOverIt.Pipes.Tests.Named.Client
             }
 
             [Fact]
-            public async Task Should_Throw_When_Cancelledl()
+            public async Task Should_Throw_When_Cancelled()
             {
                 var client = new NamedPipeClient<DummyMessage>(Create<string>(), Create<string>(), A.Fake<INamedPipeSerializer<DummyMessage>>());
 

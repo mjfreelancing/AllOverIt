@@ -335,39 +335,13 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
 
             [Fact]
-            public void Should_Throw_When_Value_Null()
+            public void Should_Throw_When_Value_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.From((string) null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("value");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Value_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.From(string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("value");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Value_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.From("  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("value");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = DummyEnrichedEnum1.From(stringValue);
+                    }, "value");
             }
         }
 
@@ -413,39 +387,13 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
 
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.TryFromName((string) null, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.TryFromName(string.Empty, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.TryFromName("  ", out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = DummyEnrichedEnum1.TryFromName(stringValue, out _);
+                    }, "name");
             }
         }
 
@@ -488,39 +436,13 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
 
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.TryFromNameOrValue((string) null, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("nameOrValue");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.TryFromNameOrValue(string.Empty, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("nameOrValue");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.TryFromNameOrValue("  ", out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("nameOrValue");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = DummyEnrichedEnum1.TryFromNameOrValue(stringValue, out _);
+                    }, "nameOrValue");
             }
         }
 
@@ -570,39 +492,13 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
 
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.HasName((string) null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.HasName(string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.HasName("  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("name");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = DummyEnrichedEnum1.HasName(stringValue);
+                    }, "name");
             }
         }
 
@@ -630,39 +526,13 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             }
 
             [Fact]
-            public void Should_Throw_When_Name_Null()
+            public void Should_Throw_When_Name_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.HasNameOrValue((string) null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("nameOrValue");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.HasNameOrValue(string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("nameOrValue");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Name_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = DummyEnrichedEnum1.HasNameOrValue("  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("nameOrValue");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = DummyEnrichedEnum1.HasNameOrValue(stringValue);
+                    }, "nameOrValue");
             }
         }
 

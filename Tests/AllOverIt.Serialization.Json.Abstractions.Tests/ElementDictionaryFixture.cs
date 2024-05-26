@@ -53,39 +53,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
         public class TryGetValue : ElementDictionaryFixture
         {
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _elementDictionary.TryGetValue(null, out _);
-                })
-                   .Should()
-                   .Throw<ArgumentNullException>()
-                   .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _elementDictionary.TryGetValue(string.Empty, out _);
-                })
-                   .Should()
-                   .Throw<ArgumentException>()
-                   .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _elementDictionary.TryGetValue("  ", out _);
-                })
-                   .Should()
-                   .Throw<ArgumentException>()
-                   .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _elementDictionary.TryGetValue(stringValue, out _);
+                    }, "propertyName");
             }
 
             [Fact]
@@ -116,39 +90,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
         public class GetValue : ElementDictionaryFixture
         {
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _elementDictionary.GetValue(null);
-                })
-                   .Should()
-                   .Throw<ArgumentNullException>()
-                   .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _elementDictionary.GetValue(string.Empty);
-                })
-                   .Should()
-                   .Throw<ArgumentException>()
-                   .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _elementDictionary.GetValue("  ");
-                })
-                   .Should()
-                   .Throw<ArgumentException>()
-                   .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _elementDictionary.GetValue(stringValue);
+                    }, "propertyName");
             }
 
             [Fact]
@@ -177,39 +125,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
         public class TrySetValue : ElementDictionaryFixture
         {
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = _elementDictionary.TrySetValue(null, new { });
-                })
-                   .Should()
-                   .Throw<ArgumentNullException>()
-                   .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = _elementDictionary.TrySetValue(string.Empty, new { });
-                })
-                   .Should()
-                   .Throw<ArgumentException>()
-                   .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = _elementDictionary.TrySetValue("  ", new { });
-                })
-                   .Should()
-                   .Throw<ArgumentException>()
-                   .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = _elementDictionary.TrySetValue(stringValue, new { });
+                    }, "propertyName");
             }
 
             [Fact]
@@ -248,39 +170,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
         public class SetValue : ElementDictionaryFixture
         {
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _elementDictionary.SetValue(null, new { });
-                })
-                   .Should()
-                   .Throw<ArgumentNullException>()
-                   .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _elementDictionary.SetValue(string.Empty, new { });
-                })
-                   .Should()
-                   .Throw<ArgumentException>()
-                   .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _elementDictionary.SetValue("  ", new { });
-                })
-                   .Should()
-                   .Throw<ArgumentException>()
-                   .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _elementDictionary.SetValue(stringValue, new { });
+                    }, "propertyName");
             }
 
             [Fact]
