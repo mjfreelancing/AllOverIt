@@ -6,19 +6,24 @@ using FluentAssertions;
 
 namespace AllOverIt.Fixture
 {
+    /// <summary>Provides a fixture customization for creating <typeparamref name="TEnrichedEnum"/> instances.</summary>
+    /// <typeparam name="TEnrichedEnum">The <see cref="EnrichedEnum{TEnum}"/> type.</typeparam>
     public sealed class EnrichedEnumCustomization<TEnrichedEnum> : ICustomization where TEnrichedEnum : EnrichedEnum<TEnrichedEnum>
     {
         private readonly Random _random;
 
+        /// <summary>Default constructor.</summary>
         public EnrichedEnumCustomization()
         {
-#if NET8_0_OR_GREATER
+#if !NETSTANDARD2_1
             _random = Random.Shared;
 #else
             _random = new Random((int) DateTime.Now.Ticks);
 #endif
         }
 
+        /// <summary>Constructor.</summary>
+        /// <param name="fixture">The fixture to be customized.</param>
         public void Customize(IFixture fixture)
         {
             fixture.Customize<TEnrichedEnum>(composer => composer.FromFactory(() =>
