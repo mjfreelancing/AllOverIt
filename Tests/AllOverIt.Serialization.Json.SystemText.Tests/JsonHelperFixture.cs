@@ -186,39 +186,13 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         public class Constructor_String : JsonHelperFixture
         {
             [Fact]
-            public void Should_Throw_When_Value_Null()
+            public void Should_Throw_When_Value_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = new JsonHelper(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("value");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Value_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = new JsonHelper(string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("value");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Value_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = new JsonHelper("  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("value");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = new JsonHelper(stringValue);
+                    }, "value");
             }
 
             [Fact]
@@ -236,42 +210,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         public class TryGetValue : JsonHelperFixture
         {
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetValue(null, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetValue(string.Empty, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_WhiteSpace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetValue("  ", out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.TryGetValue(stringValue, out _);
+                    }, "propertyName");
             }
 
             [Theory]
@@ -338,42 +284,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         public class GetValue : JsonHelperFixture
         {
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetValue(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetValue(string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_WhiteSpace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetValue("  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.GetValue(stringValue);
+                    }, "propertyName");
             }
 
             [Theory]
@@ -427,42 +345,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         public class TryGetValue_Typed : JsonHelperFixture
         {
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetValue<int>(null, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetValue<int>(string.Empty, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_WhiteSpace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetValue<int>("  ", out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.TryGetValue<int>(stringValue, out _);
+                    }, "propertyName");
             }
 
             [Theory]
@@ -578,42 +468,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         public class GetValue_Typed : JsonHelperFixture
         {
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetValue<int>(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetValue<int>(string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_WhiteSpace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetValue<int>("  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.GetValue<int>(stringValue);
+                    }, "propertyName");
             }
 
             [Theory]
@@ -717,42 +579,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         public class TryGetValues_Typed : JsonHelperFixture
         {
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetValues<int>(null, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetValues<int>(string.Empty, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_WhiteSpace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetValues<int>("  ", out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.TryGetValues<int>(stringValue, out _);
+                    }, "propertyName");
             }
 
             [Theory]
@@ -851,42 +685,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         public class GetValues_Typed : JsonHelperFixture
         {
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetValues<int>(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetValues<int>(string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_WhiteSpace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetValues<int>("  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.GetValues<int>(stringValue);
+                    }, "propertyName");
             }
 
             [Theory]
@@ -974,42 +780,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         public class TryGetObjectArray : JsonHelperFixture
         {
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetObjectArray(null, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetObjectArray(string.Empty, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_WhiteSpace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetObjectArray("  ", out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.TryGetObjectArray(stringValue, out _);
+                    }, "arrayPropertyName");
             }
 
             [Theory]
@@ -1100,42 +878,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         public class GetObjectArray : JsonHelperFixture
         {
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetObjectArray(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetObjectArray(string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_WhiteSpace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetObjectArray("  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.GetObjectArray(stringValue);
+                    }, "arrayPropertyName");
             }
 
             [Theory]
@@ -1217,81 +967,25 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         public class TryGetObjectArrayValues : JsonHelperFixture
         {
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetObjectArrayValues<int>(null, Create<string>(), out _);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.TryGetObjectArrayValues<int>(stringValue, Create<string>(), out _);
+                    }, "arrayPropertyName");
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Empty()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetObjectArrayValues<int>(string.Empty, Create<string>(), out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_WhiteSpace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetObjectArrayValues<int>("  ", Create<string>(), out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Null()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetObjectArrayValues<int>(Create<string>(), null, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetObjectArrayValues<int>(Create<string>(), string.Empty, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_WhiteSpace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetObjectArrayValues<int>(Create<string>(), "  ", out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.TryGetObjectArrayValues<int>(Create<string>(), stringValue, out _);
+                    }, "propertyName");
             }
 
             [Theory]
@@ -1358,81 +1052,25 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         public class GetObjectArrayValues : JsonHelperFixture
         {
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetObjectArrayValues<int>(null, Create<string>());
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.GetObjectArrayValues<int>(stringValue, Create<string>());
+                    }, "arrayPropertyName");
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Empty()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetObjectArrayValues<int>(string.Empty, Create<string>());
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_WhiteSpace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetObjectArrayValues<int>("  ", Create<string>());
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Null()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetObjectArrayValues<int>(Create<string>(), null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetObjectArrayValues<int>(Create<string>(), string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_WhiteSpace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetObjectArrayValues<int>(Create<string>(), "  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.GetObjectArrayValues<int>(Create<string>(), stringValue);
+                    }, "propertyName");
             }
 
             [Theory]
@@ -1741,42 +1379,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             }
 
             [Fact]
-            public void Should_Throw_When_ChildPropertyName_Null()
+            public void Should_Throw_When_ChildPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(CreateMany<string>(), null, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("childPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ChildPropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(CreateMany<string>(), string.Empty, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("childPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ChildPropertyName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(CreateMany<string>(), "  ", out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("childPropertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(CreateMany<string>(), stringValue, out _);
+                    }, "childPropertyName");
             }
 
             [Theory]
@@ -1869,42 +1479,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             }
 
             [Fact]
-            public void Should_Throw_When_ChildPropertyName_Null()
+            public void Should_Throw_When_ChildPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetDescendantObjectArrayValues<int>(CreateMany<string>(), null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("childPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ChildPropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetDescendantObjectArrayValues<int>(CreateMany<string>(), string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("childPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ChildPropertyName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    var jsonHelper = CreateJsonHelper(true);
-                    _ = jsonHelper.GetDescendantObjectArrayValues<int>(CreateMany<string>(), "  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("childPropertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        var jsonHelper = CreateJsonHelper(true);
+                        _ = jsonHelper.GetDescendantObjectArrayValues<int>(CreateMany<string>(), stringValue);
+                    }, "childPropertyName");
             }
 
             [Theory]

@@ -63,9 +63,11 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         public void Should_Add_Space_After_Colon()
         {
             var expected =
-@"{
-  ""key"": ""value""
-}";
+                """
+                {
+                  "key": "value"
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(BasicSourceString);
 
@@ -77,9 +79,11 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         {
             var stringValue = Create<string>();
             var expected =
-                $@"{stringValue}{{
-  ab: cd
-}}";
+                $$"""
+                {{stringValue}}{
+                  ab: cd
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString($"{stringValue}{{ab:cd}}");
 
@@ -92,9 +96,11 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         {
             var source = @"{""key"":""value""    }";
             var expected =
-@"{
-  ""key"": ""value""
-}";
+                """
+                {
+                  "key": "value"
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(source);
 
@@ -106,9 +112,11 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         {
             var source = @"{""key"":""val ue""  }";
             var expected =
-@"{
-  ""key"": ""val ue""
-}";
+                """
+                {
+                  "key": "val ue"
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(source);
 
@@ -120,9 +128,11 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         {
             var source = @"{""key"":""val,ue""  }";
             var expected =
-@"{
-  ""key"": ""val,ue""
-}";
+                """
+                {
+                  "key": "val,ue"
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(source);
 
@@ -134,10 +144,12 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         {
             var source = @"{""key1"":""value1"",""key2"":""value2""}";
             var expected =
-@"{
-  ""key1"": ""value1"",
-  ""key2"": ""value2""
-}";
+                """
+                {
+                  "key1": "value1",
+                  "key2": "value2"
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(source);
 
@@ -149,11 +161,13 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         {
             var source = @"{""key1"":{""key2"":""value2""}}";
             var expected =
-@"{
-  ""key1"": {
-    ""key2"": ""value2""
-  }
-}";
+                """
+                {
+                  "key1": {
+                    "key2": "value2"
+                  }
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(source);
 
@@ -165,13 +179,15 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         {
             var source = @"{""key1"":[""value1"", ""val , ue2"", ""value3""]}";
             var expected =
-@"{
-  ""key1"": [
-    ""value1"",
-    ""val , ue2"",
-    ""value3""
-  ]
-}";
+                """
+                {
+                  "key1": [
+                    "value1",
+                    "val , ue2",
+                    "value3"
+                  ]
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(source);
 
@@ -183,11 +199,13 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         {
             var source = @"{""key1"":[""value1""]}";
             var expected =
-@"{
-  ""key1"": [
-    ""value1""
-  ]
-}";
+                """
+                {
+                  "key1": [
+                    "value1"
+                  ]
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(source);
 
@@ -199,8 +217,10 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         {
             var source = @"{}";
             var expected =
-@"{
-}";
+                """
+                {
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(source);
 
@@ -212,11 +232,13 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         {
             var source = @"{""key1"":[""val[ue1""]}";
             var expected =
-@"{
-  ""key1"": [
-    ""val[ue1""
-  ]
-}";
+                """
+                {
+                  "key1": [
+                    "val[ue1"
+                  ]
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(source);
 
@@ -228,11 +250,13 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         {
             var source = @"{""key1"":[""val]ue1""]}";
             var expected =
-@"{
-  ""key1"": [
-    ""val]ue1""
-  ]
-}";
+                """
+                {
+                  "key1": [
+                    "val]ue1"
+                  ]
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(source);
 
@@ -244,10 +268,12 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         {
             var source = @"{""key1"":[]}";
             var expected =
-                @"{
-  ""key1"": [
-  ]
-}";
+                """
+                {
+                  "key1": [
+                  ]
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(source);
 
@@ -257,18 +283,22 @@ namespace AllOverIt.Tests.Formatters.Strings.Extensions
         [Fact]
         public void Should_Remove_Extra_Whitespace()
         {
-            var source = @"    {   ""key1""    :
+            var source = """
+                    {   "key1"    :
 
 
-""value1""   ,  ""key2"":   ""value2""   }
+                "value1"   ,  "key2":   "value2"   }
 
-";
+
+                """;
 
             var expected =
-                @"{
-  ""key1"": ""value1"",
-  ""key2"": ""value2""
-}";
+                """
+                {
+                  "key1": "value1",
+                  "key2": "value2"
+                }
+                """;
 
             var actual = StringFormatExtensions.FormatJsonString(source);
 

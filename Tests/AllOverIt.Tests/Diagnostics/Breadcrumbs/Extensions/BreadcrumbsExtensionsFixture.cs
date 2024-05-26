@@ -31,30 +31,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_CallerName_Null()
+            public void Should_Throw_When_CallerName_Null_Empty_Whitespace()
             {
-                Invoking(() => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, null, null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_CallerName_Empty()
-            {
-                Invoking(() => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, null, string.Empty))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_CallerName_Whitespace()
-            {
-                Invoking(() => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, null, "  "))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("callerName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, null, stringValue),
+                    "callerName");
             }
 
             [Fact]
@@ -191,30 +172,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_CallerName_Null()
+            public void Should_Throw_When_CallerName_Null_Empty_Whitespace()
             {
-                Invoking(() => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this, null, null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_CallerName_Empty()
-            {
-                Invoking(() => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this, null, string.Empty))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("callerName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_CallerName_Whitespace()
-            {
-                Invoking(() => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this, null, "  "))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("callerName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this, null, stringValue),
+                    "callerName");
             }
 
             [Fact]
@@ -268,30 +230,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_Message_Null()
+            public void Should_Throw_When_Message_Null_Empty_Whitespace()
             {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("message");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Message_Empty()
-            {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, string.Empty))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("message");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Message_Whitespace()
-            {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, "  "))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("message");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => BreadcrumbsExtensions.Add(_breadcrumbs, stringValue),
+                    "message");
             }
 
             [Fact]
@@ -337,30 +280,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_Message_Null()
+            public void Should_Throw_When_Message_Null_Empty_Whitespace()
             {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, null, Create<int>()))
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("message");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Message_Empty()
-            {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, string.Empty, Create<int>()))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("message");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Message_Whitespace()
-            {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, "  ", Create<int>()))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("message");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => BreadcrumbsExtensions.Add(_breadcrumbs, stringValue, Create<int>()),
+                    "message");
             }
 
             [Fact]
@@ -425,30 +349,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_Message_Null()
+            public void Should_Throw_When_Message_Null_Empty_Whitespace()
             {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, this, null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("message");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Message_Empty()
-            {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, this, string.Empty))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("message");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Message_Whitespace()
-            {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, this, "  "))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("message");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => BreadcrumbsExtensions.Add(_breadcrumbs, this, stringValue),
+                    "message");
             }
 
             [Fact]
@@ -584,30 +489,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_Message_Null()
+            public void Should_Throw_When_Message_Null_Empty_Whitespace()
             {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, this, null, _metadata))
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("message");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Message_Empty()
-            {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, this, string.Empty, _metadata))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("message");
-            }
-
-            [Fact]
-            public void Should_Throw_When_Message_Whitespace()
-            {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, this, "  ", _metadata))
-                  .Should()
-                  .Throw<ArgumentException>()
-                  .WithNamedMessageWhenEmpty("message");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue => BreadcrumbsExtensions.Add(_breadcrumbs, this, stringValue, _metadata),
+                    "message");
             }
 
             [Fact]

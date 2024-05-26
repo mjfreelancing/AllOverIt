@@ -74,39 +74,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.TryGetValue<int>(_elementDictionary, null, out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetValue<int>(_elementDictionary, string.Empty, out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetValue<int>(_elementDictionary, "  ", out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                        _ = ElementDictionaryExtensions.TryGetValue<int>(_elementDictionary, stringValue, out _);
+                    }, "propertyName");
             }
 
             [Fact]
@@ -179,39 +153,12 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.GetValue<int>(_elementDictionary, null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.GetValue<int>(_elementDictionary, string.Empty);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.GetValue<int>(_elementDictionary, "  ");
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                        _ = ElementDictionaryExtensions.GetValue<int>(_elementDictionary, stringValue);
+                    }, "propertyName");
             }
 
             [Fact]
@@ -274,39 +221,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.TryGetValues<int>(_elementDictionary, null, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.TryGetValues<int>(_elementDictionary, string.Empty, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.TryGetValues<int>(_elementDictionary, "  ", out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = ElementDictionaryExtensions.TryGetValues<int>(_elementDictionary, stringValue, out _);
+                    }, "propertyName");
             }
 
             [Fact]
@@ -388,39 +309,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_PropertyName_Null()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.GetValues<int>(_elementDictionary, null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.GetValues<int>(_elementDictionary, string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.GetValues<int>(_elementDictionary, "  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = ElementDictionaryExtensions.GetValues<int>(_elementDictionary, stringValue);
+                    }, "propertyName");
             }
 
             [Fact]
@@ -492,39 +387,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.TryGetObjectArray(_elementDictionary, null, out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Empty()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetObjectArray(_elementDictionary, string.Empty, out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetObjectArray(_elementDictionary, "  ", out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
+                        _ = ElementDictionaryExtensions.TryGetObjectArray(_elementDictionary, stringValue, out _);
+                    }, "arrayPropertyName");
             }
 
             [Fact]
@@ -603,39 +472,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.GetObjectArray(_elementDictionary, null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Empty()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.GetObjectArray(_elementDictionary, string.Empty);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.GetObjectArray(_elementDictionary, "  ");
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
+                        _ = ElementDictionaryExtensions.GetObjectArray(_elementDictionary, stringValue);
+                    }, "arrayPropertyName");
             }
 
             [Fact]
@@ -710,75 +553,23 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.TryGetObjectArrayValues<int>(_elementDictionary, null, Create<string>(), out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyName");
+                        _ = ElementDictionaryExtensions.TryGetObjectArrayValues<int>(_elementDictionary, stringValue, Create<string>(), out _);
+                    }, "arrayPropertyName");
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Empty()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.TryGetObjectArrayValues<int>(_elementDictionary, string.Empty, Create<string>(), out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetObjectArrayValues<int>(_elementDictionary, "  ", Create<string>(), out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Null()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetObjectArrayValues<int>(_elementDictionary, Create<string>(), null, out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetObjectArrayValues<int>(_elementDictionary, Create<string>(), string.Empty, out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetObjectArrayValues<int>(_elementDictionary, Create<string>(), "  ", out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                        _ = ElementDictionaryExtensions.TryGetObjectArrayValues<int>(_elementDictionary, Create<string>(), stringValue, out _);
+                    }, "propertyName");
             }
 
             [Fact]
@@ -863,75 +654,23 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.GetObjectArrayValues<int>(_elementDictionary, null, Create<string>());
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyName");
+                        _ = ElementDictionaryExtensions.GetObjectArrayValues<int>(_elementDictionary, stringValue, Create<string>());
+                    }, "arrayPropertyName");
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Empty()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.GetObjectArrayValues<int>(_elementDictionary, string.Empty, Create<string>());
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.GetObjectArrayValues<int>(_elementDictionary, "  ", Create<string>());
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Null()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.GetObjectArrayValues<int>(_elementDictionary, Create<string>(), null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Empty()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.GetObjectArrayValues<int>(_elementDictionary, Create<string>(), string.Empty);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_PropertyName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.GetObjectArrayValues<int>(_elementDictionary, Create<string>(), "  ");
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("propertyName");
+                        _ = ElementDictionaryExtensions.GetObjectArrayValues<int>(_elementDictionary, Create<string>(), stringValue);
+                    }, "propertyName");
             }
 
             [Fact]
@@ -1022,39 +761,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.TryGetManyObjectArrayValues<int>(new[] { _elementDictionary }, null, out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Empty()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetManyObjectArrayValues<int>(new[] { _elementDictionary }, string.Empty, out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetManyObjectArrayValues<int>(new[] { _elementDictionary }, "  ", out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
+                        _ = ElementDictionaryExtensions.TryGetManyObjectArrayValues<int>(new[] { _elementDictionary }, stringValue, out _);
+                    }, "arrayPropertyName");
             }
 
             [Fact]
@@ -1122,39 +835,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.GetManyObjectArrayValues<int>(new[] { _elementDictionary }, null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Empty()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.GetManyObjectArrayValues<int>(new[] { _elementDictionary }, string.Empty);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.GetManyObjectArrayValues<int>(new[] { _elementDictionary }, "  ");
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyName");
+                        _ = ElementDictionaryExtensions.GetManyObjectArrayValues<int>(new[] { _elementDictionary }, stringValue);
+                    }, "arrayPropertyName");
             }
 
             [Fact]
@@ -1630,39 +1317,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ChildPropertyName_Null()
+            public void Should_Throw_When_ChildPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.TryGetDescendantObjectArrayValues<int>(new[] { _elementDictionary }, CreateMany<string>(), null, out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("childPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ChildPropertyName_Empty()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetDescendantObjectArrayValues<int>(new[] { _elementDictionary }, CreateMany<string>(), string.Empty, out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("childPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ChildPropertyName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetDescendantObjectArrayValues<int>(new[] { _elementDictionary }, CreateMany<string>(), "  ", out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("childPropertyName");
+                        _ = ElementDictionaryExtensions.TryGetDescendantObjectArrayValues<int>(new[] { _elementDictionary }, CreateMany<string>(), stringValue, out _);
+                    }, "childPropertyName");
             }
 
             [Fact]
@@ -1760,39 +1421,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ChildPropertyName_Null()
+            public void Should_Throw_When_ChildPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.GetDescendantObjectArrayValues<int>(new[] { _elementDictionary }, CreateMany<string>(), null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("childPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ChildPropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.GetDescendantObjectArrayValues<int>(new[] { _elementDictionary }, CreateMany<string>(), string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("childPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ChildPropertyName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.GetDescendantObjectArrayValues<int>(new[] { _elementDictionary }, CreateMany<string>(), "  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("childPropertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = ElementDictionaryExtensions.GetDescendantObjectArrayValues<int>(new[] { _elementDictionary }, CreateMany<string>(), stringValue);
+                    }, "childPropertyName");
             }
 
             [Fact]
@@ -1882,39 +1517,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ChildPropertyName_Null()
+            public void Should_Throw_When_ChildPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.TryGetDescendantObjectArrayValues<int>(_elementDictionary, CreateMany<string>(), null, out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("childPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ChildPropertyName_Empty()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetDescendantObjectArrayValues<int>(_elementDictionary, CreateMany<string>(), string.Empty, out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("childPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ChildPropertyName_Whitespace()
-            {
-                Invoking(() =>
-                    {
-                        _ = ElementDictionaryExtensions.TryGetDescendantObjectArrayValues<int>(_elementDictionary, CreateMany<string>(), "  ", out _);
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("childPropertyName");
+                        _ = ElementDictionaryExtensions.TryGetDescendantObjectArrayValues<int>(_elementDictionary, CreateMany<string>(), stringValue, out _);
+                    }, "childPropertyName");
             }
 
             [Fact]
@@ -2005,39 +1614,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ChildPropertyName_Null()
+            public void Should_Throw_When_ChildPropertyName_Null_Empty_Whitespace()
             {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.GetDescendantObjectArrayValues<int>(_elementDictionary, CreateMany<string>(), null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("childPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ChildPropertyName_Empty()
-            {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.GetDescendantObjectArrayValues<int>(_elementDictionary, CreateMany<string>(), string.Empty);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("childPropertyName");
-            }
-
-            [Fact]
-            public void Should_Throw_When_ChildPropertyName_Whitespace()
-            {
-                Invoking(() =>
-                {
-                    _ = ElementDictionaryExtensions.GetDescendantObjectArrayValues<int>(_elementDictionary, CreateMany<string>(), "  ");
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("childPropertyName");
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = ElementDictionaryExtensions.GetDescendantObjectArrayValues<int>(_elementDictionary, CreateMany<string>(), stringValue);
+                    }, "childPropertyName");
             }
 
             [Fact]
