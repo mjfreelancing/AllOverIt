@@ -28,12 +28,12 @@ namespace AllOverIt.Fixture
 #if NET8_0_OR_GREATER
             _random = Random.Shared;
 #else
-            _random = new Random((int) DateTime.Now.Ticks);
+            _random = new Random((int)DateTime.Now.Ticks);
 #endif
 
-            Fixture.Customize<float>(composer => composer.FromFactory<int>(value => value * (0.5f + (float) _random.NextDouble())));
+            Fixture.Customize<float>(composer => composer.FromFactory<int>(value => value * (0.5f + (float)_random.NextDouble())));
             Fixture.Customize<double>(composer => composer.FromFactory<int>(value => value * (0.5d + _random.NextDouble())));
-            Fixture.Customize<decimal>(composer => composer.FromFactory<int>(value => value * (0.5m + (decimal) _random.NextDouble())));
+            Fixture.Customize<decimal>(composer => composer.FromFactory<int>(value => value * (0.5m + (decimal)_random.NextDouble())));
         }
 
         /// <summary>Constructor that supports customization of AutoFixture's Fixture.</summary>
@@ -82,7 +82,7 @@ namespace AllOverIt.Fixture
         /// <param name="action">The action to be invoked.</param>
         /// <param name="name">The name of the argument expected to cause an <see cref="ArgumentNullException"/> or <see cref="ArgumentException"/> to be thrown.</param>
         /// <param name="errorMessage">The expected exception message.</param>
-        protected static void AssertThrowsWhenStringNullOrEmptyOrWhitespace(Action<string> action, string name, string errorMessage = null)
+        protected static void AssertThrowsWhenStringNullOrEmptyOrWhitespace(Action<string?> action, string name, string? errorMessage = default)
         {
             Invoking(() =>
             {
@@ -115,7 +115,7 @@ namespace AllOverIt.Fixture
         /// <param name="name">The name of the argument expected to cause an <see cref="ArgumentNullException"/> or <see cref="ArgumentException"/> to be thrown.</param>
         /// <param name="errorMessage">The expected exception message.</param>
         /// <returns>A <see cref="Task"/> that completes when awaited.</returns>
-        protected static async Task AssertThrowsWhenStringNullOrEmptyOrWhitespace(Func<string, Task> action, string name, string errorMessage = null)
+        protected static async Task AssertThrowsWhenStringNullOrEmptyOrWhitespace(Func<string?, Task> action, string name, string? errorMessage = default)
         {
             await Invoking(async () =>
             {
@@ -482,7 +482,7 @@ namespace AllOverIt.Fixture
 
             constructor.Should().NotBeNull();
 
-            var exception = (Exception) constructor!.Invoke([message]);
+            var exception = (Exception)constructor!.Invoke([message]);
 
             exception.Message.Should().Be(message);
         }
@@ -509,7 +509,7 @@ namespace AllOverIt.Fixture
 
             constructor.Should().NotBeNull();
 
-            var exception = (Exception) constructor!.Invoke([message, innerException]);
+            var exception = (Exception)constructor!.Invoke([message, innerException]);
 
             exception.Message
                 .Should()
@@ -586,7 +586,7 @@ namespace AllOverIt.Fixture
             var enumCount = enumValues.Length;
             var index = _random.Next(1000) % enumCount;
 
-            return (TType) enumValues.GetValue(index)!;
+            return (TType)enumValues.GetValue(index)!;
         }
 
         private List<TType> CreateManyType<TType>(int count)
@@ -606,7 +606,7 @@ namespace AllOverIt.Fixture
               {
                   var index = _random.Next(1000) % enumCount;
 
-                  return (TType) enumValues.GetValue(index)!;
+                  return (TType)enumValues.GetValue(index)!;
               })
               .ToList();
         }
