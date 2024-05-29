@@ -5,6 +5,9 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
     /// <summary>Provides an instance of <see cref="IBreadcrumbs"/> without behavior.</summary>
     public sealed class NullBreadcrumbs : IBreadcrumbs
     {
+        /// <inheritdoc />
+        public int Count => 0;
+
         /// <summary>Returns a static instance of <see cref="NullBreadcrumbs"/>.</summary>
         public static readonly IBreadcrumbs Instance = new NullBreadcrumbs();
 

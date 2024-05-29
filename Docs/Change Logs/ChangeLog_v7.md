@@ -1,3 +1,14 @@
+#  Version 7.15.0
+## XX May 2024
+
+### AllOverIt
+
+* Minor performance improvements
+* Added an optional Tag to breadcrumb data
+
+---
+
+
 #  Version 7.14.1
 ## 27 May 2024
 

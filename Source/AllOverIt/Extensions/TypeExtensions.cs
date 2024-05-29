@@ -36,8 +36,6 @@ namespace AllOverIt.Extensions
 
             // This implementation is better performing than using method/query LINQ queries
 
-            var propInfos = new List<PropertyInfo>();
-
             foreach (var propInfo in typeInfo.GetPropertyInfo(declaredOnly))
             {
                 var methodInfo = propInfo.GetMethod;
@@ -45,11 +43,9 @@ namespace AllOverIt.Extensions
                 // Ignore any properties without a getter
                 if (methodInfo != null && predicate.Invoke(methodInfo))
                 {
-                    propInfos.Add(propInfo);
+                    yield return propInfo;
                 }
             }
-
-            return propInfos;
         }
 
         /// <summary>Gets the <see cref="FieldInfo"/> (field metadata) for a given public or protected field on a <see cref="Type"/>.</summary>
@@ -78,17 +74,13 @@ namespace AllOverIt.Extensions
 
             // This implementation is better performing than using method/query LINQ queries
 
-            var fieldInfos = new List<FieldInfo>();
-
             foreach (var fieldInfo in typeInfo.GetFieldInfo(declaredOnly))
             {
                 if (predicate.Invoke(fieldInfo))
                 {
-                    fieldInfos.Add(fieldInfo);
+                    yield return fieldInfo;
                 }
             }
-
-            return fieldInfos;
         }
 
         /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <see cref="Type"/> and binding option.</summary>

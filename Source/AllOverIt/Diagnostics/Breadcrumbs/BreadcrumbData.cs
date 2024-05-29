@@ -1,7 +1,7 @@
 ﻿namespace AllOverIt.Diagnostics.Breadcrumbs
 {
     /// <summary>Contains breadcrumb information at a point in time.</summary>
-    public sealed class BreadcrumbData
+    public sealed record BreadcrumbData
     {
         private static long _counter;
         internal long Counter { get; }
@@ -32,5 +32,8 @@
 
         /// <summary>The breadcrumb metadata.</summary>
         public object Metadata { get; init; }
+
+        /// <summary>An optional tag associated with the data that can be used to later collate related content.</summary>
+        public string Tag { get; init; }
     }
 }
