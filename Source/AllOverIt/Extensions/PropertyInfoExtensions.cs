@@ -1,80 +1,91 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Types;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Extensions
 {
     /// <summary>Provides a variety of extension methods for <see cref="PropertyInfo"/> types.</summary>
     public static class PropertyInfoExtensions
     {
+        private static readonly Type IsExternalInitType = typeof(IsExternalInit);
+
         /// <summary>Determines if the provided <paramref name="propertyInfo"/> is for an abstract property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
+        /// <param name="accessor">A flag to indicate if the method should consider <c>get</c>, or <c>set</c>, or both accessors..</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for an abstract property, otherwise <see langword="false" />.</returns>
-        public static bool IsAbstract(this PropertyInfo propertyInfo)
+        public static bool IsAbstract(this PropertyInfo propertyInfo, PropertyAccessor accessor = PropertyAccessor.Get)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
-            return propertyInfo.GetMethod.IsAbstract;
+            return HasPropertyAccessor(propertyInfo, accessor, methodInfo => methodInfo.IsAbstract);
         }
 
         /// <summary>Determines of the <paramref name="propertyInfo"/> is for an internal property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
+        /// <param name="accessor">A flag to indicate if the method should consider <c>get</c>, or <c>set</c>, or both accessors..</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for an internal property, otherwise <see langword="false" />.</returns>
-        public static bool IsInternal(this PropertyInfo propertyInfo)
+        public static bool IsInternal(this PropertyInfo propertyInfo, PropertyAccessor accessor = PropertyAccessor.Get)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
-            return propertyInfo.GetMethod.IsAssembly;
+            return HasPropertyAccessor(propertyInfo, accessor, methodInfo => methodInfo.IsAssembly);
         }
 
         /// <summary>Determines of the <paramref name="propertyInfo"/> is for a private property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
+        /// <param name="accessor">A flag to indicate if the method should consider <c>get</c>, or <c>set</c>, or both accessors..</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a virtual property, otherwise <see langword="false" />.</returns>
-        public static bool IsPrivate(this PropertyInfo propertyInfo)
+        public static bool IsPrivate(this PropertyInfo propertyInfo, PropertyAccessor accessor = PropertyAccessor.Get)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
-            return propertyInfo.GetMethod.IsPrivate;
+            return HasPropertyAccessor(propertyInfo, accessor, methodInfo => methodInfo.IsPrivate);
         }
 
         /// <summary>Determines of the <paramref name="propertyInfo"/> is for a protected property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
+        /// <param name="accessor">A flag to indicate if the method should consider <c>get</c>, or <c>set</c>, or both accessors..</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a protected property, otherwise <see langword="false" />.</returns>
-        public static bool IsProtected(this PropertyInfo propertyInfo)
+        public static bool IsProtected(this PropertyInfo propertyInfo, PropertyAccessor accessor = PropertyAccessor.Get)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
-            return propertyInfo.GetMethod.IsFamily;
+            return HasPropertyAccessor(propertyInfo, accessor, methodInfo => methodInfo.IsFamily);
         }
 
         /// <summary>Determines of the <paramref name="propertyInfo"/> is for a public property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
+        /// <param name="accessor">A flag to indicate if the method should consider <c>get</c>, or <c>set</c>, or both accessors..</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a public property, otherwise <see langword="false" />.</returns>
-        public static bool IsPublic(this PropertyInfo propertyInfo)
+        public static bool IsPublic(this PropertyInfo propertyInfo, PropertyAccessor accessor = PropertyAccessor.Get)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
-            return propertyInfo.GetMethod.IsPublic;
+            return HasPropertyAccessor(propertyInfo, accessor, methodInfo => methodInfo.IsPublic);
         }
 
         /// <summary>Determines of the <paramref name="propertyInfo"/> is for a static property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
+        /// <param name="accessor">A flag to indicate if the method should consider <c>get</c>, or <c>set</c>, or both accessors..</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a static property, otherwise <see langword="false" />.</returns>
-        public static bool IsStatic(this PropertyInfo propertyInfo)
+        public static bool IsStatic(this PropertyInfo propertyInfo, PropertyAccessor accessor = PropertyAccessor.Get)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
-            return propertyInfo.GetMethod.IsStatic;
+            return HasPropertyAccessor(propertyInfo, accessor, methodInfo => methodInfo.IsStatic);
         }
 
         /// <summary>Determines of the <paramref name="propertyInfo"/> is for a virtual property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
+        /// <param name="accessor">A flag to indicate if the method should consider <c>get</c>, or <c>set</c>, or both accessors..</param>
         /// <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a virtual property, otherwise <see langword="false" />.</returns>
-        public static bool IsVirtual(this PropertyInfo propertyInfo)
+        public static bool IsVirtual(this PropertyInfo propertyInfo, PropertyAccessor accessor = PropertyAccessor.Get)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
-            return propertyInfo.GetMethod.IsVirtual;
+            return HasPropertyAccessor(propertyInfo, accessor, methodInfo => methodInfo.IsVirtual);
         }
 
         /// <summary>Determines if a property is an indexer.</summary>
@@ -85,6 +96,25 @@ namespace AllOverIt.Extensions
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
             return propertyInfo.GetIndexParameters().Length != 0;
+        }
+
+        /// <summary>Determines if a property's setter is an <c>init</c>.</summary>
+        /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
+        /// <returns><see langword="True" /> if the property is an init only.</returns>
+        public static bool IsInitOnly(this PropertyInfo propertyInfo)
+        {
+            var setMethod = propertyInfo
+                .WhenNotNull(nameof(propertyInfo))
+                .SetMethod;
+
+            if (setMethod is null)
+            {
+                return false;
+            }
+
+            return setMethod.ReturnParameter
+                .GetRequiredCustomModifiers()
+                .Contains(IsExternalInitType);
         }
 
         /// <summary>Creates a lambda expression that represents accessing a property on an object of type <typeparamref name="TType"/>.
@@ -108,6 +138,23 @@ namespace AllOverIt.Extensions
 
             // item => item.Age
             return Expression.Lambda<Func<TType, TPropertyType>>(propertyMemberAccess, parameter);
+        }
+
+        private static bool HasPropertyAccessor(PropertyInfo propertyInfo, PropertyAccessor accessor, Func<MethodInfo, bool> predicate)
+        {
+            var result = true;
+
+            if (accessor.HasFlag(PropertyAccessor.Get))
+            {
+                result = result && predicate.Invoke(propertyInfo.GetMethod);
+            }
+
+            if (accessor.HasFlag(PropertyAccessor.Set))
+            {
+                result = result && propertyInfo.SetMethod is not null && predicate.Invoke(propertyInfo.SetMethod);
+            }
+
+            return result;
         }
     }
 }
