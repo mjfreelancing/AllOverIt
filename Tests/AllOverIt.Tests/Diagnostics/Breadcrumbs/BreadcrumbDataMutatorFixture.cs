@@ -68,6 +68,10 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
                 current
                     .Should()
+                    .NotBeSameAs(_breadcrumbData.Tags);
+
+                _breadcrumbData.Tags
+                    .Should()
                     .BeEquivalentTo([tag]);
             }
 
@@ -93,6 +97,10 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 _mutator.WithTags([.. tags]);
 
                 current
+                    .Should()
+                    .NotBeSameAs(_breadcrumbData.Tags);
+
+                _breadcrumbData.Tags
                     .Should()
                     .BeEquivalentTo(tags);
             }

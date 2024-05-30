@@ -377,7 +377,7 @@ namespace AllOverIt.Tests.Extensions
                 GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop7))
                     .IsInitOnly()
                     .Should()
-                    .BeFalse();
+                    .BeTrue();
             }
 
             [Fact]
