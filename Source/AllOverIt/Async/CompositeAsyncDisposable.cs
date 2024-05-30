@@ -3,6 +3,7 @@
     /// <summary>A composite that caters for asynchronous disposal of multiple IAsyncDisposable's using a synchronous Dispose().</summary>
     public sealed class CompositeAsyncDisposable : IDisposable, IAsyncDisposable
     {
+        private bool disposed;
         private readonly List<IAsyncDisposable> _disposables = [];
 
         /// <summary>Returns the collection of disposables.</summary>
@@ -69,6 +70,11 @@
 
         private async Task DisposeResourcesAsync()
         {
+            if (disposed)
+            {
+                return;
+            }
+
             try
             {
                 foreach (var disposable in _disposables)
@@ -79,8 +85,10 @@
             }
             finally
             {
-                _disposables.Clear();
                 // Not setting null - saves having to check in multiple places should there be re-entry
+                _disposables.Clear();
+
+                disposed = true;
             }
         }
     }
