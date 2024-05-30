@@ -269,7 +269,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                     LineNumber = 0,
                     Message = Create<string>(),
                     Metadata = new { Value = Create<int>() },
-                    Tag = Create<string>()
+                    Tags = [.. CreateMany<string>()]
                 };
 
                 var breadcrumb2 = new BreadcrumbData
@@ -278,7 +278,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                     FilePath = null,
                     LineNumber = 0,
                     Message = Create<string>(),
-                    Tag = Create<string>()
+                    Tags = [.. CreateMany<string>()]
                 };
 
                 var breadcrumb3 = new BreadcrumbData
@@ -312,7 +312,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumb1.LineNumber,
                         breadcrumb1.Message,
                         breadcrumb1.Metadata,
-                        breadcrumb1.Tag
+                        breadcrumb1.Tags
                     },
                     new
                     {
@@ -321,7 +321,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumb2.LineNumber,
                         breadcrumb2.Message,
                         breadcrumb2.Metadata,
-                        breadcrumb2.Tag
+                        breadcrumb2.Tags
                     },
                     new
                     {
@@ -330,7 +330,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumb3.LineNumber,
                         breadcrumb3.Message,
                         breadcrumb3.Metadata,
-                        breadcrumb3.Tag
+                        breadcrumb3.Tags
                     }
                 };
 
@@ -375,7 +375,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                     LineNumber = 0,
                     Message = Create<string>(),
                     Metadata = new { Value = Create<int>() },
-                    Tag = Create<string>()
+                    Tags = [.. CreateMany<string>()]
                 };
 
                 var breadcrumb2 = new BreadcrumbData
@@ -393,7 +393,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                     LineNumber = Create<int>(),
                     Message = Create<string>(),
                     Metadata = Create<int>(),
-                    Tag = Create<string>()
+                    Tags = [.. CreateMany<string>()]
                 };
 
                 breadcrumbs.Add(breadcrumb1);
@@ -420,7 +420,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumb1.LineNumber,
                         breadcrumb1.Message,
                         breadcrumb1.Metadata,
-                        breadcrumb1.Tag
+                        breadcrumb1.Tags
                     },
                     new
                     {
@@ -429,7 +429,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumb2.LineNumber,
                         breadcrumb2.Message,
                         breadcrumb2.Metadata,
-                        breadcrumb2.Tag
+                        breadcrumb2.Tags
                     },
                     new
                     {
@@ -438,7 +438,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumb3.LineNumber,
                         breadcrumb3.Message,
                         breadcrumb3.Metadata,
-                        breadcrumb3.Tag
+                        breadcrumb3.Tags
                     }
                 };
 

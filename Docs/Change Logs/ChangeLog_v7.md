@@ -4,7 +4,9 @@
 ### AllOverIt
 
 * Minor performance improvements
-* Added an optional Tag to breadcrumb data
+* Added optional Tags to breadcrumb data
+* Breaking: Removed ability to explicitly set breadcrumb data CallerName, FilePath, LineNumber.
+  Metadata and Tags can also be set via a fluent syntax after calling one of the Add() extension methods.
 
 ---
 

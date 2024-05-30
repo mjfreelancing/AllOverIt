@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Diagnostics.Breadcrumbs;
-using AllOverIt.Diagnostics.Breadcrumbs.Extensions;
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
 using DiagnosticsDemo.Extensions;
@@ -10,7 +9,7 @@ namespace DiagnosticsDemo
 {
     public sealed class App : ConsoleAppBase
     {
-        private const string _randomTag = "random";
+        public static readonly string RandomTag = "random";
 
         private readonly IBreadcrumbs _breadcrumbs;
         private readonly ILogger<App> _logger;
@@ -25,15 +24,8 @@ namespace DiagnosticsDemo
         {
             _logger.LogInformation("Starting...");
 
-            // Add some random, but related content - the demo uses a custom data collator to group consecutive items with the same Tag
-            for (var i = 0; i < 10; i++)
-            {
-                var data = Enumerable
-                    .Range(0, Random.Shared.Next(20) + 5)
-                    .SelectToArray(_ => Random.Shared.Next(100));
-
-                _breadcrumbs.Add("Random Data", data, _randomTag);
-            }
+            // Add some random int[] data - the demo uses a custom data collator to group consecutive items with the same Tag
+            _breadcrumbs.AddIntArrayData(false);
 
             Console.WriteLine();
             Console.WriteLine("All Over It (the background worker will finish shortly, or when a key is pressed).");
@@ -52,7 +44,7 @@ namespace DiagnosticsDemo
             Console.WriteLine();
             _logger.LogInformation("Breadcrumbs captured...");
 
-            foreach (var breadcrumb in _breadcrumbs.WithRandomDataCollated())
+            foreach (var breadcrumb in _breadcrumbs.WithRandomDataCollated(RandomTag))
             {
                 var timeOffset = (breadcrumb.Timestamp - _breadcrumbs.StartTimestamp).TotalMilliseconds;
 

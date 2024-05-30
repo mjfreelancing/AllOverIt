@@ -34,7 +34,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_CallerName_Null_Empty_Whitespace()
             {
                 AssertThrowsWhenStringNullOrEmptyOrWhitespace(
-                    stringValue => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, null, null, stringValue),
+                    stringValue => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, null, stringValue),
                     "callerName");
             }
 
@@ -64,7 +64,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         LineNumber = 0,
                         Message = $"Call Site: {fullCallerName}()",
                         Metadata = (object)null,
-                        Tag = (string)null
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -101,7 +101,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         LineNumber = 0,
                         Message = $"Call Site: {fullCallerName}()",
                         Metadata = metadata,
-                        Tag = (string)null
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -125,7 +125,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
 
                 var callerName = Create<string>();
 
-                BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, metadata, null, callerName);
+                BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, metadata, callerName);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -140,7 +140,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         LineNumber = 0,
                         Message = $"Call Site: {fullCallerName}()",
                         Metadata = metadata,
-                        Tag = (string)null
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -178,7 +178,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_CallerName_Null_Empty_Whitespace()
             {
                 AssertThrowsWhenStringNullOrEmptyOrWhitespace(
-                    stringValue => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this, null, null, stringValue),
+                    stringValue => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this, null, stringValue),
                     "callerName");
             }
 
@@ -208,7 +208,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         LineNumber = GetCallerLineNumber() - 12,
                         Message = $@"Call Site: AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions.BreadcrumbsExtensionsFixture+AddExtendedCallSite.{nameof(Should_Add_Breadcrumb_Message)}(), at {GetCallerFilePath()}:{GetCallerLineNumber()-13}",
                         Metadata = (object)null,
-                        Tag = (string)null
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -222,7 +222,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             }
         }
 
-        public class Add_Message_Tag : BreadcrumbsExtensionsFixture
+        public class Add_Message : BreadcrumbsExtensionsFixture
         {
             [Fact]
             public void Should_Throw_When_Breadcrumbs_Null()
@@ -242,22 +242,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             }
 
             [Fact]
-            public void Should_Not_Throw_When_Tag_Null()
-            {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, Create<string>(), null))
-                .Should()
-                .NotThrow();
-            }
-
-            [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Add_Breadcrumb(bool includeTag)
+            public void Should_Add_Breadcrumb()
             {
                 var message = Create<string>();
-                var tag = includeTag ? Create<string>() : null;
 
-                BreadcrumbsExtensions.Add(_breadcrumbs, message, tag);
+                BreadcrumbsExtensions.Add(_breadcrumbs, message);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -270,7 +259,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         LineNumber = 0,
                         Message = message,
                         Metadata = (object)null,
-                        Tag = tag
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -284,7 +273,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             }
         }
 
-        public class Add_Message_Metadata_Tag : BreadcrumbsExtensionsFixture
+        public class Add_Message_Metadata : BreadcrumbsExtensionsFixture
         {
             [Fact]
             public void Should_Throw_When_Breadcrumbs_Null()
@@ -313,23 +302,12 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             }
 
             [Fact]
-            public void Should_Not_Throw_When_Tag_Null()
-            {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, Create<string>(), Create<int>(), null))
-                .Should()
-                .NotThrow();
-            }
-
-            [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Add_Breadcrumb(bool includeTag)
+            public void Should_Add_Breadcrumb()
             {
                 var message = Create<string>();
                 var metadata = Create<int>();
-                var tag = includeTag ? Create<string>() : null;
 
-                BreadcrumbsExtensions.Add(_breadcrumbs, message, metadata, tag);
+                BreadcrumbsExtensions.Add(_breadcrumbs, message, metadata);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -342,7 +320,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         LineNumber = 0,
                         Message = message,
                         Metadata = metadata,
-                        Tag = tag
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -385,22 +363,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             }
 
             [Fact]
-            public void Should_Not_Throw_When_Tag_Null()
-            {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, this, Create<string>(), null))
-                .Should()
-                .NotThrow();
-            }
-
-            [Theory]
-            [InlineData(true)]
-            [InlineData(false)]
-            public void Should_Add_Breadcrumb(bool includeTag)
+            public void Should_Add_Breadcrumb()
             {
                 var message = Create<string>();
-                var tag = includeTag ? Create<string>() : null;
 
-                BreadcrumbsExtensions.Add(_breadcrumbs, this, message, tag);
+                BreadcrumbsExtensions.Add(_breadcrumbs, this, message);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -413,7 +380,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
                         Metadata = (object)null,
-                        Tag = tag
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -434,7 +401,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             {
                 var message = Create<string>();
 
-                BreadcrumbsExtensions.Add(_breadcrumbs, this, message, null, string.Empty);
+                BreadcrumbsExtensions.Add(_breadcrumbs, this, message, string.Empty);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -447,7 +414,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
                         Metadata = (object)null,
-                        Tag = (string)null
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -469,7 +436,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                 var message = Create<string>();
                 var callerName = Create<string>();
 
-                BreadcrumbsExtensions.Add(_breadcrumbs, this, message, null, callerName);
+                BreadcrumbsExtensions.Add(_breadcrumbs, this, message, callerName);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -482,7 +449,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
                         Metadata = (object)null,
-                        Tag = (string)null
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -539,15 +506,12 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             }
 
             [Theory]
-            [InlineData(true, true)]
-            [InlineData(true, false)]
-            [InlineData(false, true)]
-            [InlineData(false, false)]
-            public void Should_Add_Breadcrumb(bool includeMetadata, bool includeTag)
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Add_Breadcrumb(bool includeMetadata)
             {
                 var message = Create<string>();
                 object metadata = includeMetadata ? Create<int>() : null;
-                var tag = includeTag ? Create<string>() : null;
 
                 BreadcrumbsExtensions.Add(_breadcrumbs, this, message, _metadata);
 
@@ -562,7 +526,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
                         Metadata = _metadata,
-                        Tag = (string)null
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -583,7 +547,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             {
                 var message = Create<string>();
 
-                BreadcrumbsExtensions.Add(_breadcrumbs, this, message, _metadata, null, string.Empty);
+                BreadcrumbsExtensions.Add(_breadcrumbs, this, message, _metadata, string.Empty);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -596,7 +560,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
                         Metadata = _metadata,
-                        Tag = (string)null
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -618,7 +582,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                 var message = Create<string>();
                 var callerName = Create<string>();
 
-                BreadcrumbsExtensions.Add(_breadcrumbs, this, message, _metadata, null, callerName);
+                BreadcrumbsExtensions.Add(_breadcrumbs, this, message, _metadata, callerName);
 
                 var actual = _breadcrumbs.ToList();
 
@@ -631,7 +595,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
                         Metadata = _metadata,
-                        Tag = (string)null
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -656,7 +620,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             {
                 Invoking(() =>
                 {
-                    BreadcrumbsExtensions.AddBreadcrumb(_breadcrumbs, null, Create<string>(), Create<string>(), Create<string>(), Create<string>());
+                    BreadcrumbsExtensions.AddBreadcrumb(_breadcrumbs, null, Create<string>(), Create<string>(), Create<string>());
                 })
                 .Should()
                 .Throw<InvalidOperationException>()
@@ -668,7 +632,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             {
                 Invoking(() =>
                 {
-                    BreadcrumbsExtensions.AddBreadcrumb(_breadcrumbs, this, Create<string>(), Create<string>(), Create<string>(), null);
+                    BreadcrumbsExtensions.AddBreadcrumb(_breadcrumbs, this, Create<string>(), Create<string>(), null);
                 })
                 .Should()
                 .Throw<InvalidOperationException>()
