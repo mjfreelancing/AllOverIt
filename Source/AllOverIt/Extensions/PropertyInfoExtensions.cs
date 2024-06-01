@@ -98,9 +98,9 @@ namespace AllOverIt.Extensions
             return propertyInfo.GetIndexParameters().Length != 0;
         }
 
-        /// <summary>Determines if a property's setter is an <c>init</c>.</summary>
+        /// <summary>Determines if a property's has an <c>init</c> accessor.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
-        /// <returns><see langword="True" /> if the property is an init only.</returns>
+        /// <returns><see langword="True" /> if the property has an <c>init</c> accessor.</returns>
         public static bool IsInitOnly(this PropertyInfo propertyInfo)
         {
             var setMethod = propertyInfo
