@@ -357,6 +357,12 @@ namespace AllOverIt.Extensions
         {
             static string GetFullyQualifiedPrefix(Type type, string current)
             {
+                if (type.IsNullableType())
+                {
+                    // unwrap Nullable<T>
+                    type = type.GetGenericArguments().Single();
+                }
+
                 if (type.DeclaringType is null)
                 {
                     return type.Namespace is null
