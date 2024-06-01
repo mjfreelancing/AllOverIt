@@ -1,3 +1,4 @@
+using AllOverIt.Extensions;
 using AllOverIt.Fixture.Exceptions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Fixture.Tests.Dummies;
@@ -12,6 +13,30 @@ namespace AllOverIt.Fixture.Tests
 {
     public class FixtureBaseFixture : FixtureBase
     {
+        private sealed class DefaultConstructorExceptionDummy : Exception
+        {
+            public DefaultConstructorExceptionDummy()
+                : base("abc")
+            {
+            }
+        }
+
+        private sealed class NoDefaultConstructorExceptionDummy : Exception
+        {
+            public NoDefaultConstructorExceptionDummy(string message)
+                : base(message)
+            {
+            }
+        }
+
+        private sealed class ConstructorWithMessageExceptionDummy : Exception
+        {
+            public ConstructorWithMessageExceptionDummy(string message)
+                : base(message)
+            {
+            }
+        }
+
         public class Constructor : FixtureBaseFixture
         {
             private class FixtureDummy : FixtureBase
@@ -1025,38 +1050,6 @@ namespace AllOverIt.Fixture.Tests
                 duplicates.Should().BeFalse();
             }
         }
-
-
-
-
-
-        private sealed class DefaultConstructorExceptionDummy : Exception
-        {
-            public DefaultConstructorExceptionDummy()
-                : base("abc")
-            {
-            }
-        }
-
-        private sealed class NoDefaultConstructorExceptionDummy : Exception
-        {
-            public NoDefaultConstructorExceptionDummy(string message)
-                : base(message)
-            {
-            }
-        }
-
-        private sealed class ConstructorWithMessageExceptionDummy : Exception
-        {
-            public ConstructorWithMessageExceptionDummy(string message)
-                : base(message)
-            {
-            }
-        }
-
-
-
-
 
         public class AssertDefaultConstructor_ : FixtureBaseFixture
         {
