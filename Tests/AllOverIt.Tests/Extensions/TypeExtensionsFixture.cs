@@ -896,6 +896,25 @@ namespace AllOverIt.Tests.Extensions
 
                 actual.Should().Be(expected);
             }
+
+            [Theory]
+            [InlineData(typeof(object), "System.Object")]
+            [InlineData(typeof(int), "System.Int32")]
+            [InlineData(typeof(int?), "System.Int32?")]
+            [InlineData(typeof(Dictionary<int, string>.KeyCollection), "System.Collections.Generic.KeyCollection<Int32, String>")]     // has no backticks in the name and the inner types do not have a namespace
+            [InlineData(typeof(DummyEnum), "AllOverIt.Tests.Extensions.TypeExtensionsFixture.DummyEnum")]
+            [InlineData(typeof(DummyEnum?), "AllOverIt.Tests.Extensions.TypeExtensionsFixture.DummyEnum?")]
+            [InlineData(typeof(IEnumerable<DummyEnum>), "System.Collections.Generic.IEnumerable<DummyEnum>")]
+            [InlineData(typeof(IEnumerable<DummyEnum?>), "System.Collections.Generic.IEnumerable<DummyEnum?>")]
+            [InlineData(typeof(IDictionary<DummyEnum, PropertySuperClass>), "System.Collections.Generic.IDictionary<DummyEnum, PropertySuperClass>")]
+            [InlineData(typeof(KeyValuePair<DummyEnum?, PropertyBaseClass>), "System.Collections.Generic.KeyValuePair<DummyEnum?, PropertyBaseClass>")]
+            [InlineData(typeof(IEnumerable<IDictionary<DummyEnum, PropertySuperClass>>), "System.Collections.Generic.IEnumerable<IDictionary<DummyEnum, PropertySuperClass>>")]
+            public void Should_Create_Friendly_Type_Name_With_Namespace(Type type, string expected)
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetFriendlyName(type, true);
+
+                actual.Should().Be(expected);
+            }
         }
 
         public class IsEnrichedEnum : TypeExtensionsFixture

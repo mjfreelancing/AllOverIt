@@ -351,9 +351,23 @@ namespace AllOverIt.Extensions
 
         /// <summary>A utility method that returns a print-friendly name for a given type.</summary>
         /// <param name="type">The type to generate a print-friendly name for.</param>
+        /// <param name="fullyQualified">When <see langword="True"/> the name will be prefixed with its namespace and any parent declaring types.</param>
         /// <returns>A print-friendly name for a given type.</returns>
-        public static string GetFriendlyName(this Type type)
+        public static string GetFriendlyName(this Type type, bool fullyQualified = false)
         {
+            static string GetFullyQualifiedPrefix(Type type, string current)
+            {
+                if (type.DeclaringType is null)
+                {
+                    return type.Namespace is null
+                        ? current
+                        : $"{type.Namespace}.{current}";
+                }
+
+                // Not using type.FullName as it may need beautifying too
+                return GetFullyQualifiedPrefix(type.DeclaringType, $"{type.DeclaringType.GetFriendlyName()}.{current}");
+            }
+
             if (type.IsGenericType() && !type.IsNullableType())
             {
                 var typeName = type.Name;
@@ -366,9 +380,15 @@ namespace AllOverIt.Extensions
                     typeName = typeName.Remove(backtickIndex);
                 }
 
-                var genericTypeNames = type.GetGenericArguments().Select(GetFriendlyName);
+                var genericTypeNames = type.GetGenericArguments().Select(type => GetFriendlyName(type, false));
 
                 var stringBuilder = new StringBuilder();
+
+                if (fullyQualified && type.Namespace is not null)
+                {
+                    stringBuilder.Append(type.Namespace);
+                    stringBuilder.Append('.');
+                }
 
                 stringBuilder.Append(typeName);
                 stringBuilder.Append('<');
@@ -378,9 +398,13 @@ namespace AllOverIt.Extensions
                 return stringBuilder.ToString();
             }
 
-            return type.IsNullableType()
+            var name = type.IsNullableType()
               ? $"{type.GetGenericArguments().Single().Name}?"
               : type.Name;
+
+            return fullyQualified
+                ? GetFullyQualifiedPrefix(type, name)
+                : name;
         }
 
         /// <summary>Determines if the provided type inherits from EnrichedEnum&lt;TEnum&gt;.</summary>

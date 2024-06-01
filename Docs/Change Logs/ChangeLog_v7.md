@@ -6,6 +6,7 @@
 * Minor performance improvements
 * PropertyInfo extension methods used to obtain information about a property can now specify if the request is for the getter, setter, or both.
 * Added optional Tags to breadcrumb data
+* Updated GetFriendlyName() to optionally include declaring types and namespace
 * Breaking: Removed ability to explicitly set breadcrumb data CallerName, FilePath, LineNumber.
   Metadata and Tags can also be set via a fluent syntax after calling one of the Add() extension methods.
 
