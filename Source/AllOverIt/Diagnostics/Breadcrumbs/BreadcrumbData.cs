@@ -1,6 +1,4 @@
-﻿using AllOverIt.Assertion;
-
-namespace AllOverIt.Diagnostics.Breadcrumbs
+﻿namespace AllOverIt.Diagnostics.Breadcrumbs
 {
     /// <summary>Contains breadcrumb information at a point in time.</summary>
     public sealed class BreadcrumbData
@@ -8,7 +6,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         private static long _counter;
 
         internal object? _metadata;
-        internal string[]? _tags;
+        internal string[]? _tags = [];
 
         internal long Counter { get; }
 
@@ -37,7 +35,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             init => _metadata = value;
         }
 
-        /// <summary>An optional tag associated with the data that can be used to later collate related content.</summary>
+        /// <summary>Optional tags associated with the data that can be used to later collate related content.</summary>
         public string[]? Tags
         {
             get => _tags;
