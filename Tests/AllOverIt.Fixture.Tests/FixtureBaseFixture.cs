@@ -627,13 +627,13 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Create_Many_Populated_Class()
             {
-                var expectedInts = CreateMany<int>();
+                var expectedIntegers = CreateMany<int>();
                 var expectedStrings = CreateMany<string>();
 
                 var intIndex = 0;
                 var strIndex = 0;
 
-                Fixture.Register(() => expectedInts[intIndex++]);
+                Fixture.Register(() => expectedIntegers[intIndex++]);
                 Fixture.Register(() => expectedStrings[strIndex++]);
 
                 var values = CreateMany<DummyClass>();
@@ -641,7 +641,7 @@ namespace AllOverIt.Fixture.Tests
                 var index = 0;
                 foreach (var value in values)
                 {
-                    value.IntValue.Should().Be(expectedInts[index]);
+                    value.IntValue.Should().Be(expectedIntegers[index]);
                     value.StringValue.Should().Be(expectedStrings[index]);
 
                     index++;

@@ -499,7 +499,7 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is not cirtual.</summary>
+        /// <summary>Asserts that a property is not virtual.</summary>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
         /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
