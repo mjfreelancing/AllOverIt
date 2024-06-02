@@ -13,6 +13,10 @@
 * Breaking: Removed ability to explicitly set breadcrumb data CallerName, FilePath, LineNumber.
   Metadata and Tags can also be set via a fluent syntax after calling one of the Add() extension methods.
 
+### AllOverIt.Fixture
+
+* Added new property-based assertions, based on FluentAssertions. Refer to Properties.For<T>().
+
 ---
 
 
