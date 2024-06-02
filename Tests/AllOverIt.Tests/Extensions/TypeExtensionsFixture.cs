@@ -30,8 +30,8 @@ namespace AllOverIt.Tests.Extensions
         {
             private readonly int _value;
             public override double Prop3 { get; set; }
-
             private long Prop4 { get; set; }
+            private long Prop5 { set { } }
 
             public PropertySuperClass()
             {
@@ -178,7 +178,32 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), binding, false);
 
-                var expected = new[] { "Prop1", "Prop2", "Prop3", "Prop4" };
+                var expected = new[] { "Prop1", "Prop2", "Prop3", "Prop4", "Prop5" };
+
+                expected
+                  .Should()
+                  .BeEquivalentTo(actual.Select(item => item.Name));
+            }
+
+            [Fact]
+            public void Should_Include_Public_Set_Properties_only()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), BindingOptions.SetMethod, false);
+
+                var expected = new[] { "Prop1", "Prop2", "Prop3" };
+
+                expected
+                  .Should()
+                  .BeEquivalentTo(actual.Select(item => item.Name));
+            }
+
+            [Fact]
+            public void Should_Include_Private_Set_Properties_only()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(
+                    typeof(PropertySuperClass), BindingOptions.Private | BindingOptions.SetMethod, false);
+
+                var expected = new[] { "Prop4", "Prop5" };
 
                 expected
                   .Should()
@@ -893,6 +918,25 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Create_Friendly_Type_Name(Type type, string expected)
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetFriendlyName(type);
+
+                actual.Should().Be(expected);
+            }
+
+            [Theory]
+            [InlineData(typeof(object), "System.Object")]
+            [InlineData(typeof(int), "System.Int32")]
+            [InlineData(typeof(int?), "System.Int32?")]
+            [InlineData(typeof(Dictionary<int, string>.KeyCollection), "System.Collections.Generic.KeyCollection<Int32, String>")]     // has no backticks in the name and the inner types do not have a namespace
+            [InlineData(typeof(DummyEnum), "AllOverIt.Tests.Extensions.TypeExtensionsFixture.DummyEnum")]
+            [InlineData(typeof(DummyEnum?), "AllOverIt.Tests.Extensions.TypeExtensionsFixture.DummyEnum?")]
+            [InlineData(typeof(IEnumerable<DummyEnum>), "System.Collections.Generic.IEnumerable<DummyEnum>")]
+            [InlineData(typeof(IEnumerable<DummyEnum?>), "System.Collections.Generic.IEnumerable<DummyEnum?>")]
+            [InlineData(typeof(IDictionary<DummyEnum, PropertySuperClass>), "System.Collections.Generic.IDictionary<DummyEnum, PropertySuperClass>")]
+            [InlineData(typeof(KeyValuePair<DummyEnum?, PropertyBaseClass>), "System.Collections.Generic.KeyValuePair<DummyEnum?, PropertyBaseClass>")]
+            [InlineData(typeof(IEnumerable<IDictionary<DummyEnum, PropertySuperClass>>), "System.Collections.Generic.IEnumerable<IDictionary<DummyEnum, PropertySuperClass>>")]
+            public void Should_Create_Friendly_Type_Name_With_Namespace(Type type, string expected)
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetFriendlyName(type, true);
 
                 actual.Should().Be(expected);
             }

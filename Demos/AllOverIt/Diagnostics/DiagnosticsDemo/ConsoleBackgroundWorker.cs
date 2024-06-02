@@ -3,6 +3,7 @@ using AllOverIt.Diagnostics.Breadcrumbs;
 using AllOverIt.Diagnostics.Breadcrumbs.Extensions;
 using AllOverIt.Extensions;
 using AllOverIt.GenericHost;
+using DiagnosticsDemo.Extensions;
 using Microsoft.Extensions.Hosting;
 
 namespace DiagnosticsDemo
@@ -63,6 +64,8 @@ namespace DiagnosticsDemo
                 });
 
             await Task.WhenAll(tasks);
+
+            _breadcrumbs.AddIntArrayData(true);
 
             // The breadcrumbs will be logged by the main app after the user presses a key
 

@@ -3,6 +3,9 @@
     /// <summary>A collection of breadcrumb messages and metadata.</summary>
     public interface IBreadcrumbs : IEnumerable<BreadcrumbData>
     {
+        /// <summary>Gets the number of breadcrumb items.</summary>
+        int Count { get; }
+
         /// <summary>Controls whether or not breadcrumbs are collected.</summary>
         bool Enabled { get; set; }
 

@@ -9,6 +9,34 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {
     public class BreadcrumbsFixture : FixtureBase
     {
+        public class Count : BreadcrumbsFixture
+        {
+            [Fact]
+            public void Should_Be_Empty()
+            {
+                CreateBreadcrumbs().Count.Should().Be(0);
+            }
+
+            [Fact]
+            public void Should_Have_Expected_Count()
+            {
+                var expected = GetWithinRange(10, 20);
+
+                var breadcrumbs = CreateBreadcrumbs();
+
+                Enumerable
+                    .Range(1, expected)
+                    .ForEach((_, index) =>
+                    {
+                        var breadcrumb = Create<BreadcrumbData>();
+
+                        breadcrumbs.Add(breadcrumb);
+                    });
+
+                breadcrumbs.Count.Should().Be(expected);
+            }
+        }
+
         public class Constructor : BreadcrumbsFixture
         {
             [Fact]
@@ -252,7 +280,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                     FilePath = string.Empty,
                     LineNumber = 0,
                     Message = Create<string>(),
-                    Metadata = new { Value = Create<int>() }
+                    Metadata = new { Value = Create<int>() },
+                    Tags = [.. CreateMany<string>()]
                 };
 
                 var breadcrumb2 = new BreadcrumbData
@@ -260,7 +289,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                     CallerName = null,
                     FilePath = null,
                     LineNumber = 0,
-                    Message = Create<string>()
+                    Message = Create<string>(),
+                    Tags = [.. CreateMany<string>()]
                 };
 
                 var breadcrumb3 = new BreadcrumbData
@@ -293,7 +323,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumb1.FilePath,
                         breadcrumb1.LineNumber,
                         breadcrumb1.Message,
-                        breadcrumb1.Metadata
+                        breadcrumb1.Metadata,
+                        breadcrumb1.Tags
                     },
                     new
                     {
@@ -301,7 +332,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumb2.FilePath,
                         breadcrumb2.LineNumber,
                         breadcrumb2.Message,
-                        breadcrumb2.Metadata
+                        breadcrumb2.Metadata,
+                        breadcrumb2.Tags
                     },
                     new
                     {
@@ -309,7 +341,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumb3.FilePath,
                         breadcrumb3.LineNumber,
                         breadcrumb3.Message,
-                        breadcrumb3.Metadata
+                        breadcrumb3.Metadata,
+                        breadcrumb3.Tags
                     }
                 };
 
@@ -353,7 +386,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                     FilePath = string.Empty,
                     LineNumber = 0,
                     Message = Create<string>(),
-                    Metadata = new { Value = Create<int>() }
+                    Metadata = new { Value = Create<int>() },
+                    Tags = [.. CreateMany<string>()]
                 };
 
                 var breadcrumb2 = new BreadcrumbData
@@ -370,7 +404,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                     FilePath = Create<string>(),
                     LineNumber = Create<int>(),
                     Message = Create<string>(),
-                    Metadata = Create<int>()
+                    Metadata = Create<int>(),
+                    Tags = [.. CreateMany<string>()]
                 };
 
                 breadcrumbs.Add(breadcrumb1);
@@ -396,7 +431,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumb1.FilePath,
                         breadcrumb1.LineNumber,
                         breadcrumb1.Message,
-                        breadcrumb1.Metadata
+                        breadcrumb1.Metadata,
+                        breadcrumb1.Tags
                     },
                     new
                     {
@@ -404,7 +440,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumb2.FilePath,
                         breadcrumb2.LineNumber,
                         breadcrumb2.Message,
-                        breadcrumb2.Metadata
+                        breadcrumb2.Metadata,
+                        breadcrumb2.Tags
                     },
                     new
                     {
@@ -412,7 +449,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumb3.FilePath,
                         breadcrumb3.LineNumber,
                         breadcrumb3.Message,
-                        breadcrumb3.Metadata
+                        breadcrumb3.Metadata,
+                        breadcrumb3.Tags
                     }
                 };
 
