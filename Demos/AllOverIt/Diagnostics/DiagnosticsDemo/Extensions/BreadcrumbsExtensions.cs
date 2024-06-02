@@ -44,7 +44,7 @@ namespace DiagnosticsDemo.Extensions
             {
                 var current = enumerator.Current;
 
-                var hasTag = current?.Tags?.Contains(tag) ?? false;
+                var hasTag = current?.Tags.Contains(tag) ?? false;
 
                 if (hasTag)
                 {
@@ -52,11 +52,17 @@ namespace DiagnosticsDemo.Extensions
                 }
                 else
                 {
-                    yield return GetNextToYield(current, collated, collatedData);
+                    var nextToYield = GetNextToYield(current, collated, collatedData);
 
-                    current = null;
-                    collated = null;
-                    collatedData = null;
+                    yield return nextToYield;
+
+                    if (ReferenceEquals(nextToYield, collated))
+                    {
+                        collated = null;
+                        collatedData = null;
+
+                        yield return current;
+                    }
                 }
 
                 if (!enumerator.MoveNext())
