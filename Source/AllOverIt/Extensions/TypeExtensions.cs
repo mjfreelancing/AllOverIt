@@ -38,13 +38,6 @@ namespace AllOverIt.Extensions
                 ? bindingOptions
                 : BindingOptions.GetMethod;
 
-            if (!bindingOptions.HasFlag(BindingOptions.GetMethod) && !bindingOptions.HasFlag(BindingOptions.SetMethod))
-            {
-                bindingOptions |= BindingOptions.GetMethod;
-            }
-
-            // This implementation is better performing than using method/query LINQ queries
-
             foreach (var propInfo in typeInfo.GetPropertyInfo(declaredOnly))
             {
                 var includeInfo =

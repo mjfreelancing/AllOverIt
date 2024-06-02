@@ -146,12 +146,12 @@ namespace AllOverIt.Extensions
 
             if (accessor.HasFlag(PropertyAccessor.Get))
             {
-                result = result && predicate.Invoke(propertyInfo.GetMethod);
+                result = propertyInfo.GetMethod is not null && predicate.Invoke(propertyInfo.GetMethod);
             }
 
-            if (accessor.HasFlag(PropertyAccessor.Set))
+            if (result && accessor.HasFlag(PropertyAccessor.Set))
             {
-                result = result && propertyInfo.SetMethod is not null && predicate.Invoke(propertyInfo.SetMethod);
+                result = propertyInfo.SetMethod is not null && predicate.Invoke(propertyInfo.SetMethod);
             }
 
             return result;
