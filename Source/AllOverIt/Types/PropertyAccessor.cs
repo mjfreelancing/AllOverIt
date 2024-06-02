@@ -5,9 +5,9 @@
     public enum PropertyAccessor
     {
         /// <summary>Indicates the property's getter.</summary>
-        Get,
+        Get = 1,
 
         /// <summary>Indicates the property's setter.</summary>
-        Set
+        Set = 2
     }
 }

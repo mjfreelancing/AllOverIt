@@ -30,8 +30,8 @@ namespace AllOverIt.Tests.Extensions
         {
             private readonly int _value;
             public override double Prop3 { get; set; }
-
             private long Prop4 { get; set; }
+            private long Prop5 { set { } }
 
             public PropertySuperClass()
             {
@@ -178,7 +178,32 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), binding, false);
 
-                var expected = new[] { "Prop1", "Prop2", "Prop3", "Prop4" };
+                var expected = new[] { "Prop1", "Prop2", "Prop3", "Prop4", "Prop5" };
+
+                expected
+                  .Should()
+                  .BeEquivalentTo(actual.Select(item => item.Name));
+            }
+
+            [Fact]
+            public void Should_Include_Public_Set_Properties_only()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), BindingOptions.SetMethod, false);
+
+                var expected = new[] { "Prop1", "Prop2", "Prop3" };
+
+                expected
+                  .Should()
+                  .BeEquivalentTo(actual.Select(item => item.Name));
+            }
+
+            [Fact]
+            public void Should_Include_Private_Set_Properties_only()
+            {
+                var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(
+                    typeof(PropertySuperClass), BindingOptions.Private | BindingOptions.SetMethod, false);
+
+                var expected = new[] { "Prop4", "Prop5" };
 
                 expected
                   .Should()

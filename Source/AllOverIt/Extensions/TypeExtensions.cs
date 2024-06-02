@@ -34,14 +34,30 @@ namespace AllOverIt.Extensions
             var predicate = BindingOptionsHelper.BuildPropertyOrMethodBindingPredicate(bindingOptions);
             var typeInfo = type.GetTypeInfo();
 
+            var methodBindingOption = bindingOptions.HasFlag(BindingOptions.GetMethod) || bindingOptions.HasFlag(BindingOptions.SetMethod)
+                ? bindingOptions
+                : BindingOptions.GetMethod;
+
+            if (!bindingOptions.HasFlag(BindingOptions.GetMethod) && !bindingOptions.HasFlag(BindingOptions.SetMethod))
+            {
+                bindingOptions |= BindingOptions.GetMethod;
+            }
+
             // This implementation is better performing than using method/query LINQ queries
 
             foreach (var propInfo in typeInfo.GetPropertyInfo(declaredOnly))
             {
-                var methodInfo = propInfo.GetMethod;
+                var includeInfo =
+                    propInfo.GetMethod is not null &&
+                    methodBindingOption.HasFlag(BindingOptions.GetMethod) &&
+                    predicate.Invoke(propInfo.GetMethod);
 
-                // Ignore any properties without a getter
-                if (methodInfo != null && predicate.Invoke(methodInfo))
+                includeInfo = includeInfo ||
+                    propInfo.SetMethod is not null &&
+                    methodBindingOption.HasFlag(BindingOptions.SetMethod) &&
+                    predicate.Invoke(propInfo.SetMethod);
+
+                if (includeInfo)
                 {
                     yield return propInfo;
                 }
