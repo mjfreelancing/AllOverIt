@@ -34,22 +34,27 @@ namespace AllOverIt.Extensions
             var predicate = BindingOptionsHelper.BuildPropertyOrMethodBindingPredicate(bindingOptions);
             var typeInfo = type.GetTypeInfo();
 
-            // This implementation is better performing than using method/query LINQ queries
-
-            var propInfos = new List<PropertyInfo>();
+            var methodBindingOption = bindingOptions.HasFlag(BindingOptions.GetMethod) || bindingOptions.HasFlag(BindingOptions.SetMethod)
+                ? bindingOptions
+                : BindingOptions.GetMethod;
 
             foreach (var propInfo in typeInfo.GetPropertyInfo(declaredOnly))
             {
-                var methodInfo = propInfo.GetMethod;
+                var includeInfo =
+                    propInfo.GetMethod is not null &&
+                    methodBindingOption.HasFlag(BindingOptions.GetMethod) &&
+                    predicate.Invoke(propInfo.GetMethod);
 
-                // Ignore any properties without a getter
-                if (methodInfo != null && predicate.Invoke(methodInfo))
+                includeInfo = includeInfo ||
+                    propInfo.SetMethod is not null &&
+                    methodBindingOption.HasFlag(BindingOptions.SetMethod) &&
+                    predicate.Invoke(propInfo.SetMethod);
+
+                if (includeInfo)
                 {
-                    propInfos.Add(propInfo);
+                    yield return propInfo;
                 }
             }
-
-            return propInfos;
         }
 
         /// <summary>Gets the <see cref="FieldInfo"/> (field metadata) for a given public or protected field on a <see cref="Type"/>.</summary>
@@ -78,17 +83,13 @@ namespace AllOverIt.Extensions
 
             // This implementation is better performing than using method/query LINQ queries
 
-            var fieldInfos = new List<FieldInfo>();
-
             foreach (var fieldInfo in typeInfo.GetFieldInfo(declaredOnly))
             {
                 if (predicate.Invoke(fieldInfo))
                 {
-                    fieldInfos.Add(fieldInfo);
+                    yield return fieldInfo;
                 }
             }
-
-            return fieldInfos;
         }
 
         /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <see cref="Type"/> and binding option.</summary>
@@ -359,9 +360,29 @@ namespace AllOverIt.Extensions
 
         /// <summary>A utility method that returns a print-friendly name for a given type.</summary>
         /// <param name="type">The type to generate a print-friendly name for.</param>
+        /// <param name="fullyQualified">When <see langword="True"/> the name will be prefixed with its namespace and any parent declaring types.</param>
         /// <returns>A print-friendly name for a given type.</returns>
-        public static string GetFriendlyName(this Type type)
+        public static string GetFriendlyName(this Type type, bool fullyQualified = false)
         {
+            static string GetFullyQualifiedPrefix(Type type, string current)
+            {
+                if (type.IsNullableType())
+                {
+                    // unwrap Nullable<T>
+                    type = type.GetGenericArguments().Single();
+                }
+
+                if (type.DeclaringType is null)
+                {
+                    return type.Namespace is null
+                        ? current
+                        : $"{type.Namespace}.{current}";
+                }
+
+                // Not using type.FullName as it may need beautifying too
+                return GetFullyQualifiedPrefix(type.DeclaringType, $"{type.DeclaringType.GetFriendlyName()}.{current}");
+            }
+
             if (type.IsGenericType() && !type.IsNullableType())
             {
                 var typeName = type.Name;
@@ -374,9 +395,15 @@ namespace AllOverIt.Extensions
                     typeName = typeName.Remove(backtickIndex);
                 }
 
-                var genericTypeNames = type.GetGenericArguments().Select(GetFriendlyName);
+                var genericTypeNames = type.GetGenericArguments().Select(type => GetFriendlyName(type, false));
 
                 var stringBuilder = new StringBuilder();
+
+                if (fullyQualified && type.Namespace is not null)
+                {
+                    stringBuilder.Append(type.Namespace);
+                    stringBuilder.Append('.');
+                }
 
                 stringBuilder.Append(typeName);
                 stringBuilder.Append('<');
@@ -386,9 +413,13 @@ namespace AllOverIt.Extensions
                 return stringBuilder.ToString();
             }
 
-            return type.IsNullableType()
+            var name = type.IsNullableType()
               ? $"{type.GetGenericArguments().Single().Name}?"
               : type.Name;
+
+            return fullyQualified
+                ? GetFullyQualifiedPrefix(type, name)
+                : name;
         }
 
         /// <summary>Determines if the provided type inherits from EnrichedEnum&lt;TEnum&gt;.</summary>

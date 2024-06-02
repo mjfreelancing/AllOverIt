@@ -10,6 +10,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
     {
         private interface IEnumerableWrapper
         {
+            int Count { get; }
             void Add(BreadcrumbData breadcrumb);
             void Clear();
             IEnumerator<BreadcrumbData> GetEnumerator();
@@ -19,6 +20,8 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         {
             private readonly List<BreadcrumbData> _breadcrumbs = [];
             private readonly int _maxCapacity;
+
+            public int Count => _breadcrumbs.Count;
 
             public SingleThreadListWrapper(BreadcrumbsOptions options)
             {
@@ -50,11 +53,22 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         {
             private readonly SortedList<long, BreadcrumbData> _breadcrumbs = [];
             private readonly object _syncRoot;
-            private readonly int _maxCapactiy;
+            private readonly int _maxCapacity;
+
+            public int Count
+            {
+                get
+                {
+                    lock (_syncRoot)
+                    {
+                        return _breadcrumbs.Count;
+                    }
+                }
+            }
 
             public MultiThreadListWrapper(BreadcrumbsOptions options)
             {
-                _maxCapactiy = options.MaxCapacity;
+                _maxCapacity = options.MaxCapacity;
                 _syncRoot = ((ICollection) _breadcrumbs).SyncRoot;
             }
 
@@ -64,9 +78,9 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
                 {
                     _breadcrumbs.Add(breadcrumb.Counter, breadcrumb);
 
-                    if (_maxCapactiy > 0)
+                    if (_maxCapacity > 0)
                     {
-                        while (_breadcrumbs.Count > _maxCapactiy)
+                        while (_breadcrumbs.Count > _maxCapacity)
                         {
                             _breadcrumbs.RemoveAt(0);
                         }
@@ -101,6 +115,9 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         private readonly IReadWriteLock _readWriteLock;
         private bool _enabled;
         private DateTime _startTimestamp;
+
+        /// <inheritdoc />
+        public int Count => _breadcrumbs.Count;
 
         /// <inheritdoc />
         public bool Enabled

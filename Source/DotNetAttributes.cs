@@ -77,31 +77,3 @@ namespace System.Diagnostics.CodeAnalysis
     }
 #endif
 }
-
-namespace System.Diagnostics
-{
-#if !NET7_0_OR_GREATER
-#pragma warning disable IDE0079 // Remove unnecessary suppression
-#pragma warning disable CS1591  // Missing XML comment for publicly visible type or member
-    [ExcludeFromCodeCoverage]
-    public sealed class UnreachableException : Exception
-    {
-        public UnreachableException()
-            : base("The program executed an instruction that was thought to be unreachable.")
-        {
-        }
-
-        public UnreachableException(string? message)
-            : base(message)
-        {
-        }
-
-        public UnreachableException(string? message, Exception? innerException)
-            : base(message, innerException)
-        {
-        }
-    }
-#pragma warning restore CS1591
-#pragma warning restore IDE0079 // Remove unnecessary suppression
-#endif
-}

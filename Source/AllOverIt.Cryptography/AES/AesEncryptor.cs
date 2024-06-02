@@ -51,7 +51,6 @@ namespace AllOverIt.Cryptography.AES
                     CipherMode.CFB => aes.GetCiphertextLengthCfb(plainTextLength, Configuration.Padding),
                     CipherMode.ECB => aes.GetCiphertextLengthEcb(plainTextLength, Configuration.Padding),
 
-                    // Suitable for UnreachableException Net 7 and above
                     _ => throw new InvalidOperationException($"Unexpected cipher mode '{Configuration.Mode}' for the AES algorithm."),
                 };
             }

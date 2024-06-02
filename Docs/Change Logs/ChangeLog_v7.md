@@ -1,3 +1,25 @@
+#  Version 7.15.0
+## 03 Jun 2024
+
+### AllOverIt
+
+* Minor performance improvements
+* PropertyInfo extension methods used to obtain information about a property can now specify if the request is for the getter, setter, or both.
+* Added optional Tags to breadcrumb data
+* Updated GetFriendlyName() to optionally include declaring types and namespace
+* Breaking: Updated BindingOptions.GetMethod and BindingOptions.SetMethod to provide the ability to filter for properties based on their Get and Set
+  methods. Previously, all filtering was based solely on a property's getter. If BindingOptions.All is used, then property setters will also be
+  considered. The TypeExtensions.GetPropertyInfo() may return additional properties if BindingOptions.All is used.
+* Breaking: Removed ability to explicitly set breadcrumb data CallerName, FilePath, LineNumber.
+  Metadata and Tags can also be set via a fluent syntax after calling one of the Add() extension methods.
+
+### AllOverIt.Fixture
+
+* Added new property-based assertions, based on FluentAssertions. Refer to Properties.For<T>().
+
+---
+
+
 #  Version 7.14.1
 ## 27 May 2024
 

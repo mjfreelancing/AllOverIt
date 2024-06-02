@@ -3,6 +3,7 @@
     /// <summary>A composite that caters for asynchronous disposal of multiple IAsyncDisposable's using a synchronous Dispose().</summary>
     public sealed class CompositeAsyncDisposable : IDisposable, IAsyncDisposable
     {
+        private bool _disposed;
         private readonly List<IAsyncDisposable> _disposables = [];
 
         /// <summary>Returns the collection of disposables.</summary>
@@ -27,11 +28,13 @@
         /// perform the disposal on the calling thread.</remarks>
         public void Dispose()
         {
-            if (_disposables.Count != 0)
+            if (_disposed)
             {
-                // Dispose should not throw, so it is assumed this will not throw
-                DisposeResources();
+                return;
             }
+
+            // Dispose should not throw, so it is assumed this will not throw
+            DisposeResources();
         }
 
         /// <summary>Disposes each of the registered disposables. This method does not return until they are all processed.</summary>
@@ -39,11 +42,13 @@
         /// perform the disposal on the calling thread.</remarks>
         public async ValueTask DisposeAsync()
         {
-            if (_disposables.Count != 0)
+            if (_disposed)
             {
-                // Dispose should not throw, so it is assumed this will not throw
-                await DisposeResourcesAsync().ConfigureAwait(false);
+                return;
             }
+
+            // Dispose should not throw, so it is assumed this will not throw
+            await DisposeResourcesAsync().ConfigureAwait(false);
         }
 
         private void DisposeResources()
@@ -79,8 +84,10 @@
             }
             finally
             {
-                _disposables.Clear();
                 // Not setting null - saves having to check in multiple places should there be re-entry
+                _disposables.Clear();
+
+                _disposed = true;
             }
         }
     }

@@ -1,3 +1,4 @@
+using AllOverIt.Extensions;
 using AllOverIt.Fixture.Exceptions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Fixture.Tests.Dummies;
@@ -12,6 +13,30 @@ namespace AllOverIt.Fixture.Tests
 {
     public class FixtureBaseFixture : FixtureBase
     {
+        private sealed class DefaultConstructorExceptionDummy : Exception
+        {
+            public DefaultConstructorExceptionDummy()
+                : base("abc")
+            {
+            }
+        }
+
+        private sealed class NoDefaultConstructorExceptionDummy : Exception
+        {
+            public NoDefaultConstructorExceptionDummy(string message)
+                : base(message)
+            {
+            }
+        }
+
+        private sealed class ConstructorWithMessageExceptionDummy : Exception
+        {
+            public ConstructorWithMessageExceptionDummy(string message)
+                : base(message)
+            {
+            }
+        }
+
         public class Constructor : FixtureBaseFixture
         {
             private class FixtureDummy : FixtureBase
@@ -602,13 +627,13 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Create_Many_Populated_Class()
             {
-                var expectedInts = CreateMany<int>();
+                var expectedIntegers = CreateMany<int>();
                 var expectedStrings = CreateMany<string>();
 
                 var intIndex = 0;
                 var strIndex = 0;
 
-                Fixture.Register(() => expectedInts[intIndex++]);
+                Fixture.Register(() => expectedIntegers[intIndex++]);
                 Fixture.Register(() => expectedStrings[strIndex++]);
 
                 var values = CreateMany<DummyClass>();
@@ -616,7 +641,7 @@ namespace AllOverIt.Fixture.Tests
                 var index = 0;
                 foreach (var value in values)
                 {
-                    value.IntValue.Should().Be(expectedInts[index]);
+                    value.IntValue.Should().Be(expectedIntegers[index]);
                     value.StringValue.Should().Be(expectedStrings[index]);
 
                     index++;
@@ -1025,38 +1050,6 @@ namespace AllOverIt.Fixture.Tests
                 duplicates.Should().BeFalse();
             }
         }
-
-
-
-
-
-        private sealed class DefaultConstructorExceptionDummy : Exception
-        {
-            public DefaultConstructorExceptionDummy()
-                : base("abc")
-            {
-            }
-        }
-
-        private sealed class NoDefaultConstructorExceptionDummy : Exception
-        {
-            public NoDefaultConstructorExceptionDummy(string message)
-                : base(message)
-            {
-            }
-        }
-
-        private sealed class ConstructorWithMessageExceptionDummy : Exception
-        {
-            public ConstructorWithMessageExceptionDummy(string message)
-                : base(message)
-            {
-            }
-        }
-
-
-
-
 
         public class AssertDefaultConstructor_ : FixtureBaseFixture
         {

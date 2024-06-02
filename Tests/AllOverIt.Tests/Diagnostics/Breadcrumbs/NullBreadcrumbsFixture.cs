@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Diagnostics.Breadcrumbs;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Patterns.Specification.Extensions;
 using FluentAssertions;
@@ -18,6 +19,32 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 var actual = NullBreadcrumbs.Instance;
 
                 actual.Should().BeOfType<NullBreadcrumbs>();
+            }
+        }
+
+        public class Count : BreadcrumbsFixture
+        {
+            [Fact]
+            public void Should_Be_Empty()
+            {
+                NullBreadcrumbs.Instance.Count.Should().Be(0);
+            }
+
+            [Fact]
+            public void Should_Have_Expected_Count()
+            {
+                var breadcrumbs = NullBreadcrumbs.Instance;
+
+                Enumerable
+                    .Range(1, GetWithinRange(10, 20))
+                    .ForEach((_, index) =>
+                    {
+                        var breadcrumb = Create<BreadcrumbData>();
+
+                        breadcrumbs.Add(breadcrumb);
+                    });
+
+                breadcrumbs.Count.Should().Be(0);
             }
         }
 

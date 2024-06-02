@@ -63,7 +63,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         FilePath = (string)null,
                         LineNumber = 0,
                         Message = $"Call Site: {fullCallerName}()",
-                        Metadata = (object)null
+                        Metadata = (object)null,
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -99,7 +100,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         FilePath = (string)null,
                         LineNumber = 0,
                         Message = $"Call Site: {fullCallerName}()",
-                        Metadata = metadata
+                        Metadata = metadata,
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -137,7 +139,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         FilePath = (string)null,
                         LineNumber = 0,
                         Message = $"Call Site: {fullCallerName}()",
-                        Metadata = metadata
+                        Metadata = metadata,
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -204,7 +207,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         FilePath = GetCallerFilePath(),
                         LineNumber = GetCallerLineNumber() - 12,
                         Message = $@"Call Site: AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions.BreadcrumbsExtensionsFixture+AddExtendedCallSite.{nameof(Should_Add_Breadcrumb_Message)}(), at {GetCallerFilePath()}:{GetCallerLineNumber()-13}",
-                        Metadata = (object)null
+                        Metadata = (object)null,
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -254,7 +258,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         FilePath = (string)null,
                         LineNumber = 0,
                         Message = message,
-                        Metadata = (object)null
+                        Metadata = (object)null,
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -290,7 +295,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             [Fact]
             public void Should_Throw_When_Metadata_Null()
             {
-                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, Create<string>(), null))
+                Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, Create<string>(), (object) null))
                   .Should()
                   .Throw<ArgumentNullException>()
                   .WithNamedMessageWhenNull("metadata");
@@ -314,7 +319,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         FilePath = (string)null,
                         LineNumber = 0,
                         Message = message,
-                        Metadata = metadata
+                        Metadata = metadata,
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -373,7 +379,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         FilePath = GetCallerFilePath(),
                         LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
-                        Metadata = (object)null
+                        Metadata = (object)null,
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -406,7 +413,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         FilePath = GetCallerFilePath(),
                         LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
-                        Metadata = (object)null
+                        Metadata = (object)null,
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -440,7 +448,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         FilePath = GetCallerFilePath(),
                         LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
-                        Metadata = (object)null
+                        Metadata = (object)null,
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -496,10 +505,13 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     "message");
             }
 
-            [Fact]
-            public void Should_Add_Breadcrumb()
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Add_Breadcrumb(bool includeMetadata)
             {
                 var message = Create<string>();
+                object metadata = includeMetadata ? Create<int>() : null;
 
                 BreadcrumbsExtensions.Add(_breadcrumbs, this, message, _metadata);
 
@@ -513,7 +525,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         FilePath = GetCallerFilePath(),
                         LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
-                        Metadata = _metadata
+                        Metadata = _metadata,
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -546,7 +559,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         FilePath = GetCallerFilePath(),
                         LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
-                        Metadata = _metadata
+                        Metadata = _metadata,
+                        Tags = Array.Empty<string>()
                     }
                 };
 
@@ -580,7 +594,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                         FilePath = GetCallerFilePath(),
                         LineNumber = GetCallerLineNumber() - 10,
                         Message = message,
-                        Metadata = _metadata
+                        Metadata = _metadata,
+                        Tags = Array.Empty<string>()
                     }
                 };
 

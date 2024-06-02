@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
+using AllOverIt.Types;
 using FluentAssertions;
 using System.Reflection;
 using PropertyInfoExtensions = AllOverIt.Extensions.PropertyInfoExtensions;
@@ -14,7 +15,7 @@ namespace AllOverIt.Tests.Extensions
             public abstract int Prop1 { get; set; }
         }
 
-        private class DummyClass : DummyClassBase
+        private class DummyClass1 : DummyClassBase
         {
             public override int Prop1 { get; set; }
             internal int Prop2 { get; set; }
@@ -26,6 +27,22 @@ namespace AllOverIt.Tests.Extensions
             public string Prop5 { get; set; }
             public static double Prop6 { get; set; }
             public virtual bool Prop7 { get; set; }
+        }
+
+        private abstract class DummyClass2
+        {
+            public abstract int Prop1 { get; }
+
+            internal int Prop2 { get; private set; }
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
+            private int Prop3 { get; }
+
+            protected int Prop4 { get; private set; }
+            public string Prop5 { get; protected set; }
+            public static double Prop6 { get; internal set; }
+            public virtual bool Prop7 { get; init; }
+            public bool Prop8 { set { } }
         }
 
         public class IsAbstract : PropertyInfoExtensionsFixture
@@ -42,22 +59,27 @@ namespace AllOverIt.Tests.Extensions
                     .WithNamedMessageWhenNull("propertyInfo");
             }
 
-            [Theory]
-            [InlineData("Prop1")]
-            public void Should_Determine_Base_Is_Abstract(string name)
+            [Fact]
+            public void Should_Return_False_When_No_Accessor()
             {
-                var actual = GetPropertyInfo<DummyClassBase>(name).IsAbstract();
-
-                actual.Should().BeTrue();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop1)).IsAbstract(PropertyAccessor.Set).Should().BeFalse();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop8)).IsAbstract(PropertyAccessor.Get).Should().BeFalse();
             }
 
-            [Theory]
-            [InlineData("Prop1")]
-            public void Should_Determine_Derived_Is_Abstract(string name)
+            [Fact]
+            public void Should_Determine_Base_Is_Abstract()
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsAbstract();
+                GetPropertyInfo<DummyClassBase>(nameof(DummyClassBase.Prop1)).IsAbstract(PropertyAccessor.Get).Should().BeTrue();
+                GetPropertyInfo<DummyClassBase>(nameof(DummyClassBase.Prop1)).IsAbstract(PropertyAccessor.Set).Should().BeTrue();
+                GetPropertyInfo<DummyClassBase>(nameof(DummyClassBase.Prop1)).IsAbstract(PropertyAccessor.Get | PropertyAccessor.Set).Should().BeTrue();
 
-                actual.Should().BeFalse();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop1)).IsAbstract(PropertyAccessor.Get).Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Determine_Derived_Is_Not_Abstract()
+            {
+                GetPropertyInfo<DummyClass1>(nameof(DummyClass1.Prop1)).IsAbstract(PropertyAccessor.Get).Should().BeFalse();
             }
 
             [Theory]
@@ -69,9 +91,10 @@ namespace AllOverIt.Tests.Extensions
             [InlineData("Prop7")]
             public void Should_Not_Determine_Is_Abstract(string name)
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsAbstract();
+                GetPropertyInfo<DummyClass1>(name).IsAbstract().Should().BeFalse();
+                GetPropertyInfo<DummyClass2>(name).IsAbstract().Should().BeFalse();
 
-                actual.Should().BeFalse();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop1)).IsAbstract(PropertyAccessor.Set).Should().BeFalse();    // no setter
             }
         }
 
@@ -89,13 +112,21 @@ namespace AllOverIt.Tests.Extensions
                     .WithNamedMessageWhenNull("propertyInfo");
             }
 
-            [Theory]
-            [InlineData("Prop2")]
-            public void Should_Determine_Is_Internal(string name)
+            [Fact]
+            public void Should_Return_False_When_No_Accessor()
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsInternal();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop1)).IsInternal(PropertyAccessor.Set).Should().BeFalse();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop8)).IsInternal(PropertyAccessor.Get).Should().BeFalse();
+            }
 
-                actual.Should().BeTrue();
+            [Fact]
+            public void Should_Determine_Is_Internal()
+            {
+                GetPropertyInfo<DummyClass1>(nameof(DummyClass1.Prop2)).IsInternal(PropertyAccessor.Get).Should().BeTrue();
+                GetPropertyInfo<DummyClass1>(nameof(DummyClass1.Prop2)).IsInternal(PropertyAccessor.Set).Should().BeTrue();
+                GetPropertyInfo<DummyClass1>(nameof(DummyClass1.Prop2)).IsInternal(PropertyAccessor.Get | PropertyAccessor.Set).Should().BeTrue();
+
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop2)).IsInternal(PropertyAccessor.Get).Should().BeTrue();
             }
 
             [Theory]
@@ -107,9 +138,10 @@ namespace AllOverIt.Tests.Extensions
             [InlineData("Prop7")]
             public void Should_Not_Determine_Is_Internal(string name)
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsInternal();
+                GetPropertyInfo<DummyClass1>(name).IsInternal().Should().BeFalse();
 
-                actual.Should().BeFalse();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop2)).IsInternal(PropertyAccessor.Set).Should().BeFalse();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop2)).IsInternal(PropertyAccessor.Get | PropertyAccessor.Set).Should().BeFalse();
             }
         }
 
@@ -127,11 +159,18 @@ namespace AllOverIt.Tests.Extensions
                     .WithNamedMessageWhenNull("propertyInfo");
             }
 
+            [Fact]
+            public void Should_Return_False_When_No_Accessor()
+            {
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop1)).IsPrivate(PropertyAccessor.Set).Should().BeFalse();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop8)).IsPrivate(PropertyAccessor.Get).Should().BeFalse();
+            }
+
             [Theory]
             [InlineData("Prop3")]
             public void Should_Determine_Is_Private(string name)
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsPrivate();
+                var actual = GetPropertyInfo<DummyClass1>(name).IsPrivate();
 
                 actual.Should().BeTrue();
             }
@@ -145,7 +184,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData("Prop7")]
             public void Should_Not_Determine_Is_Private(string name)
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsPrivate();
+                var actual = GetPropertyInfo<DummyClass1>(name).IsPrivate();
 
                 actual.Should().BeFalse();
             }
@@ -165,11 +204,18 @@ namespace AllOverIt.Tests.Extensions
                     .WithNamedMessageWhenNull("propertyInfo");
             }
 
+            [Fact]
+            public void Should_Return_False_When_No_Accessor()
+            {
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop1)).IsProtected(PropertyAccessor.Set).Should().BeFalse();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop8)).IsProtected(PropertyAccessor.Get).Should().BeFalse();
+            }
+
             [Theory]
             [InlineData("Prop4")]
             public void Should_Determine_Is_Protected(string name)
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsProtected();
+                var actual = GetPropertyInfo<DummyClass1>(name).IsProtected();
 
                 actual.Should().BeTrue();
             }
@@ -183,7 +229,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData("Prop7")]
             public void Should_Not_Determine_Is_Protected(string name)
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsProtected();
+                var actual = GetPropertyInfo<DummyClass1>(name).IsProtected();
 
                 actual.Should().BeFalse();
             }
@@ -203,6 +249,13 @@ namespace AllOverIt.Tests.Extensions
                     .WithNamedMessageWhenNull("propertyInfo");
             }
 
+            [Fact]
+            public void Should_Return_False_When_No_Accessor()
+            {
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop1)).IsPublic(PropertyAccessor.Set).Should().BeFalse();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop8)).IsPublic(PropertyAccessor.Get).Should().BeFalse();
+            }
+
             [Theory]
             [InlineData("Prop1")]
             [InlineData("Prop5")]
@@ -210,7 +263,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData("Prop7")]
             public void Should_Determine_Is_Public(string name)
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsPublic();
+                var actual = GetPropertyInfo<DummyClass1>(name).IsPublic();
 
                 actual.Should().BeTrue();
             }
@@ -221,7 +274,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData("Prop4")]
             public void Should_Not_Determine_Is_Public(string name)
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsPublic();
+                var actual = GetPropertyInfo<DummyClass1>(name).IsPublic();
 
                 actual.Should().BeFalse();
             }
@@ -241,11 +294,18 @@ namespace AllOverIt.Tests.Extensions
                     .WithNamedMessageWhenNull("propertyInfo");
             }
 
+            [Fact]
+            public void Should_Return_False_When_No_Accessor()
+            {
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop1)).IsStatic(PropertyAccessor.Set).Should().BeFalse();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop8)).IsStatic(PropertyAccessor.Get).Should().BeFalse();
+            }
+
             [Theory]
             [InlineData("Prop6")]
             public void Should_Determine_Is_Static(string name)
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsStatic();
+                var actual = GetPropertyInfo<DummyClass1>(name).IsStatic();
 
                 actual.Should().BeTrue();
             }
@@ -259,7 +319,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData("Prop7")]
             public void Should_Not_Determine_Is_Static(string name)
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsStatic();
+                var actual = GetPropertyInfo<DummyClass1>(name).IsStatic();
 
                 actual.Should().BeFalse();
             }
@@ -279,12 +339,19 @@ namespace AllOverIt.Tests.Extensions
                     .WithNamedMessageWhenNull("propertyInfo");
             }
 
+            [Fact]
+            public void Should_Return_False_When_No_Accessor()
+            {
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop1)).IsVirtual(PropertyAccessor.Set).Should().BeFalse();
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop8)).IsVirtual(PropertyAccessor.Get).Should().BeFalse();
+            }
+
             [Theory]
             [InlineData("Prop1")]     // it's abstract, so it's virtual
             [InlineData("Prop7")]
             public void Should_Determine_Is_Virtual(string name)
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsVirtual();
+                var actual = GetPropertyInfo<DummyClass1>(name).IsVirtual();
 
                 actual.Should().BeTrue();
             }
@@ -297,7 +364,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData("Prop6")]
             public void Should_Not_Determine_Is_Virtual(string name)
             {
-                var actual = GetPropertyInfo<DummyClass>(name).IsVirtual();
+                var actual = GetPropertyInfo<DummyClass1>(name).IsVirtual();
 
                 actual.Should().BeFalse();
             }
@@ -340,6 +407,48 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        public class IsInitOnly : PropertyInfoExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PropertyInfo_Null()
+            {
+                Invoking(() =>
+                {
+                    PropertyInfoExtensions.IsInitOnly(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyInfo");
+            }
+
+            [Fact]
+            public void Should_Determine_Is_Init()
+            {
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop7))
+                    .IsInitOnly()
+                    .Should()
+                    .BeTrue();
+            }
+
+            [Fact]
+            public void Should_Determine_Is_Not_Init()
+            {
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop6))
+                    .IsInitOnly()
+                    .Should()
+                    .BeFalse();
+            }
+
+            [Fact]
+            public void Should_Determine_Is_Not_Init_When_Only_Has_Getter()
+            {
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop1))
+                    .IsInitOnly()
+                    .Should()
+                    .BeFalse();
+            }
+        }
+
         public class CreateMemberAccessLambda : PropertyInfoExtensionsFixture
         {
             [Fact]
@@ -347,7 +456,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(null, Create<string>());
+                        PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass1, string>(null, Create<string>());
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -360,18 +469,18 @@ namespace AllOverIt.Tests.Extensions
                 AssertThrowsWhenStringNullOrEmptyOrWhitespace(
                     stringValue =>
                     {
-                        var propInfo = GetPropertyInfo<DummyClass>(nameof(DummyClass.Prop5));
+                        var propInfo = GetPropertyInfo<DummyClass1>(nameof(DummyClass1.Prop5));
 
-                        PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, stringValue);
+                        PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass1, string>(propInfo, stringValue);
                     }, "parameterName");
             }
 
             [Fact]
             public void Should_Create_Expression()
             {
-                var propInfo = GetPropertyInfo<DummyClass>(nameof(DummyClass.Prop5));
+                var propInfo = GetPropertyInfo<DummyClass1>(nameof(DummyClass1.Prop5));
 
-                var lambda = PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, "item");
+                var lambda = PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass1, string>(propInfo, "item");
 
                 var actual = lambda.ToString();
 
@@ -381,11 +490,11 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Evaluate_Expression()
             {
-                var propInfo = GetPropertyInfo<DummyClass>(nameof(DummyClass.Prop5));
+                var propInfo = GetPropertyInfo<DummyClass1>(nameof(DummyClass1.Prop5));
 
-                var lambda = PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass, string>(propInfo, "item");
+                var lambda = PropertyInfoExtensions.CreateMemberAccessLambda<DummyClass1, string>(propInfo, "item");
 
-                var dummy = Create<DummyClass>();
+                var dummy = Create<DummyClass1>();
                 var expected = dummy.Prop5;
 
                 var compiled = lambda.Compile();
