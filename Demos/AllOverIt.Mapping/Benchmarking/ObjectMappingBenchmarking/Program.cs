@@ -14,7 +14,8 @@ namespace ObjectMappingBenchmarking
             BenchmarkRunner.Run<MappingTests>();
 #else
             var tests = new MappingTests();
-            tests.ObjectMapper_PreConfigured_CopyTo_Target();
+
+            tests.Existing_Mapper_Configured_New_Target_New();
 #endif
         }
     }

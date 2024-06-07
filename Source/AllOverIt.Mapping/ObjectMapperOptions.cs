@@ -1,14 +1,33 @@
-﻿namespace AllOverIt.Mapping
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
+
+namespace AllOverIt.Mapping
 {
-    /// <summary>/// Provides global operations for all object mapping.</summary>
-    public sealed class ObjectMapperOptions
+    /// <summary>Provides global operations for all object mapping.</summary>
+    internal sealed class ObjectMapperOptions : IObjectMapperOptions
     {
-        /// <summary>
-        /// <para>The default mapping behaviour of collections when the source is null is to create an empty array, list, or
-        /// dictionary. This option changes that behaviour so a null source value is mapped as a null target value.</para>
-        /// <para>If the target collection cannot be assigned an array, list, or dictionary then the mapper should be configured
-        /// to construct or convert the source value to the required type.</para>
-        /// </summary>
+        private readonly ObjectMapperTypeFactory _typeFactory;
+
+        /// <inheritdoc />
         public bool AllowNullCollections { get; set; }
+
+        internal ObjectMapperOptions(ObjectMapperTypeFactory typeFactory)
+        {
+            _typeFactory = typeFactory;
+        }
+
+        /// <inheritdoc />
+        public void Register<TType>()
+        {
+            Register<TType>(typeof(TType).GetFactory());
+        }
+
+        /// <inheritdoc />
+        public void Register<TType>(Func<object> factory)
+        {
+            _ = factory.WhenNotNull(nameof(factory));
+
+            _typeFactory.GetOrAdd(typeof(TType), factory);
+        }
     }
 }

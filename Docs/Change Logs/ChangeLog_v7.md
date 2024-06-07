@@ -1,3 +1,21 @@
+#  Version 7.XX.X
+## XX Jun 2024
+
+### AllOverIt.Mapping
+
+* Refactored to cater for required properties. This involved removing the `new()` constraint which means classes with a default
+  constructor now use reflection - slightly slower and allocates a little more memory.
+
+* `ObjectMapperConfiguration` has been updated to provide the ability to register custom type factories. This is completely optional
+  for classes with a default constructor, but if registered during configuration then there is a small performance improvement when
+  a target type needs to be constructed for the first time. This option also makes it possible to register an external factory within
+  DI setup.
+
+* Added a `Map()` overload that allows for specifying source and target types.
+
+---
+
+
 #  Version 7.15.1
 ## 03 Jun 2024
 

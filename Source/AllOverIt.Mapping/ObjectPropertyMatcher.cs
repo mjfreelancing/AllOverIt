@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using System.Reflection;
 
@@ -25,7 +24,7 @@ namespace AllOverIt.Mapping
         }
 
         public PropertyMatcherOptions MatcherOptions { get; }
-        public IReadOnlyCollection<PropertyMatchInfo> Matches { get; }
+        public PropertyMatchInfo[] Matches { get; }
 
         internal ObjectPropertyMatcher(Type sourceType, Type targetType, PropertyMatcherOptions matcherOptions)
         {
@@ -56,7 +55,7 @@ namespace AllOverIt.Mapping
                 matchedProps.Add(matchInfo);
             }
 
-            Matches = matchedProps.AsReadOnlyCollection();
+            Matches = [.. matchedProps];
         }
     }
 }

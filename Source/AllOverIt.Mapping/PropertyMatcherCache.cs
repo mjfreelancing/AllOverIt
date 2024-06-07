@@ -10,7 +10,7 @@ namespace AllOverIt.Mapping
         // Maps source/target types to the property matcher configuration
         private readonly ConcurrentDictionary<(Type, Type), ObjectPropertyMatcher> _matcherCache = new();
 
-        public ObjectPropertyMatcher CreateMapper(Type sourceType, Type targetType, PropertyMatcherOptions matcherOptions)
+        internal ObjectPropertyMatcher CreateMapper(Type sourceType, Type targetType, PropertyMatcherOptions matcherOptions)
         {
             _ = sourceType.WhenNotNull(nameof(sourceType));
             _ = targetType.WhenNotNull(nameof(targetType));
@@ -24,7 +24,7 @@ namespace AllOverIt.Mapping
             return GetOrCreate(sourceType, targetType, matcherOptions);
         }
 
-        public ObjectPropertyMatcher GetOrCreateMapper(Type sourceType, Type targetType)
+        internal ObjectPropertyMatcher GetOrCreateMapper(Type sourceType, Type targetType)
         {
             _ = sourceType.WhenNotNull(nameof(sourceType));
             _ = targetType.WhenNotNull(nameof(targetType));
