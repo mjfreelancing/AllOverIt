@@ -2,6 +2,7 @@
 
 using AllOverIt.Extensions;
 using AllOverIt.Fixture.Assertions;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Types;
 using FluentAssertions;
@@ -43,9 +44,6 @@ namespace AllOverIt.Fixture.Tests
             public static int Prop13 { get; set; }
             public static string? Prop14 { get; set; }
         }
-
-        private PropertyInfoAssertions GetPropertyAssertions<TType>(string name)
-            => new PropertyInfoAssertions(typeof(TType).GetPropertyInfo(BindingOptions.All).Single(propInfo => propInfo.Name == name));
 
         public class IsReadable : PropertyInfoAssertionsFixture
         {
@@ -114,7 +112,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass1.Prop3));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop3));
 
                 GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop3)).IsReadable();
             }
@@ -211,7 +210,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass1.Prop1));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop1));
 
                 GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop1)).IsNotReadable();
             }
@@ -308,7 +308,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope("Prop9");
+                // Not required for this test
+                //using var _ = new AssertionScope("Prop9");
 
                 GetPropertyAssertions<DummyClassBase>("Prop9").IsWritable();
             }
@@ -405,7 +406,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClassBase.Prop6));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClassBase.Prop6));
 
                 GetPropertyAssertions<DummyClassBase>(nameof(DummyClassBase.Prop6)).IsNotWritable();
             }
@@ -516,7 +518,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
                 GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsPublic(PropertyAccessor.Get);
                 GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsPublic(PropertyAccessor.Set);
@@ -628,7 +631,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope("Prop2");
+                // Not required for this test
+                //using var _ = new AssertionScope("Prop2");
 
                 GetPropertyAssertions<DummyClass1>("Prop2").IsNotPublic(PropertyAccessor.Get);
                 GetPropertyAssertions<DummyClass1>("Prop2").IsNotPublic(PropertyAccessor.Set);
@@ -740,7 +744,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope("Prop9");
+                // Not required for this test
+                //using var _ = new AssertionScope("Prop9");
 
                 GetPropertyAssertions<DummyClass1>("Prop9").IsProtected(PropertyAccessor.Get);
                 GetPropertyAssertions<DummyClass1>("Prop9").IsProtected(PropertyAccessor.Set);
@@ -852,7 +857,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope("Prop2");
+                // Not required for this test
+                //using var _ = new AssertionScope("Prop2");
 
                 GetPropertyAssertions<DummyClass1>("Prop2").IsNotProtected(PropertyAccessor.Get);
                 GetPropertyAssertions<DummyClass1>("Prop2").IsNotProtected(PropertyAccessor.Set);
@@ -964,7 +970,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope("Prop2");
+                // Not required for this test
+                //using var _ = new AssertionScope("Prop2");
 
                 GetPropertyAssertions<DummyClass1>("Prop2").IsPrivate(PropertyAccessor.Get);
                 GetPropertyAssertions<DummyClass1>("Prop2").IsPrivate(PropertyAccessor.Set);
@@ -1076,7 +1083,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
                 GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotPrivate(PropertyAccessor.Get);
                 GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotPrivate(PropertyAccessor.Set);
@@ -1188,7 +1196,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope("Prop12");
+                // Not required for this test
+                //using var _ = new AssertionScope("Prop12");
 
                 GetPropertyAssertions<DummyClass2>("Prop12").IsInternal(PropertyAccessor.Get);
                 GetPropertyAssertions<DummyClass2>("Prop12").IsInternal(PropertyAccessor.Set);
@@ -1300,7 +1309,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
                 GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotInternal(PropertyAccessor.Get);
                 GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotInternal(PropertyAccessor.Set);
@@ -1398,7 +1408,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope("Item");
+                // Not required for this test
+                //using var _ = new AssertionScope("Item");
 
                 GetPropertyAssertions<DummyClass2>("Item").IsAnIndexer();
             }
@@ -1495,7 +1506,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass1.Prop1));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop1));
 
                 GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop1)).IsNotAnIndexer();
             }
@@ -1568,7 +1580,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass2.Prop13));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass2.Prop13));
 
                 GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop13)).IsStatic();
             }
@@ -1665,7 +1678,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClassBase.Prop6));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClassBase.Prop6));
 
                 GetPropertyAssertions<DummyClassBase>(nameof(DummyClassBase.Prop6)).IsNotStatic();
             }
@@ -1762,7 +1776,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClassBase.Prop6));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClassBase.Prop6));
 
                 GetPropertyAssertions<DummyClass2>(nameof(DummyClassBase.Prop6)).IsAbstract();
             }
@@ -1859,7 +1874,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass2.Prop13));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass2.Prop13));
 
                 GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop13)).IsNotAbstract();
             }
@@ -1956,7 +1972,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
                 GetPropertyAssertions<DummyClass2>(nameof(DummyClass1.Prop7)).IsVirtual();
             }
@@ -2053,7 +2070,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass2.Prop13));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass2.Prop13));
 
                 GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop13)).IsNotVirtual();
             }
@@ -2150,7 +2168,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
                 GetPropertyAssertions<DummyClass2>(nameof(DummyClass1.Prop7)).HasInitAccessor();
             }
@@ -2247,7 +2266,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass2.Prop13));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass2.Prop13));
 
                 GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop13)).HasNoInitAccessor();
             }
@@ -2276,6 +2296,8 @@ namespace AllOverIt.Fixture.Tests
                     .WithMessage(expected.ToString());
             }
         }
+
+#if NET8_0_OR_GREATER
 
         public class HasRequiredModifier : PropertyInfoAssertionsFixture
         {
@@ -2344,7 +2366,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
                 GetPropertyAssertions<DummyClass2>(nameof(DummyClass1.Prop7)).HasRequiredModifier();
             }
@@ -2441,7 +2464,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass2.Prop13));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass2.Prop13));
 
                 GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop13)).HasNoRequiredModifier();
             }
@@ -2470,6 +2494,8 @@ namespace AllOverIt.Fixture.Tests
                     .WithMessage(expected.ToString());
             }
         }
+
+#endif
 
         public class IsOfType : PropertyInfoAssertionsFixture
         {
@@ -2538,7 +2564,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
                 GetPropertyAssertions<DummyClass2>(nameof(DummyClass1.Prop7)).IsOfType<int?>();
             }
@@ -2560,6 +2587,128 @@ namespace AllOverIt.Fixture.Tests
                         .BeDefinedAs(property =>
                         {
                             property.IsOfType<bool>();
+                        });
+                })
+                    .Should()
+                    .Throw<XunitException>()
+                    .WithMessage(expected.ToString());
+            }
+        }
+
+        public class IsOfType_NullabilityInfo : PropertyInfoAssertionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_NullabilityInfoAssertions_Null()
+            {
+                Invoking(() =>
+                {
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop1)).IsOfType<decimal>((Action<NullabilityInfoAssertions>) null!);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("nullabilityAssertions");
+            }
+
+            [Fact]
+            public void Should_Invoke_Action()
+            {
+                var actual = false;
+
+                using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
+
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass1.Prop7)).IsOfType<int?>(_ => actual = true);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Fail_When_Subject_Null()
+            {
+                Invoking(() =>
+                {
+                    var assertions = new PropertyInfoAssertions(null!);
+
+                    assertions.IsOfType<bool>(_ => { });
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage("Cannot validate property when its <PropertyInfo> is <null>.");
+            }
+
+            [Fact]
+            public void Should_Fail()
+            {
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop1));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop1)).IsOfType<decimal>(_ => { });
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage("Expected Prop1 to be of type \"System.Decimal\", but found \"System.Int32\".");
+            }
+
+            [Fact]
+            public void Should_Fail_With_Reason()
+            {
+                var reason = Create<string>();
+
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop1));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop1)).IsOfType<decimal>(_ => { }, reason);
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage($"Expected Prop1 to be of type \"System.Decimal\" because {reason}, but found \"System.Int32\".");
+            }
+
+            [Fact]
+            public void Should_Fail_With_Reason_Args()
+            {
+                var reason = $"{Create<string>()} {0}";
+                var reasonArgs = Create<string>();
+                var expectedReason = string.Format(reason, reasonArgs);
+
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop1));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop1)).IsOfType<decimal>(_ => { }, reason, reasonArgs);
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage($"Expected Prop1 to be of type \"System.Decimal\" because {expectedReason}, but found \"System.Int32\".");
+            }
+
+            [Fact]
+            public void Should_Not_Fail()
+            {
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
+
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass1.Prop7)).IsOfType<int?>(_ => { });
+            }
+
+            [Fact]
+            public void Should_Fail_Multiple()
+            {
+                var expected = new StringBuilder();
+
+                expected.AppendLine("Expected Prop4 to be of type \"System.Boolean\", but found \"System.String\".");
+                expected.AppendLine("Expected Prop14 to be of type \"System.Boolean\", but found \"System.String\".");
+
+                Invoking(() =>
+                {
+                    Properties
+                        .For<DummyClass2>()
+                        .Including(nameof(DummyClass2.Prop4), nameof(DummyClass2.Prop14))
+                        .Should()
+                        .BeDefinedAs(property =>
+                        {
+                            property.IsOfType<bool>(_ => { });
                         });
                 })
                     .Should()
@@ -2635,7 +2784,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope(nameof(DummyClass1.Prop5));
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop5));
 
                 GetPropertyAssertions<DummyClass2>(nameof(DummyClass1.Prop5)).IsAssignableTo<DummyClassBase>();
             }
@@ -2732,7 +2882,8 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Not_Fail()
             {
-                using var _ = new AssertionScope("Prop9");
+                // Not required for this test
+                //using var _ = new AssertionScope("Prop9");
 
                 GetPropertyAssertions<DummyClass2>("Prop9").IsAssignableFrom<DummyClass1>();
             }
@@ -2760,6 +2911,257 @@ namespace AllOverIt.Fixture.Tests
                     .Throw<XunitException>()
                     .WithMessage(expected.ToString());
             }
+        }
+
+        public class IsNullable : PropertyInfoAssertionsFixture
+        {
+            [Fact]
+            public void Should_Fail_When_Subject_Null()
+            {
+                Invoking(() =>
+                {
+                    var assertions = new PropertyInfoAssertions(null!);
+
+                    assertions.IsNullable();
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage("Cannot validate property when its <PropertyInfo> is <null>.");
+            }
+
+            [Fact]
+            public void Should_Fail_Reference()
+            {
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop4));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop4)).IsNullable();
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage("Expected Prop4 to be \"Nullable\", but it is \"NotNull\".");
+            }
+
+            [Fact]
+            public void Should_Fail_Struct()
+            {
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop15));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop15)).IsNullable();
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage("Expected Prop15 to be \"Nullable\", but it is \"NotNull\".");
+            }
+
+            [Fact]
+            public void Should_Fail_With_Reason()
+            {
+                var reason = Create<string>();
+
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop15));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop15)).IsNullable(reason);
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage($"Expected Prop15 to be \"Nullable\" because {reason}, but it is \"NotNull\".");
+            }
+
+            [Fact]
+            public void Should_Fail_With_Reason_Args()
+            {
+                var reason = $"{Create<string>()} {0}";
+                var reasonArgs = Create<string>();
+                var expectedReason = string.Format(reason, reasonArgs);
+
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop15));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop15)).IsNullable(reason, reasonArgs);
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage($"Expected Prop15 to be \"Nullable\" because {expectedReason}, but it is \"NotNull\".");
+            }
+
+            [Fact]
+            public void Should_Not_Fail_Nullable_Reference()
+            {
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass2.Prop6));
+
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop6)).IsNullable();
+            }
+
+            [Fact]
+            public void Should_Not_Fail_Nullable_Struct()
+            {
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass2.Prop3));
+
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop3)).IsNullable();
+            }
+
+            [Fact]
+            public void Should_Fail_Multiple()
+            {
+                var expected = new StringBuilder();
+
+                expected.AppendLine("Expected Prop1 to be \"Nullable\", but it is \"NotNull\".");
+                expected.AppendLine("Expected Prop4 to be \"Nullable\", but it is \"NotNull\".");
+
+                Invoking(() =>
+                {
+                    Properties
+                        .For<DummyClass2>()
+                        .Including(nameof(DummyClass1.Prop1), nameof(DummyClass1.Prop4))
+                        .Should()
+                        .BeDefinedAs(property =>
+                        {
+                            property.IsNullable();
+                        });
+                })
+                    .Should()
+                    .Throw<XunitException>()
+                    .WithMessage(expected.ToString());
+            }
+        }
+
+        public class IsNotNull : PropertyInfoAssertionsFixture
+        {
+            [Fact]
+            public void Should_Fail_When_Subject_Null()
+            {
+                Invoking(() =>
+                {
+                    var assertions = new PropertyInfoAssertions(null!);
+
+                    assertions.IsNotNull();
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage("Cannot validate property when its <PropertyInfo> is <null>.");
+            }
+
+            [Fact]
+            public void Should_Fail_Reference()
+            {
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop6));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop6)).IsNotNull();
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage("Expected Prop6 to be \"NotNull\", but it is \"Nullable\".");
+            }
+
+            [Fact]
+            public void Should_Fail_Struct()
+            {
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop3));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop3)).IsNotNull();
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage("Expected Prop3 to be \"NotNull\", but it is \"Nullable\".");
+            }
+
+            [Fact]
+            public void Should_Fail_With_Reason()
+            {
+                var reason = Create<string>();
+
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop6));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop6)).IsNotNull(reason);
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage($"Expected Prop6 to be \"NotNull\" because {reason}, but it is \"Nullable\".");
+            }
+
+            [Fact]
+            public void Should_Fail_With_Reason_Args()
+            {
+                var reason = $"{Create<string>()} {0}";
+                var reasonArgs = Create<string>();
+                var expectedReason = string.Format(reason, reasonArgs);
+
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop6));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop6)).IsNotNull(reason, reasonArgs);
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage($"Expected Prop6 to be \"NotNull\" because {expectedReason}, but it is \"Nullable\".");
+            }
+
+            [Fact]
+            public void Should_Not_Fail_Reference()
+            {
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass2.Prop4));
+
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop4)).IsNotNull();
+            }
+
+            [Fact]
+            public void Should_Not_Fail_Struct()
+            {
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass2.Prop10));
+
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop10)).IsNotNull();
+            }
+
+            [Fact]
+            public void Should_Fail_Multiple()
+            {
+                var expected = new StringBuilder();
+
+                expected.AppendLine("Expected Prop6 to be \"NotNull\", but it is \"Nullable\".");
+                expected.AppendLine("Expected Prop3 to be \"NotNull\", but it is \"Nullable\".");
+
+                Invoking(() =>
+                {
+                    Properties
+                        .For<DummyClass2>()
+                        .Including(nameof(DummyClass1.Prop3), nameof(DummyClass1.Prop6))
+                        .Should()
+                        .BeDefinedAs(property =>
+                        {
+                            property.IsNotNull();
+                        });
+                })
+                    .Should()
+                    .Throw<XunitException>()
+                    .WithMessage(expected.ToString());
+            }
+        }
+
+        private PropertyInfoAssertions GetPropertyAssertions<TType>(string name)
+        {
+            var propInfo = typeof(TType)
+                .GetPropertyInfo(BindingOptions.All)
+                .Single(propInfo => propInfo.Name == name);
+
+            return new PropertyInfoAssertions(propInfo);
         }
     }
 }

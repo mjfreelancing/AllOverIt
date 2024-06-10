@@ -4,6 +4,7 @@ using AllOverIt.Reflection;
 using AllOverIt.Serialization.Json.Abstractions;
 using AllOverIt.Serialization.Json.SystemText;
 using System.Collections.ObjectModel;
+using System.Text.Json;
 
 namespace DtoMappingDemo
 {
@@ -11,13 +12,6 @@ namespace DtoMappingDemo
     {
         static void Main()
         {
-            //var options = new JsonSerializerOptions
-            //{
-            //    WriteIndented = true,
-            //};
-
-            var serializer = new SystemTextJsonSerializer(/*options*/);
-
             var source = new SourceType(5)
             {
                 Prop1 = 10,
@@ -46,6 +40,16 @@ namespace DtoMappingDemo
                 }
             };
 
+            var options = new JsonSerializerOptions
+            {
+                //WriteIndented = true,
+            };
+
+            var serializer = new SystemTextJsonSerializer(options);
+
+            MapperCreateTargetWithRequiredAndInit(source, serializer);
+            Console.WriteLine();
+
             MapperCreateTargetUsingBindingOnOptions(source, serializer);
             Console.WriteLine();
 
@@ -63,6 +67,23 @@ namespace DtoMappingDemo
 
             Console.WriteLine("All Over It.");
             Console.ReadKey();
+        }
+
+        private static void MapperCreateTargetWithRequiredAndInit(SourceType source, IJsonSerializer serializer)
+        {
+            // Only using configuration because Prop4 on the source is private
+            var mapperConfiguration = new ObjectMapperConfiguration();
+
+            mapperConfiguration.Configure<SourceType, TargetTypeWithRequiredAndInit>(options =>
+            {
+                options.Binding = BindingOptions.All;
+            });
+
+            var objectMapper = new ObjectMapper(mapperConfiguration);
+
+            var target = objectMapper.Map<TargetTypeWithRequiredAndInit>(source);
+
+            PrintMapping("Create target, binding all properties", source, target, serializer);
         }
 
         private static void MapperCreateTargetUsingBindingOnOptions(SourceType source, IJsonSerializer serializer)
@@ -237,7 +258,7 @@ namespace DtoMappingDemo
             PrintMapping("Existing target, exclude a non-mappable IEnumerable, default binding", source, target, serializer);
         }
 
-        private static void PrintMapping(string message, SourceType source, TargetType target, IJsonSerializer serializer)
+        private static void PrintMapping(string message, SourceType source, object target, IJsonSerializer serializer)
         {
             Console.WriteLine(message);
             Console.WriteLine();

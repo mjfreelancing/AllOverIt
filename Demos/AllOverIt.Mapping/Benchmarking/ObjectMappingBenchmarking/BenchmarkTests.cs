@@ -1,38 +1,28 @@
-﻿//#define AUTOMAPPER
-using AllOverIt.Mapping;
+﻿using AllOverIt.Mapping;
 using BenchmarkDotNet.Attributes;
-
-#if AUTOMAPPER
-    using AutoMapper;
-#endif
+using BenchmarkDotNet.Jobs;
 
 namespace ObjectMappingBenchmarking
 {
     /*
-    // 07/12/2022
-
-    |                                     Method |         Mean |   Gen0 |   Gen1 | Allocated |
-    |------------------------------------------- |-------------:|-------:|-------:|----------:|
-    | ObjectMapper_New_Mapper_Explicit_Configure | 773,364.1 ns | 3.9063 | 1.9531 |   34451 B |
-    | ObjectMapper_New_Mapper_Implicit_Configure | 569,549.5 ns | 4.8828 | 3.9063 |   34372 B |
-    |   ObjectMapper_PreConfigured_Create_Target |     279.6 ns | 0.0367 |      - |     232 B |
-    |   ObjectMapper_PreConfigured_CopyTo_Target |     264.8 ns | 0.0305 |      - |     192 B |
+    | Method                                       | Mean     | Gen0   | Allocated |
+    |--------------------------------------------- |---------:|-------:|----------:|
+    | Existing_Mapper_No_Configure_New_Target      | 74.77 ns | 0.0204 |     256 B |
+    | Existing_Mapper_No_Configure_Existing_Target | 60.51 ns | 0.0120 |     152 B |
+    | Existing_Mapper_Configured_New_Target        | 71.11 ns | 0.0204 |     256 B |
+    | Existing_Mapper_Configured_Existing_Target   | 59.72 ns | 0.0121 |     152 B |
      */
 
     [MemoryDiagnoser(true)]
     [HideColumns("Error", "StdDev", "Median")]
-    //[SimpleJob(RuntimeMoniker.Net60)]
-    //[SimpleJob(RuntimeMoniker.Net70)]
+    [SimpleJob(RuntimeMoniker.Net80)]
     public class MappingTests
     {
-#if AUTOMAPPER
-        private readonly IMapper _autoMapper;
-#endif
-
-        private readonly ObjectMapper _objectMapper;
-
+        private static readonly ObjectMapper Mapper1 = new();
+        private static readonly ObjectMapper Mapper2;
         private static readonly SimpleSource SimpleSource;
         private static readonly SimpleTarget SimpleTarget;
+        private static readonly ComplexSource ComplexSource = new() { Prop1 = new SimpleSource() };
 
         static MappingTests()
         {
@@ -44,84 +34,51 @@ namespace ObjectMappingBenchmarking
             };
 
             SimpleTarget = new SimpleTarget();
-        }
 
-        public MappingTests()
-        {
-#if AUTOMAPPER
-            var autoMapperConfig = new MapperConfiguration(config =>
+            var mapperConfiguration = new ObjectMapperConfiguration(options =>
             {
-                config.CreateMap<SimpleSource, SimpleTarget>();
+                // The Register() methods are optional.
+                // * May help with the time it takes to create the first instance.
+                // * Provides a way to set default properties not on the source.
+                // * Provides a way of constructing via DI.
+
+                // Examples:
+                // options.Register<SimpleTarget>(() => new SimpleTarget());
+                // options.Register<SimpleTargetWithRequiredAndInit>(() => new { Prop1 = 10 });
             });
-
-            _autoMapper = new Mapper(autoMapperConfig);
-#endif
-
-            var mapperConfiguration = new ObjectMapperConfiguration();
 
             mapperConfiguration.Configure<SimpleSource, SimpleTarget>();
+            mapperConfiguration.Configure<SimpleSource, SimpleTargetWithRequiredAndInit>();
 
-            _objectMapper = new ObjectMapper(mapperConfiguration);
+            Mapper2 = new ObjectMapper(mapperConfiguration);
         }
 
-#if AUTOMAPPER
-        [Benchmark]     // for speed comparison
-        public void AutoMapper_New_Mapper()
+        // ==
+
+        [Benchmark]
+        public void Existing_Mapper_No_Configure_New_Target()
         {
-            var mapperConfig = new MapperConfiguration(config =>
-            {
-                config.CreateMap<SimpleSource, SimpleTarget>();
-            });
-
-            var autoMapper = new Mapper(mapperConfig);
-
-            _ = _autoMapper.Map<SimpleTarget>(SimpleSource);
+            _ = Mapper1.Map<SimpleTarget>(SimpleSource);
         }
 
         [Benchmark]
-        public void AutoMapper_Create_Target()
+        public void Existing_Mapper_No_Configure_Existing_Target()
         {
-            _ = _autoMapper.Map<SimpleTarget>(SimpleSource);
+            _ = Mapper1.Map(SimpleSource, SimpleTarget);
+        }
+
+        // ==
+
+        [Benchmark]
+        public void Existing_Mapper_Configured_New_Target()
+        {
+            _ = Mapper2.Map<SimpleTarget>(SimpleSource);
         }
 
         [Benchmark]
-        public void AutoMapper_CopyTo_Target()
+        public void Existing_Mapper_Configured_Existing_Target()
         {
-            _ = _autoMapper.Map(SimpleSource, SimpleTarget);
-        }
-#endif
-
-        [Benchmark]     // for speed comparison
-        public void ObjectMapper_New_Mapper_Explicit_Configure()
-        {
-            var mapperConfiguration = new ObjectMapperConfiguration();
-
-            mapperConfiguration.Configure<SimpleSource, SimpleTarget>();       // not really required since it will happen implicitly
-
-            var objectMapper = new ObjectMapper(mapperConfiguration);
-
-            _ = objectMapper.Map(SimpleSource, SimpleTarget);
-        }
-
-        [Benchmark]     // for speed comparison
-        public void ObjectMapper_New_Mapper_Implicit_Configure()
-        {
-            var objectMapper = new ObjectMapper();
-            // not mapping => objectMapper.Configure<SimpleSource, SimpleTarget>();
-
-            _ = objectMapper.Map(SimpleSource, SimpleTarget);
-        }
-
-        [Benchmark]
-        public void ObjectMapper_PreConfigured_Create_Target()
-        {
-            _ = _objectMapper.Map<SimpleTarget>(SimpleSource);
-        }
-
-        [Benchmark]
-        public void ObjectMapper_PreConfigured_CopyTo_Target()
-        {
-            _ = _objectMapper.Map(SimpleSource, SimpleTarget);
+            _ = Mapper2.Map(SimpleSource, SimpleTarget);
         }
     }
 }

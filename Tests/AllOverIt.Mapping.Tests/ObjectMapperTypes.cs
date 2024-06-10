@@ -48,11 +48,11 @@ namespace AllOverIt.Mapping.Tests
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
             private int Prop2 { get; set; }
 
-            public string Prop3 { get; set; }
-            internal int Prop4 { get; set; }
+            public required string Prop3 { get; set; }
+            internal required int Prop4 { get; set; }
             public int Prop5 { get; set; }
             public int? Prop6 { get; set; }
-            public string Prop7b { get; set; }
+            public required string Prop7b { get; set; }
             public int Prop8 { get; private set; }
             public IEnumerable<string> Prop9 { get; set; }
             public IEnumerable<string> Prop10 { get; set; }

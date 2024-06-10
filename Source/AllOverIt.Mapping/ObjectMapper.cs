@@ -37,7 +37,7 @@ namespace AllOverIt.Mapping
         /// <summary>Constructor.</summary>
         /// <param name="defaultOptions">Provides the ability to specify default options for all mapping operations.</param>
         /// <param name="configuration">Provides the ability to configure the mapper at the time of construction.</param>
-        public ObjectMapper(Action<ObjectMapperOptions> defaultOptions, Action<ObjectMapperConfiguration> configuration)
+        public ObjectMapper(Action<IObjectMapperOptions> defaultOptions, Action<ObjectMapperConfiguration> configuration)
         {
             _ = defaultOptions.WhenNotNull(nameof(defaultOptions));
             _ = configuration.WhenNotNull(nameof(configuration));
@@ -50,16 +50,16 @@ namespace AllOverIt.Mapping
         /// <remarks>If mapping configuration is not performed in advance then default configuration will be applied. The configuration
         /// cannot be changed later.</remarks>
         public TTarget Map<TTarget>(object source)
-            where TTarget : class, new()
+            where TTarget : class
         {
             if (source is null)
             {
                 return null;
             }
 
-            var target = new TTarget();
+            var target = _configuration.GetTypeFactory<TTarget>().Invoke();
 
-            return (TTarget) MapSourceToTarget(source, target, false);
+            return (TTarget) MapSourceToTarget(source, source.GetType(), target, typeof(TTarget), false);
         }
 
         /// <inheritdoc />
@@ -72,14 +72,24 @@ namespace AllOverIt.Mapping
             _ = source.WhenNotNull(nameof(source));
             _ = target.WhenNotNull(nameof(target));
 
-            return (TTarget) MapSourceToTarget(source, target, false);
+            return (TTarget) MapSourceToTarget(source, typeof(TSource), target, typeof(TTarget), false);
         }
 
-        private object MapSourceToTarget(object source, object target, bool isDeepCopy)
+        /// <inheritdoc />
+        /// <remarks>If mapping configuration is not performed in advance then default configuration will be applied. The configuration
+        /// cannot be changed later.</remarks>
+        public object Map(object source, Type sourceType, object target, Type targetType)
         {
-            var sourceType = source.GetType();
-            var targetType = target.GetType();
+            _ = source.WhenNotNull(nameof(source));
+            _ = sourceType.WhenNotNull(nameof(sourceType));
+            _ = target.WhenNotNull(nameof(target));
+            _ = targetType.WhenNotNull(nameof(targetType));
 
+            return MapSourceToTarget(source, sourceType, target, targetType, false);
+        }
+
+        private object MapSourceToTarget(object source, Type sourceType, object target, Type targetType, bool isDeepCopy)
+        {
             var propertyMatcher = _configuration._propertyMatcherCache.GetOrCreateMapper(sourceType, targetType);
 
             foreach (var match in propertyMatcher.Matches)
@@ -165,7 +175,8 @@ namespace AllOverIt.Mapping
             }
 
             var targetInstance = CreateType(targetPropertyType);
-            return MapSourceToTarget(sourceValue, targetInstance, deepCopy);
+
+            return MapSourceToTarget(sourceValue, sourceValueType, targetInstance, targetPropertyType, deepCopy);
         }
 
         private object MapToDictionary(object sourceValue, Type sourceValueType, Type targetPropertyType)
@@ -233,15 +244,10 @@ namespace AllOverIt.Mapping
                     }
                     else if (sourceElementType != CommonTypes.StringType)
                     {
-                        var targetCtor = targetElementType.GetConstructor(Type.EmptyTypes);     // TODO: ? worth caching a compiled factory
+                        // Assumes targetElementType has a default constructor
+                        var targetInstance = CreateType(targetElementType);
 
-                        Throw<ObjectMapperException>.WhenNull(
-                            targetCtor,
-                            $"The type '{targetElementType.GetFriendlyName()}' does not have a default constructor. Use a custom conversion.");
-
-                        var targetInstance = targetCtor.Invoke(null);
-
-                        currentElement = MapSourceToTarget(currentElement, targetInstance, doDeepCopy);
+                        currentElement = MapSourceToTarget(currentElement, sourceElementType, targetInstance, targetElementType, doDeepCopy);
                     }
                 }
 
@@ -277,7 +283,8 @@ namespace AllOverIt.Mapping
         {
             if (targetPropertyType.IsArray)
             {
-                var toArrayMethod = listType.GetMethod("ToArray");                          // TODO: ? worth caching this
+                var toArrayMethod = listType.GetMethod("ToArray");  // TODO: ? worth caching this
+
                 return toArrayMethod.Invoke(listInstance, Type.EmptyTypes);
             }
 
@@ -333,7 +340,7 @@ namespace AllOverIt.Mapping
 
         private object CreateType(Type type)
         {
-            var factory = _configuration._typeFactory.GetOrAdd(type, type.GetFactory());
+            var factory = _configuration.GetTypeFactory(type);
 
             return factory.Invoke();
         }
