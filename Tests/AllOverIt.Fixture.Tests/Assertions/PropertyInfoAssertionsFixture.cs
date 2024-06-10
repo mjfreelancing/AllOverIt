@@ -3034,7 +3034,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class IsNotNull : PropertyInfoAssertionsFixture
+        public class IsNotNullable : PropertyInfoAssertionsFixture
         {
             [Fact]
             public void Should_Fail_When_Subject_Null()
@@ -3043,7 +3043,7 @@ namespace AllOverIt.Fixture.Tests
                 {
                     var assertions = new PropertyInfoAssertions(null!);
 
-                    assertions.IsNotNull();
+                    assertions.IsNotNullable();
                 })
                 .Should()
                 .Throw<XunitException>()
@@ -3057,7 +3057,7 @@ namespace AllOverIt.Fixture.Tests
                 {
                     using var _ = new AssertionScope(nameof(DummyClass1.Prop6));
 
-                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop6)).IsNotNull();
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop6)).IsNotNullable();
                 })
                 .Should()
                 .Throw<XunitException>()
@@ -3071,7 +3071,7 @@ namespace AllOverIt.Fixture.Tests
                 {
                     using var _ = new AssertionScope(nameof(DummyClass1.Prop3));
 
-                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop3)).IsNotNull();
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop3)).IsNotNullable();
                 })
                 .Should()
                 .Throw<XunitException>()
@@ -3087,7 +3087,7 @@ namespace AllOverIt.Fixture.Tests
                 {
                     using var _ = new AssertionScope(nameof(DummyClass1.Prop6));
 
-                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop6)).IsNotNull(reason);
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop6)).IsNotNullable(reason);
                 })
                 .Should()
                 .Throw<XunitException>()
@@ -3105,7 +3105,7 @@ namespace AllOverIt.Fixture.Tests
                 {
                     using var _ = new AssertionScope(nameof(DummyClass1.Prop6));
 
-                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop6)).IsNotNull(reason, reasonArgs);
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop6)).IsNotNullable(reason, reasonArgs);
                 })
                 .Should()
                 .Throw<XunitException>()
@@ -3118,7 +3118,7 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope(nameof(DummyClass2.Prop4));
 
-                GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop4)).IsNotNull();
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop4)).IsNotNullable();
             }
 
             [Fact]
@@ -3127,7 +3127,7 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope(nameof(DummyClass2.Prop10));
 
-                GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop10)).IsNotNull();
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop10)).IsNotNullable();
             }
 
             [Fact]
@@ -3146,7 +3146,7 @@ namespace AllOverIt.Fixture.Tests
                         .Should()
                         .BeDefinedAs(property =>
                         {
-                            property.IsNotNull();
+                            property.IsNotNullable();
                         });
                 })
                     .Should()
