@@ -64,7 +64,7 @@ namespace AllOverIt.Fixture.Assertions
         /// </param>
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         [CustomAssertion]
-        public NullabilityInfoAssertions IsNotNull(string because = "", params object[] becauseArgs)
+        public NullabilityInfoAssertions IsNotNullable(string because = "", params object[] becauseArgs)
         {
             if (SubjectIsNotNull())
             {

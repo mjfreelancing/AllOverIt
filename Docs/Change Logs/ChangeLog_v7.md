@@ -1,5 +1,5 @@
 #  Version 7.16.0
-## XX Jun 2024
+## 11 Jun 2024
 
 ### AllOverIt.Mapping
 
@@ -16,7 +16,7 @@
 ### AllOverIt.Fixture
 
 * Removed HasRequiredModifier() and HasNoRequiredModifier() from PropertyInfoAssertions from NET 6.
-* Updated PropertyInfoAssertions to include IsOfType(), IsNullable(), IsNotNull().
+* Updated PropertyInfoAssertions to include IsOfType(), IsNullable(), IsNotNullable().
 * Added NullabilityInfoAssertions
 
 ---

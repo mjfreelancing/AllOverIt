@@ -109,7 +109,7 @@ namespace AllOverIt.Fixture.Tests
             }
         }
 
-        public class IsNotNull : NullabilityInfoAssertionsFixture
+        public class IsNotNullable : NullabilityInfoAssertionsFixture
         {
             [Fact]
             public void Should_Fail_When_Subject_Null()
@@ -118,7 +118,7 @@ namespace AllOverIt.Fixture.Tests
                 {
                     var assertions = new NullabilityInfoAssertions(null!);
 
-                    assertions.IsNotNull();
+                    assertions.IsNotNullable();
                 })
                 .Should()
                 .Throw<XunitException>()
@@ -132,7 +132,7 @@ namespace AllOverIt.Fixture.Tests
                 {
                     using var _ = new AssertionScope(nameof(DummyClass1.Prop2));
 
-                    GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop2)).IsNotNull();
+                    GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop2)).IsNotNullable();
                 })
                 .Should()
                 .Throw<XunitException>()
@@ -148,7 +148,7 @@ namespace AllOverIt.Fixture.Tests
                 {
                     using var _ = new AssertionScope(nameof(DummyClass1.Prop2));
 
-                    GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop2)).IsNotNull(reason);
+                    GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop2)).IsNotNullable(reason);
                 })
                 .Should()
                 .Throw<XunitException>()
@@ -166,7 +166,7 @@ namespace AllOverIt.Fixture.Tests
                 {
                     using var _ = new AssertionScope(nameof(DummyClass1.Prop2));
 
-                    GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop2)).IsNotNull(reason, reasonArgs);
+                    GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop2)).IsNotNullable(reason, reasonArgs);
                 })
                 .Should()
                 .Throw<XunitException>()
@@ -178,7 +178,7 @@ namespace AllOverIt.Fixture.Tests
             {
                 using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
-                GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotNull();
+                GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotNullable();
             }
 
             [Fact]
@@ -186,7 +186,7 @@ namespace AllOverIt.Fixture.Tests
             {
                 using var _ = new AssertionScope(nameof(DummyClass1.Prop3));
 
-                GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop3)).IsNotNull();
+                GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop3)).IsNotNullable();
             }
         }
 
@@ -279,7 +279,7 @@ namespace AllOverIt.Fixture.Tests
 
                     GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop11)).IsCollectionOf<string>(nullability =>
                     {
-                        nullability.IsNotNull();
+                        nullability.IsNotNullable();
                     });
                 })
                 .Should()
@@ -299,7 +299,7 @@ namespace AllOverIt.Fixture.Tests
 
                     GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop11)).IsCollectionOf<string>(nullability =>
                     {
-                        nullability.IsNotNull(inner);
+                        nullability.IsNotNullable(inner);
                     }, outer);
                 })
                 .Should()
@@ -319,7 +319,7 @@ namespace AllOverIt.Fixture.Tests
 
                     GetNullabilityAssertions<DummyClass1>(nameof(DummyClass1.Prop11)).IsCollectionOf<bool>(nullability =>
                     {
-                        nullability.IsNotNull(inner);
+                        nullability.IsNotNullable(inner);
                     }, outer);
                 })
                 .Should()
@@ -622,7 +622,7 @@ namespace AllOverIt.Fixture.Tests
                                 {
                                     arg1
                                         .IsOfType<string[]>()               // Is same as string?[]?
-                                        .IsNotNull(reason4);
+                                        .IsNotNullable(reason4);
                                 });
                         });
                 })
