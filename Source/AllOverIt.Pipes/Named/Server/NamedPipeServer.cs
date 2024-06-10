@@ -17,10 +17,12 @@ namespace AllOverIt.Pipes.Named.Server
     /// <typeparam name="TMessage"></typeparam>
     public sealed class NamedPipeServer<TMessage> : INamedPipeServer<TMessage> where TMessage : class, new()
     {
+        private bool _disposed;
         private readonly INamedPipeSerializer<TMessage> _serializer;
-        internal List<INamedPipeServerConnection<TMessage>> Connections { get; } = [];
         private AwaitableLock _connectionsLock = new();
         private BackgroundTask _backgroundTask;
+
+        internal List<INamedPipeServerConnection<TMessage>> Connections { get; } = [];
 
         /// <inheritdoc />
         public string PipeName { get; }
@@ -215,6 +217,11 @@ namespace AllOverIt.Pipes.Named.Server
         /// <summary>Stops the pipe server and releases resources.</summary>
         public async ValueTask DisposeAsync()
         {
+            if (_disposed)
+            {
+                return;
+            }
+
             if (_connectionsLock is not null)
             {
                 await StopAsync().ConfigureAwait(false);
@@ -222,6 +229,8 @@ namespace AllOverIt.Pipes.Named.Server
                 _connectionsLock.Dispose();
                 _connectionsLock = null;
             }
+
+            _disposed = true;
         }
 
         private async Task DoOnClientConnectedAsync(INamedPipeServerConnection<TMessage> connection)
