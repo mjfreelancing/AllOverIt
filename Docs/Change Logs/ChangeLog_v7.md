@@ -1,4 +1,4 @@
-#  Version 7.XX.X
+#  Version 7.16.0
 ## XX Jun 2024
 
 ### AllOverIt.Mapping
@@ -12,6 +12,12 @@
   DI setup.
 
 * Added a `Map()` overload that allows for specifying source and target types.
+
+### AllOverIt.Fixture
+
+* Removed HasRequiredModifier() and HasNoRequiredModifier() from PropertyInfoAssertions from NET 6.
+* Updated PropertyInfoAssertions to include IsOfType(), IsNullable(), IsNotNull().
+* Added NullabilityInfoAssertions
 
 ---
 

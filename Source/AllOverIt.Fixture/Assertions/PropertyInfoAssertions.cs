@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Types;
 using FluentAssertions;
@@ -580,6 +581,8 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
+#if NET8_0_OR_GREATER
+
         /// <summary>Asserts that a property has a required modifier.</summary>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
@@ -634,7 +637,9 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is of a specific type.</summary>
+#endif
+
+        /// <summary>Asserts that a property is of a specified type.</summary>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
         /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
@@ -665,7 +670,53 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-#if !NETSTANDARD2_1
+        /// <summary>Asserts that a property is of a specified type and invokes an action that provides the property nullability
+        /// info for performing additional assertion checks.</summary>
+        /// <typeparam name="TType">The expected property type.</typeparam>
+        /// <param name="nullabilityAssertions">An action that allows for assertions to be applied against the property's nullability info.</param>
+        /// <param name="because">
+        /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
+        /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
+        /// <para>
+        /// If the format of <paramref name="because"/> or <paramref name="becauseArgs"/> is not compatible with
+        /// <see cref="string.Format(string,object[])"/>, then a warning message is returned instead.
+        /// </para>
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more values to use for filling in any <see cref="string.Format(string,object[])"/> compatible placeholders.
+        /// </param>
+        /// <returns>The current instance to cater for a fluent syntax.</returns>
+        [CustomAssertion]
+        public PropertyInfoAssertions IsOfType<TType>(Action<NullabilityInfoAssertions> nullabilityAssertions, string because = "", params object[] becauseArgs)
+        {
+            _ = nullabilityAssertions.WhenNotNull();
+
+            if (SubjectIsNotNull())
+            {
+                using var _ = new AssertionScope();
+
+                var expectedType = typeof(TType);
+
+                if (_subject.PropertyType != expectedType)
+                {
+                    Execute.Assertion
+                        .BecauseOf(because, becauseArgs)
+                        .FailWith("Expected {context} to be of type {0}{reason}, but found {1}.", expectedType.GetFriendlyName(true), _subject.PropertyType.GetFriendlyName(true));
+                }
+                else
+                {
+                    using var scope = new AssertionScope();
+
+                    var nullabilityInfo = new NullabilityInfoContext().Create(_subject);
+                    var assertions = new NullabilityInfoAssertions(nullabilityInfo);
+
+                    nullabilityAssertions.Invoke(assertions);
+                }
+            }
+
+            return this;
+        }
+
         /// <summary>Asserts that a property is assignable to a specified type.</summary>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
@@ -699,7 +750,6 @@ namespace AllOverIt.Fixture.Assertions
 
             return this;
         }
-#endif
 
         /// <summary>Asserts that a property is assignable from a specified type.</summary>
         /// <param name="because">
@@ -735,7 +785,72 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
+        /// <summary>Asserts that a property is nullable, including reference types.</summary>
+        /// <param name="because">
+        /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
+        /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
+        /// <para>
+        /// If the format of <paramref name="because"/> or <paramref name="becauseArgs"/> is not compatible with
+        /// <see cref="string.Format(string,object[])"/>, then a warning message is returned instead.
+        /// </para>
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more values to use for filling in any <see cref="string.Format(string,object[])"/> compatible placeholders.
+        /// </param>
+        /// <returns>The current instance to cater for a fluent syntax.</returns>
         [CustomAssertion]
+        public PropertyInfoAssertions IsNullable(string because = "", params object[] becauseArgs)
+        {
+            if (SubjectIsNotNull())
+            {
+                var nullabilityInfo = new NullabilityInfoContext().Create(_subject);
+
+                var state = nullabilityInfo.ReadState != NullabilityState.Unknown
+                   ? nullabilityInfo.ReadState
+                   : nullabilityInfo.WriteState;
+
+                Execute.Assertion
+                    .BecauseOf(because, becauseArgs)
+                    .ForCondition(state == NullabilityState.Nullable)
+                    .FailWith("Expected {context} to be {0}{reason}, but it is {1}.", nameof(NullabilityState.Nullable), nameof(NullabilityState.NotNull));
+            }
+
+            return this;
+        }
+
+        /// <summary>Asserts that a property is not nullable, including reference types.</summary>
+        /// <param name="because">
+        /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
+        /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
+        /// <para>
+        /// If the format of <paramref name="because"/> or <paramref name="becauseArgs"/> is not compatible with
+        /// <see cref="string.Format(string,object[])"/>, then a warning message is returned instead.
+        /// </para>
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more values to use for filling in any <see cref="string.Format(string,object[])"/> compatible placeholders.
+        /// </param>
+        /// <returns>The current instance to cater for a fluent syntax.</returns>
+        [CustomAssertion]
+        public PropertyInfoAssertions IsNotNull(string because = "", params object[] becauseArgs)
+        {
+            if (SubjectIsNotNull())
+            {
+                var nullabilityInfo = new NullabilityInfoContext().Create(_subject);
+
+                var state = nullabilityInfo.ReadState != NullabilityState.Unknown
+                   ? nullabilityInfo.ReadState
+                   : nullabilityInfo.WriteState;
+
+                Execute.Assertion
+                    .BecauseOf(because, becauseArgs)
+                    .ForCondition(state == NullabilityState.NotNull)
+                    .FailWith("Expected {context} to be {0}{reason}, but it is {1}.", nameof(NullabilityState.NotNull), nameof(NullabilityState.Nullable));
+            }
+
+            return this;
+        }
+
         private bool SubjectIsNotNull()
         {
             return Execute.Assertion
