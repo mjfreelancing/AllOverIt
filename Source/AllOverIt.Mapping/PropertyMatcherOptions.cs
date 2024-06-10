@@ -171,7 +171,7 @@ namespace AllOverIt.Mapping
                 : sourceValue;
         }
 
-        private void UpdateTargetOptions(string sourceName, Action<PropertyMatcherOptions.TargetOptions> optionsAction)
+        private void UpdateTargetOptions(string sourceName, Action<TargetOptions> optionsAction)
         {
             var hasOptions = _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions);
 

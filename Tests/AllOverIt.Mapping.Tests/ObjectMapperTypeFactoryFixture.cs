@@ -9,6 +9,7 @@ namespace AllOverIt.Mapping.Tests
     public class ObjectMapperTypeFactoryFixture : FixtureBase
     {
         private readonly ObjectMapperTypeFactory _factory = new();
+
         public class Add_Source_Target_Type : ObjectMapperTypeFactoryFixture
         {
             [Fact]
@@ -144,6 +145,47 @@ namespace AllOverIt.Mapping.Tests
                 var actual = _factory.GetOrAdd(typeof(DummyTarget), factory);
 
                 factory.Should().BeSameAs(actual);
+            }
+        }
+
+        public class GetOrLazilyAdd : ObjectMapperTypeFactoryFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Type_Null()
+            {
+                Invoking(() =>
+                {
+                    _factory.GetOrLazilyAdd(null, () => () => new { });
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("type");
+            }
+
+            [Fact]
+            public void Should_Throw_When_FactoryResolver_Null()
+            {
+                Invoking(() =>
+                {
+                    _factory.GetOrLazilyAdd(typeof(DummyTarget), null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("factoryResolver");
+            }
+
+            [Fact]
+            public void Should_Add_Factory()
+            {
+                object expected = new { };
+
+                Func<Func<object>> factoryResolver = () => () => expected;
+
+                var factory = _factory.GetOrLazilyAdd(typeof(DummyTarget), factoryResolver);
+
+                var actual = factory.Invoke();
+
+                actual.Should().BeSameAs(expected);
             }
         }
     }

@@ -2,13 +2,14 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
-
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
 
 namespace AllOverIt.Mapping.Tests
 {
     public class ObjectMapperConfigurationFixture : FixtureBase
     {
+        private readonly ObjectMapperConfiguration _objectMapperConfiguration = new();
+
         public class Constructor_Default : ObjectMapperConfigurationFixture
         {
             private readonly PropertyMatcherCache _propertyMatcherCache = new();
@@ -16,25 +17,19 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Set_ObjectMapperOptions()
             {
-                var configuration = new ObjectMapperConfiguration();
-
-                configuration.Options.Should().NotBeNull();
+                _objectMapperConfiguration.Options.Should().NotBeNull();
             }
 
             [Fact]
             public void Should_Set_PropertyMatcherCache()
             {
-                var configuration = new ObjectMapperConfiguration();
-
-                configuration._propertyMatcherCache.Should().NotBeNull();
+                _objectMapperConfiguration._propertyMatcherCache.Should().NotBeNull();
             }
 
             [Fact]
             public void Should_Set_ObjectMapperTypeFactory()
             {
-                var configuration = new ObjectMapperConfiguration();
-
-                configuration._typeFactory.Should().NotBeNull();
+                _objectMapperConfiguration._typeFactory.Should().NotBeNull();
             }
         }
 
@@ -55,7 +50,7 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Set_ObjectMapperOptions()
             {
-                var expected = Create<ObjectMapperOptions>();
+                var expected = new ObjectMapperOptions(new ObjectMapperTypeFactory());
 
                 var configuration = new ObjectMapperConfiguration(options =>
                 {
@@ -68,17 +63,13 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Set_PropertyMatcherCache()
             {
-                var configuration = new ObjectMapperConfiguration();
-
-                configuration._propertyMatcherCache.Should().NotBeNull();
+                _objectMapperConfiguration._propertyMatcherCache.Should().NotBeNull();
             }
 
             [Fact]
             public void Should_Set_ObjectMapperTypeFactory()
             {
-                var configuration = new ObjectMapperConfiguration(options => { });
-
-                configuration._typeFactory.Should().NotBeNull();
+                _objectMapperConfiguration._typeFactory.Should().NotBeNull();
             }
         }
 
@@ -89,8 +80,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 Invoking(() =>
                 {
-                    var configuration = new ObjectMapperConfiguration();
-                    configuration.Configure<DummySource2, DummyTarget>(null);
+                    _objectMapperConfiguration.Configure<DummySource2, DummyTarget>(null);
                 })
                    .Should()
                    .NotThrow();
@@ -99,10 +89,9 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Default_Configure()
             {
-                var configuration = new ObjectMapperConfiguration();
-                configuration.Configure<DummySource2, DummyTarget>();
+                _objectMapperConfiguration.Configure<DummySource2, DummyTarget>();
 
-                configuration._propertyMatcherCache
+                _objectMapperConfiguration._propertyMatcherCache
                     .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMatcher)
                     .Should()
                     .BeTrue();
@@ -135,16 +124,14 @@ namespace AllOverIt.Mapping.Tests
             {
                 var binding = BindingOptions.Instance | BindingOptions.Internal;
 
-                var configuration = new ObjectMapperConfiguration();
-
-                configuration.Configure<DummySource2, DummyTarget>(options =>
+                _objectMapperConfiguration.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options.Binding = binding;
 
                     options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
                 });
 
-                configuration._propertyMatcherCache
+                _objectMapperConfiguration._propertyMatcherCache
                    .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMatcher)
                    .Should()
                    .BeTrue();
@@ -166,16 +153,14 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Configure_With_Filter()
             {
-                var configuration = new ObjectMapperConfiguration();
-
-                configuration.Configure<DummySource2, DummyTarget>(options =>
+                _objectMapperConfiguration.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options.Filter = propInfo => new[] { "Prop10", "Prop12", "Prop8" }.Contains(propInfo.Name);
 
                     options.WithConversion(src => src.Prop13, (mapper, value) => (DummyEnum) value);
                 });
 
-                configuration._propertyMatcherCache
+                _objectMapperConfiguration._propertyMatcherCache
                   .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMatcher)
                   .Should()
                   .BeTrue();
@@ -197,9 +182,7 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Configure_With_Exclude()
             {
-                var configuration = new ObjectMapperConfiguration();
-
-                configuration.Configure<DummySource2, DummyTarget>(options =>
+                _objectMapperConfiguration.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options.Filter = propInfo => new[] { "Prop10", "Prop12", "Prop8" }.Contains(propInfo.Name);
 
@@ -208,7 +191,7 @@ namespace AllOverIt.Mapping.Tests
                         .Exclude(src => src.Prop10);
                 });
 
-                configuration._propertyMatcherCache
+                _objectMapperConfiguration._propertyMatcherCache
                   .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMatcher)
                   .Should()
                   .BeTrue();
@@ -229,9 +212,7 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Configure_With_Filter_And_Alias()
             {
-                var configuration = new ObjectMapperConfiguration();
-
-                configuration.Configure<DummySource2, DummyTarget>(options =>
+                _objectMapperConfiguration.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options.Filter = propInfo => new[] { "Prop10", "Prop12", "Prop8" }.Contains(propInfo.Name);
 
@@ -241,7 +222,7 @@ namespace AllOverIt.Mapping.Tests
                         .WithAlias(src => (int) src.Prop12, trg => trg.Prop5);
                 });
 
-                configuration._propertyMatcherCache
+                _objectMapperConfiguration._propertyMatcherCache
                   .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMatcher)
                   .Should()
                   .BeTrue();
@@ -263,12 +244,10 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Configure_With_Filter_And_Alias_And_Conversion()
             {
-                var configuration = new ObjectMapperConfiguration();
-
                 var factor = GetWithinRange(2, 5);
                 IObjectMapper actualMapper = null;
 
-                configuration.Configure<DummySource2, DummyTarget>(options =>
+                _objectMapperConfiguration.Configure<DummySource2, DummyTarget>(options =>
                 {
                     options.Filter = propInfo => new[] { "Prop10", "Prop12", "Prop8" }.Contains(propInfo.Name);
 
@@ -284,7 +263,7 @@ namespace AllOverIt.Mapping.Tests
                     });
                 });
 
-                configuration._propertyMatcherCache
+                _objectMapperConfiguration._propertyMatcherCache
                   .TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var propertyMatcher)
                   .Should()
                   .BeTrue();
@@ -317,6 +296,136 @@ namespace AllOverIt.Mapping.Tests
                 return matches.Select(
                     match => (match.SourceInfo.Name, match.SourceInfo.PropertyType,
                               match.TargetInfo.Name, match.TargetInfo.PropertyType));
+            }
+        }
+
+        public class GetOrAdd : ObjectMapperConfigurationFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Type_Null()
+            {
+                Invoking(() =>
+                {
+                    _objectMapperConfiguration.GetOrAdd(null, () => new { });
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("type");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Factory_Null()
+            {
+                Invoking(() =>
+                {
+                    _objectMapperConfiguration.GetOrAdd(typeof(DummySource1), null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("factory");
+            }
+
+            [Fact]
+            public void Should_Add_Factory()
+            {
+                var added = false;
+
+                var actual = _objectMapperConfiguration
+                    .GetOrAdd(typeof(DummySource1), () =>
+                    {
+                        added = true;
+
+                        return new DummySource1();
+                    })
+                    .Invoke();
+
+                added.Should().BeTrue();
+
+                actual.Should().BeOfType<DummySource1>();
+            }
+
+            [Fact]
+            public void Should_Get_From_Factory()
+            {
+                var added = 0;
+
+                var actual = _objectMapperConfiguration
+                    .GetOrAdd(typeof(DummySource1), () =>
+                    {
+                        added++;
+
+                        return new DummySource1();
+                    })
+                    .Invoke();
+
+                added.Should().Be(1);
+
+                actual.Should().BeOfType<DummySource1>();
+
+                actual = _objectMapperConfiguration
+                    .GetOrAdd(typeof(DummySource1), () =>
+                    {
+                        return null;
+                    })
+                    .Invoke();
+
+                actual.Should().BeOfType<DummySource1>();
+            }
+        }
+
+        public class GetTypeFactory_Generic : ObjectMapperConfigurationFixture
+        {
+            [Fact]
+            public void Should_Get_Same_Factory()
+            {
+                var factory1 = _objectMapperConfiguration.GetTypeFactory<DummySource1>();
+                var factory2 = _objectMapperConfiguration.GetTypeFactory<DummySource1>();
+
+                factory1.Should().BeSameAs(factory2);
+            }
+
+            [Fact]
+            public void Should_Get_From_Factory()
+            {
+                var actual = _objectMapperConfiguration
+                   .GetTypeFactory<DummySource1>()
+                   .Invoke();
+
+                actual.Should().BeOfType<DummySource1>();
+            }
+        }
+
+        public class GetTypeFactory_Type : ObjectMapperConfigurationFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Type_Null()
+            {
+                Invoking(() =>
+                {
+                    _objectMapperConfiguration.GetTypeFactory(null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("type");
+            }
+
+            [Fact]
+            public void Should_Get_Same_Factory()
+            {
+                var factory1 = _objectMapperConfiguration.GetTypeFactory(typeof(DummySource1));
+                var factory2 = _objectMapperConfiguration.GetTypeFactory(typeof(DummySource1));
+
+                factory1.Should().BeSameAs(factory2);
+            }
+
+            [Fact]
+            public void Should_Get_From_Factory()
+            {
+                var actual = _objectMapperConfiguration
+                   .GetTypeFactory(typeof(DummySource1))
+                   .Invoke();
+
+                actual.Should().BeOfType<DummySource1>();
             }
         }
     }

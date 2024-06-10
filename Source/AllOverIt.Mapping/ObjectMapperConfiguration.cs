@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 
 namespace AllOverIt.Mapping
 {
@@ -9,16 +10,18 @@ namespace AllOverIt.Mapping
         internal readonly ObjectMapperTypeFactory _typeFactory = new();
 
         /// <summary>Provides global mapping options.</summary>
-        public ObjectMapperOptions Options { get; } = new();
+        public IObjectMapperOptions Options { get; }
 
         /// <summary>Constructor. Initialized with a default constructed <see cref="PropertyMatcherOptions"/>.</summary>
         public ObjectMapperConfiguration()
         {
+            Options = new ObjectMapperOptions(_typeFactory);
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="configure">Provides the ability to configure default options for all non-configured mapping operations.</param>
-        public ObjectMapperConfiguration(Action<ObjectMapperOptions> configure)
+        public ObjectMapperConfiguration(Action<IObjectMapperOptions> configure)
+            : this()
         {
             configure
                 .WhenNotNull(nameof(configure))
@@ -46,6 +49,26 @@ namespace AllOverIt.Mapping
             }
 
             _ = _propertyMatcherCache.CreateMapper(sourceType, targetType, matcherOptions);
+        }
+
+        internal Func<object> GetOrAdd(Type type, Func<object> factory)
+        {
+            _ = type.WhenNotNull(nameof(type));
+            _ = factory.WhenNotNull(nameof(factory));
+
+            return _typeFactory.GetOrAdd(type, factory);
+        }
+
+        internal Func<object> GetTypeFactory<TType>()
+        {
+            return GetTypeFactory(typeof(TType));
+        }
+
+        internal Func<object> GetTypeFactory(Type type)
+        {
+            _ = type.WhenNotNull(nameof(type));
+
+            return _typeFactory.GetOrLazilyAdd(type, type.GetFactory);
         }
     }
 }
