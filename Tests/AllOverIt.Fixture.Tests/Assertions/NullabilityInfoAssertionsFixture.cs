@@ -18,14 +18,14 @@ namespace AllOverIt.Fixture.Tests
             public string? Prop1 { get; }
             public DummyClass1? Prop2 { get; init; }
             public bool Prop3 { get; }
-            public IDictionary<int, string?[]?> Prop4 { get; }
+            public Dictionary<int, string?[]?> Prop4 { get; } = [];
             public IDictionary<int, IDictionary<int?, string?[]?>>? Prop5 { get; }
             public bool? Prop6 { get; }
-            public string Prop7 { get; }
-            public bool[] Prop8 { get; }
+            public string Prop7 { get; } = string.Empty;
+            public bool[] Prop8 { get; } = [];
             public bool[]? Prop9 { get; }
             public bool?[]? Prop10 { get; }
-            public string?[] Prop11 { get; }
+            public string?[] Prop11 { get; } = [];
         }
 
         public class IsNullable : NullabilityInfoAssertionsFixture
@@ -414,7 +414,7 @@ namespace AllOverIt.Fixture.Tests
                     // using var _ = new AssertionScope(nameof(DummyClass1.Prop4));
 
                     GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop4))
-                        .IsOfType<IDictionary<int, string?[]?>>(propertyAssertions =>
+                        .IsOfType<Dictionary<int, string?[]?>>(propertyAssertions =>
                         {
                             propertyAssertions.ForGenericArg(1, nullability =>
                             {
@@ -438,7 +438,7 @@ namespace AllOverIt.Fixture.Tests
                     using var _ = new AssertionScope(nameof(DummyClass1.Prop4));
 
                     GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop4))
-                        .IsOfType<IDictionary<int, string?[]?>>(propertyAssertions =>
+                        .IsOfType<Dictionary<int, string?[]?>>(propertyAssertions =>
                         {
                             propertyAssertions.ForGenericArg(1, nullability =>
                             {
@@ -460,7 +460,7 @@ namespace AllOverIt.Fixture.Tests
                 // using var _ = new AssertionScope(nameof(DummyClass1.Prop4));
 
                 GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop4))
-                    .IsOfType<IDictionary<int, string?[]?>>(propertyAssertions =>
+                    .IsOfType<Dictionary<int, string?[]?>>(propertyAssertions =>
                     {
                         propertyAssertions.ForGenericArg(1, nullability =>
                         {
