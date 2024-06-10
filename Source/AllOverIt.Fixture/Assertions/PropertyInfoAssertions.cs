@@ -832,7 +832,7 @@ namespace AllOverIt.Fixture.Assertions
         /// </param>
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         [CustomAssertion]
-        public PropertyInfoAssertions IsNotNull(string because = "", params object[] becauseArgs)
+        public PropertyInfoAssertions IsNotNullable(string because = "", params object[] becauseArgs)
         {
             if (SubjectIsNotNull())
             {

@@ -1,3 +1,13 @@
+#  Version 7.17.0
+## 11 Jun 2024
+
+### AllOverIt.Fixture
+
+* Breaking: Renamed PropertyInfoAssertions IsNotNull() to IsNotNullable() to align it with NullabilityInfo Assertions.
+
+---
+
+
 #  Version 7.16.0
 ## 11 Jun 2024
 
