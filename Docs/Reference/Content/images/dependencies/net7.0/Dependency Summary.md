@@ -81,9 +81,10 @@
 * Amazon.CDK.Asset.KubectlV20 v2.1.2
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.3
 * Amazon.CDK.Lib v2.110.0
-* Amazon.CDK.Lib v2.144.0
+* Amazon.CDK.Lib v2.145.0
 * Amazon.JSII.Runtime v1.98.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.449
+* Amazon.JSII.Runtime v1.99.0
+* Cdklabs.AwsCdkAppsyncUtils v0.0.457
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -230,7 +231,7 @@
 
 ## AllOverIt.Fixture
 
-![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg) ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg) ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
+![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg) ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 
 ### Dependencies
 
@@ -252,7 +253,7 @@
 
 ## AllOverIt.Fixture.FakeItEasy
 
-![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg) ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg) ![](https://img.shields.io/badge/.NET-standard2.1-6EBE50.svg)
+![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg) ![](https://img.shields.io/badge/.NET-7.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-6.0-FF8C67.svg)
 
 ### Dependencies
 
@@ -615,7 +616,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.Xaml.Behaviors.Wpf v1.1.77
+* Microsoft.Xaml.Behaviors.Wpf v1.1.122
 
 <br>
 

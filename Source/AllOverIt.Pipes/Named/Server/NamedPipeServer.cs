@@ -19,9 +19,10 @@ namespace AllOverIt.Pipes.Named.Server
     {
         private bool _disposed;
         private readonly INamedPipeSerializer<TMessage> _serializer;
-        internal List<INamedPipeServerConnection<TMessage>> Connections { get; } = [];
         private readonly AwaitableLock _connectionsLock = new();
         private BackgroundTask? _backgroundTask;
+
+        internal List<INamedPipeServerConnection<TMessage>> Connections { get; } = [];
 
         /// <inheritdoc />
         public string PipeName { get; }
@@ -115,7 +116,7 @@ namespace AllOverIt.Pipes.Named.Server
 
                         connection.Connect();
 
-                        await DoOnClientConnectedAsync(connection, token);
+                        await DoOnClientConnectedAsync(connection, token).ConfigureAwait(false);
                     }
                     catch (OperationCanceledException)
                     {
