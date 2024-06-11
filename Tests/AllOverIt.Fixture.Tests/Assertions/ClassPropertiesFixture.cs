@@ -9,7 +9,7 @@ namespace AllOverIt.Fixture.Tests
 {
     public class ClassPropertiesFixture : FixtureBase
     {
-        private abstract class DummyClass
+        private abstract class DummyClassBase
         {
             public int Prop1 { set { } }
             public int Prop2 { get; private set; }
@@ -19,119 +19,229 @@ namespace AllOverIt.Fixture.Tests
             private int Prop6 { get; init; }
         }
 
-        private readonly ClassProperties<DummyClass> _classProperties = new();
+        private class DummyClass : DummyClassBase
+        {
+            protected override int Prop5 { get; init; }
+            public int Prop7 { set { } }
+            public int Prop8 { get; private set; }
+            public int Prop9 { get; internal set; }
+            public int Prop10 { get; init; }
+            private int Prop11 { get; init; }
+        }
+
+        private readonly ClassProperties<DummyClass> _notDeclaredOnlyProperties = new(false);
+        private readonly ClassProperties<DummyClass> _declaredOnlyProperties = new(true);
 
         public class Constructor : ClassPropertiesFixture
         {
-            [Fact]
-            public void Should_Get_All_Properties()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Get_All_Properties(bool declaredOnly)
             {
-                _classProperties.Properties
-                    .Select(propInfo => propInfo.Name)
-                    .Should()
-                    .BeEquivalentTo(["Prop1", "Prop2", "Prop3", "Prop4", "Prop5", "Prop6"]);
+                if (declaredOnly)
+                {
+                    _declaredOnlyProperties.Properties
+                        .Select(propInfo => propInfo.Name)
+                        .Should()
+                        .BeEquivalentTo(["Prop5", "Prop7", "Prop8", "Prop9", "Prop10", "Prop11"]);
+                }
+                else
+                {
+                    _notDeclaredOnlyProperties.Properties
+                        .Select(propInfo => propInfo.Name)
+                        .Should()
+                        .BeEquivalentTo(["Prop1", "Prop2", "Prop3", "Prop4", "Prop5", "Prop6", "Prop7", "Prop8", "Prop9", "Prop10", "Prop11"]);
+                }
             }
         }
 
         public class Including : ClassPropertiesFixture
         {
-            [Fact]
-            public void Should_Throw_When_Property_Names_Null()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Throw_When_Property_Names_Null(bool declaredOnly)
             {
                 Invoking(() =>
                 {
-                    _ = _classProperties.Including(null!);
+                    if (declaredOnly)
+                    {
+                        _ = _declaredOnlyProperties.Including(null!);
+                    }
+                    else
+                    {
+                        _ = _notDeclaredOnlyProperties.Including(null!);
+                    }
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("propertyNames");
             }
 
-            [Fact]
-            public void Should_Throw_When_Property_Names_Empty()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Throw_When_Property_Names_Empty(bool declaredOnly)
             {
                 Invoking(() =>
                 {
-                    _ = _classProperties.Including([]);
+                    if (declaredOnly)
+                    {
+                        _ = _declaredOnlyProperties.Including([]);
+                    }
+                    else
+                    {
+                        _ = _notDeclaredOnlyProperties.Including([]);
+                    }
                 })
                 .Should()
                 .Throw<ArgumentException>()
                 .WithNamedMessageWhenEmpty("propertyNames");
             }
 
-            [Fact]
-            public void Should_Filter_Properties()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Filter_Properties(bool declaredOnly)
             {
-                _classProperties
-                    .Including("Prop2", "Prop4")
-                    .Properties
-                    .Select(propInfo => propInfo.Name)
-                    .Should()
-                    .BeEquivalentTo(["Prop2", "Prop4"]);
+                if (declaredOnly)
+                {
+                    _declaredOnlyProperties
+                        .Including("Prop1", "Prop7")
+                        .Properties
+                        .Select(propInfo => propInfo.Name)
+                        .Should()
+                        .BeEquivalentTo(["Prop7"]);
+                }
+                else
+                {
+                    _notDeclaredOnlyProperties
+                        .Including("Prop1", "Prop7")
+                        .Properties
+                        .Select(propInfo => propInfo.Name)
+                        .Should()
+                        .BeEquivalentTo(["Prop1", "Prop7"]);
+                }
             }
         }
 
         public class Excluding : ClassPropertiesFixture
         {
-            [Fact]
-            public void Should_Throw_When_Property_Names_Null()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Throw_When_Property_Names_Null(bool declaredOnly)
             {
                 Invoking(() =>
                 {
-                    _ = _classProperties.Excluding(null!);
+                    if (declaredOnly)
+                    {
+                        _ = _declaredOnlyProperties.Excluding(null!);
+                    }
+                    else
+                    {
+                        _ = _notDeclaredOnlyProperties.Excluding(null!);
+                    }
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("propertyNames");
             }
 
-            [Fact]
-            public void Should_Throw_When_Property_Names_Empty()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Throw_When_Property_Names_Empty(bool declaredOnly)
             {
                 Invoking(() =>
                 {
-                    _ = _classProperties.Excluding([]);
+                    if (declaredOnly)
+                    {
+                        _ = _declaredOnlyProperties.Excluding([]);
+                    }
+                    else
+                    {
+                        _ = _notDeclaredOnlyProperties.Excluding([]);
+                    }
                 })
                 .Should()
                 .Throw<ArgumentException>()
                 .WithNamedMessageWhenEmpty("propertyNames");
             }
 
-            [Fact]
-            public void Should_Filter_Properties()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Filter_Properties(bool declaredOnly)
             {
-                _classProperties
-                    .Excluding("Prop2", "Prop4")
-                    .Properties
-                    .Select(propInfo => propInfo.Name)
-                    .Should()
-                    .BeEquivalentTo(["Prop1", "Prop3", "Prop5", "Prop6"]);
+                if (declaredOnly)
+                {
+                    _declaredOnlyProperties
+                        .Excluding("Prop1", "Prop7", "Prop9")
+                        .Properties
+                        .Select(propInfo => propInfo.Name)
+                        .Should()
+                        .BeEquivalentTo(["Prop5", "Prop8", "Prop10", "Prop11"]);
+                }
+                else
+                {
+                    _notDeclaredOnlyProperties
+                        .Excluding("Prop1", "Prop7", "Prop9")
+                        .Properties
+                        .Select(propInfo => propInfo.Name)
+                        .Should()
+                        .BeEquivalentTo(["Prop2", "Prop3", "Prop4", "Prop5", "Prop6", "Prop8", "Prop10", "Prop11"]);
+                }
             }
         }
 
         public class Where : ClassPropertiesFixture
         {
-            [Fact]
-            public void Should_Throw_When_Predicate_Null()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Throw_When_Predicate_Null(bool declaredOnly)
             {
                 Invoking(() =>
                 {
-                    _ = _classProperties.Where(null!);
+                    if (declaredOnly)
+                    {
+                        _ = _declaredOnlyProperties.Where(null!);
+                    }
+                    else
+                    {
+                        _ = _notDeclaredOnlyProperties.Where(null!);
+                    }
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("predicate");
             }
 
-            [Fact]
-            public void Should_Filter_Properties()
+            [Theory]
+            [InlineData(false)]
+            [InlineData(true)]
+            public void Should_Filter_Properties(bool declaredOnly)
             {
-                _classProperties
-                    .Where(propInfo => propInfo.IsAbstract() || propInfo.IsInitOnly())
-                    .Properties
-                    .Select(propInfo => propInfo.Name)
-                    .Should()
-                    .BeEquivalentTo(["Prop4", "Prop5", "Prop6"]);
+                if (declaredOnly)
+                {
+                    _declaredOnlyProperties
+                        .Where(propInfo => propInfo.IsAbstract() || propInfo.IsInitOnly())
+                        .Properties
+                        .Select(propInfo => propInfo.Name)
+                        .Should()
+                        .BeEquivalentTo(["Prop5", "Prop10", "Prop11"]);
+                }
+                else
+                {
+                    _notDeclaredOnlyProperties
+                        .Where(propInfo => propInfo.IsAbstract() || propInfo.IsInitOnly())
+                        .Properties
+                        .Select(propInfo => propInfo.Name)
+                        .Should()
+                        .BeEquivalentTo(["Prop4", "Prop5", "Prop6", "Prop10", "Prop11"]);
+                }
             }
         }
     }

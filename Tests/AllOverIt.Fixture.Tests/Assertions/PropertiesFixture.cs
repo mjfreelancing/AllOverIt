@@ -15,7 +15,7 @@ namespace AllOverIt.Fixture.Tests
             public void Should_Return_ClassProperties()
             {
                 // Need to use object rather than ClassProperties<DummyClass>
-                object actual = Properties.For<DummyClass>();
+                object actual = Properties.For<DummyClass>(Create<bool>());
 
                 actual.Should().BeOfType<ClassProperties<DummyClass>>();
             }

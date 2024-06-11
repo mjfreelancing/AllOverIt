@@ -14,11 +14,9 @@ namespace AllOverIt.Fixture.Assertions
     public static class ClassPropertiesExtensions
     {
         /// <summary>Gets a <see cref="ClassPropertiesAssertions{TType}"/> that can be used to assert properties on the specified
-        /// <typeparamref name="TType"/>.</summary>
         /// <typeparam name="TType">The type to assert its' property definitions.</typeparam>
         /// <param name="instance">The <see cref="ClassProperties{TType}"/> containing the property info to assert.</param>
         /// <returns>A <see cref="ClassPropertiesAssertions{TType}"/> that can be used to assert properties on the specified
-        /// <typeparamref name="TType"/>.</returns>
         public static ClassPropertiesAssertions<TType> Should<TType>(this ClassProperties<TType> instance)
         {
             return new ClassPropertiesAssertions<TType>(instance);
@@ -31,10 +29,17 @@ namespace AllOverIt.Fixture.Assertions
     {
         private IEnumerable<PropertyInfo>? _properties;
 
-        private static readonly PropertyInfo[] AllProperties = typeof(TType).GetPropertyInfo(BindingOptions.All).ToArray();
+        private readonly PropertyInfo[] _allProperties;
 
         /// <summary>Gets the currently filtered property names.</summary>
-        internal PropertyInfo[] Properties => [.. (_properties ?? AllProperties)];
+        internal PropertyInfo[] Properties => [.. (_properties ?? _allProperties)];
+
+        /// <summary>Constructor.</summary>
+        /// <param name="declaredOnly">When <see langword="True"/>, base class properties will be ignored.</param>
+        public ClassProperties(bool declaredOnly)
+        {
+            _allProperties = typeof(TType).GetPropertyInfo(BindingOptions.All, declaredOnly).ToArray();
+        }
 
         /// <summary>Sets the initial properties to those specified in <paramref name="propertyNames"/>. Property names that
         /// do not exist or ignored.</summary>
@@ -44,7 +49,7 @@ namespace AllOverIt.Fixture.Assertions
         {
             _ = propertyNames.WhenNotNullOrEmpty(nameof(propertyNames));
 
-            _properties = AllProperties.Where(propInfo => propertyNames.Contains(propInfo.Name));
+            _properties = _allProperties.Where(propInfo => propertyNames.Contains(propInfo.Name));
 
             return this;
         }
@@ -57,7 +62,7 @@ namespace AllOverIt.Fixture.Assertions
         {
             _ = propertyNames.WhenNotNullOrEmpty(nameof(propertyNames));
 
-            _properties = AllProperties.Where(propInfo => !propertyNames.Contains(propInfo.Name));
+            _properties = _allProperties.Where(propInfo => !propertyNames.Contains(propInfo.Name));
 
             return this;
         }
@@ -71,7 +76,7 @@ namespace AllOverIt.Fixture.Assertions
         {
             _ = predicate.WhenNotNull(nameof(predicate));
 
-            _properties = (_properties ?? AllProperties).Where(predicate);
+            _properties = (_properties ?? _allProperties).Where(predicate);
 
             return this;
         }
