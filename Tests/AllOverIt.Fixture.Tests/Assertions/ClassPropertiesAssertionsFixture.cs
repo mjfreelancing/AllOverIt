@@ -38,8 +38,8 @@ namespace AllOverIt.Fixture.Tests
                 var expected = new StringBuilder();
 
                 expected.AppendLine("Expected Prop1 to have a private get accessor, but found no matching accessor.");
-                expected.AppendLine("Expected Prop2 to have a private get accessor, but found it has a public accessor.");
-                expected.AppendLine("Expected Prop3 to have a private get accessor, but found it has a public accessor.");
+                expected.AppendLine("Expected Prop2 to have a private get accessor, but found a public get accessor.");
+                expected.AppendLine("Expected Prop3 to have a private get accessor, but found a public get accessor.");
 
                 Invoking(() =>
                 {

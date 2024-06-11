@@ -32,6 +32,7 @@ namespace AllOverIt.Fixture.Tests
             public required virtual int? Prop7 { get; init; }
             public bool Prop10 { set { } }
             public override bool Prop15 { get; }
+            private bool Prop16 { get; init; }
         }
 
         private sealed class DummyClass2 : DummyClass1
@@ -563,8 +564,8 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
-                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsPublic(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsPublic(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsPublic(PropertyAccessor.Get | PropertyAccessor.Init);
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop13)).IsPublic(PropertyAccessor.Get | PropertyAccessor.Set);
             }
 
             [Fact]
@@ -718,8 +719,8 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope("Prop2");
 
-                GetPropertyAssertions<DummyClass1>("Prop2").IsNotPublic(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>("Prop2").IsNotPublic(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>("Prop2").IsNotPublic(PropertyAccessor.Get | PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>("Prop9").IsNotPublic(PropertyAccessor.Get | PropertyAccessor.Init);
             }
 
             [Fact]
@@ -873,8 +874,8 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope("Prop9");
 
-                GetPropertyAssertions<DummyClass1>("Prop9").IsProtected(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>("Prop9").IsProtected(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>("Prop9").IsProtected(PropertyAccessor.Get | PropertyAccessor.Init);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop5)).IsProtected(PropertyAccessor.Set);
             }
 
             [Fact]
@@ -1028,8 +1029,9 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope("Prop2");
 
-                GetPropertyAssertions<DummyClass1>("Prop2").IsNotProtected(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>("Prop2").IsNotProtected(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>("Prop2").IsNotProtected(PropertyAccessor.Get | PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop4)).IsNotProtected(PropertyAccessor.Get | PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotProtected(PropertyAccessor.Get | PropertyAccessor.Init);
             }
 
             [Fact]
@@ -1183,8 +1185,8 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope("Prop2");
 
-                GetPropertyAssertions<DummyClass1>("Prop2").IsPrivate(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>("Prop2").IsPrivate(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>("Prop2").IsPrivate(PropertyAccessor.Get | PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>("Prop16").IsPrivate(PropertyAccessor.Get | PropertyAccessor.Init);
             }
 
             [Fact]
@@ -1338,8 +1340,8 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
-                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotPrivate(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotPrivate(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop5)).IsNotPrivate(PropertyAccessor.Get | PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotPrivate(PropertyAccessor.Get | PropertyAccessor.Init);
             }
 
             [Fact]
@@ -1394,7 +1396,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop4 to have an internal get accessor, but found it has a public accessor.");
+                .WithMessage("Expected Prop4 to have an internal get accessor, but found a public get accessor.");
             }
 
             [Fact]
@@ -1424,7 +1426,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop4 to have an internal get accessor because {reason}, but found it has a public accessor.");
+                .WithMessage($"Expected Prop4 to have an internal get accessor because {reason}, but found a public get accessor.");
             }
 
             [Fact]
@@ -1442,7 +1444,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop4 to have an internal get accessor because {expectedReason}, but found it has a public accessor.");
+                .WithMessage($"Expected Prop4 to have an internal get accessor because {expectedReason}, but found a public get accessor.");
             }
 
             [Fact]
@@ -1460,8 +1462,8 @@ namespace AllOverIt.Fixture.Tests
             {
                 var expected = new StringBuilder();
 
-                expected.AppendLine("Expected Prop3 to have an internal get accessor, but found it has a private accessor.");
-                expected.AppendLine("Expected Prop3 to have an internal set accessor, but found it has a public accessor.");
+                expected.AppendLine("Expected Prop3 to have an internal get accessor, but found a private get accessor.");
+                expected.AppendLine("Expected Prop3 to have an internal set accessor, but found a public set accessor.");
 
                 Invoking(() =>
                 {

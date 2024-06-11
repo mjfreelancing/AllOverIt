@@ -1,3 +1,14 @@
+#  Version 7.18.1
+## 12 Jun 2024
+
+### AllOverIt.Fixture
+
+* Improved property assertion differentiation between Set and Init.
+* Improved property accessor assertion messages to indicate what was actually found.
+
+---
+
+
 #  Version 7.18.0
 ## 11 Jun 2024
 
