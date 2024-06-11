@@ -84,7 +84,7 @@
 * Amazon.CDK.Lib v2.145.0
 * Amazon.JSII.Runtime v1.98.0
 * Amazon.JSII.Runtime v1.99.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.457
+* Cdklabs.AwsCdkAppsyncUtils v0.0.458
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -563,7 +563,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* FluentValidation v11.9.1
+* FluentValidation v11.9.2
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.1
 
 <br>
@@ -581,7 +581,7 @@
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.Validation
-* FluentValidation v11.9.1
+* FluentValidation v11.9.2
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.0
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.1
 * Microsoft.Extensions.Options v8.0.2

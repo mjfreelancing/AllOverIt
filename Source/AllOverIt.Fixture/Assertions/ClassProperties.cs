@@ -13,10 +13,10 @@ namespace AllOverIt.Fixture.Assertions
     /// <summary>Provides extension methods for the <see cref="ClassPropertiesAssertions{TType}"/>.</summary>
     public static class ClassPropertiesExtensions
     {
-        /// <summary>Gets a <see cref="ClassPropertiesAssertions{TType}"/> that can be used to assert properties on the specified
+        /// <summary>Gets a <see cref="ClassPropertiesAssertions{TType}"/> that can be used to assert properties on the specified type.</summary>
         /// <typeparam name="TType">The type to assert its' property definitions.</typeparam>
         /// <param name="instance">The <see cref="ClassProperties{TType}"/> containing the property info to assert.</param>
-        /// <returns>A <see cref="ClassPropertiesAssertions{TType}"/> that can be used to assert properties on the specified
+        /// <returns>A <see cref="ClassPropertiesAssertions{TType}"/> that can be used to assert properties on the specified type.</returns>
         public static ClassPropertiesAssertions<TType> Should<TType>(this ClassProperties<TType> instance)
         {
             return new ClassPropertiesAssertions<TType>(instance);
