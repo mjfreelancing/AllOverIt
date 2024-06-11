@@ -154,6 +154,11 @@ namespace AllOverIt.Extensions
                 result = propertyInfo.SetMethod is not null && predicate.Invoke(propertyInfo.SetMethod);
             }
 
+            if (result && accessor.HasFlag(PropertyAccessor.Init))
+            {
+                result = propertyInfo.IsInitOnly();
+            }
+
             return result;
         }
     }

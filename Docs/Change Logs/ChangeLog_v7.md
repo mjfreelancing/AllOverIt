@@ -1,3 +1,17 @@
+#  Version 7.18.0
+## 11 Jun 2024
+
+### AllOverIt.Fixture
+
+* Updated ClassProperties (for property assertions) to provide the ability to assert properties only declared on the class
+  (exclude base class properties)
+* Breaking: Removed HasInitOnlyAccessor() and HasNoInitOnlyAccessor() from PropertyInfoAssertions. Replaced with an additional
+  enum value of 'Init' on PropertyAccessor that can be passed to IsPublic(), IsProtected(), IsPrivate(), and IsInternal().
+  This better reflects how code is naturally written, and therefore tested.
+
+---
+
+
 #  Version 7.17.0
 ## 11 Jun 2024
 

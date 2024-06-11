@@ -27,7 +27,7 @@ namespace AllOverIt.Fixture.Assertions
             _subject = subject;
         }
 
-        /// <summary>Asserts that a property is readable.</summary>
+        /// <summary>Asserts that a property is readable (get).</summary>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
         /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
@@ -54,7 +54,7 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is not readable.</summary>
+        /// <summary>Asserts that a property is not readable (get).</summary>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
         /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
@@ -81,7 +81,7 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is writable.</summary>
+        /// <summary>Asserts that a property is writable (set or init).</summary>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
         /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
@@ -108,7 +108,7 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is not writable.</summary>
+        /// <summary>Asserts that a property is not writable (set or init).</summary>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
         /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
@@ -135,7 +135,7 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is public.</summary>
+        /// <summary>Asserts that a property accessor (get, set, or init) is public.</summary>
         /// <param name="accessor">Indicates if the assertion applies to the getter, setter, or both.</param>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
@@ -157,7 +157,7 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is not public.</summary>
+        /// <summary>Asserts that a property accessor (get, set, or init) is not public.</summary>
         /// <param name="accessor">Indicates if the assertion applies to the getter, setter, or both.</param>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
@@ -179,7 +179,7 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is protected.</summary>
+        /// <summary>Asserts that a property accessor (get, set, or init) is protected.</summary>
         /// <param name="accessor">Indicates if the assertion applies to the getter, setter, or both.</param>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
@@ -201,7 +201,7 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is not protected.</summary>
+        /// <summary>Asserts that a property accessor (get, set, or init) is not protected.</summary>
         /// <param name="accessor">Indicates if the assertion applies to the getter, setter, or both.</param>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
@@ -223,7 +223,7 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is private.</summary>
+        /// <summary>Asserts that a property accessor (get, set, or init) is private.</summary>
         /// <param name="accessor">Indicates if the assertion applies to the getter, setter, or both.</param>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
@@ -245,7 +245,7 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is not private.</summary>
+        /// <summary>Asserts that a property accessor (get, set, or init) is not private.</summary>
         /// <param name="accessor">Indicates if the assertion applies to the getter, setter, or both.</param>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
@@ -267,7 +267,7 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is internal.</summary>
+        /// <summary>Asserts that a property accessor (get, set, or init) is internal.</summary>
         /// <param name="accessor">Indicates if the assertion applies to the getter, setter, or both.</param>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
@@ -289,7 +289,7 @@ namespace AllOverIt.Fixture.Assertions
             return this;
         }
 
-        /// <summary>Asserts that a property is not internal.</summary>
+        /// <summary>Asserts that a property accessor (get, set, or init) is not internal.</summary>
         /// <param name="accessor">Indicates if the assertion applies to the getter, setter, or both.</param>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
@@ -522,60 +522,6 @@ namespace AllOverIt.Fixture.Assertions
                     .BecauseOf(because, becauseArgs)
                     .ForCondition(!_subject.IsVirtual())
                     .FailWith("Expected {context} not to be virtual{reason}, but it is.");
-            }
-
-            return this;
-        }
-
-        /// <summary>Asserts that a property has an InitOnly accessor.</summary>
-        /// <param name="because">
-        /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
-        /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
-        /// <para>
-        /// If the format of <paramref name="because"/> or <paramref name="becauseArgs"/> is not compatible with
-        /// <see cref="string.Format(string,object[])"/>, then a warning message is returned instead.
-        /// </para>
-        /// </param>
-        /// <param name="becauseArgs">
-        /// Zero or more values to use for filling in any <see cref="string.Format(string,object[])"/> compatible placeholders.
-        /// </param>
-        /// <returns>The current instance to cater for a fluent syntax.</returns>
-        [CustomAssertion]
-        public PropertyInfoAssertions HasInitAccessor(string because = "", params object[] becauseArgs)
-        {
-            if (SubjectIsNotNull())
-            {
-                Execute.Assertion
-                    .BecauseOf(because, becauseArgs)
-                    .ForCondition(_subject.IsInitOnly())
-                    .FailWith("Expected {context} to have an init accessor{reason}, but it doesn't.");
-            }
-
-            return this;
-        }
-
-        /// <summary>Asserts that a property does not have an InitOnly accessor.</summary>
-        /// <param name="because">
-        /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
-        /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
-        /// <para>
-        /// If the format of <paramref name="because"/> or <paramref name="becauseArgs"/> is not compatible with
-        /// <see cref="string.Format(string,object[])"/>, then a warning message is returned instead.
-        /// </para>
-        /// </param>
-        /// <param name="becauseArgs">
-        /// Zero or more values to use for filling in any <see cref="string.Format(string,object[])"/> compatible placeholders.
-        /// </param>
-        /// <returns>The current instance to cater for a fluent syntax.</returns>
-        [CustomAssertion]
-        public PropertyInfoAssertions HasNoInitAccessor(string because = "", params object[] becauseArgs)
-        {
-            if (SubjectIsNotNull())
-            {
-                Execute.Assertion
-                    .BecauseOf(because, becauseArgs)
-                    .ForCondition(!_subject.IsInitOnly())
-                    .FailWith("Expected {context} not to have an init accessor{reason}, but it does.");
             }
 
             return this;
@@ -864,20 +810,40 @@ namespace AllOverIt.Fixture.Assertions
             {
                 using var _ = new AssertionScope();
 
-                if (accessor.HasFlag(PropertyAccessor.Get))
+                if (accessor.HasFlag(PropertyAccessor.Set) && accessor.HasFlag(PropertyAccessor.Init))
                 {
                     Execute.Assertion
                         .BecauseOf(because, becauseArgs)
-                        .ForCondition(_subject.GetMethod is not null && predicate.Invoke(PropertyAccessor.Get))
-                        .FailWith(GetAccessorFailMessage(visibility, PropertyAccessor.Get));
+                        .FailWith($"Property access validation cannot include '{nameof(PropertyAccessor.Set)}' and '{nameof(PropertyAccessor.Init)}'.");
                 }
-
-                if (accessor.HasFlag(PropertyAccessor.Set))
+                else
                 {
-                    Execute.Assertion
-                        .BecauseOf(because, becauseArgs)
-                        .ForCondition(_subject.SetMethod is not null && predicate.Invoke(PropertyAccessor.Set))
-                        .FailWith(GetAccessorFailMessage(visibility, PropertyAccessor.Set));
+                    // Must have Get and the required visibility
+                    if (accessor.HasFlag(PropertyAccessor.Get))
+                    {
+                        Execute.Assertion
+                            .BecauseOf(because, becauseArgs)
+                            .ForCondition(_subject.GetMethod is not null && predicate.Invoke(PropertyAccessor.Get))
+                            .FailWith(GetAccessorFailMessage(visibility, PropertyAccessor.Get));
+                    }
+
+                    // Must have Set and the required visibility
+                    if (accessor.HasFlag(PropertyAccessor.Set))
+                    {
+                        Execute.Assertion
+                            .BecauseOf(because, becauseArgs)
+                            .ForCondition(_subject.SetMethod is not null && predicate.Invoke(PropertyAccessor.Set))
+                            .FailWith(GetAccessorFailMessage(visibility, PropertyAccessor.Set));
+                    }
+
+                    // Must have Init and the required visibility
+                    if (accessor.HasFlag(PropertyAccessor.Init))
+                    {
+                        Execute.Assertion
+                            .BecauseOf(because, becauseArgs)
+                            .ForCondition(_subject.IsInitOnly() && predicate.Invoke(PropertyAccessor.Set))
+                            .FailWith(GetAccessorFailMessage(visibility, PropertyAccessor.Init));
+                    }
                 }
             }
         }
@@ -888,20 +854,40 @@ namespace AllOverIt.Fixture.Assertions
             {
                 using var _ = new AssertionScope();
 
-                if (accessor.HasFlag(PropertyAccessor.Get))
+                if (accessor.HasFlag(PropertyAccessor.Set) && accessor.HasFlag(PropertyAccessor.Init))
                 {
                     Execute.Assertion
                         .BecauseOf(because, becauseArgs)
-                        .ForCondition(_subject.GetMethod is not null && !predicate.Invoke(PropertyAccessor.Get))
-                        .FailWith(GetNotAccessorFailMessage(visibility, PropertyAccessor.Get));
+                        .FailWith($"Property access validation cannot include '{nameof(PropertyAccessor.Set)}' and '{nameof(PropertyAccessor.Init)}'.");
                 }
-
-                if (accessor.HasFlag(PropertyAccessor.Set))
+                else
                 {
-                    Execute.Assertion
-                        .BecauseOf(because, becauseArgs)
-                        .ForCondition(_subject.SetMethod is not null && !predicate.Invoke(PropertyAccessor.Set))
-                        .FailWith(GetNotAccessorFailMessage(visibility, PropertyAccessor.Set));
+                    // Must have Get and not the required visibility
+                    if (accessor.HasFlag(PropertyAccessor.Get))
+                    {
+                        Execute.Assertion
+                            .BecauseOf(because, becauseArgs)
+                            .ForCondition(_subject.GetMethod is not null && !predicate.Invoke(PropertyAccessor.Get))
+                            .FailWith(GetNotAccessorFailMessage(visibility, PropertyAccessor.Get));
+                    }
+
+                    // Must have Get and not the required visibility
+                    if (accessor.HasFlag(PropertyAccessor.Set))
+                    {
+                        Execute.Assertion
+                            .BecauseOf(because, becauseArgs)
+                            .ForCondition(_subject.SetMethod is not null && !predicate.Invoke(PropertyAccessor.Set))
+                            .FailWith(GetNotAccessorFailMessage(visibility, PropertyAccessor.Set));
+                    }
+
+                    // Must have Get and not the required visibility
+                    if (accessor.HasFlag(PropertyAccessor.Init))
+                    {
+                        Execute.Assertion
+                            .BecauseOf(because, becauseArgs)
+                            .ForCondition(_subject.IsInitOnly() && !predicate.Invoke(PropertyAccessor.Set))
+                            .FailWith(GetNotAccessorFailMessage(visibility, PropertyAccessor.Init));
+                    }
                 }
             }
         }
@@ -936,25 +922,25 @@ namespace AllOverIt.Fixture.Assertions
         {
             if (_subject.IsPublic(accessor))
             {
-                return "it to be public";
+                return "it has a public accessor";
             }
 
             if (_subject.IsProtected(accessor))
             {
-                return "it to be protected";
+                return "it has a protected accessor";
             }
 
             if (_subject.IsPrivate(accessor))
             {
-                return "it to be private";
+                return "it has a private accessor";
             }
 
             if (_subject.IsInternal(accessor))
             {
-                return "it to be internal";
+                return "it has an internal accessor";
             }
 
-            return "no accessor";
+            return "no matching accessor";
         }
     }
 }
