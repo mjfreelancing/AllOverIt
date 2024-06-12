@@ -32,6 +32,8 @@ namespace AllOverIt.Fixture.Tests
             public required virtual int? Prop7 { get; init; }
             public bool Prop10 { set { } }
             public override bool Prop15 { get; }
+            private bool Prop16 { get; init; }
+            internal bool Prop17 { get; init; }
         }
 
         private sealed class DummyClass2 : DummyClass1
@@ -464,7 +466,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop3 to have a public get accessor, but found it has a private accessor.");
+                .WithMessage("Expected Prop3 to have a public get accessor, but found it has a private get accessor.");
             }
 
             [Fact]
@@ -478,7 +480,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop1 to have a public get accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop1 to have a public get accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -492,7 +494,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop6 to have a public set accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop6 to have a public set accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -506,7 +508,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop5 to have a public init accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop5 to have a public init accessor, but found it has a protected set accessor.");
             }
 
             [Fact]
@@ -536,7 +538,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop3 to have a public get accessor because {reason}, but found it has a private accessor.");
+                .WithMessage($"Expected Prop3 to have a public get accessor because {reason}, but found it has a private get accessor.");
             }
 
             [Fact]
@@ -554,7 +556,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop3 to have a public get accessor because {expectedReason}, but found it has a private accessor.");
+                .WithMessage($"Expected Prop3 to have a public get accessor because {expectedReason}, but found it has a private get accessor.");
             }
 
             [Fact]
@@ -563,8 +565,8 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
-                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsPublic(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsPublic(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsPublic(PropertyAccessor.Get | PropertyAccessor.Init);
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop13)).IsPublic(PropertyAccessor.Get | PropertyAccessor.Set);
             }
 
             [Fact]
@@ -572,8 +574,8 @@ namespace AllOverIt.Fixture.Tests
             {
                 var expected = new StringBuilder();
 
-                expected.AppendLine("Expected Prop2 to have a public get accessor, but found it has a private accessor.");
-                expected.AppendLine("Expected Prop2 to have a public set accessor, but found it has a private accessor.");
+                expected.AppendLine("Expected Prop2 to have a public get accessor, but found it has a private get accessor.");
+                expected.AppendLine("Expected Prop2 to have a public set accessor, but found it has a private set accessor.");
 
                 Invoking(() =>
                 {
@@ -609,7 +611,7 @@ namespace AllOverIt.Fixture.Tests
             }
 
             [Fact]
-            public void Should_Fail_When_Different_Access()
+            public void Should_Fail_When_Same_Access()
             {
                 Invoking(() =>
                 {
@@ -619,7 +621,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop1 not to have a public set accessor, but found it has a public accessor.");
+                .WithMessage("Expected Prop1 not to have a public set accessor, but found it has a public set accessor.");
             }
 
             [Fact]
@@ -633,7 +635,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop1 not to have a public get accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop1 not to have a public get accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -647,7 +649,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop6 not to have a public set accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop6 not to have a public set accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -661,7 +663,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop5 not to have a public init accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop5 not to have a public init accessor, but found it has a protected set accessor.");
             }
 
             [Fact]
@@ -691,7 +693,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop1 not to have a public set accessor because {reason}, but found it has a public accessor.");
+                .WithMessage($"Expected Prop1 not to have a public set accessor because {reason}, but found it has a public set accessor.");
             }
 
             [Fact]
@@ -709,7 +711,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop1 not to have a public set accessor because {expectedReason}, but found it has a public accessor.");
+                .WithMessage($"Expected Prop1 not to have a public set accessor because {expectedReason}, but found it has a public set accessor.");
             }
 
             [Fact]
@@ -718,8 +720,8 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope("Prop2");
 
-                GetPropertyAssertions<DummyClass1>("Prop2").IsNotPublic(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>("Prop2").IsNotPublic(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>("Prop2").IsNotPublic(PropertyAccessor.Get | PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>("Prop9").IsNotPublic(PropertyAccessor.Get | PropertyAccessor.Init);
             }
 
             [Fact]
@@ -727,8 +729,8 @@ namespace AllOverIt.Fixture.Tests
             {
                 var expected = new StringBuilder();
 
-                expected.AppendLine("Expected Prop7 not to have a public get accessor, but found it has a public accessor.");
-                expected.AppendLine("Expected Prop7 not to have a public set accessor, but found it has a public accessor.");
+                expected.AppendLine("Expected Prop7 not to have a public get accessor, but found it has a public get accessor.");
+                expected.AppendLine("Expected Prop7 not to have a public set accessor, but found it has a public init only accessor.");
 
                 Invoking(() =>
                 {
@@ -774,7 +776,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop3 to have a protected get accessor, but found it has a private accessor.");
+                .WithMessage("Expected Prop3 to have a protected get accessor, but found it has a private get accessor.");
             }
 
             [Fact]
@@ -788,7 +790,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop1 to have a protected get accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop1 to have a protected get accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -802,7 +804,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop6 to have a protected set accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop6 to have a protected set accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -816,7 +818,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop5 to have a protected init accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop5 to have a protected init accessor, but found it has a protected set accessor.");
             }
 
             [Fact]
@@ -846,7 +848,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop3 to have a protected get accessor because {reason}, but found it has a private accessor.");
+                .WithMessage($"Expected Prop3 to have a protected get accessor because {reason}, but found it has a private get accessor.");
             }
 
             [Fact]
@@ -864,7 +866,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop3 to have a protected get accessor because {expectedReason}, but found it has a private accessor.");
+                .WithMessage($"Expected Prop3 to have a protected get accessor because {expectedReason}, but found it has a private get accessor.");
             }
 
             [Fact]
@@ -873,8 +875,8 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope("Prop9");
 
-                GetPropertyAssertions<DummyClass1>("Prop9").IsProtected(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>("Prop9").IsProtected(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>("Prop9").IsProtected(PropertyAccessor.Get | PropertyAccessor.Init);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop5)).IsProtected(PropertyAccessor.Set);
             }
 
             [Fact]
@@ -882,8 +884,8 @@ namespace AllOverIt.Fixture.Tests
             {
                 var expected = new StringBuilder();
 
-                expected.AppendLine("Expected Prop2 to have a protected get accessor, but found it has a private accessor.");
-                expected.AppendLine("Expected Prop2 to have a protected set accessor, but found it has a private accessor.");
+                expected.AppendLine("Expected Prop2 to have a protected get accessor, but found it has a private get accessor.");
+                expected.AppendLine("Expected Prop2 to have a protected set accessor, but found it has a private set accessor.");
 
                 Invoking(() =>
                 {
@@ -919,17 +921,17 @@ namespace AllOverIt.Fixture.Tests
             }
 
             [Fact]
-            public void Should_Fail_When_Different_Access()
+            public void Should_Fail_When_Same_Access()
             {
                 Invoking(() =>
                 {
-                    using var _ = new AssertionScope("Prop5");
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop5));
 
-                    GetPropertyAssertions<DummyClass1>("Prop5").IsNotProtected(PropertyAccessor.Set);
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop5)).IsNotProtected(PropertyAccessor.Set);
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop5 not to have a protected set accessor, but found it has a protected accessor.");
+                .WithMessage("Expected Prop5 not to have a protected set accessor, but found it has a protected set accessor.");
             }
 
             [Fact]
@@ -943,7 +945,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop1 not to have a protected get accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop1 not to have a protected get accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -957,7 +959,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop6 not to have a protected set accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop6 not to have a protected set accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -971,7 +973,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop5 not to have a protected init accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop5 not to have a protected init accessor, but found it has a protected set accessor.");
             }
 
             [Fact]
@@ -1001,7 +1003,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop9 not to have a protected set accessor because {reason}, but found it has a protected accessor.");
+                .WithMessage($"Expected Prop9 not to have a protected set accessor because {reason}, but found it has a protected init only accessor.");
             }
 
             [Fact]
@@ -1019,7 +1021,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop9 not to have a protected set accessor because {expectedReason}, but found it has a protected accessor.");
+                .WithMessage($"Expected Prop9 not to have a protected set accessor because {expectedReason}, but found it has a protected init only accessor.");
             }
 
             [Fact]
@@ -1028,8 +1030,9 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope("Prop2");
 
-                GetPropertyAssertions<DummyClass1>("Prop2").IsNotProtected(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>("Prop2").IsNotProtected(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>("Prop2").IsNotProtected(PropertyAccessor.Get | PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop4)).IsNotProtected(PropertyAccessor.Get | PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotProtected(PropertyAccessor.Get | PropertyAccessor.Init);
             }
 
             [Fact]
@@ -1037,8 +1040,8 @@ namespace AllOverIt.Fixture.Tests
             {
                 var expected = new StringBuilder();
 
-                expected.AppendLine("Expected Prop9 not to have a protected get accessor, but found it has a protected accessor.");
-                expected.AppendLine("Expected Prop9 not to have a protected set accessor, but found it has a protected accessor.");
+                expected.AppendLine("Expected Prop9 not to have a protected get accessor, but found it has a protected get accessor.");
+                expected.AppendLine("Expected Prop9 not to have a protected set accessor, but found it has a protected init only accessor.");
 
                 Invoking(() =>
                 {
@@ -1084,7 +1087,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop4 to have a private get accessor, but found it has a public accessor.");
+                .WithMessage("Expected Prop4 to have a private get accessor, but found it has a public get accessor.");
             }
 
             [Fact]
@@ -1098,7 +1101,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop1 to have a private get accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop1 to have a private get accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -1112,7 +1115,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop6 to have a private set accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop6 to have a private set accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -1126,7 +1129,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop5 to have a private init accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop5 to have a private init accessor, but found it has a protected set accessor.");
             }
 
             [Fact]
@@ -1156,7 +1159,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop4 to have a private get accessor because {reason}, but found it has a public accessor.");
+                .WithMessage($"Expected Prop4 to have a private get accessor because {reason}, but found it has a public get accessor.");
             }
 
             [Fact]
@@ -1174,7 +1177,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop4 to have a private get accessor because {expectedReason}, but found it has a public accessor.");
+                .WithMessage($"Expected Prop4 to have a private get accessor because {expectedReason}, but found it has a public get accessor.");
             }
 
             [Fact]
@@ -1183,8 +1186,8 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope("Prop2");
 
-                GetPropertyAssertions<DummyClass1>("Prop2").IsPrivate(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>("Prop2").IsPrivate(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>("Prop2").IsPrivate(PropertyAccessor.Get | PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>("Prop16").IsPrivate(PropertyAccessor.Get | PropertyAccessor.Init);
             }
 
             [Fact]
@@ -1192,8 +1195,8 @@ namespace AllOverIt.Fixture.Tests
             {
                 var expected = new StringBuilder();
 
-                expected.AppendLine("Expected Prop4 to have a private get accessor, but found it has a public accessor.");
-                expected.AppendLine("Expected Prop4 to have a private set accessor, but found it has an internal accessor.");
+                expected.AppendLine("Expected Prop4 to have a private get accessor, but found it has a public get accessor.");
+                expected.AppendLine("Expected Prop4 to have a private set accessor, but found it has an internal set accessor.");
 
                 Invoking(() =>
                 {
@@ -1229,7 +1232,7 @@ namespace AllOverIt.Fixture.Tests
             }
 
             [Fact]
-            public void Should_Fail_When_Different_Access()
+            public void Should_Fail_When_Same_Access()
             {
                 Invoking(() =>
                 {
@@ -1239,7 +1242,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop2 not to have a private set accessor, but found it has a private accessor.");
+                .WithMessage("Expected Prop2 not to have a private set accessor, but found it has a private set accessor.");
             }
 
             [Fact]
@@ -1253,7 +1256,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop1 not to have a private get accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop1 not to have a private get accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -1267,7 +1270,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop6 not to have a private set accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop6 not to have a private set accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -1281,7 +1284,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop5 not to have a private init accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop5 not to have a private init accessor, but found it has a protected set accessor.");
             }
 
             [Fact]
@@ -1311,7 +1314,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop2 not to have a private set accessor because {reason}, but found it has a private accessor.");
+                .WithMessage($"Expected Prop2 not to have a private set accessor because {reason}, but found it has a private set accessor.");
             }
 
             [Fact]
@@ -1329,7 +1332,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop2 not to have a private set accessor because {expectedReason}, but found it has a private accessor.");
+                .WithMessage($"Expected Prop2 not to have a private set accessor because {expectedReason}, but found it has a private set accessor.");
             }
 
             [Fact]
@@ -1338,8 +1341,8 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
-                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotPrivate(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotPrivate(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop5)).IsNotPrivate(PropertyAccessor.Get | PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotPrivate(PropertyAccessor.Get | PropertyAccessor.Init);
             }
 
             [Fact]
@@ -1347,8 +1350,8 @@ namespace AllOverIt.Fixture.Tests
             {
                 var expected = new StringBuilder();
 
-                expected.AppendLine("Expected Prop2 not to have a private get accessor, but found it has a private accessor.");
-                expected.AppendLine("Expected Prop2 not to have a private set accessor, but found it has a private accessor.");
+                expected.AppendLine("Expected Prop2 not to have a private get accessor, but found it has a private get accessor.");
+                expected.AppendLine("Expected Prop2 not to have a private set accessor, but found it has a private set accessor.");
 
                 Invoking(() =>
                 {
@@ -1394,7 +1397,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop4 to have an internal get accessor, but found it has a public accessor.");
+                .WithMessage("Expected Prop4 to have an internal get accessor, but found it has a public get accessor.");
             }
 
             [Fact]
@@ -1408,7 +1411,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop1 to have an internal get accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop1 to have an internal get accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -1424,7 +1427,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop4 to have an internal get accessor because {reason}, but found it has a public accessor.");
+                .WithMessage($"Expected Prop4 to have an internal get accessor because {reason}, but found it has a public get accessor.");
             }
 
             [Fact]
@@ -1442,17 +1445,17 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop4 to have an internal get accessor because {expectedReason}, but found it has a public accessor.");
+                .WithMessage($"Expected Prop4 to have an internal get accessor because {expectedReason}, but found it has a public get accessor.");
             }
 
             [Fact]
             public void Should_Not_Fail()
             {
                 // Not required for this test
-                //using var _ = new AssertionScope("Prop12");
+                //using var _ = new AssertionScope(nameof(DummyClass2.Prop12));
 
-                GetPropertyAssertions<DummyClass2>("Prop12").IsInternal(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass2>("Prop12").IsInternal(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop12)).IsInternal(PropertyAccessor.Get | PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass2.Prop17)).IsInternal(PropertyAccessor.Get | PropertyAccessor.Init);
             }
 
             [Fact]
@@ -1460,8 +1463,8 @@ namespace AllOverIt.Fixture.Tests
             {
                 var expected = new StringBuilder();
 
-                expected.AppendLine("Expected Prop3 to have an internal get accessor, but found it has a private accessor.");
-                expected.AppendLine("Expected Prop3 to have an internal set accessor, but found it has a public accessor.");
+                expected.AppendLine("Expected Prop3 to have an internal get accessor, but found it has a private get accessor.");
+                expected.AppendLine("Expected Prop3 to have an internal set accessor, but found it has a public set accessor.");
 
                 Invoking(() =>
                 {
@@ -1507,7 +1510,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop12 not to have an internal set accessor, but found it has an internal accessor.");
+                .WithMessage("Expected Prop12 not to have an internal set accessor, but found it has an internal set accessor.");
             }
 
             [Fact]
@@ -1521,7 +1524,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop1 not to have an internal get accessor, but found no matching accessor.");
+                .WithMessage("Expected Prop1 not to have an internal get accessor, but found it has no matching accessor.");
             }
 
             [Fact]
@@ -1537,7 +1540,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop12 not to have an internal set accessor because {reason}, but found it has an internal accessor.");
+                .WithMessage($"Expected Prop12 not to have an internal set accessor because {reason}, but found it has an internal set accessor.");
             }
 
             [Fact]
@@ -1555,7 +1558,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop12 not to have an internal set accessor because {expectedReason}, but found it has an internal accessor.");
+                .WithMessage($"Expected Prop12 not to have an internal set accessor because {expectedReason}, but found it has an internal set accessor.");
             }
 
             [Fact]
@@ -1564,8 +1567,8 @@ namespace AllOverIt.Fixture.Tests
                 // Not required for this test
                 //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
 
-                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotInternal(PropertyAccessor.Get);
-                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotInternal(PropertyAccessor.Set);
+                GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop7)).IsNotInternal(PropertyAccessor.Get | PropertyAccessor.Init);
+                GetPropertyAssertions<DummyClass2>("Item").IsNotInternal(PropertyAccessor.Get | PropertyAccessor.Set);
             }
 
             [Fact]
@@ -1573,8 +1576,8 @@ namespace AllOverIt.Fixture.Tests
             {
                 var expected = new StringBuilder();
 
-                expected.AppendLine("Expected Prop12 not to have an internal get accessor, but found it has an internal accessor.");
-                expected.AppendLine("Expected Prop12 not to have an internal init accessor, but found no matching accessor.");
+                expected.AppendLine("Expected Prop12 not to have an internal get accessor, but found it has an internal get accessor.");
+                expected.AppendLine("Expected Prop12 not to have an internal init accessor, but found it has an internal set accessor.");
 
                 Invoking(() =>
                 {

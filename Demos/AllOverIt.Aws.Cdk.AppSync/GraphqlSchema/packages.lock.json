@@ -51,8 +51,8 @@
       },
       "Cdklabs.AwsCdkAppsyncUtils": {
         "type": "Transitive",
-        "resolved": "0.0.458",
-        "contentHash": "zrQCc9nFG1s18nxKFrF9QYzTmXQEZHdSjaT4HI4O5NhDlva5n5txV9nCho/NxG4J6WUz6UQ+9DfrsYm4C3QqEw==",
+        "resolved": "0.0.459",
+        "contentHash": "XCgz+TTC8rjyvmISzNXqNAij81kLhSSktxNq9VEefT/oXN1j9+A2mvM2HVK4AmToZH0qjKqTinevE0J9v/3hzA==",
         "dependencies": {
           "Amazon.CDK.Lib": "[2.110.0, 3.0.0)",
           "Amazon.JSII.Runtime": "[1.99.0, 2.0.0)",
@@ -209,7 +209,7 @@
         "dependencies": {
           "AllOverIt": "[8.0.0-preview.8, )",
           "Amazon.CDK.Lib": "[2.145.0, )",
-          "Cdklabs.AwsCdkAppsyncUtils": "[0.0.458, )"
+          "Cdklabs.AwsCdkAppsyncUtils": "[0.0.459, )"
         }
       }
     }
