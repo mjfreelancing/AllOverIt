@@ -110,7 +110,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
         }
 
         internal static IBreadcrumbDataMutator AddBreadcrumb(IBreadcrumbs breadcrumbs, object? caller, string? message, object? metadata,
-            string callerName, string filePath = null, int lineNumber = 0)
+            string? callerName, string? filePath = null, int lineNumber = 0)
         {
             var fullName = (caller, callerName) switch
             {

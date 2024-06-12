@@ -122,7 +122,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
                     return index;
                 }
 
-                if (column.ForeignKeyPrincipals.Count > 0)
+                if (column.ForeignKeyPrincipals.Length > 0)
                 {
                     var foreignKey = column.ForeignKeyPrincipals.First();
 

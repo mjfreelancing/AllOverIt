@@ -10,7 +10,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
     public sealed class EnrichedEnumEntityOptions
     {
         internal Func<IMutableEntityType, bool> EntityPredicate { get; }
-        internal Func<PropertyInfo, bool> PropertyPredicate { get; private set; }
+        internal Func<PropertyInfo, bool>? PropertyPredicate { get; private set; }
         internal EnrichedEnumPropertyOptions PropertyOptions { get; } = new();
 
         /// <summary>Constructor. The default behaviour is to include all properties on all entities that inherit <see cref="EnrichedEnum{TEnum}"/>.</summary>
@@ -97,14 +97,14 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         /// <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.
         /// This should be the complete type name, including its length.</param>
         /// <param name="maxLength">Optional. If provided this value specifies the column's maximum length. This parameter is not required if the [MaxLength] attribute is used.</param>
-        public void AsName(string columnType = default, int? maxLength = default)
+        public void AsName(string? columnType = default, int? maxLength = default)
         {
             PropertyOptions.AsName(columnType, maxLength);
         }
 
         /// <summary>Configures all properties on the entity types being configured to store their values as an integer.</summary>
         /// <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.</param>
-        public void AsValue(string columnType = default)
+        public void AsValue(string? columnType = default)
         {
             PropertyOptions.AsValue(columnType);
         }
