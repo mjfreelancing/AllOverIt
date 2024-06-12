@@ -896,21 +896,77 @@ namespace AllOverIt.Fixture.Assertions
         {
             var accessorStr = $"{accessor}".ToLower();
 
-            var found = GetActualPropertyAccessorVisibilityDescription(accessor);
+            var found = GetSubjectAccessorVisibilityDescription(accessor);
 
-            return $"Expected {{context}} to have {GetExpectedVisibilityString(visibility)} {accessorStr} accessor{{reason}}, but found {found}.";
+            return $"Expected {{context}} to have {GetVisibilityStringWithAPrefix(visibility)} {accessorStr} accessor{{reason}}, but found it has {found}.";
         }
 
         private string GetNotAccessorFailMessage(string visibility, PropertyAccessor accessor)
         {
             var accessorStr = $"{accessor}".ToLower();
 
-            var found = GetActualPropertyAccessorVisibilityDescription(accessor);
+            var found = GetSubjectAccessorVisibilityDescription(accessor);
 
-            return $"Expected {{context}} not to have {GetExpectedVisibilityString(visibility)} {accessorStr} accessor{{reason}}, but found {found}.";
+            return $"Expected {{context}} not to have {GetVisibilityStringWithAPrefix(visibility)} {accessorStr} accessor{{reason}}, but found it has {found}.";
         }
 
-        private static string GetExpectedVisibilityString(string visibility)
+        private string GetSubjectAccessorVisibilityDescription(PropertyAccessor accessor)
+        {
+            var found = "no matching accessor";
+
+            switch (accessor)
+            {
+                case PropertyAccessor.Get:
+                    if (_subject.GetMethod is not null)
+                    {
+                        found = $"{GetSubjectAccessorVisibilityString(PropertyAccessor.Get)} get accessor";
+                    }
+                    break;
+
+                case PropertyAccessor.Set:
+                case PropertyAccessor.Init:
+                    if (_subject.SetMethod is not null)
+                    {
+                        var actualVisibility = GetSubjectAccessorVisibilityString(PropertyAccessor.Set);
+
+                        if (_subject.IsInitOnly())
+                        {
+                            found = $"{actualVisibility} init only accessor";
+                        }
+                        else
+                        {
+                            found = $"{actualVisibility} set accessor";
+                        }
+                    }
+                    break;
+            }
+
+            return found;
+        }
+
+        private string GetSubjectAccessorVisibilityString(PropertyAccessor propertyAccessor)
+        {
+            if (_subject.IsPublic(propertyAccessor))
+            {
+                return GetVisibilityStringWithAPrefix(Public);
+            }
+            else if (_subject.IsProtected(propertyAccessor))
+            {
+                return GetVisibilityStringWithAPrefix(Protected);
+            }
+            else if (_subject.IsPrivate(propertyAccessor))
+            {
+                return GetVisibilityStringWithAPrefix(Private);
+            }
+            else if (_subject.IsInternal(propertyAccessor))
+            {
+                return GetVisibilityStringWithAPrefix(Internal);
+            }
+
+            throw new InvalidOperationException($"Unhandled property accessor '{propertyAccessor}'.");
+        }
+
+        private static string GetVisibilityStringWithAPrefix(string visibility)
         {
             return visibility switch
             {
@@ -920,62 +976,6 @@ namespace AllOverIt.Fixture.Assertions
                 Internal => "an internal",
                 _ => throw new InvalidOperationException($"Unhandled visibility '{visibility}'.")
             };
-        }
-
-        private string GetActualPropertyAccessorVisibilityDescription(PropertyAccessor accessor)
-        {
-            var found = "no matching accessor";
-
-            switch (accessor)
-            {
-                case PropertyAccessor.Get:
-                    if (_subject.GetMethod is not null)
-                    {
-                        found = $"a {GetActualPropertyAccessorVisibilityString(PropertyAccessor.Get)} get accessor";
-                    }
-                    break;
-
-                case PropertyAccessor.Set:
-                case PropertyAccessor.Init:
-                    if (_subject.SetMethod is not null)
-                    {
-                        var actualVisibility = GetActualPropertyAccessorVisibilityString(PropertyAccessor.Set);
-
-                        if (_subject.IsInitOnly())
-                        {
-                            found = $"a {actualVisibility} init only accessor";
-                        }
-                        else
-                        {
-                            found = $"a {actualVisibility} set accessor";
-                        }
-                    }
-                    break;
-            }
-
-            return found;
-        }
-
-        private string GetActualPropertyAccessorVisibilityString(PropertyAccessor propertyAccessor)
-        {
-            if (_subject.IsPublic(propertyAccessor))
-            {
-                return "public";
-            }
-            else if (_subject.IsProtected(propertyAccessor))
-            {
-                return "protected";
-            }
-            else if (_subject.IsPrivate(propertyAccessor))
-            {
-                return "private";
-            }
-            else if (_subject.IsInternal(propertyAccessor))
-            {
-                return "internal";
-            }
-
-            throw new InvalidOperationException($"Unhandled property accessor '{propertyAccessor}'.");
         }
     }
 }
