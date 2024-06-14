@@ -4,6 +4,7 @@ using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace AllOverIt.Fixture.Assertions
@@ -41,30 +42,56 @@ namespace AllOverIt.Fixture.Assertions
             _allProperties = typeof(TType).GetPropertyInfo(BindingOptions.All, declaredOnly).ToArray();
         }
 
-        /// <summary>Sets the initial properties to those specified in <paramref name="propertyNames"/>. Property names that
-        /// do not exist or ignored.</summary>
+        /// <summary>Filters the properties to only those specified in <paramref name="propertyNames"/>. Property names
+        /// that do not exist are ignored. Multiple calls to this method will further filter the results.</summary>
         /// <param name="propertyNames">The property names to be included.</param>
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties<TType> Including(params string[] propertyNames)
         {
             _ = propertyNames.WhenNotNullOrEmpty(nameof(propertyNames));
 
-            _properties = _allProperties.Where(propInfo => propertyNames.Contains(propInfo.Name));
+            _properties = (_properties ?? _allProperties).Where(propInfo => propertyNames.Contains(propInfo.Name));
 
             return this;
         }
 
-        /// <summary>Sets the initial properties to include all properties of <typeparamref name="TType"/> except for those
-        /// specified in <paramref name="propertyNames"/>. Property names that do not exist or ignored.</summary>
+        /// <summary>Filters the properties to only those specified in the provided property expressions. Property names
+        /// that do not exist are ignored. Multiple calls to this method will further filter the results.</summary>
+        /// <param name="properties">Onr or more property expressions.</param>
+        /// <returns>The current instance to cater for a fluent syntax.</returns>
+        public ClassProperties<TType> Including(params Expression<Func<TType, object>>[] properties)
+        {
+            _ = properties.WhenNotNullOrEmpty(nameof(properties));
+
+            var propertyNames = properties.SelectToArray(property => property.UnwrapMemberExpression().Member.Name);
+
+            return Including(propertyNames);
+        }
+
+        /// <summary>Filters the properties by excluding those specified in <paramref name="propertyNames"/>. Multiple calls
+        /// to this method will further filter the results.</summary>
         /// <param name="propertyNames">The property names to be excluded.</param>
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties<TType> Excluding(params string[] propertyNames)
         {
             _ = propertyNames.WhenNotNullOrEmpty(nameof(propertyNames));
 
-            _properties = _allProperties.Where(propInfo => !propertyNames.Contains(propInfo.Name));
+            _properties = (_properties ?? _allProperties).Where(propInfo => !propertyNames.Contains(propInfo.Name));
 
             return this;
+        }
+
+        /// <summary>Filters the properties by excluding those specified in <paramref name="properties"/>. Multiple calls
+        /// to this method will further filter the results.</summary>
+        /// <param name="propertyNames">The property names to be excluded.</param>
+        /// <returns>The current instance to cater for a fluent syntax.</returns>
+        public ClassProperties<TType> Excluding(params Expression<Func<TType, object>>[] properties)
+        {
+            _ = properties.WhenNotNullOrEmpty(nameof(properties));
+
+            var propertyNames = properties.SelectToArray(property => property.UnwrapMemberExpression().Member.Name);
+
+            return Excluding(propertyNames);
         }
 
         /// <summary>Filters the current collection of properties based on the specified <paramref name="predicate"/>.
