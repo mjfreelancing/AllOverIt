@@ -1,3 +1,16 @@
+#  Version 7.19.0
+## 14 Jun 2024
+
+### AllOverIt.Fixture
+
+* Updated ClassProperties to provide the ability to include / exclude properties using expressions.
+* The ClassProperties Including() and Excluding() methods now allow for cumulative filtering by chaining multiple calls.
+* Changed PropertyInfoAssertions and NullabilityInfoAssertions to use "Not Nullable" instead of "NotNull" when reporting a
+  nullability assertion failure.
+
+---
+
+
 #  Version 7.18.1
 ## 12 Jun 2024
 
