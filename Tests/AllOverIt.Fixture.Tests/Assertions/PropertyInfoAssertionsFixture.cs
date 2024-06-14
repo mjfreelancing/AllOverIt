@@ -2999,7 +2999,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop4 to be \"Nullable\", but it is \"NotNull\".");
+                .WithMessage("Expected Prop4 to be \"Nullable\", but it is \"Not Nullable\".");
             }
 
             [Fact]
@@ -3013,7 +3013,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop15 to be \"Nullable\", but it is \"NotNull\".");
+                .WithMessage("Expected Prop15 to be \"Nullable\", but it is \"Not Nullable\".");
             }
 
             [Fact]
@@ -3029,7 +3029,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop15 to be \"Nullable\" because {reason}, but it is \"NotNull\".");
+                .WithMessage($"Expected Prop15 to be \"Nullable\" because {reason}, but it is \"Not Nullable\".");
             }
 
             [Fact]
@@ -3047,7 +3047,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop15 to be \"Nullable\" because {expectedReason}, but it is \"NotNull\".");
+                .WithMessage($"Expected Prop15 to be \"Nullable\" because {expectedReason}, but it is \"Not Nullable\".");
             }
 
             [Fact]
@@ -3073,8 +3073,8 @@ namespace AllOverIt.Fixture.Tests
             {
                 var expected = new StringBuilder();
 
-                expected.AppendLine("Expected Prop1 to be \"Nullable\", but it is \"NotNull\".");
-                expected.AppendLine("Expected Prop4 to be \"Nullable\", but it is \"NotNull\".");
+                expected.AppendLine("Expected Prop1 to be \"Nullable\", but it is \"Not Nullable\".");
+                expected.AppendLine("Expected Prop4 to be \"Nullable\", but it is \"Not Nullable\".");
 
                 Invoking(() =>
                 {
@@ -3120,7 +3120,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop6 to be \"NotNull\", but it is \"Nullable\".");
+                .WithMessage("Expected Prop6 to be \"Not Nullable\", but it is \"Nullable\".");
             }
 
             [Fact]
@@ -3134,7 +3134,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage("Expected Prop3 to be \"NotNull\", but it is \"Nullable\".");
+                .WithMessage("Expected Prop3 to be \"Not Nullable\", but it is \"Nullable\".");
             }
 
             [Fact]
@@ -3150,7 +3150,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop6 to be \"NotNull\" because {reason}, but it is \"Nullable\".");
+                .WithMessage($"Expected Prop6 to be \"Not Nullable\" because {reason}, but it is \"Nullable\".");
             }
 
             [Fact]
@@ -3168,7 +3168,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                 .Should()
                 .Throw<XunitException>()
-                .WithMessage($"Expected Prop6 to be \"NotNull\" because {expectedReason}, but it is \"Nullable\".");
+                .WithMessage($"Expected Prop6 to be \"Not Nullable\" because {expectedReason}, but it is \"Nullable\".");
             }
 
             [Fact]
@@ -3194,8 +3194,8 @@ namespace AllOverIt.Fixture.Tests
             {
                 var expected = new StringBuilder();
 
-                expected.AppendLine("Expected Prop6 to be \"NotNull\", but it is \"Nullable\".");
-                expected.AppendLine("Expected Prop3 to be \"NotNull\", but it is \"Nullable\".");
+                expected.AppendLine("Expected Prop6 to be \"Not Nullable\", but it is \"Nullable\".");
+                expected.AppendLine("Expected Prop3 to be \"Not Nullable\", but it is \"Nullable\".");
 
                 Invoking(() =>
                 {
