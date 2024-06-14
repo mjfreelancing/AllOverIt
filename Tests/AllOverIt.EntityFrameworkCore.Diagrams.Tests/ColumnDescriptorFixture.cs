@@ -35,9 +35,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             ColumnName = nameof(Author.Id),
                             ColumnType = "INTEGER",
                             IsNullable = false,
-                            MaxLength = (int?) null,
+                            MaxLength = (int?)null,
                             Constraint = ConstraintType.PrimaryKey,
-                            ForeignKeyPrincipals = (IReadOnlyCollection<PrincipalForeignKey>) null
+                            ForeignKeyPrincipals = Array.Empty<PrincipalForeignKey>()
                         };
                     }
                     else if (descriptor.ColumnName == nameof(Author.FirstName))
@@ -49,7 +49,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             IsNullable = false,
                             MaxLength = 50,
                             Constraint = ConstraintType.None,
-                            ForeignKeyPrincipals = (IReadOnlyCollection<PrincipalForeignKey>) null
+                            ForeignKeyPrincipals = Array.Empty<PrincipalForeignKey>()
                         };
                     }
                     else if (descriptor.ColumnName == nameof(Author.LastName))
@@ -61,7 +61,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             IsNullable = true,
                             MaxLength = 50,
                             Constraint = ConstraintType.None,
-                            ForeignKeyPrincipals = (IReadOnlyCollection<PrincipalForeignKey>) null
+                            ForeignKeyPrincipals = Array.Empty<PrincipalForeignKey>()
                         };
                     }
                     else if (descriptor.ColumnName == nameof(Author.Email))
@@ -73,7 +73,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             IsNullable = false,
                             MaxLength = 50,
                             Constraint = ConstraintType.None,
-                            ForeignKeyPrincipals = (IReadOnlyCollection<PrincipalForeignKey>) null
+                            ForeignKeyPrincipals = Array.Empty<PrincipalForeignKey>()
                         };
                     }
 
@@ -111,9 +111,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             ColumnName = nameof(AuthorBlog.Id),
                             ColumnType = "INTEGER",
                             IsNullable = false,
-                            MaxLength = (int?) null,
+                            MaxLength = (int?)null,
                             Constraint = ConstraintType.PrimaryKey,
-                            ForeignKeyPrincipals = (IReadOnlyCollection<PrincipalForeignKey>) null
+                            ForeignKeyPrincipals = Array.Empty<PrincipalForeignKey>()
                         };
                     }
                     else if (descriptor.ColumnName == $"{nameof(AuthorBlog.Author)}Id")
@@ -123,7 +123,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             ColumnName = $"{nameof(AuthorBlog.Author)}Id",
                             ColumnType = "INTEGER",
                             IsNullable = false,
-                            MaxLength = (int?) null,
+                            MaxLength = (int?)null,
                             Constraint = ConstraintType.ForeignKey,
                             ForeignKeyPrincipals = new[]
                             {
@@ -144,7 +144,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             ColumnName = $"{nameof(AuthorBlog.Blogger)}Id",
                             ColumnType = "INTEGER",
                             IsNullable = false,
-                            MaxLength = (int?) null,
+                            MaxLength = (int?)null,
                             Constraint = ConstraintType.ForeignKey,
                             ForeignKeyPrincipals = new[]
                             {
