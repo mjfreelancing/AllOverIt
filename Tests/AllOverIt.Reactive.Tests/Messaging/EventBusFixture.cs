@@ -1,8 +1,9 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Reactive.Messaging;
 using FluentAssertions;
 using System.Reactive.Linq;
 
-namespace AllOverIt.Reactive.Tests
+namespace AllOverIt.Reactive.Tests.Messaging
 {
     public class EventBusFixture : FixtureBase
     {

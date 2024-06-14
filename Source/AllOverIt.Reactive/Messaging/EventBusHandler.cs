@@ -2,14 +2,15 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-namespace AllOverIt.Reactive
+namespace AllOverIt.Reactive.Messaging
 {
     /// <summary>A base class handler for a message that was published by an <see cref="IEventBus"/> instance.</summary>
     /// <typeparam name="TEvent">The event type this handler will respond to.</typeparam>
     public abstract class EventBusHandler<TEvent> : ObservableObject, IDisposable
     {
+        private bool _disposed;
         private readonly IEventBus _eventBus;
-        private IDisposable _subscription;
+        private IDisposable? _subscription;
 
         private bool _isActive;
 
@@ -70,6 +71,11 @@ namespace AllOverIt.Reactive
         /// <param name="disposing">Indicates if the internal resources are to be disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
+            if (_disposed)
+            {
+                return;
+            }
+
             if (_subscription is not null)
             {
                 if (disposing)
@@ -77,6 +83,8 @@ namespace AllOverIt.Reactive
                     DisposeSubscription();
                 }
             }
+
+            _disposed = true;
         }
 
         private void DisposeSubscription()

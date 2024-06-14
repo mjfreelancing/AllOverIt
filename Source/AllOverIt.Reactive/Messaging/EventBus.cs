@@ -1,11 +1,11 @@
 ﻿using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
-namespace AllOverIt.Reactive
+namespace AllOverIt.Reactive.Messaging
 {
     // Note: Not sealed to cater for scenarios where differently scoped event buses are required.
 
-    /// <summary>Implements a subscribable event aggregator / bus that consumers can subscribe to for notification of various event types.</summary>
+    /// <summary>Implements an event aggregator / bus that consumers can subscribe to for notification of various event types.</summary>
     public class EventBus : IEventBus
     {
         private Subject<object> _subject = new();

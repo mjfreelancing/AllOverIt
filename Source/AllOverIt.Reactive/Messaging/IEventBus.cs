@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Reactive
+﻿namespace AllOverIt.Reactive.Messaging
 {
     /// <summary>Describes a subscribable event aggregator / message bus.</summary>
     public interface IEventBus : IDisposable

@@ -32,4 +32,7 @@
 * Refactored RsaAesHybridEncryptor to use CryptographicOperations.HashData() for NET 9
 
 
+### AllOverIt.Reactive
+* Moved event bus and handlers to the AllOverIt.Reactive.Messaging namespace
+
 ---
