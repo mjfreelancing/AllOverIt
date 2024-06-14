@@ -86,7 +86,7 @@ namespace AllOverIt.Extensions
             {
                 MemberExpression memberExpression => memberExpression,
                 LambdaExpression { Body: MemberExpression memberExpression } => memberExpression,
-                LambdaExpression { Body: UnaryExpression unaryExpression } => (unaryExpression.Operand as MemberExpression),
+                LambdaExpression { Body: UnaryExpression unaryExpression } => unaryExpression.Operand as MemberExpression,
                 _ => null
             };
         }
