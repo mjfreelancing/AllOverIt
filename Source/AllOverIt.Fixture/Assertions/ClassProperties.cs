@@ -57,7 +57,7 @@ namespace AllOverIt.Fixture.Assertions
 
         /// <summary>Filters the properties to only those specified in the provided property expressions. Property names
         /// that do not exist are ignored. Multiple calls to this method will further filter the results.</summary>
-        /// <param name="properties">Onr or more property expressions.</param>
+        /// <param name="properties">One or more property expressions to include.</param>
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties<TType> Including(params Expression<Func<TType, object>>[] properties)
         {
@@ -83,7 +83,7 @@ namespace AllOverIt.Fixture.Assertions
 
         /// <summary>Filters the properties by excluding those specified in <paramref name="properties"/>. Multiple calls
         /// to this method will further filter the results.</summary>
-        /// <param name="propertyNames">The property names to be excluded.</param>
+        /// <param name="properties">One or more property expressions to exclude.</param>
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties<TType> Excluding(params Expression<Func<TType, object>>[] properties)
         {
