@@ -758,7 +758,7 @@ namespace AllOverIt.Fixture.Assertions
                 Execute.Assertion
                     .BecauseOf(because, becauseArgs)
                     .ForCondition(state == NullabilityState.Nullable)
-                    .FailWith("Expected {context} to be {0}{reason}, but it is {1}.", nameof(NullabilityState.Nullable), nameof(NullabilityState.NotNull));
+                    .FailWith("Expected {context} to be {0}{reason}, but it is {1}.", GetNullableString(false), GetNullableString(true));
             }
 
             return this;
@@ -791,7 +791,7 @@ namespace AllOverIt.Fixture.Assertions
                 Execute.Assertion
                     .BecauseOf(because, becauseArgs)
                     .ForCondition(state == NullabilityState.NotNull)
-                    .FailWith("Expected {context} to be {0}{reason}, but it is {1}.", nameof(NullabilityState.NotNull), nameof(NullabilityState.Nullable));
+                    .FailWith("Expected {context} to be {0}{reason}, but it is {1}.", GetNullableString(true), GetNullableString(false));
             }
 
             return this;
@@ -976,6 +976,11 @@ namespace AllOverIt.Fixture.Assertions
                 Internal => "an internal",
                 _ => throw new InvalidOperationException($"Unhandled visibility '{visibility}'.")
             };
+        }
+
+        private static string GetNullableString(bool inverted)
+        {
+            return inverted ? "Not Nullable" : "Nullable";
         }
     }
 }
