@@ -24,7 +24,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             var sb = new StringBuilder();
             var relationships = new List<string>();
 
-            var dbContextEntityTypes = dbContext.Model.GetEntityTypes().AsReadOnlyCollection();
+            var dbContextEntityTypes = dbContext.Model.GetEntityTypes().ToArray();
 
             sb.AppendLine($"direction: {_options.Direction}".ToLowerInvariant());
             sb.AppendLine();

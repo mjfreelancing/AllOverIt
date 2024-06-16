@@ -13,14 +13,14 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
         private const string ForeignKey = "foreign_key";
 
         private readonly ErdOptions _options;
-        private readonly IReadOnlyCollection<IEntityType> _dbContextEntityTypes;
+        private readonly IEntityType[] _dbContextEntityTypes;
         private readonly string _defaultShapeStyle;
 
-        public EntityNodeGenerator(ErdOptions options, IReadOnlyCollection<IEntityType> dbContextEntityTypes, string defaultShapeStyle)
+        public EntityNodeGenerator(ErdOptions options, IEntityType[] dbContextEntityTypes, string defaultShapeStyle)
         {
             _options = options.WhenNotNull(nameof(options));
-            _dbContextEntityTypes = dbContextEntityTypes.WhenNotNullOrEmpty(nameof(dbContextEntityTypes)) as IReadOnlyCollection<IEntityType>;
-            _defaultShapeStyle = defaultShapeStyle;     // can be null
+            _dbContextEntityTypes = dbContextEntityTypes.WhenNotNullOrEmpty(nameof(dbContextEntityTypes)).AsArray();
+            _defaultShapeStyle = defaultShapeStyle;     // can be string.Empty
         }
 
         public string CreateNode(EntityIdentifier entityIdentifier, IReadOnlyCollection<IColumnDescriptor> columns, Action<string> onRelationship)
