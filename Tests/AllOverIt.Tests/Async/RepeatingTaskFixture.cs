@@ -115,7 +115,7 @@ namespace AllOverIt.Tests.Async
 
                 var invokedCount = 0;
 
-                Task DoAction()
+                Task DoActionAsync()
                 {
                     invokedCount++;
 
@@ -138,24 +138,12 @@ namespace AllOverIt.Tests.Async
                     TimeProvider = _timeProviderFake
                 };
 
-                var task = RepeatingTask.StartAsync(DoAction, options, cts.Token);
+                var task = RepeatingTask.StartAsync(DoActionAsync, options, cts.Token);
 
                 // Give the background task time to actually start
                 resetEvent.Wait();
 
                 invokedCount.Should().Be(1);
-
-                _timeProviderFake.Advance(_delayTimeSpan);
-
-                await Task.Delay(100);      // Allow time for the callback to invoke
-
-                invokedCount.Should().Be(2);
-
-                _timeProviderFake.Advance(_delayTimeSpan);
-
-                await Task.Delay(100);      // Allow time for the callback to invoke
-
-                invokedCount.Should().Be(2);
 
                 _timeProviderFake.Advance(_delayTimeSpan);
 

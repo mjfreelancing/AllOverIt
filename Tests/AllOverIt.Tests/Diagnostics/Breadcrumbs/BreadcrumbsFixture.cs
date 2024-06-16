@@ -17,12 +17,14 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 CreateBreadcrumbs().Count.Should().Be(0);
             }
 
-            [Fact]
-            public void Should_Have_Expected_Count()
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Have_Expected_Count(bool threadSafe)
             {
                 var expected = GetWithinRange(10, 20);
 
-                var breadcrumbs = CreateBreadcrumbs();
+                var breadcrumbs = CreateBreadcrumbs(threadSafe);
 
                 Enumerable
                     .Range(1, expected)
@@ -363,7 +365,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             {
                 var breadcrumbs = CreateBreadcrumbs();
 
-                var enumerator = ((IEnumerable) breadcrumbs).GetEnumerator();
+                var enumerator = ((IEnumerable)breadcrumbs).GetEnumerator();
 
                 var count = 0;
 
@@ -414,11 +416,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
                 var actual = new List<BreadcrumbData>();
 
-                var enumerator = ((IEnumerable) breadcrumbs).GetEnumerator();
+                var enumerator = ((IEnumerable)breadcrumbs).GetEnumerator();
 
                 while (enumerator.MoveNext())
                 {
-                    var value = (BreadcrumbData) enumerator.Current;
+                    var value = (BreadcrumbData)enumerator.Current;
 
                     actual.Add(value);
                 }
