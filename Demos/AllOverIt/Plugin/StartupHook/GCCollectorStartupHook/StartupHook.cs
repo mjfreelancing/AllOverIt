@@ -65,7 +65,7 @@ internal class StartupHook
         loadContext.CreateType(StartupHookProxyAssemblyName, StartupHookProxyTypeName);
     }
 
-    private static Assembly LoadAssemblyFromSharedLocation(AssemblyLoadContext context, AssemblyName assemblyName)
+    private static Assembly? LoadAssemblyFromSharedLocation(AssemblyLoadContext context, AssemblyName assemblyName)
     {
         var sharedAssemblyPath = string.Empty;      // Set to a path to a shared location - could be via an environment variable
 

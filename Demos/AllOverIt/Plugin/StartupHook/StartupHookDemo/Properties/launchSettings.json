@@ -2,10 +2,11 @@
   "profiles": {
     "StartupHookDemo": {
       "commandName": "Project",
-        "environmentVariables": {
-            // A list of fully qualified names, delimited by the platform-specific path separator (; on Windows and : on Unix).
-            "DOTNET_STARTUP_HOOKS": "<set the explicit path here>\\GCCollectorStartupHook.dll"
-        }
+      "environmentVariables": {
+        // A list of fully qualified names, delimited by the platform-specific path separator (; on Windows and : on Unix).
+        // Cannot be relative and then changed to an absolute path by the application since this environment variable is read before Main() is invoked.
+        "DOTNET_STARTUP_HOOKS": "<set the explicit path to the DLL here>\\GCCollectorStartupHook.dll"
+      }
     }
   }
 }

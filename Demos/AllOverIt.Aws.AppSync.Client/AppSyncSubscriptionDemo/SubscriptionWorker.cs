@@ -342,7 +342,7 @@ namespace AppSyncSubscriptionDemo
                         : "Errors";
 
                     var message = response.Errors.IsNullOrEmpty()
-                        ? (object) response.Data
+                        ? (object)response.Data
                         : response.Errors;
 
                     LogMessage($"{name}: {type}{Environment.NewLine}" +
@@ -405,7 +405,7 @@ namespace AppSyncSubscriptionDemo
             var counter = 0;
             var codes = new[] { "LNG1", "LNG2", "LNG3" };
 
-            RepeatingTask.Start(async () =>
+            RepeatingTask.StartAsync(async () =>
             {
                 mutation.Variables = new
                 {
@@ -429,7 +429,12 @@ namespace AppSyncSubscriptionDemo
                     LogMessage($"Error sending mutation: {exception.Message}");
                     throw;
                 }
-            }, 3000, cancellationToken);
+            },
+            new RepeatingTaskOptions
+            {
+                RepeatDelay = TimeSpan.FromSeconds(3)
+            },
+            cancellationToken);
         }
     }
 }
