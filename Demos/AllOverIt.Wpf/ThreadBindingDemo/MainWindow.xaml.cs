@@ -54,7 +54,7 @@ namespace ThreadBindingDemo
 
             LogMessage(uiSynchronizationContext, $"Starting on UI thread {Environment.CurrentManagedThreadId}{Environment.NewLine}");
 
-            return RepeatingTask.Start(async () =>
+            return RepeatingTask.StartAsync(async () =>
             {
                 count++;
 
@@ -179,7 +179,12 @@ namespace ThreadBindingDemo
                 {
                     LogMessage(uiSynchronizationContext, $"Iteration #{count} - END (currently on thread Id {Environment.CurrentManagedThreadId}){Environment.NewLine}{Environment.NewLine}");
                 }
-            }, 250, cancellationToken);
+            },
+            new RepeatingTaskOptions
+            {
+                RepeatDelay = TimeSpan.FromMilliseconds(250)
+            },
+            cancellationToken);
         }
 
         private void LogMessage(SynchronizationContext uiSynchronizationContext, string message)
