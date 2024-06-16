@@ -15,7 +15,7 @@ namespace AllOverIt.Reactive.Extensions
         public static IObservable<TResult> WaitUntil<TResult>(
             this IObservable<TResult> observable,
             Func<TResult, bool> predicate,
-            Func<TResult, TResult> action = default)
+            Func<TResult, TResult>? action = default)
         {
             _ = observable.WhenNotNull(nameof(observable));
             _ = predicate.WhenNotNull(nameof(predicate));
@@ -56,7 +56,7 @@ namespace AllOverIt.Reactive.Extensions
         public static Task<TResult> WaitUntilAsync<TResult>(
             this IObservable<TResult> observable,
             Func<TResult, bool> predicate,
-            Func<TResult, Task<TResult>> action = default)
+            Func<TResult, Task<TResult>>? action = default)
         {
             _ = observable.WhenNotNull(nameof(observable));
             _ = predicate.WhenNotNull(nameof(predicate));

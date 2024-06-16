@@ -65,7 +65,7 @@ namespace AllOverIt.Reactive
         /// <param name="propertyName">The name of the property that is changing. Optional</param>
         /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="False"/>.</returns>
         protected bool RaiseAndSetIfChanged<TProperty>(TProperty oldValue, TProperty newValue, Action<TType, TProperty> setValue,
-            IEqualityComparer<TProperty> comparer, Action onChanging, Action onChanged, [CallerMemberName] string propertyName = "")
+            IEqualityComparer<TProperty>? comparer, Action? onChanging, Action? onChanged, [CallerMemberName] string propertyName = "")
         {
             _ = setValue.WhenNotNull(nameof(setValue));
 
