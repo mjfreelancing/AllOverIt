@@ -21,6 +21,7 @@
 ### AllOverIt
 * EnrichedEnum previously threw ArgumentNullException when comparing to a null
 * Updated ObjectExtensions.InvokeMethod() to support return values
+* Added LockableList.
 
 
 ### AllOverIt.Aws.Cdk.AppSync
