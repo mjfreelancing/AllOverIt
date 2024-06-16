@@ -19,9 +19,10 @@
 
 
 ### AllOverIt
-* EnrichedEnum previously threw ArgumentNullException when comparing to a null
-* Updated ObjectExtensions.InvokeMethod() to support return values
+* EnrichedEnum previously threw ArgumentNullException when comparing to a null.
+* Updated ObjectExtensions.InvokeMethod() to support return values.
 * Added LockableList.
+* Moved event bus and handlers to the AllOverIt.Reactive.Messaging namespace.
 
 
 ### AllOverIt.Aws.Cdk.AppSync
@@ -30,10 +31,10 @@
 
 
 ### AllOverIt.Cryptography
-* Refactored RsaAesHybridEncryptor to use CryptographicOperations.HashData() for NET 9
+* Refactored RsaAesHybridEncryptor to use CryptographicOperations.HashData() for NET 9.
 
 
 ### AllOverIt.Reactive
-* Moved event bus and handlers to the AllOverIt.Reactive.Messaging namespace
+* Moved event bus and handlers to the AllOverIt.Reactive.Messaging namespace.
 
 ---
