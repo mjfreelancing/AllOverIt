@@ -1,9 +1,10 @@
 ﻿using AllOverIt.Assertion;
+using AllOverIt.Pipes.Named.Server;
 using AllOverIt.Threading;
 using AllOverIt.Threading.Extensions;
 using System.Collections;
 
-namespace AllOverIt.Pipes.Named.Server
+namespace AllOverIt.Collections
 {
     public static class LockableListExtensions
     {
