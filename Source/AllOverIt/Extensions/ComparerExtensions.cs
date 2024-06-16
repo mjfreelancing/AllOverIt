@@ -17,22 +17,13 @@ namespace AllOverIt.Extensions
 
             public int Compare(TType? lhs, TType? rhs)
             {
-                if (lhs is null && rhs is null)
-                {
-                    return 0;
-                }
+                // Not considering null lhs or rhs here since this should be handled by _comparer
 
-                if (lhs is null)
-                {
-                    return -1;
-                }
-
-                if (rhs is null)
-                {
-                    return 1;
-                }
-
+#pragma warning disable IDE0079     // unnecessary suppression
+#pragma warning disable CS8604      // Possible null refererence argument => Compare() allows null
                 var result = _comparer.Compare(lhs, rhs);
+#pragma warning restore CS8604
+#pragma warning restore IDE0079
 
                 return result == 0 ? result : -result;
             }
@@ -52,22 +43,13 @@ namespace AllOverIt.Extensions
 
             int IComparer<TType>.Compare(TType? lhs, TType? rhs)
             {
-                if (lhs is null && rhs is null)
-                {
-                    return 0;
-                }
+                // Not considering null lhs or rhs here since this should be handled by _first and _next respectively
 
-                if (lhs is null)
-                {
-                    return -1;
-                }
-
-                if (rhs is null)
-                {
-                    return 1;
-                }
-
+#pragma warning disable IDE0079     // unnecessary suppression
+#pragma warning disable CS8604      // Possible null refererence argument => Compare() allows null
                 var result = _first.Compare(lhs, rhs);
+#pragma warning restore CS8604
+#pragma warning restore IDE0079
 
                 return result != 0
                     ? result
