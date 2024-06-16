@@ -1,9 +1,10 @@
-﻿using AllOverIt.Fixture;
+﻿using AllOverIt.Collections;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using AllOverIt.Pipes.Named.Server;
 using AllOverIt.Threading;
 using FluentAssertions;
 using NSubstitute;
+using System.Collections;
 
 namespace AllOverIt.Tests.Collections
 {
@@ -217,9 +218,77 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Enumerate()
             {
-                var actual = _lockableList.ToList();
+                var index = 0;
+                var count = 0;
+                var enumerator = _lockableList.GetEnumerator();
 
-                actual.Should().BeEquivalentTo(_list, options => options.WithStrictOrdering());
+                while (enumerator.MoveNext())
+                {
+                    enumerator.Current.Should().Be(_list[index++]);
+                    count++;
+                }
+
+                count.Should().Be(3);
+            }
+
+            [Fact]
+            public void Should_Reset()
+            {
+                var count = 0;
+                var enumerator = _lockableList.GetEnumerator();
+
+                while (count < 6)
+                {
+                    var index = 0;
+
+                    while (enumerator.MoveNext())
+                    {
+                        enumerator.Current.Should().Be(_list[index++]);
+                        count++;
+                    }
+
+                    enumerator.Reset();
+                }
+
+                count.Should().Be(6);
+            }
+
+            [Fact]
+            public void Should_Enumerate_Explicit()
+            {
+                var index = 0;
+                var count = 0;
+                IEnumerator enumerator = ((IEnumerable) _lockableList).GetEnumerator();
+
+                while (enumerator.MoveNext())
+                {
+                    ((string) enumerator.Current).Should().Be(_list[index++]);
+                    count++;
+                }
+
+                count.Should().Be(3);
+            }
+
+            [Fact]
+            public void Should_Reset_Explicit()
+            {
+                var count = 0;
+                IEnumerator enumerator = ((IEnumerable) _lockableList).GetEnumerator();
+
+                while (count < 6)
+                {
+                    var index = 0;
+
+                    while (enumerator.MoveNext())
+                    {
+                        ((string) enumerator.Current).Should().Be(_list[index++]);
+                        count++;
+                    }
+
+                    enumerator.Reset();
+                }
+
+                count.Should().Be(6);
             }
         }
 
@@ -314,6 +383,40 @@ namespace AllOverIt.Tests.Collections
             }
         }
 
+        public class Disposable : LockableListFixture
+        {
+            private sealed class DummyLockableList : LockableList<string>
+            {
+                public Action _action { get; }
+
+                public DummyLockableList(Action action) : base(true)
+                {
+                    _action = action;
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    base.Dispose(disposing);
+
+                    _action.Invoke();
+                }
+            }
+
+            [Fact]
+            public void Should_Be_Disposable()
+            {
+                var isDisposed = false;
+
+                Action action = () => { isDisposed = true; };
+
+                using (new DummyLockableList(action))
+                {
+                }
+
+                isDisposed.Should().BeTrue();
+            }
+        }
+
         public class GetReadLock : LockableListFixture
         {
             [Theory]
@@ -363,8 +466,8 @@ namespace AllOverIt.Tests.Collections
 
         private void AssertEnterExitReadLock(bool upgradeable)
         {
-            _lockFake.Received().EnterReadLock(upgradeable);
-            _lockFake.Received().ExitReadLock();
+            _lockFake.Received(1).EnterReadLock(upgradeable);
+            _lockFake.Received(1).ExitReadLock();
 
             _lockFake.DidNotReceive().EnterWriteLock();
             _lockFake.DidNotReceive().ExitWriteLock();
@@ -372,8 +475,8 @@ namespace AllOverIt.Tests.Collections
 
         private void AssertEnterExitWriteLock()
         {
-            _lockFake.Received().EnterWriteLock();
-            _lockFake.Received().ExitWriteLock();
+            _lockFake.Received(1).EnterWriteLock();
+            _lockFake.Received(1).ExitWriteLock();
 
             _lockFake.DidNotReceive().EnterReadLock(Arg.Any<bool>());
             _lockFake.DidNotReceive().ExitReadLock();

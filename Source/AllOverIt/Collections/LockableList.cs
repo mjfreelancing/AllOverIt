@@ -1,34 +1,10 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Pipes.Named.Server;
 using AllOverIt.Threading;
 using AllOverIt.Threading.Extensions;
 using System.Collections;
 
 namespace AllOverIt.Collections
 {
-    public static class LockableListExtensions
-    {
-        public static void AddRange<TType>(this ILockableList<TType> lockableList, IEnumerable<TType> items)
-        {
-            if (lockableList is LockableList<TType> lockableList2)
-            {
-                if (lockableList2._list is List<TType> list)
-                {
-                    list.AddRange(items);
-                    return;
-                }
-            }
-
-            using (lockableList.GetWriteLock())
-            {
-                foreach (var item in items)
-                {
-                    lockableList.Add(item);
-                }
-            }
-        }
-    }
-
     /// <summary>A general-purpose list, or list decorator, that applies a lock around each method call as well as
     /// providing the ability to be globally locked for read or write access. A global read lock can be optionally
     /// defined as upgradeable to a write lock.</summary>

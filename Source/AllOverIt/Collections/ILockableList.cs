@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Pipes.Named.Server
+﻿namespace AllOverIt.Collections
 {
     /// <summary>Represents a lockable list of objects that can be access by index. The list methods are individually
     /// locked and the list can be globally locked for read or write access. A global read lock can be optionally defined
