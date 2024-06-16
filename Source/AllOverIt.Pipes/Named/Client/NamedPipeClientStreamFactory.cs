@@ -11,7 +11,7 @@ namespace AllOverIt.Pipes.Named.Client
         {
             var pipeStream = await CreateConnectedStreamAsync(pipeName, serverName, timeout, cancellationToken).ConfigureAwait(false);
 
-            return new NamedPipeReaderWriter(pipeStream, false);
+            return new NamedPipeReaderWriter(pipeStream);
         }
 
         public static async Task<NamedPipeClientStream> CreateConnectedStreamAsync(string pipeName, string serverName, TimeSpan timeout, CancellationToken cancellationToken = default)

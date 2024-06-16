@@ -1,12 +1,13 @@
-﻿using System.IO.Pipes;
+﻿using AllOverIt.Assertion;
+using System.IO.Pipes;
 
 namespace AllOverIt.Pipes.Anonymous
 {
     /// <summary>Provides an anonymous pipe server that can be configured as a reader or a writer.</summary>
     public sealed class AnonymousPipeServer : AnonymousPipeBase
     {
-        private AnonymousPipeServerStream _pipeServerStream;
-        private string _clientHandleString;
+        private AnonymousPipeServerStream? _pipeServerStream;
+        private string? _clientHandleString;
         private HandleInheritability _inheritability;
 
         /// <summary>Initializes an anonymous pipe server using a provided data stream direction and inheritability mode.</summary>
@@ -19,6 +20,8 @@ namespace AllOverIt.Pipes.Anonymous
         public string Start(PipeDirection direction = PipeDirection.Out, HandleInheritability inheritability = HandleInheritability.None)
         {
             _inheritability = inheritability;
+
+            Throw<InvalidOperationException>.WhenNotNull(_pipeServerStream, "The anonymous pipe server has already been started.");
 
             _pipeServerStream = new AnonymousPipeServerStream(direction, _inheritability);
 

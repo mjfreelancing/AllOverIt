@@ -34,6 +34,10 @@
 * Refactored RsaAesHybridEncryptor to use CryptographicOperations.HashData() for NET 9.
 
 
+### AllOverIt.Pipes
+* Internal improvements to anonymous and named pipes
+
+
 ### AllOverIt.Reactive
 * Moved event bus and handlers to the AllOverIt.Reactive.Messaging namespace.
 

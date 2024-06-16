@@ -9,16 +9,16 @@ namespace AllOverIt.Pipes.Named.Server
         /// <summary>
         /// Invoked whenever a client connects to the server.
         /// </summary>
-        event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeServerConnection<TMessage>>> OnClientConnected;
+        event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeServerConnection<TMessage>>>? OnClientConnected;
 
         /// <summary>
         /// Invoked whenever a client disconnects from the server.
         /// </summary>
-        event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeServerConnection<TMessage>>> OnClientDisconnected;
+        event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeServerConnection<TMessage>>>? OnClientDisconnected;
 
         /// <summary>
         /// Invoked whenever a message is received.
         /// </summary>
-        event EventHandler<NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeServerConnection<TMessage>>> OnMessageReceived;
+        event EventHandler<NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeServerConnection<TMessage>>>? OnMessageReceived;
     }
 }

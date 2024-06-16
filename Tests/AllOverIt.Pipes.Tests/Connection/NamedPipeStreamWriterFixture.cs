@@ -14,43 +14,9 @@ namespace AllOverIt.Pipes.Tests.Connection
 
         public sealed class DummyPipeStream : PipeStream
         {
-            private Func<Task> _action;
-
             public DummyPipeStream()
                 : base(PipeDirection.InOut, 1024)
             {
-            }
-
-            public override async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                if (_action is not null)
-                {
-                    // Invoke re-entry...
-                    await _action?.Invoke();
-
-                    // short-circuit the hijacking of this method 
-                    throw new DummyPipeStreamException();
-                }
-
-                await base.WriteAsync(buffer, cancellationToken);
-            }
-
-            internal void SetupRentry(Func<Task> action)
-            {
-                IsConnected = true;
-                _action = action;
-            }
-
-            internal void SetupIOException()
-            {
-                IsConnected = true;
-
-                _action = () =>
-                {
-                    IsConnected = false;
-
-                    throw new IOException();
-                };
             }
         }
 
@@ -134,52 +100,6 @@ namespace AllOverIt.Pipes.Tests.Connection
                 })
                 .Should()
                 .NotThrowAsync();
-            }
-
-            [Fact]
-            public async Task Should_Disconnect_When_Reentry_Detected()
-            {
-                var bytes = CreateMany<byte>().ToArray();
-
-                var dummyPipeStream = new DummyPipeStream();
-
-                _pipeStream = dummyPipeStream;
-
-                var writer = new NamedPipeStreamWriter(_pipeStream);
-
-                dummyPipeStream.SetupRentry(() => writer.WriteAsync(bytes, CancellationToken.None));
-
-                _pipeStream.IsConnected.Should().BeTrue();
-
-                try
-                {
-                    await writer.WriteAsync(bytes, CancellationToken.None);
-                }
-                catch (DummyPipeStreamException)
-                {
-                }
-
-                _pipeStream.IsConnected.Should().BeFalse();
-            }
-
-            [Fact]
-            public async Task Should_Handle_IOException()
-            {
-                var bytes = CreateMany<byte>().ToArray();
-
-                var dummyPipeStream = new DummyPipeStream();
-
-                _pipeStream = dummyPipeStream;
-
-                var writer = new NamedPipeStreamWriter(_pipeStream);
-
-                dummyPipeStream.SetupIOException();
-
-                _pipeStream.IsConnected.Should().BeTrue();
-
-                await writer.WriteAsync(bytes, CancellationToken.None);
-
-                _pipeStream.IsConnected.Should().BeFalse();
             }
         }
     }

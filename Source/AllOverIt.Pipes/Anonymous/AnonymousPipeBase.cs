@@ -6,10 +6,11 @@ namespace AllOverIt.Pipes.Anonymous
     /// <summary>Provides base anonymous client or server pipe functionality catering for read or write operations.</summary>
     public abstract class AnonymousPipeBase : IDisposable
     {
+        private bool _disposed;
         private PipeDirection _direction;
-        private PipeStream _pipeStream;
-        private StreamReader _streamReader;
-        private StreamWriter _streamWriter;
+        private PipeStream? _pipeStream;
+        private StreamReader? _streamReader;
+        private StreamWriter? _streamWriter;
 
         /// <summary>Gets the stream reader for a readable anonymous pipe.</summary>
         public StreamReader Reader
@@ -31,7 +32,7 @@ namespace AllOverIt.Pipes.Anonymous
             {
                 AssertCanWrite();
 
-                _streamWriter ??= new StreamWriter(_pipeStream);
+                _streamWriter ??= new StreamWriter(_pipeStream!);
 
                 return _streamWriter;
             }
@@ -43,7 +44,7 @@ namespace AllOverIt.Pipes.Anonymous
         {
             AssertCanWrite();
 
-            _pipeStream.WaitForPipeDrain();
+            _pipeStream!.WaitForPipeDrain();
         }
 
         /// <summary>Disposes of the internal streams.</summary>
@@ -85,7 +86,7 @@ namespace AllOverIt.Pipes.Anonymous
         /// <param name="disposing">Indicates if the internal resources are to be disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && !_disposed)
             {
                 _streamReader?.Dispose();
                 _streamReader = null;
@@ -95,6 +96,8 @@ namespace AllOverIt.Pipes.Anonymous
 
                 _pipeStream?.Dispose();
                 _pipeStream = null;
+
+                _disposed = true;
             }
         }
 

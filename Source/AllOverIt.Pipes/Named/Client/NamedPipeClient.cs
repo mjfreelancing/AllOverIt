@@ -13,7 +13,7 @@ namespace AllOverIt.Pipes.Named.Client
         private const string LocalServer = ".";
 
         private readonly INamedPipeSerializer<TMessage> _serializer;
-        private NamedPipeClientConnection<TMessage> _connection;
+        private NamedPipeClientConnection<TMessage>? _connection;
 
         /// <inheritdoc/>
         public bool IsConnected => _connection?.IsConnected ?? false;
@@ -25,16 +25,16 @@ namespace AllOverIt.Pipes.Named.Client
         public string ServerName { get; }
 
         /// <inheritdoc/>
-        public event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeClientConnection<TMessage>>> OnConnected;
+        public event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeClientConnection<TMessage>>>? OnConnected;
 
         /// <inheritdoc/>
-        public event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeClientConnection<TMessage>>> OnDisconnected;
+        public event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeClientConnection<TMessage>>>? OnDisconnected;
 
         /// <inheritdoc/>
-        public event EventHandler<NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeClientConnection<TMessage>>> OnMessageReceived;
+        public event EventHandler<NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeClientConnection<TMessage>>>? OnMessageReceived;
 
         /// <inheritdoc/>
-        public event EventHandler<NamedPipeExceptionEventArgs> OnException;
+        public event EventHandler<NamedPipeExceptionEventArgs>? OnException;
 
         /// <summary>Constructor.</summary>
         /// <param name="pipeName">The name of the pipe.</param>
@@ -78,9 +78,9 @@ namespace AllOverIt.Pipes.Named.Client
         }
 
         /// <inheritdoc />
-        public async Task DisconnectAsync()
+        public Task DisconnectAsync()
         {
-            await DoOnDisconnectedAsync().ConfigureAwait(false);
+            return DoOnDisconnectedAsync();
         }
 
         /// <inheritdoc />
@@ -120,7 +120,7 @@ namespace AllOverIt.Pipes.Named.Client
             }
         }
 
-        private async void DoOnConnectionDisconnected(object sender, NamedPipeConnectionEventArgs<TMessage, INamedPipeClientConnection<TMessage>> args)
+        private async void DoOnConnectionDisconnected(object? sender, NamedPipeConnectionEventArgs<TMessage, INamedPipeClientConnection<TMessage>> args)
         {
             try
             {
@@ -162,12 +162,12 @@ namespace AllOverIt.Pipes.Named.Client
             }
         }
 
-        private void DoOnConnectionMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeClientConnection<TMessage>> args)
+        private void DoOnConnectionMessageReceived(object? sender, NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeClientConnection<TMessage>> args)
         {
             OnMessageReceived?.Invoke(this, args);
         }
 
-        private void DoOnConnectionException(object sender, NamedPipeConnectionExceptionEventArgs<TMessage, INamedPipeClientConnection<TMessage>> args)
+        private void DoOnConnectionException(object? sender, NamedPipeConnectionExceptionEventArgs<TMessage, INamedPipeClientConnection<TMessage>> args)
         {
             DoOnException(args.Exception);
         }

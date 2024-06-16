@@ -7,6 +7,7 @@ using AllOverIt.Pipes.Named.Serialization;
 using AllOverIt.Pipes.Named.Server;
 using FluentAssertions;
 using System.IO.Pipes;
+using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Pipes.Tests.Named
 {
@@ -100,11 +101,11 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -144,11 +145,11 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -191,11 +192,11 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -266,17 +267,17 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
 
-                    server.Connections.Single().IsConnected.Should().BeTrue();
+                    server._connections.Single().IsConnected.Should().BeTrue();
 
                     signal3.Release();
 
-                    await signal4.WaitAsync();
+                    await WaitOrThrowAsync(signal4);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -285,7 +286,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     await client.ConnectAsync(ConnectTimeout);
 
                     // Wait for the server to update the connection list - triggered via Server_OnClientConnected
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
                 }
 
                 signal4.Release();
@@ -320,21 +321,23 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal2.WaitAsync();
-
-                    server.Connections.Single().IsConnected.Should().BeTrue();
-
-                    signal3.Release();
-
-                    await signal4.WaitAsync();    // wait for the client to disconnect
+                    await WaitOrThrowAsync(signal2);
 
                     await Task.Delay(100);
 
-                    server.Connections.Count.Should().Be(0);
+                    server._connections.Single().IsConnected.Should().BeTrue();
+
+                    signal3.Release();
+
+                    await WaitOrThrowAsync(signal4);    // wait for the client to disconnect
+
+                    await Task.Delay(100);
+
+                    server._connections.Count.Should().Be(0);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -343,7 +346,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     await client.ConnectAsync(ConnectTimeout);
 
                     // Wait for the server to update the connection list
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
                 }
 
                 signal4.Release();
@@ -383,11 +386,11 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         signal1.Release();
 
-                        await signal2.WaitAsync();
+                        await WaitOrThrowAsync(signal2);
 
                         await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                        await signal4.WaitAsync();
+                        await WaitOrThrowAsync(signal4);
                     }
                     finally
                     {
@@ -396,7 +399,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -408,7 +411,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal2.Release();
 
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
                 }
 
                 signal4.Release();
@@ -447,7 +450,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         signal1.Release();
 
-                        await signal3.WaitAsync();
+                        await WaitOrThrowAsync(signal3);
                     }
                     finally
                     {
@@ -456,7 +459,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -477,7 +480,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         await Task.Delay(100);
 
-                        await signal2.WaitAsync();
+                        await WaitOrThrowAsync(signal2);
                     }
                     finally
                     {
@@ -520,11 +523,11 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal2.WaitAsync();     // wait for the client to connect
+                    await WaitOrThrowAsync(signal2);     // wait for the client to connect
 
                     Invoking(() =>
                     {
-                        _ = server.Connections.Single().GetImpersonationUserName();
+                        _ = server._connections.Single().GetImpersonationUserName();
                     })
                     .Should()
                     .Throw<IOException>()
@@ -533,10 +536,10 @@ namespace AllOverIt.Pipes.Tests.Named
                     signal3.Release();
                 }
 
-                await signal4.WaitAsync();
+                await WaitOrThrowAsync(signal4);
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -545,7 +548,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     await client.ConnectAsync(ConnectTimeout);
 
                     // wait for the server-side assertion
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
                 }
 
                 signal4.Release();
@@ -582,15 +585,15 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         signal1.Release();
 
-                        await signal2.WaitAsync();
+                        await WaitOrThrowAsync(signal2);
 
-                        var username = server.Connections.Single().GetImpersonationUserName();
+                        var username = server._connections.Single().GetImpersonationUserName();
 
                         username.Should().Be(Environment.UserName);
 
                         signal3.Release();
 
-                        await signal4.WaitAsync();
+                        await WaitOrThrowAsync(signal4);
                     }
                     finally
                     {
@@ -599,7 +602,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -609,7 +612,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
                 }
 
                 signal4.Release();
@@ -639,15 +642,15 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
 
                     await server.WriteAsync(expected, CancellationToken.None);
 
-                    await signal4.WaitAsync();
+                    await WaitOrThrowAsync(signal4);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -670,7 +673,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         signal2.Release();
 
-                        await signal3.WaitAsync();
+                        await WaitOrThrowAsync(signal3);
                     }
                     finally
                     {
@@ -718,12 +721,12 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
 
                     if (connectionIndex == 2)
                     {
                         var filteredIds = (server as NamedPipeServer<DummyMessage>)
-                            .Connections
+                            ._connections
                             .Select(item => item.ConnectionId)
                             .ToArray();
 
@@ -736,7 +739,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     else
                     {
                         var filteredId = (server as NamedPipeServer<DummyMessage>)
-                            .Connections
+                            ._connections
                             .ElementAt(connectionIndex)
                             .ConnectionId;
 
@@ -748,7 +751,7 @@ namespace AllOverIt.Pipes.Tests.Named
                             CancellationToken.None);
                     }
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
 
                     if (connectionIndex != 2)
                     {
@@ -757,13 +760,13 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal4.Release();
 
-                    await signal5.WaitAsync();
+                    await WaitOrThrowAsync(signal5);
 
                     await server.StopAsync();
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -795,7 +798,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal3.Release();
 
-                    await signal4.WaitAsync();
+                    await WaitOrThrowAsync(signal4);
                 }
                 finally
                 {
@@ -848,7 +851,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         signal1.Release();
 
-                        await signal3.WaitAsync();
+                        await WaitOrThrowAsync(signal3);
                     }
                     finally
                     {
@@ -856,10 +859,10 @@ namespace AllOverIt.Pipes.Tests.Named
                     }
                 }
 
-                await signal4.WaitAsync();
+                await WaitOrThrowAsync(signal4);
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -869,7 +872,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     await client.WriteAsync(expected, CancellationToken.None);
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
 
                     signal3.Release();
                 }
@@ -933,11 +936,11 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -956,7 +959,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     await Task.Delay(100);
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
                 }
 
                 signal3.Release();
@@ -987,15 +990,15 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
 
                     await server.StopAsync();
 
-                    await signal4.WaitAsync();
+                    await WaitOrThrowAsync(signal4);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1014,7 +1017,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal2.Release();
 
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
                 }
 
                 signal4.Release();
@@ -1045,15 +1048,15 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
 
                     await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    await signal4.WaitAsync();
+                    await WaitOrThrowAsync(signal4);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1076,7 +1079,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         signal2.Release();
 
-                        await signal3.WaitAsync();
+                        await WaitOrThrowAsync(signal3);
                     }
                     finally
                     {
@@ -1113,15 +1116,15 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
 
                     await server.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    await signal4.WaitAsync();
+                    await WaitOrThrowAsync(signal4);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1150,7 +1153,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         signal3.Release();
 
-                        await signal2.WaitAsync();
+                        await WaitOrThrowAsync(signal2);
                     }
                     finally
                     {
@@ -1188,15 +1191,15 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
 
                     await server.StopAsync();
 
-                    await signal4.WaitAsync();
+                    await WaitOrThrowAsync(signal4);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1223,7 +1226,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal3.Release();
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
 
                     client.IsConnected.Should().BeFalse();
                 }
@@ -1264,11 +1267,11 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1276,7 +1279,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await client.ConnectAsync(ConnectTimeout);
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
                 }
 
                 signal3.Release();
@@ -1322,11 +1325,11 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1334,7 +1337,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 {
                     await client.ConnectAsync(ConnectTimeout);
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
 
                     await Task.Delay(100);
 
@@ -1377,11 +1380,11 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1391,7 +1394,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     await client.DisconnectAsync();
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
                 }
 
                 signal3.Release();
@@ -1433,7 +1436,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         signal1.Release();
 
-                        await signal3.WaitAsync();
+                        await WaitOrThrowAsync(signal3);
                     }
                     finally
                     {
@@ -1442,7 +1445,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1452,7 +1455,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
                 }
 
                 signal3.Release();
@@ -1494,7 +1497,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal1.Release();
 
-                    await signal3.WaitAsync();
+                    await WaitOrThrowAsync(signal3);
 
                     // Now assign the handler
                     server.OnMessageReceived += Server_OnMessageReceived;
@@ -1503,7 +1506,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     {
                         signal4.Release();
 
-                        await signal5.WaitAsync();
+                        await WaitOrThrowAsync(signal5);
                     }
                     finally
                     {
@@ -1512,7 +1515,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1528,11 +1531,11 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     signal3.Release();
 
-                    await signal4.WaitAsync();
+                    await WaitOrThrowAsync(signal4);
 
                     await client.WriteAsync(expected, CancellationToken.None);
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
                 }
 
                 signal5.Release();
@@ -1581,7 +1584,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                         signal1.Release();
 
-                        await signal3.WaitAsync();
+                        await WaitOrThrowAsync(signal3);
                     }
                     finally
                     {
@@ -1591,7 +1594,7 @@ namespace AllOverIt.Pipes.Tests.Named
                 }
             }, _timeoutSource.Token).Unwrap();
 
-            await signal1.WaitAsync();
+            await WaitOrThrowAsync(signal1);
 
             var clientTask = Task.Factory.StartNew(async () =>
             {
@@ -1601,7 +1604,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     await client.WriteAsync(Create<DummyMessage>(), CancellationToken.None);
 
-                    await signal2.WaitAsync();
+                    await WaitOrThrowAsync(signal2);
                 }
 
                 signal3.Release();
@@ -1624,6 +1627,16 @@ namespace AllOverIt.Pipes.Tests.Named
             _timeoutSource.Dispose();
 
             return Task.CompletedTask;
+        }
+
+        private async Task WaitOrThrowAsync(SemaphoreSlim signal, [CallerMemberName] string caller = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            var success = await signal.WaitAsync(5000);
+
+            if (!success)
+            {
+                throw new InvalidOperationException($"Signal timed out for {caller} on line {lineNumber} in file {filePath}.");
+            }
         }
     }
 }

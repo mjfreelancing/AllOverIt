@@ -10,17 +10,17 @@ namespace AllOverIt.Pipes.Named.Server
         where TMessage : class, new()
     {
         /// <inheritdoc />
-        public event EventHandler<NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeServerConnection<TMessage>>> OnMessageReceived;
+        public event EventHandler<NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeServerConnection<TMessage>>>? OnMessageReceived;
 
         /// <inheritdoc />
-        public event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeServerConnection<TMessage>>> OnDisconnected;
+        public event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeServerConnection<TMessage>>>? OnDisconnected;
 
         /// <inheritdoc />
-        public event EventHandler<NamedPipeConnectionExceptionEventArgs<TMessage, INamedPipeServerConnection<TMessage>>> OnException;
+        public event EventHandler<NamedPipeConnectionExceptionEventArgs<TMessage, INamedPipeServerConnection<TMessage>>>? OnException;
 
         /// <summary>Constructor.</summary>
         /// <param name="pipeStream">The underlying pipe stream.</param>
-        /// <param name="connectionId">Gets the conection's unique identifier.</param>
+        /// <param name="connectionId">Gets the connection's unique identifier.</param>
         /// <param name="serializer">The message serializer.</param>
         public NamedPipeServerConnection(PipeStream pipeStream, string connectionId, INamedPipeSerializer<TMessage> serializer)
             : base(pipeStream, connectionId, serializer)

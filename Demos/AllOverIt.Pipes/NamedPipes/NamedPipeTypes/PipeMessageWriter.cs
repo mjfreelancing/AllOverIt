@@ -7,11 +7,12 @@ namespace NamedPipeTypes
     {
         public override void WriteValue(IEnrichedBinaryWriter writer, object value)
         {
-            var message = (PipeMessage) value;
+            var message = (PipeMessage)value;
 
             writer.WriteGuid(message.Id);
             writer.WriteSafeString(message.Text);
-            writer.WriteObject(message.Child, typeof(PipeMessage.ChildClass));
+            writer.WriteBoolean(message.PingBack);
+            writer.WriteObject(message.Child, typeof(PipeMessage.ChildClass));    // not doing anything with this, just demonstrating objects can be serialized
         }
     }
 }

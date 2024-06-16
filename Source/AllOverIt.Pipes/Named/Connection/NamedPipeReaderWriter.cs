@@ -6,23 +6,28 @@ namespace AllOverIt.Pipes.Named.Connection
     // Composes a reader and writer
     internal sealed class NamedPipeReaderWriter : IAsyncDisposable
     {
-        private readonly bool _leaveConnected;
         private readonly NamedPipeStreamReader _streamReader;
         private readonly NamedPipeStreamWriter _streamWriter;
-        private PipeStream _pipeStream;
+        private PipeStream? _pipeStream;
 
-        public NamedPipeReaderWriter(PipeStream stream, bool leaveConnected)
+        public NamedPipeReaderWriter(PipeStream stream)
         {
-            _pipeStream = stream.WhenNotNull(nameof(stream));
-            _leaveConnected = leaveConnected;
+            _pipeStream = stream.WhenNotNull(nameof(stream));   // This class assumes ownership
 
             _streamReader = new NamedPipeStreamReader(_pipeStream);
             _streamWriter = new NamedPipeStreamWriter(_pipeStream);
         }
 
+        // Can throw IO.Exception if communication is cut off
         public Task<byte[]> ReadAsync(CancellationToken cancellationToken = default)
         {
-            // An empty array will be returned if the connection has been broken
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (_pipeStream is null)
+            {
+                throw new IOException("The underlying pipe stream has been closed.");
+            }
+
             return _streamReader.ReadAsync(cancellationToken);
         }
 
@@ -30,13 +35,18 @@ namespace AllOverIt.Pipes.Named.Connection
         {
             cancellationToken.ThrowIfCancellationRequested();
 
+            if (_pipeStream is null)
+            {
+                throw new IOException("The underlying pipe stream has been closed.");
+            }
+
             // Writes, flushes, and waits for the pipe to drain - _streamWriter checks for a broken connection
             return _streamWriter.WriteAsync(buffer, cancellationToken);
         }
 
         public async ValueTask DisposeAsync()
         {
-            if (!_leaveConnected && _pipeStream is not null)
+            if (_pipeStream is not null)
             {
                 await _pipeStream.DisposeAsync().ConfigureAwait(false);
                 _pipeStream = null;

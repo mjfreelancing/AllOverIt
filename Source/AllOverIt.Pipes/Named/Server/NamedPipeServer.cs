@@ -1,12 +1,11 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Async;
+using AllOverIt.Collections;
 using AllOverIt.Extensions;
 using AllOverIt.Pipes.Exceptions;
 using AllOverIt.Pipes.Named.Connection;
 using AllOverIt.Pipes.Named.Events;
 using AllOverIt.Pipes.Named.Serialization;
-using AllOverIt.Threading;
-using AllOverIt.Threading.Extensions;
 using System.IO.Pipes;
 using System.Text;
 
@@ -19,10 +18,9 @@ namespace AllOverIt.Pipes.Named.Server
     {
         private bool _disposed;
         private readonly INamedPipeSerializer<TMessage> _serializer;
-        private readonly AwaitableLock _connectionsLock = new();
         private BackgroundTask? _backgroundTask;
 
-        internal List<INamedPipeServerConnection<TMessage>> Connections { get; } = [];
+        internal LockableList<INamedPipeServerConnection<TMessage>> _connections = new(true);
 
         /// <inheritdoc />
         public string PipeName { get; }
@@ -50,7 +48,7 @@ namespace AllOverIt.Pipes.Named.Server
         /// <summary>An event raised when a client sends a message to the server. This event may be raised on a background thread.</summary>
         public event EventHandler<NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeServerConnection<TMessage>>>? OnMessageReceived;
 
-        /// <summary>An event raised when an exception is thrown during a read or write operation.</summary>
+        /// <summary>An event raised when an exception is thrown during a connection or subsequent read or write operation.</summary>
         public event EventHandler<NamedPipeExceptionEventArgs>? OnException;
 
         /// <inheritdoc />
@@ -65,6 +63,8 @@ namespace AllOverIt.Pipes.Named.Server
         {
             _ = pipeSecurity.WhenNotNull(nameof(pipeSecurity));
 
+            Throw<PipeException>.WhenNotNull(_backgroundTask, "The named pipe server has already been started.");
+
             var security = new PipeSecurity();
 
             pipeSecurity.Invoke(security);
@@ -77,12 +77,10 @@ namespace AllOverIt.Pipes.Named.Server
         {
             Throw<PipeException>.WhenNotNull(_backgroundTask, "The named pipe server has already been started.");
 
-            _backgroundTask = new BackgroundTask(async token =>
+            _backgroundTask = new BackgroundTask(async cancellationToken =>
             {
-                while (!token.IsCancellationRequested)
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    NamedPipeServerConnection<TMessage>? connection = null;
-
                     try
                     {
                         var connectionId = $"{Guid.NewGuid()}";
@@ -92,42 +90,32 @@ namespace AllOverIt.Pipes.Named.Server
 
                         await using (serverStream)
                         {
-                            await serverStream.WaitForConnectionAsync(token).ConfigureAwait(false);
+                            await serverStream
+                                .WaitForConnectionAsync(cancellationToken)
+                                .ConfigureAwait(false);
 
-                            await using (var writer = new NamedPipeReaderWriter(serverStream, false))
-                            {
-                                await writer
-                                    .WriteAsync(Encoding.UTF8.GetBytes(connectionId), token)
-                                    .ConfigureAwait(false);
-                            }
+                            await using var writer = new NamedPipeReaderWriter(serverStream);
+
+                            await writer
+                                .WriteAsync(Encoding.UTF8.GetBytes(connectionId), cancellationToken)
+                                .ConfigureAwait(false);
                         }
 
-                        // Wait for the client to connect to the data pipe
+                        // Wait for the client to connect to the data pipe.
                         var connectionStream = NamedPipeServerStreamFactory.CreateStream(connectionId, pipeSecurity);
 
-                        await connectionStream.WaitForConnectionAsync(token).ConfigureAwait(false);
+                        await connectionStream
+                            .WaitForConnectionAsync(cancellationToken)
+                            .ConfigureAwait(false);
 
-                        // Add the client's connection to the list of connections
-                        connection = new NamedPipeServerConnection<TMessage>(connectionStream, connectionId, _serializer);
-
-                        connection.OnMessageReceived += DoOnConnectionMessageReceived;
-                        connection.OnDisconnected += DoOnConnectionDisconnected;
-                        connection.OnException += DoOnConnectionException;
-
-                        connection.Connect();
-
-                        await DoOnClientConnectedAsync(connection, token).ConfigureAwait(false);
+                        // Add the client's connection to the list of connections.
+                        await CreateActiveServerConnectionAsync(connectionStream, connectionId, cancellationToken).ConfigureAwait(false);
                     }
                     catch (OperationCanceledException)
                     {
                     }
                     catch (Exception exception)
                     {
-                        if (connection is not null)
-                        {
-                            await connection.DisposeAsync().ConfigureAwait(false);
-                        }
-
                         DoOnException(exception);
                     }
                 }
@@ -144,16 +132,24 @@ namespace AllOverIt.Pipes.Named.Server
                 _backgroundTask = null;
             }
 
-            // We cannot lock here since the OnDisconnected event handler will be called - and apply the lock
-            // New connections are not possible now the background thread has been disposed of.
+            List<INamedPipeServerConnection<TMessage>>? connections = null;
 
-            if (Connections.Count != 0)
+            using (_connections.GetWriteLock())
             {
-                // DoOnConnectionDisconnected() will be called for each connection where
-                // its' event handlers are also released. Using a copy since 'Connections'
-                // will be modified.
-                var connections = Connections.ToList();
+                if (_connections.Count != 0)
+                {
+                    // DoOnConnectionDisconnected() will be called for each connection where
+                    // its' event handlers are also released. Using a copy since '_connections'
+                    // will be modified.
+                    connections = [.. _connections];
 
+                    _connections.Clear();
+                }
+            }
+
+            if (connections is not null)
+            {
+                // The OnDisconnected event handler will be called.
                 await connections.DisposeAllAsync().ConfigureAwait(false);
             }
         }
@@ -166,7 +162,7 @@ namespace AllOverIt.Pipes.Named.Server
             return WriteAsync(message, _ => true, cancellationToken);
         }
 
-        /// <summary>Asynchronously sends a message to the client with a specfied pipe name..</summary>
+        /// <summary>Asynchronously sends a message to the client with a specified pipe name..</summary>
         /// <param name="message">The message to send to all connected clients.</param>
         /// <param name="pipeName">The name of the pipe to send the message to. This name is case-insensitive.</param>
         /// <param name="cancellationToken">An optional cancellation token.</param>
@@ -188,18 +184,22 @@ namespace AllOverIt.Pipes.Named.Server
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            // Get potential connections synchronously
-            IEnumerable<INamedPipeConnection<TMessage>>? targetConnections = null;
+            INamedPipeConnection<TMessage>[] targetConnections;
 
-            using (await _connectionsLock.GetLockAsync(cancellationToken))
+            using (_connections.GetReadLock(false))
             {
-                targetConnections = Connections
-                    .Where(connection => connection.IsConnected && predicate.Invoke(connection))
-                    .ToArray();
+                targetConnections = _connections.Where(predicate).ToArray();
             }
+
+            List<Exception>? exceptions = [];
 
             foreach (var connection in targetConnections)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return;
+                }
+
                 try
                 {
                     if (connection.IsConnected)
@@ -207,34 +207,72 @@ namespace AllOverIt.Pipes.Named.Server
                         await connection.WriteAsync(message, cancellationToken).ConfigureAwait(false);
                     }
                 }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
                 catch (Exception exception)
                 {
-                    DoOnException(exception);
+                    if (exception is IOException or ObjectDisposedException)
+                    {
+                        // IOException              - A broken pipe, such as due to the server terminating
+                        // ObjectDisposedException  - Cannot access a closed pipe
+                        exception = new PipeException("Cannot write to the pipe as it is not available.", exception);
+                    }
+
+                    exceptions.Add(exception);
                 }
+            }
+
+            if (exceptions.Count != 0)
+            {
+                var aggregate = new AggregateException("One or more named pipe connections failed to write the message", exceptions);
+
+                DoOnException(aggregate);
             }
         }
 
         /// <summary>Stops the pipe server and releases resources.</summary>
         public async ValueTask DisposeAsync()
         {
-            if (!_disposed)
+            if (_disposed)
             {
-                // We cannot lock here since the OnDisconnected event handler will be called
-                await StopAsync().ConfigureAwait(false);
-
-                _connectionsLock.Dispose();
-                _disposed = true;
+                return;
             }
+
+            // We cannot lock here since the OnDisconnected event handler will be called
+            await StopAsync().ConfigureAwait(false);
+
+            _disposed = true;
         }
 
-        private async Task DoOnClientConnectedAsync(INamedPipeServerConnection<TMessage> connection, CancellationToken cancellationToken)
+        private async Task CreateActiveServerConnectionAsync(NamedPipeServerStream connectionStream, string connectionId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            using (await _connectionsLock.GetLockAsync(cancellationToken).ConfigureAwait(false))
+            var connection = new NamedPipeServerConnection<TMessage>(connectionStream, connectionId, _serializer);
+
+            AddConnection(connection);
+
+            try
             {
-                Connections.Add(connection);
+                connection.Connect();
+
+                DoOnClientConnected(connection, cancellationToken);
             }
+            catch
+            {
+                RemoveConnection(connection);
+
+                await connection.DisposeAsync().ConfigureAwait(false);
+
+                throw;  // The caller will call DoOnException(exception);
+            }
+        }
+
+        private void DoOnClientConnected(INamedPipeServerConnection<TMessage> connection, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
 
             var clientConnected = OnClientConnected;
 
@@ -251,22 +289,15 @@ namespace AllOverIt.Pipes.Named.Server
             OnMessageReceived?.Invoke(this, args);
         }
 
-        private async void DoOnConnectionDisconnected(object? sender, NamedPipeConnectionEventArgs<TMessage, INamedPipeServerConnection<TMessage>> args)
+        private void DoOnConnectionDisconnected(object? sender, NamedPipeConnectionEventArgs<TMessage, INamedPipeServerConnection<TMessage>> args)
         {
-            OnClientDisconnected?.Invoke(this, args);
-
             try
             {
                 var connection = args.Connection;
 
-                connection.OnMessageReceived -= DoOnConnectionMessageReceived;
-                connection.OnDisconnected -= DoOnConnectionDisconnected;
-                connection.OnException -= DoOnConnectionException;
+                RemoveConnection(connection);
 
-                using (await _connectionsLock.GetLockAsync().ConfigureAwait(false))
-                {
-                    Connections.Remove(connection);
-                }
+                OnClientDisconnected?.Invoke(this, args);
             }
             catch (Exception exception)
             {
@@ -289,6 +320,24 @@ namespace AllOverIt.Pipes.Named.Server
 
                 onException.Invoke(this, args);
             }
+        }
+
+        private void AddConnection(INamedPipeServerConnection<TMessage> connection)
+        {
+            connection.OnMessageReceived += DoOnConnectionMessageReceived;
+            connection.OnDisconnected += DoOnConnectionDisconnected;
+            connection.OnException += DoOnConnectionException;
+
+            _connections.Add(connection);
+        }
+
+        private void RemoveConnection(INamedPipeServerConnection<TMessage> connection)
+        {
+            connection.OnMessageReceived -= DoOnConnectionMessageReceived;
+            connection.OnDisconnected -= DoOnConnectionDisconnected;
+            connection.OnException -= DoOnConnectionException;
+
+            _connections.Remove(connection);
         }
     }
 }

@@ -9,12 +9,14 @@ namespace NamedPipeTypes
         {
             var id = reader.ReadGuid();
             var text = reader.ReadSafeString();
-            var child = reader.ReadObject<PipeMessage.ChildClass>();
+            var pingBack = reader.ReadBoolean();
+            var child = reader.ReadObject<PipeMessage.ChildClass>();    // not doing anything with this, just demonstrating objects can be serialized
 
             return new PipeMessage
             {
                 Id = id,
                 Text = text,
+                PingBack = pingBack,
                 Child = child
             };
         }

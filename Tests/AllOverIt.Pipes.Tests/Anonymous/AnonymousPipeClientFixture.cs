@@ -24,7 +24,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
             }
 
             [Fact]
-            public void Should_Throw_When_Initialized_Twice()
+            public async Task Should_Throw_When_Initialized_Twice()
             {
                 using (var server = new AnonymousPipeServer())
                 {
@@ -34,13 +34,15 @@ namespace AllOverIt.Pipes.Tests.Anonymous
                     {
                         client.Start(clientHandle);
 
+                        await Task.Delay(10);
+
                         Invoking(() =>
                         {
                             client.Start(PipeDirection.In, clientHandle);
                         })
                        .Should()
                        .Throw<InvalidOperationException>()
-                       .WithMessage("The anonymous pipe has already been initialized.");
+                       .WithMessage("The anonymous pipe client has already been started.");
                     }
                 }
             }
@@ -79,7 +81,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
                         })
                        .Should()
                        .Throw<InvalidOperationException>()
-                       .WithMessage("The anonymous pipe has already been initialized.");
+                       .WithMessage("The anonymous pipe client has already been started.");
                     }
                 }
             }

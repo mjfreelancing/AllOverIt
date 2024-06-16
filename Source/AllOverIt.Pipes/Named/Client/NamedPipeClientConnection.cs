@@ -12,20 +12,20 @@ namespace AllOverIt.Pipes.Named.Client
         where TMessage : class, new()
     {
         /// <inheritdoc />
-        public event EventHandler<NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeClientConnection<TMessage>>> OnMessageReceived;
+        public event EventHandler<NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeClientConnection<TMessage>>>? OnMessageReceived;
 
         /// <inheritdoc />
-        public event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeClientConnection<TMessage>>> OnDisconnected;
+        public event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeClientConnection<TMessage>>>? OnDisconnected;
 
         /// <inheritdoc />
-        public event EventHandler<NamedPipeConnectionExceptionEventArgs<TMessage, INamedPipeClientConnection<TMessage>>> OnException;
+        public event EventHandler<NamedPipeConnectionExceptionEventArgs<TMessage, INamedPipeClientConnection<TMessage>>>? OnException;
 
         /// <inheritdoc />
         public string ServerName { get; }
 
         /// <summary>Constructor.</summary>
         /// <param name="pipeStream">The underlying pipe stream.</param>
-        /// <param name="connectionId">Gets the conection's unique identifier.</param>
+        /// <param name="connectionId">Gets the connection's unique identifier.</param>
         /// <param name="serverName">The name of the server to communicate with.</param>
         /// <param name="serializer">The serializer to be used by named pipe client instances.</param>
         public NamedPipeClientConnection(PipeStream pipeStream, string connectionId, string serverName, INamedPipeSerializer<TMessage> serializer)

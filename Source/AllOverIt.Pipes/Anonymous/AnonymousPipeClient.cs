@@ -27,6 +27,8 @@ namespace AllOverIt.Pipes.Anonymous
         {
             _ = clientHandle.WhenNotNullOrEmpty();
 
+            Throw<InvalidOperationException>.WhenNotNull(_pipeClientStream, "The anonymous pipe client has already been started.");
+
             _pipeClientStream = new AnonymousPipeClientStream(direction, clientHandle);
 
             InitializeStart(direction, _pipeClientStream);

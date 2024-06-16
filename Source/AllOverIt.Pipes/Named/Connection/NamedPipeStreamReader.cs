@@ -38,6 +38,8 @@ namespace AllOverIt.Pipes.Named.Connection
 
         private async Task<byte[]> ReadAsync(int length, bool throwIfInsufficientBytes, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var buffer = new byte[length];
 
             var bytesRead = await _pipeStream.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
