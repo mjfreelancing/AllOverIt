@@ -21,6 +21,37 @@ namespace AllOverIt.Tests.Collections.Extensions
             _lockableList = new LockableList<string>(_list, _lockFake);
         }
 
+        public class Clone : LockableListExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_List_Null()
+            {
+                Invoking(() =>
+                {
+                    LockableListExtensions.Clone((ILockableList<string>) null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("lockableList");
+            }
+
+            [Fact]
+            public void Should_Lock_And_Release()
+            {
+                var _ = _lockableList.Clone();
+
+                AssertEnterExitReadLock(false);
+            }
+
+            [Fact]
+            public void Should_Clone()
+            {
+                var actual = _lockableList.Clone();
+
+                actual.Should().BeEquivalentTo(_list, options => options.WithStrictOrdering());
+            }
+        }
+
         public class AddRange : LockableListExtensionsFixture
         {
             private sealed class DummyList : IList<string>
@@ -157,6 +188,16 @@ namespace AllOverIt.Tests.Collections.Extensions
                 lockableList.Count.Should().Be(3);
                 lockableList.Should().BeEquivalentTo(list, options => options.WithStrictOrdering());
             }
+        }
+
+        private void AssertEnterExitReadLock(bool upgradeable)
+        {
+            // At least 1 call - Clone() results in 3..depends on what .NET code does
+            _lockFake.Received().EnterReadLock(upgradeable);
+            _lockFake.Received().ExitReadLock();
+
+            _lockFake.DidNotReceive().EnterWriteLock();
+            _lockFake.DidNotReceive().ExitWriteLock();
         }
 
         private void AssertEnterExitWriteLock(int count)

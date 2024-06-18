@@ -44,7 +44,7 @@ namespace AllOverIt.Tests.Collections
                 {
                     _ = _lockableList[0];
 
-                    AssertEnterExitReadLock(false);
+                    AssertEnterExitReadLock(1, false);
                 }
 
                 [Fact]
@@ -63,7 +63,7 @@ namespace AllOverIt.Tests.Collections
                 {
                     _lockableList[0] = Create<string>();
 
-                    AssertEnterExitWriteLock();
+                    AssertEnterExitWriteLock(1);
                 }
 
                 [Fact]
@@ -87,7 +87,7 @@ namespace AllOverIt.Tests.Collections
             {
                 _ = _lockableList.Count;
 
-                AssertEnterExitReadLock(false);
+                AssertEnterExitReadLock(1, false);
             }
 
             [Fact]
@@ -106,7 +106,7 @@ namespace AllOverIt.Tests.Collections
             {
                 _ = _lockableList.IsReadOnly;
 
-                AssertEnterExitReadLock(false);
+                AssertEnterExitReadLock(1, false);
             }
 
             [Fact]
@@ -125,7 +125,7 @@ namespace AllOverIt.Tests.Collections
             {
                 _lockableList.Add(Create<string>());
 
-                AssertEnterExitWriteLock();
+                AssertEnterExitWriteLock(1);
             }
 
             [Fact]
@@ -149,7 +149,7 @@ namespace AllOverIt.Tests.Collections
             {
                 _lockableList.Clear();
 
-                AssertEnterExitWriteLock();
+                AssertEnterExitWriteLock(1);
             }
 
             [Fact]
@@ -170,7 +170,7 @@ namespace AllOverIt.Tests.Collections
             {
                 _lockableList.Contains(Create<string>());
 
-                AssertEnterExitReadLock(false);
+                AssertEnterExitReadLock(1, false);
             }
 
             [Fact]
@@ -191,7 +191,7 @@ namespace AllOverIt.Tests.Collections
 
                 _lockableList.CopyTo(array, 0);
 
-                AssertEnterExitReadLock(false);
+                AssertEnterExitReadLock(1, false);
             }
 
             [Fact]
@@ -212,7 +212,7 @@ namespace AllOverIt.Tests.Collections
             {
                 _lockableList.GetEnumerator().Dispose();
 
-                AssertEnterExitReadLock(false);
+                AssertEnterExitReadLock(1, false);
             }
 
             [Fact]
@@ -299,7 +299,7 @@ namespace AllOverIt.Tests.Collections
             {
                 _lockableList.IndexOf(Create<string>());
 
-                AssertEnterExitReadLock(false);
+                AssertEnterExitReadLock(1, false);
             }
 
             [Fact]
@@ -318,7 +318,7 @@ namespace AllOverIt.Tests.Collections
             {
                 _lockableList.Insert(0, Create<string>());
 
-                AssertEnterExitWriteLock();
+                AssertEnterExitWriteLock(1);
             }
 
             [Fact]
@@ -342,7 +342,7 @@ namespace AllOverIt.Tests.Collections
             {
                 _lockableList.Remove(Create<string>());
 
-                AssertEnterExitWriteLock();
+                AssertEnterExitWriteLock(1);
             }
 
             [Fact]
@@ -366,7 +366,7 @@ namespace AllOverIt.Tests.Collections
             {
                 _lockableList.RemoveAt(0);
 
-                AssertEnterExitWriteLock();
+                AssertEnterExitWriteLock(1);
             }
 
             [Fact]
@@ -426,7 +426,7 @@ namespace AllOverIt.Tests.Collections
             {
                 _lockableList.GetReadLock(upgradeable).Dispose();
 
-                AssertEnterExitReadLock(upgradeable);
+                AssertEnterExitReadLock(1, upgradeable);
             }
         }
 
@@ -437,7 +437,7 @@ namespace AllOverIt.Tests.Collections
             {
                 _lockableList.GetWriteLock().Dispose();
 
-                AssertEnterExitWriteLock();
+                AssertEnterExitWriteLock(1);
             }
         }
 
@@ -464,19 +464,19 @@ namespace AllOverIt.Tests.Collections
             }
         }
 
-        private void AssertEnterExitReadLock(bool upgradeable)
+        private void AssertEnterExitReadLock(int count, bool upgradeable)
         {
-            _lockFake.Received(1).EnterReadLock(upgradeable);
-            _lockFake.Received(1).ExitReadLock();
+            _lockFake.Received(count).EnterReadLock(upgradeable);
+            _lockFake.Received(count).ExitReadLock();
 
             _lockFake.DidNotReceive().EnterWriteLock();
             _lockFake.DidNotReceive().ExitWriteLock();
         }
 
-        private void AssertEnterExitWriteLock()
+        private void AssertEnterExitWriteLock(int count)
         {
-            _lockFake.Received(1).EnterWriteLock();
-            _lockFake.Received(1).ExitWriteLock();
+            _lockFake.Received(count).EnterWriteLock();
+            _lockFake.Received(count).ExitWriteLock();
 
             _lockFake.DidNotReceive().EnterReadLock(Arg.Any<bool>());
             _lockFake.DidNotReceive().ExitReadLock();

@@ -5,6 +5,18 @@ namespace AllOverIt.Collections.Extensions
     /// <summary>Contains extension methods for <see cref="ILockableList{TType}"/>.</summary>
     public static class LockableListExtensions
     {
+        /// <summary>Locks the collection to create, and return, a snapshot of the list's current contents.</summary>
+        /// <returns>A snapshot of the list's current contents.</returns>
+        public static List<TType> Clone<TType>(this ILockableList<TType> lockableList)
+        {
+            _ = lockableList.WhenNotNull(nameof(lockableList));
+
+            using (lockableList.GetReadLock(false))
+            {
+                return new List<TType>(lockableList);
+            }
+        }
+
         /// <summary>Adds the elements of the specified items to the end of the list.</summary>
         /// <typeparam name="TType">The element type.</typeparam>
         /// <param name="lockableList">The lockable list to append the items to.</param>

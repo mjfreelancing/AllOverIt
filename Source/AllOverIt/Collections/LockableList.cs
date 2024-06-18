@@ -7,10 +7,11 @@ namespace AllOverIt.Collections
 {
     /// <summary>A general-purpose list, or list decorator, that applies a lock around each method call as well as
     /// providing the ability to be globally locked for read or write access. A global read lock can be optionally
-    /// defined as upgradeable to a write lock.</summary>
+    /// defined as upgradeable to a write lock. The locking mechanism is optimized for reads by using a
+    /// <see cref="IReadWriteLock"/> implementation.</summary>
     /// <typeparam name="TType">The object type help by the list.</typeparam>
-    /// <remarks>This lockable list is not as comprehensive as the .NET provided concurrent collections. Refer to
-    /// https://github.com/dotnet/runtime/issues/41740 for a discussion on potential issues, such as race conditions.</remarks>
+    /// <remarks>This lockable list is not intended to be as performant as the .NET provided concurrent collections. Refer to
+    /// https://github.com/dotnet/runtime/issues/41740 for a discussion on other potential issues, such as race conditions.</remarks>
     public class LockableList<TType> : ILockableList<TType>
     {
         private sealed class LockedListEnumerator : IEnumerator<TType>
@@ -141,6 +142,9 @@ namespace AllOverIt.Collections
         }
 
         /// <inheritdoc />
+        /// <remarks>The enumerator obtains a read-lock for the duration of the enumeration. If the caller only needs to
+        /// iterate the current collection of items without concern of future additions or deletions then consider using
+        /// the <see cref="Clone"/> method to obtain a copy (snapshot) of the list for enumeration purposes.</remarks>
         public IEnumerator<TType> GetEnumerator()
         {
             return new LockedListEnumerator(_list, _lock);
