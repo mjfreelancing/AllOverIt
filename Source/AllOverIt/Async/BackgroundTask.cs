@@ -99,6 +99,11 @@ namespace AllOverIt.Async
         /// <inheritdoc />
         public async ValueTask DisposeAsync()
         {
+            if (_isDisposing)
+            {
+                return;
+            }
+
             _isDisposing = true;
 
             try
