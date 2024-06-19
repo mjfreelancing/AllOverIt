@@ -44,8 +44,6 @@ namespace CircularBufferSinkDemo
             Console.WriteLine("All Over It.");
             Console.WriteLine();
             Console.ReadKey();
-
-            //return Task.CompletedTask;
         }
 
         public override void OnStopping()
