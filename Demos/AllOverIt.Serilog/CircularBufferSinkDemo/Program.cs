@@ -24,7 +24,7 @@ namespace CircularBufferSinkDemo
             /*
                 This demo sets up a console filter to only log messages that contain '13'. It then outputs all
                 messages that we captured by the Serilog sink to the console (using Console.WriteLine). The output
-                is custom formatter, and looks similar to this:
+                is custom formatted, and looks similar to this:
 
                     Filtered to console: 2024-02-08 20:03:39.044 +11:00 [INF] (Thread 20) 138
                     Filtered to console: 2024-02-08 20:03:38.914 +11:00 [INF] (Thread 5) 113
