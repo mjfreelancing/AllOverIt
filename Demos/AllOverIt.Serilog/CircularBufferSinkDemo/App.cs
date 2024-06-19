@@ -43,6 +43,7 @@ namespace CircularBufferSinkDemo
             Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.WriteLine();
+
             Console.ReadKey();
         }
 
