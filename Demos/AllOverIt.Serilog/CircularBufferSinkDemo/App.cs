@@ -25,7 +25,7 @@ namespace CircularBufferSinkDemo
             // Demo logging to multiple threads is captured by the circular buffer
             var tasks = Enumerable
                 .Range(100, 50)
-                .Select(value => Task.Run(() => _logger.LogInformation(value.ToString())));
+                .Select(value => Task.Run(() => _logger.LogInformation("{Value}", value)));
 
             await Task.WhenAll(tasks);
 
