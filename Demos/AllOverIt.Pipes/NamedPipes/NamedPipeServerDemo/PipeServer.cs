@@ -51,6 +51,14 @@ namespace NamedPipeServerDemo
                                 .ConfigureAwait(false);
                         }
                     }
+                    catch (IOException)
+                    {
+                        // A broken pipe
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        // Cannot access a closed pipe
+                    }
                     catch (OperationCanceledException)
                     {
                     }
@@ -145,6 +153,18 @@ namespace NamedPipeServerDemo
 
                         server.Start(pipeSecurity =>
                         {
+                            //pipeSecurity.AddAccessRule(
+                            //    new PipeAccessRule(
+                            //        WindowsIdentity.GetCurrent().User,
+                            //        PipeAccessRights.FullControl,
+                            //        AccessControlType.Allow));
+
+                            //pipeSecurity.AddAccessRule(
+                            //    new PipeAccessRule(
+                            //        new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null),
+                            //        PipeAccessRights.ReadWrite,
+                            //        AccessControlType.Allow));
+
                             pipeSecurity.AddIdentityAccessRule(WellKnownSidType.BuiltinUsersSid, PipeAccessRights.ReadWrite, AccessControlType.Allow);
                         });
 
@@ -250,7 +270,7 @@ namespace NamedPipeServerDemo
 
         private static void DoOnException(Exception exception)
         {
-            Console.Error.WriteLine($"Exception: {exception}");
+            Console.Error.WriteLine($"Exception: {exception.Message}");
         }
 
         private void DoOnException(object? sender, NamedPipeExceptionEventArgs args)

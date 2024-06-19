@@ -1,4 +1,5 @@
-﻿using AllOverIt.Pipes.Exceptions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Pipes.Exceptions;
 using AllOverIt.Pipes.Named.Connection;
 using AllOverIt.Pipes.Named.Events;
 using AllOverIt.Pipes.Named.Serialization;
@@ -30,10 +31,10 @@ namespace AllOverIt.Pipes.Named.Server
         /// <inheritdoc />
         public string GetImpersonationUserName()
         {
-            if (PipeStream is not NamedPipeServerStream serverStream)
-            {
-                throw new PipeException($"The pipe stream must be a {nameof(NamedPipeServerStream)}.");
-            }
+            // ServerStream is a property getter that performs a cast
+            var serverStream = ServerStream;
+
+            Throw<PipeException>.WhenNull(serverStream, $"The pipe stream must be a {nameof(NamedPipeServerStream)}.");
 
             // IOException will be raised of the pipe connection has been broken or
             // the user name is longer than 19 characters.

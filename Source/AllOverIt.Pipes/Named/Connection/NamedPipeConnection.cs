@@ -8,44 +8,44 @@ namespace AllOverIt.Pipes.Named.Connection
 {
     internal abstract class NamedPipeConnection<TMessage> : IConnectableNamedPipeConnection<TMessage>
     {
+        private bool _disposed;
+
         private readonly INamedPipeSerializer<TMessage> _serializer;
+        private readonly NamedPipeReaderWriter _pipeReaderWriter;
+
+        // Will be a NamedPipeClientStream or NamedPipeServerStream. This class assumes ownership until _pipeReaderWriter is created.
+        private readonly PipeStream _pipeStream;
 
         private CancellationTokenSource? _cancellationTokenSource;
         private BackgroundTask? _backgroundReader;
-        private NamedPipeReaderWriter? _pipeReaderWriter;
+        private bool _isConnected;
 
-        private bool IsRunning =>
-            _cancellationTokenSource is not null &&
-            _pipeReaderWriter is not null &&
-            _backgroundReader is not null;
+        private bool PipeStreamConnected => _pipeStream.IsConnected;
+
+        protected NamedPipeServerStream? ServerStream => _pipeStream as NamedPipeServerStream;
 
         public string ConnectionId { get; }
 
-        public bool IsConnected => IsRunning && (PipeStream?.IsConnected ?? false);
-
-        // Will be a NamedPipeClientStream or NamedPipeServerStream. This class assumes ownership until _pipeReaderWriter is created.
-        protected PipeStream? PipeStream { get; private set; }
+        public bool IsConnected => _isConnected && PipeStreamConnected;
 
         internal NamedPipeConnection(PipeStream pipeStream, string connectionId, INamedPipeSerializer<TMessage> serializer)
         {
-            PipeStream = pipeStream.WhenNotNull(nameof(pipeStream));               // Assume ownership of this stream
+            _pipeStream = pipeStream.WhenNotNull(nameof(pipeStream));               // Assume ownership of this stream
             ConnectionId = connectionId.WhenNotNullOrEmpty(nameof(connectionId));
             _serializer = serializer.WhenNotNull(nameof(serializer));
+
+            _pipeReaderWriter = new NamedPipeReaderWriter(_pipeStream);
         }
 
-        // Note: A connection cannot be re-established after it has been disconnected
         public void Connect()
         {
-            Throw<PipeException>.When(IsRunning, "The named pipe connection is already open.");
-            Throw<PipeException>.WhenNull(PipeStream, "The named pipe connection cannot be opened after it has been disconnected.");
+            Throw<PipeException>.When(_isConnected, "The named pipe connection is already open.");
 
             _cancellationTokenSource = new CancellationTokenSource();
 
-            _pipeReaderWriter = new NamedPipeReaderWriter(PipeStream);
-
             _backgroundReader = new BackgroundTask(async cancellationToken =>
             {
-                while (!cancellationToken.IsCancellationRequested && IsConnected)
+                while (!cancellationToken.IsCancellationRequested && PipeStreamConnected)
                 {
                     try
                     {
@@ -86,12 +86,12 @@ namespace AllOverIt.Pipes.Named.Connection
                     }
                 }
 
-                // Dispose of the PipeStream and associated reader/writer - cannot call DisconnectAsync() here
-                // as this will attempt to cancel / dispose of this background worker thread and cause a deadlock.
-                await DisposeResources().ConfigureAwait(false);
+                // Cannot call DisconnectAsync() here as this will attempt to cancel / dispose of this background worker thread and cause a deadlock.
 
                 try
                 {
+                    _isConnected = false;
+
                     DoOnDisconnected();
                 }
                 catch (Exception exception)
@@ -99,11 +99,19 @@ namespace AllOverIt.Pipes.Named.Connection
                     DoOnException(exception);
                 }
             }, _cancellationTokenSource.Token);
+
+            _isConnected = true;
         }
 
         public async Task DisconnectAsync()
         {
-            _cancellationTokenSource?.Cancel();
+            // Cannot return early based on !_isConnected since this may be set if the background reader terminates early due to a broken pipe
+
+            // _backgroundReader may, or may not, be running - so dispose of related resources as required
+            if (_cancellationTokenSource is not null && !_cancellationTokenSource!.IsCancellationRequested)
+            {
+                _cancellationTokenSource.Cancel();
+            }
 
             if (_backgroundReader is not null)
             {
@@ -111,7 +119,10 @@ namespace AllOverIt.Pipes.Named.Connection
                 _backgroundReader = null;
             }
 
-            await DisposeResources().ConfigureAwait(false);
+            _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = null;
+
+            _isConnected = false;
         }
 
         public async Task WriteAsync(TMessage value, CancellationToken cancellationToken = default)
@@ -119,7 +130,7 @@ namespace AllOverIt.Pipes.Named.Connection
             cancellationToken.ThrowIfCancellationRequested();
 
             // The connection can be broken at any time
-            if (IsConnected && IsRunning)
+            if (IsConnected)
             {
                 var bytes = _serializer.Serialize(value);
 
@@ -129,32 +140,21 @@ namespace AllOverIt.Pipes.Named.Connection
 
         public async ValueTask DisposeAsync()
         {
+            if (_disposed)
+            {
+                return;
+            }
+
             await DisconnectAsync().ConfigureAwait(false);
+
+            // This will also dispose PipeStream as it assumes ownership once created
+            await _pipeReaderWriter.DisposeAsync().ConfigureAwait(false);
+
+            _disposed = true;
         }
 
         protected abstract void DoOnDisconnected();
         protected abstract void DoOnMessageReceived(TMessage message);
         protected abstract void DoOnException(Exception exception);
-
-        private async Task DisposeResources()
-        {
-            _cancellationTokenSource?.Dispose();
-            _cancellationTokenSource = null;
-
-            if (_pipeReaderWriter is not null)
-            {
-                // This will also dispose PipeStream as it assumes ownership once created
-                await _pipeReaderWriter.DisposeAsync().ConfigureAwait(false);
-                _pipeReaderWriter = null;
-
-                PipeStream = null;
-            }
-
-            if (PipeStream is not null)
-            {
-                await PipeStream!.DisposeAsync().ConfigureAwait(false);
-                PipeStream = null;
-            }
-        }
     }
 }

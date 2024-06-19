@@ -18,7 +18,6 @@ namespace AllOverIt.Pipes.Named.Connection
             _streamWriter = new NamedPipeStreamWriter(_pipeStream);
         }
 
-        // Can throw IO.Exception if communication is cut off
         public Task<byte[]> ReadAsync(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

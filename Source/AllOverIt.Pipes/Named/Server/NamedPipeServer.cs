@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Async;
 using AllOverIt.Collections;
+using AllOverIt.Collections.Extensions;
 using AllOverIt.Extensions;
 using AllOverIt.Pipes.Exceptions;
 using AllOverIt.Pipes.Named.Connection;
@@ -132,25 +133,20 @@ namespace AllOverIt.Pipes.Named.Server
                 _backgroundTask = null;
             }
 
-            List<INamedPipeServerConnection<TMessage>>? connections = null;
+            // New connections cannot be added once _backgroundTask has closed down, but there's always the chance that
+            // an existing connection will be dropped while this disconnection processing is in play. Doing our best to
+            // avoid issues, but there is still a chance of a race condition if the client side terminates preemptively.
+            // The named pipe connection is thread safe and idempotent if disposed of multiple times.
+            List<INamedPipeServerConnection<TMessage>> currentConnections = _connections.Clone();
 
-            using (_connections.GetWriteLock())
+            if (currentConnections.Count > 0)
             {
-                if (_connections.Count != 0)
-                {
-                    // DoOnConnectionDisconnected() will be called for each connection where
-                    // its' event handlers are also released. Using a copy since '_connections'
-                    // will be modified.
-                    connections = [.. _connections];
+                // OnDisconnect() will be called for each
+                var tasks = currentConnections.SelectToList(connection => connection.DisconnectAsync());
 
-                    _connections.Clear();
-                }
-            }
+                await Task.WhenAll(tasks).ConfigureAwait(false);
 
-            if (connections is not null)
-            {
-                // The OnDisconnected event handler will be called.
-                await connections.DisposeAllAsync().ConfigureAwait(false);
+                await currentConnections.DisposeAllAsync().ConfigureAwait(false);
             }
         }
 
