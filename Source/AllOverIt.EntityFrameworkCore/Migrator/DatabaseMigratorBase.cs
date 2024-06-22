@@ -13,7 +13,7 @@ namespace AllOverIt.EntityFrameworkCore.Migrator
         private readonly IDbContextFactory<TDbContext> _dbContextFactory;
 
         /// <inheritdoc />
-        public event EventHandler<MigrationEventArgs> OnNewMigration;
+        public event EventHandler<MigrationEventArgs>? OnNewMigration;
 
         /// <summary>Constructor.</summary>
         /// <param name="dbContextFactory">The <see cref="DbContext"/> factory used to create an instance of the <typeparamref name="TDbContext"/>.</param>
@@ -23,7 +23,7 @@ namespace AllOverIt.EntityFrameworkCore.Migrator
         }
 
         /// <inheritdoc />
-        public async Task MigrateAsync(MigrationOptions options = default)
+        public async Task MigrateAsync(MigrationOptions? options = default)
         {
             using (var dbContext = _dbContextFactory.CreateDbContext())
             {
@@ -52,7 +52,7 @@ namespace AllOverIt.EntityFrameworkCore.Migrator
             }
         }
 
-        private static void ApplyOptions(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade database, MigrationOptions options)
+        private static void ApplyOptions(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade database, MigrationOptions? options)
         {
             var commandTimeout = options?.CommandTimeout;
 
