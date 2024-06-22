@@ -47,8 +47,18 @@ namespace AllOverIt.Pipes.Named.Connection
         {
             if (_pipeStream is not null)
             {
-                await _pipeStream.DisposeAsync().ConfigureAwait(false);
-                _pipeStream = null;
+                try
+                {
+                    await _pipeStream.DisposeAsync().ConfigureAwait(false);
+                }
+                catch (ObjectDisposedException)
+                {
+                    // The pipe stream may have already been disposed due to a broken pipe.
+                }
+                finally
+                {
+                    _pipeStream = null;
+                }
             }
         }
     }
