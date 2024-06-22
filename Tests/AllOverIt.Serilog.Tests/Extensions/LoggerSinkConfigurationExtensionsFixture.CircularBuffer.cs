@@ -8,7 +8,7 @@ using Serilog.Formatting.Display;
 
 namespace AllOverIt.Serilog.Tests.Extensions
 {
-    public class LoggerSinkConfigurationExtensionsFixture : FixtureBase
+    public partial class LoggerSinkConfigurationExtensionsFixture : FixtureBase
     {
         public class CircularBuffer_OutputTemplate : LoggerSinkConfigurationExtensionsFixture
         {

@@ -10,9 +10,9 @@ using Serilog.Formatting.Display;
 namespace AllOverIt.Serilog.Extensions
 {
     /// <summary>Provides extension methods for a <see cref="LoggerSinkConfiguration"/>.</summary>
-    public static class LoggerSinkConfigurationExtensions
+    public static partial class LoggerSinkConfigurationExtensions
     {
-        private const string DefaultOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message}{NewLine}{Exception}";
+        private const string DefaultCircularBufferOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message}{NewLine}{Exception}";
 
         /// <summary>Writes log events to a <see cref="ICircularBufferSinkMessages"/> instance.</summary>
         /// <param name="sinkConfiguration">The logger sink configuration.</param>
@@ -24,9 +24,10 @@ namespace AllOverIt.Serilog.Extensions
         /// <param name="formatProvider">Supplies culture-specific formatting information, or <see langword="null"></see>.</param>
         /// <param name="levelSwitch">A switch allowing the pass-through minimum level to be changed at runtime.</param>
         /// <returns>The sink's <see cref="LoggerConfiguration"/> instance, allowing method chaining.</returns>
-        public static LoggerConfiguration CircularBuffer(this LoggerSinkConfiguration sinkConfiguration,
+        public static LoggerConfiguration CircularBuffer(
+            this LoggerSinkConfiguration sinkConfiguration,
             ICircularBufferSinkMessages sinkMessages,
-            string outputTemplate = DefaultOutputTemplate,
+            string outputTemplate = DefaultCircularBufferOutputTemplate,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             IFormatProvider? formatProvider = default,
             LoggingLevelSwitch? levelSwitch = default)
@@ -50,7 +51,8 @@ namespace AllOverIt.Serilog.Extensions
         /// Ignored when <paramref name="levelSwitch"/> is specified.</param>
         /// <param name="levelSwitch">A switch allowing the pass-through minimum level to be changed at runtime.</param>
         /// <returns>The sink's <see cref="LoggerConfiguration"/> instance, allowing method chaining.</returns>
-        public static LoggerConfiguration CircularBuffer(this LoggerSinkConfiguration sinkConfiguration,
+        public static LoggerConfiguration CircularBuffer(
+            this LoggerSinkConfiguration sinkConfiguration,
             ICircularBufferSinkMessages sinkMessages,
             ITextFormatter formatter,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,

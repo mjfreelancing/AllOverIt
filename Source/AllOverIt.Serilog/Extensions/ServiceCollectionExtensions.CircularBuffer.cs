@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AllOverIt.Serilog.Extensions
 {
     /// <summary>Provides extension methods for a <see cref="IServiceCollection"/>.</summary>
-    public static class ServiceCollectionExtensions
+    public static partial class ServiceCollectionExtensions
     {
         private static readonly Type ICircularBufferSinkMessagesType = typeof(ICircularBufferSinkMessages);
 
