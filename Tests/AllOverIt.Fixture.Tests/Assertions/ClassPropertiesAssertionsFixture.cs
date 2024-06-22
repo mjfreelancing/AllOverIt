@@ -18,6 +18,87 @@ namespace AllOverIt.Fixture.Tests
             public int Prop3 { get; internal set; }
         }
 
+        public class MatchNames : ClassPropertiesAssertionsFixture
+        {
+            [Fact]
+            public void Should_Not_Fail_When_Property_Names_Out_Of_Order()
+            {
+                Properties
+                    .For<DummyClass>()
+                    .Should()
+                    .MatchNames([nameof(DummyClass.Prop1), nameof(DummyClass.Prop3), nameof(DummyClass.Prop2)]);
+            }
+
+            [Fact]
+            public void Should_Fail()
+            {
+                Invoking(() =>
+                {
+                    Properties
+                        .For<DummyClass>()
+                        .Should()
+                        .MatchNames([nameof(DummyClass.Prop1), nameof(DummyClass.Prop3)]);
+                })
+                    .Should()
+                    .Throw<XunitException>()
+                    .WithMessage("Expected properties on type DummyClass to be named {\"Prop1\",\"Prop3\"}, but found {\"Prop1\",\"Prop2\",\"Prop3\"}.");
+            }
+
+            [Fact]
+            public void Should_Fail_With_Reason()
+            {
+                var reason = Create<string>();
+
+                Invoking(() =>
+                {
+                    Properties
+                        .For<DummyClass>()
+                        .Should()
+                        .MatchNames([nameof(DummyClass.Prop1), nameof(DummyClass.Prop3)], reason);
+                })
+                    .Should()
+                    .Throw<XunitException>()
+                    .WithMessage($"Expected properties on type DummyClass to be named {{\"Prop1\",\"Prop3\"}} because {reason}, but found {{\"Prop1\",\"Prop2\",\"Prop3\"}}.");
+            }
+
+            [Fact]
+            public void Should_Fail_With_Reason_Args()
+            {
+                var reason = $"{Create<string>()} {0}";
+                var reasonArgs = Create<string>();
+                var expectedReason = string.Format(reason, reasonArgs);
+
+                Invoking(() =>
+                {
+                    Properties
+                        .For<DummyClass>()
+                        .Should()
+                        .MatchNames([nameof(DummyClass.Prop1), nameof(DummyClass.Prop3)], reason, reasonArgs);
+                })
+                    .Should()
+                    .Throw<XunitException>()
+                    .WithMessage($"Expected properties on type DummyClass to be named {{\"Prop1\",\"Prop3\"}} because {expectedReason}, but found {{\"Prop1\",\"Prop2\",\"Prop3\"}}.");
+            }
+
+            [Fact]
+            public void Should_Fail_When_No_Properties()
+            {
+                var reason = Create<string>();
+
+                Invoking(() =>
+                {
+                    Properties
+                        .For<DummyClass>()
+                        .Where(_ => false)
+                        .Should()
+                        .MatchNames([nameof(DummyClass.Prop1), nameof(DummyClass.Prop2), nameof(DummyClass.Prop3)], reason);
+                })
+                    .Should()
+                    .Throw<XunitException>()
+                    .WithMessage($"Expected to validate at least one property on type \"DummyClass\" because {reason}, but found none.");
+            }
+        }
+
         public class BeDefinedAs : ClassPropertiesAssertionsFixture
         {
             [Fact]

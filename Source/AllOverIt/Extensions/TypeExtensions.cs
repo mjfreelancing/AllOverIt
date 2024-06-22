@@ -23,7 +23,9 @@ namespace AllOverIt.Extensions
 
         /// <summary>Gets <see cref="PropertyInfo"/> (property metadata) for all properties on a given <see cref="Type"/> satisfying a given binding option.</summary>
         /// <param name="type">The type to obtain property metadata for.</param>
-        /// <param name="bindingOptions">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
+        /// <param name="bindingOptions">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.
+        /// If neither <see cref="BindingOptions.GetMethod"/> or <see cref="BindingOptions.SetMethod"/> is provided, then <see cref="BindingOptions.GetMethod"/>
+        /// is assumed when applying all other binding options.</param>
         /// <param name="declaredOnly">If False, the metadata of properties in the declared class as well as base class(es) are returned.
         /// If True, only property metadata of the declared type is returned.</param>
         /// <returns>The property metadata, as <see cref="PropertyInfo"/>, of a provided <see cref="Type"/>.</returns>
@@ -32,23 +34,18 @@ namespace AllOverIt.Extensions
         public static IEnumerable<PropertyInfo> GetPropertyInfo(this Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false)
         {
             var predicate = BindingOptionsHelper.BuildPropertyOrMethodBindingPredicate(bindingOptions);
-            var typeInfo = type.GetTypeInfo();
+            var propertyInfo = type.GetTypeInfo().GetPropertyInfo(declaredOnly);
 
-            var methodBindingOption = bindingOptions.HasFlag(BindingOptions.GetMethod) || bindingOptions.HasFlag(BindingOptions.SetMethod)
-                ? bindingOptions
-                : BindingOptions.GetMethod;
+            var hasSetFlag = bindingOptions.HasFlag(BindingOptions.SetMethod);
+            var hasGetFlag = bindingOptions.HasFlag(BindingOptions.GetMethod) || !hasSetFlag;
 
-            foreach (var propInfo in typeInfo.GetPropertyInfo(declaredOnly))
+            bool getPredicate(PropertyInfo pInfo) => hasGetFlag && pInfo.GetMethod is not null && predicate.Invoke(pInfo.GetMethod);
+
+            bool setPredicate(PropertyInfo pInfo) => hasSetFlag && pInfo.SetMethod is not null && predicate.Invoke(pInfo.SetMethod);
+
+            foreach (var propInfo in propertyInfo)
             {
-                var includeInfo =
-                    propInfo.GetMethod is not null &&
-                    methodBindingOption.HasFlag(BindingOptions.GetMethod) &&
-                    predicate.Invoke(propInfo.GetMethod);
-
-                includeInfo = includeInfo ||
-                    propInfo.SetMethod is not null &&
-                    methodBindingOption.HasFlag(BindingOptions.SetMethod) &&
-                    predicate.Invoke(propInfo.SetMethod);
+                var includeInfo = getPredicate(propInfo) || setPredicate(propInfo);
 
                 if (includeInfo)
                 {

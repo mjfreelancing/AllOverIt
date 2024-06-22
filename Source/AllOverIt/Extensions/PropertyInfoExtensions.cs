@@ -118,6 +118,16 @@ namespace AllOverIt.Extensions
                 .Contains(IsExternalInitType);
         }
 
+        /// <summary>Determines if a property is compiler generated, such as a record's <c>EqualityContract</c>.</summary>
+        /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
+        /// <returns><see langword="True" /> if the property is compiler generated.</returns>
+        public static bool IsCompilerGenerated([NotNull] this PropertyInfo propertyInfo)
+        {
+            _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+
+            return propertyInfo.GetCustomAttribute<CompilerGeneratedAttribute>() is not null;
+        }
+
         /// <summary>Creates a lambda expression that represents accessing a property on an object of type <typeparamref name="TType"/>.
         /// If the <paramref name="parameterName"/> is 'item' and the property info refers to a property named 'Age' then the expression will represent
         /// 'item => item.Age'.</summary>

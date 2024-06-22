@@ -7,52 +7,53 @@
     {
 #pragma warning disable IDE0079
 #pragma warning disable CA1069      // Enums should not have duplicate values
+
         #region Scope
 
         /// <summary>Filter reflection operations to <i>static</i> scope.</summary>
-        Static = 1,
+        Static = 1 << 0,                    // 1
 
         /// <summary>Filter reflection operations to <i>instance</i> (non-static) scope.</summary>
-        Instance = 2,
+        Instance = 1 << 1,                  // 2,
 
         #endregion
 
         #region Access
 
         /// <summary>Filter reflection operations to <i>abstract</i> access.</summary>
-        Abstract = 4,
+        Abstract = 1 << 2,                  // 4,
 
         /// <summary>Filter reflection operations to <i>virtual</i> access.</summary>
-        Virtual = 8,
+        Virtual = 1 << 3,                   // 8,
 
         /// <summary>Filter reflection operations to a <i>non-virtual</i> access.</summary>
-        NonVirtual = 16,
+        NonVirtual = 1 << 4,                // 16,
 
         #endregion
 
         #region Visibility
 
         /// <summary>Filter reflection operations to <i>internal</i> visibility.</summary>
-        Internal = 32,
+        Internal = 1 << 5,                  // 32,
 
         /// <summary>Filter reflection operations to <i>private</i> visibility.</summary>
-        Private = 64,
+        Private = 1 << 6,                   // 64,
 
         /// <summary>Filter reflection operations to <i>protected</i> visibility.</summary>
-        Protected = 128,
+        Protected = 1 << 7,                 // 128,
 
         /// <summary>Filter reflection operations to <i>public</i> visibility.</summary>
-        Public = 256,
+        Public = 1 << 8,                    // 256,
 
         #endregion
 
         #region Method
 
         /// <summary>Perform filtering against the property's <i>GetMethod</i>.</summary>
-        GetMethod = 512,
+        GetMethod = 1 << 9,                 // 512,
 
         /// <summary>Perform filtering against the property's <i>SetMethod</i>.</summary>
-        SetMethod = 1024,
+        SetMethod = 1 << 10,                // 1024,
 
         #endregion
 

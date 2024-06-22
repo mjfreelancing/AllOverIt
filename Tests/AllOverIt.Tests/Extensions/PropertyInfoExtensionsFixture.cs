@@ -45,6 +45,10 @@ namespace AllOverIt.Tests.Extensions
             public bool Prop8 { set { } }
         }
 
+        private sealed record DummyRecord1
+        {
+        }
+
         public class IsAbstract : PropertyInfoExtensionsFixture
         {
             [Fact]
@@ -444,6 +448,39 @@ namespace AllOverIt.Tests.Extensions
             {
                 GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop1))
                     .IsInitOnly()
+                    .Should()
+                    .BeFalse();
+            }
+        }
+
+        public class IsCompilerGenerated : PropertyInfoExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PropertyInfo_Null()
+            {
+                Invoking(() =>
+                {
+                    PropertyInfoExtensions.IsCompilerGenerated(null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyInfo");
+            }
+
+            [Fact]
+            public void Should_Determine_Is_CompilerGenerated()
+            {
+                GetPropertyInfo<DummyRecord1>("EqualityContract")
+                    .IsCompilerGenerated()
+                    .Should()
+                    .BeTrue();
+            }
+
+            [Fact]
+            public void Should_Determine_Is_Not_CompilerGenerated()
+            {
+                GetPropertyInfo<DummyClass2>(nameof(DummyClass2.Prop6))
+                    .IsCompilerGenerated()
                     .Should()
                     .BeFalse();
             }
