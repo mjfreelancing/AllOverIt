@@ -10,21 +10,25 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
     public sealed class EnrichedEnumEntityOptions
     {
         internal Func<IMutableEntityType, bool> EntityPredicate { get; }
-        internal Func<PropertyInfo, bool>? PropertyPredicate { get; private set; }
+        internal Func<PropertyInfo, bool> PropertyPredicate { get; private set; }
         internal EnrichedEnumPropertyOptions PropertyOptions { get; } = new();
 
-        /// <summary>Constructor. The default behaviour is to include all properties on all entities that inherit <see cref="EnrichedEnum{TEnum}"/>.</summary>
+        /// <summary>Constructor. The default behaviour is to include all properties on all entities that inherit
+        /// <see cref="EnrichedEnum{TEnum}"/>.</summary>
         public EnrichedEnumEntityOptions()
         {
             EntityPredicate = _ => true;
             PropertyPredicate = property => property.PropertyType.IsEnrichedEnum();
         }
 
-        /// <summary>Constructor. The property options to be configured will be applied to the specified entity types.</summary>
+        /// <summary>Constructor. The default behaviour is to include all properties on the specified entity types that
+        /// inherit <see cref="EnrichedEnum{TEnum}"/>. To filter the properties, call one of the <c>Property()</c> or
+        /// <c>Properties()</c> methods.</summary>
         /// <param name="entityTypes">One or more entity types to be configured.</param>
         public EnrichedEnumEntityOptions(IEnumerable<Type> entityTypes)
         {
             EntityPredicate = entity => entityTypes.Contains(entity.ClrType);
+            PropertyPredicate = property => property.PropertyType.IsEnrichedEnum();
         }
 
         /// <summary>Gets options for all properties of the specified type on the entity types being configured.</summary>

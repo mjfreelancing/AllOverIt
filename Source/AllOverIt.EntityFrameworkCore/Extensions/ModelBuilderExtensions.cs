@@ -15,7 +15,7 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         /// <summary>Configures the model builder to store entity properties that inherit <see cref="EnrichedEnum{TENum}"/> as integer or string values.</summary>
         /// <param name="modelBuilder">The model builder being configured.</param>
         /// <param name="configure">The configuration action to invoke. If null then the model builder will be configured to store all values as integers.</param>
-        public static ModelBuilder UseEnrichedEnum(this ModelBuilder modelBuilder, Action<EnrichedEnumModelBuilderOptions> configure = default)
+        public static ModelBuilder UseEnrichedEnum(this ModelBuilder modelBuilder, Action<EnrichedEnumModelBuilderOptions>? configure = default)
         {
             var options = new EnrichedEnumModelBuilderOptions();
             configure?.Invoke(options);
@@ -74,7 +74,7 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         }
 
         private static void ConfigureEntityProperty(ModelBuilder modelBuilder, IMutableEntityType entityType, PropertyInfo property,
-            Action<PropertyBuilder> propertyBuilder, Type valueConverter)
+            Action<PropertyBuilder>? propertyBuilder, Type valueConverter)
         {
             var converter = CreateValueConverter(property.PropertyType, valueConverter);
 
@@ -89,7 +89,7 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         private static ValueConverter CreateValueConverter(Type propertyType, Type valueConverter)
         {
             var converterType = valueConverter.MakeGenericType(propertyType);
-            return (ValueConverter) Activator.CreateInstance(converterType);
+            return (ValueConverter) Activator.CreateInstance(converterType)!;
         }
     }
 }

@@ -51,27 +51,24 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
             PropertyBuilder = CreateIntegerPropertyBuilder(columnOptions);
         }
 
-        private static Action<PropertyBuilder>? CreateStringPropertyBuilder(EnrichedEnumStringColumnOptions? columnOptions)
+        private static Action<PropertyBuilder>? CreateStringPropertyBuilder(EnrichedEnumStringColumnOptions columnOptions)
         {
             Action<PropertyBuilder>? propertyBuilder = null;
 
-            if (columnOptions is not null)
+            if (columnOptions.ColumnType is not null || columnOptions.MaxLength.HasValue)
             {
-                if (columnOptions.ColumnType is not null || columnOptions.MaxLength.HasValue)
+                propertyBuilder = builder =>
                 {
-                    propertyBuilder = builder =>
+                    if (columnOptions.ColumnType is not null)
                     {
-                        if (columnOptions.ColumnType is not null)
-                        {
-                            builder.HasColumnType(columnOptions.ColumnType);
-                        }
+                        builder.HasColumnType(columnOptions.ColumnType);
+                    }
 
-                        if (columnOptions.MaxLength.HasValue)
-                        {
-                            builder.HasMaxLength(columnOptions.MaxLength.Value);
-                        }
-                    };
-                }
+                    if (columnOptions.MaxLength.HasValue)
+                    {
+                        builder.HasMaxLength(columnOptions.MaxLength.Value);
+                    }
+                };
             }
 
             return propertyBuilder;
