@@ -41,4 +41,8 @@
 ### AllOverIt.Reactive
 * Moved event bus and handlers to the AllOverIt.Reactive.Messaging namespace.
 
+
+### AllOverIt.Serilog
+* Added ObservableSink
+
 ---
