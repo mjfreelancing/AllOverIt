@@ -21,6 +21,59 @@ namespace AllOverIt.Fixture.Assertions
             _classProperties = subject;
         }
 
+        /// <summary>Asserts that the <typeparamref name="TType"/> contains property names matching the specified property names.</summary>
+        /// <param name="propertyNames">The expected property names.</param>
+        /// <param name="because">
+        /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
+        /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
+        /// <para>
+        /// If the format of <paramref name="because"/> or <paramref name="becauseArgs"/> is not compatible with
+        /// <see cref="string.Format(string,object[])"/>, then a warning message is returned instead.
+        /// </para>
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more values to use for filling in any <see cref="string.Format(string,object[])"/> compatible placeholders.
+        /// </param>
+        /// <returns>The current instance to cater for a fluent syntax.</returns>
+        [CustomAssertion]
+        public AndConstraint<ClassPropertiesAssertions<TType>> MatchNames(string[] propertyNames, string because = "", params object[] becauseArgs)
+        {
+            using var _ = new AssertionScope();
+
+            var success = Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(_classProperties.Properties.Length > 0)
+                .FailWith("Expected to validate at least one property on type {0}{reason}, but found none.", typeof(TType).GetFriendlyName());
+
+            if (success)
+            {
+                // Not using BeEquivalentTo() here since we want to customize the message rather than it pick up the expression.
+                var actual = _classProperties.Properties
+                    .Select(propertyInfo => propertyInfo.Name)
+#if NET8_0_OR_GREATER
+                    .Order();
+#else
+                    .OrderBy(item => item);
+#endif
+
+                var expected = propertyNames
+#if NET8_0_OR_GREATER
+                    .Order();
+#else
+                    .OrderBy(item => item);
+#endif
+
+                static string GetQuoted(IEnumerable<string> values) => "{{" + string.Join(",", values.Select(item => $"\"{item}\"")) + "}}";
+
+                Execute.Assertion
+                    .BecauseOf(because, becauseArgs)
+                    .ForCondition(actual.SequenceEqual(expected))
+                    .FailWith($"Expected properties on type {typeof(TType).GetFriendlyName()} to be named {GetQuoted(expected)}{{reason}}, but found {GetQuoted(actual)}.");
+            }
+
+            return new AndConstraint<ClassPropertiesAssertions<TType>>(this);
+        }
+
         /// <summary>Invokes an action to execute one or more property assertions.</summary>
         /// <param name="propertyAssertion">The action to execute.</param>
         /// <param name="because">
@@ -35,6 +88,7 @@ namespace AllOverIt.Fixture.Assertions
         /// Zero or more values to use for filling in any <see cref="string.Format(string,object[])"/> compatible placeholders.
         /// </param>
         /// <returns>The current instance to cater for a fluent syntax.</returns>
+        [CustomAssertion]
         public AndConstraint<ClassPropertiesAssertions<TType>> BeDefinedAs(Action<PropertyInfoAssertions> propertyAssertion, string because = "", params object[] becauseArgs)
         {
             using var _ = new AssertionScope();

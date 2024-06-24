@@ -1,3 +1,18 @@
+#  Version 7.20.0
+## 24 Jun 2024
+
+### AllOverIt
+
+* Added IsCompilerGenerated() extension method on PropertyInfo.
+
+### AllOverIt.Fixture
+
+* Updated ClassProperties to exclude properties that are compiler generated, such as 'EqualityContract' on records.
+* Added MatchNames() to ClassPropertiesAssertions so tests can detect when a property is added or removed from a class.
+
+---
+
+
 #  Version 7.19.0
 ## 14 Jun 2024
 

@@ -39,7 +39,10 @@ namespace AllOverIt.Fixture.Assertions
         /// <param name="declaredOnly">When <see langword="True"/>, base class properties will be ignored.</param>
         public ClassProperties(bool declaredOnly)
         {
-            _allProperties = typeof(TType).GetPropertyInfo(BindingOptions.All, declaredOnly).ToArray();
+            _allProperties = typeof(TType)
+                .GetPropertyInfo(BindingOptions.All, declaredOnly)
+                .Where(propInfo => !propInfo.IsCompilerGenerated())     // Exclude record compiler generated 'EqualityContract'
+                .ToArray();
         }
 
         /// <summary>Filters the properties to only those specified in <paramref name="propertyNames"/>. Property names

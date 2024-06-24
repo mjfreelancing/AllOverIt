@@ -90,12 +90,22 @@ namespace AllOverIt.Tests.Async
             public async Task Should_Not_Throw_When_Task_Cancelled_And_Handled()
             {
                 var cts = new CancellationTokenSource();
+                var resetEvent = new ManualResetEventSlim(false);
 
                 var backgroundTask = new BackgroundTask(
-                    token => Task.Delay(-1, token),
+                    async token =>
+                    {
+                        // Used to determine when the background task has started
+                        await Task.Delay(1, token);
+
+                        resetEvent.Set();
+
+                        // And now we can detect, and handle, the token being cancelled
+                        await Task.Delay(-1, token);
+                    },
                     edi => true, cts.Token);
 
-                await Task.Delay(10);
+                resetEvent.Wait();
 
                 cts.Cancel();
 
