@@ -18,7 +18,7 @@ namespace AllOverIt.Csv.Extensions
         /// <param name="valueResolver">This resolver is called during the export process for each field instance and its associated header name.
         /// If <typeparamref name="TField"/> is an IDictionary&lt;U, V&gt; then the header name is typically used to look up the value based on this key.</param>
         public static void AddDynamicFields<TCsvData, TField>(this ICsvSerializer<TCsvData> serializer, IEnumerable<TCsvData> data,
-            Func<TCsvData, TField> fieldSelector, Func<TField, IEnumerable<string>> headerNameResolver, Func<TField, string, object> valueResolver)
+            Func<TCsvData, TField> fieldSelector, Func<TField, IEnumerable<string>> headerNameResolver, Func<TField, string, object?> valueResolver)
         {
             _ = serializer.WhenNotNull(nameof(serializer));
             var csvData = data.WhenNotNull(nameof(data));
@@ -56,11 +56,11 @@ namespace AllOverIt.Csv.Extensions
         /// the 'Names' could be 'PropA 1' and 'PropB 1', assuming 'PropA' and 'PropB' were being exported.</param>
         /// <param name="valuesResolver">This resolver is called during the export process for each field instance and its associated field identifier. The 'Id'
         /// property of the field identifier is typically used to find the element to be exported. The serializer expects the same number of values to be returned
-        /// as there were header names. If there's no data to be exported for this field instance then return null.</param>
+        /// as there were header names. If there's no data to be exported for this field instance then return <see langword="null"/>.</param>
         /// <exception cref="CsvSerializerException">When the number of values returned does not match the number of header names.</exception>
         public static void AddDynamicFields<TCsvData, TField, TFieldId>(this ICsvSerializer<TCsvData> serializer, IEnumerable<TCsvData> data,
             Func<TCsvData, TField> fieldSelector, Func<TField, IEnumerable<FieldIdentifier<TFieldId>>> fieldIdentifiers,
-            Func<TField, FieldIdentifier<TFieldId>, object?[]> valuesResolver) where TFieldId : notnull
+            Func<TField, FieldIdentifier<TFieldId>, object?[]?> valuesResolver) where TFieldId : notnull
         {
             _ = serializer.WhenNotNull(nameof(serializer));
             var csvData = data.WhenNotNull(nameof(data));

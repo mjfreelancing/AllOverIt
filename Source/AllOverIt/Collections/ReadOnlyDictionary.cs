@@ -9,7 +9,7 @@ namespace AllOverIt.Collections
     public class ReadOnlyDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
         where TKey : notnull
     {
-        private readonly IDictionary<TKey, TValue> _dictionary;
+        private readonly Dictionary<TKey, TValue> _dictionary;
 
         /// <inheritdoc />
         public TValue this[TKey key] => _dictionary[key];
@@ -65,7 +65,7 @@ namespace AllOverIt.Collections
         /// <inheritdoc />
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CS8767  // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
-        public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
+        public bool TryGetValue(TKey key, [MaybeNull] out TValue value)
 #pragma warning restore CS8767  // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
 #pragma warning restore IDE0079 // Remove unnecessary suppression
         {

@@ -50,8 +50,8 @@ namespace AllOverIt.EntityFrameworkCore.Pagination.Extensions
             var pageResults = await pageQuery.ToListAsync(cancellationToken).ConfigureAwait(false);
             var hasResults = pageResults.Count != 0;
 
-            string previousToken = default;
-            string nextToken = default;
+            string? previousToken = null;
+            string? nextToken = null;
 
             if (hasResults)
             {

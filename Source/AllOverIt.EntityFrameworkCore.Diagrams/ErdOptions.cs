@@ -2,6 +2,7 @@
 using AllOverIt.EntityFrameworkCore.Diagrams.Exceptions;
 using AllOverIt.Extensions;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams
 {
@@ -35,7 +36,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
                 return this;
             }
 
-            string IEntityGroups.GetAlias(Type entityType)
+            string? IEntityGroups.GetAlias(Type entityType)
             {
                 if (_entityGroupAliases.TryGetValue(entityType, out var alias))
                 {
@@ -108,7 +109,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             /// <summary>Gets the alias associated with a specified entity type.</summary>
             /// <param name="entityType">The entity type to get the alias for.</param>
             /// <returns>The alias associated with a specified entity type.</returns>
-            string GetAlias(Type entityType);
+            string? GetAlias(Type entityType);
         }
 
         /// <summary>Provides options that specify how a column's nullability is depicted on the generated diagram.</summary>
@@ -222,7 +223,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         /// <param name="alias">The alias to use in the diagram file for the group.</param>
         /// <param name="title">The group title. Optional.</param>
         /// <param name="entities">An action that adds the required entities to the group.</param>
-        public void Group(string alias, string title, Action<EntityGroup> entities)
+        public void Group(string alias, string? title, Action<EntityGroup> entities)
         {
             // Not using ShapeStyle.Default because the caller can change properties
             Group(alias, title, new ShapeStyle(), entities);
@@ -233,7 +234,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         /// <param name="title">The group title. Optional.</param>
         /// <param name="shapeStyle">The styling options for the group shape.</param>
         /// <param name="entities">An action that adds the required entities to the group.</param>
-        public void Group(string alias, string title, ShapeStyle shapeStyle, Action<EntityGroup> entities)
+        public void Group(string alias, string? title, ShapeStyle shapeStyle, Action<EntityGroup> entities)
         {
             _ = alias.WhenNotNullOrEmpty();
             _ = entities.WhenNotNull();
@@ -272,7 +273,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             return GetEntityOptions(entityType, copyGlobal);
         }
 
-        internal bool TryGetEntityOptions(Type entity, out EntityOptions options)
+        internal bool TryGetEntityOptions(Type entity, [NotNullWhen(true)] out EntityOptions? options)
         {
             return _entityOptions.TryGetValue(entity, out options);
         }

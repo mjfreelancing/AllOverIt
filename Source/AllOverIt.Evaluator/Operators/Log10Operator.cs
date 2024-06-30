@@ -6,7 +6,7 @@ namespace AllOverIt.Evaluator.Operators
     /// <summary>An expression operator that calculates log10 of a given operand.</summary>
     public sealed class Log10Operator : UnaryOperator
     {
-        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Log10", [typeof(double)]);
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Log10", [typeof(double)])!;
 
         /// <summary>Constructor.</summary>
         /// <param name="operand">The operand (argument) to be evaluated.</param>

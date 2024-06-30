@@ -2,6 +2,7 @@
 using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Extensions;
 using AllOverIt.Patterns.Specification.Extensions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Evaluator.Variables
 {
@@ -17,7 +18,7 @@ namespace AllOverIt.Evaluator.Variables
         }
 
         // The PendingRegistrationState input is optional. When not null it will be populated with unregistered and associated referenced variable names that are also not registered.
-        private readonly List<Func<PendingRegistrationState, bool>> _pendingRegistrations = [];
+        private readonly List<Func<PendingRegistrationState?, bool>> _pendingRegistrations = [];
 
         private readonly IVariableRegistry _variableRegistry;
         private readonly IVariableFactory _variableFactory;
@@ -145,17 +146,18 @@ namespace AllOverIt.Evaluator.Variables
         }
 
         /// <inheritdoc />
+        [return: NotNull]
         public IVariableRegistry Build()
         {
             var success = TryBuild(out var variableRegistry);
 
             Throw<VariableRegistryBuilderException>.WhenNot(success, "Cannot build the variable registry due to missing variable references.");
 
-            return variableRegistry;
+            return variableRegistry!;
         }
 
         /// <inheritdoc />
-        public bool TryBuild(out IVariableRegistry variableRegistry)
+        public bool TryBuild([NotNullWhen(true)] out IVariableRegistry? variableRegistry)
         {
             ProcessPendingRegistrations(null);
 
@@ -167,7 +169,7 @@ namespace AllOverIt.Evaluator.Variables
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<string> GetUnregisteredVariableNames()
+        public string[] GetUnregisteredVariableNames()
         {
             // There may have been pending variables that have since been added as variable types that don't have references,
             // such as constant / mutable variables so we must first process the pending list.
@@ -190,7 +192,7 @@ namespace AllOverIt.Evaluator.Variables
             // despite b not yet being present in the variable registry.
             return pendingState.MissingNames
                 .Except(pendingState.PendingNames)
-                .AsReadOnlyCollection();
+                .ToArray();
         }
 
         private VariableRegistryBuilder TryRegisterVariable(string name, Func<IVariableRegistry, FormulaCompilerResult> formulaCompilerResultResolver,
@@ -198,7 +200,7 @@ namespace AllOverIt.Evaluator.Variables
         {
             var formulaCompilerResult = formulaCompilerResultResolver.Invoke(_variableRegistry);
 
-            bool TryRegisterVariable(PendingRegistrationState getMissingVariableNames)
+            bool TryRegisterVariable(PendingRegistrationState? getMissingVariableNames)
             {
                 var referencedVariables = formulaCompilerResult.ReferencedVariableNames;
 
@@ -230,14 +232,14 @@ namespace AllOverIt.Evaluator.Variables
             return this;
         }
 
-        private void ProcessPendingRegistrations(PendingRegistrationState pendingState)
+        private void ProcessPendingRegistrations(PendingRegistrationState? pendingState)
         {
             if (_pendingRegistrations.Count == 0)
             {
                 return;
             }
 
-            Func<PendingRegistrationState, bool> next;
+            Func<PendingRegistrationState, bool>? next;
 
             do
             {
@@ -245,7 +247,7 @@ namespace AllOverIt.Evaluator.Variables
 
                 if (next is not null)
                 {
-                    _pendingRegistrations.Remove(next);
+                    _pendingRegistrations.Remove(next!);
                 }
             } while (next is not null);
         }

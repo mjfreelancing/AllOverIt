@@ -6,7 +6,7 @@ namespace AllOverIt.Evaluator.Operators
     /// <summary>An expression operator that calculates the sine of a specified angle (in radians).</summary>
     public sealed class SinOperator : UnaryOperator
     {
-        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Sin", [typeof(double)]);
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Sin", [typeof(double)])!;
 
         /// <summary>Constructor.</summary>
         /// <param name="operand">The operand (argument) to be evaluated.</param>

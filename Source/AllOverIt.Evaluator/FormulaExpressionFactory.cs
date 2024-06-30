@@ -11,7 +11,7 @@ namespace AllOverIt.Evaluator
     /// <summary>Implements a factory that creates expressions required for compiling a formula.</summary>
     public static class FormulaExpressionFactory
     {
-        private static readonly MethodInfo GetValueMethodInfo = typeof(IReadableVariableRegistry).GetMethod("GetValue", [CommonTypes.StringType]);
+        private static readonly MethodInfo GetValueMethodInfo = typeof(IReadableVariableRegistry).GetMethod("GetValue", [CommonTypes.StringType])!;
 
         /// <summary>Creates an Expression for an arithmetic operation.</summary>
         /// <param name="operation">The arithmetic operation to create an Expression for.</param>

@@ -1,4 +1,5 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams
@@ -11,6 +12,16 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
     /// <summary>Base class for an entity relationship diagram generator.</summary>
     public abstract class ErdGeneratorBase : IErdGenerator
     {
+        /// <summary>The entity relationship diagram generator options.</summary>
+        protected ErdOptions Options { get; }
+
+        /// <summary>Constructor.</summary>
+        /// <param name="options">The entity relationship diagram generator options.</param>
+        protected ErdGeneratorBase(ErdOptions options)
+        {
+            Options = options.WhenNotNull(nameof(options));
+        }
+
         /// <summary>Generates the entity relationship diagram.</summary>
         /// <param name="dbContext">The source <see cref="DbContext"/> to generate an entity relationship diagram.</param>
         /// <returns>The generated diagram text.</returns>
@@ -37,8 +48,8 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
             foreach (var entityType in entityTypes)
             {
-                var entityName = entityType.GetTableName();
-                var descriptors = entityType.GetProperties().SelectAsReadOnlyCollection(ColumnDescriptor.Create);
+                var entityName = entityType.GetTableName()!;
+                var descriptors = entityType.GetProperties().SelectToArray(ColumnDescriptor.Create);
 
                 var identifier = new EntityIdentifier(entityType.ClrType, entityName);
 

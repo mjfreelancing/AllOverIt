@@ -18,7 +18,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         }
 
         /// <summary>The subscription identifier.</summary>
-        public string Id => Request.Id;
+        public string Id => Request.Id!;
 
         /// <summary>The subscription message used for registration with AppSync.</summary>
         public SubscriptionRequest Request { get; }
@@ -35,7 +35,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// <param name="payload">The registration payload to be sent to AppSync.</param>
         protected SubscriptionRegistrationRequest(string id, SubscriptionQueryPayload payload)
         {
-            _ = id.WhenNotNull(nameof(id));
+            _ = id.WhenNotNullOrEmpty(nameof(id));
             _ = payload.WhenNotNull(nameof(payload));
 
             Request = new SubscriptionRequest(id, payload);

@@ -11,6 +11,6 @@ namespace AllOverIt.Aws.AppSync.Client.Response
         public HttpStatusCode StatusCode { get; internal set; }
 
         /// <summary>Contains the HTTP headers on the response.</summary>
-        public HttpResponseHeaders Headers { get; internal set; }
+        public HttpResponseHeaders? Headers { get; internal set; }      // In practice this will never be null
     }
 }

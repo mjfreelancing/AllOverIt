@@ -5,13 +5,13 @@
     {
         private static readonly ShapeStyle Default = new();
 
-        /// <summary>Specifies the fill color of the shape. When not specified the diagram's
+        /// <summary>Specifies the fill color of the shape. When <see langword="null"/>, the diagram's
         /// default fill color is used.</summary>
-        public string Fill { get; set; }
+        public string? Fill { get; set; }
 
-        /// <summary>Specifies the stroke color of the shape. When not specified the diagram's
+        /// <summary>Specifies the stroke color of the shape. When <see langword="null"/>, the diagram's
         /// default stroke color is used.</summary>
-        public string Stroke { get; set; }
+        public string? Stroke { get; set; }
 
         /// <summary>Specifies the stroke width of the shape. When not <see langword="null"/> the diagram's
         /// default stroke width is used.</summary>

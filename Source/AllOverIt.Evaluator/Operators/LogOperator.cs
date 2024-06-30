@@ -6,7 +6,7 @@ namespace AllOverIt.Evaluator.Operators
     /// <summary>An expression operator that calculates the natural logarithm of a given operand.</summary>
     public sealed class LogOperator : UnaryOperator
     {
-        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Log", [typeof(double)]);
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Log", [typeof(double)])!;
 
         /// <summary>Constructor.</summary>
         /// <param name="operand">The operand (argument) to be evaluated.</param>

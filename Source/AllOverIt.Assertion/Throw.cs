@@ -12,7 +12,7 @@ namespace AllOverIt.Assertion
         #region When
         /// <summary>Throws a <typeparamref name="TException"/> when the <paramref name="condition"/> is <see langword="True"/>.</summary>
         /// <param name="condition">The predicate condition.</param>
-        public static void When(bool condition)
+        public static void When([DoesNotReturnIf(true)] bool condition)
         {
             if (condition)
             {
@@ -24,7 +24,7 @@ namespace AllOverIt.Assertion
         /// <typeparam name="TExceptionArg1">The exception argument type.</typeparam>
         /// <param name="condition">The predicate condition.</param>
         /// <param name="arg1">The argument to be provided to the exception constructor.</param>
-        public static void When<TExceptionArg1>(bool condition, TExceptionArg1 arg1)
+        public static void When<TExceptionArg1>([DoesNotReturnIf(true)] bool condition, TExceptionArg1 arg1)
         {
             if (condition)
             {
@@ -38,7 +38,7 @@ namespace AllOverIt.Assertion
         /// <param name="condition">The predicate condition.</param>
         /// <param name="arg1">The first argument to be provided to the exception constructor.</param>
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
-        public static void When<TExceptionArg1, TExceptionArg2>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2)
+        public static void When<TExceptionArg1, TExceptionArg2>([DoesNotReturnIf(true)] bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2)
         {
             if (condition)
             {
@@ -54,8 +54,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg1">The first argument to be provided to the exception constructor.</param>
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
-        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2,
-            TExceptionArg3 arg3)
+        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3>([DoesNotReturnIf(true)] bool condition, TExceptionArg1 arg1,
+            TExceptionArg2 arg2, TExceptionArg3 arg3)
         {
             if (condition)
             {
@@ -73,8 +73,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
         /// <param name="arg4">The fourth argument to be provided to the exception constructor.</param>
-        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2,
-            TExceptionArg3 arg3, TExceptionArg4 arg4)
+        public static void When<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>([DoesNotReturnIf(true)] bool condition,
+            TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
         {
             if (condition)
             {
@@ -98,7 +98,7 @@ namespace AllOverIt.Assertion
         /// <typeparam name="TExceptionArg1">The exception argument type.</typeparam>
         /// <param name="condition">The predicate condition.</param>
         /// <param name="arg1">The argument to be provided to the exception constructor.</param>
-        public static void WhenNot<TExceptionArg1>(bool condition, TExceptionArg1 arg1)
+        public static void WhenNot<TExceptionArg1>([DoesNotReturnIf(false)] bool condition, TExceptionArg1 arg1)
         {
             if (!condition)
             {
@@ -112,7 +112,7 @@ namespace AllOverIt.Assertion
         /// <param name="condition">The predicate condition.</param>
         /// <param name="arg1">The first argument to be provided to the exception constructor.</param>
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
-        public static void WhenNot<TExceptionArg1, TExceptionArg2>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2)
+        public static void WhenNot<TExceptionArg1, TExceptionArg2>([DoesNotReturnIf(false)] bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2)
         {
             if (!condition)
             {
@@ -128,8 +128,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg1">The first argument to be provided to the exception constructor.</param>
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
-        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3>(bool condition, TExceptionArg1 arg1, TExceptionArg2 arg2,
-            TExceptionArg3 arg3)
+        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3>([DoesNotReturnIf(false)] bool condition, TExceptionArg1 arg1,
+            TExceptionArg2 arg2, TExceptionArg3 arg3)
         {
             if (!condition)
             {
@@ -147,8 +147,8 @@ namespace AllOverIt.Assertion
         /// <param name="arg2">The second argument to be provided to the exception constructor.</param>
         /// <param name="arg3">The third argument to be provided to the exception constructor.</param>
         /// <param name="arg4">The fourth argument to be provided to the exception constructor.</param>
-        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>(bool condition, TExceptionArg1 arg1,
-            TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
+        public static void WhenNot<TExceptionArg1, TExceptionArg2, TExceptionArg3, TExceptionArg4>([DoesNotReturnIf(false)] bool condition,
+            TExceptionArg1 arg1, TExceptionArg2 arg2, TExceptionArg3 arg3, TExceptionArg4 arg4)
         {
             if (!condition)
             {

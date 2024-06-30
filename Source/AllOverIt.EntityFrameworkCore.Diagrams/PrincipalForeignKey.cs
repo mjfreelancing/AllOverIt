@@ -4,16 +4,16 @@
     public sealed class PrincipalForeignKey
     {
         /// <summary>The principle entity type.</summary>
-        public Type Type { get; init; }
+        public required Type Type { get; init; }
 
         /// <summary>The name of the principal entity.</summary>
-        public string EntityName { get; init; }
+        public required string EntityName { get; init; }
 
         /// <summary>The name of the column on the principal entity.</summary>
-        public string ColumnName { get; init; }
+        public required string ColumnName { get; init; }
 
         /// <summary>When <see langword="True"/>, indicates the foreign key is one-to-many, otherwise
         /// it is assumed to be one-to-one..</summary>
-        public bool IsOneToMany { get; init; }
+        public required bool IsOneToMany { get; init; }
     }
 }

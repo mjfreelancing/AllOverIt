@@ -12,7 +12,7 @@ namespace AllOverIt.Evaluator
         /// <summary>Constructor.</summary>
         /// <param name="operationFactory">The arithmetic operation factory used for building expressions.</param>
         /// <param name="userMethodFactory">The user-defined method factory used for evaluating higher level operations.</param>
-        public FormulaCompiler(IArithmeticOperationFactory operationFactory = null, IUserDefinedMethodFactory userMethodFactory = null)
+        public FormulaCompiler(IArithmeticOperationFactory? operationFactory = default, IUserDefinedMethodFactory? userMethodFactory = default)
         {
             // Note: FormulaCompiler must be created per-thread because the FormulaProcessor maintains state between each call to Process().
             //       The FormulaCompiler *could* be made thread safe by creating a new FormulaProcessor instance each time Process() was
@@ -30,7 +30,7 @@ namespace AllOverIt.Evaluator
         /// and the formula contains variables then an instance will be created and provided as part of the result.</param>
         /// <returns>The compiler result containing the variable registry (if originally provided or variables are found in the formula),
         /// the compiled delegate, and a list of variables referenced by the formula (if applicable).</returns>
-        public FormulaCompilerResult Compile(string formula, IVariableRegistry variableRegistry = null)
+        public FormulaCompilerResult Compile(string formula, IVariableRegistry? variableRegistry = default)
         {
             if (formula.IsNullOrEmpty())
             {

@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\AllOverIt.EntityFrameworkCore\AllOverIt.EntityFrameworkCore.csproj" />
+		<ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
+	</ItemGroup>
+
+</Project>

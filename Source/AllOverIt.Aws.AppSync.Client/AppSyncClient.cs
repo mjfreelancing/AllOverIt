@@ -4,6 +4,7 @@ using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Request;
 using AllOverIt.Aws.AppSync.Client.Response;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace AllOverIt.Aws.AppSync.Client
@@ -53,7 +54,7 @@ namespace AllOverIt.Aws.AppSync.Client
             return SendRequestAsync<TResponse>(query, authorization, cancellationToken);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA2016")]
+        [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA2016")]
         private async Task<GraphqlHttpResponse<TResponse>> SendRequestAsync<TResponse>(GraphqlQuery query, IAppSyncAuthorization? authorization,
             CancellationToken cancellationToken)
         {
@@ -63,8 +64,7 @@ namespace AllOverIt.Aws.AppSync.Client
                 {
                     var content = await GetHttpResponseAsString(responseMessage, cancellationToken).ConfigureAwait(false);
 
-                    var result = _configuration.Serializer
-                        .DeserializeObject<GraphqlHttpResponse<TResponse>>(content);
+                    var result = _configuration.Serializer.DeserializeObject<GraphqlHttpResponse<TResponse>>(content);
 
                     result.StatusCode = responseMessage.StatusCode;
                     result.Headers = responseMessage.Headers;

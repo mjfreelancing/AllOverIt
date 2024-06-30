@@ -2,6 +2,7 @@ using AllOverIt.Assertion;
 using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Variables.Extensions;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Evaluator.Variables
 {
@@ -12,7 +13,7 @@ namespace AllOverIt.Evaluator.Variables
     /// when all referenced variables have been registered.</summary>
     public sealed class VariableRegistry : IVariableRegistry
     {
-        private readonly IDictionary<string, IVariable> _variableRegistry = new Dictionary<string, IVariable>();
+        private readonly Dictionary<string, IVariable> _variableRegistry = [];
 
         /// <inheritdoc />
         public void AddVariable(IVariable variable)
@@ -71,7 +72,7 @@ namespace AllOverIt.Evaluator.Variables
         }
 
         /// <inheritdoc />
-        public bool TryGetVariable(string name, out IVariable variable)
+        public bool TryGetVariable(string name, [NotNullWhen(true)] out IVariable? variable)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
 

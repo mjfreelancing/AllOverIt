@@ -6,7 +6,7 @@ namespace AllOverIt.Evaluator.Operators
     /// <summary>An expression operator that calculates the hyperbolic cosine of a specified angle (in radians).</summary>
     public sealed class CoshOperator : UnaryOperator
     {
-        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Cosh", [typeof(double)]);
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Cosh", [typeof(double)])!;
 
         /// <summary>Constructor.</summary>
         /// <param name="operand">The operand (argument) to be evaluated.</param>
