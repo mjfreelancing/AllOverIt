@@ -68,7 +68,6 @@ namespace AllOverIt.Tests.Events
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
 #pragma warning disable CA1822 // Mark members as static
         private Task SubscriptionHandler(int _)
 #pragma warning restore CA1822 // Mark members as static

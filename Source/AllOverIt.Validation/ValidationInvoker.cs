@@ -3,6 +3,7 @@ using AllOverIt.Validation.Exceptions;
 using AllOverIt.Validation.Extensions;
 using FluentValidation;
 using FluentValidation.Results;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Validation
 {
@@ -32,9 +33,7 @@ namespace AllOverIt.Validation
         }
 
         /// <inheritdoc />
-#pragma warning disable IDE0079 // Remove unnecessary suppression
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2263:Prefer generic overload when type is known", Justification = "Would be a recursive call, resulting in a stack overflow")]
-#pragma warning restore IDE0079 // Remove unnecessary suppression
+        [SuppressMessage("Usage", "CA2263:Prefer generic overload when type is known", Justification = "Would be a recursive call, resulting in a stack overflow")]
         bool IValidationRegistry.ContainsModelRegistration<TType>()
         {
             return ValidationRegistry.ContainsModelRegistration(typeof(TType));

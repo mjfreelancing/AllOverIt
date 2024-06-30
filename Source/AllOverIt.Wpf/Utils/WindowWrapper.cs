@@ -8,6 +8,8 @@ namespace AllOverIt.Wpf.Utils
     /// <summary>Provides P/Invoke based wrapping operations for a <see cref="Window"/>.</summary>
     public sealed class WindowWrapper : IDisposable
     {
+#pragma warning disable SYSLIB1054 // Use 'LibraryImportAttribute' instead of 'DllImportAttribute' to generate P/Invoke marshalling code at compile time
+
         [DllImport("user32.dll")]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
@@ -22,6 +24,8 @@ namespace AllOverIt.Wpf.Utils
 
         [DllImport("user32.dll")]
         private static extern IntPtr DestroyMenu(IntPtr hWnd);
+
+#pragma warning restore SYSLIB1054 // Use 'LibraryImportAttribute' instead of 'DllImportAttribute' to generate P/Invoke marshalling code at compile time
 
         private const int GWL_STYLE = -16;
 

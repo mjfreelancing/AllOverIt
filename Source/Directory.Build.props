@@ -47,8 +47,10 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <!--IDE0290 - use primary constructor-->
-        <!--CS0618 - 'member' is obsolete-->
-        <NoWarn>$(NoWarn);IDE0290;CS0618</NoWarn>
-    </PropertyGroup>
+		<!--IDE0063 - 'using' statement can be simplified-->
+		<!--IDE0079 - remove unnecessary suppression-->
+		<!--IDE0290 - use primary constructor-->
+		<!--CS0618 - 'member' is obsolete-->
+		<NoWarn>$(NoWarn);IDE0063;IDE0079;IDE0290;CS0618</NoWarn>
+	</PropertyGroup>
 </Project>

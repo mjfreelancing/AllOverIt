@@ -37,7 +37,7 @@ namespace HostedConsoleAppDemo
 
             while (!cancellationToken.IsCancellationRequested)
             {
-                _logger.LogInformation($"Background Worker: {DateTimeOffset.Now}");
+                _logger.LogInformation("Background Worker: {DateTimeOffset}", DateTimeOffset.Now);
 
                 await Task.Delay(1000, cancellationToken);
             }

@@ -39,7 +39,7 @@ namespace AllOverIt.Evaluator
 
             var processorResult = _formulaProcessor.Process(formula, variableRegistry);
             var compiledExpression = processorResult.FormulaExpression.Compile();
-            var referencedVariableNames = processorResult.ReferencedVariableNames;  // will be a static, empty, ReadOnlyCollection if there were no variables
+            var referencedVariableNames = processorResult.ReferencedVariableNames;  // will be [] if there were no variables
 
             // The result's variable registry will be the same reference as the passed in variableRegistry.
             // If the caller did not provide a registry but the formula contained variables then the _formulaProcessor will have created a registry.

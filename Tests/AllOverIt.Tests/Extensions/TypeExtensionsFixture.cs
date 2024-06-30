@@ -973,14 +973,12 @@ namespace AllOverIt.Tests.Extensions
         {
             private class StaticMethodClass
             {
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
 #pragma warning disable CA1822 // Mark members as static
                 public static void Method1()
 #pragma warning restore CA1822 // Mark members as static
                 {
                 }
 
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
                 [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
 #pragma warning disable CA1822 // Mark members as static
                 private static void Method2()
@@ -988,7 +986,6 @@ namespace AllOverIt.Tests.Extensions
                 {
                 }
 
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
                 [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
 #pragma warning disable CA1822 // Mark members as static
                 internal static void Method3()
@@ -1034,14 +1031,12 @@ namespace AllOverIt.Tests.Extensions
         {
             private class InstanceMethodClass
             {
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
 #pragma warning disable CA1822 // Mark members as static
                 public void Method1()
 #pragma warning restore CA1822 // Mark members as static
                 {
                 }
 
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
                 [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
 #pragma warning disable CA1822 // Mark members as static
                 private void Method2()
@@ -1049,7 +1044,6 @@ namespace AllOverIt.Tests.Extensions
                 {
                 }
 
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
                 [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
 #pragma warning disable CA1822 // Mark members as static
                 internal void Method3()

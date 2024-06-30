@@ -14,7 +14,7 @@ namespace AllOverIt.Filtering.Builders
     {
         private readonly IFilterSpecificationBuilder<TType, TFilter> _specificationBuilder;
 
-        private ILinqSpecification<TType> _currentSpecification;
+        private ILinqSpecification<TType>? _currentSpecification;
 
         // Gets the current logical expression to cater for additional chaining.
         public ILogicalFilterBuilder<TType, TFilter> Current => this;
@@ -149,7 +149,7 @@ namespace AllOverIt.Filtering.Builders
         {
             if (specification != FilterSpecificationBuilder<TType, TFilter>.SpecificationTrue)
             {
-                _currentSpecification = _currentSpecification == null
+                _currentSpecification = _currentSpecification is null
                     ? specification
                     : action.Invoke(_currentSpecification, specification);
             }

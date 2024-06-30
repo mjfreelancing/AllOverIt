@@ -22,7 +22,6 @@ namespace ObjectMappingBenchmarking
         private static readonly ObjectMapper Mapper2;
         private static readonly SimpleSource SimpleSource;
         private static readonly SimpleTarget SimpleTarget;
-        private static readonly ComplexSource ComplexSource = new() { Prop1 = new SimpleSource() };
 
         static MappingTests()
         {

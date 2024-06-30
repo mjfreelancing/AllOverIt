@@ -49,7 +49,8 @@ namespace AllOverIt.Mapping
         /// <inheritdoc />
         /// <remarks>If mapping configuration is not performed in advance then default configuration will be applied. The configuration
         /// cannot be changed later.</remarks>
-        public TTarget Map<TTarget>(object source)
+
+        public TTarget? Map<TTarget>(object source)
             where TTarget : class
         {
             if (source is null)
@@ -65,7 +66,7 @@ namespace AllOverIt.Mapping
         /// <inheritdoc />
         /// <remarks>If mapping configuration is not performed in advance then default configuration will be applied. The configuration
         /// cannot be changed later.</remarks>
-        public TTarget Map<TSource, TTarget>(TSource source, TTarget target)
+        public TTarget? Map<TSource, TTarget>(TSource source, TTarget target)
             where TSource : class
             where TTarget : class
         {
@@ -78,7 +79,7 @@ namespace AllOverIt.Mapping
         /// <inheritdoc />
         /// <remarks>If mapping configuration is not performed in advance then default configuration will be applied. The configuration
         /// cannot be changed later.</remarks>
-        public object Map(object source, Type sourceType, object target, Type targetType)
+        public object? Map(object source, Type sourceType, object target, Type targetType)
         {
             _ = source.WhenNotNull(nameof(source));
             _ = sourceType.WhenNotNull(nameof(sourceType));
@@ -123,7 +124,7 @@ namespace AllOverIt.Mapping
             return target;
         }
 
-        private object GetMappedSourceValue(object sourceValue, Type sourcePropertyType, Type targetPropertyType, bool deepCopy)
+        private object? GetMappedSourceValue(object? sourceValue, Type sourcePropertyType, Type targetPropertyType, bool deepCopy)
         {
             if (sourceValue is null)
             {
@@ -162,8 +163,13 @@ namespace AllOverIt.Mapping
                 : sourceValue;
         }
 
-        private object CreateTargetFromSourceValue(object sourceValue, Type sourceValueType, Type targetPropertyType, bool deepCopy)
+        private object? CreateTargetFromSourceValue(object? sourceValue, Type sourceValueType, Type targetPropertyType, bool deepCopy)
         {
+            if (sourceValue is null)
+            {
+                return null;
+            }
+
             if (sourceValueType.IsEnumerableType())
             {
                 return sourceValue switch
@@ -196,7 +202,7 @@ namespace AllOverIt.Mapping
 
             var dictionaryAddMethod = CommonTypes.ICollectionGenericType
                 .MakeGenericType(targetKvpType)
-                .GetMethod("Add", [targetKvpType]);                             // TODO: ? worth caching this
+                .GetMethod("Add", [targetKvpType])!;                            // TODO: ? worth caching this
 
             var sourceElements = sourceValue.GetObjectElements();
 
@@ -225,8 +231,8 @@ namespace AllOverIt.Mapping
 
         private object MapToCollection(object sourceValue, Type sourceValueType, Type targetPropertyType, bool doDeepCopy)
         {
-            var sourceElementType = sourceValueType.GetEnumerableElementType();
-            var targetElementType = targetPropertyType.GetEnumerableElementType();
+            var sourceElementType = sourceValueType.GetEnumerableElementType()!;
+            var targetElementType = targetPropertyType.GetEnumerableElementType()!;
 
             var (listType, listInstance) = CreateTypedList(targetPropertyType, targetElementType);
 
@@ -257,7 +263,7 @@ namespace AllOverIt.Mapping
             return GetAsListOrArray(listType, listInstance, targetPropertyType);
         }
 
-        private object CreateEmptyCollection(Type targetPropertyType)
+        private object? CreateEmptyCollection(Type targetPropertyType)
         {
             if (targetPropertyType.IsDerivedFrom(CommonTypes.IDictionaryGenericType))
             {
@@ -268,7 +274,7 @@ namespace AllOverIt.Mapping
 
             if (targetPropertyType.IsEnumerableType())  // Cater for IEnumerable and IEnumerable<T>
             {
-                var targetElementType = targetPropertyType.GetEnumerableElementType();
+                var targetElementType = targetPropertyType.GetEnumerableElementType()!;
 
                 // Includes support for ArrayList
                 var (listType, listInstance) = CreateTypedList(targetPropertyType, targetElementType);
@@ -285,7 +291,7 @@ namespace AllOverIt.Mapping
             {
                 var toArrayMethod = listType.GetMethod("ToArray");  // TODO: ? worth caching this
 
-                return toArrayMethod.Invoke(listInstance, Type.EmptyTypes);
+                return toArrayMethod!.Invoke(listInstance, Type.EmptyTypes)!;
             }
 
             return listInstance;
@@ -297,10 +303,10 @@ namespace AllOverIt.Mapping
             {
                 // attempt to convert the source value to the target type
                 var convertToType = targetPropertyType.IsNullableType()
-                    ? Nullable.GetUnderlyingType(targetPropertyType)
+                    ? Nullable.GetUnderlyingType(targetPropertyType)!
                     : targetPropertyType;
 
-                // If this throws then a custom conversion will be requiered - not attempting to convert between value types here.
+                // If this throws then a custom conversion will be required - not attempting to convert between value types here.
                 // The custom conversion could use an explicit cast, an appropriate Parse() method, or even use .As<T>().
                 sourceValue = Convert.ChangeType(sourceValue, convertToType);
             }

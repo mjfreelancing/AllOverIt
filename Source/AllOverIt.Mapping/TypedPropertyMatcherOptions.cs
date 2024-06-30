@@ -11,7 +11,7 @@ namespace AllOverIt.Mapping
     /// <typeparam name="TTarget">The target object type.</typeparam>
     public sealed class TypedPropertyMatcherOptions<TSource, TTarget> : PropertyMatcherOptions
     {
-        // source type, target type, factory (ampper, source, target)
+        // source type, target type, factory (mapper, source, target)
         private readonly Action<Type, Type, Func<IObjectMapper, object, object>> _sourceTargetFactoryRegistration;
 
         /// <summary>Constructor.</summary>
@@ -97,7 +97,7 @@ namespace AllOverIt.Mapping
         /// <param name="nullReplacement">The value to assign to the target property when the source value is null.</param>
         /// <returns>The same <see cref="TypedPropertyMatcherOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
         public TypedPropertyMatcherOptions<TSource, TTarget> UseWhenNull<TSourceProperty, TTargetProperty>(Expression<Func<TSource, TSourceProperty>> sourceExpression,
-            TTargetProperty nullReplacement)
+            TTargetProperty nullReplacement) where TTargetProperty : notnull
         {
             _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
 
@@ -133,7 +133,7 @@ namespace AllOverIt.Mapping
         {
             _ = targetFactory.WhenNotNull(nameof(targetFactory));
 
-            _sourceTargetFactoryRegistration.Invoke(typeof(TSource), typeof(TTarget), (mapper, source) => targetFactory.Invoke(mapper, (TSource) source));
+            _sourceTargetFactoryRegistration.Invoke(typeof(TSource), typeof(TTarget), (mapper, source) => targetFactory.Invoke(mapper, (TSource) source)!);
 
             return this;
         }

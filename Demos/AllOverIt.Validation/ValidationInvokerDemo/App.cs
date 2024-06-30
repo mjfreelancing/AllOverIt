@@ -29,13 +29,13 @@ namespace ValidationInvokerDemo
 
             var errors = UseValidationInvoker();
 
-            _logger.LogError(string.Join($"  {Environment.NewLine}", errors));
+            _logger.LogError("{Errors}", string.Join($"  {Environment.NewLine}", errors));
 
             Console.WriteLine();
 
             errors = UseLifetimeValidationInvoker();
 
-            _logger.LogError(string.Join($"  {Environment.NewLine}", errors));
+            _logger.LogError("{Errors}", string.Join($"  {Environment.NewLine}", errors));
 
             ExitCode = 0;
 

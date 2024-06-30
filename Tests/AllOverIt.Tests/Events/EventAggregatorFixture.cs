@@ -22,7 +22,6 @@ namespace AllOverIt.Tests.Events
 
         private class Handler
         {
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
 #pragma warning disable CA1822 // Mark members as static
             public void HandleEvent(DummyEvent message)
 #pragma warning restore CA1822 // Mark members as static
@@ -33,7 +32,6 @@ namespace AllOverIt.Tests.Events
 
         private class HandlerAsync
         {
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
 #pragma warning disable CA1822 // Mark members as static
             public Task HandleEventAsync(DummyEvent message)
 #pragma warning restore CA1822 // Mark members as static
@@ -356,7 +354,6 @@ namespace AllOverIt.Tests.Events
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
 #pragma warning disable CA1822 // Mark members as static
         private void HandleMessageEvent(DummyEvent message)
 #pragma warning restore CA1822 // Mark members as static
@@ -364,7 +361,6 @@ namespace AllOverIt.Tests.Events
             StaticHandleMessageEvent(message);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
 #pragma warning disable CA1822 // Mark members as static
         private Task HandleMessageEventAsync(DummyEvent message)
 #pragma warning restore CA1822 // Mark members as static

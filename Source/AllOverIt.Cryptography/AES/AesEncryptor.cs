@@ -57,8 +57,6 @@ namespace AllOverIt.Cryptography.AES
 #endif
 
         /// <inheritdoc />
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0079:Remove unnecessary suppression", Justification = "Silence Code Analysis")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "Code readability")]
         public byte[] Encrypt(byte[] plainText)
         {
             _ = plainText.WhenNotNull(nameof(plainText));
@@ -80,8 +78,6 @@ namespace AllOverIt.Cryptography.AES
         }
 
         /// <inheritdoc />
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0079:Remove unnecessary suppression", Justification = "Silence Code Analysis")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "Code readability")]
         public byte[] Decrypt(byte[] cipherText)
         {
             _ = cipherText.WhenNotNullOrEmpty(nameof(cipherText));
@@ -103,8 +99,6 @@ namespace AllOverIt.Cryptography.AES
         }
 
         /// <inheritdoc />
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0079:Remove unnecessary suppression", Justification = "Silence Code Analysis")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "Code readability")]
         public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
             _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
@@ -122,8 +116,6 @@ namespace AllOverIt.Cryptography.AES
         }
 
         /// <inheritdoc />
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0079:Remove unnecessary suppression", Justification = "Silence Code Analysis")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "Code readability")]
         public void Decrypt(Stream cipherTextStream, Stream plainTextStream)
         {
             _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));

@@ -32,7 +32,7 @@ namespace AllOverIt.Mapping
         /// <typeparam name="TSource">The source type.</typeparam>
         /// <typeparam name="TTarget">The target type.</typeparam>
         /// <param name="configure">The action that allows the property matching options to be configured.</param>
-        public void Configure<TSource, TTarget>(Action<TypedPropertyMatcherOptions<TSource, TTarget>> configure = default)
+        public void Configure<TSource, TTarget>(Action<TypedPropertyMatcherOptions<TSource, TTarget>>? configure = default)
         {
             var sourceType = typeof(TSource);
             var targetType = typeof(TTarget);

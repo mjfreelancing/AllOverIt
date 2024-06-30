@@ -5,7 +5,6 @@
     [Flags]
     public enum BindingOptions : int
     {
-#pragma warning disable IDE0079
 #pragma warning disable CA1069      // Enums should not have duplicate values
 
         #region Scope
@@ -106,6 +105,5 @@
         #endregion
 
 #pragma warning restore CA1069
-#pragma warning restore IDE0079
     }
 }

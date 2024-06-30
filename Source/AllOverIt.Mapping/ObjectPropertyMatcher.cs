@@ -10,8 +10,8 @@ namespace AllOverIt.Mapping
         {
             public PropertyInfo SourceInfo { get; }
             public PropertyInfo TargetInfo { get; }
-            public Func<object, object> SourceGetter { get; }
-            public Action<object, object> TargetSetter { get; }
+            public Func<object, object?> SourceGetter { get; }
+            public Action<object, object?> TargetSetter { get; }
 
             public PropertyMatchInfo(PropertyInfo sourceInfo, PropertyInfo targetInfo)
             {

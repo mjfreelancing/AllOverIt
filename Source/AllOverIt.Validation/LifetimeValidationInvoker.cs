@@ -34,9 +34,7 @@ namespace AllOverIt.Validation
             return _services.Any(item => item.ServiceType == validatorKey);
         }
 
-#pragma warning disable IDE0079 // Remove unnecessary suppression
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2263:Prefer generic overload when type is known", Justification = "Would be a recursive call, resulting in a stack overflow")]
-#pragma warning restore IDE0079 // Remove unnecessary suppression
+        [SuppressMessage("Usage", "CA2263:Prefer generic overload when type is known", Justification = "Would be a recursive call, resulting in a stack overflow")]
         bool ILifetimeValidationRegistry.ContainsModelRegistration<TType>()
         {
             return ValidationRegistry.ContainsModelRegistration(typeof(TType));

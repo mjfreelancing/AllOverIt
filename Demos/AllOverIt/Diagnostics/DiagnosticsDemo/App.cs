@@ -59,7 +59,7 @@ namespace DiagnosticsDemo
 
                 if (breadcrumb.CallerName.IsNotNullOrEmpty())
                 {
-                    _logger.LogInformation($"Called from {breadcrumb.CallerName} at {breadcrumb.FilePath}:{breadcrumb.LineNumber}");
+                    _logger.LogInformation("Called from {CallerName} at {FilePath}:{LineNumber}", breadcrumb.CallerName, breadcrumb.FilePath, breadcrumb.LineNumber);
                 }
 
                 Console.WriteLine();

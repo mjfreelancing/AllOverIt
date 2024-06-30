@@ -19,7 +19,7 @@ namespace NamedPipeServerDemo
         private readonly EventBus _eventBus = new();
         private IDisposable? _eventSubscription;
         private CancellationTokenSource? _runningToken;
-        private ConcurrentDictionary<string, bool> _pendingConnectionPings = [];
+        private readonly ConcurrentDictionary<string, bool> _pendingConnectionPings = [];
 
         private PipeServer()
         {

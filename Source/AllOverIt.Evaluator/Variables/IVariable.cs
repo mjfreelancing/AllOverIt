@@ -10,6 +10,6 @@ namespace AllOverIt.Evaluator.Variables
         double Value { get; }
 
         /// <summary>Gets all variables this variable references. Only applicable to variables constructed from a FormulaCompilerResult.</summary>
-        IEnumerable<IVariable> ReferencedVariables { get; }
+        IVariable[] ReferencedVariables { get; }
     }
 }

@@ -19,7 +19,7 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">An optional action to configure options that control how the specifications are built.</param>
         /// <returns>A reference to the current filter builder so additional logical operations can be applied.</returns>
         ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation,
-            Action<OperationFilterOptions> options = default);
+            Action<OperationFilterOptions>? options = default);
 
         /// <summary>Adds a filter operation to the filter builder, applying it is an equivalent specification. Multiple calls to this method
         /// will result in the subsequent filter operations being applied as a binary AND operation.</summary>
@@ -29,7 +29,7 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">An optional action to configure options that control how the specifications are built.</param>
         /// <returns>A reference to the current filter builder so additional logical operations can be applied.</returns>
         ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation,
-            Action<OperationFilterOptions> options = default);
+            Action<OperationFilterOptions>? options = default);
 
         /// <summary>Adds a specification to the filter builder. Multiple calls to this method will result in the subsequent filter operations
         /// being applied as a binary AND operation.</summary>

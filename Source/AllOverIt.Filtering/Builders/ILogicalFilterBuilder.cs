@@ -19,7 +19,7 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>A reference to the current filter builder so additional logical operations can be applied.</returns>
         ILogicalFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation,
-            Action<OperationFilterOptions> options = default);
+            Action<OperationFilterOptions>? options = default);
 
         /// <summary>Applies an <see cref="IBasicFilterOperation"/> or <see cref="IArrayFilterOperation"/> operation or comparison
         /// against a property on a <typeparamref name="TType"/> instance.</summary>
@@ -28,7 +28,7 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>A reference to the current filter builder so additional logical operations can be applied.</returns>
         ILogicalFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default);
+            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions>? options = default);
 
         /// <summary>Adds a specification to the filter builder. Multiple calls to this method will result in the subsequent filter operations
         /// being applied as a binary AND operation.</summary>
@@ -44,7 +44,7 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>A reference to the current filter builder so additional logical operations can be applied.</returns>
         ILogicalFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation,
-            Action<OperationFilterOptions> options = default);
+            Action<OperationFilterOptions>? options = default);
 
         /// <summary>Applies an <see cref="IBasicFilterOperation"/> or <see cref="IArrayFilterOperation"/> operation or comparison
         /// against a property on a <typeparamref name="TType"/> instance.</summary>
@@ -53,7 +53,7 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>A reference to the current filter builder so additional logical operations can be applied.</returns>
         ILogicalFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default);
+            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions>? options = default);
 
         /// <summary>Adds a specification to the filter builder. Multiple calls to this method will result in the subsequent filter operations
         /// being applied as a binary OR operation.</summary>

@@ -30,6 +30,10 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <NoWarn>$(NoWarn);0618;1701;1702;0169;0649</NoWarn>
+		<!--IDE0063 - 'using' statement can be simplified-->
+		<!--IDE0079 - remove unnecessary suppression-->
+		<!--IDE0290 - use primary constructor-->
+		<!--CS0618 - 'member' is obsolete-->
+		<NoWarn>$(NoWarn);IDE0063;IDE0079;IDE0290;CS0618;CS1701;CS1702;CS0169;CS0649</NoWarn>
     </PropertyGroup>
 </Project>

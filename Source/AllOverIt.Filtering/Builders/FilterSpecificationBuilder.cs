@@ -61,7 +61,7 @@ namespace AllOverIt.Filtering.Builders
         }
 
         public ILinqSpecification<TType> Create<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default)
+            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions>? options = default)
         {
             _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
             _ = operation.WhenNotNull(nameof(operation));
@@ -182,7 +182,7 @@ namespace AllOverIt.Filtering.Builders
         }
         #endregion
 
-        private OperationFilterOptions GetOperationFilterOptions(Action<OperationFilterOptions> action)
+        private OperationFilterOptions GetOperationFilterOptions(Action<OperationFilterOptions>? action)
         {
             var filterOptions = new OperationFilterOptions
             {
@@ -236,7 +236,7 @@ namespace AllOverIt.Filtering.Builders
         }
 
         private ILinqSpecification<TType> GetFilterSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IBasicFilterOperation> filterOperation, Action<OperationFilterOptions> options)
+            Func<TFilter, IBasicFilterOperation> filterOperation, Action<OperationFilterOptions>? options)
         {
             var operation = filterOperation.Invoke(_filter);
 
@@ -317,7 +317,7 @@ namespace AllOverIt.Filtering.Builders
             {
                 // The InnerException will never be null - it holds the underlying exception thrown by the invoked method
                 // The operation may throw a NullNotSupportedException
-                throw exception.InnerException;
+                throw exception.InnerException!;
             }
         }
 

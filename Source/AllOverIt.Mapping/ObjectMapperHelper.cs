@@ -25,7 +25,8 @@ namespace AllOverIt.Mapping
 
         internal static string GetTargetAliasName(string sourceName, PropertyMatcherOptions options)
         {
-            return options.GetAliasName(sourceName) ?? sourceName;
+            // will return sourceName if there is no alias
+            return options.GetAliasName(sourceName);
         }
 
         private static List<PropertyInfo> GetFilteredSourcePropertyInfo(Type sourceType, PropertyMatcherOptions options)
@@ -45,7 +46,7 @@ namespace AllOverIt.Mapping
                 // that property name being added twice, resulting in a duplicate key error.
                 if (propInfo.CanRead &&
                     !options.IsExcluded(propInfo.Name) &&
-                    (options.Filter == null || options.Filter.Invoke(propInfo)))
+                    (options.Filter is null || options.Filter.Invoke(propInfo)))
                 {
                     sourceProps.Add(propInfo);
                 }

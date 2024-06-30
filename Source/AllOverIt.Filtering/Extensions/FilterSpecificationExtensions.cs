@@ -14,7 +14,7 @@ namespace AllOverIt.Filtering.Extensions
         /// <param name="filterBuilder">The filter builder instance.</param>
         /// <param name="visitor">An optional visitor that can resolve node values for custom types.</param>
         /// <returns>A string representation of the filter specification.</returns>
-        public static string ToQueryString<TType, TFilter>(this IFilterSpecification<TType, TFilter> filterBuilder, LinqSpecificationVisitor visitor = default)
+        public static string ToQueryString<TType, TFilter>(this IFilterSpecification<TType, TFilter> filterBuilder, LinqSpecificationVisitor? visitor = default)
            where TType : class
            where TFilter : class
         {

@@ -242,7 +242,7 @@ namespace AppSyncSubscriptionDemo
 
         protected override void OnStopping()
         {
-            _logger.LogInformation($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - The background worker is stopping");
+            _logger.LogInformation("{DateTime} - The background worker is stopping", $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
 
             _compositeSubscriptions.Dispose();
             _compositeSubscriptions = null;
@@ -250,7 +250,7 @@ namespace AppSyncSubscriptionDemo
 
         protected override void OnStopped()
         {
-            _logger.LogInformation($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - The background worker is done");
+            _logger.LogInformation("{DateTime} - The background worker is done", $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
 
             // shutdown is not graceful after this returns
         }
@@ -342,7 +342,7 @@ namespace AppSyncSubscriptionDemo
                         : "Errors";
 
                     var message = response.Errors.IsNullOrEmpty()
-                        ? (object)response.Data
+                        ? (object) response.Data
                         : response.Errors;
 
                     LogMessage($"{name}: {type}{Environment.NewLine}" +

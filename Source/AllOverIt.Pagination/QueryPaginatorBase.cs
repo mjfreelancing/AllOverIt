@@ -2,6 +2,7 @@
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace AllOverIt.Pagination
@@ -37,7 +38,7 @@ namespace AllOverIt.Pagination
             ComparisonMethods = registry;
         }
 
-        internal static bool TryGetComparisonMethodInfo(Type type, out MethodInfo methodInfo)
+        internal static bool TryGetComparisonMethodInfo(Type type, [MaybeNullWhen(false)] out MethodInfo methodInfo)
         {
             // Enum's are IComparable but we can't pre-register the types we don't know about - so register them as they arrive
             if (type.IsEnum)
@@ -46,7 +47,7 @@ namespace AllOverIt.Pagination
                 {
                     return type
                         .GetTypeInfo()
-                        .GetMethod(nameof(Enum.CompareTo), [type]);
+                        .GetMethod(nameof(Enum.CompareTo), [type])!;
                 });
 
                 return true;

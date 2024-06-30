@@ -8,7 +8,7 @@
         /// <param name="source">The source instance to copy property values from.</param>
         /// <returns>A new target instance after all source properties have been copied. If the source is <see langword="null"/>
         /// then <see langword="null"/> will be returned.</returns>
-        TTarget Map<TTarget>(object source)
+        TTarget? Map<TTarget>(object source)
             where TTarget : class;
 
         /// <summary>Maps properties from a source object onto a provided target instance.</summary>
@@ -17,7 +17,7 @@
         /// <param name="source">The source object to be mapped onto a target.</param>
         /// <param name="target">The target instance to have property values copied onto.</param>
         /// <returns>The same target instance after all source properties have been copied.</returns>
-        TTarget Map<TSource, TTarget>(TSource source, TTarget target)
+        TTarget? Map<TSource, TTarget>(TSource source, TTarget target)
             where TSource : class
             where TTarget : class;
 
@@ -27,6 +27,6 @@
         /// <param name="target">The target instance to have property values copied onto.</param>
         /// <param name="targetType">The target type.</param>
         /// <returns>The same target instance after all source properties have been copied.</returns>
-        object Map(object source, Type sourceType, object target, Type targetType);
+        object? Map(object source, Type sourceType, object target, Type targetType);
     }
 }

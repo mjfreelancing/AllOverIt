@@ -4,7 +4,6 @@ using AllOverIt.Aws.AppSync.Client.Configuration;
 using AllOverIt.Aws.AppSync.Client.Exceptions;
 using AllOverIt.Aws.AppSync.Client.Request;
 using AllOverIt.Aws.AppSync.Client.Response;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace AllOverIt.Aws.AppSync.Client
@@ -54,7 +53,6 @@ namespace AllOverIt.Aws.AppSync.Client
             return SendRequestAsync<TResponse>(query, authorization, cancellationToken);
         }
 
-        [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA2016")]
         private async Task<GraphqlHttpResponse<TResponse>> SendRequestAsync<TResponse>(GraphqlQuery query, IAppSyncAuthorization? authorization,
             CancellationToken cancellationToken)
         {

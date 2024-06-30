@@ -21,7 +21,7 @@ namespace AllOverIt.GenericHost
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Starting with arguments: {string.Join(" ", Environment.GetCommandLineArgs())}");
+            _logger.LogInformation("Starting with arguments: {CommandLineArgs}", string.Join(" ", Environment.GetCommandLineArgs()));
 
             _applicationLifetime.ApplicationStarted.Register(() => OnStarted(cancellationToken));
             _applicationLifetime.ApplicationStopping.Register(OnStopping);
@@ -32,7 +32,7 @@ namespace AllOverIt.GenericHost
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Exiting with return code: {_exitCode}");
+            _logger.LogInformation("Exiting with return code: {ExitCode}", _exitCode);
 
             // Exit code may be null if the user cancelled via Ctrl+C/SIGTERM
             Environment.ExitCode = _exitCode.GetValueOrDefault(_consoleApp.DefaultExitCode);

@@ -10,11 +10,11 @@ namespace AllOverIt.Mapping
         private sealed class TargetOptions
         {
             public bool Exclude { get; set; }                           // Efficiently excluded when processing the configuration
-            public Func<object, bool> ExcludeWhen { get; set; }         // Excluded at runtime based on the source value
+            public Func<object?, bool>? ExcludeWhen { get; set; }       // Excluded at runtime based on the source value
             public bool DeepCopy { get; set; }
-            public string Alias { get; set; }
-            public object NullReplacement { get; set; }
-            public Func<IObjectMapper, object, object> Converter { get; set; }
+            public string? Alias { get; set; }
+            public object? NullReplacement { get; set; }
+            public Func<IObjectMapper, object?, object?>? Converter { get; set; }
         }
 
         // Source property to target options
@@ -26,7 +26,7 @@ namespace AllOverIt.Mapping
         public BindingOptions Binding { get; set; } = BindingOptions.Default;
 
         /// <summary>Use to filter out source properties discovered based on the <see cref="Binding"/> option used.</summary>
-        public Func<PropertyInfo, bool> Filter { get; set; }
+        public Func<PropertyInfo, bool>? Filter { get; set; }
 
         /// <summary>Excludes one or more source properties from object mapping.</summary>
         /// <param name="sourceNames">One or more source property names to be excluded from mapping.</param>
@@ -47,7 +47,7 @@ namespace AllOverIt.Mapping
         /// <param name="sourceName">The name of the property to exclude when a predicate condition is met.</param>
         /// <param name="predicate">The predicate to apply to the source property value at runtime.</param>
         /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
-        public PropertyMatcherOptions ExcludeWhen(string sourceName, Func<object, bool> predicate)
+        public PropertyMatcherOptions ExcludeWhen(string sourceName, Func<object?, bool> predicate)
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
             _ = predicate.WhenNotNull(nameof(predicate));
@@ -108,7 +108,7 @@ namespace AllOverIt.Mapping
         /// <param name="sourceName">The source type property name.</param>
         /// <param name="converter">The source to target value conversion delegate.</param>
         /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
-        public PropertyMatcherOptions WithConversion(string sourceName, Func<IObjectMapper, object, object> converter)
+        public PropertyMatcherOptions WithConversion(string sourceName, Func<IObjectMapper, object?, object?> converter)
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
             _ = converter.WhenNotNull(nameof(converter));
@@ -125,7 +125,7 @@ namespace AllOverIt.Mapping
             return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.Exclude;
         }
 
-        internal bool IsExcludedWhen(string sourceName, object sourceValue)
+        internal bool IsExcludedWhen(string sourceName, object? sourceValue)
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
 
@@ -143,12 +143,17 @@ namespace AllOverIt.Mapping
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
 
-            return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions)
-                ? targetOptions.Alias
-                : sourceName;
+            string? sourceAlias = null;
+
+            if (_sourceTargetOptions.TryGetValue(sourceName, out var targetOptions))
+            {
+                sourceAlias = targetOptions.Alias;
+            }
+
+            return sourceAlias ?? sourceName;
         }
 
-        internal object GetNullReplacement(string sourceName)
+        internal object? GetNullReplacement(string sourceName)
         {
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
 
@@ -157,16 +162,21 @@ namespace AllOverIt.Mapping
                 : null;
         }
 
-        internal object GetConvertedValue(IObjectMapper objectMapper, string sourceName, object sourceValue)
+        internal object? GetConvertedValue(IObjectMapper objectMapper, string sourceName, object? sourceValue)
         {
             _ = objectMapper.WhenNotNull(nameof(objectMapper));
             _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+
+            if (sourceValue is null)
+            {
+                return null;
+            }
 
             var converter = _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions)
                 ? targetOptions.Converter
                 : null;
 
-            return converter != null
+            return converter is not null
                 ? converter.Invoke(objectMapper, sourceValue)
                 : sourceValue;
         }
@@ -180,11 +190,13 @@ namespace AllOverIt.Mapping
                 targetOptions = new TargetOptions();
             }
 
-            optionsAction.Invoke(targetOptions);
+            var options = targetOptions!;
+
+            optionsAction.Invoke(options);
 
             if (!hasOptions)
             {
-                _sourceTargetOptions.Add(sourceName, targetOptions);
+                _sourceTargetOptions.Add(sourceName, options);
             }
         }
     }

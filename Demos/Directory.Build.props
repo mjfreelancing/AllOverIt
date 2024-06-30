@@ -8,6 +8,9 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <NoWarn>$(NoWarn);0618</NoWarn>
-    </PropertyGroup>
+		<!--IDE0063 - 'using' statement can be simplified-->
+		<!--IDE0290 - use primary constructor-->
+		<!--CS0618 - 'member' is obsolete-->
+		<NoWarn>$(NoWarn);IDE0063;IDE0290;CS0618</NoWarn>
+	</PropertyGroup>
 </Project>
