@@ -41,7 +41,7 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <param name="name">The name to be assigned to the variable.</param>
         /// <param name="value">The constant value to be assigned to the variable.</param>
         /// <returns>The new variable instance.</returns>
-        public static IVariable AddConstantVariable(this IVariableRegistry registry, string name, double value = default)
+        public static IVariable AddConstantVariable(this IVariableRegistry registry, string name, double value)
         {
             _ = registry.WhenNotNull(nameof(registry));
             _ = name.WhenNotNullOrEmpty(nameof(name));
@@ -73,10 +73,11 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <param name="name">The name to be assigned to the variable.</param>
         /// <param name="valueResolver">The initial delegate to be assigned to the variable.</param>
         /// <returns>The new variable instance.</returns>
-        public static IVariable AddDelegateVariable(this IVariableRegistry registry, string name, Func<double> valueResolver = default)
+        public static IVariable AddDelegateVariable(this IVariableRegistry registry, string name, Func<double> valueResolver)
         {
             _ = registry.WhenNotNull(nameof(registry));
             _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = valueResolver.WhenNotNull(nameof(valueResolver));
 
             var variable = new DelegateVariable(name, valueResolver);
             registry.AddVariable(variable);
@@ -94,6 +95,7 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         {
             _ = registry.WhenNotNull(nameof(registry));
             _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = formulaCompilerResult.WhenNotNull(nameof(formulaCompilerResult));
 
             var variable = new DelegateVariable(name, formulaCompilerResult);
             registry.AddVariable(variable);
@@ -106,10 +108,11 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <param name="name">The name to be assigned to the variable.</param>
         /// <param name="valueResolver">The initial lazily-evaluated delegate to be assigned to the variable.</param>
         /// <returns>The new variable instance.</returns>
-        public static IVariable AddLazyVariable(this IVariableRegistry registry, string name, Func<double> valueResolver = default)
+        public static IVariable AddLazyVariable(this IVariableRegistry registry, string name, Func<double> valueResolver)
         {
             _ = registry.WhenNotNull(nameof(registry));
             _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = valueResolver.WhenNotNull(nameof(valueResolver));
 
             var variable = new LazyVariable(name, valueResolver);
             registry.AddVariable(variable);

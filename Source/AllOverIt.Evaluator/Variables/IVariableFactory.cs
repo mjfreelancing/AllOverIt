@@ -56,8 +56,8 @@ namespace AllOverIt.Evaluator.Variables
         /// <param name="name">The name to be assigned to the variable.</param>
         /// <param name="variableRegistry">The variable registry containing the named variables to be aggregated.</param>
         /// <param name="variableNames">The names of the variables to be aggregated. This cannot be an empty collection.
-        /// If null is provided then all variables within the registry will be aggregated.</param>
+        /// If <see langword="null"/> is provided then all variables within the registry will be aggregated.</param>
         /// <returns>The new variable instance.</returns>
-        IVariable CreateAggregateVariable(string name, IVariableRegistry variableRegistry, IEnumerable<string> variableNames = null);
+        IVariable CreateAggregateVariable(string name, IVariableRegistry variableRegistry, IEnumerable<string>? variableNames = default);
     }
 }

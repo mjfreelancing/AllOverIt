@@ -61,7 +61,7 @@ namespace AllOverIt.Evaluator.Variables
         }
 
         /// <inheritdoc />
-        public IVariable CreateAggregateVariable(string name, IVariableRegistry variableRegistry, IEnumerable<string> variableNames = null)
+        public IVariable CreateAggregateVariable(string name, IVariableRegistry variableRegistry, IEnumerable<string>? variableNames = default)
         {
             _ = name.WhenNotNullOrEmpty(nameof(name));
             _ = variableRegistry.WhenNotNull(nameof(variableRegistry));
@@ -73,11 +73,11 @@ namespace AllOverIt.Evaluator.Variables
                                let variable = item.Value
                                select variable.Value;
 
-            var sumValues = selectedVariableNames == null
+            var sumValues = selectedVariableNames is null
               ? allVariables
               : selectedVariableNames.Select(variableRegistry.GetValue);
 
-            return new DelegateVariable(name, () => sumValues.Sum());
+            return new DelegateVariable(name, sumValues.Sum);
         }
     }
 }
