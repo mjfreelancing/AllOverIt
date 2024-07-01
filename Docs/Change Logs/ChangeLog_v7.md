@@ -1,3 +1,14 @@
+#  Version 7.20.1
+## 01 Jul 2024
+
+### AllOverIt.Logging.Testing
+
+* Added AssertMessageWithArgumentsEntry() and GetExpectedLogTemplateWithArgumentsMetadata() overloads that will allow
+  destructured argument names to be provided via a dictionary.
+
+---
+
+
 #  Version 7.20.0
 ## 24 Jun 2024
 

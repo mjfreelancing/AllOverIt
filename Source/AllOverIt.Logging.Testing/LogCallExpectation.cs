@@ -115,11 +115,22 @@ namespace AllOverIt.Logging.Testing
             _ = logTemplate.WhenNotNullOrEmpty(nameof(logTemplate));
             _ = arguments.WhenNotNull(nameof(arguments));
 
-            var dictionary = arguments.ToPropertyDictionary();
+            return GetExpectedLogTemplateWithArgumentsMetadata(logTemplate, arguments.ToPropertyDictionary());
+        }
 
-            dictionary.Add(OriginalFormat, logTemplate);
+        /// <summary>Gets the expected metadata following a call to log a message using a log template with arguments.</summary>
+        /// <param name="logTemplate">The log template expected to be captured.</param>
+        /// <param name="arguments">The arguments, as a <c>Dictionary<string, object></String></c>, expected to be captured.</param>
+        /// <returns>The expected metadata.</returns>
+        public static IDictionary<string, object> GetExpectedLogTemplateWithArgumentsMetadata(string logTemplate, IDictionary<string, object> arguments)
+        {
+            _ = logTemplate.WhenNotNullOrEmpty(nameof(logTemplate));
+            _ = arguments.WhenNotNull(nameof(arguments));
 
-            return dictionary;
+            return new Dictionary<string, object>(arguments)
+            {
+                { OriginalFormat, logTemplate }
+            };
         }
     }
 }
