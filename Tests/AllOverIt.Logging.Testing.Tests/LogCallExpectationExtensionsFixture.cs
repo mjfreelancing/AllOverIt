@@ -209,7 +209,7 @@ namespace AllOverIt.Logging.Testing.Tests
             }
         }
 
-        public class GetExpectedLogTemplateWithArgumentsMetadata : LogCallExpectationExtensionsFixture
+        public class GetExpectedLogTemplateWithArgumentsMetadata_Object : LogCallExpectationExtensionsFixture
         {
             [Fact]
             public void Should_Throw_When_LogTemplate_Null_Empty_Whitespace()
@@ -244,6 +244,52 @@ namespace AllOverIt.Logging.Testing.Tests
                 var expected = arguments.ToPropertyDictionary();
 
                 expected.Add(OriginalFormat, logTemplate);
+
+                actual.Should().BeEquivalentTo(expected);
+            }
+        }
+
+        public class GetExpectedLogTemplateWithArgumentsMetadata_Dictionary : LogCallExpectationExtensionsFixture
+        {
+            [Fact]
+            public void Should_Throw_When_LogTemplate_Null_Empty_Whitespace()
+            {
+                AssertThrowsWhenStringNullOrEmptyOrWhitespace(
+                    stringValue =>
+                    {
+                        _ = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(stringValue, new Dictionary<string, object>());
+                    }, "logTemplate");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Arguments_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(Create<string>(), null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("arguments");
+            }
+
+            [Fact]
+            public void Should_Return_Expectation()
+            {
+                var logTemplate = "{Value1} and {@Value2}";
+
+                var arguments = new Dictionary<string, object>
+                {
+                    { "Value1", Create<string>() },
+                    { "@Value2", Create<int>() }
+                };
+
+                var actual = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(logTemplate, arguments);
+
+                var expected = new Dictionary<string, object>(arguments)
+                {
+                    { OriginalFormat, logTemplate}
+                };
 
                 actual.Should().BeEquivalentTo(expected);
             }
