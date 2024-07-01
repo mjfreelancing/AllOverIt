@@ -255,6 +255,37 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             }
 
             [Fact]
+            public void Should_Log_Message_With_Destructured_Argument()
+            {
+                var logTemplate = "Message = {Value1} and {@Value2}";
+
+                var value1 = Create<int>();
+                var value2 = Create<string>();
+
+                Invoking(() =>
+                {
+                    var methodCallContext = _loggerFake.CaptureLogCalls(() =>
+                    {
+                        _dummyClass.LogInformationMethodWithArguments(logTemplate, value1, value2);
+                    });
+
+                    var expectedArguments = new Dictionary<string, object>
+                    {
+                        { "Value1", value1 },
+                        { "@Value2", value2 }
+                    };
+
+                    methodCallContext.AssertMessageWithArgumentsEntry(
+                        0,
+                        logTemplate,
+                        expectedArguments,
+                        LogLevel.Information);
+                })
+                    .Should()
+                    .NotThrow();
+            }
+
+            [Fact]
             public void Should_Capture_Call_Logs()
             {
                 Invoking(() =>
