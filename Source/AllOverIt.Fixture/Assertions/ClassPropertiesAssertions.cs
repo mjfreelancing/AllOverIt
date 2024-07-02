@@ -7,8 +7,7 @@ using System.Diagnostics;
 
 namespace AllOverIt.Fixture.Assertions
 {
-    /// <summary>Provides a wrapper around the specified <typeparamref name="TType"/> so its' properties can be asserted.</summary>
-    /// <typeparam name="TType">The type containing the properties to be asserted.</typeparam>
+    /// <summary>Provides a wrapper around a specified class type so its' properties can be asserted.</summary>
     [DebuggerNonUserCode]
     public sealed class ClassPropertiesAssertions
     {
@@ -21,7 +20,7 @@ namespace AllOverIt.Fixture.Assertions
             _classProperties = subject;
         }
 
-        /// <summary>Asserts that the <typeparamref name="TType"/> contains property names matching the specified property names.</summary>
+        /// <summary>Asserts that a class type contains property names matching the specified property names.</summary>
         /// <param name="propertyNames">The expected property names.</param>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should

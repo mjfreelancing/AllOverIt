@@ -124,7 +124,7 @@ namespace AllOverIt.Fixture.Assertions
 
         /// <summary>Filters the current collection of properties based on the specified <paramref name="predicate"/>.
         /// If <see cref="Including(string[])"/> or <see cref="Excluding(string[])"/> has not been called, then the
-        /// predicate is applied against all properties on <typeparamref name="TType"/>.</summary>
+        /// predicate is applied against all properties on the class type.</summary>
         /// <param name="predicate">The predicate to filter the properties.</param>
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties Where(Func<PropertyInfo, bool> predicate)
