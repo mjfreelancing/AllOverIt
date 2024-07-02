@@ -585,6 +585,34 @@ namespace AllOverIt.Fixture.Assertions
 
 #endif
 
+        /// <summary>Asserts that the property's <see cref="PropertyInfo"/> meets a specified criteria.</summary>
+        /// <param name="predicate">The predicate that must evaluate to <see langword="True"/>.</param>
+        /// <param name="because">
+        /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
+        /// be satisfied. If the phrase does not start with the word <em>because</em>, it is prepended to the message.
+        /// <para>
+        /// If the format of <paramref name="because"/> or <paramref name="becauseArgs"/> is not compatible with
+        /// <see cref="string.Format(string,object[])"/>, then a warning message is returned instead.
+        /// </para>
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more values to use for filling in any <see cref="string.Format(string,object[])"/> compatible placeholders.
+        /// </param>
+        /// <returns>The current instance to cater for a fluent syntax.</returns>
+        [CustomAssertion]
+        public PropertyInfoAssertions MeetsCriteria(Func<PropertyInfo, bool> predicate, string because = "", params object[] becauseArgs)
+        {
+            if (SubjectIsNotNull())
+            {
+                Execute.Assertion
+                    .BecauseOf(because, becauseArgs)
+                    .ForCondition(predicate.Invoke(_subject))
+                    .FailWith("Expected {context} to meet a specified criteria{reason}, but it did not.");
+            }
+
+            return this;
+        }
+
         /// <summary>Asserts that a property is of a specified type.</summary>
         /// <param name="because">
         /// A formatted phrase compatible with <see cref="string.Format(string,object[])"/> explaining why the condition should
