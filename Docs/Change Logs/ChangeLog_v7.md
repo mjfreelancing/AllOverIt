@@ -1,3 +1,14 @@
+#  Version 7.21.0
+## 02 Jul 2024
+
+### AllOverIt.Fixture
+
+* Refactored ClassPropertyAssertions (and related) to cater for open generics via typeof(T).
+* Added MeetsCriteria() on PropertyInfoAssertions.
+
+---
+
+
 #  Version 7.20.1
 ## 01 Jul 2024
 

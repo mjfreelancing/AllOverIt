@@ -2556,6 +2556,104 @@ namespace AllOverIt.Fixture.Tests
 
 #endif
 
+        public class MeetsCriteria : PropertyInfoAssertionsFixture
+        {
+            [Fact]
+            public void Should_Fail_When_Subject_Null()
+            {
+                Invoking(() =>
+                {
+                    var assertions = new PropertyInfoAssertions(null!);
+
+                    assertions.MeetsCriteria(_ => Create<bool>());
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage("Cannot validate property when its <PropertyInfo> is <null>.");
+            }
+
+            [Fact]
+            public void Should_Fail()
+            {
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop1));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop1)).MeetsCriteria(_ => false);
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage("Expected Prop1 to meet a specified criteria, but it did not.");
+            }
+
+            [Fact]
+            public void Should_Fail_With_Reason()
+            {
+                var reason = Create<string>();
+
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop1));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop1)).MeetsCriteria(_ => false, reason);
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage($"Expected Prop1 to meet a specified criteria because {reason}, but it did not.");
+            }
+
+            [Fact]
+            public void Should_Fail_With_Reason_Args()
+            {
+                var reason = $"{Create<string>()} {0}";
+                var reasonArgs = Create<string>();
+                var expectedReason = string.Format(reason, reasonArgs);
+
+                Invoking(() =>
+                {
+                    using var _ = new AssertionScope(nameof(DummyClass1.Prop1));
+
+                    GetPropertyAssertions<DummyClass1>(nameof(DummyClass1.Prop1)).MeetsCriteria(_ => false, reason, reasonArgs);
+                })
+                .Should()
+                .Throw<XunitException>()
+                .WithMessage($"Expected Prop1 to meet a specified criteria because {expectedReason}, but it did not.");
+            }
+
+            [Fact]
+            public void Should_Not_Fail()
+            {
+                // Not required for this test
+                //using var _ = new AssertionScope(nameof(DummyClass1.Prop7));
+
+                GetPropertyAssertions<DummyClass2>(nameof(DummyClass1.Prop7)).MeetsCriteria(_ => true);
+            }
+
+            [Fact]
+            public void Should_Fail_Multiple()
+            {
+                var expected = new StringBuilder();
+
+                expected.AppendLine("Expected Prop4 to meet a specified criteria, but it did not.");
+                expected.AppendLine("Expected Prop14 to meet a specified criteria, but it did not.");
+
+                Invoking(() =>
+                {
+                    Properties
+                        .For<DummyClass2>()
+                        .Including(nameof(DummyClass2.Prop4), nameof(DummyClass2.Prop14))
+                        .Should()
+                        .BeDefinedAs(property =>
+                        {
+                            property.MeetsCriteria(_ => false);
+                        });
+                })
+                    .Should()
+                    .Throw<XunitException>()
+                    .WithMessage(expected.ToString());
+            }
+        }
+
         public class IsOfType : PropertyInfoAssertionsFixture
         {
             [Fact]

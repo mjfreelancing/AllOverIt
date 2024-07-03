@@ -81,10 +81,10 @@
 * Amazon.CDK.Asset.KubectlV20 v2.1.2
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.0.3
 * Amazon.CDK.Lib v2.110.0
-* Amazon.CDK.Lib v2.146.0
-* Amazon.JSII.Runtime v1.100.0
+* Amazon.CDK.Lib v2.147.3
+* Amazon.JSII.Runtime v1.101.0
 * Amazon.JSII.Runtime v1.99.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.461
+* Cdklabs.AwsCdkAppsyncUtils v0.0.473
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -117,7 +117,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* CsvHelper v32.0.3
+* CsvHelper v33.0.1
 
 <br>
 
@@ -264,7 +264,7 @@
 * AutoFixture.AutoFakeItEasy v4.18.1
 * Castle.Core v5.1.1
 * FakeItEasy v4.9.0
-* FakeItEasy v8.2.0
+* FakeItEasy v8.3.0
 * Fare v2.1.1
 * FluentAssertions v6.12.0
 * NSubstitute v5.1.0
