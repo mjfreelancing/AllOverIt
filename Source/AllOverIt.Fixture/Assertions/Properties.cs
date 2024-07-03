@@ -11,5 +11,14 @@
         {
             return new ClassProperties<TType>(declaredOnly);
         }
+
+        /// <summary>Gets an object that provides property assertions for a specific class type.</summary>
+        /// <param name="classType">The class type to assert its' property definitions.</param>
+        /// <param name="declaredOnly">When <see langword="True"/>, base class properties will be ignored.</param>
+        /// <returns>An object that provides property assertions for a specific class type.</returns>
+        public static ClassProperties For(Type classType, bool declaredOnly = false)
+        {
+            return new ClassProperties(classType, declaredOnly);
+        }
     }
 }

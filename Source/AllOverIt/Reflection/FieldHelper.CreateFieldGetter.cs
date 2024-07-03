@@ -21,10 +21,10 @@ namespace AllOverIt.Reflection
             var instanceParam = itemParam.CastOrConvertTo(fieldInfo.DeclaringType!);
 
             var instanceField = Expression.Field(instanceParam, fieldInfo);
-            var objectinstanceField = Expression.Convert(instanceField, typeof(object));
+            var objectInstanceField = Expression.Convert(instanceField, typeof(object));
 
             return Expression
-                .Lambda<Func<object, object>>(objectinstanceField, itemParam)
+                .Lambda<Func<object, object>>(objectInstanceField, itemParam)
                 .Compile();
         }
 
