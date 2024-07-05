@@ -7,7 +7,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
     /// to implement <see cref="IViewFor{T}"/>, where <c>T</c> is any view model type. The registry is enumerable to provide
     /// easy access to each of the currently registered view models and associated views.</summary>
     /// <typeparam name="TViewId">The type used for identifying each view within the registry.</typeparam>
-    public interface IViewRegistry<TViewId> : IEnumerable<ViewModelViewItem<TViewId>>
+    public interface IViewRegistry<TViewId> : IEnumerable<ViewModelViewItem<TViewId>> where TViewId : notnull
     {
         /// <summary>An event raised when a view is added to or removed from the registry.</summary>
         event ViewRegistryEventHandler OnUpdate;
@@ -52,7 +52,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         /// <param name="configure">An optional callback that allows the caller to configure the view model associated with each newly
         /// created view. The callback also includes the view instance and its' Id as provided by the <paramref name="nextViewId"/> callback.</param>
         void CreateOrActivateFor<TViewModel>(int maxCount, Func<IReadOnlyCollection<ViewItem<TViewId>>, TViewId> nextViewId,
-            Action<TViewModel, IViewFor, TViewId> configure = default) where TViewModel : class;
+            Action<TViewModel, IViewFor, TViewId>? configure = default) where TViewModel : class;
 
         /// <summary>Attempts to close all currently registered views. Views that cancel being closed will remain registered.</summary>
         /// <returns><see langword="True"/> if all views were closed, otherwise <see langword="False"/>.</returns>

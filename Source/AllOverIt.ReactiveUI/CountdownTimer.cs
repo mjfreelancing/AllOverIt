@@ -10,11 +10,12 @@ namespace AllOverIt.ReactiveUI
     /// <summary>Provides an observable countdown timer.</summary>
     public sealed class CountdownTimer : ReactiveObject, ICountdownTimer
     {
+        private bool _disposed;
         private readonly Subject<bool> _countdownCompletedSubject = new();      // publishes true if completed, false if cancelled
-        private readonly IScheduler _timerScheduler;
-        private ReactiveCommand<int, Unit> _startCommand;
-        private IDisposable _startDisposable;
-        private IDisposable _intervalDisposable;
+        private readonly IScheduler? _timerScheduler;
+        private ReactiveCommand<int, Unit>? _startCommand;
+        private IDisposable? _startDisposable;
+        private IDisposable? _intervalDisposable;
         private bool _isRunning;
         private double _remainingMilliseconds;
         private TimeSpan _remainingTimeSpan;
@@ -49,25 +50,25 @@ namespace AllOverIt.ReactiveUI
         /// <inheritdoc />
         public IObservable<bool> WhenCompleted() => _countdownCompletedSubject;
 
-        /// <summary>Default constructor.</summary>
-        public CountdownTimer()
-        {
-        }
-
         // Only used for tests
         internal CountdownTimer(IScheduler timerScheduler)
         {
             _timerScheduler = timerScheduler;
         }
 
+        /// <summary>Default constructor.</summary>
+        public CountdownTimer()
+        {
+        }
+
         /// <inheritdoc />
-        public void Configure(double totalMilliseconds, double updateIntervalMilliseconds, IScheduler scheduler = null, CancellationToken cancellationToken = default)
+        public void Configure(double totalMilliseconds, double updateIntervalMilliseconds, IScheduler? scheduler = null, CancellationToken cancellationToken = default)
         {
             Configure(TimeSpan.FromMilliseconds(totalMilliseconds), TimeSpan.FromMilliseconds(updateIntervalMilliseconds), scheduler, cancellationToken);
         }
 
         /// <inheritdoc />
-        public void Configure(TimeSpan totalTimeSpan, TimeSpan updateInterval, IScheduler observeOnScheduler = null, CancellationToken cancellationToken = default)
+        public void Configure(TimeSpan totalTimeSpan, TimeSpan updateInterval, IScheduler? observeOnScheduler = null, CancellationToken cancellationToken = default)
         {
             Throw<InvalidOperationException>.When(IsRunning, "The countdown timer period cannot be modified while executing.");
 
@@ -124,6 +125,14 @@ namespace AllOverIt.ReactiveUI
         /// <inheritdoc />
         public void Start(int skipMilliseconds = 0)
         {
+#pragma warning disable CA1513 // Use ObjectDisposedException throw helper
+            if (_disposed)
+            {
+                // Using Throw<ObjectDisposedException>() causes an AmbiguousMatchException when choosing a constructor
+                throw new ObjectDisposedException("The countdown timer is already disposed.", innerException: null);
+            }
+#pragma warning restore CA1513 // Use ObjectDisposedException throw helper
+
             Throw<InvalidOperationException>.WhenNull(_startCommand, $"The {nameof(Configure)}() method must be called first.");
 
             Throw<InvalidOperationException>.When(IsRunning, "The countdown timer is already executing.");
@@ -150,7 +159,12 @@ namespace AllOverIt.ReactiveUI
         /// <inheritdoc />
         public void Dispose()
         {
-            Stop();
+            if (!_disposed)
+            {
+                Stop();
+
+                _disposed = true;
+            }
         }
 
         private void ResetDisposables()

@@ -10,7 +10,7 @@ namespace CountdownTimerAppDemo.ViewModels
     public class MainWindowViewModel : ActivatableViewModel
     {
         private const int CountdownSeconds = 10;
-        private CountdownTimer _countdownTimer;
+        private CountdownTimer _countdownTimer = null!;
 
         [Reactive]
         public double RemainingSeconds { get; private set; }
@@ -21,9 +21,9 @@ namespace CountdownTimerAppDemo.ViewModels
         [Reactive]
         public bool IsDone { get; set; }
 
-        public ReactiveCommand<Unit, Unit> ResumeTimerCommand { get; private set; }
-        public ReactiveCommand<Unit, Unit> PauseTimerCommand { get; private set; }
-        public ReactiveCommand<Unit, Unit> StopTimerCommand { get; private set; }
+        public ReactiveCommand<Unit, Unit> ResumeTimerCommand { get; private set; } = null!;
+        public ReactiveCommand<Unit, Unit> PauseTimerCommand { get; private set; } = null!;
+        public ReactiveCommand<Unit, Unit> StopTimerCommand { get; private set; } = null!;
 
         public MainWindowViewModel()
         {
@@ -93,7 +93,7 @@ namespace CountdownTimerAppDemo.ViewModels
 
         private void StopCountdownTimer(bool resetRemainingTime)
         {
-            _countdownTimer.Stop();
+            _countdownTimer!.Stop();
             IsRunning = false;
 
             if (resetRemainingTime)

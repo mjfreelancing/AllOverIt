@@ -30,5 +30,5 @@ namespace AllOverIt.ReactiveUI.ViewRegistry.Events
     /// <summary>Describes an event handler raised by an <see cref="IViewRegistry{TViewId}"/>.</summary>
     /// <param name="sender">The sender raising the event.</param>
     /// <param name="eventArgs">The arguments for the event.</param>
-    public delegate void ViewRegistryEventHandler(object sender, ViewRegistryEventArgs eventArgs);
+    public delegate void ViewRegistryEventHandler(object? sender, ViewRegistryEventArgs eventArgs);
 }

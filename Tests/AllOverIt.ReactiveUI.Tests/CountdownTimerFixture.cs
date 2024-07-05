@@ -284,6 +284,23 @@ namespace AllOverIt.ReactiveUI.Tests
                     timer.IsRunning.Should().BeTrue();
                 }
             }
+
+            [Fact]
+            public void Should_Throw_If_Start_When_Already_Disposed()
+            {
+                var timer = new CountdownTimer();
+
+                timer.Configure(Create<double>(), Create<double>());
+                timer.Dispose();
+
+                Invoking(() =>
+                {
+                    timer.Start();
+                })
+                    .Should()
+                    .Throw<ObjectDisposedException>()
+                    .WithMessage("The countdown timer is already disposed.");
+            }
         }
 
         public class Stop : CountdownTimerFixture

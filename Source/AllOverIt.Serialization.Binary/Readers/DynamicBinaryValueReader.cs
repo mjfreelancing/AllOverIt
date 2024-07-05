@@ -27,8 +27,7 @@ namespace AllOverIt.Serialization.Binary.Readers
         {
             _ = reader.WhenNotNull(nameof(reader));
 
-            // Create an instance of the required type
-            var instance = Activator.CreateInstance(Type);
+            var instance = CreateType();
 
             var properties = Type
                .GetPropertyInfo()
