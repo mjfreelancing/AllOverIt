@@ -13,7 +13,7 @@ namespace AllOverIt.Reflection
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property setter.</param>
         /// <returns>The compiled property setter.</returns>
         /// <remarks>This overload will only work with structs that are provided as object types.</remarks>
-        public static Action<object, object> CreatePropertySetter(PropertyInfo propertyInfo)
+        public static Action<object, object?> CreatePropertySetter(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
@@ -35,7 +35,7 @@ namespace AllOverIt.Reflection
             var setterCall = Expression.Call(castTargetExpression, setterMethodInfo, valueParamExpression);
 
             return Expression
-                .Lambda<Action<object, object>>(setterCall, instanceExpression, argumentExpression)
+                .Lambda<Action<object, object?>>(setterCall, instanceExpression, argumentExpression)
                 .Compile();
         }
 

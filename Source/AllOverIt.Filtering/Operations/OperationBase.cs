@@ -6,6 +6,7 @@ using AllOverIt.Filtering.Options;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Reflection;
 using System.Linq.Expressions;
+
 using SystemExpression = System.Linq.Expressions.Expression;    // avoid conflict with the Expression property on LinqSpecification
 
 namespace AllOverIt.Filtering.Operations
@@ -16,10 +17,10 @@ namespace AllOverIt.Filtering.Operations
 
         protected OperationBase(
             // The property building the predicate for
-            Expression<Func<TEntity, TProperty>> propertyExpression,
+            Expression<Func<TEntity, TProperty?>> propertyExpression,
 
             // The constant value used in the predicate
-            TProperty value,
+            TProperty? value,
 
             // Indicates if an exception is to be thrown when the provided value is null
             bool supportsNull,
@@ -34,10 +35,10 @@ namespace AllOverIt.Filtering.Operations
 
         protected OperationBase(
             // The property building the predicate for
-            Expression<Func<TEntity, TProperty>> propertyExpression,
+            Expression<Func<TEntity, TProperty?>> propertyExpression,
 
             // The constant value used in the predicate
-            IList<TProperty> values,
+            IList<TProperty?>? values,
 
             IOperationFilterOptions options,
 
@@ -47,14 +48,14 @@ namespace AllOverIt.Filtering.Operations
         {
         }
 
-        private static Expression<Func<TEntity, bool>> CreateResolver(Expression<Func<TEntity, TProperty>> propertyExpression, SystemExpression constant,
+        private static Expression<Func<TEntity, bool>> CreateResolver(Expression<Func<TEntity, TProperty?>> propertyExpression, SystemExpression constant,
             IOperationFilterOptions options, Func<SystemExpression, SystemExpression, IOperationFilterOptions, SystemExpression> predicateExpressionFactory)
         {
             _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
 
             var parameter = SystemExpression.Parameter(typeof(TEntity), "entity");
 
-            SystemExpression memberExpression = propertyExpression.GetPropertyOrFieldExpressionUsingParameter(parameter);
+            SystemExpression memberExpression = propertyExpression.GetPropertyOrFieldExpressionUsingParameter(parameter)!;
 
             var predicate = predicateExpressionFactory.Invoke(memberExpression, constant, options);
 
@@ -65,8 +66,8 @@ namespace AllOverIt.Filtering.Operations
         {
             _ = options.WhenNotNull(nameof(options));
 
-            // Need to deal with null strings and nullables. Could use Nullable.GetUnderlyingType() for nullable
-            // types but the approach below works for both cases.
+            // Need to deal with null strings and nullable values. Could use Nullable.GetUnderlyingType()
+            // for nullable types but the approach below works for both cases.
 
             // eg bool? on the entity
             var expectedType = typeof(TValue);
@@ -85,7 +86,7 @@ namespace AllOverIt.Filtering.Operations
                 ? ExpressionUtils.CreateParameterizedValue(value, valueType)
                 : SystemExpression.Constant(value, valueType);
 
-            if (!supportsNull && result.GetValue() == null)
+            if (!supportsNull && result.GetValue() is null)
             {
                 throw new NullNotSupportedException();
             }

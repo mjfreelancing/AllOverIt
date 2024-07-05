@@ -2,6 +2,7 @@
 using AllOverIt.Extensions;
 using AllOverIt.Mapping.Exceptions;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Mapping
 {
@@ -32,7 +33,7 @@ namespace AllOverIt.Mapping
             return GetOrCreate(sourceType, targetType, PropertyMatcherOptions.None);
         }
 
-        internal bool TryGetMapper(Type sourceType, Type targetType, out ObjectPropertyMatcher matcher)
+        internal bool TryGetMapper(Type sourceType, Type targetType, [NotNullWhen(true)] out ObjectPropertyMatcher? matcher)
         {
             _ = sourceType.WhenNotNull(nameof(sourceType));
             _ = targetType.WhenNotNull(nameof(targetType));

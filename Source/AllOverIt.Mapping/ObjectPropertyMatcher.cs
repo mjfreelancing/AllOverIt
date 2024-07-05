@@ -36,11 +36,11 @@ namespace AllOverIt.Mapping
             var matches = ObjectMapperHelper.GetMappableProperties(sourceType, targetType, matcherOptions);
 
             var sourcePropertyInfo = ReflectionCache
-                .GetPropertyInfo(sourceType, matcherOptions.Binding)
+                .GetPropertyInfo(sourceType, matcherOptions.Binding)!
                 .ToDictionary(prop => prop.Name);
 
             var targetPropertyInfo = ReflectionCache
-                .GetPropertyInfo(targetType, matcherOptions.Binding)
+                .GetPropertyInfo(targetType, matcherOptions.Binding)!
                 .ToDictionary(prop => prop.Name);
 
             var matchedProps = new List<PropertyMatchInfo>(matches.Count);

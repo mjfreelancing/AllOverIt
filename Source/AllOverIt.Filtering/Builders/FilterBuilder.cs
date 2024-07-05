@@ -28,8 +28,8 @@ namespace AllOverIt.Filtering.Builders
         public ILinqSpecification<TType> AsSpecification() => _currentSpecification ?? FilterSpecificationBuilder<TType, TFilter>.SpecificationTrue;
 
         #region WHERE Operations
-        public ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string>> propertyExpression,
-            Func<TFilter, IStringFilterOperation> operation, Action<OperationFilterOptions> options = default)
+        public ILogicalFilterBuilder<TType, TFilter> Where(Expression<Func<TType, string?>> propertyExpression,
+            Func<TFilter, IStringFilterOperation> operation, Action<OperationFilterOptions>? options = default)
         {
             _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
             _ = operation.WhenNotNull(nameof(operation));
@@ -41,8 +41,8 @@ namespace AllOverIt.Filtering.Builders
             return this;
         }
 
-        public ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default)
+        public ILogicalFilterBuilder<TType, TFilter> Where<TProperty>(Expression<Func<TType, TProperty?>> propertyExpression,
+            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions>? options = default)
         {
             _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
             _ = operation.WhenNotNull(nameof(operation));
@@ -66,8 +66,8 @@ namespace AllOverIt.Filtering.Builders
 
         #region AND Operations
         // On ILogicalFilterBuilder interface - want to enforce Where() being the first method called
-        public ILogicalFilterBuilder<TType, TFilter> And(Expression<Func<TType, string>> propertyExpression,
-            Func<TFilter, IStringFilterOperation> operation, Action<OperationFilterOptions> options = default)
+        public ILogicalFilterBuilder<TType, TFilter> And(Expression<Func<TType, string?>> propertyExpression,
+            Func<TFilter, IStringFilterOperation> operation, Action<OperationFilterOptions>? options = default)
         {
             _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
             _ = operation.WhenNotNull(nameof(operation));
@@ -80,8 +80,8 @@ namespace AllOverIt.Filtering.Builders
         }
 
         // On ILogicalFilterBuilder interface - want to enforce Where() being the first method called
-        public ILogicalFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default)
+        public ILogicalFilterBuilder<TType, TFilter> And<TProperty>(Expression<Func<TType, TProperty?>> propertyExpression,
+            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions>? options = default)
         {
             _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
             _ = operation.WhenNotNull(nameof(operation));
@@ -106,8 +106,8 @@ namespace AllOverIt.Filtering.Builders
 
         #region OR Operations
         // On ILogicalFilterBuilder interface - want to enforce Where() being the first method called
-        public ILogicalFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string>> propertyExpression,
-            Func<TFilter, IStringFilterOperation> operation, Action<OperationFilterOptions> options = default)
+        public ILogicalFilterBuilder<TType, TFilter> Or(Expression<Func<TType, string?>> propertyExpression,
+            Func<TFilter, IStringFilterOperation> operation, Action<OperationFilterOptions>? options = default)
         {
             _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
             _ = operation.WhenNotNull(nameof(operation));
@@ -120,8 +120,8 @@ namespace AllOverIt.Filtering.Builders
         }
 
         // On ILogicalFilterBuilder interface - want to enforce Where() being the first method called
-        public ILogicalFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default)
+        public ILogicalFilterBuilder<TType, TFilter> Or<TProperty>(Expression<Func<TType, TProperty?>> propertyExpression,
+            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions>? options = default)
         {
             _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
             _ = operation.WhenNotNull(nameof(operation));

@@ -6,17 +6,22 @@ namespace ExecuteCommandOnEnterKeyBehavior
     public class ShowMessageCommand : ICommand
     {
 #pragma warning disable 0067        // CS0067: The event is never used
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 #pragma warning restore 0067
 
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
             return true;
         }
 
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
-            var dateTime = (DateTime) parameter;
+            if (parameter is null)
+            {
+                return;
+            }
+
+            var dateTime = (DateTime) parameter!;
 
             MessageBox.Show(dateTime.ToString("o"));
         }

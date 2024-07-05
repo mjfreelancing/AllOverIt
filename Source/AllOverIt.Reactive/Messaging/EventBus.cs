@@ -8,22 +8,23 @@ namespace AllOverIt.Reactive.Messaging
     /// <summary>Implements an event aggregator / bus that consumers can subscribe to for notification of various event types.</summary>
     public class EventBus : IEventBus
     {
-        private Subject<object> _subject = new();
+        private bool _disposed;
+        private readonly Subject<object> _subject = new();
 
         /// <inheritdoc />
-        public void Publish<TEvent>() where TEvent : new()
+        public void Publish<TEvent>() where TEvent : notnull, new()
         {
             _subject.OnNext(new TEvent());
         }
 
         /// <inheritdoc />
-        public void Publish<TEvent>(TEvent @event)
+        public void Publish<TEvent>(TEvent @event) where TEvent : notnull
         {
             _subject.OnNext(@event);
         }
 
         /// <inheritdoc />
-        public IObservable<TEvent> GetEvent<TEvent>()
+        public IObservable<TEvent> GetEvent<TEvent>() where TEvent : notnull
         {
             return _subject.OfType<TEvent>();
         }
@@ -32,10 +33,10 @@ namespace AllOverIt.Reactive.Messaging
         /// <param name="disposing">Indicates if the internal resources are to be disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && _subject is not null)
+            if (disposing && !_disposed)
             {
                 _subject.Dispose();
-                _subject = null;
+                _disposed = true;
             }
         }
 
@@ -43,7 +44,6 @@ namespace AllOverIt.Reactive.Messaging
         public void Dispose()
         {
             Dispose(true);
-
             GC.SuppressFinalize(this);
         }
     }

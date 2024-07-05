@@ -39,7 +39,7 @@ namespace AllOverIt.Fixture.Assertions
         {
             _ = properties.WhenNotNullOrEmpty(nameof(properties));
 
-            var propertyNames = properties.SelectToArray(property => property.UnwrapMemberExpression().Member.Name);
+            var propertyNames = properties.SelectToArray(property => property.UnwrapMemberExpression()!.Member.Name);
 
             return Including(propertyNames);
         }
@@ -65,7 +65,7 @@ namespace AllOverIt.Fixture.Assertions
         {
             _ = properties.WhenNotNullOrEmpty(nameof(properties));
 
-            var propertyNames = properties.SelectToArray(property => property.UnwrapMemberExpression().Member.Name);
+            var propertyNames = properties.SelectToArray(property => property.UnwrapMemberExpression()!.Member.Name);
 
             return Excluding(propertyNames);
         }

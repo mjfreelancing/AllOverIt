@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Mapping
 {
@@ -23,7 +24,7 @@ namespace AllOverIt.Mapping
             _sourceTargetFactories.Add(factoryKey, factory);
         }
 
-        internal bool TryGet(Type sourceType, Type targetType, out Func<IObjectMapper, object, object> factory)
+        internal bool TryGet(Type sourceType, Type targetType, [NotNullWhen(true)] out Func<IObjectMapper, object, object>? factory)
         {
             _ = sourceType.WhenNotNull(nameof(sourceType));
             _ = targetType.WhenNotNull(nameof(targetType));

@@ -4,7 +4,7 @@
     /// that can compare one value to another.</summary>
     public interface IStringFilterOperation
     {
-        /// <summary>The value of the filter.</summary>
-        string Value { get; }
+        /// <summary>The value of the filter. Although the value is nullable, not all operations support <see langword="null"/>.</summary>
+        string? Value { get; }
     }
 }

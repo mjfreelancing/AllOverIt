@@ -32,7 +32,7 @@ namespace AllOverIt.Mapping
         private static List<PropertyInfo> GetFilteredSourcePropertyInfo(Type sourceType, PropertyMatcherOptions options)
         {
             var propertyInfo = ReflectionCache
-                .GetPropertyInfo(sourceType, options.Binding)
+                .GetPropertyInfo(sourceType, options.Binding)!
                 .AsReadOnlyCollection();
 
             var sourceProps = new List<PropertyInfo>(propertyInfo.Count);
@@ -58,7 +58,7 @@ namespace AllOverIt.Mapping
         private static List<PropertyInfo> GetFilteredTargetPropertyInfo(Type targetType, PropertyMatcherOptions options)
         {
             var propertyInfo = ReflectionCache
-                .GetPropertyInfo(targetType, options.Binding)
+                .GetPropertyInfo(targetType, options.Binding)!
                 .AsReadOnlyCollection();
 
             var targetProps = new List<PropertyInfo>(propertyInfo.Count);
