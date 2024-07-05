@@ -17,7 +17,7 @@ namespace EnrichedEnumModelBindingDemo.Problems
         private static void AppendErrorCodes(IDictionary<string, object?> extensions, IEnumerable<ValidationFailure> errors)
         {
             var errorDetails = errors
-                .SelectAsReadOnlyCollection(error => new
+                .SelectToReadOnlyCollection(error => new
                 {
                     Field = error.PropertyName,
                     error.ErrorCode,

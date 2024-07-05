@@ -46,12 +46,12 @@ namespace AllOverIt.Pipes.Named.Serialization
         }
 
         /// <inheritdoc/>
-        public TMessage Deserialize(byte[] bytes)
+        public TMessage? Deserialize(byte[]? bytes)
         {
             // If a connection is broken we get back an empty byte array - we don't want to throw
             if (bytes.IsNullOrEmpty())
             {
-                return default;
+                return null;
             }
 
             using (var stream = new MemoryStream(bytes))

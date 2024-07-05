@@ -129,7 +129,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
                     {
                         array = items
                             .Cast<Dictionary<string, object>>()
-                            .SelectAsReadOnlyCollection(item => new ElementDictionary(item));
+                            .SelectToReadOnlyCollection(item => new ElementDictionary(item));
 
                         return true;
                     }

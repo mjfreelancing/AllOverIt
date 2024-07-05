@@ -41,7 +41,7 @@ namespace DeserializeToDictionaryDemo
             //var errorMessages = jsonHelper
             //    .GetArray("errors")
             //    .SelectMany(error => error.GetArray("errorInfo"))
-            //    .SelectAsReadOnlyCollection(errorInfo => errorInfo.GetValue<string>("errorMessage"));
+            //    .SelectToReadOnlyCollection(errorInfo => errorInfo.GetValue<string>("errorMessage"));
 
             //var errorMessages = jsonHelper
             //    .GetArray("errors")
@@ -51,7 +51,7 @@ namespace DeserializeToDictionaryDemo
             //var errorMessages = jsonHelper
             //    .GetArray("errors")
             //    .GetChildArray("errorInfo")
-            //    .SelectAsReadOnlyCollection(errorInfo => errorInfo.GetValue<string>("errorMessage"));
+            //    .SelectToReadOnlyCollection(errorInfo => errorInfo.GetValue<string>("errorMessage"));
 
             //var errorMessages = jsonHelper
             //    .GetArray("errors")
@@ -60,7 +60,7 @@ namespace DeserializeToDictionaryDemo
 
             //var errorMessages = jsonHelper
             //    .GetChildArray("errors", "errorInfo")
-            //    .SelectAsReadOnlyCollection(errorInfo => errorInfo.GetValue<string>("errorMessage"));
+            //    .SelectToReadOnlyCollection(errorInfo => errorInfo.GetValue<string>("errorMessage"));
 
             var errorMessages = jsonHelper.GetDescendantObjectArrayValues<string>(["errors", "errorInfo"], "errorMessage");
 

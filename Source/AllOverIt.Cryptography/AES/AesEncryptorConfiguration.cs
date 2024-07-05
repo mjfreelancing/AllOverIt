@@ -64,7 +64,7 @@ namespace AllOverIt.Cryptography.AES
             Throw<AesException>.When(!AesUtils.IsKeySizeValid(keySizeBits), $"AES Key size {keySizeBits} is invalid.");
             Throw<AesException>.When(iv.Length != 16, "The AES Initialization Vector must be 16 bytes.");
 
-            _keySize = keySizeBits;             // Using _keySize to avoid the Key being generated
+            _keySize = keySizeBits;         // Using _keySize to avoid the Key being generated
             Key = key;
             IV = iv;
         }

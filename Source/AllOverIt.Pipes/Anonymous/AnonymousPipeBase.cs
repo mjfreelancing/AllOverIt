@@ -19,7 +19,7 @@ namespace AllOverIt.Pipes.Anonymous
             {
                 AssertCanRead();
 
-                _streamReader ??= new StreamReader(_pipeStream);
+                _streamReader ??= new StreamReader(_pipeStream!);
 
                 return _streamReader;
             }

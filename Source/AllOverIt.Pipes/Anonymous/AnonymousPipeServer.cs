@@ -44,7 +44,7 @@ namespace AllOverIt.Pipes.Anonymous
         {
             if (_clientHandleString is not null)
             {
-                _pipeServerStream.DisposeLocalCopyOfClientHandle();
+                _pipeServerStream!.DisposeLocalCopyOfClientHandle();
                 _clientHandleString = null;
             }
         }

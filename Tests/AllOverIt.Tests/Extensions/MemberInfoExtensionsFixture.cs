@@ -26,7 +26,7 @@ namespace AllOverIt.Tests.Extensions
 
             public static double Method6()
             {
-                return default;
+                return 0.0d;
             }
         }
 

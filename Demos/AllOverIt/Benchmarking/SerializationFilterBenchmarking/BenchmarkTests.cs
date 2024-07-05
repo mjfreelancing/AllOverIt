@@ -23,7 +23,7 @@ namespace SerializationFilterBenchmarking
                         Data = new ComplexObject.Item.ItemData
                         {
                             Timestamp = DateTime.Now,
-                            Values = Enumerable.Range(1, 5).SelectAsReadOnlyCollection(value => value)
+                            Values = Enumerable.Range(1, 5).SelectToReadOnlyCollection(value => value)
                         }
                     },
                     new()
@@ -33,7 +33,7 @@ namespace SerializationFilterBenchmarking
                         Data = new ComplexObject.Item.ItemData
                         {
                             Timestamp = DateTime.Now,
-                            Values = Enumerable.Range(11, 5).SelectAsReadOnlyCollection(value => value)
+                            Values = Enumerable.Range(11, 5).SelectToReadOnlyCollection(value => value)
                         }
                     },
                     new()
@@ -43,14 +43,14 @@ namespace SerializationFilterBenchmarking
                         Data = new ComplexObject.Item.ItemData
                         {
                             Timestamp = DateTime.Now,
-                            Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
+                            Values = Enumerable.Range(21, 5).SelectToReadOnlyCollection(value => value)
                         }
                     },
                 ]
             };
 
             var filter = new ComplexObjectFilter();
-            _serializer = new ObjectPropertySerializer(null, filter);
+            _serializer = new ObjectPropertySerializer(filter);
         }
 
         [Benchmark]

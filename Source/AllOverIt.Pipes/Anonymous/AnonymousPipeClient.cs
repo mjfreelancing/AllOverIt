@@ -6,7 +6,7 @@ namespace AllOverIt.Pipes.Anonymous
     /// <summary>Provides an anonymous pipe client that can be configured as a reader or a writer.</summary>
     public sealed class AnonymousPipeClient : AnonymousPipeBase
     {
-        private AnonymousPipeClientStream _pipeClientStream;
+        private AnonymousPipeClientStream? _pipeClientStream;
 
         /// <summary>Initializes an anonymous readable pipe client using a string representation of the client handle
         /// as provided by an anonymous pipe server.</summary>

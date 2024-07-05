@@ -7,7 +7,7 @@ namespace AllOverIt.Pagination.Extensions
 {
     internal static class ColumnItemExtensions
     {
-        public static IReadOnlyCollection<object> GetColumnValues(this IReadOnlyCollection<IColumnDefinition> columns, object reference)
+        public static IReadOnlyCollection<object?> GetColumnValues(this IReadOnlyCollection<IColumnDefinition> columns, object reference)
         {
             _ = columns.WhenNotNullOrEmpty(nameof(columns));
             _ = reference.WhenNotNull(nameof(reference));
@@ -16,10 +16,10 @@ namespace AllOverIt.Pagination.Extensions
             var referenceTypeInfo = reference.GetType().GetTypeInfo();
 
             return columns
-                .SelectAsReadOnlyCollection(column =>
+                .SelectToReadOnlyCollection(column =>
                 {
                     return ReflectionCache
-                        .GetPropertyInfo(referenceTypeInfo, column.Property.Name)
+                        .GetPropertyInfo(referenceTypeInfo, column.Property.Name)!
                         .GetValue(reference);
                 });
         }

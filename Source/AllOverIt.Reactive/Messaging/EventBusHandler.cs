@@ -7,6 +7,7 @@ namespace AllOverIt.Reactive.Messaging
     /// <summary>A base class handler for a message that was published by an <see cref="IEventBus"/> instance.</summary>
     /// <typeparam name="TEvent">The event type this handler will respond to.</typeparam>
     public abstract class EventBusHandler<TEvent> : ObservableObject, IDisposable
+        where TEvent : notnull
     {
         private bool _disposed;
         private readonly IEventBus _eventBus;
@@ -54,12 +55,12 @@ namespace AllOverIt.Reactive.Messaging
         /// <inheritdoc />
         public void Dispose()
         {
-            Dispose(disposing: true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         /// <summary>The base class receives the event from the event bus and makes it available for subscribing to.
-        /// Override this method in concrete classes to filter or tranform the event before the subscription is applied.
+        /// Override this method in concrete classes to filter or transform the event before the subscription is applied.
         /// The base method must be called first and the filter or transform is to be applied to this result.</summary>
         /// <returns>The observable notifying a new event when it is received.</returns>
         protected virtual IObservable<TEvent> OnEvent()

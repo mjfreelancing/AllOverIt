@@ -22,7 +22,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                 var descriptors = _dbContext.Model
                     .FindEntityType(typeof(Author))
                     .GetProperties()
-                    .SelectAsReadOnlyCollection(ColumnDescriptor.Create);
+                    .SelectToReadOnlyCollection(ColumnDescriptor.Create);
 
                 foreach (var descriptor in descriptors)
                 {
@@ -35,7 +35,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             ColumnName = nameof(Author.Id),
                             ColumnType = "INTEGER",
                             IsNullable = false,
-                            MaxLength = (int?)null,
+                            MaxLength = (int?) null,
                             Constraint = ConstraintType.PrimaryKey,
                             ForeignKeyPrincipals = Array.Empty<PrincipalForeignKey>()
                         };
@@ -98,7 +98,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                 var descriptors = _dbContext.Model
                     .FindEntityType(typeof(AuthorBlog))
                     .GetProperties()
-                    .SelectAsReadOnlyCollection(ColumnDescriptor.Create);
+                    .SelectToReadOnlyCollection(ColumnDescriptor.Create);
 
                 foreach (var descriptor in descriptors)
                 {
@@ -111,7 +111,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             ColumnName = nameof(AuthorBlog.Id),
                             ColumnType = "INTEGER",
                             IsNullable = false,
-                            MaxLength = (int?)null,
+                            MaxLength = (int?) null,
                             Constraint = ConstraintType.PrimaryKey,
                             ForeignKeyPrincipals = Array.Empty<PrincipalForeignKey>()
                         };
@@ -123,7 +123,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             ColumnName = $"{nameof(AuthorBlog.Author)}Id",
                             ColumnType = "INTEGER",
                             IsNullable = false,
-                            MaxLength = (int?)null,
+                            MaxLength = (int?) null,
                             Constraint = ConstraintType.ForeignKey,
                             ForeignKeyPrincipals = new[]
                             {
@@ -144,7 +144,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             ColumnName = $"{nameof(AuthorBlog.Blogger)}Id",
                             ColumnType = "INTEGER",
                             IsNullable = false,
-                            MaxLength = (int?)null,
+                            MaxLength = (int?) null,
                             Constraint = ConstraintType.ForeignKey,
                             ForeignKeyPrincipals = new[]
                             {

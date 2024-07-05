@@ -58,7 +58,7 @@ namespace AllOverIt.Events
                 // We're not checking for duplicate handler subscriptions so make sure any duplicates are unsubscribed
                 var subscriptionsToRemove = subscriptions
                     .Where(subscription => subscription.GetHandler<TMessage>() == handler)
-                    .SelectAsReadOnlyCollection(subscription => subscription);
+                    .SelectToReadOnlyCollection(subscription => subscription);
 
                 foreach (var subscription in subscriptionsToRemove)
                 {
@@ -75,7 +75,7 @@ namespace AllOverIt.Events
                 // We're not checking for duplicate handler subscriptions so make sure any duplicates are unsubscribed
                 var subscriptionsToRemove = subscriptions
                     .Where(subscription => subscription.GetHandler<TMessage>() == handler)
-                    .SelectAsReadOnlyCollection(subscription => subscription);
+                    .SelectToReadOnlyCollection(subscription => subscription);
 
                 foreach (var subscription in subscriptionsToRemove)
                 {

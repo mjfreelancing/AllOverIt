@@ -386,7 +386,7 @@ namespace AllOverIt.Csv.Tests.Extensions
 
                 var headerNames = _sampleData
                     .SelectMany(item => item.Children)
-                    .SelectAsReadOnlyCollection(item => $"{item.Name}-{item.Value}");
+                    .SelectToReadOnlyCollection(item => $"{item.Name}-{item.Value}");
 
                 sb.AppendLine(string.Join(",", headerNames));
 

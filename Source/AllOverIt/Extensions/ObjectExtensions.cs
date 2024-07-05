@@ -163,7 +163,7 @@ namespace AllOverIt.Extensions
                     }
                 }
 
-                return default;
+                return null;
             }
         }
 

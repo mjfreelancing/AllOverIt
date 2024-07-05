@@ -372,7 +372,7 @@ namespace AllOverIt.Tests.Extensions
             public async Task Should_Iterate_Collection()
             {
                 var values = CreateMany<bool>();
-                var expected = values.SelectAsReadOnlyCollection(item => !item);
+                var expected = values.SelectToArray(item => !item);
 
                 var actual = await values.SelectAsync((item, token) => Task.FromResult(!item)).ToListAsync();
 
@@ -971,7 +971,7 @@ namespace AllOverIt.Tests.Extensions
             public async Task Should_Iterate_Collection()
             {
                 var values = CreateMany<bool>(100);
-                var expected = values.SelectAsReadOnlyCollection(item => !item);
+                var expected = values.SelectToArray(item => !item);
 
                 var actual = await values.SelectAsParallelAsync((item, token) => Task.FromResult(!item), GetWithinRange(1, 4)).ToListAsync();
 
@@ -1054,123 +1054,6 @@ namespace AllOverIt.Tests.Extensions
                 var expected = source.Select(item => item * 2);
 
                 var actual = source.SelectToArray(item => item * 2);
-
-                expected.Should().BeEquivalentTo(actual);
-            }
-        }
-
-        public class SelectAsList : EnumerableExtensionsFixture
-        {
-            [Fact]
-            public void Should_Throw_When_Null()
-            {
-                Invoking(
-                    () =>
-                    {
-                        IEnumerable<object> items = null;
-
-                        items.SelectAsList(item => item);
-                    })
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("items");
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Empty()
-            {
-                var items = new List<int>();
-
-                Invoking(() => items.SelectAsList(item => item))
-                  .Should()
-                  .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Return_Projected_List()
-            {
-                var source = CreateMany<int>();
-                var expected = source.Select(item => item * 2);
-
-                var actual = source.SelectAsList(item => item * 2);
-
-                expected.Should().BeEquivalentTo(actual);
-            }
-        }
-
-        public class SelectAsReadOnlyCollection : EnumerableExtensionsFixture
-        {
-            [Fact]
-            public void Should_Throw_When_Null()
-            {
-                Invoking(
-                    () =>
-                    {
-                        IEnumerable<object> items = null;
-
-                        items.SelectAsReadOnlyCollection(item => item);
-                    })
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("items");
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Empty()
-            {
-                var items = new List<int>();
-
-                Invoking(() => items.SelectAsReadOnlyCollection(item => item))
-                  .Should()
-                  .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Return_Projected_Collection()
-            {
-                var source = CreateMany<int>();
-                var expected = source.Select(item => item * 2);
-
-                var actual = source.SelectAsReadOnlyCollection(item => item * 2);
-
-                expected.Should().BeEquivalentTo(actual);
-            }
-        }
-
-        public class SelectAsReadOnlyList : EnumerableExtensionsFixture
-        {
-            [Fact]
-            public void Should_Throw_When_Null()
-            {
-                Invoking(
-                    () =>
-                    {
-                        IEnumerable<object> items = null;
-
-                        items.SelectAsReadOnlyList(item => item);
-                    })
-                  .Should()
-                  .Throw<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("items");
-            }
-
-            [Fact]
-            public void Should_Not_Throw_When_Empty()
-            {
-                var items = new List<int>();
-
-                Invoking(() => items.SelectAsReadOnlyList(item => item))
-                  .Should()
-                  .NotThrow();
-            }
-
-            [Fact]
-            public void Should_Return_Projected_List()
-            {
-                var source = CreateMany<int>();
-                var expected = source.Select(item => item * 2);
-
-                var actual = source.SelectAsReadOnlyList(item => item * 2);
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -1387,114 +1270,6 @@ namespace AllOverIt.Tests.Extensions
                 var expected = source.Select(item => item * 2);
 
                 var actual = await source.SelectToListAsync((item, token) => Task.FromResult(item * 2));
-
-                expected.Should().BeEquivalentTo(actual);
-            }
-        }
-
-        public class SelectAsReadOnlyCollectionAsync : EnumerableExtensionsFixture
-        {
-            [Fact]
-            public async Task Should_Throw_When_Null()
-            {
-                await Invoking(
-                    () =>
-                    {
-                        IEnumerable<object> items = null;
-
-                        return items.SelectAsReadOnlyCollectionAsync((item, token) => Task.FromResult(item));
-                    })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("items");
-            }
-
-            [Fact]
-            public async Task Should_Not_Throw_When_Empty()
-            {
-                var items = new List<int>();
-
-                await Invoking(() => items.SelectAsReadOnlyCollectionAsync((item, token) => Task.FromResult(item)))
-                  .Should()
-                  .NotThrowAsync();
-            }
-
-            [Fact]
-            public async Task Should_Throw_When_Selector_Null()
-            {
-                await Invoking(
-                    () =>
-                    {
-                        IEnumerable<bool> items = [];
-
-                        return items.SelectAsReadOnlyCollectionAsync((Func<bool, CancellationToken, Task<bool>>) null);
-                    })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("selector");
-            }
-
-            [Fact]
-            public async Task Should_Return_Projected_Collection()
-            {
-                var source = CreateMany<int>();
-                var expected = source.Select(item => item * 2);
-
-                var actual = await source.SelectAsReadOnlyCollectionAsync((item, token) => Task.FromResult(item * 2));
-
-                expected.Should().BeEquivalentTo(actual);
-            }
-        }
-
-        public class SelectAsReadOnlyListAsync : EnumerableExtensionsFixture
-        {
-            [Fact]
-            public async Task Should_Throw_When_Null()
-            {
-                await Invoking(
-                    () =>
-                    {
-                        IEnumerable<object> items = null;
-
-                        return items.SelectAsReadOnlyListAsync((item, token) => Task.FromResult(item));
-                    })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("items");
-            }
-
-            [Fact]
-            public async Task Should_Not_Throw_When_Empty()
-            {
-                var items = new List<int>();
-
-                await Invoking(() => items.SelectAsReadOnlyListAsync((item, token) => Task.FromResult(item)))
-                  .Should()
-                  .NotThrowAsync();
-            }
-
-            [Fact]
-            public async Task Should_Throw_When_Selector_Null()
-            {
-                await Invoking(
-                    () =>
-                    {
-                        IEnumerable<bool> items = [];
-
-                        return items.SelectAsReadOnlyListAsync((Func<bool, CancellationToken, Task<bool>>) null);
-                    })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
-                  .WithNamedMessageWhenNull("selector");
-            }
-
-            [Fact]
-            public async Task Should_Return_Projected_List()
-            {
-                var source = CreateMany<int>();
-                var expected = source.Select(item => item * 2);
-
-                var actual = await source.SelectAsReadOnlyListAsync((item, token) => Task.FromResult(item * 2));
 
                 expected.Should().BeEquivalentTo(actual);
             }
@@ -1834,7 +1609,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, cts.Token);
 
-                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
+                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as structs are copied by value
             }
         }
 

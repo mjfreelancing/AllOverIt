@@ -33,7 +33,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
             _prop8 = Create<double>();
             _prop9 = DateTime.Now;
             _prop11 = CreateMany<int>(3);
-            _prop12 = _prop11.SelectAsReadOnlyCollection(item => $"{item}");
+            _prop12 = _prop11.SelectToReadOnlyCollection(item => $"{item}");
             _prop13 = CreateMany<Guid>(3);
 
             _value = new

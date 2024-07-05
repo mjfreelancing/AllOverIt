@@ -42,7 +42,7 @@ namespace DiagnosticsDemo
 
             var tasks = Enumerable
                 .Range(1, 10)
-                .SelectAsReadOnlyCollection(item =>
+                .SelectToReadOnlyCollection(item =>
                 {
                     return Task.Run(async () =>
                     {

@@ -194,7 +194,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         public bool TryCloseAllViews()
         {
             // Need to get all views in advance as they cannot be closed during iteration (the collection will be modified)
-            var views = this.SelectAsReadOnlyCollection(item => item.View);
+            var views = this.SelectToReadOnlyCollection(item => item.View);
 
             foreach (var view in views)
             {
