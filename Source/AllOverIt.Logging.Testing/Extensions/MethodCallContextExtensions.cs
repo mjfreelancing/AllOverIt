@@ -1,9 +1,10 @@
 ﻿#nullable enable
 
+using AllOverIt;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 
-namespace AllOverIt.Logging.Testing
+namespace AllOverIt.Logging.Testing.Extensions
 {
     /// <summary>Contains extensions methods for <see cref="MethodCallContext"/> to help with asserting captured logging data.</summary>
     public static class MethodCallsWithArgumentsExtensions

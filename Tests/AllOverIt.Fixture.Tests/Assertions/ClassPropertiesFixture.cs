@@ -1,12 +1,13 @@
 ﻿#nullable enable
 
+using AllOverIt;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture.Assertions;
 using AllOverIt.Fixture.Extensions;
 using FluentAssertions;
 using System.Linq.Expressions;
 
-namespace AllOverIt.Fixture.Tests
+namespace AllOverIt.Fixture.Tests.Assertions
 {
     public class ClassProperties_Generic_Fixture : FixtureBase
     {
@@ -509,11 +510,11 @@ namespace AllOverIt.Fixture.Tests
                 {
                     if (declaredOnly)
                     {
-                        _ = _declaredOnlyProperties.Including((string[]) null!);
+                        _ = _declaredOnlyProperties.Including( null!);
                     }
                     else
                     {
-                        _ = _notDeclaredOnlyProperties.Including((string[]) null!);
+                        _ = _notDeclaredOnlyProperties.Including( null!);
                     }
                 })
                 .Should()
@@ -604,11 +605,11 @@ namespace AllOverIt.Fixture.Tests
                 {
                     if (declaredOnly)
                     {
-                        _ = _declaredOnlyProperties.Excluding((string[]) null!);
+                        _ = _declaredOnlyProperties.Excluding( null!);
                     }
                     else
                     {
-                        _ = _notDeclaredOnlyProperties.Excluding((string[]) null!);
+                        _ = _notDeclaredOnlyProperties.Excluding( null!);
                     }
                 })
                 .Should()

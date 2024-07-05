@@ -38,7 +38,7 @@ namespace AllOverIt.Serialization.Binary.Readers
                     var assemblyTypeName = reader._userDefinedTypeCache[cacheIndex];
 
                     var valueType = Type.GetType(assemblyTypeName);
-                    var converter = reader.Readers.SingleOrDefault(converter => converter.Type == valueType);
+                    var converter = reader.Readers.Single(converter => converter.Type == valueType);
 
                     return converter.ReadValue(reader);
                 }

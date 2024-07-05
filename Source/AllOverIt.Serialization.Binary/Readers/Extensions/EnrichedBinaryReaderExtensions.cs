@@ -11,11 +11,11 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
     /// <summary>Provides extension methods for <see cref="IEnrichedBinaryReader"/>.</summary>
     public static class EnrichedBinaryReaderExtensions
     {
-        /// <summary>Reads a string from the current stream, including null values.</summary>
+        /// <summary>Reads a string from the current stream, including <see langword="null"/> values.</summary>
         /// <param name="reader">The reader that is reading from the current stream.</param>
-        /// <returns>The read string. If the written string was null then null will be returned.</returns>
+        /// <returns>The read string. If the written string was <see langword="null"/> then <see langword="null"/> will be returned.</returns>
         /// <remarks>This method must be used in conjunction with <see cref="EnrichedBinaryWriterExtensions.WriteSafeString(IEnrichedBinaryWriter, string)"/>.</remarks>
-        public static string ReadSafeString(this IEnrichedBinaryReader reader)
+        public static string? ReadSafeString(this IEnrichedBinaryReader reader)
         {
             var hasValue = reader
                 .WhenNotNull(nameof(reader))
@@ -23,7 +23,7 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
 
             return hasValue
                 ? reader.ReadString()
-                : default;
+                : null;
         }
 
         /// <summary>Reads a GUID from the current stream.</summary>
@@ -110,7 +110,7 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
         /// <typeparam name="TValue">The dictionary value type to be read from the current stream.</typeparam>
         /// <param name="reader">The reader that is reading from the current stream.</param>
         /// <returns>The object read from the stream.</returns>
-        public static IDictionary<TKey, TValue> ReadObjectAsDictionary<TKey, TValue>(this IEnrichedBinaryReader reader)
+        public static IDictionary<TKey, TValue> ReadObjectAsDictionary<TKey, TValue>(this IEnrichedBinaryReader reader) where TKey : notnull
         {
             return reader
                 .WhenNotNull(nameof(reader))
@@ -144,6 +144,8 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
 
             var assemblyTypeName = reader.ReadString();
             var elementType = Type.GetType(assemblyTypeName);
+
+            Throw<BinaryReaderException>.WhenNull(elementType, $"Cannot read value for unknown type '{assemblyTypeName}'.");
 
             var values = Array.CreateInstance(elementType, count);
 

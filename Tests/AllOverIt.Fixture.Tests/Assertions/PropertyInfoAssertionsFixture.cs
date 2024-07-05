@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using AllOverIt;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture.Assertions;
 using AllOverIt.Fixture.Extensions;
@@ -10,7 +11,7 @@ using FluentAssertions.Execution;
 using System.Text;
 using Xunit.Sdk;
 
-namespace AllOverIt.Fixture.Tests
+namespace AllOverIt.Fixture.Tests.Assertions
 {
     public class PropertyInfoAssertionsFixture : FixtureBase
     {

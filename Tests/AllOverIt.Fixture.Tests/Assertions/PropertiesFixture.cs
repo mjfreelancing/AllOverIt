@@ -1,9 +1,10 @@
 ﻿#nullable enable
 
+using AllOverIt;
 using AllOverIt.Fixture.Assertions;
 using FluentAssertions;
 
-namespace AllOverIt.Fixture.Tests
+namespace AllOverIt.Fixture.Tests.Assertions
 {
     public class PropertiesFixture : FixtureBase
     {

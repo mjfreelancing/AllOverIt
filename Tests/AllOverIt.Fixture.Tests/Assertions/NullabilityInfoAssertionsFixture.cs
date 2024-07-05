@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using AllOverIt;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture.Assertions;
 using AllOverIt.Reflection;
@@ -9,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using Xunit.Sdk;
 
-namespace AllOverIt.Fixture.Tests
+namespace AllOverIt.Fixture.Tests.Assertions
 {
     public class NullabilityInfoAssertionsFixture : FixtureBase
     {
