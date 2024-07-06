@@ -228,7 +228,7 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
             // Due to the above potential edge cases this code is not using enumerableType.IsGenericEnumerableType()
             // as this does not (intentionally) cater for anything other than arrays and IEnumerable types.
 
-            Type? elementType = default;         // Passed to WriteEnumerable() when enumerableType is IEnumerable
+            Type? elementType = null;         // Passed to WriteEnumerable() when enumerableType is IEnumerable
 
             if (enumerableType.IsArray)
             {
@@ -265,19 +265,19 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
         /// <param name="enumerable">The IEnumerable to be written.</param>
         /// <param name="valueType">The type of each value in the <see cref="IEnumerable{TType}"/>. If the <paramref name="valueType"/>
-        /// is null then the runtime type of the first value read will be used. If the first value is <see langword="null"/> then object is used.</param>
-        public static void WriteEnumerable(this IEnrichedBinaryWriter writer, IEnumerable enumerable, Type valueType)
+        /// is <see langword="null"/> then the runtime type of the first value read will be used. If the first value is <see langword="null"/>
+        /// then object is used.</param>
+        public static void WriteEnumerable(this IEnrichedBinaryWriter writer, IEnumerable enumerable, Type? valueType)
         {
             _ = writer.WhenNotNull(nameof(writer));
             _ = enumerable.WhenNotNull(nameof(enumerable));
 
             var elementType = valueType;
 
-            if (elementType is null ||
-                enumerable is not ICollection collection)
+            if (elementType is null || enumerable is not ICollection collection)
             {
-                collection = null;
-                IList values = null;
+                collection = null!;
+                IList? values = null;
 
                 foreach (var value in enumerable)
                 {
@@ -300,13 +300,22 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
                     values.Add(value);
                 }
 
-                collection ??= values;
+                if (collection is null)
+                {
+                    if (values is null)
+                    {
+                        elementType = CommonTypes.ObjectType;
+                        values = Array.Empty<object>();
+                    }
+
+                    collection = values;
+                }
             }
 
             writer.Write(collection.Count);
 
             // The element type is required so ReadEnumerable knows the type of list to create
-            var assemblyTypeName = elementType.AssemblyQualifiedName;
+            var assemblyTypeName = elementType!.AssemblyQualifiedName!;
             writer.Write(assemblyTypeName);
 
             if (collection.Count > 0)

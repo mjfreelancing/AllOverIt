@@ -185,6 +185,8 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
             var assemblyTypeName = reader.ReadString();
             var elementType = Type.GetType(assemblyTypeName);
 
+            Throw<BinaryReaderException>.WhenNull(elementType, $"Cannot read value for unknown type '{assemblyTypeName}'.");
+
             if (count == 0)
             {
                 return elementType.CreateListOf();
@@ -244,7 +246,7 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
         /// <param name="reader">The reader that is reading from the current stream.</param>
         /// <returns>The IDictionary read from the stream, after converting from IDictionary&lt;object, object&gt; to IDictionary&lt;TKey, TValue&gt;
         /// by casting the key and value values.</returns>
-        public static IDictionary<TKey, TValue> ReadDictionary<TKey, TValue>(this IEnrichedBinaryReader reader)
+        public static IDictionary<TKey, TValue> ReadDictionary<TKey, TValue>(this IEnrichedBinaryReader reader) where TKey : notnull
         {
             var dictionary = reader
                 .WhenNotNull(nameof(reader))

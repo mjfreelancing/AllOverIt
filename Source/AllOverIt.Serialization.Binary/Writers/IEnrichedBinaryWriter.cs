@@ -82,16 +82,16 @@
         /// <summary>Writes a value to the underlying stream, prefixed with a type identifier that will enable it to be read back again.
         /// The value cannot be null and it must have a type that is supported by the writer. IEnumerable and IDictionary types are supported
         /// so long as their underlying value types can be determined.</summary>
-        /// <param name="value">The value to be written.</param>
+        /// <param name="value">The value to be written. Cannot be <see langword="null"/>.</param>
         void WriteObject(object value);
 
         /// <summary>
         /// Writes a value to the underlying stream, prefixed with a type identifier that will enable it to be read back again.
         /// Null values are supported so long as the type information is available; it cannot be typeof(object).
         /// </summary>
-        /// <param name="value">The value to be written.</param>
+        /// <param name="value">The value to be written.  Can be <see langword="null"/>.</param>
         /// <param name="type">The value type. A suitable type identifier will be written to the stream prior to the value. If
         /// this is typeof(object) then the value's runtime type information will be used; this cannot be typeof(object).</param>
-        void WriteObject(object value, Type type);
+        void WriteObject(object? value, Type type);
     }
 }

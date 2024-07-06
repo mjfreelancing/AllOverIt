@@ -152,12 +152,18 @@ namespace AllOverIt.Tests.Aspects
 
         public class WithServiceProvider : InterceptorFactoryFixture
         {
+            private readonly ServiceCollection serviceCollection;
+            private readonly ServiceProvider serviceProvider;
+
+            public WithServiceProvider()
+            {
+                serviceCollection = new ServiceCollection();
+                serviceProvider = serviceCollection.BuildServiceProvider();
+            }
+
             [Fact]
             public void Should_Provide_ServiceProvider()
             {
-                var serviceCollection = new ServiceCollection();
-                var serviceProvider = serviceCollection.BuildServiceProvider();
-
                 IServiceProvider actual = null;
 
                 var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>(serviceProvider, (provider, interceptor) =>
@@ -184,7 +190,7 @@ namespace AllOverIt.Tests.Aspects
             {
                 var actual = false;
 
-                _ = CreateDummyInterceptor<DummyInterceptor1>(null, (provider, interceptor) =>
+                _ = CreateDummyInterceptor<DummyInterceptor1>(serviceProvider, (provider, interceptor) =>
                 {
                     actual = true;
                 });
@@ -197,7 +203,7 @@ namespace AllOverIt.Tests.Aspects
             {
                 DummyInterceptor1 actual = null;
 
-                var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>(null, (provider, interceptor) =>
+                var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>(serviceProvider, (provider, interceptor) =>
                 {
                     actual = interceptor;
                 });
@@ -209,7 +215,7 @@ namespace AllOverIt.Tests.Aspects
             [Fact]
             public void Should_Decorate_Service()
             {
-                var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>(null, (provider, interceptor) =>
+                var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor1>(serviceProvider, (provider, interceptor) =>
                 {
                 });
 
