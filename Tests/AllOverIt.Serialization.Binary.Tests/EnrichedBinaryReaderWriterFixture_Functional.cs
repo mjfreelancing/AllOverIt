@@ -34,6 +34,7 @@ namespace AllOverIt.Serialization.Binary.Tests
             public decimal Decimal { get; set; }
             public string String { get; set; }
             public string NullString { get; set; }
+            public string EmptyString { get; set; }
             public char Char { get; set; }
             public DummyEnum Enum { get; set; }
             public Guid Guid { get; set; }
@@ -66,6 +67,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 writer.Write(Decimal);
                 writer.Write(String);
                 writer.WriteSafeString(NullString);             // Can't use Write()
+                writer.WriteSafeString(EmptyString);
                 writer.Write(Char);
 
                 // Items below require these extension methods or WriteObject()
@@ -105,6 +107,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 Decimal = reader.ReadDecimal();
                 String = reader.ReadString();
                 NullString = reader.ReadSafeString();           // Can't use reader.ReadString()
+                EmptyString = reader.ReadSafeString();
                 Char = reader.ReadChar();
 
                 // Using extension methods to match the write calls
@@ -147,6 +150,7 @@ namespace AllOverIt.Serialization.Binary.Tests
 
                 writer.WriteSafeString(String);
                 writer.WriteSafeString(NullString);
+                writer.WriteSafeString(EmptyString);
 
                 writer.WriteChar(Char);
 
@@ -187,6 +191,7 @@ namespace AllOverIt.Serialization.Binary.Tests
 
                 String = reader.ReadSafeString();
                 NullString = reader.ReadSafeString();
+                EmptyString = reader.ReadSafeString();
 
                 Char = reader.ReadChar();
 
@@ -232,6 +237,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 writer.WriteObject(Decimal);
                 writer.WriteObject(String);
                 writer.WriteSafeString(NullString);             // Can't use WriteObject()
+                writer.WriteSafeString(EmptyString);
                 writer.WriteObject(Char);
                 writer.WriteObject(Enum);
                 writer.WriteObject(Guid);
@@ -267,6 +273,7 @@ namespace AllOverIt.Serialization.Binary.Tests
 
                 String = reader.ReadObject<string>();
                 NullString = reader.ReadSafeString();                   // Can't use reader.ReadObject<string>()
+                EmptyString = reader.ReadSafeString();
 
                 Char = reader.ReadObject<char>();
                 Enum = reader.ReadObject<DummyEnum>();
@@ -381,7 +388,6 @@ namespace AllOverIt.Serialization.Binary.Tests
         public void Should_Write_Using_Write_Method1_Using_All_Constructors(int constructor)
         {
             var expected = CreateKnownTypes();
-            expected.NullString = default;
 
             KnownTypes actual = new();
 
@@ -429,7 +435,6 @@ namespace AllOverIt.Serialization.Binary.Tests
         public void Should_Write_Using_Write_Extensions_Method2_Using_All_Constructors(int constructor)
         {
             var expected = CreateKnownTypes();
-            expected.NullString = default;
 
             KnownTypes actual = new();
 
@@ -474,7 +479,6 @@ namespace AllOverIt.Serialization.Binary.Tests
         public void Should_Write_All_As_Objects()
         {
             var expected = CreateKnownTypes();
-            expected.NullString = default;
 
             KnownTypes actual = new();
 
@@ -686,12 +690,14 @@ namespace AllOverIt.Serialization.Binary.Tests
         {
             var knownTypes = Create<KnownTypes>();
 
-            knownTypes.Strings = new List<string> { null, "a", "b" };
+            knownTypes.Strings = new List<string> { null, "a", "", null, "b" };
             knownTypes.Doubles = knownTypes.Doubles.ToList();               // replace Autofixture type
             knownTypes.NullableInts = new int?[3] { 1, null, 3 };
             knownTypes.EmptyDoubleArray = Array.Empty<double>();
             knownTypes.EmptyDoubles = new List<double>();
             knownTypes.NullDoubles = null;
+            knownTypes.NullString = default;
+            knownTypes.EmptyString = string.Empty;
 
             return knownTypes;
         }

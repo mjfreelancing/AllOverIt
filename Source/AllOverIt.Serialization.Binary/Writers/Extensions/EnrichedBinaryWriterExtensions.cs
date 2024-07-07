@@ -29,16 +29,17 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
         /// <param name="value">The value to be written.</param>
         /// <remarks>The value can null.</remarks>
-        public static void WriteSafeString(this IEnrichedBinaryWriter writer, string value)
+        public static void WriteSafeString(this IEnrichedBinaryWriter writer, string? value)
         {
             _ = writer.WhenNotNull(nameof(writer));
 
-            var hasValue = value.IsNotNullOrEmpty();
+            var hasValue = value is not null;
+
             writer.Write(hasValue);
 
             if (hasValue)
             {
-                writer.Write(value);
+                writer.Write(value!);
             }
         }
 

@@ -16,6 +16,6 @@ namespace AllOverIt.Serialization.Binary.Writers
         }
 
         /// <inheritdoc />
-        public abstract void WriteValue(IEnrichedBinaryWriter writer, object? value);
+        public abstract void WriteValue(IEnrichedBinaryWriter writer, object value);
     }
 }
