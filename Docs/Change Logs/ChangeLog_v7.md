@@ -1,3 +1,13 @@
+#  Version 7.22.0
+## 07 Jul 2024
+
+### AllOverIt.Serialization.Binary
+
+* Fixed issue with writing an empty string via WriteSafeString() that was being read back as null.
+
+---
+
+
 #  Version 7.21.0
 ## 02 Jul 2024
 

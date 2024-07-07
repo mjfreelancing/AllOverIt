@@ -33,7 +33,8 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
         {
             _ = writer.WhenNotNull(nameof(writer));
 
-            var hasValue = value.IsNotNullOrEmpty();
+            var hasValue = value is not null;
+
             writer.Write(hasValue);
 
             if (hasValue)
