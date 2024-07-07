@@ -18,7 +18,7 @@ namespace AllOverIt.Pagination
         /// <param name="continuationToken">The continuation token containing the encoded query direction.</param>
         /// <returns>The configured query direction when the <paramref name="continuationToken"/> is <see langword="null" /> or empty,
         /// otherwise the direction encoded in the <paramref name="continuationToken"/>.</returns>
-        PaginationDirection GetQueryDirection(string continuationToken = default);
+        PaginationDirection GetQueryDirection(string? continuationToken = default);
 
         /// <summary>Appends a new ascending order-by column. When ordering by multiple columns it is important that the last column
         /// is unique across all pages (such as the IDENTITY column), even if that column is not returned in the results.</summary>
@@ -40,7 +40,7 @@ namespace AllOverIt.Pagination
         /// <param name="continuationToken">The continuation token. The token will only be valid for queries that are constructed equally
         /// across consecutive calls. The content of the token is only used to determine where the required page starts.</param>
         /// <returns>The current paginator instance to support a fluent syntax.</returns>
-        IQueryable<TEntity> GetPageQuery(string continuationToken = default);
+        IQueryable<TEntity> GetPageQuery(string? continuationToken = default);
 
         /// <summary>Creates a query that returns data that is previous to (relative to the pagination direction) the provided entity reference.</summary>
         /// <param name="reference">The entity reference that all subsequent data must be prior to.</param>

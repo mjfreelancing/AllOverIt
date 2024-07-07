@@ -31,7 +31,7 @@ namespace AllOverIt.Pagination.TokenEncoding
             {
                 reader.Readers.Add(Reader);
 
-                return (ContinuationToken) reader.ReadObject();
+                return (ContinuationToken) reader.ReadObject()!;
             }
         }
     }

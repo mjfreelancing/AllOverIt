@@ -58,7 +58,7 @@ namespace AllOverIt.Pipes.Named.Connection
                             break;
                         }
 
-                        var message = _serializer.Deserialize(bytes);
+                        var message = _serializer.Deserialize(bytes)!;
 
                         DoOnMessageReceived(message);
                     }

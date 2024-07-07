@@ -122,12 +122,12 @@ namespace AllOverIt.Logging.Testing
         /// <param name="logTemplate">The log template expected to be captured.</param>
         /// <param name="arguments">The arguments, as a <c>Dictionary&lt;string, object&gt;</c>, expected to be captured.</param>
         /// <returns>The expected metadata.</returns>
-        public static IDictionary<string, object> GetExpectedLogTemplateWithArgumentsMetadata(string logTemplate, IDictionary<string, object> arguments)
+        public static IDictionary<string, object?> GetExpectedLogTemplateWithArgumentsMetadata(string logTemplate, IDictionary<string, object?> arguments)
         {
             _ = logTemplate.WhenNotNullOrEmpty(nameof(logTemplate));
             _ = arguments.WhenNotNull(nameof(arguments));
 
-            return new Dictionary<string, object>(arguments)
+            return new Dictionary<string, object?>(arguments)
             {
                 { OriginalFormat, logTemplate }
             };

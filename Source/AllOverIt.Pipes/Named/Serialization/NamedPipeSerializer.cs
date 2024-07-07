@@ -63,7 +63,7 @@ namespace AllOverIt.Pipes.Named.Serialization
                         serializerReader.Readers.Add(reader);
                     }
 
-                    return (TMessage) serializerReader.ReadObject();
+                    return (TMessage) serializerReader.ReadObject()!;
                 }
             }
         }

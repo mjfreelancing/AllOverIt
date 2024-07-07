@@ -51,7 +51,7 @@ namespace BackgroundTaskDemo
                 Console.WriteLine("Task 5 Completed");      // Will not be logged
             }, cts.Token);
 
-            var task6 = new BackgroundTask(Task6Impl, exception =>
+            var task6 = new BackgroundTask(Task6Action, exception =>
             {
                 Console.WriteLine("Task 6, last chance to handle an exception. Returning false.");
 
@@ -71,10 +71,10 @@ namespace BackgroundTaskDemo
             // ...and others
 
             // Or like this - it uses an implicit Task operator
-            await Task.WhenAll(task1, task2, task3, task4);
+            await Task.WhenAll(task1!, task2!, task3!, task4!);
 
             // .Result is OK after awaiting the task
-            var t2Result = ((Task<long>) task2).Result;
+            var t2Result = ((Task<long>) task2!).Result;
 
             Console.WriteLine();
             Console.WriteLine($"Task 2 returned a value of {t2Result}");
@@ -98,7 +98,7 @@ namespace BackgroundTaskDemo
             Console.ReadKey();
         }
 
-        private static async Task Task6Impl(CancellationToken cancellationToken)
+        private static async Task Task6Action(CancellationToken cancellationToken)
         {
             try
             {

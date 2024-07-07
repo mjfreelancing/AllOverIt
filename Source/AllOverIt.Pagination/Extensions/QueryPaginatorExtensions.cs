@@ -269,8 +269,8 @@ namespace AllOverIt.Pagination.Extensions
             var pageResults = pageQuery.ToList();
             var hasResults = pageResults.Count != 0;
 
-            string previousToken = default;
-            string nextToken = default;
+            string? previousToken = default;
+            string? nextToken = default;
 
             if (hasResults)
             {

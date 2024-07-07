@@ -698,7 +698,8 @@ namespace AllOverIt.Aws.AppSync.Client
         private async Task<AppSyncSubscriptionMessage> GetGraphqlResponse(MemoryStream stream)
         {
             var response = await _configuration.Serializer.DeserializeObjectAsync<AppSyncSubscriptionMessage>(stream, _webSocketCancellationTokenSource!.Token);
-            response.Message = Encoding.UTF8.GetString(stream.ToArray());
+
+            response!.Message = Encoding.UTF8.GetString(stream.ToArray());
 
             return response;
         }

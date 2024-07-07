@@ -208,7 +208,7 @@ namespace AllOverIt.Serialization.Json.Abstractions
 
         private ElementDictionary CreateElementDictionary(string value)
         {
-            var dictionary = _jsonSerializer.DeserializeObject<Dictionary<string, object?>>(value);
+            var dictionary = _jsonSerializer.DeserializeObject<Dictionary<string, object?>>(value)!;
 
             return new ElementDictionary(dictionary);
         }

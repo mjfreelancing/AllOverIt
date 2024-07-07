@@ -21,7 +21,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
         }
 
         /// <inheritdoc />
-        public override IList<TConcrete> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override IList<TConcrete>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             return JsonSerializer.Deserialize<List<TConcrete>>(ref reader, options);
         }

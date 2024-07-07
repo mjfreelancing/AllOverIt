@@ -8,6 +8,6 @@
         public Type Type => typeof(TType);
 
         /// <inheritdoc />
-        public abstract void WriteValue(IEnrichedBinaryWriter writer, object? value);
+        public abstract void WriteValue(IEnrichedBinaryWriter writer, object value);
     }
 }

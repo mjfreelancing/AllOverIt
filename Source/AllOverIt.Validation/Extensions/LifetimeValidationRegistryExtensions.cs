@@ -13,7 +13,7 @@ namespace AllOverIt.Validation.Extensions
         /// instance of a <see cref="LifetimeValidationInvoker"/>.</param>
         /// <param name="predicate">An optional predicate to filter discovered validators.</param>
         public static void AutoRegisterTransientValidators<TRegistrar>(this ILifetimeValidationRegistry validationRegistry,
-            Func<Type, Type, bool> predicate = default) where TRegistrar : LifetimeValidationRegistrarBase, new()
+            Func<Type, Type, bool>? predicate = default) where TRegistrar : LifetimeValidationRegistrarBase, new()
         {
             _ = validationRegistry.WhenNotNull(nameof(validationRegistry));
 
@@ -27,7 +27,7 @@ namespace AllOverIt.Validation.Extensions
         /// instance of a <see cref="LifetimeValidationInvoker"/>.</param>
         /// <param name="predicate">An optional predicate to filter discovered validators.</param>
         public static void AutoRegisterScopedValidators<TRegistrar>(this ILifetimeValidationRegistry validationRegistry,
-            Func<Type, Type, bool> predicate = default) where TRegistrar : LifetimeValidationRegistrarBase, new()
+            Func<Type, Type, bool>? predicate = default) where TRegistrar : LifetimeValidationRegistrarBase, new()
         {
             _ = validationRegistry.WhenNotNull(nameof(validationRegistry));
 
@@ -41,7 +41,7 @@ namespace AllOverIt.Validation.Extensions
         /// instance of a <see cref="LifetimeValidationInvoker"/>.</param>
         /// <param name="predicate">An optional predicate to filter discovered validators.</param>
         public static void AutoRegisterSingletonValidators<TRegistrar>(this ILifetimeValidationRegistry validationRegistry,
-            Func<Type, Type, bool> predicate = default) where TRegistrar : LifetimeValidationRegistrarBase, new()
+            Func<Type, Type, bool>? predicate = default) where TRegistrar : LifetimeValidationRegistrarBase, new()
         {
             _ = validationRegistry.WhenNotNull(nameof(validationRegistry));
 
@@ -56,7 +56,7 @@ namespace AllOverIt.Validation.Extensions
         /// <param name="lifetime">The lifetime of the validator.</param>
         /// <param name="predicate">An optional predicate to filter discovered validators.</param>
         public static void AutoRegisterValidators<TRegistrar>(this ILifetimeValidationRegistry validationRegistry, ServiceLifetime lifetime,
-            Func<Type, Type, bool> predicate = default) where TRegistrar : LifetimeValidationRegistrarBase, new()
+            Func<Type, Type, bool>? predicate = default) where TRegistrar : LifetimeValidationRegistrarBase, new()
         {
             _ = validationRegistry.WhenNotNull(nameof(validationRegistry));
 

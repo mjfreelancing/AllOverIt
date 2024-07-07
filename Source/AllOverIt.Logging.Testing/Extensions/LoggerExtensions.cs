@@ -157,8 +157,8 @@ namespace AllOverIt.Logging.Testing.Extensions
                 .When(call => call.Log(Arg.Any<LogLevel>(),
                                        Arg.Any<EventId>(),
                                        Arg.Any<object>(),
-                                       Arg.Any<Exception>(),
-                                       Arg.Any<Func<object, Exception, string>>()))
+                                       Arg.Any<Exception?>(),
+                                       Arg.Any<Func<object, Exception?, string>>()))
                 .Do(args =>
                 {
                     lock (methodCallContext)
@@ -166,8 +166,8 @@ namespace AllOverIt.Logging.Testing.Extensions
                         var callContext = new MethodCallContext.Item
                         {
                             LogLevel = args.ArgAt<LogLevel>(0),
-                            Metadata = args.ArgAt<IReadOnlyList<KeyValuePair<string, object>>>(2).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
-                            Exception = args.ArgAt<Exception>(3)
+                            Metadata = args.ArgAt<IReadOnlyList<KeyValuePair<string, object?>>>(2).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+                            Exception = args.ArgAt<Exception?>(3)
                         };
 
                         methodCallContext.Add(callContext);

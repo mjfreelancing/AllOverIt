@@ -9,7 +9,7 @@ namespace AllOverIt.Wpf.Threading
     public readonly struct SynchronizationContextAwaiter : INotifyCompletion
     {
         // The 'state' is the continuation to be invoked
-        private static readonly SendOrPostCallback SynchronizationCallback = state => ((Action) state).Invoke();
+        private static readonly SendOrPostCallback SynchronizationCallback = state => ((Action) state!).Invoke();
 
         private readonly SynchronizationContext _synchronizationContext;
 

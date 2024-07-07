@@ -13,7 +13,7 @@ namespace AllOverIt.Validation
         /// <param name="validationRegistry">The registry to be populated with all discovered validators. This would normally be an
         /// instance of a <see cref="ValidationInvoker"/>.</param>
         /// <param name="predicate">An optional predicate to filter discovered validators.</param>
-        public void AutoRegisterValidators(IValidationRegistry validationRegistry, Func<Type, Type, bool> predicate = default)
+        public void AutoRegisterValidators(IValidationRegistry validationRegistry, Func<Type, Type, bool>? predicate = default)
         {
             _ = validationRegistry.WhenNotNull(nameof(validationRegistry));
 

@@ -2,7 +2,7 @@
 {
     public sealed class UnhandledExceptionHandler : QueueMessageHandlerBase
     {
-        public override Task<QueueMessageHandlerState> HandleAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
+        public override Task<QueueMessageHandlerState?> HandleAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
         {
             Console.WriteLine(" >> Handling an unhandled exception... (no more handlers)");
 

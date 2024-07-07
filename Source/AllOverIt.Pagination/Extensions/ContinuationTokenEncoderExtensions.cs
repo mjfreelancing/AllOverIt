@@ -13,7 +13,7 @@ namespace AllOverIt.Pagination.Extensions
             return encoder.Serializer.Serialize(continuationToken);
         }
 
-        public static IContinuationToken Decode(this IContinuationTokenEncoder encoder, string continuationToken)
+        public static IContinuationToken Decode(this IContinuationTokenEncoder encoder, string? continuationToken)
         {
             _ = encoder.WhenNotNull(nameof(encoder));
 

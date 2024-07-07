@@ -68,7 +68,7 @@ namespace AllOverIt.Validation
                 throw new ValidationRegistryException($"The type '{validatorType.GetFriendlyName()}' cannot validate a {modelType.GetFriendlyName()} type.");
             }
 
-            AddToValidatorCache(modelType, new Lazy<IValidator>(() => (IValidator) Activator.CreateInstance(validatorType)));
+            AddToValidatorCache(modelType, new Lazy<IValidator>(() => (IValidator) Activator.CreateInstance(validatorType)!));
 
             return this;
         }

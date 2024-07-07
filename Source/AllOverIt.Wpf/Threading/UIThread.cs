@@ -99,9 +99,11 @@ namespace AllOverIt.Wpf.Threading
 
         private static bool GetIsBound(out Dispatcher dispatcher)
         {
-            dispatcher = Application.Current?.Dispatcher;
+            var currentDispatcher = Application.Current?.Dispatcher;
 
-            Throw<InvalidOperationException>.WhenNull(dispatcher, "The application's dispatcher is not available.");
+            Throw<InvalidOperationException>.WhenNull(currentDispatcher, "The application's dispatcher is not available.");
+
+            dispatcher = currentDispatcher;
 
             return dispatcher.CheckAccess();
         }

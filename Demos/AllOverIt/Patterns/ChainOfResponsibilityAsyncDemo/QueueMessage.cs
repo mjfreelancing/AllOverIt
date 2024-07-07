@@ -2,6 +2,6 @@
 {
     public sealed class QueueMessage
     {
-        public string Payload { get; set; }
+        public string? Payload { get; set; }
     }
 }

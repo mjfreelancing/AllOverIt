@@ -67,7 +67,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// <param name="message">The response data as a serialized string.</param>
         public override void NotifyResponse(string message)
         {
-            var response = _serializer.DeserializeObject<WebSocketSubscriptionResponse<GraphqlSubscriptionResponse<TResponse>>>(message);
+            var response = _serializer.DeserializeObject<WebSocketSubscriptionResponse<GraphqlSubscriptionResponse<TResponse>>>(message)!;
+
             ResponseAction.Invoke(response.Payload);
         }
     }

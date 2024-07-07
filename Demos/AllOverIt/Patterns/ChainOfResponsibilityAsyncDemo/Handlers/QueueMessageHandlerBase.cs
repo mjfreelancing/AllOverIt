@@ -6,7 +6,7 @@ namespace ChainOfResponsibilityAsyncDemo.Handlers
     {
         // This is demo code - the members would normally be accessing member data
 #pragma warning disable CA1822 // Mark members as static
-        protected async Task<QueueMessageHandlerState> AbandonAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
+        protected async Task<QueueMessageHandlerState?> AbandonAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
         {
             // do something async in the handler
             await Task.Delay(100, cancellationToken);
@@ -16,7 +16,7 @@ namespace ChainOfResponsibilityAsyncDemo.Handlers
             return state;
         }
 
-        protected async Task<QueueMessageHandlerState> DeadletterAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
+        protected async Task<QueueMessageHandlerState?> DeadletterAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
         {
             // do something async in the handler
             await Task.Delay(100, cancellationToken);

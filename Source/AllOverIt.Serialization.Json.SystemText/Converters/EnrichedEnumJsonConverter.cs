@@ -14,7 +14,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
         /// <summary>Reads a string from the current JSON reader and converts it to the required <typeparamref name="TEnum"/> type.</summary>
         public override TEnum Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var value = reader.GetString();
+            var value = reader.GetString()!;
+
             return EnrichedEnum<TEnum>.From(value);
         }
 
@@ -28,7 +29,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
         /// <returns>A new JsonConverter instance.</returns>
         public static JsonConverter Create()
         {
-            return (JsonConverter) Activator.CreateInstance(EnrichedEnumJsonConverterType);
+            return (JsonConverter) Activator.CreateInstance(EnrichedEnumJsonConverterType)!;
         }
     }
 }

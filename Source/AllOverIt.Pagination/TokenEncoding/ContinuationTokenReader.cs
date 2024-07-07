@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Extensions;
 using AllOverIt.Serialization.Binary.Readers;
 using AllOverIt.Serialization.Binary.Readers.Extensions;
 
@@ -15,7 +14,7 @@ namespace AllOverIt.Pagination.TokenEncoding
 
             // Not using reader.ReadEnumerable() as this would assume at least one value and the token Values can be null.
             // ReadObject(), when provided a type, caters for null values.
-            var values = reader.ReadObject<IEnumerable<object>>()?.AsReadOnlyCollection();
+            var values = reader.ReadObject<IEnumerable<object?>>()?.ToArray();
 
             return new ContinuationToken
             {

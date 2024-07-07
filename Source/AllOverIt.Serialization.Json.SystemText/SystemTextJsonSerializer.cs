@@ -19,7 +19,7 @@ namespace AllOverIt.Serialization.Json.SystemText
 
         /// <summary>Constructor.</summary>
         /// <param name="options">The System.Text serialization options to use. If no options are provided then a default set will be applied.</param>
-        public SystemTextJsonSerializer(JsonSerializerOptions options = default)
+        public SystemTextJsonSerializer(JsonSerializerOptions? options = default)
         {
             Options = options ?? new JsonSerializerOptions();
         }
@@ -47,13 +47,13 @@ namespace AllOverIt.Serialization.Json.SystemText
         }
 
         /// <inheritdoc />
-        public TType DeserializeObject<TType>(string value)
+        public TType? DeserializeObject<TType>(string value)
         {
             return JsonSerializer.Deserialize<TType>(value, Options);
         }
 
         /// <inheritdoc />
-        public Task<TType> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken)
+        public Task<TType?> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken)
         {
             return JsonSerializer
                 .DeserializeAsync<TType>(stream, Options, cancellationToken)

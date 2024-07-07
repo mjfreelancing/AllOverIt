@@ -62,7 +62,7 @@ namespace AllOverIt.Aws.AppSync.Client
                 {
                     var content = await GetHttpResponseAsString(responseMessage, cancellationToken).ConfigureAwait(false);
 
-                    var result = _configuration.Serializer.DeserializeObject<GraphqlHttpResponse<TResponse>>(content);
+                    var result = _configuration.Serializer.DeserializeObject<GraphqlHttpResponse<TResponse>>(content)!;
 
                     result.StatusCode = responseMessage.StatusCode;
                     result.Headers = responseMessage.Headers;

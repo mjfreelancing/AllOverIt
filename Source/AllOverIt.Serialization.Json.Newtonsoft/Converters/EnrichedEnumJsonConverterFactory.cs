@@ -45,7 +45,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
             var genericArg = objectType.BaseType!.GenericTypeArguments[0];
             var genericType = typeof(EnrichedEnumJsonConverter<>).MakeGenericType(genericArg);
 
-            return (JsonConverter) Activator.CreateInstance(genericType);
+            return (JsonConverter) Activator.CreateInstance(genericType)!;
         }
     }
 }

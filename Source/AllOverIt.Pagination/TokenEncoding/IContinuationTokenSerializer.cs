@@ -1,4 +1,6 @@
-﻿namespace AllOverIt.Pagination.TokenEncoding
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace AllOverIt.Pagination.TokenEncoding
 {
     /// <summary>Serializes and deserializes <see cref="IContinuationToken"/> instances.</summary>
     public interface IContinuationTokenSerializer
@@ -11,12 +13,12 @@
         /// <summary>Deserializes a continuation token string to a <see cref="IContinuationToken"/>.</summary>
         /// <param name="continuationToken">The continuation token string to deserialize.</param>
         /// <returns>The <see cref="IContinuationToken"/> deserialized from a provided string value.</returns>
-        IContinuationToken Deserialize(string continuationToken);
+        IContinuationToken Deserialize(string? continuationToken);
 
         /// <summary>Deserializes a continuation token string to a <see cref="IContinuationToken"/> if it is valid.</summary>
         /// <param name="continuationToken">A serialized continuation token.</param>
         /// <param name="token">The deserialized continuation token if it can be decoded.</param>
         /// <returns><see langword="True" /> if the continuation token was deserialized, otherwise <see langword="False" />.</returns>
-        bool TryDeserialize(string continuationToken, out IContinuationToken token);
+        bool TryDeserialize(string continuationToken, [NotNullWhen(true)] out IContinuationToken? token);
     }
 }

@@ -1008,7 +1008,7 @@ namespace AllOverIt.Pipes.Tests.Named
                     {
                         actual = true;
 
-                        Task.Run(() => signal3.Release());
+                        signal3.Release();
                     }
 
                     client.OnDisconnected += Client_OnDisconnected;
@@ -1018,6 +1018,8 @@ namespace AllOverIt.Pipes.Tests.Named
                     signal2.Release();
 
                     await WaitOrThrowAsync(signal3);
+
+                    await Task.Delay(100);
                 }
 
                 signal4.Release();

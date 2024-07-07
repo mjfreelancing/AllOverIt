@@ -18,7 +18,7 @@ namespace AllOverIt.Validation
         }
 
         private readonly IServiceCollection _services;
-        private IServiceScopeFactory _scopeFactory;
+        private IServiceScopeFactory? _scopeFactory;
 
         private ILifetimeValidationRegistry ValidationRegistry => this;
 
@@ -89,11 +89,7 @@ namespace AllOverIt.Validation
 
         ILifetimeValidationRegistry ILifetimeValidationRegistry.Register(Type modelType, Type validatorType, ServiceLifetime lifetime)
         {
-            if (!validatorType.IsDerivedFrom(typeof(ValidatorBase<>)))
-            {
-                throw new ValidationRegistryException($"The type '{validatorType.GetFriendlyName()}' is not a validator.");
-            }
-
+            // GetModelType() asserts validatorType inherits typeof(ValidatorBase<>)
             var validatorModelType = ValidationTypeHelper.GetModelType(validatorType);
 
             if (modelType != validatorModelType)
@@ -202,7 +198,7 @@ namespace AllOverIt.Validation
             return (ValidatorBase<TType>) validator;
         }
 
-        private bool TryGetValidator(Type modelType, out IValidator validator)
+        private bool TryGetValidator(Type modelType, [NotNullWhen(true)] out IValidator? validator)
         {
             Throw<InvalidOperationException>.WhenNull(_scopeFactory, "The scope factory has not been set.");
 
@@ -212,12 +208,13 @@ namespace AllOverIt.Validation
             {
                 var validatorKey = CreateModelValidatorKey(modelType);
 
-                validator = (IValidator) scope.ServiceProvider.GetService(validatorKey);
+                validator = (IValidator?) scope.ServiceProvider.GetService(validatorKey);
 
                 return validator is not null;
             }
         }
 
+        [DoesNotReturn]
         private static void ThrowValidatorNotRegistered<TType>()
         {
             throw new InvalidOperationException($"The type '{typeof(TType).GetFriendlyName()}' does not have a registered validator.");

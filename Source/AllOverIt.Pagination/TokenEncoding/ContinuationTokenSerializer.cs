@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Pagination.Exceptions;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Pagination.TokenEncoding
@@ -53,7 +54,7 @@ namespace AllOverIt.Pagination.TokenEncoding
             }
         }
 
-        public IContinuationToken Deserialize(string continuationToken)
+        public IContinuationToken Deserialize(string? continuationToken)
         {
             if (continuationToken.IsNullOrEmpty())
             {
@@ -64,17 +65,17 @@ namespace AllOverIt.Pagination.TokenEncoding
             // Will throw if there's an error
             _ = TryDeserialize(continuationToken, true, out var token);
 
-            return token;
+            return token!;
         }
 
-        public bool TryDeserialize(string continuationToken, out IContinuationToken token)
+        public bool TryDeserialize(string continuationToken, [NotNullWhen(true)] out IContinuationToken? token)
         {
             _ = continuationToken.WhenNotNull(nameof(continuationToken));
 
             return TryDeserialize(continuationToken, false, out token);
         }
 
-        private bool TryDeserialize(string continuationToken, bool throwOnError, out IContinuationToken token)
+        private bool TryDeserialize(string continuationToken, bool throwOnError, [NotNullWhen(true)] out IContinuationToken? token)
         {
             token = default;
 

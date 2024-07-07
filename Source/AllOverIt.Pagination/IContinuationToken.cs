@@ -8,6 +8,6 @@
         PaginationDirection Direction { get; }
 
         /// <summary>The reference (column) values that identifies the record (row) to traverse from.</summary>
-        IReadOnlyCollection<object> Values { get; }
+        object?[]? Values { get; }
     }
 }

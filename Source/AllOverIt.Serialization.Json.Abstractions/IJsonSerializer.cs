@@ -23,13 +23,13 @@
         /// <typeparam name="TType">The type to be deserialized from the provided JSON string.</typeparam>
         /// <param name="value">The value to be deserialized.</param>
         /// <returns>An instance of the specified type.</returns>
-        TType DeserializeObject<TType>(string value);
+        TType? DeserializeObject<TType>(string value);
 
         /// <summary>Deserializes the provided stream to a specified type. The stream is assumed to contain UTF8 bytes.</summary>
         /// <typeparam name="TType">The type to be deserialized from the provided stream.</typeparam>
         /// <param name="stream">The stream to be deserialized.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>An instance of the specified type.</returns>
-        Task<TType> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken);
+        Task<TType?> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken);
     }
 }

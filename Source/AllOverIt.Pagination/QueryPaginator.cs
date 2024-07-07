@@ -17,17 +17,17 @@ namespace AllOverIt.Pagination
         private sealed class FirstExpression
         {
             public bool IsPending => MemberAccess == null;
-            public MemberExpression MemberAccess { get; set; }
-            public Expression ReferenceValue { get; set; }
+            public MemberExpression? MemberAccess { get; set; }
+            public Expression? ReferenceValue { get; set; }
         }
 
         private readonly List<ColumnDefinition<TEntity>> _columns = [];
         private readonly QueryPaginatorConfiguration _configuration;
         private readonly IContinuationTokenEncoderFactory _continuationTokenEncoderFactory;
 
-        private IContinuationTokenEncoder _continuationTokenEncoder;
-        private IOrderedQueryable<TEntity> _directionQuery;                     // based on the _paginationDirection        
-        private IOrderedQueryable<TEntity> _directionReverseQuery;              // based on the reverse _direction
+        private IContinuationTokenEncoder? _continuationTokenEncoder;
+        private IOrderedQueryable<TEntity>? _directionQuery;                    // based on the _paginationDirection        
+        private IOrderedQueryable<TEntity>? _directionReverseQuery;             // based on the reverse _direction
 
         /// <inheritdoc />
         public IQueryable<TEntity> BaseQuery { get; }
@@ -61,7 +61,7 @@ namespace AllOverIt.Pagination
         }
 
         /// <inheritdoc />
-        public PaginationDirection GetQueryDirection(string continuationToken = default)
+        public PaginationDirection GetQueryDirection(string? continuationToken = default)
         {
             // continuationToken can be null
             var decodedToken = TokenEncoder.Decode(continuationToken);
@@ -90,7 +90,7 @@ namespace AllOverIt.Pagination
         }
 
         /// <inheritdoc />
-        public IQueryable<TEntity> GetPageQuery(string continuationToken = default)
+        public IQueryable<TEntity> GetPageQuery(string? continuationToken = default)
         {
             AssertColumnsDefined();
 
@@ -267,11 +267,12 @@ namespace AllOverIt.Pagination
 
         private IOrderedQueryable<TEntity> GetDirectionBasedQuery(PaginationDirection direction)
         {
+            // _columns > 0
             return _columns.Aggregate(
-                (IOrderedQueryable<TEntity>) default,
-                (currentQuery, nextColumn) => currentQuery == null
+                (IOrderedQueryable<TEntity>?) default,
+                (currentQuery, nextColumn) => currentQuery is null
                     ? nextColumn.ApplyColumnOrderTo(BaseQuery, direction)
-                    : nextColumn.ThenApplyColumnOrderTo(currentQuery, direction));
+                    : nextColumn.ThenApplyColumnOrderTo(currentQuery, direction))!;
         }
 
         private IQueryable<TEntity> ApplyContinuationToken(IQueryable<TEntity> paginatedQuery, IContinuationToken continuationToken)
@@ -283,7 +284,7 @@ namespace AllOverIt.Pagination
             }
 
             // Decode, ensuring to set the correct value type otherwise the expression comparisons may fail
-            var referenceValues = continuationToken.Values.AsReadOnlyList();
+            var referenceValues = continuationToken.Values;
 
             var predicate = CreatePaginatedPredicate(continuationToken.Direction, referenceValues);
 
@@ -292,23 +293,19 @@ namespace AllOverIt.Pagination
 
         private Expression<Func<TEntity, bool>> CreatePreviousPagePredicate(TEntity reference)
         {
-            var referenceValues = _columns
-                .GetColumnValues(reference)
-                .AsReadOnlyList();
+            var referenceValues = _columns.GetColumnValues(reference);
 
             return CreatePaginatedPredicate(_configuration.PaginationDirection.Reverse(), referenceValues);
         }
 
         private Expression<Func<TEntity, bool>> CreateNextPagePredicate(TEntity reference)
         {
-            var referenceValues = _columns
-                .GetColumnValues(reference)
-                .AsReadOnlyList();
+            var referenceValues = _columns.GetColumnValues(reference);
 
             return CreatePaginatedPredicate(_configuration.PaginationDirection, referenceValues);
         }
 
-        private Expression<Func<TEntity, bool>> CreatePaginatedPredicate(PaginationDirection direction, IReadOnlyList<object> referenceValues)
+        private Expression<Func<TEntity, bool>> CreatePaginatedPredicate(PaginationDirection direction, object?[] referenceValues)
         {
             // Fully explained at https://use-the-index-luke.com/sql/partial-results/fetch-next-page
             //
@@ -359,8 +356,8 @@ namespace AllOverIt.Pagination
 
                 var accessPredicateClause = CreateCompareToExpression(
                     firstColumn,
-                    firstExpression.MemberAccess,
-                    firstExpression.ReferenceValue,
+                    firstExpression.MemberAccess!,
+                    firstExpression.ReferenceValue!,
                     comparison);
 
                 finalExpression = Expression.And(accessPredicateClause, finalExpression);
@@ -369,10 +366,12 @@ namespace AllOverIt.Pagination
             return Expression.Lambda<Func<TEntity, bool>>(finalExpression, param);
         }
 
-        private Expression CompoundOuterColumnExpressions(PaginationDirection direction, ParameterExpression param, IReadOnlyList<object> referenceValues,
+        private Expression CompoundOuterColumnExpressions(PaginationDirection direction, ParameterExpression param, object?[] referenceValues,
             FirstExpression firstExpression, IDictionary<int, Expression> referenceParameterCache)
         {
-            Expression outerExpression = default;
+            Expression? outerExpression = default;
+
+            // _columns.Count > 0
 
             // Compound the outer OR expressions
             for (var idx = 0; idx < _columns.Count; idx++)
@@ -380,18 +379,20 @@ namespace AllOverIt.Pagination
                 // Compound the inner AND expressions
                 var innerExpression = CompoundInnerColumnExpressions(direction, param, referenceValues, idx + 1, firstExpression, referenceParameterCache);
 
-                outerExpression = outerExpression == null
+                outerExpression = outerExpression is null
                     ? innerExpression
                     : Expression.Or(outerExpression, innerExpression);
             }
 
-            return outerExpression;
+            return outerExpression!;
         }
 
-        private Expression CompoundInnerColumnExpressions(PaginationDirection direction, ParameterExpression param, IReadOnlyList<object> referenceValues,
+        private Expression CompoundInnerColumnExpressions(PaginationDirection direction, ParameterExpression param, object?[] referenceValues,
             int columnCount, FirstExpression firstExpression, IDictionary<int, Expression> referenceParameterCache)
         {
-            Expression innerExpression = default;
+            Expression? innerExpression = default;
+
+            // columnCount > 0
 
             // Compound the inner AND expressions
             for (var idx = 0; idx < columnCount; idx++)
@@ -434,7 +435,7 @@ namespace AllOverIt.Pagination
                     : Expression.And(innerExpression, columnExpression);
             }
 
-            return innerExpression;
+            return innerExpression!;
         }
 
         private static Expression CreateCompareToExpression(ColumnDefinition<TEntity> entity, MemberExpression memberAccess,
@@ -471,7 +472,7 @@ namespace AllOverIt.Pagination
             }
         }
 
-        private Expression CreateReferenceParameter(IReadOnlyList<object> referenceValues, int index, Type valueType,
+        private Expression CreateReferenceParameter(object?[] referenceValues, int index, Type valueType,
             IDictionary<int, Expression> referenceParameterCache)
         {
             if (referenceParameterCache.TryGetValue(index, out var expression))

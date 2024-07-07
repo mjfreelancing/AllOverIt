@@ -4,9 +4,10 @@ namespace ChainOfResponsibilityAsyncDemo.Handlers
 {
     public sealed class EmptyMessageExceptionHandler : QueueMessageHandlerBase
     {
-        public override async Task<QueueMessageHandlerState> HandleAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
+        public override async Task<QueueMessageHandlerState?> HandleAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
         {
-            var payload = state.QueueMessage.Payload;
+            // Known to not be null in this demo
+            var payload = state.QueueMessage.Payload!;
 
             if (payload.IsEmpty())
             {

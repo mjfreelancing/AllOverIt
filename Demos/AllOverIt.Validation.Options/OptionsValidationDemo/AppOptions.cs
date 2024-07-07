@@ -5,6 +5,6 @@
         public static readonly string SectionName = "Options";
 
         public int MinLevel { get; init; }
-        public string AppName { get; init; }
+        public string? AppName { get; init; }
     }
 }
