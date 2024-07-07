@@ -1,4 +1,4 @@
-#  Version 7.21.1
+#  Version 7.22.0
 ## 07 Jul 2024
 
 ### AllOverIt.Serialization.Binary
