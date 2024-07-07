@@ -91,7 +91,7 @@ namespace BinarySerializationDemo
                     new()
                     {
                         FirstName = "Mary",
-                        LastName = "Lamb",
+                        LastName = null,                // testing null is ok
                         Gender = Gender.Female,
                         Age = 12
                     },
@@ -104,6 +104,7 @@ namespace BinarySerializationDemo
                     new()
                     {
                         FirstName = "Shrek",
+                        LastName = string.Empty,        // Testing empty strings are ok
                         Gender = Gender.Male,
                         Age = 13
                     }

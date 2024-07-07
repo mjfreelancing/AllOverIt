@@ -46,7 +46,7 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
                 string actual = default;
 
                 valueWriterFake
-                   .CallsTo(fake => fake.WriteValue(writerFake, expected))
+                    .CallsTo(fake => fake.WriteValue(writerFake, expected))
                     .Invokes(call => actual = call.Arguments.Get<string>(1));
 
                 EnrichedBinaryValueWriterExtensions.WriteValue(valueWriterFake.FakedObject, writerFake, expected);
