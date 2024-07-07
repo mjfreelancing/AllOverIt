@@ -19,18 +19,24 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         }
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
-            var strValue = (string) reader.Value;
+            var strValue = (string?) reader.Value;
 
-            return strValue == null
+            return strValue is null
                 ? null
                 : EnrichedEnum<TEnum>.From(strValue);
         }
 
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
+            if (value is null)
+            {
+                writer.WriteNull();
+                return;
+            }
+
             var enumValue = ((EnrichedEnum<TEnum>) value).Name;
             writer.WriteValue(enumValue);
         }
@@ -39,7 +45,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         /// <returns>A new JsonConverter instance.</returns>
         public static JsonConverter Create()
         {
-            return (JsonConverter) Activator.CreateInstance(EnrichedEnumJsonConverterType);
+            return (JsonConverter) Activator.CreateInstance(EnrichedEnumJsonConverterType)!;
         }
     }
 }

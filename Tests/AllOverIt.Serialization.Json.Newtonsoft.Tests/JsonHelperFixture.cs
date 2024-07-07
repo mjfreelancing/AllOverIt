@@ -18,10 +18,12 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
         private readonly string _prop7;
         private readonly double _prop8;
         private readonly DateTime _prop9;
-        private readonly object _value;
         private readonly IReadOnlyCollection<int> _prop11;
         private readonly IReadOnlyCollection<string> _prop12;
         private readonly IReadOnlyCollection<Guid> _prop13;
+        private readonly string[] _prop14;
+        private readonly string[] _prop15;
+        private readonly object _value;
 
         protected JsonHelperFixture()
         {
@@ -35,6 +37,8 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
             _prop11 = CreateMany<int>(3);
             _prop12 = _prop11.SelectToReadOnlyCollection(item => $"{item}");
             _prop13 = CreateMany<Guid>(3);
+            _prop14 = [Create<string>(), null, Create<string>()];
+            _prop15 = null;
 
             _value = new
             {
@@ -153,7 +157,9 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
                 },
                 Prop11 = _prop11,
                 Prop12 = _prop12,
-                Prop13 = _prop13
+                Prop13 = _prop13,
+                Prop14 = _prop14,
+                Prop15 = _prop15
             };
         }
 
@@ -221,22 +227,30 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
             }
 
             [Theory]
-            [InlineData(true, "Prop1", true)]
-            [InlineData(true, "Prop7", true)]
-            [InlineData(true, "Prop8", true)]
-            [InlineData(true, "Prop9", true)]
-            [InlineData(false, "Prop1", true)]
-            [InlineData(false, "Prop7", true)]
-            [InlineData(false, "Prop8", true)]
-            [InlineData(false, "Prop9", true)]
-            [InlineData(true, "Prop1", false)]
-            [InlineData(true, "Prop7", false)]
-            [InlineData(true, "Prop8", false)]
-            [InlineData(true, "Prop9", false)]
             [InlineData(false, "Prop1", false)]
+            [InlineData(false, "Prop1", true)]
+            [InlineData(true, "Prop1", false)]
+            [InlineData(true, "Prop1", true)]
             [InlineData(false, "Prop7", false)]
+            [InlineData(false, "Prop7", true)]
+            [InlineData(true, "Prop7", false)]
+            [InlineData(true, "Prop7", true)]
             [InlineData(false, "Prop8", false)]
+            [InlineData(false, "Prop8", true)]
+            [InlineData(true, "Prop8", false)]
+            [InlineData(true, "Prop8", true)]
             [InlineData(false, "Prop9", false)]
+            [InlineData(false, "Prop9", true)]
+            [InlineData(true, "Prop9", false)]
+            [InlineData(true, "Prop9", true)]
+            [InlineData(false, "Prop14", false)]
+            [InlineData(false, "Prop14", true)]
+            [InlineData(true, "Prop14", false)]
+            [InlineData(true, "Prop14", true)]
+            [InlineData(false, "Prop15", false)]
+            [InlineData(false, "Prop15", true)]
+            [InlineData(true, "Prop15", false)]
+            [InlineData(true, "Prop15", true)]
             public void Should_Get_Value(bool useObject, string propName, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
@@ -249,11 +263,13 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
                     "Prop7" => _prop7,                      // string type - looks like a double but will be interpreted as a string
                     "Prop8" => _prop8,                      // double type
                     "Prop9" => _prop9,                      // DateTime
+                    "Prop14" => _prop14,                    // string[]
+                    "Prop15" => _prop15,                    // (string[])null
                     _ => throw new InvalidExpressionException($"Unexpected property name {propName}")
                 };
 
                 actual.Should().BeTrue();
-                value.Should().Be(expected);
+                value.Should().BeEquivalentTo(expected);
             }
 
             [Theory]
@@ -295,18 +311,18 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
             }
 
             [Theory]
-            [InlineData(true, "Prop1", true)]
-            [InlineData(true, "Prop7", true)]
-            [InlineData(true, "Prop8", true)]
-            [InlineData(false, "Prop1", true)]
-            [InlineData(false, "Prop7", true)]
-            [InlineData(false, "Prop8", true)]
-            [InlineData(true, "Prop1", false)]
-            [InlineData(true, "Prop7", false)]
-            [InlineData(true, "Prop8", false)]
             [InlineData(false, "Prop1", false)]
+            [InlineData(false, "Prop1", true)]
+            [InlineData(true, "Prop1", false)]
+            [InlineData(true, "Prop1", true)]
             [InlineData(false, "Prop7", false)]
+            [InlineData(false, "Prop7", true)]
+            [InlineData(true, "Prop7", false)]
+            [InlineData(true, "Prop7", true)]
             [InlineData(false, "Prop8", false)]
+            [InlineData(false, "Prop8", true)]
+            [InlineData(true, "Prop8", false)]
+            [InlineData(true, "Prop8", true)]
             public void Should_Get_Value(bool useObject, string propName, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
@@ -805,13 +821,13 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
             [Theory]
             [InlineData(true)]
             [InlineData(false)]
-            public void Should_Return_Empty_Array_When_Not_Found(bool useObject)
+            public void Should_Return_Null_When_Not_Found(bool useObject)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
                 _ = jsonHelper.TryGetObjectArray(Create<string>(), out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
 
             [Theory]
@@ -1039,13 +1055,13 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
             [Theory]
             [InlineData(true)]
             [InlineData(false)]
-            public void Should_Return_Empty_Array_When_Property_Not_Found(bool useObject)
+            public void Should_Return_Null_When_Property_Not_Found(bool useObject)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
                 _ = jsonHelper.TryGetObjectArrayValues<string>("Prop10", "Prop1", out var arrayValues);
 
-                arrayValues.Should().BeEmpty();
+                arrayValues.Should().BeNull();
             }
         }
 
@@ -1238,13 +1254,13 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
             [Theory]
             [InlineData(true)]
             [InlineData(false)]
-            public void Should_Return_Empty_Array_When_Property_Not_Found(bool useObject)
+            public void Should_Return_Null_When_Property_Not_Found(bool useObject)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
                 _ = jsonHelper.TryGetDescendantObjectArray(new[] { "Prop0" }, out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
         }
 
@@ -1440,13 +1456,13 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
             [Theory]
             [InlineData(true)]
             [InlineData(false)]
-            public void Should_Return_Empty_Array_When_Property_Not_Found(bool useObject)
+            public void Should_Return_Null_When_Property_Not_Found(bool useObject)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
                 _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(new[] { "Prop0" }, "Value", out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
         }
 

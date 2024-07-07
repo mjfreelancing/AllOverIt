@@ -18,42 +18,58 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
         private readonly IDictionary<string, object> _prop2b;
         private readonly IDictionary<string, object> _prop3a;
         private readonly IDictionary<string, object> _prop3b;
+        private readonly IDictionary<string, object> _prop4a;
+        private readonly IDictionary<string, object> _prop4b;
         private readonly IElementDictionary _elementDictionary;
 
         public ElementDictionaryExtensionsFixture()
         {
+            _prop4a = new Dictionary<string, object>
+            {
+                {"Prop1", Create<int>()}
+            };
+
+            _prop4b = new Dictionary<string, object>
+            {
+                {"Prop1", Create<int>()}
+            };
+
             _prop3a = new Dictionary<string, object>
             {
                 {"Prop1", Create<int>()},
-                {"Prop2", new[] {CreateMany<string>()}},
-                {"Prop3", DateTime.Now}
+                {"Prop2", new[] { CreateMany<string>() }},
+                {"Prop3", DateTime.Now},
+                {"Prop4", new[] { _prop4a, _prop4b }}
             };
 
             _prop3b = new Dictionary<string, object>
             {
                 {"Prop1", Create<int>()},
-                {"Prop2", new[] {CreateMany<string>()}},
-                {"Prop3", DateTime.Now.AddDays(1)}
+                {"Prop2", new[] { CreateMany<string>() }},
+                {"Prop3", DateTime.Now.AddDays(1)},
+                {"Prop4", new[] { _prop4b, _prop4a }}
             };
 
             _prop2a = new Dictionary<string, object>
             {
                 {"Prop1", Create<string>()},
-                {"Prop2", new[] {_prop3a, _prop3b}},
+                {"Prop2", new[] { _prop3a, _prop3b }},
             };
 
             _prop2b = new Dictionary<string, object>
             {
                 {"Prop1", Create<string>()},
-                {"Prop2", new[] {_prop3b, _prop3a}},
+                {"Prop2", new[] { _prop3b, _prop3a }},
             };
 
             _prop1 = new Dictionary<string, object>
             {
                 {"Prop1", Create<double>()},
-                {"Prop2", new[] {_prop2a, _prop2b}},
+                {"Prop2", new[] { _prop2a, _prop2b }},
                 {"Prop3", CreateMany<int>()},
-                {"Prop4", new[]{new ElementItem()}}
+                {"Prop4", new[] { new ElementItem() }},
+                {"Prop5", new string[]{ null, null } },
+                {"Prop6", (string[]) null }
             };
 
             _elementDictionary = new ElementDictionary(_prop1);
@@ -405,11 +421,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Return_Empty_Collection_When_Property_Not_found()
+            public void Should_Return_Null_When_Property_Not_found()
             {
                 _ = ElementDictionaryExtensions.TryGetObjectArray(_elementDictionary, Create<string>(), out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
 
             [Fact]
@@ -581,11 +597,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Return_Empty_Collection_When_Property_Not_found()
+            public void Should_Return_Null_When_Property_Not_found()
             {
                 _ = ElementDictionaryExtensions.TryGetObjectArrayValues<int>(_elementDictionary, Create<string>(), Create<string>(), out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
 
             [Fact]
@@ -739,11 +755,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
         }
 
-        public class TryGetManyObjectArrayValues : ElementDictionaryExtensionsFixture
+        public class TryGetManyObjectValues : ElementDictionaryExtensionsFixture
         {
             private readonly IEnumerable<IElementDictionary> _elements;
 
-            public TryGetManyObjectArrayValues()
+            public TryGetManyObjectValues()
             {
                 _elements = _elementDictionary.GetObjectArray("Prop2").AsReadOnlyCollection();
             }
@@ -753,7 +769,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        _ = ElementDictionaryExtensions.TryGetManyObjectArrayValues<int>(null, Create<string>(), out _);
+                        _ = ElementDictionaryExtensions.TryGetManyObjectValues<int>(null, Create<string>(), out _);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -761,37 +777,41 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null_Empty_Whitespace()
+            public void Should_Throw_When_PropertyName_Null_Empty_Whitespace()
             {
                 AssertThrowsWhenStringNullOrEmptyOrWhitespace(
                     stringValue =>
                     {
-                        _ = ElementDictionaryExtensions.TryGetManyObjectArrayValues<int>(new[] { _elementDictionary }, stringValue, out _);
-                    }, "arrayPropertyName");
+                        _ = ElementDictionaryExtensions.TryGetManyObjectValues<int>(new[] { _elementDictionary }, stringValue, out _);
+                    }, "propertyName");
             }
 
             [Fact]
             public void Should_Return_False_When_Property_Not_found()
             {
-                var actual = ElementDictionaryExtensions.TryGetManyObjectArrayValues<int>(_elements, Create<string>(), out _);
+                var actual = ElementDictionaryExtensions.TryGetManyObjectValues<int>(_elements, Create<string>(), out _);
 
                 actual.Should().BeFalse();
             }
 
             [Fact]
-            public void Should_Return_Empty_Collection_When_Property_Not_found()
+            public void Should_Return_Null_When_Property_Not_found()
             {
-                _ = ElementDictionaryExtensions.TryGetManyObjectArrayValues<int>(_elements, Create<string>(), out var array);
+                _ = ElementDictionaryExtensions.TryGetManyObjectValues<int>(_elements, Create<string>(), out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
 
             [Fact]
             public void Should_Get_Object_Array_Values()
             {
-                _ = ElementDictionaryExtensions.TryGetManyObjectArrayValues<string>(_elements, "Prop1", out var elements);
+                // same as:
+                //
+                // var values = _elements.SelectToArray(element => element.GetValue<string>("Prop1"));
 
-                var array = elements.ToList();
+                _ = ElementDictionaryExtensions.TryGetManyObjectValues<string>(_elements, "Prop1", out var values);
+
+                var array = values.ToList();
 
                 array.Should().BeEquivalentTo(new[]
                 {
@@ -805,7 +825,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        _ = ElementDictionaryExtensions.TryGetManyObjectArrayValues<double[]>(_elements, "Prop1", out _);
+                        _ = ElementDictionaryExtensions.TryGetManyObjectValues<double[]>(_elements, "Prop1", out _);
                     })
                     .Should()
                     .Throw<InvalidCastException>()
@@ -907,7 +927,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyNames_Null()
             {
                 Invoking(() =>
                     {
@@ -919,11 +939,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Return_Empty_Collection_When_Property_Not_found()
+            public void Should_Return_Null_When_Property_Not_found()
             {
                 _ = ElementDictionaryExtensions.TryGetDescendantObjectArray(_elements, CreateMany<string>(), out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
 
             [Fact]
@@ -953,35 +973,64 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             [Fact]
             public void Should_Get_Array()
             {
+                // See equivalent test in TryGetDescendantObjectArray_Single to see how the same can be navigated from the root _elementDictionary
+
                 _ = ElementDictionaryExtensions.TryGetDescendantObjectArray(_elements, new[] { "Prop2" }, out var elements);
 
-                var array = elements.ToList();
+                elements.Should().HaveCount(4);
 
-                array.Should().HaveCount(4);
-
-                var element0 = array.ElementAt(0);
+                var element0 = elements.ElementAt(0);
 
                 element0.GetValue("Prop1").Should().Be(_prop3a["Prop1"]);
                 element0.GetValue("Prop2").Should().Be(_prop3a["Prop2"]);
                 element0.GetValue("Prop3").Should().Be(_prop3a["Prop3"]);
+                element0.GetValue("Prop4").Should().Be(_prop3a["Prop4"]);
 
-                var element1 = array.ElementAt(1);
+                var element1 = elements.ElementAt(1);
 
                 element1.GetValue("Prop1").Should().Be(_prop3b["Prop1"]);
                 element1.GetValue("Prop2").Should().Be(_prop3b["Prop2"]);
                 element1.GetValue("Prop3").Should().Be(_prop3b["Prop3"]);
+                element1.GetValue("Prop4").Should().Be(_prop3b["Prop4"]);
 
-                var element2 = array.ElementAt(2);
+                var element2 = elements.ElementAt(2);
 
                 element2.GetValue("Prop1").Should().Be(_prop3b["Prop1"]);
                 element2.GetValue("Prop2").Should().Be(_prop3b["Prop2"]);
                 element2.GetValue("Prop3").Should().Be(_prop3b["Prop3"]);
+                element2.GetValue("Prop4").Should().Be(_prop3b["Prop4"]);
 
-                var element3 = array.ElementAt(3);
+                var element3 = elements.ElementAt(3);
 
                 element3.GetValue("Prop1").Should().Be(_prop3a["Prop1"]);
                 element3.GetValue("Prop2").Should().Be(_prop3a["Prop2"]);
                 element3.GetValue("Prop3").Should().Be(_prop3a["Prop3"]);
+                element3.GetValue("Prop4").Should().Be(_prop3a["Prop4"]);
+            }
+
+            [Fact]
+            public void Should_Get_Array_2()
+            {
+                // See equivalent test in TryGetDescendantObjectArray_Single to see how the same can be navigated from the root _elementDictionary
+
+                _ = ElementDictionaryExtensions.TryGetDescendantObjectArray(_elements, new[] { "Prop2", "Prop4" }, out var elements);
+
+                elements.Should().HaveCount(8);
+
+                // _elements is Prop2 (on root), which contains _prop2a, _prop2b
+                // _prop2a.Prop2 contains _prop3a, _prop3b
+                // _prop2b.Prop2 contains _prop3b, _prop3a
+                // _prop3a.Prop4 contains _prop4a, _prop4b
+                // _prop3b.Prop4 contains _prop4b, _prop4a
+
+                elements.ElementAt(0).GetValue("Prop1").Should().Be(_prop4a["Prop1"]);
+                elements.ElementAt(1).GetValue("Prop1").Should().Be(_prop4b["Prop1"]);
+                elements.ElementAt(2).GetValue("Prop1").Should().Be(_prop4b["Prop1"]);
+                elements.ElementAt(3).GetValue("Prop1").Should().Be(_prop4a["Prop1"]);
+                elements.ElementAt(4).GetValue("Prop1").Should().Be(_prop4b["Prop1"]);
+                elements.ElementAt(5).GetValue("Prop1").Should().Be(_prop4a["Prop1"]);
+                elements.ElementAt(6).GetValue("Prop1").Should().Be(_prop4a["Prop1"]);
+                elements.ElementAt(7).GetValue("Prop1").Should().Be(_prop4b["Prop1"]);
             }
         }
 
@@ -1007,7 +1056,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyNames_Null()
             {
                 Invoking(() =>
                     {
@@ -1061,29 +1110,27 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             {
                 var elements = ElementDictionaryExtensions.GetDescendantObjectArray(_elements, new[] { "Prop2" });
 
-                var array = elements.ToList();
+                elements.Should().HaveCount(4);
 
-                array.Should().HaveCount(4);
-
-                var element0 = array.ElementAt(0);
+                var element0 = elements.ElementAt(0);
 
                 element0.GetValue("Prop1").Should().Be(_prop3a["Prop1"]);
                 element0.GetValue("Prop2").Should().Be(_prop3a["Prop2"]);
                 element0.GetValue("Prop3").Should().Be(_prop3a["Prop3"]);
 
-                var element1 = array.ElementAt(1);
+                var element1 = elements.ElementAt(1);
 
                 element1.GetValue("Prop1").Should().Be(_prop3b["Prop1"]);
                 element1.GetValue("Prop2").Should().Be(_prop3b["Prop2"]);
                 element1.GetValue("Prop3").Should().Be(_prop3b["Prop3"]);
 
-                var element2 = array.ElementAt(2);
+                var element2 = elements.ElementAt(2);
 
                 element2.GetValue("Prop1").Should().Be(_prop3b["Prop1"]);
                 element2.GetValue("Prop2").Should().Be(_prop3b["Prop2"]);
                 element2.GetValue("Prop3").Should().Be(_prop3b["Prop3"]);
 
-                var element3 = array.ElementAt(3);
+                var element3 = elements.ElementAt(3);
 
                 element3.GetValue("Prop1").Should().Be(_prop3a["Prop1"]);
                 element3.GetValue("Prop2").Should().Be(_prop3a["Prop2"]);
@@ -1106,7 +1153,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyNames_Null()
             {
                 Invoking(() =>
                 {
@@ -1118,11 +1165,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Return_Empty_Collection_When_Property_Not_found()
+            public void Should_Return_Null_When_Property_Not_found()
             {
                 _ = ElementDictionaryExtensions.TryGetDescendantObjectArray(_elementDictionary, CreateMany<string>(), out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
 
             [Fact]
@@ -1154,33 +1201,54 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             {
                 _ = ElementDictionaryExtensions.TryGetDescendantObjectArray(_elementDictionary, new[] { "Prop2", "Prop2" }, out var elements);
 
-                var array = elements.ToList();
+                elements.Should().HaveCount(4);
 
-                array.Should().HaveCount(4);
-
-                var element0 = array.ElementAt(0);
+                var element0 = elements.ElementAt(0);
 
                 element0.GetValue("Prop1").Should().Be(_prop3a["Prop1"]);
                 element0.GetValue("Prop2").Should().Be(_prop3a["Prop2"]);
                 element0.GetValue("Prop3").Should().Be(_prop3a["Prop3"]);
 
-                var element1 = array.ElementAt(1);
+                var element1 = elements.ElementAt(1);
 
                 element1.GetValue("Prop1").Should().Be(_prop3b["Prop1"]);
                 element1.GetValue("Prop2").Should().Be(_prop3b["Prop2"]);
                 element1.GetValue("Prop3").Should().Be(_prop3b["Prop3"]);
 
-                var element2 = array.ElementAt(2);
+                var element2 = elements.ElementAt(2);
 
                 element2.GetValue("Prop1").Should().Be(_prop3b["Prop1"]);
                 element2.GetValue("Prop2").Should().Be(_prop3b["Prop2"]);
                 element2.GetValue("Prop3").Should().Be(_prop3b["Prop3"]);
 
-                var element3 = array.ElementAt(3);
+                var element3 = elements.ElementAt(3);
 
                 element3.GetValue("Prop1").Should().Be(_prop3a["Prop1"]);
                 element3.GetValue("Prop2").Should().Be(_prop3a["Prop2"]);
                 element3.GetValue("Prop3").Should().Be(_prop3a["Prop3"]);
+            }
+
+            [Fact]
+            public void Should_Get_Array_2()
+            {
+                _ = ElementDictionaryExtensions.TryGetDescendantObjectArray(_elementDictionary, new[] { "Prop2", "Prop2", "Prop4" }, out var elements);
+
+                elements.Should().HaveCount(8);
+
+                // _elementDictionary.Prop2 which contains _prop2a, _prop2b
+                // _prop2a.Prop2 contains _prop3a, _prop3b
+                // _prop2b.Prop2 contains _prop3b, _prop3a
+                // _prop3a.Prop4 contains _prop4a, _prop4b
+                // _prop3b.Prop4 contains _prop4b, _prop4a
+
+                elements.ElementAt(0).GetValue("Prop1").Should().Be(_prop4a["Prop1"]);
+                elements.ElementAt(1).GetValue("Prop1").Should().Be(_prop4b["Prop1"]);
+                elements.ElementAt(2).GetValue("Prop1").Should().Be(_prop4b["Prop1"]);
+                elements.ElementAt(3).GetValue("Prop1").Should().Be(_prop4a["Prop1"]);
+                elements.ElementAt(4).GetValue("Prop1").Should().Be(_prop4b["Prop1"]);
+                elements.ElementAt(5).GetValue("Prop1").Should().Be(_prop4a["Prop1"]);
+                elements.ElementAt(6).GetValue("Prop1").Should().Be(_prop4a["Prop1"]);
+                elements.ElementAt(7).GetValue("Prop1").Should().Be(_prop4b["Prop1"]);
             }
         }
 
@@ -1199,7 +1267,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Throw_When_ArrayPropertyName_Null()
+            public void Should_Throw_When_ArrayPropertyNames_Null()
             {
                 Invoking(() =>
                 {
@@ -1253,29 +1321,27 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             {
                 var elements = ElementDictionaryExtensions.GetDescendantObjectArray(_elementDictionary, new[] { "Prop2", "Prop2" });
 
-                var array = elements.ToList();
+                elements.Should().HaveCount(4);
 
-                array.Should().HaveCount(4);
-
-                var element0 = array.ElementAt(0);
+                var element0 = elements.ElementAt(0);
 
                 element0.GetValue("Prop1").Should().Be(_prop3a["Prop1"]);
                 element0.GetValue("Prop2").Should().Be(_prop3a["Prop2"]);
                 element0.GetValue("Prop3").Should().Be(_prop3a["Prop3"]);
 
-                var element1 = array.ElementAt(1);
+                var element1 = elements.ElementAt(1);
 
                 element1.GetValue("Prop1").Should().Be(_prop3b["Prop1"]);
                 element1.GetValue("Prop2").Should().Be(_prop3b["Prop2"]);
                 element1.GetValue("Prop3").Should().Be(_prop3b["Prop3"]);
 
-                var element2 = array.ElementAt(2);
+                var element2 = elements.ElementAt(2);
 
                 element2.GetValue("Prop1").Should().Be(_prop3b["Prop1"]);
                 element2.GetValue("Prop2").Should().Be(_prop3b["Prop2"]);
                 element2.GetValue("Prop3").Should().Be(_prop3b["Prop3"]);
 
-                var element3 = array.ElementAt(3);
+                var element3 = elements.ElementAt(3);
 
                 element3.GetValue("Prop1").Should().Be(_prop3a["Prop1"]);
                 element3.GetValue("Prop2").Should().Be(_prop3a["Prop2"]);
@@ -1335,11 +1401,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Return_Empty_Collection_When_Property_Not_found()
+            public void Should_Return_Null_When_Property_Not_found()
             {
                 _ = ElementDictionaryExtensions.TryGetDescendantObjectArrayValues<int>(_elements, CreateMany<string>(), Create<string>(), out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
 
             [Fact]
@@ -1535,11 +1601,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Return_Empty_Collection_When_Property_Not_found()
+            public void Should_Return_Null_When_Property_Not_found()
             {
                 _ = ElementDictionaryExtensions.TryGetDescendantObjectArrayValues<int>(_elementDictionary, CreateMany<string>(), Create<string>(), out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
 
             [Fact]

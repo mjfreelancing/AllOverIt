@@ -5,9 +5,9 @@ using System.Text.Json.Serialization;
 
 namespace AllOverIt.Serialization.Json.SystemText.Converters
 {
-    /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object>. All object and array
-    /// properties are also converted to and from a Dictionary&lt;string, object>.</summary>
-    internal sealed class NestedDictionaryConverter : JsonConverter<Dictionary<string, object>>
+    /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object?>. All object and array
+    /// properties are also converted to and from a Dictionary&lt;string, object?>.</summary>
+    internal sealed class NestedDictionaryConverter : JsonConverter<Dictionary<string, object?>>
     {
         private readonly NestedDictionaryConverterOptions _options;
 
@@ -23,14 +23,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
 
 
         /// <inheritdoc />
-        public override Dictionary<string, object> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override Dictionary<string, object?> Read(ref Utf8JsonReader reader, Type? typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType != JsonTokenType.StartObject)
             {
                 throw CreateJsonSerializationException(reader.TokenType);
             }
 
-            var dictionary = new Dictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
+            var dictionary = new Dictionary<string, object?>(StringComparer.InvariantCultureIgnoreCase);
 
             while (reader.Read())
             {
@@ -57,7 +57,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
         }
 
         /// <inheritdoc />
-        public override void Write(Utf8JsonWriter writer, Dictionary<string, object> value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, Dictionary<string, object?> value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
 
@@ -76,7 +76,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
                 : reader.GetDouble();
         }
 
-        private object ReadValue(ref Utf8JsonReader reader, JsonSerializerOptions options)
+        private object? ReadValue(ref Utf8JsonReader reader, JsonSerializerOptions options)
         {
             return reader.TokenType switch
             {
@@ -91,9 +91,9 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
             };
         }
 
-        private List<object> ReadArray(ref Utf8JsonReader reader, JsonSerializerOptions options)
+        private List<object?> ReadArray(ref Utf8JsonReader reader, JsonSerializerOptions options)
         {
-            var list = new List<object>();
+            var list = new List<object?>();
 
             while (reader.Read() && reader.TokenType != JsonTokenType.EndArray)
             {
@@ -104,9 +104,9 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
             return list;
         }
 
-        private static void WriteValue(Utf8JsonWriter writer, string key, object objectValue)
+        private static void WriteValue(Utf8JsonWriter writer, string? key, object? objectValue)
         {
-            if (key != null)
+            if (key is not null)
             {
                 writer.WritePropertyName(key);
             }
@@ -133,7 +133,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
             writer.WriteEndArray();
         }
 
-        private static void WriteValue(Utf8JsonWriter writer, object objectValue)
+        private static void WriteValue(Utf8JsonWriter writer, object? objectValue)
         {
             switch (objectValue)
             {

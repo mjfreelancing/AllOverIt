@@ -805,13 +805,13 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Theory]
             [InlineData(true)]
             [InlineData(false)]
-            public void Should_Return_Empty_Array_When_Not_Found(bool useObject)
+            public void Should_Return_Null_When_Not_Found(bool useObject)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
                 _ = jsonHelper.TryGetObjectArray(Create<string>(), out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
 
             [Theory]
@@ -1039,13 +1039,13 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Theory]
             [InlineData(true)]
             [InlineData(false)]
-            public void Should_Return_Empty_Array_When_Property_Not_Found(bool useObject)
+            public void Should_Return_Null_When_Property_Not_Found(bool useObject)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
                 _ = jsonHelper.TryGetObjectArrayValues<string>("Prop10", "Prop1", out var arrayValues);
 
-                arrayValues.Should().BeEmpty();
+                arrayValues.Should().BeNull();
             }
         }
 
@@ -1238,13 +1238,13 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Theory]
             [InlineData(true)]
             [InlineData(false)]
-            public void Should_Return_Empty_Array_When_Property_Not_Found(bool useObject)
+            public void Should_Return_Null_When_Property_Not_Found(bool useObject)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
                 _ = jsonHelper.TryGetDescendantObjectArray(new[] { "Prop0" }, out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
         }
 
@@ -1440,13 +1440,13 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Theory]
             [InlineData(true)]
             [InlineData(false)]
-            public void Should_Return_Empty_Array_When_Property_Not_Found(bool useObject)
+            public void Should_Return_Null_When_Property_Not_Found(bool useObject)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
                 _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(new[] { "Prop0" }, "Value", out var array);
 
-                array.Should().BeEmpty();
+                array.Should().BeNull();
             }
         }
 

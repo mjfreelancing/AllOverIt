@@ -23,6 +23,9 @@
 * Updated ObjectExtensions.InvokeMethod() to support return values.
 * Added LockableList.
 * Moved event bus and handlers to the AllOverIt.Reactive.Messaging namespace.
+* Renamed `ElementDictionaryExtensions.TryGetManyObjectArrayValues<TValue>()` to `ElementDictionaryExtensions.TryGetManyObjectValues<TValue>()`.
+* Methods such as `ElementDictionaryExtensions.TryGetDescendantObjectArray()` previously returned an empty array for
+  the out argument when the method returned false. These methods now return null for this argument.
 
 
 ### AllOverIt.Aws.Cdk.AppSync

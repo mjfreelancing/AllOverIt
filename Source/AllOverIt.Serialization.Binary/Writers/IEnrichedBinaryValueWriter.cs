@@ -11,6 +11,6 @@
         /// <see cref="Type"/>.</summary>
         /// <param name="writer">The binary writer that will write the value to the underlying stream.</param>
         /// <param name="value">The object value to be written.</param>
-        void WriteValue(IEnrichedBinaryWriter writer, object value);
+        void WriteValue(IEnrichedBinaryWriter writer, object? value);
     }
 }

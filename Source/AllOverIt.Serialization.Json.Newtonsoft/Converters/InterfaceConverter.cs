@@ -21,7 +21,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         }
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             return serializer.Deserialize<TConcrete>(reader);
         }
@@ -29,7 +29,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         /// <inheritdoc />
         /// <remarks>The converter only supports deserialization so this method will throw <exception cref="NotImplementedException" /> if called.</remarks>
         [ExcludeFromCodeCoverage]
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             // This method will never be called as CanConvert() doesn't allow it
             throw new NotImplementedException();

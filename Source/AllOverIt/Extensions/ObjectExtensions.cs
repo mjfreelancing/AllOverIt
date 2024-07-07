@@ -142,7 +142,7 @@ namespace AllOverIt.Extensions
 
                     if (!typeConverter.IsValid(instance))
                     {
-                        throw new InvalidCastException($"Unable to cast object of type '{instanceType.Name}' to type '{convertToType.Name}'.");
+                        throw new InvalidCastException($"Unable to cast object of type '{instanceType.GetFriendlyName()}' to type '{convertToType.GetFriendlyName()}'.");
                     }
 
                     return typeConverter.ConvertFrom(instance);

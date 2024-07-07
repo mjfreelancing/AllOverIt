@@ -10,7 +10,7 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
         /// <param name="valueWriter">The binary value writer that will write the value to the underlying stream.</param>
         /// <param name="writer">The binary writer that will write the value to the underlying stream.</param>
         /// <param name="value">The value to be written.</param>
-        public static void WriteValue<TValue>(this IEnrichedBinaryValueWriter valueWriter, IEnrichedBinaryWriter writer, TValue value)
+        public static void WriteValue<TValue>(this IEnrichedBinaryValueWriter valueWriter, IEnrichedBinaryWriter writer, TValue? value)
         {
             _ = valueWriter.WhenNotNull(nameof(valueWriter));
             _ = writer.WhenNotNull(nameof(writer));

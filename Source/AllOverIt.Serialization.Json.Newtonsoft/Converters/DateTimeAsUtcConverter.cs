@@ -16,9 +16,9 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         }
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
-            if (reader.Value == null)
+            if (reader.Value is null)
             {
                 return null;
             }
@@ -29,8 +29,14 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         }
 
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
+            if (value is null)
+            {
+                writer.WriteNull();
+                return;
+            }
+
             var utcDateTime = DateTime.SpecifyKind((DateTime) value, DateTimeKind.Utc);
             writer.WriteValue(utcDateTime);
         }
