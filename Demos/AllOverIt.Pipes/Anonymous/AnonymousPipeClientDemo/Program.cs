@@ -17,7 +17,7 @@ namespace AnonymousPipeClientDemo
 
                     LogMessage("Client waiting for handshake...");
 
-                    var message = pipeClient.Reader.ReadLine();
+                    var message = pipeClient.Reader.ReadLine()!;
 
                     if (!message.Equals("Handshake", StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -30,7 +30,7 @@ namespace AnonymousPipeClientDemo
                         // Read the server message and echo to the console - until 'quit' is received.
                         do
                         {
-                            message = pipeClient.Reader.ReadLine();
+                            message = pipeClient.Reader.ReadLine()!;
 
                             LogMessage($"Client received: {message}");
                         } while (!message.Equals("quit", StringComparison.InvariantCultureIgnoreCase));

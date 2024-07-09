@@ -35,8 +35,8 @@ namespace AppSyncSubscriptionDemo
         private readonly IJsonSerializer _jsonSerializer;
         private readonly ILogger<SubscriptionWorker> _logger;
 
-        private CompositeAsyncDisposable _compositeSubscriptions = new();
-        private IAppSyncClient _appSyncClient;
+        private readonly CompositeAsyncDisposable _compositeSubscriptions = new();
+        private IAppSyncClient? _appSyncClient;
 
         // The demo can be configured to register a client explicitly, or use a named client - determine which approach was configured.
         // Note: The DI setup has configured the name as "Public". As many named clients can be configured as required.
@@ -128,12 +128,12 @@ namespace AppSyncSubscriptionDemo
 
             // collate all exceptions raised during the subscription process
             var subscriptionErrors = new[] { subscription1, subscription2, subscription3 }
-                .Where(item => item.Exceptions != null)
+                .Where(item => item.Exceptions is not null)
                 .Select(item => item)
                 .GroupBy(item => item.Id)
-                .AsReadOnlyCollection();
+                .AsArray();
 
-            if (subscriptionErrors.Count != 0)
+            if (subscriptionErrors.Length != 0)
             {
                 LogMessage("Subscription errors received:");
 
@@ -141,7 +141,7 @@ namespace AppSyncSubscriptionDemo
                 {
                     LogMessage($" - Subscription '{subscription.Key}'");
 
-                    var exceptions = subscription.SelectMany(item => item.Exceptions);
+                    var exceptions = subscription.SelectMany(item => item.Exceptions!);
 
                     foreach (var exception in exceptions)
                     {
@@ -245,7 +245,6 @@ namespace AppSyncSubscriptionDemo
             _logger.LogInformation("{DateTime} - The background worker is stopping", $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
 
             _compositeSubscriptions.Dispose();
-            _compositeSubscriptions = null;
         }
 
         protected override void OnStopped()
@@ -323,7 +322,7 @@ namespace AppSyncSubscriptionDemo
             return subscription;
         }
 
-        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription(IAppSyncSubscriptionClient client, string name, string query, object variables = null)
+        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription(IAppSyncSubscriptionClient client, string name, string query, object? variables = null)
         {
             var subscriptionQuery = new SubscriptionQuery
             {
@@ -353,9 +352,9 @@ namespace AppSyncSubscriptionDemo
 
             string GetFailureMessage()
             {
-                var errors = subscription.Exceptions != null
+                var errors = subscription.Exceptions is not null
                     ? subscription.Exceptions.Select(item => item.Message)
-                    : subscription.GraphqlErrors.Select(item => item.Message);
+                    : subscription.GraphqlErrors!.Select(item => item.Message!);
 
                 return string.Join(", ", errors);
             }
@@ -369,17 +368,19 @@ namespace AppSyncSubscriptionDemo
 
         private static string GetErrorMessage(GraphqlErrorDetail detail)
         {
+            var errorMessage = detail.Message ?? string.Empty;
+
             if (detail.ErrorCode.HasValue)
             {
-                return $"({detail.ErrorCode}): {detail.Message}";
+                return $"({detail.ErrorCode}): {errorMessage}";
             }
 
-            if (!detail.ErrorType.IsNullOrEmpty())
+            if (detail.ErrorType.IsNotNullOrEmpty())
             {
-                return $"({detail.ErrorType}): {detail.Message}";
+                return $"({detail.ErrorType}): {errorMessage}";
             }
 
-            return detail.Message;
+            return errorMessage;
         }
 
         private static void LogMessage(string message)

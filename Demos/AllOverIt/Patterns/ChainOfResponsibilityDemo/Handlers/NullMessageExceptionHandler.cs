@@ -2,7 +2,7 @@
 {
     public sealed class NullMessageExceptionHandler : QueueMessageHandlerBase
     {
-        public override QueueMessageHandlerState Handle(QueueMessageHandlerState state)
+        public override QueueMessageHandlerState? Handle(QueueMessageHandlerState state)
         {
             var payload = state.QueueMessage.Payload;
 

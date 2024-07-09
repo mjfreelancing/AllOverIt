@@ -4,10 +4,10 @@
     {
         public sealed class AddLanguageContent
         {
-            public string Code { get; set; }
-            public string Name { get; set; }
+            public string? Code { get; set; }
+            public string? Name { get; set; }
         }
 
-        public AddLanguageContent AddLanguage { get; set; }
+        public required AddLanguageContent AddLanguage { get; set; }
     }
 }

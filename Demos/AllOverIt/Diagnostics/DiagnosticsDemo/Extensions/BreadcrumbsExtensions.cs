@@ -1,4 +1,5 @@
-﻿using AllOverIt.Diagnostics.Breadcrumbs;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Diagnostics.Breadcrumbs;
 using AllOverIt.Diagnostics.Breadcrumbs.Extensions;
 using AllOverIt.Extensions;
 
@@ -37,14 +38,14 @@ namespace DiagnosticsDemo.Extensions
                 yield break;
             }
 
-            BreadcrumbData collated = null;
-            int[] collatedData = null;
+            BreadcrumbData? collated = null;
+            int[]? collatedData = null;
 
             while (true)
             {
                 var current = enumerator.Current;
 
-                var hasTag = current?.Tags.Contains(tag) ?? false;
+                var hasTag = current?.Tags?.Contains(tag) ?? false;
 
                 if (hasTag)
                 {
@@ -61,7 +62,7 @@ namespace DiagnosticsDemo.Extensions
                         collated = null;
                         collatedData = null;
 
-                        yield return current;
+                        yield return current.WhenNotNull();
                     }
                 }
 
@@ -77,11 +78,11 @@ namespace DiagnosticsDemo.Extensions
             }
         }
 
-        private static BreadcrumbData GetNextToYield(BreadcrumbData current, BreadcrumbData collated, int[] collatedData)
+        private static BreadcrumbData GetNextToYield(BreadcrumbData? current, BreadcrumbData? collated, int[]? collatedData)
         {
             if (collated is null)
             {
-                return current;
+                return current.WhenNotNull();
             }
             else
             {
@@ -91,16 +92,18 @@ namespace DiagnosticsDemo.Extensions
             }
         }
 
-        private static void UpdateCollatedData(BreadcrumbData current, ref BreadcrumbData collated, ref int[] collatedData)
+        private static void UpdateCollatedData(BreadcrumbData? current, ref BreadcrumbData? collated, ref int[]? collatedData)
         {
             if (collated is null)
             {
-                collated = current;
-                collatedData = (int[]) current.Metadata;
+                collated = current.WhenNotNull();
+                collatedData = (int[]?) current.Metadata;
             }
             else
             {
-                collatedData = [.. collatedData, .. (int[]) current.Metadata];
+                var metadata = (int[]?) current?.Metadata.WhenNotNull();
+
+                collatedData = [.. collatedData, .. metadata];
             }
         }
     }

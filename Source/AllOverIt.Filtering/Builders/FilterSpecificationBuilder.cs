@@ -322,7 +322,7 @@ namespace AllOverIt.Filtering.Builders
         }
 
         private static ILinqSpecification<TType> CreateBasicSpecificationOperation<TProperty>(Type genericOperation,
-            Expression<Func<TType, TProperty>> propertyExpression, object value, IOperationFilterOptions options)
+            Expression<Func<TType, TProperty>> propertyExpression, object? value, IOperationFilterOptions options)
         {
             // No special consideration is required when the value is double (for example) and TProperty is double?
             var ctor = genericOperation.GetConstructor([typeof(Expression<Func<TType, TProperty>>), typeof(TProperty), typeof(IOperationFilterOptions)])!;
@@ -331,7 +331,7 @@ namespace AllOverIt.Filtering.Builders
         }
 
         private static ILinqSpecification<TType> CreateArraySpecificationOperation<TProperty>(Type genericOperation,
-            Expression<Func<TType, TProperty>> propertyExpression, object values, IOperationFilterOptions options)
+            Expression<Func<TType, TProperty>> propertyExpression, object? values, IOperationFilterOptions options)
         {
             Throw<InvalidOperationException>.When(values is not IList, "Array based specifications expect an IList<T>.");
 
@@ -364,7 +364,7 @@ namespace AllOverIt.Filtering.Builders
                 : specification1;
         }
 
-        private static object GetOperationValue<TProperty>(Type operationType, object operation)
+        private static object? GetOperationValue<TProperty>(Type operationType, object operation)
         {
             var key = new GenericCacheKey<Type>(operationType);
 

@@ -9,7 +9,7 @@ namespace BinarySerializationDemo.Readers
         public override object ReadValue(IEnrichedBinaryReader reader)
         {
             var roomId = reader.ReadGuid();
-            var teacher = reader.ReadObject<Teacher>();
+            var teacher = reader.ReadObject<Teacher>()!;
             var students = reader.ReadEnumerable<Student>();
 
             return new Classroom

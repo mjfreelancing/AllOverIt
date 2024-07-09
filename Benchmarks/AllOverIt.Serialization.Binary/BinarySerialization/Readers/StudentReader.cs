@@ -8,7 +8,7 @@ namespace BinarySerializationBenchmark.Readers
     {
         public override object ReadValue(IEnrichedBinaryReader reader)
         {
-            var firstName = reader.ReadSafeString();
+            var firstName = reader.ReadString();
             var lastName = reader.ReadSafeString();
             var gender = reader.ReadEnum<Gender>();
             var age = reader.ReadNullable<int>();

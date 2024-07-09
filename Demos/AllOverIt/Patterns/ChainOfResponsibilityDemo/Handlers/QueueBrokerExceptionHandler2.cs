@@ -10,7 +10,7 @@ namespace ChainOfResponsibilityDemo.Handlers
                 .Then(new EmptyMessageExceptionHandler())
                 .Then(new UnhandledExceptionHandler());         // end of the chain
 
-        public QueueMessageHandlerState Handle(QueueMessage queueMessage, QueueBroker queueBroker, Exception exception)
+        public QueueMessageHandlerState? Handle(QueueMessage queueMessage, QueueBroker queueBroker, Exception exception)
         {
             // Create state that can be passed from one handler to the next
             var state = new QueueMessageHandlerState(queueMessage, queueBroker, exception);

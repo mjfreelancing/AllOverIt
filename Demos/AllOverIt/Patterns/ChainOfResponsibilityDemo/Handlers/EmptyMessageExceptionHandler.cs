@@ -1,4 +1,5 @@
-﻿using AllOverIt.Extensions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Extensions;
 
 namespace ChainOfResponsibilityDemo.Handlers
 {
@@ -8,15 +9,17 @@ namespace ChainOfResponsibilityDemo.Handlers
         {
             var payload = state.QueueMessage.Payload;
 
+            Throw<InvalidOperationException>.WhenNull(payload, "Not expecting the payload to be null.");
+
             if (payload.IsEmpty())
             {
                 Console.WriteLine(" >> Handling an empty message...");
                 return Abandon(state);
             }
 
-            Console.WriteLine("Payload is empty, trying the next handler.");
+            Console.WriteLine("Payload is not empty, trying the next handler.");
 
-            // not handled, so move onto the next handler
+            // Not handled, so move onto the next handler
             return base.Handle(state);
         }
     }

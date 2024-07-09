@@ -64,7 +64,7 @@ namespace BinarySerializationBenchmark
                     reader.Readers.Add(new TeacherReader());
                     reader.Readers.Add(new ClassroomReader());
 
-                    _ = (Classroom) reader.ReadObject();
+                    _ = (Classroom) reader.ReadObject()!;
                 }
             }
 

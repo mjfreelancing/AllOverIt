@@ -1,4 +1,5 @@
-﻿using AllOverIt.Csv;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Csv;
 using AllOverIt.Csv.Exporter;
 using AllOverIt.Csv.Extensions;
 using CsvExporterDemo.Data;
@@ -8,8 +9,10 @@ namespace CsvExporterDemo
     internal sealed class SampleDataExporter : MemoryCsvExporterBase<SampleData>
     {
         // Only need to pass in as much data is as required to configure the dynamic headers
-        protected override ICsvSerializer<SampleData> CreateSerializer(IEnumerable<SampleData> sampleData)
+        protected override ICsvSerializer<SampleData> CreateSerializer(IEnumerable<SampleData>? sampleData)
         {
+            _ = sampleData.WhenNotNull();
+
             var serializer = new CsvSerializer<SampleData>();
 
             // Add fixed, known, columns

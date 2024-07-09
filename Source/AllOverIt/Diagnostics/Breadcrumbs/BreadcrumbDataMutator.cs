@@ -11,14 +11,14 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             _breadcrumbData = breadcrumbData.WhenNotNull(nameof(breadcrumbData));
         }
 
-        IBreadcrumbDataMutator IBreadcrumbDataMutator.WithMetadata(object metadata)
+        IBreadcrumbDataMutator IBreadcrumbDataMutator.WithMetadata(object? metadata)
         {
             _breadcrumbData._metadata = metadata;
 
             return this;
         }
 
-        IBreadcrumbDataMutator IBreadcrumbDataMutator.WithTag(string tag)
+        IBreadcrumbDataMutator IBreadcrumbDataMutator.WithTag(string? tag)
         {
             _breadcrumbData._tags = tag is null ? null : [tag];
 

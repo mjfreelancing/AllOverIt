@@ -363,9 +363,11 @@ namespace AllOverIt.Extensions
         /// <param name="instance">The object instance to be converted.</param>
         /// <param name="defaultValue">The default value to be returned when <paramref name="instance"/> is null.</param>
         /// <returns>Returns <paramref name="instance"/> converted to the specified <typeparamref name="TType"/>.</returns>
-        public static TType? As<TType>(this object instance, TType? defaultValue = default)
+        public static TType? As<TType>(this object? instance, TType? defaultValue = default)
         {
-            return ObjectConversionHelper.ConvertTo(instance, defaultValue);
+            return instance is null
+              ? defaultValue
+              : ObjectConversionHelper.ConvertTo(instance, defaultValue);
         }
 
         /// <summary>Converts the provided source <paramref name="instance"/> to a specified nullable type.</summary>
@@ -373,10 +375,10 @@ namespace AllOverIt.Extensions
         /// <param name="instance">The object instance to be converted.</param>
         /// <param name="defaultValue">The default value to be returned when <paramref name="instance"/> is null.</param>
         /// <returns>Returns <paramref name="instance"/> converted to the specified <typeparamref name="TType"/>.</returns>
-        public static TType? AsNullable<TType>(this object instance, TType? defaultValue = null)
+        public static TType? AsNullable<TType>(this object? instance, TType? defaultValue = null)
           where TType : struct
         {
-            return instance == null
+            return instance is null
               ? defaultValue
               : ObjectExtensions.As<TType>(instance);
         }

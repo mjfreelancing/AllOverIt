@@ -72,17 +72,17 @@ namespace DeserializeToDictionaryDemo
 
             var errorMessages2 = jsonHelper
                 .GetObjectArray("errors")!
-                .SelectMany(error => error.GetObjectArrayValues<string>("errorInfo", "errorMessage"))
+                .SelectMany(error => error.GetObjectArrayValues<string>("errorInfo", "errorMessage")!)
                 .ToArray();
 
             var errorMessages3 = jsonHelper
                 .GetObjectArray("errors")!
-                .GetDescendantObjectArray(["errorInfo"])
+                .GetDescendantObjectArray(["errorInfo"])!
                 .SelectToArray(errorInfo => errorInfo.GetValue<string>("errorMessage"));
 
             var errorMessages4 = jsonHelper
                 .GetObjectArray("errors")!
-                .GetDescendantObjectArrayValues<string>(["errorInfo"], "errorMessage")
+                .GetDescendantObjectArrayValues<string>(["errorInfo"], "errorMessage")!
                 .ToArray();
 
             var errorMessages5 = jsonHelper
@@ -133,7 +133,7 @@ namespace DeserializeToDictionaryDemo
 
             var jsonHelper = new JsonHelper(anonymousObject);
 
-            var arguments = jsonHelper.GetDescendantObjectArray(["arguments"]);
+            var arguments = jsonHelper.GetDescendantObjectArray(["arguments"])!;
 
             // Use IEnumerable<> to find the 'arguments' element where the property 'Name' has a value of 'id'
             var idArgument = arguments

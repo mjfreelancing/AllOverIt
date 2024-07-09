@@ -16,13 +16,13 @@ namespace CompiledReflectionBenchmark
         private static readonly PropertyInfo DummyPropInfo = typeof(DummyType).GetProperty(nameof(DummyType.Value))!;
 
         // Compiled
-        private static readonly Func<object, object> ObjectPropertyGetterInfo = PropertyHelper.CreatePropertyGetter(DummyPropInfo);
-        private static readonly Func<DummyType, object> TypedPropertyGetterInfo = PropertyHelper.CreatePropertyGetter<DummyType>(DummyPropInfo);
-        private static readonly Func<DummyType, object> TypedPropertyGetterName = PropertyHelper.CreatePropertyGetter<DummyType>(nameof(DummyType.Value));
+        private static readonly Func<object, object?> ObjectPropertyGetterInfo = PropertyHelper.CreatePropertyGetter(DummyPropInfo);
+        private static readonly Func<DummyType, object?> TypedPropertyGetterInfo = PropertyHelper.CreatePropertyGetter<DummyType>(DummyPropInfo);
+        private static readonly Func<DummyType, object?> TypedPropertyGetterName = PropertyHelper.CreatePropertyGetter<DummyType>(nameof(DummyType.Value));
 
-        private static readonly Action<object, object> ObjectPropertySetterInfo = PropertyHelper.CreatePropertySetter(DummyPropInfo);
-        private static readonly Action<DummyType, object> TypedPropertySetterInfo = PropertyHelper.CreatePropertySetter<DummyType>(DummyPropInfo);
-        private static readonly Action<DummyType, object> TypedPropertySetterName = PropertyHelper.CreatePropertySetter<DummyType>(nameof(DummyType.Value));
+        private static readonly Action<object, object?> ObjectPropertySetterInfo = PropertyHelper.CreatePropertySetter(DummyPropInfo);
+        private static readonly Action<DummyType, object?> TypedPropertySetterInfo = PropertyHelper.CreatePropertySetter<DummyType>(DummyPropInfo);
+        private static readonly Action<DummyType, object?> TypedPropertySetterName = PropertyHelper.CreatePropertySetter<DummyType>(nameof(DummyType.Value));
 
         [Params(4)]
         public int IterationCount;

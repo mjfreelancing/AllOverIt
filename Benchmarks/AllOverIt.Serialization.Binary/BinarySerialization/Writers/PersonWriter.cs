@@ -10,7 +10,7 @@ namespace BinarySerializationBenchmark.Writers
         {
             var person = (Person) value;
 
-            writer.WriteSafeString(person.FirstName);
+            writer.Write(person.FirstName);
             writer.WriteSafeString(person.LastName);
             writer.WriteEnum(person.Gender);           // writes the type and value
             writer.WriteNullable(person.Age);            // caters for nullable values

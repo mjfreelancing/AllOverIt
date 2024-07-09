@@ -24,7 +24,7 @@ namespace AnonymousPipeServerDemo
                 var clientHandle = pipeServer.Start(inheritability: HandleInheritability.Inheritable);
 
                 // Determine the location of the client demo to launch.
-                var clientPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location).Replace("Server", "Client");
+                var clientPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!.Replace("Server", "Client");
                 var clientExePath = Path.Combine(clientPath, "AnonymousPipeClientDemo.exe");
 
                 LogMessage("Server launching client app...");
@@ -56,7 +56,7 @@ namespace AnonymousPipeServerDemo
                 {
                     LogMessage("Type a message to send to the client (type 'quit' to exit): ");
 
-                    message = Console.ReadLine();
+                    message = Console.ReadLine()!;
 
                     pipeServer.Writer.WriteLine(message);
 
