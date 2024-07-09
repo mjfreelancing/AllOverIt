@@ -41,7 +41,7 @@ namespace AllOverIt.Expressions.Strings
             // Required for some serialization scenarios
         }
 
-        private StringComparisonMode(int value, [CallerMemberName] string? name = default)
+        private StringComparisonMode(int value, [CallerMemberName] string name = "")
             : base(value, name.WhenNotNull(nameof(name)))
         {
         }

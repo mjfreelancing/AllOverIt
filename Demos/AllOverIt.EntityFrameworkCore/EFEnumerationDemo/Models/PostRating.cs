@@ -14,7 +14,7 @@ namespace EFEnumerationDemo.Models
         {
         }
 
-        private PostRating(int value, [CallerMemberName] string name = null)
+        private PostRating(int value, [CallerMemberName] string name = "")
             : base(value, name)
         {
         }

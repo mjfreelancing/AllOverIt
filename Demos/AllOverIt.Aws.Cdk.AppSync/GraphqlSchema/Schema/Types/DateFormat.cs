@@ -10,7 +10,7 @@ namespace GraphqlSchema.Schema.Types
         public static readonly DateFormat Universal = new(0);
         public static readonly DateFormat Local = new(1);
 
-        private DateFormat(int value, [CallerMemberName] string? name = default)
+        private DateFormat(int value, [CallerMemberName] string name = "")
             : base(value, name.WhenNotNull(nameof(name)))
         {
         }

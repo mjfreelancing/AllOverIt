@@ -80,7 +80,7 @@ namespace AllOverIt.Tests.Extensions
 
         private abstract class DummyEnrichedEnum : EnrichedEnum<DummyEnrichedEnum>
         {
-            protected DummyEnrichedEnum(int value, [CallerMemberName] string name = null)
+            protected DummyEnrichedEnum(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }
@@ -91,7 +91,7 @@ namespace AllOverIt.Tests.Extensions
             public static readonly SuperEnrichedEnumDummy Value1 = new(1);
             public static readonly SuperEnrichedEnumDummy Value2 = new(2);
 
-            private SuperEnrichedEnumDummy(int value, [CallerMemberName] string name = null)
+            private SuperEnrichedEnumDummy(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }

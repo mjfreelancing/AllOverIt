@@ -81,7 +81,7 @@ namespace DtoMappingDemo
 
             var objectMapper = new ObjectMapper(mapperConfiguration);
 
-            var target = objectMapper.Map<TargetTypeWithRequiredAndInit>(source);
+            var target = objectMapper.Map<TargetTypeWithRequiredAndInit>(source)!;
 
             PrintMapping("Create target, binding all properties", source, target, serializer);
         }
@@ -96,13 +96,13 @@ namespace DtoMappingDemo
 
                 options.WithConversion(src => src.Prop3b, (mapper, value) =>
                 {
-                    return new ObservableCollection<string>(value);
+                    return new ObservableCollection<string>(value!);
                 });
             });
 
             var objectMapper = new ObjectMapper(mapperConfiguration);
 
-            var target = objectMapper.Map<TargetType>(source);
+            var target = objectMapper.Map<TargetType>(source)!;
 
             PrintMapping("Create target, binding private properties only", source, target, serializer);
         }
@@ -117,7 +117,7 @@ namespace DtoMappingDemo
 
                 options.WithConversion(src => src.Prop3b, (mapper, value) =>
                 {
-                    return new ObservableCollection<string>(value);
+                    return new ObservableCollection<string>(value!);
                 });
             });
 
@@ -182,12 +182,12 @@ namespace DtoMappingDemo
             {
                 options.WithConversion(src => src.Prop3b, (mapper, value) =>
                 {
-                    return new ObservableCollection<string>(value);
+                    return new ObservableCollection<string>(value!);
                 });
 
                 options.WithConversion(src => src.Prop7, (mapper, value) =>
                 {
-                    return value.Reverse();
+                    return value!.Reverse();
                 });
 
                 // Testing the child object property types that have a different name
@@ -197,7 +197,7 @@ namespace DtoMappingDemo
 
                 options.WithConversion(src => src.Prop8, (mapper, value) =>
                    {
-                       return mapper.Map<ChildTargetType>(value);
+                       return mapper.Map<ChildTargetType>(value!);
                    });
 
                 options.WithConversion(src => src.Prop9, (mapper, value) =>
@@ -205,7 +205,7 @@ namespace DtoMappingDemo
                     // Can use the mapper, or explicitly create the return type
 
                     //return mapper.Map<ChildTargetType>(value);
-                    return new ChildTargetType { Prop1 = value.Prop1 };
+                    return new ChildTargetType { Prop1 = value!.Prop1 };
                 });
 
             });
@@ -240,12 +240,12 @@ namespace DtoMappingDemo
                 {
                     options.WithConversion(src => src.Prop3b, (mapper, value) =>
                     {
-                        return new ObservableCollection<string>(value);
+                        return new ObservableCollection<string>(value!);
                     });
 
                     // will exclude Prop7 because the item count matches. This means the target will be null
                     // (and not an empty collection) because the property is completely excluded from mapping
-                    options.ExcludeWhen(src => src.Prop7, values => values.AsReadOnlyCollection().Count == 3);
+                    options.ExcludeWhen(src => src.Prop7, values => values!.Count() == 3);
                 });
             });
 

@@ -2,13 +2,13 @@
 {
     public class SourceType
     {
-        public int Prop1 { get; set; }
-        public bool Prop2 { get; set; }
-        public IEnumerable<string> Prop3 { get; set; }
-        public IEnumerable<string> Prop3b { get; set; }
+        public required int Prop1 { get; set; }
+        public required bool Prop2 { get; set; }
+        public IEnumerable<string>? Prop3 { get; set; }
+        public required IEnumerable<string> Prop3b { get; set; }
         private int Prop4 { get; }      // Is public on the target, but has a private setter
-        public int Prop5a { get; set; }
-        public IEnumerable<string> Prop7 { get; set; }
+        public required int Prop5a { get; set; }
+        public IEnumerable<string>? Prop7 { get; set; }
         public ChildSourceType Prop8 { get; set; } = new();
         public ChildSourceType Prop9 { get; set; } = new();
 

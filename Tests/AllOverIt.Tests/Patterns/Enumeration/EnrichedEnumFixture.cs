@@ -14,7 +14,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             public static readonly DummyEnrichedEnum1 Value1 = new(1);
             public static readonly DummyEnrichedEnum1 Value2 = new(2, "Value 2");
 
-            private DummyEnrichedEnum1(int value, [CallerMemberName] string name = null)
+            private DummyEnrichedEnum1(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }
@@ -25,7 +25,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             public static readonly DummyEnrichedEnum2 Value1 = new(1);
             public static readonly DummyEnrichedEnum2 Value2 = new(2, "Value 2");
 
-            private DummyEnrichedEnum2(int value, [CallerMemberName] string name = null)
+            private DummyEnrichedEnum2(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }
@@ -36,7 +36,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
         {
             public static readonly DummyBadEnrichedEnum1 NullName = new(1, null);
 
-            private DummyBadEnrichedEnum1(int value, [CallerMemberName] string name = null)
+            private DummyBadEnrichedEnum1(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }
@@ -46,7 +46,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
         {
             public static readonly DummyBadEnrichedEnum2 EmptyName = new(1, "");
 
-            private DummyBadEnrichedEnum2(int value, [CallerMemberName] string name = null)
+            private DummyBadEnrichedEnum2(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }
@@ -56,7 +56,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
         {
             public static readonly DummyBadEnrichedEnum3 WhitespaceName = new(1, "  ");
 
-            private DummyBadEnrichedEnum3(int value, [CallerMemberName] string name = null)
+            private DummyBadEnrichedEnum3(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }

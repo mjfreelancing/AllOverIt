@@ -16,7 +16,7 @@ namespace EFEnumerationDemo.Models
         {
         }
 
-        private BlogStatus(int value, [CallerMemberName] string name = null)
+        private BlogStatus(int value, [CallerMemberName] string name = "")
             : base(value, name!.ToUpper())
         {
         }

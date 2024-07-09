@@ -19,7 +19,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
             {
             }
 
-            private DummyEnrichedEnum(int value, [CallerMemberName] string name = null)
+            private DummyEnrichedEnum(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }

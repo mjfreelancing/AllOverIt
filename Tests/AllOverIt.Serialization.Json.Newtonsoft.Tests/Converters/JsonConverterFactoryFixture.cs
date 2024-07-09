@@ -20,7 +20,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
             {
             }
 
-            private DummyEnrichedEnum1(int value, [CallerMemberName] string name = null)
+            private DummyEnrichedEnum1(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }
@@ -35,7 +35,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
             {
             }
 
-            private DummyEnrichedEnum2(int value, [CallerMemberName] string name = null)
+            private DummyEnrichedEnum2(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }

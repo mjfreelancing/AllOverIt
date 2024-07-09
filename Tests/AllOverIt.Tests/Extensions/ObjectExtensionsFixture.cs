@@ -71,7 +71,7 @@ namespace AllOverIt.Tests.Extensions
         {
             public static readonly DummyEnrichedEnum Value1 = new(1);
 
-            protected DummyEnrichedEnum(int value, [CallerMemberName] string name = null)
+            protected DummyEnrichedEnum(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }
@@ -81,7 +81,7 @@ namespace AllOverIt.Tests.Extensions
         {
             public static readonly SuperEnrichedEnumDummy Value2 = new(2);
 
-            private SuperEnrichedEnumDummy(int value, [CallerMemberName] string name = null)
+            private SuperEnrichedEnumDummy(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }

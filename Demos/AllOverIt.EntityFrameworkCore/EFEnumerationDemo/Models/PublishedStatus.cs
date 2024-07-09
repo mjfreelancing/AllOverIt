@@ -14,7 +14,7 @@ namespace EFEnumerationDemo.Models
         {
         }
 
-        private PublishedStatus(int value, [CallerMemberName] string name = null)
+        private PublishedStatus(int value, [CallerMemberName] string name = "")
             : base(value, name)
         {
         }
