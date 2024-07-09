@@ -1,4 +1,6 @@
-﻿using EFEnumerationDemo.Models;
+﻿#nullable disable           // If enabled, string without [Required] would need to be changed to string?
+
+using EFEnumerationDemo.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace EFEnumerationDemo.Entities
