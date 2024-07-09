@@ -87,7 +87,8 @@ namespace EFEnumerationDemo
                                 blog.Id,
                                 blog.Description,
                                 post.Rating,
-                                post.Content
+                                post.Content,
+                                post.Tag
                             };
 
                 var queryString = query.ToQueryString();
@@ -98,7 +99,7 @@ namespace EFEnumerationDemo
 
                 foreach (var result in results)
                 {
-                    Console.WriteLine($"{result.Id} - {result.Description} - {result.Rating.Value} - {result.Rating.Name} - {result.Content}");
+                    Console.WriteLine($"{result.Id} - {result.Description} - {result.Rating.Value} - {result.Rating.Name} - {result.Content} - {result.Tag}");
                 }
             }
 
@@ -209,6 +210,11 @@ namespace EFEnumerationDemo
                                 Rating = PostRating.From(postIndex % 3),
                                 Status = PublishedStatus.From((postIndex + 2) % 3)
                             };
+
+                            if (idx % 2 == 0)
+                            {
+                                post.Tag = $"Tag {idx + 1}";
+                            }
 
                             post.StatusValue = post.Status;
                             post.RatingValue = post.Rating;

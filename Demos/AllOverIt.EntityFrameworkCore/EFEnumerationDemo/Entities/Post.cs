@@ -1,4 +1,6 @@
-﻿using EFEnumerationDemo.Models;
+﻿#nullable disable           // If enabled, string without [Required] would need to be changed to string?
+
+using EFEnumerationDemo.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace EFEnumerationDemo.Entities
@@ -15,18 +17,21 @@ namespace EFEnumerationDemo.Entities
         [Required]
         public string Content { get; set; }
 
+        // Testing without any attributes
+        public string Tag { get; set; }
+
         [Required]
         [MaxLength(20)]
         public PostRating Rating { get; set; }
 
-        // testing without any attributes
+        // Testing without any attributes
         public PostRating RatingValue { get; set; }
 
         [Required]
         [MaxLength(20)]
         public PublishedStatus Status { get; set; }
 
-        // testing without any attributes
+        // Testing without any attributes
         public PublishedStatus StatusValue { get; set; }
 
         [Required]

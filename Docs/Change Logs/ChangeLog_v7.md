@@ -1,3 +1,13 @@
+#  Version 7.22.1
+## 09 Jul 2024
+
+### AllOverIt.EntityFrameworkCore.Diagrams
+
+* Fixed PreserveColumnOrder issue so base class properties are listed first.
+
+---
+
+
 #  Version 7.22.0
 ## 07 Jul 2024
 
