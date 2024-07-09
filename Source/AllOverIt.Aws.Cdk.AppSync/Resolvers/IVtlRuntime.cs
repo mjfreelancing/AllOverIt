@@ -4,7 +4,7 @@
     public interface IVtlRuntime : IResolverRuntime
     {
         /// <summary>The VTL request handler as a string.</summary>
-        public string RequestMapping { get; }
+        public string? RequestMapping { get; }
 
         /// <summary>The VTL response handler as a string.</summary>
         public string ResponseMapping { get; }

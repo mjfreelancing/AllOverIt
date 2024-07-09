@@ -85,7 +85,7 @@ namespace GraphqlSchema.Constructs
             resolverFactory.Register<ContinentLanguagesResolver>(() => new ContinentLanguagesResolver(true));
 
             // Register a factory method based on a base class type.
-            resolverFactory.Register<HttpGetVtlResolver>(type => (IVtlRuntime) Activator.CreateInstance(type, "super_secret_api_key"));
+            resolverFactory.Register<HttpGetVtlResolver>(type => (IVtlRuntime) Activator.CreateInstance(type, "super_secret_api_key")!);
 
             // DateType doesn't have an attribute. Without one, it would be named "DateType", except when overridden like so:
             var typeNameOverrides = new Dictionary<SystemType, string>

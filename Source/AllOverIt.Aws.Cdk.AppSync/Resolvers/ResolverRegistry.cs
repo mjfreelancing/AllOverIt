@@ -44,7 +44,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Resolvers
 
             if (resolver is IVtlRuntime requestResponseMapping)
             {
-                resolverProps.RequestMappingTemplate = MappingTemplate.FromString(requestResponseMapping.RequestMapping);
+                if (requestResponseMapping.RequestMapping is not null)
+                {
+                    resolverProps.RequestMappingTemplate = MappingTemplate.FromString(requestResponseMapping.RequestMapping);
+                }
+
                 resolverProps.ResponseMappingTemplate = MappingTemplate.FromString(requestResponseMapping.ResponseMapping);
             }
             else if (resolver is IJsRuntime jsRuntime)

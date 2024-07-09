@@ -115,7 +115,7 @@ namespace GraphqlSchema
             yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetLanguageUrlExportName, "https://www.google.com");
             yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetCountriesUrlImportName, Fn.Join("/", [Fn.ImportValue(Constants.HttpDataSource.GetCountriesUrlImportName), "lookup"]));
             yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetCountryCodesUrl, "https://www.yahoo.com");
-            yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName, System.Environment.GetEnvironmentVariable(Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName));
+            yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName, System.Environment.GetEnvironmentVariable(Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName)!);
         }
 
         private static IEnumerable<GraphqlDataSourceBase> CreateNoneDataSources()

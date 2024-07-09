@@ -1,10 +1,11 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Resolvers;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Aws.Cdk.AppSync.Resolvers;
 
 namespace GraphqlSchema.Schema.Resolvers
 {
     internal abstract class VtlResolverBase : IVtlRuntime
     {
-        public string RequestMapping { get; protected set; }
+        public string? RequestMapping { get; protected set; }
         public string ResponseMapping { get; protected set; }
 
         protected VtlResolverBase()
@@ -14,6 +15,9 @@ namespace GraphqlSchema.Schema.Resolvers
 
         protected void SetHttpRequestMapping(string verb, string resourcePath)
         {
+            _ = verb.WhenNotNullOrEmpty();
+            _ = resourcePath.WhenNotNullOrEmpty();
+
             RequestMapping = $$"""
                     {
                       "version": "2018-05-29",
@@ -34,11 +38,12 @@ namespace GraphqlSchema.Schema.Resolvers
                     """;
         }
 
-
-
         protected void SetHttpRequestMapping(string verb, string resourcePath, string apiKey)
         {
-            // Using FormatJsonString() to remove the extra padding
+            _ = verb.WhenNotNullOrEmpty();
+            _ = resourcePath.WhenNotNullOrEmpty();
+            _ = apiKey.WhenNotNullOrEmpty();
+
             RequestMapping = $$"""
                     {
                       "version": "2018-05-29",

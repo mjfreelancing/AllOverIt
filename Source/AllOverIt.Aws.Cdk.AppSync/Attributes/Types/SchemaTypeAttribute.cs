@@ -21,7 +21,7 @@
         /// attribute is associated with and an optionally specified name.</summary>
         /// <param name="excludeNamespacePrefix">The portion of the type's namespace to exclude from the generated name.</param>
         /// <param name="name">An optional name to append to the namespace. This can be null or an empty string if not required.</param>
-        public SchemaTypeAttribute(string excludeNamespacePrefix, string name)
+        public SchemaTypeAttribute(string excludeNamespacePrefix, string? name)
             : base(excludeNamespacePrefix, name, GraphqlSchemaType.Type)
         {
         }

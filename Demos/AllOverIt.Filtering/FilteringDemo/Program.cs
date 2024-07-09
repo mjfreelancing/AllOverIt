@@ -45,7 +45,7 @@ namespace FilteringDemo
             };
 
             var customVisitor = new LinqSpecificationVisitor();
-            customVisitor.AddTypeValueConverter(typeof(DateTimeValue), value => value.ToString());      // returns DateTimeValue.Value
+            customVisitor.AddTypeValueConverter(typeof(DateTimeValue), value => value.ToString()!);      // returns DateTimeValue.Value
 
             var results = products
                 .AsQueryable()

@@ -28,7 +28,7 @@
         /// <summary>Constructor.</summary>
         /// <param name="name">The Graphql schema type name.</param>
         /// <param name="graphqlSchemaType">The Graphql schema type.</param>
-        protected SchemaTypeBaseAttribute(string name, GraphqlSchemaType graphqlSchemaType)
+        protected SchemaTypeBaseAttribute(string? name, GraphqlSchemaType graphqlSchemaType)
             : this(graphqlSchemaType)
         {
             Name = name;
@@ -39,7 +39,7 @@
         /// <param name="excludeNamespacePrefix">The portion of the type's namespace to exclude from the generated name.</param>
         /// <param name="name">An optional name to append to the namespace. This can be null or an empty string if not required.</param>
         /// <param name="graphqlSchemaType">The Graphql schema type.</param>
-        protected SchemaTypeBaseAttribute(string excludeNamespacePrefix, string name, GraphqlSchemaType graphqlSchemaType)
+        protected SchemaTypeBaseAttribute(string excludeNamespacePrefix, string? name, GraphqlSchemaType graphqlSchemaType)
             : this(name, graphqlSchemaType)
         {
             ExcludeNamespacePrefix = excludeNamespacePrefix;

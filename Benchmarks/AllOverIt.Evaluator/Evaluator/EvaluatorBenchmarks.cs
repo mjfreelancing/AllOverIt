@@ -113,7 +113,7 @@ namespace EvaluatorBenchmark
         private void AddTwoVariablesUsingRegistry(int iterations)
         {
             var compilerResult = _compiler.Compile("x + y");
-            var registry = compilerResult.VariableRegistry;
+            var registry = compilerResult.VariableRegistry!;
             var resolver = compilerResult.Resolver;
 
             var x = registry.AddMutableVariable("x");
