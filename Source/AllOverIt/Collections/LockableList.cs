@@ -144,7 +144,7 @@ namespace AllOverIt.Collections
         /// <inheritdoc />
         /// <remarks>The enumerator obtains a read-lock for the duration of the enumeration. If the caller only needs to
         /// iterate the current collection of items without concern of future additions or deletions then consider using
-        /// the <see cref="Clone"/> method to obtain a copy (snapshot) of the list for enumeration purposes.</remarks>
+        /// the <see cref="CopyTo(TType[], int)"/> method to obtain a copy (snapshot) of the list for enumeration purposes.</remarks>
         public IEnumerator<TType> GetEnumerator()
         {
             return new LockedListEnumerator(_list, _lock);
@@ -198,12 +198,15 @@ namespace AllOverIt.Collections
             return _lock.GetWriteLock();
         }
 
+        /// <summary>Disposes of the underlying lock.</summary>
         public void Dispose()
         {
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>Disposes of the underlying lock.</summary>
+        /// <param name="disposing">Indicates if the object is currently being disposed of.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)

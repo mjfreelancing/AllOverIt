@@ -12,6 +12,7 @@ namespace AllOverIt.Serilog.Sinks.Observable
         private bool _disposed;
         private readonly LockableList<IObserver<LogEvent>> _observers = new(false);
 
+        /// <inheritdoc/>
         public int Count => _observers.Count;
 
         /// <summary>Subscribes the observer for notification of log events.</summary>

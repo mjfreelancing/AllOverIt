@@ -16,7 +16,6 @@ namespace AllOverIt.Formatters.Objects
         public ObjectPropertyFilter? Filter { get; } = default;
 
         /// <summary>Constructor. Applies a default constructed <see cref="ObjectPropertySerializerOptions"/>.</summary>
-        /// <param name="filter">Provides support for filtering properties and values when serializing. Optional.</param>
         public ObjectPropertySerializer()
             : this(new ObjectPropertySerializerOptions(), null)
         {

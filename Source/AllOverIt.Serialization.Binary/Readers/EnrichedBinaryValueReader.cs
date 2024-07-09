@@ -23,6 +23,8 @@ namespace AllOverIt.Serialization.Binary.Readers
         /// <inheritdoc />
         public abstract object ReadValue(IEnrichedBinaryReader reader);
 
+        /// <summary>Creates an instance of the type to be read.</summary>
+        /// <returns>The new instance.</returns>
         protected object CreateType()
         {
             return _typeFactory.Invoke();

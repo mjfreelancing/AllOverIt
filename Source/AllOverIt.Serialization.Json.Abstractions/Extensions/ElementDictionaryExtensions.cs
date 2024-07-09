@@ -12,7 +12,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
     public static class ElementDictionaryExtensions
     {
         /// <summary>Tries to get the value of a specified property on an element. If the value is not a <typeparamref name="TValue"/>
-        /// then an attempt will be made to convert it using <see cref="ObjectExtensions.As{TType}(object, TType?)"/>.</summary>
+        /// then an attempt will be made to convert it using <see cref="ObjectExtensions.As{TType}(object, TType)"/>.</summary>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="element">The element to get the value from.</param>
         /// <param name="propertyName">The name of the property on the element to get the value from.</param>
@@ -43,7 +43,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         }
 
         /// <summary>Gets the value of a specified property on an element. If the value is not a <typeparamref name="TValue"/>
-        /// then an attempt will be made to convert it using <see cref="ObjectExtensions.As{TType}(object, TType?)"/>.</summary>
+        /// then an attempt will be made to convert it using <see cref="ObjectExtensions.As{TType}(object?, TType)"/>.</summary>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="element">The element to get the value from.</param>
         /// <param name="propertyName">The name of the property on the element to get the value from.</param>
@@ -65,7 +65,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
 
         /// <summary>Tries to get an array of values for a specified property on an element. If the element's values are not a
         /// <typeparamref name="TValue"/> then an attempt will be made to convert each value using
-        /// <see cref="ObjectExtensions.As{TType}(object, TType?)"/>.</summary>
+        /// <see cref="ObjectExtensions.As{TType}(object?, TType)"/>.</summary>
         /// <typeparam name="TValue">The array's element type.</typeparam>
         /// <param name="element">The element to get the values from.</param>
         /// <param name="propertyName">The name of the array property on the element to get the values from.</param>
@@ -114,7 +114,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         }
 
         /// <summary>Gets an array of values for a specified property on an element. If the element's values are not a <typeparamref name="TValue"/>
-        /// then an attempt will be made to convert each value using <see cref="ObjectExtensions.As{TType}(object, TType?)"/>.</summary>
+        /// then an attempt will be made to convert each value using <see cref="ObjectExtensions.As{TType}(object?, TType)"/>.</summary>
         /// <typeparam name="TValue">The array's element type.</typeparam>
         /// <param name="element">The element to get the values from.</param>
         /// <param name="propertyName">The name of the array property on the element to get the values from.</param>

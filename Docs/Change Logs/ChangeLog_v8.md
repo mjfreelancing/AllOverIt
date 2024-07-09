@@ -2,16 +2,17 @@
 ## XX XXX 2024
 
 ### PENDING / IN-PROGRESS
-* Enable nullable references
-* Change properties and arguments from IReadOnlyCollection<T> to T[], where applicable
-* Add 'required' to properties, where applicable - including NetStandard 2.1 support
-* Consider removing extraneous null guard checks in extension methods
-* Add alternative to ServiceRegistrar to provide a fluent syntax that caters for similar functionality
+* Enable nullable references.
+* Change properties and arguments from IReadOnlyCollection<T> to T[], where applicable.
+* Add 'required' to properties, where applicable - including NetStandard 2.1 support.
+* Consider removing extraneous null guard checks in extension methods.
+* Add alternative to ServiceRegistrar to provide a fluent syntax that caters for similar functionality.
   plus the ability to resolve the same instance for multiple interfaces, and handle open generics.
-* Update / replace how Throw<> works to save on string allocations
-* Throw<> => add overloads that support params for string formatting
-* Update EnrichedEnumModelBindingDemo so it is based on minimal API and the built-in problem details
+* Update / replace how Throw<> works to save on string allocations.
+* Throw<> => add overloads that support params for string formatting.
+* Update EnrichedEnumModelBindingDemo so it is based on minimal API and the built-in problem details.
 * Deprecate FakeItEasy package. Switch to NSubstitute, including incorporating TestUtils project.
+* Run BinarySerializationBenchmark - see if the reader/writer can be made more efficient.
 
 
 ### Applicable to all packages
