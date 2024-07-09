@@ -107,7 +107,8 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             List<string> orderedPropertyNames = [];
             List<Type> orderedPropertyTypes = [];
 
-            foreach (var property in entityIdentifier.Type.GetProperties())
+            // Not using entityIdentifier.Type.GetProperties() as it returns base class properties after the derived type properties.
+            foreach (var property in entityIdentifier.Type.GetPropertyInfo())
             {
                 orderedPropertyNames.Add(property.Name);
                 orderedPropertyTypes.Add(property.PropertyType);
