@@ -46,7 +46,7 @@ namespace AllOverIt.Reflection
         /// <returns>The compiled property setter.</returns>
         /// <remarks>This overload will not work with strongly typed structs. To set the value of a property on a struct
         /// use <see cref="CreatePropertySetter(PropertyInfo)"/>.</remarks>
-        public static Action<TType, object> CreatePropertySetter<TType>(PropertyInfo propertyInfo)
+        public static Action<TType, object?> CreatePropertySetter<TType>(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
@@ -62,7 +62,7 @@ namespace AllOverIt.Reflection
         /// <returns>The compiled property setter.</returns>
         /// <remarks>This overload will not work with strongly typed structs. To set the value of a property on a struct
         /// use <see cref="CreatePropertySetter(PropertyInfo)"/>.</remarks>
-        public static Action<TType, object> CreatePropertySetter<TType>(string propertyName)
+        public static Action<TType, object?> CreatePropertySetter<TType>(string propertyName)
         {
             _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
@@ -74,7 +74,7 @@ namespace AllOverIt.Reflection
             return CreatePropertySetterExpressionLambda<TType>(propertyInfo).Compile();
         }
 
-        private static Expression<Action<TType, object>> CreatePropertySetterExpressionLambda<TType>(PropertyInfo propertyInfo)
+        private static Expression<Action<TType, object?>> CreatePropertySetterExpressionLambda<TType>(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
@@ -93,7 +93,7 @@ namespace AllOverIt.Reflection
 
             var setterCall = Expression.Call(instanceType, setterMethodInfo, valueParam);
 
-            return Expression.Lambda<Action<TType, object>>(setterCall, instance, argument);
+            return Expression.Lambda<Action<TType, object?>>(setterCall, instance, argument);
         }
 
         private static void AssertPropertyCanWrite(PropertyInfo propertyInfo)

@@ -13,7 +13,7 @@ namespace AllOverIt.Reflection
         /// on a specified <see cref="PropertyInfo"/> instance.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property getter.</param>
         /// <returns>The compiled property getter.</returns>
-        public static Func<object, object> CreatePropertyGetter(PropertyInfo propertyInfo)
+        public static Func<object, object?> CreatePropertyGetter(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
@@ -25,7 +25,7 @@ namespace AllOverIt.Reflection
         /// <typeparam name="TType">The object type to get the property value from.</typeparam>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property getter.</param>
         /// <returns>The compiled property getter.</returns>
-        public static Func<TType, object> CreatePropertyGetter<TType>(PropertyInfo propertyInfo)
+        public static Func<TType, object?> CreatePropertyGetter<TType>(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
@@ -37,7 +37,7 @@ namespace AllOverIt.Reflection
         /// <typeparam name="TType">The object type to get the property value from.</typeparam>
         /// <param name="propertyName">The name of the property to get the value from.</param>
         /// <returns>The compiled property getter.</returns>
-        public static Func<TType, object> CreatePropertyGetter<TType>(string propertyName)
+        public static Func<TType, object?> CreatePropertyGetter<TType>(string propertyName)
         {
             _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
@@ -52,7 +52,7 @@ namespace AllOverIt.Reflection
         /// <summary>Gets an expression lambda that represents getting a property value from an object.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property getter.</param>
         /// <returns>The expression lambda representing a property getter.</returns>
-        public static Expression<Func<object, object>> CreatePropertyGetterExpressionLambda(PropertyInfo propertyInfo)
+        public static Expression<Func<object, object?>> CreatePropertyGetterExpressionLambda(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
@@ -74,10 +74,10 @@ namespace AllOverIt.Reflection
             var getterCall = Expression.Call(instanceParam, getterMethodInfo);
             var objectGetterCall = Expression.Convert(getterCall, typeof(object));
 
-            return Expression.Lambda<Func<object, object>>(objectGetterCall, itemParam);
+            return Expression.Lambda<Func<object, object?>>(objectGetterCall, itemParam);
         }
 
-        private static Expression<Func<TType, object>> CreatePropertyGetterExpressionLambda<TType>(PropertyInfo propertyInfo)
+        private static Expression<Func<TType, object?>> CreatePropertyGetterExpressionLambda<TType>(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
 
@@ -93,7 +93,7 @@ namespace AllOverIt.Reflection
 
             var objectProperty = Expression.TypeAs(property, typeof(object));
 
-            return Expression.Lambda<Func<TType, object>>(objectProperty, itemParam);
+            return Expression.Lambda<Func<TType, object?>>(objectProperty, itemParam);
         }
 
         private static void AssertPropertyCanRead(PropertyInfo propertyInfo)

@@ -85,12 +85,21 @@ namespace AllOverIt.Tests.Reflection
                     Prop1 = Create<int>()
                 };
 
-                var propInfo = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop1));
-                var getter = PropertyHelper.CreatePropertyGetter(propInfo);
+                var prop1Info = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop1));
+                var getter1 = PropertyHelper.CreatePropertyGetter(prop1Info);
 
-                var actual = getter.Invoke(expected);
+                var prop2Info = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop2));       // testing null string
+                var getter2 = PropertyHelper.CreatePropertyGetter(prop2Info);
 
-                actual.Should().Be(expected.Prop1);
+                var actual1 = getter1.Invoke(expected);
+                actual1.Should().Be(expected.Prop1);
+
+                var actual2 = getter2.Invoke(expected);
+                actual2.Should().BeNull();
+
+                expected.Prop2 = Create<string>();
+                actual2 = getter2.Invoke(expected);
+                actual2.Should().Be(expected.Prop2);
             }
 
             [Fact]
