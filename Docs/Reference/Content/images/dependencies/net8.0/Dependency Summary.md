@@ -148,8 +148,8 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.EntityFrameworkCore v8.0.6
-* Microsoft.EntityFrameworkCore.Relational v8.0.6
+* Microsoft.EntityFrameworkCore v8.0.7
+* Microsoft.EntityFrameworkCore.Relational v8.0.7
 * Microsoft.Extensions.Configuration.Abstractions v8.0.0
 
 <br>
@@ -166,8 +166,8 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.EntityFrameworkCore v8.0.6
-* Microsoft.EntityFrameworkCore.Relational v8.0.6
+* Microsoft.EntityFrameworkCore v8.0.7
+* Microsoft.EntityFrameworkCore.Relational v8.0.7
 * Microsoft.Extensions.Configuration.Abstractions v8.0.0
 
 <br>
@@ -187,8 +187,8 @@
 * AllOverIt.EntityFrameworkCore
 * AllOverIt.Pagination
 * AllOverIt.Serialization.Binary
-* Microsoft.EntityFrameworkCore v8.0.6
-* Microsoft.EntityFrameworkCore.Relational v8.0.6
+* Microsoft.EntityFrameworkCore v8.0.7
+* Microsoft.EntityFrameworkCore.Relational v8.0.7
 * Microsoft.Extensions.Configuration.Abstractions v8.0.0
 * Microsoft.Extensions.DependencyInjection.Abstractions v8.0.1
 
@@ -521,7 +521,7 @@
 * AllOverIt.Serialization.Json.Abstractions
 * System.Runtime.CompilerServices.Unsafe v6.0.0
 * System.Text.Encodings.Web v8.0.0
-* System.Text.Json v8.0.3
+* System.Text.Json v8.0.4
 
 <br>
 

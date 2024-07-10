@@ -521,7 +521,7 @@
 * AllOverIt.Serialization.Json.Abstractions
 * System.Runtime.CompilerServices.Unsafe v6.0.0
 * System.Text.Encodings.Web v8.0.0
-* System.Text.Json v8.0.3
+* System.Text.Json v8.0.4
 
 <br>
 

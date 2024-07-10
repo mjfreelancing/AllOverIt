@@ -1,3 +1,21 @@
+#  Version 7.22.2
+## 10 Jul 2024
+
+### AllOverIt.EntityFrameworkCore
+
+* Package dependency updates
+
+### AllOverIt.EntityFrameworkCore.Diagrams
+
+* Package dependency updates
+
+### AllOverIt.Serialization.Json.SystemText
+
+* Package dependency updates to address Microsoft Security Advisory CVE-2024-30105 | .NET Denial of Service Vulnerability.
+
+---
+
+
 #  Version 7.22.1
 ## 09 Jul 2024
 
