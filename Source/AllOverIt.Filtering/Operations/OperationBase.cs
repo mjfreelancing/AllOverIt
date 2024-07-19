@@ -73,7 +73,7 @@ namespace AllOverIt.Filtering.Operations
             var expectedType = typeof(TValue);
 
             // eg bool value provided for comparison
-            var valueType = value == null
+            var valueType = value is null
                 ? typeof(TValue)
                 : value.GetType();
 

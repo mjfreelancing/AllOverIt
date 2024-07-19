@@ -409,7 +409,7 @@ namespace AllOverIt.Evaluator
 
         private void ProcessOperators(Stack<string> operators, Stack<Expression> expressions, Func<bool>? condition = default)
         {
-            while (operators.Count > 0 && (condition == null || condition.Invoke()))
+            while (operators.Count > 0 && (condition is null || condition.Invoke()))
             {
                 var nextOperator = operators.Pop();
                 var operation = _operationFactory.GetOperation(nextOperator);

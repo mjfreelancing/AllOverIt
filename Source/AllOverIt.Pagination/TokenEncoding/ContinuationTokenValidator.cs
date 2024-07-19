@@ -16,7 +16,7 @@ namespace AllOverIt.Pagination.TokenEncoding
         }
 
         /// <inheritdoc />
-        public bool IsValidToken(string continuationToken, IContinuationTokenOptions tokenOptions)
+        public bool IsValidToken(string? continuationToken, IContinuationTokenOptions tokenOptions)
         {
             _ = tokenOptions.WhenNotNull(nameof(tokenOptions));
 

@@ -363,7 +363,7 @@ namespace AllOverIt.Csv.Tests.Extensions
 
                         var child = item.SingleOrDefault(data => data.Name == name && data.Value == value);
 
-                        return child == null
+                        return child is null
                             ? null
                             : new object[]
                             {
@@ -398,7 +398,7 @@ namespace AllOverIt.Csv.Tests.Extensions
                     {
                         var child = data.Children.SingleOrDefault(item => headerName == $"{item.Name}-{item.Value}");
 
-                        var cellValue = child != null
+                        var cellValue = child is not null
                             ? $"{child.Active}"
                             : string.Empty;
 
@@ -446,7 +446,7 @@ namespace AllOverIt.Csv.Tests.Extensions
 
                         var child = item.SingleOrDefault(data => data.Name == name && data.Value == value);
 
-                        return child == null
+                        return child is null
                             ? null
                             : new object[]
                             {

@@ -72,7 +72,7 @@ namespace AllOverIt.Extensions
         {
             var propertyInfo = typeInfo.GetDeclaredField(fieldName);
 
-            if (propertyInfo == null && typeInfo.BaseType != null)
+            if (propertyInfo is null && typeInfo.BaseType is not null)
             {
                 var baseTypeInfo = typeInfo.BaseType.GetTypeInfo();
                 propertyInfo = GetFieldInfo(baseTypeInfo, fieldName);
@@ -83,7 +83,7 @@ namespace AllOverIt.Extensions
 
         private static void GetPropertyInfo(TypeInfo typeInfo, bool declaredOnly, ICollection<PropertyInfo> propInfoList)
         {
-            if (!declaredOnly && typeInfo.BaseType != null)
+            if (!declaredOnly && typeInfo.BaseType is not null)
             {
                 var baseTypeInfo = typeInfo.BaseType.GetTypeInfo();
                 GetPropertyInfo(baseTypeInfo, false, propInfoList);
@@ -100,7 +100,7 @@ namespace AllOverIt.Extensions
 
         private static void GetFieldInfo(TypeInfo typeInfo, bool declaredOnly, ICollection<FieldInfo> fieldInfoList)
         {
-            if (!declaredOnly && typeInfo.BaseType != null)
+            if (!declaredOnly && typeInfo.BaseType is not null)
             {
                 var baseTypeInfo = typeInfo.BaseType.GetTypeInfo();
                 GetFieldInfo(baseTypeInfo, false, fieldInfoList);

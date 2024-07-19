@@ -103,7 +103,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
             // TODO: Check the SystemText serializer does this - also need to add more tests
             var converter = serializer.Converters.FirstOrDefault(converter => !ReferenceEquals(converter, this) && converter.CanWrite && converter.CanConvert(value.GetType()));
 
-            if (converter != null)
+            if (converter is not null)
             {
                 converter.WriteJson(writer, value, serializer);
                 return;

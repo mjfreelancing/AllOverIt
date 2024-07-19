@@ -2,6 +2,6 @@
 {
     public class Level2
     {
-        public IEnumerable<Level3> Level3 { get; }
+        public IEnumerable<Level3> Level3 { get; } = [];
     }
 }

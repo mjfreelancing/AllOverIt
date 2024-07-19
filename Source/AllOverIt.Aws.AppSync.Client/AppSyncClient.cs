@@ -67,7 +67,7 @@ namespace AllOverIt.Aws.AppSync.Client
                     result.StatusCode = responseMessage.StatusCode;
                     result.Headers = responseMessage.Headers;
 
-                    if (responseMessage.IsSuccessStatusCode && result.Errors == null)
+                    if (responseMessage.IsSuccessStatusCode && result.Errors is null)
                     {
                         return result;
                     }

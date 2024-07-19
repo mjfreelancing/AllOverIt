@@ -21,7 +21,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
             protected override bool ValidateValue(string value)
             {
                 // not allowing palindrome
-                return value == null || value != ReverseString(value);
+                return value is null || value != ReverseString(value);
             }
         }
 
@@ -269,7 +269,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var value = Create<string>();
                 var string1 = new StringValueObject(value);
 
-                var actual = string1 == null;
+                var actual = string1 is null;
 
                 actual.Should().BeFalse();
             }
@@ -317,7 +317,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var value = Create<string>();
                 var string1 = new StringValueObject(value);
 
-                var actual = string1 != null;
+                var actual = string1 is not null;
 
                 actual.Should().BeTrue();
             }
@@ -588,7 +588,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
             [Fact]
             public void Should_Return_Zero_When_Null()
             {
-                string value = default;
+                string value = null;
                 var string1 = (ValueObject<string, StringValueObject>) value;
 
                 var actual = string1.GetHashCode();

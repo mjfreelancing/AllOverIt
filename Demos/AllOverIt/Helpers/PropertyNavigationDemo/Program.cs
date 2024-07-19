@@ -65,7 +65,7 @@ namespace PropertyNavigationDemo
             {
                 elementType = leafNodeType.GetElementType()!;
 
-                Console.WriteLine($"with a leaf node of type {elementType.GetFriendlyName()}[].");
+                Console.WriteLine($"With a leaf node of type {elementType.GetFriendlyName()}[].");
             }
 
             if (typeof(IEnumerable).IsAssignableFrom(leafNodeType))
@@ -74,14 +74,14 @@ namespace PropertyNavigationDemo
                 {
                     elementType = leafNodeType.GetGenericArguments()[0];
 
-                    Console.WriteLine($"with a leaf node of type IEnumerable<{elementType.GetFriendlyName()}>.");
+                    Console.WriteLine($"With a leaf node of type IEnumerable<{elementType.GetFriendlyName()}>.");
                 }
             }
 
-            if (elementType == null)
+            if (elementType is null)
             {
                 // not an array or IEnumerable<T>
-                Console.WriteLine($"with a leaf node of type {leafNodeType.GetFriendlyName()}.");
+                Console.WriteLine($"With a leaf node of type {leafNodeType.GetFriendlyName()}.");
             }
 
             var typeToCheck = elementType ?? leafNodeType;

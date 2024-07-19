@@ -71,7 +71,7 @@ namespace AllOverIt.DependencyInjection.Extensions
                     {
                         var firstMismatch = descriptors.FirstOrDefault(item => item.Lifetime != lifetime);
 
-                        if (firstMismatch != null)
+                        if (firstMismatch is not null)
                         {
                             throw new DependencyRegistrationException($"The service type {serviceType.GetFriendlyName()} is already registered to the implementation type " +
                                                                       $"{implementationType.GetFriendlyName()} but has a different lifetime ({firstMismatch.Lifetime}).");

@@ -78,7 +78,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         {
             Action<PropertyBuilder>? propertyBuilder = null;
 
-            if (columnOptions?.ColumnType != null)
+            if (columnOptions?.ColumnType is not null)
             {
                 propertyBuilder = builder =>
                 {

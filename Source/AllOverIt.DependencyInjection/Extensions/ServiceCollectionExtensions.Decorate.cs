@@ -94,12 +94,12 @@ namespace AllOverIt.DependencyInjection.Extensions
 
         private static object GetInstance(IServiceProvider provider, ServiceDescriptor descriptor)
         {
-            if (descriptor.ImplementationInstance != null)
+            if (descriptor.ImplementationInstance is not null)
             {
                 return descriptor.ImplementationInstance;
             }
 
-            return descriptor.ImplementationType != null
+            return descriptor.ImplementationType is not null
                 ? ActivatorUtilities.GetServiceOrCreateInstance(provider, descriptor.ImplementationType)
                 : descriptor.ImplementationFactory!.Invoke(provider);
         }

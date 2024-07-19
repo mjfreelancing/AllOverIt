@@ -130,7 +130,7 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
             [Fact]
             public void Should_Not_Write_Value()
             {
-                string value = default;
+                string value = null;
 
                 _writerFake.FakedObject.WriteSafeString(value);
 

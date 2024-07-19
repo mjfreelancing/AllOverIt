@@ -302,7 +302,7 @@ namespace AllOverIt.Expressions.Strings
 
         private static Expression ConvertIfNullConstant(Expression value)
         {
-            if (value is ConstantExpression constant && constant.Value == null && value.Type == CommonTypes.ObjectType)
+            if (value is ConstantExpression constant && constant.Value is null && value.Type == CommonTypes.ObjectType)
             {
                 value = Expression.Convert(value, typeof(string));
             }

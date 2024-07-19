@@ -142,7 +142,7 @@ namespace PaginationConsoleDemo
                     .CreatePaginator(query, paginatorConfig)
                     .ColumnAscending(item => item.Description, item => item.Title, item => item.BlogId, item => item.PostId);
 
-                string continuationToken = default;
+                string? continuationToken = null;
                 var key = 'n';
 
                 var stopwatch = Stopwatch.StartNew();
@@ -319,7 +319,7 @@ namespace PaginationConsoleDemo
 
                 for (var blogIndex = 0; blogIndex < batchSize; blogIndex++)
                 {
-                    string description = default;
+                    string? description = null;
 
                     switch ((startIndex + blogIndex) % 4)
                     {
@@ -338,6 +338,9 @@ namespace PaginationConsoleDemo
                         case 3:
                             description = $"DeScRiPtIoN {startIndex + blogIndex}";
                             break;
+
+                        default:
+                            throw new UnreachableException();
                     }
 
                     var blog = new Blog

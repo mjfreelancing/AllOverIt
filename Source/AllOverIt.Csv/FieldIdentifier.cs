@@ -10,7 +10,7 @@ namespace AllOverIt.Csv
         {
             public bool Equals(FieldIdentifier<TFieldId>? lhs, FieldIdentifier<TFieldId>? rhs)
             {
-                Throw<InvalidOperationException>.When(lhs == null || rhs == null, "Field identifiers must not be null.");
+                Throw<InvalidOperationException>.When(lhs is null || rhs is null, "Field identifiers must not be null.");
 
                 if (ReferenceEquals(lhs, rhs))
                 {

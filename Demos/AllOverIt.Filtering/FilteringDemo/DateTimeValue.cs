@@ -32,7 +32,7 @@
                 return true;
             }
 
-            if (left == null || right == null)
+            if (left is null || right is null)
             {
                 return left is null;
             }
@@ -47,7 +47,7 @@
                 return false;
             }
 
-            if (left == null || right == null)
+            if (left is null || right is null)
             {
                 return right is null;
             }
@@ -62,7 +62,7 @@
                 return false;
             }
 
-            if (left == null || right == null)
+            if (left is null || right is null)
             {
                 return left is null;
             }

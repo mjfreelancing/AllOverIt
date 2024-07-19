@@ -12,7 +12,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
         public async Task Server_Should_Write_To_Client()
         {
             var expected = Create<string>();
-            string actual = default;
+            string actual = null;
 
             using (var server = new AnonymousPipeServer())
             {
@@ -45,7 +45,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
         public async Task Server_Should_Read_From_Client()
         {
             var expected = Create<string>();
-            string actual = default;
+            string actual = null;
 
             using (var server = new AnonymousPipeServer())
             {

@@ -50,7 +50,7 @@ namespace AllOverIt.Formatters.Objects
 
             dictionary = new Dictionary<string, string>();
 
-            if (instance != null)
+            if (instance is not null)
             {
                 Populate(string.Empty, instance, dictionary, new Dictionary<object, ObjectPropertyParent>());
             }
@@ -192,7 +192,7 @@ namespace AllOverIt.Formatters.Objects
             {
                 var value = propertyInfo.GetValue(instance);
 
-                if (Options.IncludeNulls || value != null)
+                if (Options.IncludeNulls || value is not null)
                 {
                     var fullPath = propertyInfo.Name;
 
@@ -365,7 +365,7 @@ namespace AllOverIt.Formatters.Objects
 
         private static string GetPropertyPath(IDictionary<object, ObjectPropertyParent> references)
         {
-            return string.Join(".", references.Values.Where(item => item.Name != null).Select(item => item.Name));
+            return string.Join(".", references.Values.Where(item => item.Name is not null).Select(item => item.Name));
         }
 
         private static Type GetEnumerableElementType(IEnumerable enumerable)

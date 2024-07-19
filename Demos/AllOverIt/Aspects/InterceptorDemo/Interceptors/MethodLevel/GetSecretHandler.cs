@@ -26,7 +26,7 @@ namespace InterceptorDemo.Interceptors.MethodLevel
 
             args[0] = accessKey.ToUpperInvariant();
 
-            string? result = default;
+            string? result = null;
             var isHandled = false;
 
             var methodName = targetMethod!.Name;

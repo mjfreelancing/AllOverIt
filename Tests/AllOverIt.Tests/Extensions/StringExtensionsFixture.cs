@@ -332,7 +332,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Return_False_When_Null()
             {
-                string actual = default;
+                string actual = null;
 
                 actual.IsEmpty().Should().BeFalse();
             }

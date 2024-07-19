@@ -102,7 +102,7 @@ namespace AllOverIt.Extensions
             var predicate = BindingOptionsHelper.BuildPropertyOrMethodBindingPredicate(bindingOptions);
             var currentType = type;
 
-            while (currentType != null)
+            while (currentType is not null)
             {
                 var typeInfo = currentType.GetTypeInfo();
 

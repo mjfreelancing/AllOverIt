@@ -17,7 +17,7 @@ namespace ValueObjectDemo
             Temperature = temperature;
         }
 
-        public bool Equals(EnrichedTemperature other)
+        public bool Equals(EnrichedTemperature? other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -27,13 +27,18 @@ namespace ValueObjectDemo
             return other is not null && this.ConvertToKelvin().Equals(other.ConvertToKelvin());
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(obj as EnrichedTemperature);
         }
 
-        public int CompareTo(EnrichedTemperature other)
+        public int CompareTo(EnrichedTemperature? other)
         {
+            if (other is null)
+            {
+                return 1;
+            }
+
             return this.ConvertToKelvin().CompareTo(other.ConvertToKelvin());
         }
 

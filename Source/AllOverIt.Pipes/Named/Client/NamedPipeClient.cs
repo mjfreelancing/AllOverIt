@@ -136,7 +136,7 @@ namespace AllOverIt.Pipes.Named.Client
 
         private async Task DoOnDisconnectedAsync()
         {
-            if (_connection == null)
+            if (_connection is null)
             {
                 return;
             }

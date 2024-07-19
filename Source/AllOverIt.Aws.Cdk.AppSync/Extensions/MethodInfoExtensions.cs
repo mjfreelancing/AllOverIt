@@ -24,12 +24,12 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
         public static bool IsGqlTypeRequired(this MethodInfo methodInfo)
         {
-            return methodInfo.GetCustomAttribute<SchemaTypeRequiredAttribute>(true) != null;
+            return methodInfo.GetCustomAttribute<SchemaTypeRequiredAttribute>(true) is not null;
         }
 
         public static bool IsGqlArrayRequired(this MethodInfo propertyInfo)
         {
-            return propertyInfo.GetCustomAttribute<SchemaArrayRequiredAttribute>(true) != null;
+            return propertyInfo.GetCustomAttribute<SchemaArrayRequiredAttribute>(true) is not null;
         }
 
         public static void AssertReturnTypeIsNotNullable(this MethodInfo methodInfo)

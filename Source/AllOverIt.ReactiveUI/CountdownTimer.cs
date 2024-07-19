@@ -98,7 +98,7 @@ namespace AllOverIt.ReactiveUI
                     })
                     .TakeWhile(remainingTime => !cancellationToken.IsCancellationRequested && remainingTime > TimeSpan.Zero);
 
-                if (observeOnScheduler != null)
+                if (observeOnScheduler is not null)
                 {
                     intervalObservable = intervalObservable.ObserveOn(observeOnScheduler);
                 }

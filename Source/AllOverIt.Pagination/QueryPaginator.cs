@@ -16,7 +16,7 @@ namespace AllOverIt.Pagination
     {
         private sealed class FirstExpression
         {
-            public bool IsPending => MemberAccess == null;
+            public bool IsPending => MemberAccess is null;
             public MemberExpression? MemberAccess { get; set; }
             public Expression? ReferenceValue { get; set; }
         }
@@ -130,7 +130,7 @@ namespace AllOverIt.Pagination
 
             var backQuery = GetDirectionReverseQuery().AsQueryable();
 
-            if (reference != null)
+            if (reference is not null)
             {
                 var predicate = CreatePreviousPagePredicate(reference);
                 backQuery = backQuery.Where(predicate);
@@ -155,7 +155,7 @@ namespace AllOverIt.Pagination
 
             var forwardQuery = GetDirectionQuery().AsQueryable();
 
-            if (reference != null)
+            if (reference is not null)
             {
                 var predicate = CreateNextPagePredicate(reference);
                 forwardQuery = forwardQuery.Where(predicate);
@@ -369,7 +369,7 @@ namespace AllOverIt.Pagination
         private Expression CompoundOuterColumnExpressions(PaginationDirection direction, ParameterExpression param, object?[] referenceValues,
             FirstExpression firstExpression, IDictionary<int, Expression> referenceParameterCache)
         {
-            Expression? outerExpression = default;
+            Expression? outerExpression = null;
 
             // _columns.Count > 0
 
@@ -390,7 +390,7 @@ namespace AllOverIt.Pagination
         private Expression CompoundInnerColumnExpressions(PaginationDirection direction, ParameterExpression param, object?[] referenceValues,
             int columnCount, FirstExpression firstExpression, IDictionary<int, Expression> referenceParameterCache)
         {
-            Expression? innerExpression = default;
+            Expression? innerExpression = null;
 
             // columnCount > 0
 
@@ -430,7 +430,7 @@ namespace AllOverIt.Pagination
                     columnExpression = Expression.Equal(memberAccess, referenceValueExpression);
                 }
 
-                innerExpression = innerExpression == null
+                innerExpression = innerExpression is null
                     ? columnExpression
                     : Expression.And(innerExpression, columnExpression);
             }

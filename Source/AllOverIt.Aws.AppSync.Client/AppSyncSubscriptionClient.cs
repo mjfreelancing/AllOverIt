@@ -340,7 +340,7 @@ namespace AllOverIt.Aws.AppSync.Client
         {
             _connectionAuthorization ??= authorization;
 
-            if (_connectionAuthorization == null)
+            if (_connectionAuthorization is null)
             {
                 throw new InvalidOperationException("Authorization has not been provided for the AppSync subscription client connection.");
             }
@@ -687,7 +687,7 @@ namespace AllOverIt.Aws.AppSync.Client
             var segment = new ArraySegment<byte>(buffer);
 
             // check if an error has occurred mid-subscription that resulted in the WebSocket being disposed
-            if (_webSocket == null)
+            if (_webSocket is null)
             {
                 throw new WebSocketConnectionLostException();
             }

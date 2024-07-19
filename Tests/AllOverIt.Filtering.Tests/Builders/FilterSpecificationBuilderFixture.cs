@@ -54,7 +54,7 @@ namespace AllOverIt.Filtering.Tests.Builders
                     return true;
                 }
 
-                if (left == null || right == null)
+                if (left is null || right is null)
                 {
                     return left is null;
                 }
@@ -69,7 +69,7 @@ namespace AllOverIt.Filtering.Tests.Builders
                     return false;
                 }
 
-                if (left == null || right == null)
+                if (left is null || right is null)
                 {
                     return right is null;
                 }
@@ -84,7 +84,7 @@ namespace AllOverIt.Filtering.Tests.Builders
                     return false;
                 }
 
-                if (left == null || right == null)
+                if (left is null || right is null)
                 {
                     return left is null;
                 }

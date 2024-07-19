@@ -2,6 +2,7 @@
 {
     internal sealed class Parent : Person
     {
-        public IEnumerable<IChild> Children { get; set; }
+        public IChild[] ChildrenArray { get; set; } = [];
+        public IEnumerable<IChild> ChildrenEnumerable { get; set; } = [];
     }
 }

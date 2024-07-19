@@ -110,7 +110,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var serializerFake = this.CreateStub<IContinuationTokenSerializer>();
 
-                IContinuationToken actualToken = default;
+                IContinuationToken actualToken = null;
 
                 A.CallTo(() => serializerFake.Serialize(A<IContinuationToken>.Ignored))
                     .Invokes(call => actualToken = call.Arguments.Get<IContinuationToken>(0));
@@ -224,7 +224,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var serializerFake = this.CreateStub<IContinuationTokenSerializer>();
 
-                IContinuationToken actualToken = default;
+                IContinuationToken actualToken = null;
 
                 A.CallTo(() => serializerFake.Serialize(A<IContinuationToken>.Ignored))
                     .Invokes(call => actualToken = call.Arguments.Get<IContinuationToken>(0));
@@ -300,7 +300,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var serializerFake = this.CreateStub<IContinuationTokenSerializer>();
 
-                IContinuationToken actualToken = default;
+                IContinuationToken actualToken = null;
 
                 A.CallTo(() => serializerFake.Serialize(A<IContinuationToken>.Ignored))
                     .Invokes(call => actualToken = call.Arguments.Get<IContinuationToken>(0));
@@ -369,7 +369,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var serializerFake = this.CreateStub<IContinuationTokenSerializer>();
 
-                IContinuationToken actualToken = default;
+                IContinuationToken actualToken = null;
 
                 A.CallTo(() => serializerFake.Serialize(A<IContinuationToken>.Ignored))
                     .Invokes(call => actualToken = call.Arguments.Get<IContinuationToken>(0));
@@ -438,7 +438,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var serializerFake = this.CreateStub<IContinuationTokenSerializer>();
 
-                IContinuationToken actualToken = default;
+                IContinuationToken actualToken = null;
 
                 A.CallTo(() => serializerFake.Serialize(A<IContinuationToken>.Ignored))
                     .Invokes(call => actualToken = call.Arguments.Get<IContinuationToken>(0));

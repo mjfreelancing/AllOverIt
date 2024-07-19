@@ -92,7 +92,7 @@ namespace CsvExporterDemo
 
                     var metadata = item.SingleOrDefault(data => data.Type == dataType && data.Name == typeName);
 
-                    return metadata == null
+                    return metadata is null
                         ? null
                         : new object[]
                         {

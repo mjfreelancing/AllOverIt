@@ -50,7 +50,7 @@ namespace ThreadBindingDemo
             var count = 0;
 
             // Capture the context for the UI thread so we can switch back to the UI thread later
-            var uiSynchronizationContext = SynchronizationContext.Current;
+            var uiSynchronizationContext = SynchronizationContext.Current!;
 
             LogMessage(uiSynchronizationContext, $"Starting on UI thread {Environment.CurrentManagedThreadId}{Environment.NewLine}");
 

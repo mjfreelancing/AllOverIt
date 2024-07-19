@@ -8,46 +8,52 @@ namespace RSAEncryptionDemo
     {
         private readonly RsaEncryptor _encryptor;
 
-        private string _publicKey;
+        private string _publicKey = string.Empty;
+
         public string PublicKey
         {
             get => _publicKey;
-            private set => RaiseAndSetIfChanged(ref _publicKey, value);
+            private set => RaiseAndSetIfChanged(ref _publicKey!, value);
         }
 
-        private string _privateKey;
+        private string _privateKey = string.Empty;
+
         public string PrivateKey
         {
             get => _privateKey;
-            private set => RaiseAndSetIfChanged(ref _privateKey, value);
+            private set => RaiseAndSetIfChanged(ref _privateKey!, value);
         }
 
-        private string _textInput;
+        private string _textInput = string.Empty;
+
         public string TextInput
         {
             get => _textInput;
-            set => RaiseAndSetIfChanged(ref _textInput, value, null, OnTextInputChanged);
+            set => RaiseAndSetIfChanged(ref _textInput!, value, null, OnTextInputChanged);
         }
 
         private int _maxInputLength;
+
         public int MaxInputLength
         {
             get => _maxInputLength;
             private set => RaiseAndSetIfChanged(ref _maxInputLength, value);
         }
 
-        private string _textEncrypted;
+        private string _textEncrypted = string.Empty;
+
         public string TextEncrypted
         {
             get => _textEncrypted;
-            private set => RaiseAndSetIfChanged(ref _textEncrypted, value);
+            private set => RaiseAndSetIfChanged(ref _textEncrypted!, value);
         }
 
-        private string _textDecrypted;
+        private string _textDecrypted = string.Empty;
+
         public string TextDecrypted
         {
             get => _textDecrypted;
-            private set => RaiseAndSetIfChanged(ref _textDecrypted, value);
+            private set => RaiseAndSetIfChanged(ref _textDecrypted!, value);
         }
 
         public MainWindowViewModel()

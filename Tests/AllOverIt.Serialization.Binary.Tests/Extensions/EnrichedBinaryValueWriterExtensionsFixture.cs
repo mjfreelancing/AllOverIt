@@ -66,7 +66,7 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
                 var writerFake = this.CreateStub<IEnrichedBinaryWriter>();
 
                 var expected = Create<string>();
-                string actual = default;
+                string actual = null;
 
                 valueWriterFake
                     .CallsTo(fake => fake.WriteValue(writerFake, expected))

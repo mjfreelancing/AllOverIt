@@ -39,10 +39,10 @@ namespace AllOverIt.Extensions
 
                 var convertedValue = AsConverters
                     .Select(func => func.Invoke(instance, instanceType, convertToType))
-                    .Where(result => result != null)
+                    .Where(result => result is not null)
                     .FirstOrDefault();
 
-                return convertedValue != null
+                return convertedValue is not null
                     ? (TType) convertedValue
                     : StringExtensions.As(instance.ToString(), defaultValue);
             }
@@ -406,8 +406,8 @@ namespace AllOverIt.Extensions
             // uses declaredOnly = false so base class properties are included
             // ordering by name to make the calculations predictable
             var properties = from property in objType.GetPropertyInfo(DefaultHashCodeBindings)
-                             where (inclusions == null || inclusions.Contains(property.Name)) &&
-                                   (exclusions == null || !exclusions.Contains(property.Name))
+                             where (inclusions is null || inclusions.Contains(property.Name)) &&
+                                   (exclusions is null || !exclusions.Contains(property.Name))
                              orderby property.Name
                              select property.GetValue(instance);
 

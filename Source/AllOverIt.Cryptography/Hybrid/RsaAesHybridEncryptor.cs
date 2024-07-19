@@ -244,7 +244,8 @@ namespace AllOverIt.Cryptography.Hybrid
         private static byte[] ReadFromStream(Stream stream, int length)
         {
             var data = new byte[length];
-            stream.Read(data);
+
+            stream.ReadExactly(data);
 
             return data;
         }

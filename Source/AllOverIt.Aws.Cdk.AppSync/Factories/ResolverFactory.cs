@@ -76,7 +76,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
             // Next look for inherited types.
             var baseType = _inheritedResolverRegistry.Keys.SingleOrDefault(item => item.IsAssignableFrom(resolverType));
 
-            if (baseType != null)
+            if (baseType is not null)
             {
                 return _inheritedResolverRegistry[baseType].Invoke(resolverType);
             }

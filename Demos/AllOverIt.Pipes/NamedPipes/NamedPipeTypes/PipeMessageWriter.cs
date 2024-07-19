@@ -7,7 +7,7 @@ namespace NamedPipeTypes
     {
         public override void WriteValue(IEnrichedBinaryWriter writer, object value)
         {
-            var message = (PipeMessage)value;
+            var message = (PipeMessage) value;
 
             writer.WriteGuid(message.Id);
             writer.WriteSafeString(message.Text);

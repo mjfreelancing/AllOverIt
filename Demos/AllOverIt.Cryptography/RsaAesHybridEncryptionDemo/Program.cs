@@ -14,7 +14,7 @@ namespace RsaAesHybridEncryptionDemo
             to that of a 128-bit symmetric key.
             
             The determination of RSA key size being "roughly equivalent to a 128-bit symmetric key"
-            is based on the estimation of the computationaleffort required to break each encryption
+            is based on the estimation of the computational effort required to break each encryption
             scheme. The key size in symmetric encryption algorithms (e.g., AES) and asymmetric encryption
             algorithms (e.g., RSA) is measured in bits and directly impacts the strength of the encryption.
             
@@ -47,9 +47,9 @@ namespace RsaAesHybridEncryptionDemo
             var senderRsaKeys = new RsaKeyPair();
             var recipientRsaKeys = new RsaKeyPair();
 
-            var encryptedBase64 = Encrypt(PlainText, recipientRsaKeys.PublicKey, senderRsaKeys.PrivateKey, logger);
+            var encryptedBase64 = Encrypt(PlainText, recipientRsaKeys.PublicKey!, senderRsaKeys.PrivateKey!, logger);
 
-            Decrypt(encryptedBase64, senderRsaKeys.PublicKey, recipientRsaKeys.PrivateKey, logger);
+            Decrypt(encryptedBase64, senderRsaKeys.PublicKey!, recipientRsaKeys.PrivateKey!, logger);
 
             logger.WriteLine();
             logger.WriteLine("All Over It.");

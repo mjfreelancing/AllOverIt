@@ -7,6 +7,6 @@
         /// <param name="continuationToken">The serialized continuation token to be validated.</param>
         /// <param name="tokenOptions">The serializer options that were used to create the serialized continuation token.</param>
         /// <returns><see langword="True" /> if the continuation token is valid, otherwise <see langword="False" />.</returns>
-        bool IsValidToken(string continuationToken, IContinuationTokenOptions tokenOptions);
+        bool IsValidToken(string? continuationToken, IContinuationTokenOptions tokenOptions);
     }
 }

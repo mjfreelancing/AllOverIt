@@ -84,7 +84,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
                 sb.AppendLine($"  {columnName}: {columnType} {columnConstraint}");
 
-                if (column.ForeignKeyPrincipals != null)
+                if (column.ForeignKeyPrincipals is not null)
                 {
                     var relationshipNodeGenerator = new RelationshipNodeGenerator(_options);
 

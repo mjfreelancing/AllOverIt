@@ -2,7 +2,6 @@
 {
     public class Root
     {
-
-        public Level1 Level1 { get; }
+        public Level1 Level1 { get; } = new();
     }
 }

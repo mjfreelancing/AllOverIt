@@ -6,15 +6,15 @@ namespace ValueObjectDemo
     internal sealed class TemperatureValueObject : ValueObject<EnrichedTemperature, TemperatureValueObject>
     {
         public TemperatureUnits Units { get; }
-        public double Temperature => Value.Temperature;
+        public double Temperature => Value!.Temperature;
 
-        public TemperatureValueObject(double celcius)
-            : this(new EnrichedTemperature(TemperatureUnits.Celcius, celcius))
+        public TemperatureValueObject(double celsius)
+            : this(new EnrichedTemperature(TemperatureUnits.Celcius, celsius))
         {
         }
 
-        public TemperatureValueObject(TemperatureUnits units, double celcius)
-            : this(new EnrichedTemperature(units, celcius))
+        public TemperatureValueObject(TemperatureUnits units, double celsius)
+            : this(new EnrichedTemperature(units, celsius))
         {
         }
 
@@ -24,9 +24,15 @@ namespace ValueObjectDemo
             Units = value.Units;
         }
 
-        protected override bool ValidateValue(EnrichedTemperature value)
+        protected override bool ValidateValue(EnrichedTemperature? value)
         {
+            if (value is null)
+            {
+                return false;
+            }
+
             var kelvin = value.ConvertToKelvin();
+
             return kelvin >= 0.0d;
         }
     }

@@ -52,7 +52,7 @@ namespace AllOverIt.Cryptography.RSA
         /// <param name="privateKey">>The RSA private key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing
         /// an encryption operation.</param>
         /// <remarks>At least one of the public / private keys must be provided.</remarks>
-        public RsaKeyPair(byte[] publicKey, byte[] privateKey)
+        public RsaKeyPair(byte[]? publicKey, byte[]? privateKey)
         {
             SetKeys(publicKey, privateKey);
         }

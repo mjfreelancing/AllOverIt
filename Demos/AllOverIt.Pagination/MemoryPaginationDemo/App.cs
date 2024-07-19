@@ -33,9 +33,9 @@ namespace MemoryPaginationDemo
 
         private class ContinuationTokens
         {
-            public string Current { get; set; }
-            public string Next { get; set; }
-            public string Previous { get; set; }
+            public string? Current { get; set; }
+            public string? Next { get; set; }
+            public string? Previous { get; set; }
         }
 
         private readonly IQueryPaginatorFactory _queryPaginatorFactory;
@@ -62,13 +62,13 @@ namespace MemoryPaginationDemo
                 UseParameterizedQueries = false                         // Not required for memory based pagination
             };
 
-            // Pagination requires a unique column on the end (Id in this example) just in case multiple records have the same lastname / firstname.
+            // Pagination requires a unique column on the end (Id in this example) just in case multiple records have the same LastName / FirstName.
             // The 'Gender' item is only including for testing Enum's in the continuation token.
             var queryPaginator = _queryPaginatorFactory
                   .CreatePaginator(query, paginatorConfig)
                   .ColumnAscending(person => person.LastName, item => item.FirstName, item => item.Gender, item => item.Id);
 
-            string continuationToken = default;
+            string? continuationToken = null;
             var key = 'n';
 
             var stopwatch = Stopwatch.StartNew();

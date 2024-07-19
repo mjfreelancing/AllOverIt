@@ -77,7 +77,7 @@ namespace AllOverIt.Pagination.TokenEncoding
 
         private bool TryDeserialize(string continuationToken, bool throwOnError, [NotNullWhen(true)] out IContinuationToken? token)
         {
-            token = default;
+            token = null;
 
             var buffer = new Span<byte>(new byte[continuationToken.Length]);
 

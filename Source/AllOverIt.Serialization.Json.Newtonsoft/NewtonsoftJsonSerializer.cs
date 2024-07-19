@@ -109,14 +109,14 @@ namespace AllOverIt.Serialization.Json.Newtonsoft
 
             if (configuration.SupportEnrichedEnums.Value)
             {
-                if (enrichedEnumConverterFactory == null)
+                if (enrichedEnumConverterFactory is null)
                 {
                     Settings.Converters.Add(new EnrichedEnumJsonConverterFactory());
                 }
             }
             else
             {
-                if (enrichedEnumConverterFactory != null)
+                if (enrichedEnumConverterFactory is not null)
                 {
                     Settings.Converters.Remove(enrichedEnumConverterFactory);
                 }

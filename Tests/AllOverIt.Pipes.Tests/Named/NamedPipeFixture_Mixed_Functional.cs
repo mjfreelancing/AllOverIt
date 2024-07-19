@@ -698,7 +698,7 @@ namespace AllOverIt.Pipes.Tests.Named
             var pipeName = Create<string>();
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var expected = Create<DummyMessage>();
-            string actual = default;
+            string actual = null;
 
             var signal1 = new SemaphoreSlim(0);
             var signal2 = new SemaphoreSlim(0);

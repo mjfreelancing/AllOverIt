@@ -16,7 +16,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
 
             var fullyQualifiedName = context.Metadata.ModelType.FullName;
 
-            if (fullyQualifiedName == null)
+            if (fullyQualifiedName is null)
             {
                 return null;
             }

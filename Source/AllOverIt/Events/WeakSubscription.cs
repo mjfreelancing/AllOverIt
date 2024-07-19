@@ -27,7 +27,7 @@ namespace AllOverIt.Events
 
             var target = _weakReference.Target;
 
-            if (target != null)
+            if (target is not null)
             {
                 return (Action<TMessage>) _handlerMethod.CreateDelegate(_handlerType, target);
             }

@@ -93,14 +93,14 @@ namespace AllOverIt.Serialization.Json.SystemText
 
             if (configuration.SupportEnrichedEnums.Value)
             {
-                if (enrichedEnumConverterFactory == null)
+                if (enrichedEnumConverterFactory is null)
                 {
                     Options.Converters.Add(new EnrichedEnumJsonConverterFactory());
                 }
             }
             else
             {
-                if (enrichedEnumConverterFactory != null)
+                if (enrichedEnumConverterFactory is not null)
                 {
                     Options.Converters.Remove(enrichedEnumConverterFactory);
                 }

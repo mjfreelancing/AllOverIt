@@ -2,6 +2,6 @@
 {
     public class Level4a
     {
-        public int[] Values { get; set; }
+        public int[] Values { get; set; } = [];
     }
 }

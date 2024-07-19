@@ -23,7 +23,7 @@ namespace AllOverIt.Converters
         /// <inheritdoc />
         public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
         {
-            if (value == null)
+            if (value is null)
             {
                 return null;
             }
@@ -42,7 +42,7 @@ namespace AllOverIt.Converters
         /// <inheritdoc />
         public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
         {
-            if (value == null)
+            if (value is null)
             {
                 return null;
             }

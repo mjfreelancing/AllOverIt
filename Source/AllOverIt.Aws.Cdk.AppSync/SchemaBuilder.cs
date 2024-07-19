@@ -175,7 +175,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
         {
             var attribute = methodInfo.GetCustomAttribute<SubscriptionMutationAttribute>(true);
 
-            return attribute == null
+            return attribute is null
                 ? []
                 : attribute!.Mutations;
         }
