@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net8.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
         <Description>This package contains AWS AppSync GraphQL and Subscription clients with support for serialization using Newtonsoft or System.Text, including serialization of AllOverIt based enriched enums.</Description>
         <PackageTags>AllOverIt;Utilities;AWS;Amazon;AppSync;Graphql</PackageTags>
     </PropertyGroup>

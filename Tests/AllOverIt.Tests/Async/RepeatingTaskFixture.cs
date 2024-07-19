@@ -1,6 +1,4 @@
-﻿#if !NETSTANDARD2_1
-
-using AllOverIt.Async;
+﻿using AllOverIt.Async;
 using AllOverIt.Fixture;
 using FluentAssertions;
 using Microsoft.Extensions.Time.Testing;
@@ -507,5 +505,3 @@ namespace AllOverIt.Tests.Async
         }
     }
 }
-
-#endif

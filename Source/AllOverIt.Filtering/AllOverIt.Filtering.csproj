@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net8.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
         <Description>This package adds comprehensive filtering support to any IQueryable with built-in provision for operations such as Contains, StartsWith, EndsWith, In, NotIn, EqualTo, NotEqualTo, GreaterThan, LessThan, GreaterThanOrEqual, and LessThanOrEqual. It's also possible to create a custom predicate based on a Specification and there are options such as ignoring default (null) filter values and parameterizing query inputs that makes it ideal for use with EntityFramework Core.</Description>
         <PackageTags>AllOverIt;Utilities;Query;Filtering</PackageTags>
     </PropertyGroup>

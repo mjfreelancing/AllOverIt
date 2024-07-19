@@ -60,11 +60,7 @@ namespace AllOverIt.Csv.Exporter
             // _writer will be null if there was no data to process
             if (_writer is not null)
             {
-#if NETSTANDARD2_1
-                await _writer.FlushAsync();
-#else
                 await _writer.FlushAsync(cancellationToken);
-#endif
             }
         }
 

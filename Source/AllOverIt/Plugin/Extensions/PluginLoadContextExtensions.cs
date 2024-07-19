@@ -1,6 +1,4 @@
-﻿#if !NETSTANDARD2_1
-
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using AllOverIt.Plugin.Exceptions;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -88,5 +86,3 @@ namespace AllOverIt.Plugin.Extensions
         }
     }
 }
-
-#endif

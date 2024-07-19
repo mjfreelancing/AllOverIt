@@ -20,15 +20,9 @@ namespace AllOverIt.Pipes.Named.Client
 
             try
             {
-#if NETSTANDARD2_1
-                await pipeStream
-                    .ConnectAsync((int)timeout.TotalMilliseconds, cancellationToken)
-                    .ConfigureAwait(false);
-#else
                 await pipeStream
                     .ConnectAsync(timeout, cancellationToken)
                     .ConfigureAwait(false);
-#endif
 
                 return pipeStream;
             }

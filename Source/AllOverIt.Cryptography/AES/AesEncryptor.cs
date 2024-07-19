@@ -38,7 +38,6 @@ namespace AllOverIt.Cryptography.AES
             Configuration = configuration.WhenNotNull(nameof(configuration));
         }
 
-#if !NETSTANDARD2_1
         /// <inheritdoc />
         public int GetCipherTextLength(int plainTextLength)
         {
@@ -54,7 +53,6 @@ namespace AllOverIt.Cryptography.AES
                 _ => throw new InvalidOperationException($"Unexpected cipher mode '{Configuration.Mode}' for the AES algorithm."),
             };
         }
-#endif
 
         /// <inheritdoc />
         public byte[] Encrypt(byte[] plainText)

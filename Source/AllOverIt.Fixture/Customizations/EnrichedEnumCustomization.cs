@@ -14,11 +14,7 @@ namespace AllOverIt.Fixture.Customizations
         /// <summary>Default constructor.</summary>
         public EnrichedEnumCustomization()
         {
-#if !NETSTANDARD2_1
             _random = Random.Shared;
-#else
-            _random = new Random((int) DateTime.Now.Ticks);
-#endif
         }
 
         /// <summary>Constructor.</summary>

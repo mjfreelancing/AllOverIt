@@ -164,7 +164,6 @@ namespace AllOverIt.Caching
             return success;
         }
 
-#if !NETSTANDARD2_1
         /// <inheritdoc />
         public bool TryRemove<TValue>(KeyValuePair<GenericCacheKeyBase, TValue?> item)
         {
@@ -172,7 +171,6 @@ namespace AllOverIt.Caching
 
             return _cache.TryRemove(keyValue);
         }
-#endif
 
         /// <inheritdoc />
         public bool TryUpdate<TValue>(GenericCacheKeyBase key, TValue? newValue, TValue? comparisonValue)

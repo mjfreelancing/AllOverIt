@@ -41,13 +41,11 @@
         /// <returns><see langword="True" /> if the key was found in the cache, otherwise <see langword="False" />.</returns>
         bool TryRemove<TValue>(GenericCacheKeyBase key, out TValue? value);
 
-#if !NETSTANDARD2_1
         /// <summary>Attempts to remove a key and its associated value from the cache.</summary>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="item">The custom key and associated value.</param>
         /// <returns><see langword="True" /> if the key was found in the cache, otherwise <see langword="False" />.</returns>
         bool TryRemove<TValue>(KeyValuePair<GenericCacheKeyBase, TValue?> item);
-#endif
 
         /// <summary>Updates the value associated with the specified key to <paramref name="newValue"/> if the existing value is
         /// equal to <paramref name="comparisonValue"/>.</summary>

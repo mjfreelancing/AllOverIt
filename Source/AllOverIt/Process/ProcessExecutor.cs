@@ -3,6 +3,7 @@ using AllOverIt.Process.Exceptions;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+
 using SystemProcess = System.Diagnostics.Process;
 
 namespace AllOverIt.Process
@@ -106,12 +107,6 @@ namespace AllOverIt.Process
             {
                 var milliseconds = (int) _options.Timeout.TotalMilliseconds;
 
-#if NETSTANDARD2_1
-                // A value of -1 will wait indefinitely
-                Throw<ProcessException>.When(milliseconds == 0, "A non-zero timeout must be specified when using the NETSTANDARD2_1 target.");
-
-                await WaitForProcessAsync(milliseconds).ConfigureAwait(false);
-#else
                 // Cater for an explicit timeout for the scenario where the provided cancellationToken does not have an associated timeout (via a CancellationTokenSource)
                 if (milliseconds != 0)        // -1 means indefinite
                 {
@@ -124,7 +119,6 @@ namespace AllOverIt.Process
                 {
                     await WaitForProcessAsync(cancellationToken).ConfigureAwait(false);
                 }
-#endif
             }
             catch (OperationCanceledException)
             {
@@ -151,7 +145,7 @@ namespace AllOverIt.Process
                 }
             }
 
-            if (processException != null)
+            if (processException is not null)
             {
                 throw new ProcessException("Process execution failed.", processException);
             }
@@ -168,30 +162,16 @@ namespace AllOverIt.Process
             return new ProcessExecutorBufferedResult(_process, standardOutput.ToString(), errorOutput.ToString());
         }
 
-#if NETSTANDARD2_1
-        [ExcludeFromCodeCoverage]
-        private Task WaitForProcessAsync(int milliseconds)
-        {
-            _process.WaitForExit(milliseconds);
-
-            return Task.CompletedTask;
-        }
-#else
         [ExcludeFromCodeCoverage]
         private Task WaitForProcessAsync(CancellationToken cancellationToken)
         {
             return _process.WaitForExitAsync(cancellationToken);
         }
-#endif
 
         [ExcludeFromCodeCoverage]
         private void KillProcess()
         {
-#if NETSTANDARD2_1
-            _process.Kill();
-#else
             _process.Kill(true);
-#endif
         }
     }
 }

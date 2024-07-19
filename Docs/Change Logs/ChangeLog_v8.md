@@ -16,7 +16,7 @@
 
 
 ### Applicable to all packages
-* Dopped support for NET 6 and NET 7
+* Dropped support for NET Standard 2.1, NET 6 and NET 7.
 
 
 ### AllOverIt

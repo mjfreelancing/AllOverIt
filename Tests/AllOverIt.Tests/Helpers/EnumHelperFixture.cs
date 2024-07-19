@@ -39,7 +39,6 @@ namespace AllOverIt.Tests.Helpers
             }
         }
 
-#if !NETSTANDARD2_1
         public class GetValuesFromBitMask : EnumHelperFixture
         {
             [Theory]
@@ -90,6 +89,5 @@ namespace AllOverIt.Tests.Helpers
                 expected.Should().BeEquivalentTo(actual);
             }
         }
-#endif
     }
 }

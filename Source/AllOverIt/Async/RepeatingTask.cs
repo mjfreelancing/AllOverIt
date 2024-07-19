@@ -30,11 +30,7 @@ namespace AllOverIt.Async
                         {
                             cancellationToken.ThrowIfCancellationRequested();
 
-#if NETSTANDARD2_1
-                            await Task.Delay(options.InitialDelay, cancellationToken).ConfigureAwait(false);
-#else
                             await Task.Delay(options.InitialDelay, options.TimeProvider, cancellationToken).ConfigureAwait(false);
-#endif
                         }
 
                         while (!cancellationToken.IsCancellationRequested)
@@ -43,11 +39,7 @@ namespace AllOverIt.Async
 
                             cancellationToken.ThrowIfCancellationRequested();
 
-#if NETSTANDARD2_1
-                            await Task.Delay(options.RepeatDelay, cancellationToken).ConfigureAwait(false);
-#else
                             await Task.Delay(options.RepeatDelay, options.TimeProvider, cancellationToken).ConfigureAwait(false);
-#endif
                         }
                     }
                     catch (OperationCanceledException)
@@ -81,11 +73,7 @@ namespace AllOverIt.Async
                         {
                             cancellationToken.ThrowIfCancellationRequested();
 
-#if NETSTANDARD2_1
-                            await Task.Delay(options.InitialDelay, cancellationToken).ConfigureAwait(false);
-#else
                             await Task.Delay(options.InitialDelay, options.TimeProvider, cancellationToken).ConfigureAwait(false);
-#endif
                         }
 
                         while (!cancellationToken.IsCancellationRequested)
@@ -94,11 +82,7 @@ namespace AllOverIt.Async
 
                             cancellationToken.ThrowIfCancellationRequested();
 
-#if NETSTANDARD2_1
-                            await Task.Delay(options.RepeatDelay, cancellationToken).ConfigureAwait(false);
-#else
                             await Task.Delay(options.RepeatDelay, options.TimeProvider, cancellationToken).ConfigureAwait(false);
-#endif
                         }
                     }
                     catch (OperationCanceledException)

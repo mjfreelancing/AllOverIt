@@ -1,9 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-
-#if !NETSTANDARD2_1
 using System.Runtime.CompilerServices;
-#endif
 
 namespace AllOverIt.Assertion
 {
@@ -167,11 +164,7 @@ namespace AllOverIt.Assertion
         /// is "Value cannot be null".</param>
         /// <returns>The original object instance when not null.</returns>
         public static TType WhenNotNull<TType>([NotNull] this TType? @object,
-#if NETSTANDARD2_1
-            string name,
-#else
             [CallerArgumentExpression(nameof(@object))] string name = "",
-#endif
             string? errorMessage = default)
             where TType : class
         {
@@ -185,61 +178,38 @@ namespace AllOverIt.Assertion
 
         /// <summary>Checks that the provided collection is not null and not empty.</summary>
         /// <typeparam name="TType">The element type.</typeparam>
-        /// <param name="object">The collection instance.</param>
+        /// <param name="items">The collection instance.</param>
         /// <param name="name">The name identifying the collection instance.</param>
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
         /// instance and "Value cannot be empty" for an empty collection.</param>
         /// <returns>The original object instance when not null and not empty.</returns>
-        [return: NotNullIfNotNull(nameof(@object))]
-        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType>? @object,
-#if NETSTANDARD2_1
-            string name,
-#else
-            [CallerArgumentExpression(nameof(@object))] string name = "",
-#endif
+        [return: NotNullIfNotNull(nameof(items))]
+        public static IEnumerable<TType> WhenNotNullOrEmpty<TType>(this IEnumerable<TType>? items,
+            [CallerArgumentExpression(nameof(items))] string name = "",
             string? errorMessage = default)
         {
-            if (@object is null)
+            if (items is null)
             {
                 ThrowArgumentNullException(name, errorMessage);
             }
 
-            return WhenNotEmpty(@object, name, errorMessage);
+            return WhenNotEmpty(items, name, errorMessage);
         }
 
         /// <summary>Checks that the provided collection is not empty.</summary>
         /// <typeparam name="TType">The element type.</typeparam>
-        /// <param name="object">The collection instance.</param>
+        /// <param name="items">The collection instance.</param>
         /// <param name="name">The name identifying the collection instance.</param>
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
         /// <returns>The original collection instance when not empty. If the instance was null then null will be returned.</returns>
-        [return: NotNullIfNotNull(nameof(@object))]
-        public static IEnumerable<TType>? WhenNotEmpty<TType>(this IEnumerable<TType>? @object,
-#if NETSTANDARD2_1
-            string name,
-#else
-            [CallerArgumentExpression(nameof(@object))] string name = "",
-#endif
+        [return: NotNullIfNotNull(nameof(items))]
+        public static IEnumerable<TType>? WhenNotEmpty<TType>(this IEnumerable<TType>? items,
+            [CallerArgumentExpression(nameof(items))] string name = "",
             string? errorMessage = default)
         {
-            if (@object is not null)
+            if (items is not null)
             {
-#if NETSTANDARD2_1
-                // We don't have access to IListProvider<TType> so do the best we can to avoid multiple enumeration via Any()
-                var any = @object switch
-                {
-                    IList<TType> iList => iList.Count != 0,
-                    IReadOnlyCollection<TType> iReadOnlyCollection => iReadOnlyCollection.Count != 0,
-                    ICollection<TType> items => items.Count != 0,
-
-                    // Not applicable in this method as it's generic
-                    // ICollection iCollection => iCollection.Count != 0,
-
-                    _ => @object.Any()
-                };
-#else
-                var any = @object.Any();
-#endif
+                var any = items.Any();
 
                 if (!any)
                 {
@@ -247,52 +217,44 @@ namespace AllOverIt.Assertion
                 }
             }
 
-            return @object;
+            return items;
         }
 
         /// <summary>Checks that the provided string is not null and not empty.</summary>
-        /// <param name="object">The string instance.</param>
+        /// <param name="value">The string instance.</param>
         /// <param name="name">The name identifying the string instance.</param>
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
         /// instance and "Value cannot be empty" for an empty collection.</param>
         /// <returns>The original string instance when not null and not empty.</returns>
-        [return: NotNullIfNotNull(nameof(@object))]
-        public static string? WhenNotNullOrEmpty([NotNull] this string? @object,
-#if NETSTANDARD2_1
-            string name,
-#else
-            [CallerArgumentExpression(nameof(@object))] string name = "",
-#endif
+        [return: NotNullIfNotNull(nameof(value))]
+        public static string? WhenNotNullOrEmpty([NotNull] this string? value,
+            [CallerArgumentExpression(nameof(value))] string name = "",
             string? errorMessage = default)
         {
-            if (@object is null)
+            if (value is null)
             {
                 ThrowArgumentNullException(name, errorMessage);
             }
 
-            return WhenNotEmpty(@object, name, errorMessage);
+            return WhenNotEmpty(value, name, errorMessage);
         }
 
         /// <summary>Checks that the provided string is not empty.</summary>
-        /// <param name="object">The string instance.</param>
+        /// <param name="value">The string instance.</param>
         /// <param name="name">The name identifying the string instance.</param>
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be empty".</param>
         /// <returns>The original string instance when not empty. If the instance was <see langword="null"/> then <see langword="null"/> will be returned.</returns>
-        [return: NotNullIfNotNull(nameof(@object))]
-        public static string? WhenNotEmpty(this string? @object,
-#if NETSTANDARD2_1
-            string name,
-#else
-            [CallerArgumentExpression(nameof(@object))] string name = "",
-#endif
+        [return: NotNullIfNotNull(nameof(value))]
+        public static string? WhenNotEmpty(this string? value,
+            [CallerArgumentExpression(nameof(value))] string name = "",
             string? errorMessage = default)
         {
-            if (@object is not null && string.IsNullOrWhiteSpace(@object))
+            if (value is not null && string.IsNullOrWhiteSpace(value))
             {
                 ThrowEmptyArgumentException(name, errorMessage);
             }
 
-            return @object;
+            return value;
         }
 
         #endregion

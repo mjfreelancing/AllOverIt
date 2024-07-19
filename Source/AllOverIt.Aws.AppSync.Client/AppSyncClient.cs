@@ -60,7 +60,9 @@ namespace AllOverIt.Aws.AppSync.Client
             {
                 using (var responseMessage = await GetHttpResponseMessageAsync(requestMessage, cancellationToken).ConfigureAwait(false))
                 {
-                    var content = await GetHttpResponseAsString(responseMessage, cancellationToken).ConfigureAwait(false);
+                    var content = await responseMessage.Content
+                        .ReadAsStringAsync(cancellationToken)
+                        .ConfigureAwait(false);
 
                     var result = _configuration.Serializer.DeserializeObject<GraphqlHttpResponse<TResponse>>(content)!;
 
@@ -75,15 +77,6 @@ namespace AllOverIt.Aws.AppSync.Client
                     throw new GraphqlHttpRequestException(responseMessage.StatusCode, result.Errors, content);
                 }
             }
-        }
-
-        private static Task<string> GetHttpResponseAsString(HttpResponseMessage responseMessage, CancellationToken cancellationToken)
-        {
-#if NETSTANDARD2_1
-            return responseMessage.Content.ReadAsStringAsync();
-#else
-            return responseMessage.Content.ReadAsStringAsync(cancellationToken);
-#endif
         }
 
         private HttpRequestMessage CreateHttpRequestMessage(GraphqlQuery query, IAppSyncAuthorization? authorization)

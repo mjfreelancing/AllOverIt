@@ -65,14 +65,7 @@ namespace AllOverIt.Fixture
         /// <returns>The same action passed to the method.</returns>
         protected static Action Invoking(Action action)
         {
-#if !NETSTANDARD2_1
             ArgumentNullException.ThrowIfNull(action);
-#else
-            if (action == null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
-#endif
 
             return action;
         }
@@ -148,14 +141,7 @@ namespace AllOverIt.Fixture
         /// <returns>The result of the invoked action.</returns>
         protected static Func<TResult> Invoking<TResult>(Func<TResult> action)
         {
-#if !NETSTANDARD2_1
             ArgumentNullException.ThrowIfNull(action);
-#else
-            if (action == null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
-#endif
 
             return action;
         }
@@ -526,20 +512,8 @@ namespace AllOverIt.Fixture
         /// <param name="exceptionHandler">The handler invoked with each exception contained within an aggregate exception.</param>
         protected static void AssertHandledAggregateException(Action action, Func<Exception, bool> exceptionHandler)
         {
-#if !NETSTANDARD2_1
             ArgumentNullException.ThrowIfNull(action);
             ArgumentNullException.ThrowIfNull(exceptionHandler);
-#else
-            if (action == null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
-
-            if (exceptionHandler == null)
-            {
-                throw new ArgumentNullException(nameof(exceptionHandler));
-            }
-#endif
 
             try
             {

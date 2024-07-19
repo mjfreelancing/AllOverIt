@@ -1,8 +1,4 @@
-﻿#if !NETSTANDARD2_1
-
-using System;
-
-namespace AllOverIt.Plugin.Exceptions
+﻿namespace AllOverIt.Plugin.Exceptions
 {
     /// <summary>Represents an error raised when attempting to create a type from a loaded plugin assembly.</summary>
     public sealed class CannotLoadPluginTypeException : Exception
@@ -28,5 +24,3 @@ namespace AllOverIt.Plugin.Exceptions
         }
     }
 }
-
-#endif
