@@ -1,3 +1,13 @@
+#  Version 7.23.0
+## XX Jul 2024
+
+### AllOverIt
+
+* Correct locking in breadcrumbs enumeration.
+
+---
+
+
 #  Version 7.22.2
 ## 10 Jul 2024
 
