@@ -50,37 +50,6 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Extensions
                     .Should()
                     .BeOfType<InterfaceConverter<IDummyType, DummyType>>();
             }
-
-            [Fact]
-            public void Should_Add_Interface_And_Enumerable_Converter()
-            {
-                var serializer = new SystemTextJsonSerializer();
-
-                serializer.AddInterfaceConverter<IDummyType, DummyType>(true);
-
-                serializer.Options.Converters.ElementAt(0)
-                    .Should()
-                    .BeOfType<InterfaceConverter<IDummyType, DummyType>>();
-
-                serializer.Options.Converters.ElementAt(1)
-                    .Should()
-                    .BeOfType<EnumerableInterfaceConverter<IDummyType, DummyType>>();
-            }
-        }
-
-        public class AddEnumerableInterfaceConverter : SystemTextJsonSerializerExtensionsFixture
-        {
-            [Fact]
-            public void Should_Add_Enumerable_Interface_Converter()
-            {
-                var serializer = new SystemTextJsonSerializer();
-
-                serializer.AddEnumerableInterfaceConverter<IDummyType, DummyType>();
-
-                serializer.Options.Converters.Single()
-                    .Should()
-                    .BeOfType<EnumerableInterfaceConverter<IDummyType, DummyType>>();
-            }
         }
     }
 }

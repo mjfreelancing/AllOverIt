@@ -50,37 +50,6 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Extensions
                     .Should()
                     .BeOfType<InterfaceConverter<IDummyType, DummyType>>();
             }
-
-            [Fact]
-            public void Should_Add_Interface_And_Enumerable_Converter()
-            {
-                var serializer = new NewtonsoftJsonSerializer();
-
-                serializer.AddInterfaceConverter<IDummyType, DummyType>(true);
-
-                serializer.Settings.Converters.ElementAt(0)
-                    .Should()
-                    .BeOfType<InterfaceConverter<IDummyType, DummyType>>();
-
-                serializer.Settings.Converters.ElementAt(1)
-                    .Should()
-                    .BeOfType<EnumerableInterfaceConverter<IDummyType, DummyType>>();
-            }
-        }
-
-        public class AddEnumerableInterfaceConverter : NewtonsoftJsonSerializerExtensionsFixture
-        {
-            [Fact]
-            public void Should_Add_Enumerable_Interface_Converter()
-            {
-                var serializer = new NewtonsoftJsonSerializer();
-
-                serializer.AddEnumerableInterfaceConverter<IDummyType, DummyType>();
-
-                serializer.Settings.Converters.Single()
-                    .Should()
-                    .BeOfType<EnumerableInterfaceConverter<IDummyType, DummyType>>();
-            }
         }
     }
 }

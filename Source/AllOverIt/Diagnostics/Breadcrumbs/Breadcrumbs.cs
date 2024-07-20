@@ -98,16 +98,15 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
 
             public IEnumerator<BreadcrumbData> GetEnumerator()
             {
+                List<BreadcrumbData> clone = [];
+
+                // Can't yield within a lock, so taking a snapshot and returning it's enumerator
                 lock (_syncRoot)
                 {
-                    using (var iterator = _breadcrumbs.GetEnumerator())
-                    {
-                        while (iterator.MoveNext())
-                        {
-                            yield return iterator.Current.Value;
-                        }
-                    }
+                    clone.AddRange(_breadcrumbs.Values);
                 }
+
+                return clone.GetEnumerator();
             }
         }
 
