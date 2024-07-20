@@ -321,27 +321,14 @@ namespace PaginationConsoleDemo
                 {
                     string? description = null;
 
-                    switch ((startIndex + blogIndex) % 4)
+                    description = ((startIndex + blogIndex) % 4) switch
                     {
-                        case 0:
-                            description = $"Description {startIndex + blogIndex}";
-                            break;
-
-                        case 1:
-                            description = $"description {startIndex + blogIndex}";
-                            break;
-
-                        case 2:
-                            description = $"DESCRIPTION {startIndex + blogIndex}";
-                            break;
-
-                        case 3:
-                            description = $"DeScRiPtIoN {startIndex + blogIndex}";
-                            break;
-
-                        default:
-                            throw new UnreachableException();
-                    }
+                        0 => $"Description {startIndex + blogIndex}",
+                        1 => $"description {startIndex + blogIndex}",
+                        2 => $"DESCRIPTION {startIndex + blogIndex}",
+                        3 => $"DeScRiPtIoN {startIndex + blogIndex}",
+                        _ => throw new UnreachableException(),
+                    };
 
                     var blog = new Blog
                     {
