@@ -2,7 +2,7 @@
 ## XX XXX 2024
 
 ### PENDING / IN-PROGRESS
-* Enable nullable references.
+* Remove nameof() from calls such as WhenNotNullOrEmpty(nameof(propertyNames))
 * Change properties and arguments from IReadOnlyCollection<T> to T[], where applicable.
 * Add 'required' to properties, where applicable - including NetStandard 2.1 support.
 * Consider removing extraneous null guard checks in extension methods.
@@ -39,14 +39,24 @@
 
 
 ### AllOverIt.Pipes
-* Internal improvements to anonymous and named pipes
+* Internal improvements to anonymous and named pipes.
 
 
 ### AllOverIt.Reactive
 * Moved event bus and handlers to the AllOverIt.Reactive.Messaging namespace.
 
 
+### AllOverIt.Serialization.Json.Newtonsoft
+* Dropped `EnumerableInterfaceConverter`. No longer required to deserialize collections of interfaces when using the
+  AddInterfaceConverter() extension method.
+
+
+### AllOverIt.Serialization.Json.SystemText
+* Dropped `EnumerableInterfaceConverter`. No longer required to deserialize collections of interfaces when using the
+  AddInterfaceConverter() extension method.
+
+
 ### AllOverIt.Serilog
-* Added ObservableSink
+* Added ObservableSink.
 
 ---
