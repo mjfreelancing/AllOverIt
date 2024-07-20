@@ -12,7 +12,7 @@ namespace AllOverIt.Serialization.Binary.Writers
         /// <param name="type">The value type this writer write to a stream.</param>
         public EnrichedBinaryValueWriter(Type type)
         {
-            Type = type.WhenNotNull(nameof(type));
+            Type = type.WhenNotNull();
         }
 
         /// <inheritdoc />

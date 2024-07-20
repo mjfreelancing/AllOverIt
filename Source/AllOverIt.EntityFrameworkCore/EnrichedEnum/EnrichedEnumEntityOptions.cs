@@ -71,7 +71,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         /// <returns>An options instance for the specified property on the entity types being configured.</returns>
         public EnrichedEnumPropertyOptions Property(string propertyName)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             return Properties(propertyName);
         }
@@ -81,7 +81,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         /// <returns>An options instance for the specified properties on the entity types being configured.</returns>
         public EnrichedEnumPropertyOptions Properties(params string[] propertyNames)
         {
-            _ = propertyNames.WhenNotNullOrEmpty(nameof(propertyNames));
+            _ = propertyNames.WhenNotNullOrEmpty();
 
             PropertyPredicate = property =>
             {

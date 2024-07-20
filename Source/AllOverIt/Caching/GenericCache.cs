@@ -90,7 +90,7 @@ namespace AllOverIt.Caching
         /// <returns><see langword="True" /> if the cache contains the key, otherwise <see langword="False" />.</returns>
         public bool ContainsKey(GenericCacheKeyBase key)
         {
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
 
             return _cache.ContainsKey(key);
         }
@@ -104,7 +104,7 @@ namespace AllOverIt.Caching
         /// <inheritdoc />
         public void Add<TValue>(GenericCacheKeyBase key, TValue? value)
         {
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
 
             ((IDictionary<GenericCacheKeyBase, object?>) _cache).Add(key, value);
         }
@@ -112,7 +112,7 @@ namespace AllOverIt.Caching
         /// <inheritdoc />
         public bool TryAdd<TValue>(GenericCacheKeyBase key, TValue? value)
         {
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
 
             return _cache.TryAdd(key, value);
         }
@@ -123,7 +123,7 @@ namespace AllOverIt.Caching
         /// <returns><see langword="True" /> if the key was found in the cache, otherwise <see langword="False" />.</returns>
         public bool TryGetValue(GenericCacheKeyBase key, out object? value)
         {
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
 
             return _cache.TryGetValue(key, out value);
         }
@@ -131,7 +131,7 @@ namespace AllOverIt.Caching
         /// <inheritdoc />
         public bool TryGetValue<TValue>(GenericCacheKeyBase key, out TValue? value)
         {
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
 
             var success = _cache.TryGetValue(key, out var keyValue);
 
@@ -153,7 +153,7 @@ namespace AllOverIt.Caching
         /// <inheritdoc />
         public bool TryRemove<TValue>(GenericCacheKeyBase key, out TValue? value)
         {
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
 
             var success = _cache.TryRemove(key, out var keyValue);
 
@@ -175,7 +175,7 @@ namespace AllOverIt.Caching
         /// <inheritdoc />
         public bool TryUpdate<TValue>(GenericCacheKeyBase key, TValue? newValue, TValue? comparisonValue)
         {
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
 
             return _cache.TryUpdate(key, newValue, comparisonValue);
         }
@@ -189,8 +189,8 @@ namespace AllOverIt.Caching
         /// <inheritdoc />
         public TValue? GetOrAdd<TValue>(GenericCacheKeyBase key, Func<GenericCacheKeyBase, TValue?> addResolver)
         {
-            _ = key.WhenNotNull(nameof(key));
-            _ = addResolver.WhenNotNull(nameof(addResolver));
+            _ = key.WhenNotNull();
+            _ = addResolver.WhenNotNull();
 
             return (TValue?) _cache.GetOrAdd(key, valueKey => addResolver.Invoke(valueKey));
         }
@@ -198,7 +198,7 @@ namespace AllOverIt.Caching
         /// <inheritdoc />
         public TValue? GetOrAdd<TValue>(GenericCacheKeyBase key, TValue? value)
         {
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
 
             return (TValue?) _cache.GetOrAdd(key, value);
         }
@@ -209,8 +209,8 @@ namespace AllOverIt.Caching
             Func<GenericCacheKeyBase, TArg?, TValue?> addResolver,
             TArg? resolverArgument)
         {
-            _ = key.WhenNotNull(nameof(key));
-            _ = addResolver.WhenNotNull(nameof(addResolver));
+            _ = key.WhenNotNull();
+            _ = addResolver.WhenNotNull();
 
             object? objectResolver(GenericCacheKeyBase valueKey, TArg? arg) => addResolver.Invoke(valueKey, arg);
 
@@ -226,9 +226,9 @@ namespace AllOverIt.Caching
             Func<GenericCacheKeyBase, TValue?> addResolver,
             Func<GenericCacheKeyBase, TValue?, TValue?> updateResolver)
         {
-            _ = key.WhenNotNull(nameof(key));
-            _ = addResolver.WhenNotNull(nameof(addResolver));
-            _ = updateResolver.WhenNotNull(nameof(updateResolver));
+            _ = key.WhenNotNull();
+            _ = addResolver.WhenNotNull();
+            _ = updateResolver.WhenNotNull();
 
             object? objectAddResolver(GenericCacheKeyBase valueKey) => addResolver.Invoke(valueKey);
 
@@ -246,8 +246,8 @@ namespace AllOverIt.Caching
             TValue? addValue,
             Func<GenericCacheKeyBase, TValue?, TValue?> updateResolver)
         {
-            _ = key.WhenNotNull(nameof(key));
-            _ = updateResolver.WhenNotNull(nameof(updateResolver));
+            _ = key.WhenNotNull();
+            _ = updateResolver.WhenNotNull();
 
             object? objectUpdateResolver(GenericCacheKeyBase valueKey, object? value) => updateResolver.Invoke(valueKey, (TValue?) value);
 
@@ -264,9 +264,9 @@ namespace AllOverIt.Caching
             Func<GenericCacheKeyBase, TValue?, TArg?, TValue?> updateResolver,
             TArg? resolverArgument)
         {
-            _ = key.WhenNotNull(nameof(key));
-            _ = addResolver.WhenNotNull(nameof(addResolver));
-            _ = updateResolver.WhenNotNull(nameof(updateResolver));
+            _ = key.WhenNotNull();
+            _ = addResolver.WhenNotNull();
+            _ = updateResolver.WhenNotNull();
 
             object? objectAddResolver(GenericCacheKeyBase valueKey, TArg? arg) => addResolver.Invoke(valueKey, arg);
 
@@ -291,7 +291,7 @@ namespace AllOverIt.Caching
 
         void IDictionary<GenericCacheKeyBase, object?>.Add(GenericCacheKeyBase key, object? value)
         {
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
 
             ((IDictionary<GenericCacheKeyBase, object?>) _cache).Add(key, value);
         }
@@ -308,21 +308,21 @@ namespace AllOverIt.Caching
 
         bool IDictionary<GenericCacheKeyBase, object?>.Remove(GenericCacheKeyBase key)
         {
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
 
             return ((IDictionary<GenericCacheKeyBase, object?>) _cache).Remove(key);
         }
 
         bool IDictionary<GenericCacheKeyBase, object?>.TryGetValue(GenericCacheKeyBase key, out object? value)
         {
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
 
             return ((IDictionary<GenericCacheKeyBase, object?>) _cache).TryGetValue(key, out value);
         }
 
         bool IReadOnlyDictionary<GenericCacheKeyBase, object?>.TryGetValue(GenericCacheKeyBase key, out object? value)
         {
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
 
             return ((IReadOnlyDictionary<GenericCacheKeyBase, object?>) _cache).TryGetValue(key, out value);
         }

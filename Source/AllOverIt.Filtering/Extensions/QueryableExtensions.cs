@@ -30,7 +30,7 @@ namespace AllOverIt.Filtering.Extensions
             where TType : class
             where TFilter : class
         {
-            _ = filter.WhenNotNull(nameof(filter));
+            _ = filter.WhenNotNull();
 
             // defaults to using parameterized queries as this is mostly likely to be used with EF (or similar) queries
             options ??= new DefaultQueryFilterOptions();

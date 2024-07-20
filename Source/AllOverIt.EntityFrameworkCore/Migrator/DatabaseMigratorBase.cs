@@ -19,7 +19,7 @@ namespace AllOverIt.EntityFrameworkCore.Migrator
         /// <param name="dbContextFactory">The <see cref="DbContext"/> factory used to create an instance of the <typeparamref name="TDbContext"/>.</param>
         public DatabaseMigratorBase(IDbContextFactory<TDbContext> dbContextFactory)
         {
-            _dbContextFactory = dbContextFactory.WhenNotNull(nameof(dbContextFactory));
+            _dbContextFactory = dbContextFactory.WhenNotNull();
         }
 
         /// <inheritdoc />

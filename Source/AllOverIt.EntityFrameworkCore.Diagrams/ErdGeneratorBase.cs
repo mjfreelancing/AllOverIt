@@ -19,7 +19,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         /// <param name="options">The entity relationship diagram generator options.</param>
         protected ErdGeneratorBase(ErdOptions options)
         {
-            Options = options.WhenNotNull(nameof(options));
+            Options = options.WhenNotNull();
         }
 
         /// <summary>Generates the entity relationship diagram.</summary>

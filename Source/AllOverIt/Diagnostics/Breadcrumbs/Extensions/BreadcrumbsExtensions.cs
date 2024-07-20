@@ -14,9 +14,9 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
         public static IBreadcrumbDataMutator AddCallSite(this IBreadcrumbs breadcrumbs, object caller, object? metadata = default,
             [CallerMemberName] string callerName = "")
         {
-            _ = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
-            _ = caller.WhenNotNull(nameof(caller));
-            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));      // Pointless calling this method without a caller name
+            _ = breadcrumbs.WhenNotNull();
+            _ = caller.WhenNotNull();
+            _ = callerName.WhenNotNullOrEmpty();      // Pointless calling this method without a caller name
 
             var message = $"Call Site: {caller.GetType().FullName}.{callerName}()";
 
@@ -35,10 +35,10 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int lineNumber = 0)
         {
-            _ = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
-            _ = caller.WhenNotNull(nameof(caller));
-            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));      // Pointless calling this method without a caller name
-            _ = filePath.WhenNotNullOrEmpty(nameof(filePath));          // Pointless calling this method without a file path
+            _ = breadcrumbs.WhenNotNull();
+            _ = caller.WhenNotNull();
+            _ = callerName.WhenNotNullOrEmpty();      // Pointless calling this method without a caller name
+            _ = filePath.WhenNotNullOrEmpty();          // Pointless calling this method without a file path
 
             var message = $"Call Site: {caller.GetType().FullName}.{callerName}(), at {filePath}:{lineNumber}";
 
@@ -50,8 +50,8 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
         /// <param name="message">The message to be added.</param>
         public static IBreadcrumbDataMutator Add(this IBreadcrumbs breadcrumbs, string message)
         {
-            _ = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
-            _ = message.WhenNotNullOrEmpty(nameof(message));
+            _ = breadcrumbs.WhenNotNull();
+            _ = message.WhenNotNullOrEmpty();
 
             return AddBreadcrumb(breadcrumbs, null, message, null, null);
         }
@@ -62,9 +62,9 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
         /// <param name="metadata">Metadata associated with the message.</param>
         public static IBreadcrumbDataMutator Add(this IBreadcrumbs breadcrumbs, string message, object metadata)
         {
-            _ = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
-            _ = message.WhenNotNullOrEmpty(nameof(message));
-            _ = metadata.WhenNotNull(nameof(metadata));
+            _ = breadcrumbs.WhenNotNull();
+            _ = message.WhenNotNullOrEmpty();
+            _ = metadata.WhenNotNull();
 
             return AddBreadcrumb(breadcrumbs, null, message, metadata, null);
         }
@@ -81,9 +81,9 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int lineNumber = 0)
         {
-            _ = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
-            _ = caller.WhenNotNull(nameof(caller));
-            _ = message.WhenNotNullOrEmpty(nameof(message));
+            _ = breadcrumbs.WhenNotNull();
+            _ = caller.WhenNotNull();
+            _ = message.WhenNotNullOrEmpty();
 
             return AddBreadcrumb(breadcrumbs, caller, message, null, callerName, filePath, lineNumber);
         }
@@ -101,10 +101,10 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int lineNumber = 0)
         {
-            _ = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
-            _ = caller.WhenNotNull(nameof(caller));
-            _ = message.WhenNotNullOrEmpty(nameof(message));
-            _ = metadata.WhenNotNull(nameof(metadata));
+            _ = breadcrumbs.WhenNotNull();
+            _ = caller.WhenNotNull();
+            _ = message.WhenNotNullOrEmpty();
+            _ = metadata.WhenNotNull();
 
             return AddBreadcrumb(breadcrumbs, caller, message, metadata, callerName, filePath, lineNumber);
         }

@@ -23,8 +23,8 @@ namespace AllOverIt.Aws.AppSync.Client
         /// <param name="configuration">Contains configuration details for AppSync Graphql query and mutation operations.</param>
         public AppSyncClient(IHttpClientFactory httpClientFactory, IAppSyncClientConfiguration configuration)
         {
-            _httpClientFactory = httpClientFactory.WhenNotNull(nameof(httpClientFactory));
-            _configuration = configuration.WhenNotNull(nameof(configuration));
+            _httpClientFactory = httpClientFactory.WhenNotNull();
+            _configuration = configuration.WhenNotNull();
         }
 
         /// <inheritdoc />

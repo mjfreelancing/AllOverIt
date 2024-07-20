@@ -65,7 +65,7 @@ namespace AllOverIt.Logging
         /// <param name="callPrefix">The call prefix to use.</param>
         public static void UseCallPrefix(string callPrefix)
         {
-            Instance._callPrefix = callPrefix.WhenNotNullOrEmpty(nameof(callPrefix));
+            Instance._callPrefix = callPrefix.WhenNotNullOrEmpty();
 
             Instance._logTemplateWithNoArguments = null;
             Instance._logTemplateWithArguments = null;
@@ -76,7 +76,7 @@ namespace AllOverIt.Logging
         /// <param name="exceptionPrefix">The exception prefix to use.</param>
         public static void UseExceptionPrefix(string exceptionPrefix)
         {
-            Instance._exceptionPrefix = exceptionPrefix.WhenNotNullOrEmpty(nameof(exceptionPrefix));
+            Instance._exceptionPrefix = exceptionPrefix.WhenNotNullOrEmpty();
 
             Instance._logExceptionTemplate = null;
         }
@@ -89,7 +89,7 @@ namespace AllOverIt.Logging
         /// <param name="methodNameProperty">The method name property to use.</param>
         public static void UseMethodNameProperty(string methodNameProperty)
         {
-            Instance._methodNameProperty = methodNameProperty.WhenNotNullOrEmpty(nameof(methodNameProperty));
+            Instance._methodNameProperty = methodNameProperty.WhenNotNullOrEmpty();
 
             Instance._logTemplateWithNoArguments = null;
             Instance._logTemplateWithArguments = null;
@@ -100,7 +100,7 @@ namespace AllOverIt.Logging
         /// <param name="exceptionMessageProperty">The exception message property to use.</param>
         public static void UseExceptionMessageProperty(string exceptionMessageProperty)
         {
-            Instance._exceptionMessageProperty = exceptionMessageProperty.WhenNotNullOrEmpty(nameof(exceptionMessageProperty));
+            Instance._exceptionMessageProperty = exceptionMessageProperty.WhenNotNullOrEmpty();
 
             Instance._logExceptionTemplate = null;
         }
@@ -110,7 +110,7 @@ namespace AllOverIt.Logging
         /// <param name="argumentsPrefix">The arguments prefix to use.</param>
         public static void UseArgumentsPrefix(string argumentsPrefix)
         {
-            Instance._argumentsPrefix = argumentsPrefix.WhenNotNullOrEmpty(nameof(argumentsPrefix));
+            Instance._argumentsPrefix = argumentsPrefix.WhenNotNullOrEmpty();
 
             Instance._logTemplateWithArguments = null;
         }
@@ -120,7 +120,7 @@ namespace AllOverIt.Logging
         /// <param name="argumentsProperty">The arguments property to use.</param>
         public static void UseArgumentsDestructureProperty(string argumentsProperty)
         {
-            Instance._argumentsDestructureProperty = argumentsProperty.WhenNotNullOrEmpty(nameof(argumentsProperty));
+            Instance._argumentsDestructureProperty = argumentsProperty.WhenNotNullOrEmpty();
 
             Instance._logTemplateWithArguments = null;
         }

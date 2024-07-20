@@ -16,9 +16,9 @@ namespace AllOverIt.Validation.Extensions
         public static void CustomRuleFor<TType, TProperty>(this AbstractValidator<TType> validator, Expression<Func<TType, TProperty>> propertyExpression,
             Action<TProperty, ValidationContext<TType>> action)
         {
-            _ = validator.WhenNotNull(nameof(validator));
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = action.WhenNotNull(nameof(action));
+            _ = validator.WhenNotNull();
+            _ = propertyExpression.WhenNotNull();
+            _ = action.WhenNotNull();
 
             validator
                 .RuleFor(propertyExpression)
@@ -34,9 +34,9 @@ namespace AllOverIt.Validation.Extensions
         public static void CustomRuleForAsync<TType, TProperty>(this AbstractValidator<TType> validator, Expression<Func<TType, TProperty>> propertyExpression,
             Func<TProperty, ValidationContext<TType>, CancellationToken, Task> action)
         {
-            _ = validator.WhenNotNull(nameof(validator));
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = action.WhenNotNull(nameof(action));
+            _ = validator.WhenNotNull();
+            _ = propertyExpression.WhenNotNull();
+            _ = action.WhenNotNull();
 
             validator
                 .RuleFor(propertyExpression)
@@ -54,10 +54,10 @@ namespace AllOverIt.Validation.Extensions
             Expression<Func<TType, TProperty>> propertyExpression, Func<TType, bool> predicate,
             Action<TProperty, ValidationContext<TType>> action)
         {
-            _ = validator.WhenNotNull(nameof(validator));
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = predicate.WhenNotNull(nameof(predicate));
-            _ = action.WhenNotNull(nameof(action));
+            _ = validator.WhenNotNull();
+            _ = propertyExpression.WhenNotNull();
+            _ = predicate.WhenNotNull();
+            _ = action.WhenNotNull();
 
             validator.When(predicate, () =>
             {
@@ -76,10 +76,10 @@ namespace AllOverIt.Validation.Extensions
             Expression<Func<TType, TProperty>> propertyExpression, Func<TType, bool> predicate,
             Func<TProperty, ValidationContext<TType>, CancellationToken, Task> action)
         {
-            _ = validator.WhenNotNull(nameof(validator));
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = predicate.WhenNotNull(nameof(predicate));
-            _ = action.WhenNotNull(nameof(action));
+            _ = validator.WhenNotNull();
+            _ = propertyExpression.WhenNotNull();
+            _ = predicate.WhenNotNull();
+            _ = action.WhenNotNull();
 
             validator.When(predicate, () =>
             {

@@ -40,7 +40,7 @@ namespace AllOverIt.Aspects
         {
             if (configure is not null)
             {
-                _ = serviceProvider.WhenNotNull(nameof(serviceProvider));
+                _ = serviceProvider.WhenNotNull();
             }
 
             var proxyInstance = GetServiceProxy<TServiceType, TInterceptor>(serviceInstance);

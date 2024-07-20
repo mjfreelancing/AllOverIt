@@ -17,7 +17,7 @@ namespace AllOverIt.Wpf.Threading
 
         internal DispatcherAwaiter(Dispatcher dispatcher)
         {
-            _dispatcher = dispatcher.WhenNotNull(nameof(dispatcher));
+            _dispatcher = dispatcher.WhenNotNull();
         }
 
         /// <summary>Queues the <paramref name="action"/> on the thread associated with the dispatcher

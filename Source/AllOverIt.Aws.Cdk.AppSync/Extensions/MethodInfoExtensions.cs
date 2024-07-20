@@ -71,7 +71,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 
         public static void RegisterResolver(this MethodInfo methodInfo, string fieldMapping, ResolverRegistry resolverRegistry, ResolverFactory resolverFactory)
         {
-            _ = fieldMapping.WhenNotNullOrEmpty(nameof(fieldMapping));
+            _ = fieldMapping.WhenNotNullOrEmpty();
 
             // Will be null if the resolver has already been populated (via code), or the factory will provide the information,
             // or it isn't required (such as Subscriptions).

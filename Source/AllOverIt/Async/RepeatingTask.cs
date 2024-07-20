@@ -12,8 +12,8 @@ namespace AllOverIt.Async
         /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
         public static Task StartAsync(Func<Task> action, RepeatingTaskOptions options, CancellationToken cancellationToken)
         {
-            _ = action.WhenNotNull(nameof(action));
-            _ = options.WhenNotNull(nameof(options));
+            _ = action.WhenNotNull();
+            _ = options.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(options.InitialDelay.TotalMilliseconds < 0, $"The {nameof(RepeatingTaskOptions.InitialDelay)} cannot be negative.");
             Throw<ArgumentOutOfRangeException>.When(options.RepeatDelay.TotalMilliseconds <= 0, $"The {nameof(RepeatingTaskOptions.RepeatDelay)} must be greater than zero.");
@@ -57,8 +57,8 @@ namespace AllOverIt.Async
         /// <returns>A task that completes when the <paramref name="cancellationToken"/> is cancelled.</returns>
         public static Task StartAsync(Action action, RepeatingTaskOptions options, CancellationToken cancellationToken)
         {
-            _ = action.WhenNotNull(nameof(action));
-            _ = options.WhenNotNull(nameof(options));
+            _ = action.WhenNotNull();
+            _ = options.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(options.InitialDelay.TotalMilliseconds < 0, $"The {nameof(RepeatingTaskOptions.InitialDelay)} cannot be negative.");
             Throw<ArgumentOutOfRangeException>.When(options.RepeatDelay.TotalMilliseconds <= 0, $"The {nameof(RepeatingTaskOptions.RepeatDelay)} must be greater than zero.");

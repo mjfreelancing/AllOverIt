@@ -12,8 +12,8 @@ namespace AutoRegistrationDemo
         private readonly IRepository _repository;
         public App(IRepository repository, ILogger<App> logger)
         {
-            _logger = logger.WhenNotNull(nameof(logger));
-            _repository = repository.WhenNotNull(nameof(repository));
+            _logger = logger.WhenNotNull();
+            _repository = repository.WhenNotNull();
 
             Console.WriteLine();
         }

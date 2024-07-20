@@ -24,7 +24,7 @@ namespace AllOverIt.Mapping
             : this()
         {
             configure
-                .WhenNotNull(nameof(configure))
+                .WhenNotNull()
                 .Invoke(Options);
         }
 
@@ -53,8 +53,8 @@ namespace AllOverIt.Mapping
 
         internal Func<object> GetOrAdd(Type type, Func<object> factory)
         {
-            _ = type.WhenNotNull(nameof(type));
-            _ = factory.WhenNotNull(nameof(factory));
+            _ = type.WhenNotNull();
+            _ = factory.WhenNotNull();
 
             return _typeFactory.GetOrAdd(type, factory);
         }
@@ -66,7 +66,7 @@ namespace AllOverIt.Mapping
 
         internal Func<object> GetTypeFactory(Type type)
         {
-            _ = type.WhenNotNull(nameof(type));
+            _ = type.WhenNotNull();
 
             return _typeFactory.GetOrLazilyAdd(type, type.GetFactory);
         }

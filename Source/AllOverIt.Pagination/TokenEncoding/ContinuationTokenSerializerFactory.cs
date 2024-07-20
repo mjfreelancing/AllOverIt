@@ -6,7 +6,7 @@ namespace AllOverIt.Pagination.TokenEncoding
     {
         public IContinuationTokenSerializer CreateContinuationTokenSerializer(IContinuationTokenOptions continuationTokenOptions)
         {
-            _ = continuationTokenOptions.WhenNotNull(nameof(continuationTokenOptions));
+            _ = continuationTokenOptions.WhenNotNull();
 
             return new ContinuationTokenSerializer(continuationTokenOptions);
         }

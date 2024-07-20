@@ -28,7 +28,7 @@ namespace AllOverIt.Wpf.Threading
         /// <returns>A <see cref="Task"/> that completes when the action has been invoked on the UI thread.</returns>
         public static async Task InvokeAsync(Func<Task> action)
         {
-            _ = action.WhenNotNull(nameof(action));
+            _ = action.WhenNotNull();
 
             // Switch to the UI thread
             await BindToAsync();
@@ -43,7 +43,7 @@ namespace AllOverIt.Wpf.Threading
         /// <returns>A <see cref="Task{TResult}"/> that completes when the action has been invoked on the UI thread.</returns>
         public static async Task<TResult> InvokeAsync<TResult>(Func<Task<TResult>> action)
         {
-            _ = action.WhenNotNull(nameof(action));
+            _ = action.WhenNotNull();
 
             // Switch to the UI thread
             await BindToAsync();
@@ -67,7 +67,7 @@ namespace AllOverIt.Wpf.Threading
         /// <param name="action">The action to be invoked on the UI thread.</param>
         public static void Invoke(Action action)
         {
-            _ = action.WhenNotNull(nameof(action));
+            _ = action.WhenNotNull();
 
             if (GetIsBound(out var dispatcher))
             {
@@ -85,7 +85,7 @@ namespace AllOverIt.Wpf.Threading
         /// <param name="action">The action to be invoked on a worker thread.</param>
         public static void InvokeOnWorkerThread(Action action)
         {
-            _ = action.WhenNotNull(nameof(action));
+            _ = action.WhenNotNull();
 
             if (GetIsBound(out _))
             {

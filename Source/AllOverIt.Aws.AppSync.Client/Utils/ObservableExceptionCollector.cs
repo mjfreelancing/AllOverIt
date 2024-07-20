@@ -15,7 +15,7 @@ namespace AllOverIt.Aws.AppSync.Client.Utils
         public ObservableExceptionCollector(IObservable<Exception> observable)
         {
             _subscription = observable
-                .WhenNotNull(nameof(observable))
+                .WhenNotNull()
                 .Subscribe(_exceptions.Add);
         }
 

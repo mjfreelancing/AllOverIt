@@ -48,7 +48,7 @@ namespace AllOverIt.Formatters.Objects
         /// <inheritdoc />
         public bool GetObjectPropertySerializer(object @object, out IObjectPropertySerializer serializer)
         {
-            _ = @object.WhenNotNull(nameof(@object));
+            _ = @object.WhenNotNull();
 
             return GetObjectPropertySerializer(@object.GetType(), out serializer);
         }
@@ -62,7 +62,7 @@ namespace AllOverIt.Formatters.Objects
         /// <inheritdoc />
         public bool GetObjectPropertySerializer(Type type, out IObjectPropertySerializer serializer)
         {
-            _ = type.WhenNotNull(nameof(type));
+            _ = type.WhenNotNull();
 
             if (_filterRegistry.TryGetValue(type, out var serializerFactory))
             {
@@ -78,7 +78,7 @@ namespace AllOverIt.Formatters.Objects
         private static ObjectPropertySerializer CreateObjectPropertySerializer<TFilter>(ObjectPropertySerializerOptions serializerOptions)
             where TFilter : ObjectPropertyFilter, new()
         {
-            _ = serializerOptions.WhenNotNull(nameof(serializerOptions));
+            _ = serializerOptions.WhenNotNull();
 
             var filter = new TFilter();
 

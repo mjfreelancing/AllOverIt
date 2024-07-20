@@ -16,7 +16,7 @@ namespace AllOverIt.IO
         [ExcludeFromCodeCoverage]
         public static string CreateUniqueFilename(string filename)
         {
-            _ = filename.WhenNotNullOrEmpty(nameof(filename));
+            _ = filename.WhenNotNullOrEmpty();
 
             if (!File.Exists(filename))
             {
@@ -43,8 +43,8 @@ namespace AllOverIt.IO
         /// <returns><see langword="True" /> if the child path is an immediate subfolder of the parent path.</returns>
         public static bool PathIsSubFolder(string parentPath, string childPath)
         {
-            _ = parentPath.WhenNotNullOrEmpty(nameof(parentPath));
-            _ = childPath.WhenNotNullOrEmpty(nameof(childPath));
+            _ = parentPath.WhenNotNullOrEmpty();
+            _ = childPath.WhenNotNullOrEmpty();
 
             var parent = Path.GetFullPath(parentPath);
             var child = Path.GetFullPath(childPath);
@@ -58,8 +58,8 @@ namespace AllOverIt.IO
         /// <returns>The absolute path derived from combining the source and relative paths.</returns>
         public static string GetAbsolutePath(string sourcePath, string relativePath)
         {
-            _ = sourcePath.WhenNotNullOrEmpty(nameof(sourcePath));
-            _ = relativePath.WhenNotNull(nameof(relativePath));   // can be empty
+            _ = sourcePath.WhenNotNullOrEmpty();
+            _ = relativePath.WhenNotNull();   // can be empty
 
             var outputDirectory = Path.Combine(sourcePath, relativePath);
 
@@ -73,8 +73,8 @@ namespace AllOverIt.IO
         /// <returns>The absolute filename derived from applying a relative path to the original source filename.</returns>
         public static string GetAbsoluteFileName(string sourceFileName, string relativePath, string? newFileName = null)
         {
-            _ = sourceFileName.WhenNotNullOrEmpty(nameof(sourceFileName));
-            _ = relativePath.WhenNotNullOrEmpty(nameof(relativePath));
+            _ = sourceFileName.WhenNotNullOrEmpty();
+            _ = relativePath.WhenNotNullOrEmpty();
 
             var sourceDirectory = Path.GetDirectoryName(sourceFileName);
 
@@ -93,8 +93,8 @@ namespace AllOverIt.IO
         [ExcludeFromCodeCoverage]
         public static Task CreateFileWithContentAsync(string content, string fileName, CancellationToken cancellationToken = default)
         {
-            _ = content.WhenNotNullOrEmpty(nameof(content));
-            _ = fileName.WhenNotNullOrEmpty(nameof(fileName));
+            _ = content.WhenNotNullOrEmpty();
+            _ = fileName.WhenNotNullOrEmpty();
 
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(content));
 
@@ -110,8 +110,8 @@ namespace AllOverIt.IO
         [ExcludeFromCodeCoverage]
         public static async Task CreateFileWithContentAsync(Stream stream, string fileName, bool leaveOpen = false, CancellationToken cancellationToken = default)
         {
-            _ = stream.WhenNotNull(nameof(stream));
-            _ = fileName.WhenNotNullOrEmpty(nameof(fileName));
+            _ = stream.WhenNotNull();
+            _ = fileName.WhenNotNullOrEmpty();
 
             using var fileStream = File.Create(fileName);
 

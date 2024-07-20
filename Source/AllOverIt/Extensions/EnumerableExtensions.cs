@@ -16,7 +16,7 @@ namespace AllOverIt.Extensions
         /// <returns><see langword="True" /> if the source items contains no elements, otherwise <see langword="False" />.</returns>
         public static bool NotAny<TType>(this IEnumerable<TType> items)
         {
-            _ = items.WhenNotNull(nameof(items));
+            _ = items.WhenNotNull();
 
             return !items.Any();
         }
@@ -29,7 +29,7 @@ namespace AllOverIt.Extensions
         /// before being returned.</returns>
         public static TType[] AsArray<TType>(this IEnumerable<TType> items)
         {
-            _ = items.WhenNotNull(nameof(items));
+            _ = items.WhenNotNull();
 
             return items as TType[] ?? items.ToArray();
         }
@@ -42,7 +42,7 @@ namespace AllOverIt.Extensions
         /// being returned.</returns>
         public static IList<TType> AsList<TType>(this IEnumerable<TType> items)
         {
-            _ = items.WhenNotNull(nameof(items));
+            _ = items.WhenNotNull();
 
             return items as IList<TType> ?? items.ToList();
         }
@@ -55,7 +55,7 @@ namespace AllOverIt.Extensions
         /// and populated before being returned.</returns>
         public static IReadOnlyList<TType> AsReadOnlyList<TType>(this IEnumerable<TType> items)
         {
-            _ = items.WhenNotNull(nameof(items));
+            _ = items.WhenNotNull();
 
             return items as IReadOnlyList<TType> ?? items.ToList();
         }
@@ -68,7 +68,7 @@ namespace AllOverIt.Extensions
         /// populated before being returned.</returns>
         public static IReadOnlyCollection<TType> AsReadOnlyCollection<TType>(this IEnumerable<TType> items)
         {
-            _ = items.WhenNotNull(nameof(items));
+            _ = items.WhenNotNull();
 
             return items as IReadOnlyCollection<TType> ?? new ReadOnlyCollection<TType>(items.AsList());
         }
@@ -83,8 +83,8 @@ namespace AllOverIt.Extensions
         public static async IAsyncEnumerable<TResult> SelectAsync<TType, TResult>(this IEnumerable<TType> items,
             Func<TType, CancellationToken, Task<TResult>> selector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             foreach (var item in items)
             {
@@ -104,8 +104,8 @@ namespace AllOverIt.Extensions
         public static async IAsyncEnumerable<TResult> SelectManyAsync<TType, TResult>(this IEnumerable<TType> items,
             Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             foreach (var item in items)
             {
@@ -128,8 +128,8 @@ namespace AllOverIt.Extensions
         /// <returns>An array containing a flattened list of projected items.</returns>
         public static TResult[] SelectManyToArray<TType, TResult>(this IEnumerable<TType> items, Func<TType, IEnumerable<TResult>> selector)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             return items.SelectMany(selector).ToArray();
         }
@@ -142,8 +142,8 @@ namespace AllOverIt.Extensions
         /// <returns>A <see cref="List{T}"/> containing a flattened list of projected items.</returns>
         public static List<TResult> SelectManyToList<TType, TResult>(this IEnumerable<TType> items, Func<TType, IEnumerable<TResult>> selector)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             return items.SelectMany(selector).ToList();
         }
@@ -156,8 +156,8 @@ namespace AllOverIt.Extensions
         /// <returns>A <see cref="ReadOnlyCollection{T}"/> containing a flattened list of projected items.</returns>
         public static ReadOnlyCollection<TResult> SelectManyToReadOnlyCollection<TType, TResult>(this IEnumerable<TType> items, Func<TType, IEnumerable<TResult>> selector)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             return items.SelectMany(selector).ToList().AsReadOnly();
         }
@@ -173,8 +173,8 @@ namespace AllOverIt.Extensions
         public static Task<TResult[]> SelectManyToArrayAsync<TType, TResult>(this IEnumerable<TType> items,
             Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             return items
                 .SelectManyAsync(selector, cancellationToken)
@@ -191,8 +191,8 @@ namespace AllOverIt.Extensions
         public static Task<List<TResult>> SelectManyToListAsync<TType, TResult>(this IEnumerable<TType> items,
             Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             return items
                 .SelectManyAsync(selector, cancellationToken)
@@ -209,8 +209,8 @@ namespace AllOverIt.Extensions
         public static Task<ReadOnlyCollection<TResult>> SelectManyToReadOnlyCollectionAsync<TType, TResult>(this IEnumerable<TType> items,
             Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             return items
                 .SelectManyAsync(selector, cancellationToken)
@@ -230,8 +230,8 @@ namespace AllOverIt.Extensions
             Func<TType, CancellationToken, Task<TResult>> selector, int degreeOfParallelism,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(
                 degreeOfParallelism < 1,
@@ -286,8 +286,8 @@ namespace AllOverIt.Extensions
         /// <returns>The projected results as a TResult[].</returns>
         public static TResult[] SelectToArray<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             return items.Select(selector).ToArray();
         }
@@ -300,8 +300,8 @@ namespace AllOverIt.Extensions
         /// <returns>The projected results as an List&lt;TResult&gt;.</returns>
         public static List<TResult> SelectToList<TSource, TResult>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             return items.Select(selector).ToList();
         }
@@ -315,8 +315,8 @@ namespace AllOverIt.Extensions
         public static ReadOnlyCollection<TResult> SelectToReadOnlyCollection<TSource, TResult>(this IEnumerable<TSource> items,
             Func<TSource, TResult> selector)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             return items.SelectToList(selector).AsReadOnly();
         }
@@ -331,8 +331,8 @@ namespace AllOverIt.Extensions
         public static async Task<TResult[]> SelectToArrayAsync<TSource, TResult>(this IEnumerable<TSource> items,
             Func<TSource, CancellationToken, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             var results = await items.SelectToListAsync(selector, cancellationToken);
 
@@ -349,8 +349,8 @@ namespace AllOverIt.Extensions
         public static async Task<List<TResult>> SelectToListAsync<TSource, TResult>(this IEnumerable<TSource> items,
             Func<TSource, CancellationToken, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             var results = await items
                 .SelectAsync(selector, cancellationToken)
@@ -369,8 +369,8 @@ namespace AllOverIt.Extensions
         public static async Task<ReadOnlyCollection<TResult>> SelectToReadOnlyCollectionAsync<TSource, TResult>(this IEnumerable<TSource> items,
             Func<TSource, CancellationToken, Task<TResult>> selector, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = selector.WhenNotNull(nameof(selector));
+            _ = items.WhenNotNull();
+            _ = selector.WhenNotNull();
 
             var list = await items.SelectToListAsync(selector, cancellationToken);
 
@@ -402,7 +402,7 @@ namespace AllOverIt.Extensions
         /// <returns>One or more batches containing the source items partitioned into a maximum batch size.</returns>
         public static IEnumerable<IEnumerable<TType>> Batch<TType>(this IEnumerable<TType> items, int batchSize)
         {
-            _ = items.WhenNotNull(nameof(items));
+            _ = items.WhenNotNull();
 
             var batch = new List<TType>(batchSize);
 
@@ -429,7 +429,7 @@ namespace AllOverIt.Extensions
         /// <returns>The projected sequence including the element's index.</returns>
         public static IEnumerable<(TType Item, int Index)> WithIndex<TType>(this IEnumerable<TType> items)
         {
-            _ = items.WhenNotNull(nameof(items));
+            _ = items.WhenNotNull();
 
             return items.Select((item, index) => (item, index));
         }
@@ -440,7 +440,7 @@ namespace AllOverIt.Extensions
         /// <param name="action">The action to invoke against each element in the sequence.</param>
         public static void ForEach<TType>(this IEnumerable<TType> items, Action<TType, int> action)
         {
-            _ = items.WhenNotNull(nameof(items));
+            _ = items.WhenNotNull();
 
             var index = 0;
 
@@ -459,7 +459,7 @@ namespace AllOverIt.Extensions
         public static async Task ForEachAsync<TType>(this IEnumerable<TType> items, Func<TType, int, CancellationToken, Task> action,
             CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
+            _ = items.WhenNotNull();
 
             var index = 0;
 
@@ -485,15 +485,15 @@ namespace AllOverIt.Extensions
             where TKey : notnull
         {
             var firstItems = first
-                .WhenNotNull(nameof(first))
+                .WhenNotNull()
                 .AsReadOnlyCollection();
 
             var secondItems = second
-                .WhenNotNull(nameof(second))
+                .WhenNotNull()
                 .AsReadOnlyCollection();
 
-            _ = firstSelector.WhenNotNull(nameof(firstSelector));
-            _ = secondSelector.WhenNotNull(nameof(secondSelector));
+            _ = firstSelector.WhenNotNull();
+            _ = secondSelector.WhenNotNull();
 
             // This method is faster than using LINQ queries to find the matches
             var firstMap = firstItems.ToDictionary(firstSelector);
@@ -510,7 +510,7 @@ namespace AllOverIt.Extensions
         public static bool HasDistinctGrouping<TType, TKey>(this IEnumerable<TType> source, Func<TType, TKey> selector)
         {
             return source
-                .WhenNotNull(nameof(source))
+                .WhenNotNull()
                 .GroupBy(selector)
                 .All(item => item.Count() == 1);
         }

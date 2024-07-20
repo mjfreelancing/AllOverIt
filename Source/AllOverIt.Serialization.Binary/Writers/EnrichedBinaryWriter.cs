@@ -119,7 +119,7 @@ namespace AllOverIt.Serialization.Binary.Writers
         /// <inheritdoc />
         public void WriteObject(object value)
         {
-            _ = value.WhenNotNull(nameof(value));
+            _ = value.WhenNotNull();
 
             WriteObject(value, value.GetType());
         }

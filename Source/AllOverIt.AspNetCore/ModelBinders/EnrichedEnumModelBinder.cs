@@ -23,7 +23,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
         /// <inheritdoc />
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            _ = bindingContext.WhenNotNull(nameof(bindingContext));
+            _ = bindingContext.WhenNotNull();
 
             var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.FieldName);
 

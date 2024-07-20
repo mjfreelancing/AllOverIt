@@ -12,8 +12,8 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
         /// <param name="value">The value to be written. When a reference type, the value cannot be <see langword="null"/>.</param>
         public static void WriteValue<TValue>(this IEnrichedBinaryValueWriter valueWriter, IEnrichedBinaryWriter writer, TValue value)
         {
-            _ = valueWriter.WhenNotNull(nameof(valueWriter));
-            _ = writer.WhenNotNull(nameof(writer));
+            _ = valueWriter.WhenNotNull();
+            _ = writer.WhenNotNull();
 
             // Can't use WhenNotNull() due to a 'class' constraint
             if (value is null)

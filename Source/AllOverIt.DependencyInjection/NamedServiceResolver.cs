@@ -15,14 +15,14 @@ namespace AllOverIt.DependencyInjection
         [SuppressMessage("Usage", "CA2263:Prefer generic overload when type is known", Justification = "Would be a recursive call, resulting in a stack overflow")]
         void INamedServiceRegistration<TService>.Register<TImplementation>(string name)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             (this as INamedServiceRegistration<TService>).Register(name, typeof(TImplementation));
         }
 
         void INamedServiceRegistration<TService>.Register(string name, Type implementationType)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             if (_namedImplementations.TryGetValue(name, out var namedType))
             {
@@ -39,7 +39,7 @@ namespace AllOverIt.DependencyInjection
 
         TService INamedServiceResolver<TService>.GetRequiredNamedService(string name)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             if (_namedImplementations.TryGetValue(name, out var implementationType))
             {
@@ -60,12 +60,12 @@ namespace AllOverIt.DependencyInjection
 
         public NamedServiceResolver(IServiceProvider provider)
         {
-            _provider = provider.WhenNotNull(nameof(provider));
+            _provider = provider.WhenNotNull();
         }
 
         TService INamedServiceResolver.GetRequiredNamedService<TService>(string name)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             var resolver = _provider.GetRequiredService<INamedServiceResolver<TService>>();
 

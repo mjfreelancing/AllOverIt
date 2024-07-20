@@ -15,9 +15,9 @@ namespace AllOverIt.Mapping
 
         internal void Add(Type sourceType, Type targetType, Func<IObjectMapper, object, object> factory)
         {
-            _ = sourceType.WhenNotNull(nameof(sourceType));
-            _ = targetType.WhenNotNull(nameof(targetType));
-            _ = factory.WhenNotNull(nameof(factory));
+            _ = sourceType.WhenNotNull();
+            _ = targetType.WhenNotNull();
+            _ = factory.WhenNotNull();
 
             var factoryKey = (sourceType, targetType);
 
@@ -26,8 +26,8 @@ namespace AllOverIt.Mapping
 
         internal bool TryGet(Type sourceType, Type targetType, [NotNullWhen(true)] out Func<IObjectMapper, object, object>? factory)
         {
-            _ = sourceType.WhenNotNull(nameof(sourceType));
-            _ = targetType.WhenNotNull(nameof(targetType));
+            _ = sourceType.WhenNotNull();
+            _ = targetType.WhenNotNull();
 
             var factoryKey = (sourceType, targetType);
 
@@ -36,8 +36,8 @@ namespace AllOverIt.Mapping
 
         internal Func<object> GetOrAdd(Type type, Func<object> factory)
         {
-            _ = type.WhenNotNull(nameof(type));
-            _ = factory.WhenNotNull(nameof(factory));
+            _ = type.WhenNotNull();
+            _ = factory.WhenNotNull();
 
             return _typeFactories.GetOrAdd(type, factory);
         }
@@ -46,8 +46,8 @@ namespace AllOverIt.Mapping
         // via ObjectMapperConfiguration (by calling GetOrAdd() in this class).
         internal Func<object> GetOrLazilyAdd(Type type, Func<Func<object>> factoryResolver)
         {
-            _ = type.WhenNotNull(nameof(type));
-            _ = factoryResolver.WhenNotNull(nameof(factoryResolver));
+            _ = type.WhenNotNull();
+            _ = factoryResolver.WhenNotNull();
 
             if (!_typeFactories.TryGetValue(type, out var typeFactory))
             {

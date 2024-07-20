@@ -15,7 +15,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.DataSources
         public HttpGraphqlDataSource(string dataSourceName, string endpoint, string? description = default)
             : base(dataSourceName, description)
         {
-            Endpoint = endpoint.WhenNotNullOrEmpty(nameof(endpoint));
+            Endpoint = endpoint.WhenNotNullOrEmpty();
         }
     }
 }

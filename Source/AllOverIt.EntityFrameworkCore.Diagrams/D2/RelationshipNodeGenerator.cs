@@ -36,7 +36,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
         public RelationshipNodeGenerator(ErdOptions options)
         {
-            _options = options.WhenNotNull(nameof(options));
+            _options = options.WhenNotNull();
         }
 
         public string CreateNode(PrincipalForeignKey foreignKey, string targetEntityName, string targetColumnName)

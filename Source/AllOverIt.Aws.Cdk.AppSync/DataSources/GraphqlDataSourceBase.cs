@@ -16,7 +16,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.DataSources
         /// <param name="description">A description for the DataSource.</param>
         protected GraphqlDataSourceBase(string dataSourceName, string? description)
         {
-            DataSourceName = dataSourceName.WhenNotNullOrEmpty(nameof(dataSourceName));
+            DataSourceName = dataSourceName.WhenNotNullOrEmpty();
             Description = description;
         }
     }

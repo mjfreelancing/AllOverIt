@@ -35,7 +35,7 @@ namespace AllOverIt.IO
             // NOTE: Cannot implement using SearchOption.AllDirectories / SearchOption.TopDirectoryOnly as a non-recursive
             //       alternative because 'return yield' cannot be used within a try block.
 
-            _ = directoryInfo.WhenNotNull(nameof(directoryInfo));
+            _ = directoryInfo.WhenNotNull();
 
             if (cancellationToken.IsCancellationRequested)
             {

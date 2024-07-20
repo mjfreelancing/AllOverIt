@@ -42,7 +42,7 @@ namespace AllOverIt.Expressions.Strings
         }
 
         private StringComparisonMode(int value, [CallerMemberName] string name = "")
-            : base(value, name.WhenNotNull(nameof(name)))
+            : base(value, name.WhenNotNull())
         {
         }
     }

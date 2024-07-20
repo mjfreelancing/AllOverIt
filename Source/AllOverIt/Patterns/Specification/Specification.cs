@@ -11,7 +11,7 @@ namespace AllOverIt.Patterns.Specification
 
             public AdHocSpecification(Func<TType, bool> predicate)
             {
-                _predicate = predicate.WhenNotNull(nameof(predicate));
+                _predicate = predicate.WhenNotNull();
             }
 
             public override bool IsSatisfiedBy(TType candidate)

@@ -18,7 +18,7 @@ namespace AllOverIt.ReactiveUI
         /// <param name="model">The wrapped model instance.</param>
         protected ReactiveProxy(TType model)
         {
-            Model = model.WhenNotNull(nameof(model));
+            Model = model.WhenNotNull();
         }
 
 
@@ -69,7 +69,7 @@ namespace AllOverIt.ReactiveUI
         protected bool RaiseAndSetIfChanged<TProperty>(TProperty oldValue, TProperty newValue, Action<TType, TProperty> setValue,
             IEqualityComparer<TProperty>? comparer, Action? onChanging, Action? onChanged, [CallerMemberName] string propertyName = "")
         {
-            _ = setValue.WhenNotNull(nameof(setValue));
+            _ = setValue.WhenNotNull();
 
             comparer ??= EqualityComparer<TProperty>.Default;
 

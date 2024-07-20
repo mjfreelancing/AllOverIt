@@ -33,7 +33,7 @@ namespace AllOverIt.Mapping
         /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
         public PropertyMatcherOptions Exclude(params string[] sourceNames)
         {
-            _ = sourceNames.WhenNotNull(nameof(sourceNames));
+            _ = sourceNames.WhenNotNull();
 
             foreach (var sourceName in sourceNames)
             {
@@ -49,8 +49,8 @@ namespace AllOverIt.Mapping
         /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
         public PropertyMatcherOptions ExcludeWhen(string sourceName, Func<object?, bool> predicate)
         {
-            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
-            _ = predicate.WhenNotNull(nameof(predicate));
+            _ = sourceName.WhenNotNullOrEmpty();
+            _ = predicate.WhenNotNull();
 
             UpdateTargetOptions(sourceName, targetOptions => targetOptions.ExcludeWhen = predicate);
 
@@ -63,7 +63,7 @@ namespace AllOverIt.Mapping
         /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
         public PropertyMatcherOptions DeepCopy(params string[] sourceNames)
         {
-            _ = sourceNames.WhenNotNull(nameof(sourceNames));
+            _ = sourceNames.WhenNotNull();
 
             foreach (var sourceName in sourceNames)
             {
@@ -81,8 +81,8 @@ namespace AllOverIt.Mapping
         /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
         public PropertyMatcherOptions WithAlias(string sourceName, string targetName)
         {
-            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
-            _ = targetName.WhenNotNullOrEmpty(nameof(targetName));
+            _ = sourceName.WhenNotNullOrEmpty();
+            _ = targetName.WhenNotNullOrEmpty();
 
             UpdateTargetOptions(sourceName, targetOptions => targetOptions.Alias = targetName);
 
@@ -95,7 +95,7 @@ namespace AllOverIt.Mapping
         /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
         public PropertyMatcherOptions UseWhenNull(string sourceName, object nullReplacement)
         {
-            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+            _ = sourceName.WhenNotNullOrEmpty();
 
             UpdateTargetOptions(sourceName, targetOptions => targetOptions.NullReplacement = nullReplacement);
 
@@ -110,8 +110,8 @@ namespace AllOverIt.Mapping
         /// <returns>The same <see cref="PropertyMatcherOptions"/> instance so a fluent syntax can be used.</returns>
         public PropertyMatcherOptions WithConversion(string sourceName, Func<IObjectMapper, object?, object?> converter)
         {
-            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
-            _ = converter.WhenNotNull(nameof(converter));
+            _ = sourceName.WhenNotNullOrEmpty();
+            _ = converter.WhenNotNull();
 
             UpdateTargetOptions(sourceName, targetOptions => targetOptions.Converter = converter);
 
@@ -120,28 +120,28 @@ namespace AllOverIt.Mapping
 
         internal bool IsExcluded(string sourceName)
         {
-            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+            _ = sourceName.WhenNotNullOrEmpty();
 
             return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.Exclude;
         }
 
         internal bool IsExcludedWhen(string sourceName, object? sourceValue)
         {
-            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+            _ = sourceName.WhenNotNullOrEmpty();
 
             return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && (targetOptions.ExcludeWhen?.Invoke(sourceValue) ?? false);
         }
 
         internal bool IsDeepCopy(string sourceName)
         {
-            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+            _ = sourceName.WhenNotNullOrEmpty();
 
             return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions) && targetOptions.DeepCopy;
         }
 
         internal string GetAliasName(string sourceName)
         {
-            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+            _ = sourceName.WhenNotNullOrEmpty();
 
             string? sourceAlias = null;
 
@@ -155,7 +155,7 @@ namespace AllOverIt.Mapping
 
         internal object? GetNullReplacement(string sourceName)
         {
-            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+            _ = sourceName.WhenNotNullOrEmpty();
 
             return _sourceTargetOptions.TryGetValue(sourceName, out var targetOptions)
                 ? targetOptions.NullReplacement
@@ -164,8 +164,8 @@ namespace AllOverIt.Mapping
 
         internal object? GetConvertedValue(IObjectMapper objectMapper, string sourceName, object? sourceValue)
         {
-            _ = objectMapper.WhenNotNull(nameof(objectMapper));
-            _ = sourceName.WhenNotNullOrEmpty(nameof(sourceName));
+            _ = objectMapper.WhenNotNull();
+            _ = sourceName.WhenNotNullOrEmpty();
 
             if (sourceValue is null)
             {

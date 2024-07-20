@@ -267,8 +267,8 @@ namespace AllOverIt.Extensions
         /// <remarks>Use the <seealso cref="IsDerivedFrom"/> method when class and interface support is required.</remarks>
         public static bool IsSubClassOfRawGeneric(this Type type, Type fromType)
         {
-            _ = type.WhenNotNull(nameof(type));
-            _ = fromType.WhenNotNull(nameof(fromType));
+            _ = type.WhenNotNull();
+            _ = fromType.WhenNotNull();
 
             // Treated as Type? due to 'is not null' check below
             var nextType = type;
@@ -293,8 +293,8 @@ namespace AllOverIt.Extensions
         /// <returns><see langword="True" /> if <paramref name="type"/> inherits from <paramref name="fromType"/>, otherwise <see langword="False" />.</returns>
         public static bool IsDerivedFrom(this Type type, Type fromType)
         {
-            _ = type.WhenNotNull(nameof(type));
-            _ = fromType.WhenNotNull(nameof(fromType));
+            _ = type.WhenNotNull();
+            _ = fromType.WhenNotNull();
 
             // Tests any type/interface (including unbound such as IDerived2<,>) against another interface (such as IBase or IBase<int>)
             if (type.GetInterfaces().Any(item => item == fromType))

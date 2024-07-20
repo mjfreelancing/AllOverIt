@@ -35,7 +35,7 @@ namespace AllOverIt.Patterns.Command
         /// <returns>The pipeline instance, allowing for a fluent syntax.</returns>
         public CommandPipeline<TInput, TOutput> Append(params ICommand<TInput, TOutput>[] commands)
         {
-            _ = commands.WhenNotNullOrEmpty(nameof(commands));
+            _ = commands.WhenNotNullOrEmpty();
 
             _commands.AddRange(commands);
             return this;

@@ -13,7 +13,7 @@ namespace AllOverIt.Serilog.Extensions
         /// <returns>The <see cref="ICircularBufferSinkMessages"/> instance.</returns>
         public static ICircularBufferSinkMessages GetCircularBufferSinkMessages(this IServiceProvider serviceProvider)
         {
-            _ = serviceProvider.WhenNotNull(nameof(serviceProvider));
+            _ = serviceProvider.WhenNotNull();
 
             return serviceProvider.GetRequiredService<ICircularBufferSinkMessages>();
         }
@@ -23,7 +23,7 @@ namespace AllOverIt.Serilog.Extensions
         /// <returns>The <see cref="IObservableSink"/> instance.</returns>
         public static IObservableSink GetObservableSink(this IServiceProvider serviceProvider)
         {
-            _ = serviceProvider.WhenNotNull(nameof(serviceProvider));
+            _ = serviceProvider.WhenNotNull();
 
             return serviceProvider.GetRequiredService<IObservableSink>();
         }

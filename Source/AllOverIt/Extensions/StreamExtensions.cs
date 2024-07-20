@@ -11,7 +11,7 @@ namespace AllOverIt.Extensions
         /// <returns>The content of a stream as a byte array.</returns>
         public static byte[] ToByteArray(this Stream stream)
         {
-            _ = stream.WhenNotNull(nameof(stream));
+            _ = stream.WhenNotNull();
 
             using var reader = new BinaryReader(stream);
 
@@ -24,8 +24,8 @@ namespace AllOverIt.Extensions
         /// <param name="bytes">The byte array to write to the stream.</param>
         public static void FromByteArray(this Stream stream, byte[] bytes)
         {
-            _ = stream.WhenNotNull(nameof(stream));
-            _ = bytes.WhenNotNull(nameof(bytes));
+            _ = stream.WhenNotNull();
+            _ = bytes.WhenNotNull();
 
             using var writer = new BinaryWriter(stream, Encoding.UTF8, true);
 

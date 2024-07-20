@@ -17,8 +17,8 @@ namespace AllOverIt.Formatters.Objects.Extensions
         /// <remarks>This method also validates the property to be collated is not a class type (the <see cref="ObjectPropertyFilter"/> does not support collating class types).</remarks>
         public static void SetAutoCollatedPaths(this ObjectPropertyEnumerableOptions options, params IPropertyNodes[] propertyNodes)
         {
-            _ = options.WhenNotNull(nameof(options));
-            _ = propertyNodes.WhenNotNullOrEmpty(nameof(propertyNodes));
+            _ = options.WhenNotNull();
+            _ = propertyNodes.WhenNotNullOrEmpty();
 
             var fullPaths = propertyNodes.SelectToArray(item =>
             {

@@ -56,8 +56,8 @@ namespace AllOverIt.Cryptography.AES
         /// the secret key.</summary>
         public AesEncryptorConfiguration(byte[] key, byte[] iv)
         {
-            _ = iv.WhenNotNull(nameof(iv));
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
+            _ = iv.WhenNotNull();
 
             var keySizeBits = key.Length * 8;
 

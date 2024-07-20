@@ -21,8 +21,8 @@ namespace AllOverIt.Pagination.TokenEncoding
 
         internal ContinuationTokenSerializer(IContinuationTokenStreamer tokenStreamer, IContinuationTokenOptions tokenOptions)
         {
-            _tokenStreamer = tokenStreamer.WhenNotNull(nameof(tokenStreamer));
-            _tokenOptions = tokenOptions.WhenNotNull(nameof(tokenOptions));
+            _tokenStreamer = tokenStreamer.WhenNotNull();
+            _tokenOptions = tokenOptions.WhenNotNull();
 
             if (_tokenOptions.UseCompression)
             {
@@ -33,7 +33,7 @@ namespace AllOverIt.Pagination.TokenEncoding
 
         public string Serialize(IContinuationToken continuationToken)
         {
-            _ = continuationToken.WhenNotNull(nameof(continuationToken));
+            _ = continuationToken.WhenNotNull();
 
             using (var stream = new MemoryStream())
             {
@@ -70,7 +70,7 @@ namespace AllOverIt.Pagination.TokenEncoding
 
         public bool TryDeserialize(string continuationToken, [NotNullWhen(true)] out IContinuationToken? token)
         {
-            _ = continuationToken.WhenNotNull(nameof(continuationToken));
+            _ = continuationToken.WhenNotNull();
 
             return TryDeserialize(continuationToken, false, out token);
         }

@@ -16,8 +16,8 @@ namespace DiagnosticsDemo
 
         public App(IBreadcrumbs breadcrumbs, ILogger<App> logger)
         {
-            _breadcrumbs = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _breadcrumbs = breadcrumbs.WhenNotNull();
+            _logger = logger.WhenNotNull();
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)

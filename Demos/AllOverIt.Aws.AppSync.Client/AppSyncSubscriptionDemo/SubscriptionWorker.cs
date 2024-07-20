@@ -58,15 +58,15 @@ namespace AppSyncSubscriptionDemo
             IWorkerReady workerReady, IJsonSerializer jsonSerializer, ILogger<SubscriptionWorker> logger)
             : base(applicationLifetime)
         {
-            _subscriptionClient = subscriptionClient.WhenNotNull(nameof(subscriptionClient));
+            _subscriptionClient = subscriptionClient.WhenNotNull();
 
             // Program.cs can be setup to use a named, or unnamed, client - comment out as required 
-            //_appSyncClient = appSyncClient.WhenNotNull(nameof(appSyncClient));
-            _appSyncNamedClientProvider = appSyncNamedClientProvider.WhenNotNull(nameof(appSyncNamedClientProvider));
+            //_appSyncClient = appSyncClient.WhenNotNull();
+            _appSyncNamedClientProvider = appSyncNamedClientProvider.WhenNotNull();
 
-            _workerReady = workerReady.WhenNotNull(nameof(workerReady));
-            _jsonSerializer = jsonSerializer.WhenNotNull(nameof(jsonSerializer));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _workerReady = workerReady.WhenNotNull();
+            _jsonSerializer = jsonSerializer.WhenNotNull();
+            _logger = logger.WhenNotNull();
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)

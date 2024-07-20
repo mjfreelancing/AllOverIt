@@ -14,7 +14,7 @@ namespace AllOverIt.Validation.Extensions
         public static void AutoRegisterValidators<TRegistrar>(this IValidationRegistry validationRegistry, Func<Type, Type, bool>? predicate = default)
             where TRegistrar : ValidationRegistrarBase, new()
         {
-            _ = validationRegistry.WhenNotNull(nameof(validationRegistry));
+            _ = validationRegistry.WhenNotNull();
 
             var registrar = new TRegistrar();
             registrar.AutoRegisterValidators(validationRegistry, predicate);

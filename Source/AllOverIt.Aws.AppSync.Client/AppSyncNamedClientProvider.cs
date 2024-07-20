@@ -12,7 +12,7 @@ namespace AllOverIt.Aws.AppSync.Client
         /// <param name="namedClientDelegate">A delegate responsible for obtaining an AppSync client by name.</param>
         public AppSyncNamedClientProvider(NamedAppSyncClientDelegate namedClientDelegate)
         {
-            _namedClient = namedClientDelegate.WhenNotNull(nameof(namedClientDelegate));
+            _namedClient = namedClientDelegate.WhenNotNull();
         }
 
         /// <inheritdoc />

@@ -20,9 +20,9 @@ namespace AllOverIt.Evaluator.Operators
         protected TernaryOperator(Func<Expression, Expression, Expression, Expression> operatorType, Expression operand1, Expression operand2, Expression operand3)
             : base(operatorType)
         {
-            _operand1 = operand1.WhenNotNull(nameof(operand1));
-            _operand2 = operand2.WhenNotNull(nameof(operand2));
-            _operand3 = operand3.WhenNotNull(nameof(operand3));
+            _operand1 = operand1.WhenNotNull();
+            _operand2 = operand2.WhenNotNull();
+            _operand3 = operand3.WhenNotNull();
         }
 
         /// <inheritdoc />

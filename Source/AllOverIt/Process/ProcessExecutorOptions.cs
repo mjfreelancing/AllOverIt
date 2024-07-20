@@ -37,7 +37,7 @@ namespace AllOverIt.Process
         /// <param name="processFileName">The name of the process to be executed. This should be fully qualified if the process cannot be found on the system path.</param>
         public ProcessExecutorOptions(string processFileName)
         {
-            ProcessFileName = processFileName.WhenNotNullOrEmpty(nameof(processFileName));
+            ProcessFileName = processFileName.WhenNotNullOrEmpty();
         }
     }
 }

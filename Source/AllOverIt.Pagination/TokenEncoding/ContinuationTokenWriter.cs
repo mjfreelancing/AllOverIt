@@ -9,7 +9,7 @@ namespace AllOverIt.Pagination.TokenEncoding
 
         public override void WriteValue(IEnrichedBinaryWriter writer, object value)
         {
-            _ = writer.WhenNotNull(nameof(writer));
+            _ = writer.WhenNotNull();
 
             var continuationToken = (ContinuationToken) value;
 

@@ -18,8 +18,8 @@ namespace AllOverIt.Evaluator.Operators
         protected BinaryOperator(Func<Expression, Expression, Expression> operatorType, Expression leftOperand, Expression rightOperand)
             : base(operatorType)
         {
-            _leftOperand = leftOperand.WhenNotNull(nameof(leftOperand));
-            _rightOperand = rightOperand.WhenNotNull(nameof(rightOperand));
+            _leftOperand = leftOperand.WhenNotNull();
+            _rightOperand = rightOperand.WhenNotNull();
         }
 
         /// <inheritdoc />

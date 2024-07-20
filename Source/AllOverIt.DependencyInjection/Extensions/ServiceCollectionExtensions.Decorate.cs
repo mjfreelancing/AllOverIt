@@ -18,7 +18,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection Decorate<TServiceType, TDecoratorType>(this IServiceCollection serviceCollection)
             where TDecoratorType : TServiceType
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
+            _ = serviceCollection.WhenNotNull();
 
             ReplaceServiceDescriptor<TServiceType>(serviceCollection, descriptor => Decorate(descriptor, typeof(TDecoratorType)));
 
@@ -36,7 +36,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection DecorateWithInterceptor<TServiceType, TInterceptor>(this IServiceCollection serviceCollection, Action<IServiceProvider, TInterceptor>? configure = default)
             where TInterceptor : InterceptorBase<TServiceType>
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
+            _ = serviceCollection.WhenNotNull();
 
             ReplaceServiceDescriptor<TServiceType>(serviceCollection, descriptor => DecorateWithInterceptor<TServiceType, TInterceptor>(descriptor, configure));
 

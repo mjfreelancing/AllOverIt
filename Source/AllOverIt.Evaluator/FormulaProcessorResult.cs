@@ -29,7 +29,7 @@ namespace AllOverIt.Evaluator
         /// <param name="variableRegistry">When not <see langword="null"/>, the variable registry that will be referenced by the compiled expression during evaluation.</param>
         internal FormulaProcessorResult(Expression<Func<double>> formulaExpression, string[]? referencedVariableNames, IVariableRegistry? variableRegistry)
         {
-            FormulaExpression = formulaExpression.WhenNotNull(nameof(formulaExpression));
+            FormulaExpression = formulaExpression.WhenNotNull();
 
             // Can be NULL if there were no variables in the formula
             _referencedVariableNames = referencedVariableNames?.AsArray();

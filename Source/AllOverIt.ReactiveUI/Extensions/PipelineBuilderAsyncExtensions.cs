@@ -19,8 +19,8 @@ namespace AllOverIt.ReactiveUI.Extensions
         public static IPipelineBuilderAsync<TIn, TNextOut> Pipe<TIn, TPrevOut, TNextOut>(this IPipelineBuilderAsync<TIn, TPrevOut> prevStep,
             ReactiveCommand<TPrevOut, TNextOut> step)
         {
-            _ = prevStep.WhenNotNull(nameof(prevStep));
-            _ = step.WhenNotNull(nameof(step));
+            _ = prevStep.WhenNotNull();
+            _ = step.WhenNotNull();
 
             var commandStep = new ReactiveCommandPipelineStep<TPrevOut, TNextOut>(step);
 

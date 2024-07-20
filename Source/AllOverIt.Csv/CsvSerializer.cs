@@ -37,8 +37,8 @@ namespace AllOverIt.Csv
         /// <inheritdoc />
         public void AddField(string headerName, Func<TCsvData, object?> valueResolver)
         {
-            _ = headerName.WhenNotNullOrEmpty(nameof(headerName));
-            _ = valueResolver.WhenNotNull(nameof(valueResolver));
+            _ = headerName.WhenNotNullOrEmpty();
+            _ = valueResolver.WhenNotNull();
 
             _fieldResolvers.Add(new CsvFieldResolver(headerName, valueResolver));
         }
@@ -46,8 +46,8 @@ namespace AllOverIt.Csv
         /// <inheritdoc />
         public void AddFields(string[] headerNames, Func<TCsvData, object?[]> valuesResolver)
         {
-            _ = headerNames.WhenNotNull(nameof(headerNames));
-            _ = valuesResolver.WhenNotNull(nameof(valuesResolver));
+            _ = headerNames.WhenNotNull();
+            _ = valuesResolver.WhenNotNull();
 
             _fieldResolvers.Add(new CsvFieldResolver(headerNames, valuesResolver));
         }
@@ -56,8 +56,8 @@ namespace AllOverIt.Csv
         public async Task SerializeAsync(TextWriter writer, IEnumerable<TCsvData> data, bool includeHeader = true, bool leaveOpen = false,
             CancellationToken cancellationToken = default)
         {
-            _ = writer.WhenNotNull(nameof(writer));
-            _ = data.WhenNotNull(nameof(data));
+            _ = writer.WhenNotNull();
+            _ = data.WhenNotNull();
 
             // Prepares the writer, streams the header (if required), and then calls back to stream the data
             await SerializeDataAsync(
@@ -78,8 +78,8 @@ namespace AllOverIt.Csv
         public async Task SerializeAsync(TextWriter writer, IAsyncEnumerable<TCsvData> data, bool includeHeader = true, bool leaveOpen = false,
             CancellationToken cancellationToken = default)
         {
-            _ = writer.WhenNotNull(nameof(writer));
-            _ = data.WhenNotNull(nameof(data));
+            _ = writer.WhenNotNull();
+            _ = data.WhenNotNull();
 
             // Prepares the writer, streams the header (if required), and then calls back to stream the data
             await SerializeDataAsync(

@@ -15,8 +15,8 @@ namespace AllOverIt.Mapping.Extensions
         public static IEnumerable<TTarget?> MapMany<TTarget>(this IObjectMapper mapper, IEnumerable sources)
            where TTarget : class, new()
         {
-            _ = mapper.WhenNotNull(nameof(mapper));
-            _ = sources.WhenNotNull(nameof(sources));
+            _ = mapper.WhenNotNull();
+            _ = sources.WhenNotNull();
 
             var enumerator = sources.GetEnumerator();
 
@@ -36,8 +36,8 @@ namespace AllOverIt.Mapping.Extensions
             where TSource : class
             where TTarget : class, new()
         {
-            _ = mapper.WhenNotNull(nameof(mapper));
-            _ = sources.WhenNotNull(nameof(sources));
+            _ = mapper.WhenNotNull();
+            _ = sources.WhenNotNull();
 
             return sources.Select(source =>
             {

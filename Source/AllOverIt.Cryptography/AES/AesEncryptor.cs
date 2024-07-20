@@ -34,8 +34,8 @@ namespace AllOverIt.Cryptography.AES
 
         private AesEncryptor(IAesFactory aesFactory, IAesEncryptorConfiguration configuration)
         {
-            _aesFactory = aesFactory.WhenNotNull(nameof(aesFactory));
-            Configuration = configuration.WhenNotNull(nameof(configuration));
+            _aesFactory = aesFactory.WhenNotNull();
+            Configuration = configuration.WhenNotNull();
         }
 
         /// <inheritdoc />
@@ -57,7 +57,7 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public byte[] Encrypt(byte[] plainText)
         {
-            _ = plainText.WhenNotNull(nameof(plainText));
+            _ = plainText.WhenNotNull();
 
             using (var memoryStream = new MemoryStream())
             {
@@ -78,7 +78,7 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public byte[] Decrypt(byte[] cipherText)
         {
-            _ = cipherText.WhenNotNullOrEmpty(nameof(cipherText));
+            _ = cipherText.WhenNotNullOrEmpty();
 
             using (var memoryStream = new MemoryStream())
             {
@@ -99,8 +99,8 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = plainTextStream.WhenNotNull();
+            _ = cipherTextStream.WhenNotNull();
 
             // Aes will throw if not appropriately configured
             using (var aes = _aesFactory.Create(Configuration))
@@ -116,8 +116,8 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public void Decrypt(Stream cipherTextStream, Stream plainTextStream)
         {
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+            _ = cipherTextStream.WhenNotNull();
+            _ = plainTextStream.WhenNotNull();
 
             // Aes will throw if not appropriately configured
             using (var aes = _aesFactory.Create(Configuration))

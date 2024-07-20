@@ -12,7 +12,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
         /// <inheritdoc />
         public IModelBinder? GetBinder(ModelBinderProviderContext context)
         {
-            _ = context.WhenNotNull(nameof(context));
+            _ = context.WhenNotNull();
 
             var fullyQualifiedName = context.Metadata.ModelType.FullName;
 
@@ -27,7 +27,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
             {
                 var methodInfo = typeof(EnrichedEnumModelBinder).GetMethod("CreateInstance", BindingFlags.Static | BindingFlags.Public);
 
-                methodInfo.CheckNotNull(nameof(methodInfo));
+                methodInfo.CheckNotNull();
 
                 return methodInfo!
                     .MakeGenericMethod(enumType)

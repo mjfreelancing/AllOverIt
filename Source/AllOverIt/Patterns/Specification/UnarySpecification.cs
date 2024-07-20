@@ -12,7 +12,7 @@ namespace AllOverIt.Patterns.Specification
         /// <param name="specification">The unary specification to apply to a candidate.</param>
         protected UnarySpecification(ISpecification<TType> specification)
         {
-            _specification = specification.WhenNotNull(nameof(specification));
+            _specification = specification.WhenNotNull();
         }
 
         /// <inheritdoc />

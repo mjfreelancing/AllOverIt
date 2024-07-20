@@ -12,7 +12,7 @@ namespace HostedConsoleAppDemo
         public ConsoleBackgroundWorker(IHostApplicationLifetime applicationLifetime, ILogger<ConsoleBackgroundWorker> logger)
             : base(applicationLifetime)
         {
-            _logger = logger.WhenNotNull(nameof(logger));
+            _logger = logger.WhenNotNull();
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)

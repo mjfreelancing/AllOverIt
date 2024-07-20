@@ -25,8 +25,8 @@ namespace AllOverIt.Evaluator
         internal FormulaCompilerResult(IVariableRegistry? variableRegistry, Func<double> resolver, string[] referencedVariableNames)
         {
             VariableRegistry = variableRegistry;                    // will be null if the formula contained no variables
-            Resolver = resolver.WhenNotNull(nameof(resolver));
-            ReferencedVariableNames = referencedVariableNames.WhenNotNull(nameof(referencedVariableNames));
+            Resolver = resolver.WhenNotNull();
+            ReferencedVariableNames = referencedVariableNames.WhenNotNull();
         }
     }
 }

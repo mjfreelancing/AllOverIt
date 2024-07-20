@@ -11,7 +11,7 @@ namespace AllOverIt.Wpf.Threading.Extensions
         /// <returns>An awaiter for a <see cref="SynchronizationContext"/> that returns a <see cref="SynchronizationContextAwaiter"/>.</returns>
         public static SynchronizationContextAwaiter GetAwaiter(this SynchronizationContext synchronizationContext)
         {
-            _ = synchronizationContext.WhenNotNull(nameof(synchronizationContext));
+            _ = synchronizationContext.WhenNotNull();
 
             return new SynchronizationContextAwaiter(synchronizationContext);
         }

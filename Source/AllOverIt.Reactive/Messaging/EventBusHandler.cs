@@ -38,7 +38,7 @@ namespace AllOverIt.Reactive.Messaging
         /// <param name="eventBus">The event bus to receive messages (events) from.</param>
         public EventBusHandler(IEventBus eventBus)
         {
-            _eventBus = eventBus.WhenNotNull(nameof(eventBus));
+            _eventBus = eventBus.WhenNotNull();
         }
 
         /// <summary>Implemented in concrete classes to provide the required event handling.</summary>

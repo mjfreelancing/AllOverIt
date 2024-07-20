@@ -19,8 +19,8 @@ namespace AllOverIt.Evaluator
         /// <returns>An Expression representing the arithmetic operation.</returns>
         public static Expression CreateExpression(IArithmeticOperation operation, Stack<Expression> expressionStack)
         {
-            _ = operation.WhenNotNull(nameof(operation));
-            _ = expressionStack.WhenNotNull(nameof(expressionStack));
+            _ = operation.WhenNotNull();
+            _ = expressionStack.WhenNotNull();
 
             // how many parameters need to be passed to it
             var expressionsRequired = operation.ArgumentCount;
@@ -48,8 +48,8 @@ namespace AllOverIt.Evaluator
         /// <returns>An expression that gets the value of a variable from the variable registry.</returns>
         public static Expression CreateExpression(string variableName, IVariableRegistry variableRegistry)
         {
-            _ = variableName.WhenNotNullOrEmpty(nameof(variableName));
-            _ = variableRegistry.WhenNotNull(nameof(variableRegistry));
+            _ = variableName.WhenNotNullOrEmpty();
+            _ = variableRegistry.WhenNotNull();
 
             // create an expression that calls GetValue(), passing the name of the variable
             var registry = Expression.Constant(variableRegistry);

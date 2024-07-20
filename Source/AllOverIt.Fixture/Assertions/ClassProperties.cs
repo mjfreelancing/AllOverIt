@@ -24,7 +24,7 @@ namespace AllOverIt.Fixture.Assertions
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties<TType> Including(params string[] propertyNames)
         {
-            _ = propertyNames.WhenNotNullOrEmpty(nameof(propertyNames));
+            _ = propertyNames.WhenNotNullOrEmpty();
 
             IncludeProperties(propertyNames);
 
@@ -37,7 +37,7 @@ namespace AllOverIt.Fixture.Assertions
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties<TType> Including(params Expression<Func<TType, object>>[] properties)
         {
-            _ = properties.WhenNotNullOrEmpty(nameof(properties));
+            _ = properties.WhenNotNullOrEmpty();
 
             var propertyNames = properties.SelectToArray(property => property.UnwrapMemberExpression()!.Member.Name);
 
@@ -50,7 +50,7 @@ namespace AllOverIt.Fixture.Assertions
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties<TType> Excluding(params string[] propertyNames)
         {
-            _ = propertyNames.WhenNotNullOrEmpty(nameof(propertyNames));
+            _ = propertyNames.WhenNotNullOrEmpty();
 
             ExcludeProperties(propertyNames);
 
@@ -63,7 +63,7 @@ namespace AllOverIt.Fixture.Assertions
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties<TType> Excluding(params Expression<Func<TType, object>>[] properties)
         {
-            _ = properties.WhenNotNullOrEmpty(nameof(properties));
+            _ = properties.WhenNotNullOrEmpty();
 
             var propertyNames = properties.SelectToArray(property => property.UnwrapMemberExpression()!.Member.Name);
 
@@ -77,7 +77,7 @@ namespace AllOverIt.Fixture.Assertions
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties<TType> Where(Func<PropertyInfo, bool> predicate)
         {
-            _ = predicate.WhenNotNull(nameof(predicate));
+            _ = predicate.WhenNotNull();
 
             AddFilter(predicate);
 
@@ -102,7 +102,7 @@ namespace AllOverIt.Fixture.Assertions
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties Including(params string[] propertyNames)
         {
-            _ = propertyNames.WhenNotNullOrEmpty(nameof(propertyNames));
+            _ = propertyNames.WhenNotNullOrEmpty();
 
             IncludeProperties(propertyNames);
 
@@ -115,7 +115,7 @@ namespace AllOverIt.Fixture.Assertions
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties Excluding(params string[] propertyNames)
         {
-            _ = propertyNames.WhenNotNullOrEmpty(nameof(propertyNames));
+            _ = propertyNames.WhenNotNullOrEmpty();
 
             ExcludeProperties(propertyNames);
 
@@ -129,7 +129,7 @@ namespace AllOverIt.Fixture.Assertions
         /// <returns>The current instance to cater for a fluent syntax.</returns>
         public ClassProperties Where(Func<PropertyInfo, bool> predicate)
         {
-            _ = predicate.WhenNotNull(nameof(predicate));
+            _ = predicate.WhenNotNull();
 
             AddFilter(predicate);
 

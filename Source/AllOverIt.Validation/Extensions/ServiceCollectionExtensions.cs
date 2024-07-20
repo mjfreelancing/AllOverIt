@@ -16,7 +16,7 @@ namespace AllOverIt.Validation.Extensions
         /// <see cref="AddLifetimeValidationInvoker(IServiceCollection, Action{ILifetimeValidationRegistry})"/>.</remarks>
         public static IValidationRegistry AddValidationInvoker(this IServiceCollection services, Action<IValidationRegistry>? configure = default)
         {
-            _ = services.WhenNotNull(nameof(services));
+            _ = services.WhenNotNull();
 
             var validationInvoker = new ValidationInvoker();
 
@@ -38,7 +38,7 @@ namespace AllOverIt.Validation.Extensions
         /// is to use <see cref="AddValidationInvoker(IServiceCollection, Action{IValidationRegistry})"/>.</remarks>
         public static ILifetimeValidationRegistry AddLifetimeValidationInvoker(this IServiceCollection services, Action<ILifetimeValidationRegistry>? configure = default)
         {
-            _ = services.WhenNotNull(nameof(services));
+            _ = services.WhenNotNull();
 
             var validationInvoker = new LifetimeValidationInvoker(services);
 

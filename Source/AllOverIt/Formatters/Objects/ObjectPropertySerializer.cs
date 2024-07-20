@@ -34,14 +34,14 @@ namespace AllOverIt.Formatters.Objects
         /// <param name="filter">Provides support for filtering properties and values when serializing. Optional.</param>
         public ObjectPropertySerializer(ObjectPropertySerializerOptions options, ObjectPropertyFilter? filter = default)
         {
-            Options = options.WhenNotNull(nameof(options));
+            Options = options.WhenNotNull();
             Filter = filter;
         }
 
         /// <inheritdoc />
         public IDictionary<string, string> SerializeToDictionary(object instance)
         {
-            _ = instance.WhenNotNull(nameof(instance));
+            _ = instance.WhenNotNull();
 
             if (instance is IDictionary<string, string> dictionary)
             {

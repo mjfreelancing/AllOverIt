@@ -50,9 +50,9 @@ namespace AllOverIt.Pipes.Named.Client
         /// <param name="serializer">The serializer to be used by named pipe client instances.</param>
         public NamedPipeClient(string pipeName, string serverName, INamedPipeSerializer<TMessage> serializer)
         {
-            PipeName = pipeName.WhenNotNullOrEmpty(nameof(pipeName));
-            ServerName = serverName.WhenNotNullOrEmpty(nameof(serverName));
-            _serializer = serializer.WhenNotNull(nameof(serializer));
+            PipeName = pipeName.WhenNotNullOrEmpty();
+            ServerName = serverName.WhenNotNullOrEmpty();
+            _serializer = serializer.WhenNotNull();
         }
 
         /// <inheritdoc />

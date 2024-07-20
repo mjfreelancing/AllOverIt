@@ -23,7 +23,7 @@ namespace AllOverIt.Patterns.Specification
         /// <param name="expressionResolver"></param>
         protected LinqSpecification(Func<Expression<Func<TType, bool>>> expressionResolver)
         {
-            _ = expressionResolver.WhenNotNull(nameof(expressionResolver));
+            _ = expressionResolver.WhenNotNull();
 
             Expression = expressionResolver.Invoke();
         }
@@ -41,7 +41,7 @@ namespace AllOverIt.Patterns.Specification
         /// <param name="specification">The specification to be returned as an Expression&lt;Func&lt;TType, bool&gt;&gt;.</param>
         public static implicit operator Expression<Func<TType, bool>>(LinqSpecification<TType> specification)
         {
-            _ = specification.WhenNotNull(nameof(specification));
+            _ = specification.WhenNotNull();
 
             return specification.Expression;
         }
@@ -51,7 +51,7 @@ namespace AllOverIt.Patterns.Specification
         /// <param name="specification">The specification to be returned as a Func&lt;TType, bool&gt;.</param>
         public static explicit operator Func<TType, bool>(LinqSpecification<TType> specification)
         {
-            _ = specification.WhenNotNull(nameof(specification));
+            _ = specification.WhenNotNull();
 
             return specification.GetCompiledExpression();
         }

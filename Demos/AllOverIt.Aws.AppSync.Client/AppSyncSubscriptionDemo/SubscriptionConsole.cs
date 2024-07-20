@@ -11,8 +11,8 @@ namespace AppSyncSubscriptionDemo
 
         public SubscriptionConsole(IWorkerReady workerReady, ILogger<SubscriptionConsole> logger)
         {
-            _workerReady = workerReady.WhenNotNull(nameof(workerReady));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _workerReady = workerReady.WhenNotNull();
+            _logger = logger.WhenNotNull();
         }
 
         public override async Task StartAsync(CancellationToken cancellationToken = default)

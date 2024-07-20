@@ -15,7 +15,7 @@ namespace AllOverIt.Validation.Extensions
         public static void AutoRegisterTransientValidators<TRegistrar>(this ILifetimeValidationRegistry validationRegistry,
             Func<Type, Type, bool>? predicate = default) where TRegistrar : LifetimeValidationRegistrarBase, new()
         {
-            _ = validationRegistry.WhenNotNull(nameof(validationRegistry));
+            _ = validationRegistry.WhenNotNull();
 
             AutoRegisterValidators<TRegistrar>(validationRegistry, ServiceLifetime.Transient, predicate);
         }
@@ -29,7 +29,7 @@ namespace AllOverIt.Validation.Extensions
         public static void AutoRegisterScopedValidators<TRegistrar>(this ILifetimeValidationRegistry validationRegistry,
             Func<Type, Type, bool>? predicate = default) where TRegistrar : LifetimeValidationRegistrarBase, new()
         {
-            _ = validationRegistry.WhenNotNull(nameof(validationRegistry));
+            _ = validationRegistry.WhenNotNull();
 
             AutoRegisterValidators<TRegistrar>(validationRegistry, ServiceLifetime.Scoped, predicate);
         }
@@ -43,7 +43,7 @@ namespace AllOverIt.Validation.Extensions
         public static void AutoRegisterSingletonValidators<TRegistrar>(this ILifetimeValidationRegistry validationRegistry,
             Func<Type, Type, bool>? predicate = default) where TRegistrar : LifetimeValidationRegistrarBase, new()
         {
-            _ = validationRegistry.WhenNotNull(nameof(validationRegistry));
+            _ = validationRegistry.WhenNotNull();
 
             AutoRegisterValidators<TRegistrar>(validationRegistry, ServiceLifetime.Singleton, predicate);
         }
@@ -58,7 +58,7 @@ namespace AllOverIt.Validation.Extensions
         public static void AutoRegisterValidators<TRegistrar>(this ILifetimeValidationRegistry validationRegistry, ServiceLifetime lifetime,
             Func<Type, Type, bool>? predicate = default) where TRegistrar : LifetimeValidationRegistrarBase, new()
         {
-            _ = validationRegistry.WhenNotNull(nameof(validationRegistry));
+            _ = validationRegistry.WhenNotNull();
 
             var registrar = new TRegistrar();
             registrar.AutoRegisterValidators(validationRegistry, lifetime, predicate);

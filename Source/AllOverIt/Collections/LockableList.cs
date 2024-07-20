@@ -101,7 +101,7 @@ namespace AllOverIt.Collections
 
         internal LockableList(IList<TType> list, IReadWriteLock @lock)
         {
-            _list = list.WhenNotNull(nameof(list));
+            _list = list.WhenNotNull();
             _lock = @lock;
         }
 

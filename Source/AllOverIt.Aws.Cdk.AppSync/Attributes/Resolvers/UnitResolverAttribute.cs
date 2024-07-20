@@ -13,7 +13,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers
         /// <param name="dataSourceName">The datasource name.</param>
         public UnitResolverAttribute(string dataSourceName)
         {
-            DataSourceName = dataSourceName.WhenNotNullOrEmpty(nameof(dataSourceName));
+            DataSourceName = dataSourceName.WhenNotNullOrEmpty();
         }
 
         /// <summary>Constructor.</summary>
@@ -23,7 +23,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers
         public UnitResolverAttribute(Type resolverType, string dataSourceName)
             : base(resolverType)
         {
-            DataSourceName = dataSourceName.WhenNotNullOrEmpty(nameof(dataSourceName));
+            DataSourceName = dataSourceName.WhenNotNullOrEmpty();
         }
     }
 }

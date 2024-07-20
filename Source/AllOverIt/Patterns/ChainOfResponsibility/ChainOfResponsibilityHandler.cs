@@ -13,7 +13,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
         /// <inheritdoc />
         public IChainOfResponsibilityHandler<TInput, TOutput> SetNext(IChainOfResponsibilityHandler<TInput, TOutput> handler)
         {
-            _nextHandler = handler.WhenNotNull(nameof(handler));
+            _nextHandler = handler.WhenNotNull();
             return handler;
         }
 

@@ -118,7 +118,7 @@ namespace AllOverIt.Extensions
         /// <returns>A string encoded using base-64 digits that represents the source value.</returns>
         public static string ToBase64(this string value)
         {
-            _ = value.WhenNotNull(nameof(value));
+            _ = value.WhenNotNull();
 
             var bytes = Encoding.UTF8.GetBytes(value);
 
@@ -130,7 +130,7 @@ namespace AllOverIt.Extensions
         /// <returns>The string decoded from a source string previously encoded with base-64 digits.</returns>
         public static string FromBase64(this string value)
         {
-            _ = value.WhenNotNull(nameof(value));
+            _ = value.WhenNotNull();
 
             var bytes = Convert.FromBase64String(value);
 
@@ -142,7 +142,7 @@ namespace AllOverIt.Extensions
         /// <returns></returns>
         public static MemoryStream ToMemoryStream(this string value)
         {
-            _ = value.WhenNotNull(nameof(value));
+            _ = value.WhenNotNull();
 
             var bytes = Encoding.UTF8.GetBytes(value);
 

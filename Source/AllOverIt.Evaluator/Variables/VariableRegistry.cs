@@ -18,7 +18,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <inheritdoc />
         public void AddVariable(IVariable variable)
         {
-            _ = variable.WhenNotNull(nameof(variable));
+            _ = variable.WhenNotNull();
 
             if (_variableRegistry.ContainsKey(variable.Name))
             {
@@ -34,7 +34,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <inheritdoc />
         public void AddVariables(params IVariable[] variables)
         {
-            _ = variables.WhenNotNull(nameof(variables));
+            _ = variables.WhenNotNull();
 
             foreach (var variable in variables)
             {
@@ -45,7 +45,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <inheritdoc />
         public double GetValue(string name)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             var variable = GetVariable(name);
 
@@ -55,7 +55,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <inheritdoc />
         public void SetValue(string name, double value)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             if (GetVariable(name) is not IMutableVariable variable)
             {
@@ -74,7 +74,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <inheritdoc />
         public bool TryGetVariable(string name, [NotNullWhen(true)] out IVariable? variable)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             return _variableRegistry.TryGetValue(name, out variable);
         }
@@ -82,7 +82,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <inheritdoc />
         public IVariable GetVariable(string name)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             if (!TryGetVariable(name, out var variable))
             {
@@ -95,7 +95,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <inheritdoc />
         public bool ContainsVariable(string name)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             return _variableRegistry.ContainsKey(name);
         }

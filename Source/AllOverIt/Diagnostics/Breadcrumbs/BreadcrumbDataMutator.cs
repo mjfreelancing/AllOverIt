@@ -8,7 +8,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
 
         public BreadcrumbDataMutator(BreadcrumbData breadcrumbData)
         {
-            _breadcrumbData = breadcrumbData.WhenNotNull(nameof(breadcrumbData));
+            _breadcrumbData = breadcrumbData.WhenNotNull();
         }
 
         IBreadcrumbDataMutator IBreadcrumbDataMutator.WithMetadata(object? metadata)

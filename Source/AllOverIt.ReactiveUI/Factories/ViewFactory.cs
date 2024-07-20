@@ -13,7 +13,7 @@ namespace AllOverIt.ReactiveUI.Factories
         /// <param name="provider">The service provider used to resolve Views from.</param>
         public ViewFactory(IServiceProvider provider)
         {
-            _provider = provider.WhenNotNull(nameof(provider));
+            _provider = provider.WhenNotNull();
         }
 
         /// <inheritdoc />

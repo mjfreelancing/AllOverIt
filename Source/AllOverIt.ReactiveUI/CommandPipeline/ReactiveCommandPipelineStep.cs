@@ -12,7 +12,7 @@ namespace AllOverIt.ReactiveUI.CommandPipeline
 
         public ReactiveCommandPipelineStep(ReactiveCommand<TIn, TOut> command)
         {
-            _command = command.WhenNotNull(nameof(command));
+            _command = command.WhenNotNull();
         }
 
         public async Task<TOut> ExecuteAsync(TIn input, CancellationToken cancellationToken)

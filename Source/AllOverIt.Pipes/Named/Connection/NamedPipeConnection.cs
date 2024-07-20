@@ -30,9 +30,9 @@ namespace AllOverIt.Pipes.Named.Connection
 
         internal NamedPipeConnection(PipeStream pipeStream, string connectionId, INamedPipeSerializer<TMessage> serializer)
         {
-            _pipeStream = pipeStream.WhenNotNull(nameof(pipeStream));               // Assume ownership of this stream
-            ConnectionId = connectionId.WhenNotNullOrEmpty(nameof(connectionId));
-            _serializer = serializer.WhenNotNull(nameof(serializer));
+            _pipeStream = pipeStream.WhenNotNull();               // Assume ownership of this stream
+            ConnectionId = connectionId.WhenNotNullOrEmpty();
+            _serializer = serializer.WhenNotNull();
 
             _pipeReaderWriter = new NamedPipeReaderWriter(_pipeStream);
         }

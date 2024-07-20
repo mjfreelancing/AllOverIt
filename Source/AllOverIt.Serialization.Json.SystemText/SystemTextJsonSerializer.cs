@@ -27,7 +27,7 @@ namespace AllOverIt.Serialization.Json.SystemText
         /// <inheritdoc />
         public void Configure(JsonSerializerConfiguration configuration)
         {
-            _ = configuration.WhenNotNull(nameof(configuration));
+            _ = configuration.WhenNotNull();
 
             ApplyOptionUseCamelCase(configuration);
             ApplyOptionCaseSensitive(configuration);

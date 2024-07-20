@@ -59,7 +59,7 @@ namespace AllOverIt.Extensions
         /// <returns>A new comparer that negates the result returned by <paramref name="comparer"/>.</returns>
         public static IComparer<TType> Reverse<TType>(this IComparer<TType> comparer)
         {
-            _ = comparer.WhenNotNull(nameof(comparer));
+            _ = comparer.WhenNotNull();
 
             return new ReverseComparer<TType>(comparer);
         }
@@ -72,8 +72,8 @@ namespace AllOverIt.Extensions
         /// <returns>A new comparer that composes <paramref name="first"/> and <paramref name="next"/>.</returns>
         public static IComparer<TType> Then<TType>(this IComparer<TType> first, IComparer<TType> next)
         {
-            _ = first.WhenNotNull(nameof(first));
-            _ = next.WhenNotNull(nameof(next));
+            _ = first.WhenNotNull();
+            _ = next.WhenNotNull();
 
             return new ComparerNode<TType>(first, next);
         }

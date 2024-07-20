@@ -12,7 +12,7 @@ namespace AllOverIt.Filtering.Extensions
         /// <returns><see langword="True" /> if the filter has a non-null value with at least one element, otherwise <see langword="False" />.</returns>
         public static bool HasValue<TType>(this IArrayFilterOperation<TType> filter)
         {
-            _ = filter.WhenNotNull(nameof(filter));
+            _ = filter.WhenNotNull();
 
             return filter.Value?.Any() ?? false;
         }
@@ -22,7 +22,7 @@ namespace AllOverIt.Filtering.Extensions
         /// <returns><see langword="True" /> if the filter has a non-null value, otherwise <see langword="False" />.</returns>
         public static bool HasValue(this IStringFilterOperation filter)
         {
-            _ = filter.WhenNotNull(nameof(filter));
+            _ = filter.WhenNotNull();
 
             return filter.Value is not null;
         }
@@ -33,7 +33,7 @@ namespace AllOverIt.Filtering.Extensions
         /// <returns><see langword="True" /> if the filter has a non-null value, otherwise <see langword="False" />.</returns>
         public static bool HasValue<TType>(this IBasicFilterOperation<TType?> filter) where TType : struct
         {
-            _ = filter.WhenNotNull(nameof(filter));
+            _ = filter.WhenNotNull();
 
             return filter.Value.HasValue;
         }

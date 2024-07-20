@@ -14,7 +14,7 @@ namespace AllOverIt.Evaluator.Operators
         /// <param name="operatorType">The operator type.</param>
         protected Operator(TType operatorType)
         {
-            OperatorType = operatorType.WhenNotNull(nameof(operatorType));
+            OperatorType = operatorType.WhenNotNull();
         }
     }
 }

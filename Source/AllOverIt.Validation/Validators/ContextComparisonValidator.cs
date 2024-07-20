@@ -18,7 +18,7 @@ namespace AllOverIt.Validation.Validators
         /// <param name="valueResolver">The resolver to obtain the comparison value from the validation context.</param>
         protected ContextComparisonValidator(Func<TContext, TProperty> valueResolver)
         {
-            _valueResolver = valueResolver.WhenNotNull(nameof(valueResolver));
+            _valueResolver = valueResolver.WhenNotNull();
         }
 
         /// <inheritdoc />

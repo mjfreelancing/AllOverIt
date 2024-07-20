@@ -14,7 +14,7 @@ namespace AllOverIt.ReactiveUI.CommandPipeline
         /// <returns>A new pipeline builder instance that can have additional pipeline steps appended.</returns>
         public static IPipelineBuilderAsync<TIn, TOut> Pipe<TIn, TOut>(ReactiveCommand<TIn, TOut> command)
         {
-            _ = command.WhenNotNull(nameof(command));
+            _ = command.WhenNotNull();
 
             var step = new ReactiveCommandPipelineStep<TIn, TOut>(command);
 

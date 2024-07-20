@@ -62,7 +62,7 @@ namespace AllOverIt.Pipes.Anonymous
         /// <param name="pipeStream">The pipe's stream.</param>
         protected void InitializeStart(PipeDirection direction, PipeStream pipeStream)
         {
-            _ = pipeStream.WhenNotNull(nameof(pipeStream));
+            _ = pipeStream.WhenNotNull();
 
             Throw<InvalidOperationException>.WhenNotNull(_pipeStream, "The anonymous pipe has already been initialized.");
 

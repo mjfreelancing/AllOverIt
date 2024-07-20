@@ -14,19 +14,19 @@ namespace AllOverIt.Serialization.Json.Abstractions
 
         public ElementDictionary(IDictionary<string, object?> element)
         {
-            _element = element.WhenNotNull(nameof(element));
+            _element = element.WhenNotNull();
         }
 
         public bool TryGetValue(string propertyName, out object? value)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             return _element.TryGetValue(propertyName, out value);
         }
 
         public object? GetValue(string propertyName)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             if (!TryGetValue(propertyName, out var value))
             {
@@ -38,7 +38,7 @@ namespace AllOverIt.Serialization.Json.Abstractions
 
         public bool TrySetValue(string propertyName, object? value)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             if (!_element.ContainsKey(propertyName))
             {
@@ -52,7 +52,7 @@ namespace AllOverIt.Serialization.Json.Abstractions
 
         public void SetValue(string propertyName, object? value)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             // Cannot use '_element[propertyName] = value' as this would add a new value if it doesn't exist.
             if (!TrySetValue(propertyName, value))

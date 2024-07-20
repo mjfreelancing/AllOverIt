@@ -87,14 +87,14 @@ namespace AllOverIt.Reactive
 
         private void RaisePropertyChanging(PropertyChangingEventArgs eventArgs)
         {
-            _ = eventArgs.WhenNotNull(nameof(eventArgs));
+            _ = eventArgs.WhenNotNull();
 
             PropertyChanging?.Invoke(this, eventArgs);
         }
 
         private void RaisePropertyChanged(PropertyChangedEventArgs eventArgs)
         {
-            _ = eventArgs.WhenNotNull(nameof(eventArgs));
+            _ = eventArgs.WhenNotNull();
 
             PropertyChanged?.Invoke(this, eventArgs);
         }

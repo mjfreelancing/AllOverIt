@@ -51,7 +51,7 @@ namespace AllOverIt.Expressions
         /// <returns>An enumerable of <see cref="ParameterExpression"/> for each of the provided types.</returns>
         public static IEnumerable<ParameterExpression> CreateParameterExpressions(IEnumerable<Type> parameterTypes)
         {
-            _ = parameterTypes.WhenNotNullOrEmpty(nameof(parameterTypes));
+            _ = parameterTypes.WhenNotNullOrEmpty();
 
             var id = 1;
 
@@ -69,8 +69,8 @@ namespace AllOverIt.Expressions
         /// a provided type and its' constructor parameter types.</returns>
         public static (NewExpression NewExpression, ParameterExpression[] ParameterExpressions) GetConstructorWithParameters(Type type, Type[] paramTypes)
         {
-            _ = type.WhenNotNull(nameof(type));
-            _ = paramTypes.WhenNotNullOrEmpty(nameof(paramTypes));
+            _ = type.WhenNotNull();
+            _ = paramTypes.WhenNotNullOrEmpty();
 
             var ctor = type.GetConstructor(paramTypes);
 
@@ -92,8 +92,8 @@ namespace AllOverIt.Expressions
         /// a provided type and its' constructor parameter types.</returns>
         public static (NewExpression NewExpression, ParameterExpression[] ParameterExpressions) GetConstructorWithParametersAsObjects(Type type, Type[] paramTypes)
         {
-            _ = type.WhenNotNull(nameof(type));
-            _ = paramTypes.WhenNotNullOrEmpty(nameof(paramTypes));
+            _ = type.WhenNotNull();
+            _ = paramTypes.WhenNotNullOrEmpty();
 
             var ctor = type.GetConstructor(paramTypes);
 

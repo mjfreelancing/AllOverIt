@@ -18,16 +18,16 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
         public EntityNodeGenerator(ErdOptions options, IEntityType[] dbContextEntityTypes, string defaultShapeStyle)
         {
-            _options = options.WhenNotNull(nameof(options));
-            _dbContextEntityTypes = dbContextEntityTypes.WhenNotNullOrEmpty(nameof(dbContextEntityTypes)).AsArray();
+            _options = options.WhenNotNull();
+            _dbContextEntityTypes = dbContextEntityTypes.WhenNotNullOrEmpty().AsArray();
             _defaultShapeStyle = defaultShapeStyle;     // can be string.Empty
         }
 
         public string CreateNode(EntityIdentifier entityIdentifier, IReadOnlyCollection<IColumnDescriptor> columns, Action<string> onRelationship)
         {
-            _ = entityIdentifier.WhenNotNull(nameof(entityIdentifier));
-            _ = columns.WhenNotNullOrEmpty(nameof(columns));
-            _ = onRelationship.WhenNotNull(nameof(onRelationship));
+            _ = entityIdentifier.WhenNotNull();
+            _ = columns.WhenNotNullOrEmpty();
+            _ = onRelationship.WhenNotNull();
 
             var sb = new StringBuilder();
 

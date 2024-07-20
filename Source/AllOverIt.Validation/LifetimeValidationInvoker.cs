@@ -24,7 +24,7 @@ namespace AllOverIt.Validation
 
         internal LifetimeValidationInvoker(IServiceCollection services)
         {
-            _services = services.WhenNotNull(nameof(services));
+            _services = services.WhenNotNull();
         }
 
         bool ILifetimeValidationRegistry.ContainsModelRegistration(Type modelType)

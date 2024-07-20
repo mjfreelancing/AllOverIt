@@ -18,7 +18,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         /// <param name="options">Options that control how breadcrumb items are inserted and cached by <see cref="Breadcrumbs"/>.</param>
         public BreadcrumbsFactory(BreadcrumbsOptions options)
         {
-            _options = options.WhenNotNull(nameof(options));
+            _options = options.WhenNotNull();
         }
 
         /// <summary>Creates a new <see cref="Breadcrumbs"/> instance using the options initially provided to the factory.</summary>

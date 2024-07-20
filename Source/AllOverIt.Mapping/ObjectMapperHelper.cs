@@ -10,7 +10,7 @@ namespace AllOverIt.Mapping
     {
         internal static IReadOnlyCollection<PropertyInfo> GetMappableProperties(Type sourceType, Type targetType, PropertyMatcherOptions options)
         {
-            _ = options.WhenNotNull(nameof(options));
+            _ = options.WhenNotNull();
 
             var sourceProps = GetFilteredSourcePropertyInfo(sourceType, options);
             var targetProps = GetFilteredTargetPropertyInfo(targetType, options);

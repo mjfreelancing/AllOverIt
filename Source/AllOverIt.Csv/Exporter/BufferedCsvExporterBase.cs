@@ -29,7 +29,7 @@ namespace AllOverIt.Csv.Exporter
         /// <param name="configuration">The configuration to use.</param>
         protected BufferedCsvExporterBase(BufferedCsvExporterConfiguration configuration)
         {
-            _configuration = configuration.WhenNotNull(nameof(configuration));
+            _configuration = configuration.WhenNotNull();
 
             _data = new List<TModel>(_configuration.BufferSize);
         }
@@ -45,7 +45,7 @@ namespace AllOverIt.Csv.Exporter
         /// <inheritdoc />
         public Task AddDataAsync(TModel data, CancellationToken cancellationToken)
         {
-            _ = data.WhenNotNull(nameof(data));
+            _ = data.WhenNotNull();
 
             _data.Add(data);
 

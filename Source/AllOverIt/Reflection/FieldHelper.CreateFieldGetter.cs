@@ -15,7 +15,7 @@ namespace AllOverIt.Reflection
         /// <returns>The compiled field getter.</returns>
         public static Func<object, object> CreateFieldGetter(FieldInfo fieldInfo)
         {
-            _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
+            _ = fieldInfo.WhenNotNull();
 
             var itemParam = Expression.Parameter(typeof(object), "item");
             var instanceParam = itemParam.CastOrConvertTo(fieldInfo.DeclaringType!);
@@ -34,7 +34,7 @@ namespace AllOverIt.Reflection
         /// <returns>The compiled field getter.</returns>
         public static Func<TType, object> CreateFieldGetter<TType>(FieldInfo fieldInfo)
         {
-            _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
+            _ = fieldInfo.WhenNotNull();
 
             var instance = Expression.Parameter(typeof(TType), "item");
 
@@ -54,7 +54,7 @@ namespace AllOverIt.Reflection
         /// <returns>The compiled field getter.</returns>
         public static Func<TType, object> CreateFieldGetter<TType>(string fieldName)
         {
-            _ = fieldName.WhenNotNullOrEmpty(nameof(fieldName));
+            _ = fieldName.WhenNotNullOrEmpty();
 
             var type = typeof(TType);
             var fieldInfo = ReflectionCache.GetFieldInfo(type.GetTypeInfo(), fieldName);

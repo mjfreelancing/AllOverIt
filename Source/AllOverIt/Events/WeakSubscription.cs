@@ -11,7 +11,7 @@ namespace AllOverIt.Events
 
         public WeakSubscription(Delegate handler)
         {
-            _ = handler.WhenNotNull(nameof(handler));
+            _ = handler.WhenNotNull();
 
             _weakReference = new WeakReference(handler.Target);
             _handlerMethod = handler.GetMethodInfo();

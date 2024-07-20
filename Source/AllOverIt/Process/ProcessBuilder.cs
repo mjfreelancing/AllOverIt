@@ -11,7 +11,7 @@ namespace AllOverIt.Process
         /// <returns>A default <see cref="ProcessExecutorOptions"/> for the provided process filename.</returns>
         public static ProcessExecutorOptions For(string processFileName)
         {
-            _ = processFileName.WhenNotNullOrEmpty(nameof(processFileName));
+            _ = processFileName.WhenNotNullOrEmpty();
 
             return new ProcessExecutorOptions(processFileName);
         }

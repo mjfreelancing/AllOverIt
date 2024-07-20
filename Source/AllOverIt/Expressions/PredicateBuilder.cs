@@ -60,8 +60,8 @@ namespace AllOverIt.Expressions
         public static Expression<Func<TType, bool>> Or<TType>(this Expression<Func<TType, bool>> leftExpression,
             Expression<Func<TType, bool>> rightExpression)
         {
-            _ = leftExpression.WhenNotNull(nameof(leftExpression));
-            _ = rightExpression.WhenNotNull(nameof(rightExpression));
+            _ = leftExpression.WhenNotNull();
+            _ = rightExpression.WhenNotNull();
 
             return leftExpression.Compose(rightExpression, Expression.OrElse);
         }
@@ -74,8 +74,8 @@ namespace AllOverIt.Expressions
         public static Expression<Func<TType, bool>> And<TType>(this Expression<Func<TType, bool>> leftExpression,
             Expression<Func<TType, bool>> rightExpression)
         {
-            _ = leftExpression.WhenNotNull(nameof(leftExpression));
-            _ = rightExpression.WhenNotNull(nameof(rightExpression));
+            _ = leftExpression.WhenNotNull();
+            _ = rightExpression.WhenNotNull();
 
             return leftExpression.Compose(rightExpression, Expression.AndAlso);
         }
@@ -86,7 +86,7 @@ namespace AllOverIt.Expressions
         /// <returns>An expression that represents a bitwise complement of the provided expression.</returns>
         public static Expression<Func<TType, bool>> Not<TType>(this Expression<Func<TType, bool>> expression)
         {
-            _ = expression.WhenNotNull(nameof(expression));
+            _ = expression.WhenNotNull();
 
             var negated = Expression.Not(expression.Body);
 

@@ -28,8 +28,8 @@ namespace AllOverIt.Async
         /// <param name="cancellationToken">An optional cancellation token that will cancel the task if cancelled.</param>
         public BackgroundTask(Func<CancellationToken, Task> action, Func<Exception, bool> exceptionHandler, CancellationToken cancellationToken = default)
         {
-            _ = action.WhenNotNull(nameof(action));
-            _ = exceptionHandler.WhenNotNull(nameof(exceptionHandler));
+            _ = action.WhenNotNull();
+            _ = exceptionHandler.WhenNotNull();
 
             var taskToken = CreateTaskCancellationToken(cancellationToken);
 
@@ -66,8 +66,8 @@ namespace AllOverIt.Async
         public BackgroundTask(Func<CancellationToken, Task> action, TaskCreationOptions creationOptions, TaskScheduler scheduler,
             Func<Exception, bool> exceptionHandler, CancellationToken cancellationToken = default)
         {
-            _ = action.WhenNotNull(nameof(action));
-            _ = exceptionHandler.WhenNotNull(nameof(exceptionHandler));
+            _ = action.WhenNotNull();
+            _ = exceptionHandler.WhenNotNull();
 
             var taskToken = CreateTaskCancellationToken(cancellationToken);
 

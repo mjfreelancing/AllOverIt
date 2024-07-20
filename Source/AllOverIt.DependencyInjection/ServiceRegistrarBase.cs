@@ -36,7 +36,7 @@ namespace AllOverIt.DependencyInjection
             configure?.Invoke(this);
 
             var allServiceTypes = serviceTypes
-                .WhenNotNullOrEmpty(nameof(serviceTypes))
+                .WhenNotNullOrEmpty()
                 .AsReadOnlyCollection();
 
             ValidateServiceTypes(allServiceTypes);
@@ -49,7 +49,7 @@ namespace AllOverIt.DependencyInjection
 
         void IServiceRegistrarOptions.Filter(Func<Type, Type, bool> filter)
         {
-            _registrationFilter = filter.WhenNotNull(nameof(filter));
+            _registrationFilter = filter.WhenNotNull();
         }
 
         private static void ValidateServiceTypes(IEnumerable<Type> allServiceTypes)

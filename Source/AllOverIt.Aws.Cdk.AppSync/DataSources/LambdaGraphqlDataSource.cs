@@ -15,7 +15,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.DataSources
         public LambdaGraphqlDataSource(string dataSourceName, string functionName, string? description = default)
             : base(dataSourceName, description)
         {
-            FunctionName = functionName.WhenNotNullOrEmpty(nameof(functionName));
+            FunctionName = functionName.WhenNotNullOrEmpty();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace DiagnosticsDemo
         public ConsoleBackgroundWorker(IBreadcrumbs breadcrumbs, IHostApplicationLifetime applicationLifetime)
             : base(applicationLifetime)
         {
-            _breadcrumbs = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
+            _breadcrumbs = breadcrumbs.WhenNotNull();
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)

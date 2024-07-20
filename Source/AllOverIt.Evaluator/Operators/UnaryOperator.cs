@@ -14,7 +14,7 @@ namespace AllOverIt.Evaluator.Operators
         protected UnaryOperator(Func<Expression, Expression> operatorType, Expression operand)
             : base(operatorType)
         {
-            _operand = operand.WhenNotNull(nameof(operand));
+            _operand = operand.WhenNotNull();
         }
 
         /// <inheritdoc />

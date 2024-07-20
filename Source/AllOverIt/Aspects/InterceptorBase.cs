@@ -35,7 +35,7 @@ namespace AllOverIt.Aspects
         {
             // CanInterceptMethod() returns false if targetMethod is null BUT we want to avoid
             // calling InvokeServiceInstance() if the method is not null but filtered out.
-            _ = targetMethod.WhenNotNull(nameof(targetMethod));
+            _ = targetMethod.WhenNotNull();
 
             if (!CanInterceptMethod(targetMethod))
             {

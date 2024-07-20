@@ -16,8 +16,8 @@ namespace AllOverIt.Serilog.Sinks.CircularBuffer
         /// <param name="formatter">A custom formatter to apply to the log events.</param>
         public CircularBufferSink(ICircularBufferSinkMessages sinkMessages, ITextFormatter formatter)
         {
-            _sinkMessages = sinkMessages.WhenNotNull(nameof(sinkMessages));
-            _formatter = formatter.WhenNotNull(nameof(formatter));
+            _sinkMessages = sinkMessages.WhenNotNull();
+            _formatter = formatter.WhenNotNull();
         }
 
         /// <inheritdoc/>

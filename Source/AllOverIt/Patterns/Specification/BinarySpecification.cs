@@ -17,8 +17,8 @@ namespace AllOverIt.Patterns.Specification
         /// <param name="rightSpecification">The right specification applied against a candidate.</param>
         protected BinarySpecification(ISpecification<TType> leftSpecification, ISpecification<TType> rightSpecification)
         {
-            LeftSpecification = leftSpecification.WhenNotNull(nameof(leftSpecification));
-            RightSpecification = rightSpecification.WhenNotNull(nameof(rightSpecification));
+            LeftSpecification = leftSpecification.WhenNotNull();
+            RightSpecification = rightSpecification.WhenNotNull();
         }
     }
 }

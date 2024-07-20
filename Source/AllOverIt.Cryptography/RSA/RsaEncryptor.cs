@@ -68,8 +68,8 @@ namespace AllOverIt.Cryptography.RSA
 
         internal RsaEncryptor(IRsaFactory rsaFactory, IRsaEncryptorConfiguration configuration)
         {
-            _rsaFactory = rsaFactory.WhenNotNull(nameof(rsaFactory));
-            Configuration = configuration.WhenNotNull(nameof(configuration));
+            _rsaFactory = rsaFactory.WhenNotNull();
+            Configuration = configuration.WhenNotNull();
         }
 
         /// <inheritdoc />
@@ -92,7 +92,7 @@ namespace AllOverIt.Cryptography.RSA
         /// <inheritdoc />
         public byte[] Encrypt(byte[] plainText)
         {
-            _ = plainText.WhenNotNullOrEmpty(nameof(plainText));
+            _ = plainText.WhenNotNullOrEmpty();
 
             Throw<RsaException>.WhenNull(Configuration.Keys.PublicKey, "An RSA public key has not been configured.");
 
@@ -106,7 +106,7 @@ namespace AllOverIt.Cryptography.RSA
         /// <inheritdoc />
         public byte[] Decrypt(byte[] cipherText)
         {
-            _ = cipherText.WhenNotNullOrEmpty(nameof(cipherText));
+            _ = cipherText.WhenNotNullOrEmpty();
 
             Throw<RsaException>.WhenNull(Configuration.Keys.PrivateKey, "An RSA private key has not been configured.");
 
@@ -120,8 +120,8 @@ namespace AllOverIt.Cryptography.RSA
         /// <inheritdoc />
         public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = plainTextStream.WhenNotNull();
+            _ = cipherTextStream.WhenNotNull();
 
             var plainTextBytes = plainTextStream.ToByteArray();
 
@@ -133,8 +133,8 @@ namespace AllOverIt.Cryptography.RSA
         /// <inheritdoc />
         public void Decrypt(Stream cipherTextStream, Stream plainTextStream)
         {
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+            _ = cipherTextStream.WhenNotNull();
+            _ = plainTextStream.WhenNotNull();
 
             var cipherTextBytes = cipherTextStream.ToByteArray();
 

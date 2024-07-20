@@ -31,7 +31,7 @@ namespace AllOverIt.Pipes.Named.Client
         public NamedPipeClientConnection(PipeStream pipeStream, string connectionId, string serverName, INamedPipeSerializer<TMessage> serializer)
             : base(pipeStream, connectionId, serializer)
         {
-            ServerName = serverName.WhenNotNullOrEmpty(nameof(serverName));
+            ServerName = serverName.WhenNotNullOrEmpty();
         }
 
         /// <summary>Raises an <see cref="OnMessageReceived"/> event.</summary>

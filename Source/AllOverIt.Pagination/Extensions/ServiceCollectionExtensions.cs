@@ -13,7 +13,7 @@ namespace AllOverIt.Pagination.Extensions
         /// <returns>The service collection instance to allow for a fluent syntax.</returns>
         public static IServiceCollection AddQueryPagination(this IServiceCollection serviceCollection)
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
+            _ = serviceCollection.WhenNotNull();
 
             serviceCollection.AddSingleton<IContinuationTokenValidator, ContinuationTokenValidator>();
             serviceCollection.AddSingleton<IContinuationTokenSerializerFactory, ContinuationTokenSerializerFactory>();

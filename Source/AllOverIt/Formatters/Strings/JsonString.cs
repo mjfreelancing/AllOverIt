@@ -39,7 +39,7 @@ namespace AllOverIt.Formatters.Strings
             // Inspired by https://stackoverflow.com/questions/4580397/json-formatter-in-c) but not
             // using LINQ as the memory and speed performance is significantly poorer.
 
-            _ = jsonValue.WhenNotNull(nameof(jsonValue));
+            _ = jsonValue.WhenNotNull();
 
             if (indentSize < 0)
             {

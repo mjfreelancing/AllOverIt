@@ -17,8 +17,8 @@ namespace EFEnumerationDemo
 
         public App(IDbContextFactory<BloggingContext> dbContextFactory, ILogger<App> logger)
         {
-            _dbContextFactory = dbContextFactory.WhenNotNull(nameof(dbContextFactory));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _dbContextFactory = dbContextFactory.WhenNotNull();
+            _logger = logger.WhenNotNull();
         }
 
         public override async Task StartAsync(CancellationToken cancellationToken)

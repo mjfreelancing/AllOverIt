@@ -12,13 +12,13 @@ namespace AllOverIt.Pagination.TokenEncoding
         /// <param name="serializerFactory">A factory to create a continuation token serializer that can validate a serialized token.</param>
         public ContinuationTokenValidator(IContinuationTokenSerializerFactory serializerFactory)
         {
-            _serializerFactory = serializerFactory.WhenNotNull(nameof(serializerFactory));
+            _serializerFactory = serializerFactory.WhenNotNull();
         }
 
         /// <inheritdoc />
         public bool IsValidToken(string? continuationToken, IContinuationTokenOptions tokenOptions)
         {
-            _ = tokenOptions.WhenNotNull(nameof(tokenOptions));
+            _ = tokenOptions.WhenNotNull();
 
             if (continuationToken.IsNullOrEmpty())
             {

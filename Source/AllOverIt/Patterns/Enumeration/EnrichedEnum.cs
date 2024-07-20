@@ -33,7 +33,7 @@ namespace AllOverIt.Patterns.Enumeration
         protected EnrichedEnum(int value, string name)
         {
             Value = value;
-            Name = name.WhenNotNullOrEmpty(nameof(name));
+            Name = name.WhenNotNullOrEmpty();
         }
 
         /// <summary>Returns a string representation of the enumeration. This will be the name value.</summary>
@@ -97,7 +97,7 @@ namespace AllOverIt.Patterns.Enumeration
         /// <exception cref="EnrichedEnumException">If the name or integer value does not match any of the enumeration instances.</exception>
         public static TEnum From(string value)
         {
-            _ = value.WhenNotNullOrEmpty(nameof(value));
+            _ = value.WhenNotNullOrEmpty();
 
             // assume parsing a name
             if (TryParse(item => item.Name.Equals(value, StringComparison.OrdinalIgnoreCase), out var enumeration))
@@ -129,7 +129,7 @@ namespace AllOverIt.Patterns.Enumeration
         /// <returns><see langword="True" /> if the conversion was successful, otherwise <see langword="False" />.</returns>
         public static bool TryFromName(string name, [MaybeNullWhen(false)] out TEnum enumeration)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             return TryParse(item => item.Name.Equals(name, StringComparison.OrdinalIgnoreCase), out enumeration);
         }
@@ -140,7 +140,7 @@ namespace AllOverIt.Patterns.Enumeration
         /// <returns><see langword="True" /> if the conversion was successful, otherwise <see langword="False" />.</returns>
         public static bool TryFromNameOrValue(string nameOrValue, [MaybeNullWhen(false)] out TEnum enumeration)
         {
-            _ = nameOrValue.WhenNotNullOrEmpty(nameof(nameOrValue));
+            _ = nameOrValue.WhenNotNullOrEmpty();
 
             // assume parsing a name
             if (TryParse(item => item.Name.Equals(nameOrValue, StringComparison.OrdinalIgnoreCase), out enumeration))

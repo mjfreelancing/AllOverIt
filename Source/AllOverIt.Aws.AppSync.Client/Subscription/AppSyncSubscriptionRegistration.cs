@@ -30,8 +30,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// <param name="disposable">The subscription that will unregister from AppSync when disposed.</param>
         public AppSyncSubscriptionRegistration(string id, IAsyncDisposable disposable)
         {
-            Id = id.WhenNotNullOrEmpty(nameof(id));
-            _disposable = disposable.WhenNotNull(nameof(disposable));
+            Id = id.WhenNotNullOrEmpty();
+            _disposable = disposable.WhenNotNull();
         }
 
         /// <summary>Constructor.</summary>
@@ -40,10 +40,10 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// are typically associated with connectivity issues.</param>
         public AppSyncSubscriptionRegistration(string id, IEnumerable<Exception> exceptions)
         {
-            Id = id.WhenNotNullOrEmpty(nameof(id));
+            Id = id.WhenNotNullOrEmpty();
 
             Exceptions = exceptions
-                .WhenNotNullOrEmpty(nameof(exceptions))
+                .WhenNotNullOrEmpty()
                 .AsArray();
         }
 
@@ -53,7 +53,7 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// are typically associated with invalid queries or request/response mappings.</param>
         public AppSyncSubscriptionRegistration(string id, IEnumerable<GraphqlErrorDetail> errors)
         {
-            Id = id.WhenNotNullOrEmpty(nameof(id));
+            Id = id.WhenNotNullOrEmpty();
             GraphqlErrors = errors.AsArray();
         }
 

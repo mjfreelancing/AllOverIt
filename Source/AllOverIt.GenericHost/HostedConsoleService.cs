@@ -14,9 +14,9 @@ namespace AllOverIt.GenericHost
 
         public HostedConsoleService(IConsoleApp consoleApp, IHostApplicationLifetime applicationLifetime, ILogger<HostedConsoleService> logger)
         {
-            _applicationLifetime = applicationLifetime.WhenNotNull(nameof(applicationLifetime));
-            _consoleApp = consoleApp.WhenNotNull(nameof(consoleApp));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _applicationLifetime = applicationLifetime.WhenNotNull();
+            _consoleApp = consoleApp.WhenNotNull();
+            _logger = logger.WhenNotNull();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

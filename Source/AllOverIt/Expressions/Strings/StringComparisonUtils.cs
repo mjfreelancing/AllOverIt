@@ -54,8 +54,8 @@ namespace AllOverIt.Expressions.Strings
         /// <see cref="string.Compare(string, string, StringComparison)"/> method based on the provided arguments.</returns>
         public static MethodCallExpression CreateCompareCallExpression(Expression value1, Expression value2, StringComparison? stringComparison = default)
         {
-            _ = value1.WhenNotNull(nameof(value1));
-            _ = value2.WhenNotNull(nameof(value2));
+            _ = value1.WhenNotNull();
+            _ = value2.WhenNotNull();
 
             value1 = ConvertIfNullConstant(value1);
             value2 = ConvertIfNullConstant(value2);
@@ -78,9 +78,9 @@ namespace AllOverIt.Expressions.Strings
         /// <see cref="StringComparisonMode"/> option.</returns>
         public static MethodCallExpression CreateCompareCallExpression(Expression value1, Expression value2, StringComparisonMode stringComparisonMode)
         {
-            _ = value1.WhenNotNull(nameof(value1));
-            _ = value2.WhenNotNull(nameof(value2));
-            _ = stringComparisonMode.WhenNotNull(nameof(stringComparisonMode));
+            _ = value1.WhenNotNull();
+            _ = value2.WhenNotNull();
+            _ = stringComparisonMode.WhenNotNull();
 
             if (stringComparisonMode.IsStringModifier())
             {
@@ -108,8 +108,8 @@ namespace AllOverIt.Expressions.Strings
         /// its <see cref="StringComparison"/> overload.</returns>
         public static MethodCallExpression CreateContainsCallExpression(Expression instance, Expression value, StringComparison? stringComparison = default)
         {
-            _ = instance.WhenNotNull(nameof(instance));
-            _ = value.WhenNotNull(nameof(value));
+            _ = instance.WhenNotNull();
+            _ = value.WhenNotNull();
 
             // The instance 'Contains' method does not allow null
             ThrowIfNullConstant(instance, nameof(instance));
@@ -132,9 +132,9 @@ namespace AllOverIt.Expressions.Strings
         /// <returns>A <see cref="MethodCallExpression"/> that will perform a string comparison based on the provided <see cref="StringComparisonMode"/> option.</returns>
         public static MethodCallExpression CreateContainsCallExpression(Expression instance, Expression value, StringComparisonMode stringComparisonMode)
         {
-            _ = instance.WhenNotNull(nameof(instance));
-            _ = value.WhenNotNull(nameof(value));
-            _ = stringComparisonMode.WhenNotNull(nameof(stringComparisonMode));
+            _ = instance.WhenNotNull();
+            _ = value.WhenNotNull();
+            _ = stringComparisonMode.WhenNotNull();
 
             // The instance 'Contains' method does not allow null
             ThrowIfNullConstant(instance, nameof(instance));
@@ -154,8 +154,8 @@ namespace AllOverIt.Expressions.Strings
         /// <see cref="string.StartsWith(string, StringComparison)"/> method based on the provided arguments.</returns>
         public static MethodCallExpression CreateStartsWithCallExpression(Expression instance, Expression value, StringComparison? stringComparison = default)
         {
-            _ = instance.WhenNotNull(nameof(instance));
-            _ = value.WhenNotNull(nameof(value));
+            _ = instance.WhenNotNull();
+            _ = value.WhenNotNull();
 
             // The instance 'StartsWith' method does not allow null
             ThrowIfNullConstant(instance, nameof(instance));
@@ -179,9 +179,9 @@ namespace AllOverIt.Expressions.Strings
         /// <see cref="StringComparisonMode"/> option.</returns>
         public static MethodCallExpression CreateStartsWithCallExpression(Expression instance, Expression value, StringComparisonMode stringComparisonMode)
         {
-            _ = instance.WhenNotNull(nameof(instance));
-            _ = value.WhenNotNull(nameof(value));
-            _ = stringComparisonMode.WhenNotNull(nameof(stringComparisonMode));
+            _ = instance.WhenNotNull();
+            _ = value.WhenNotNull();
+            _ = stringComparisonMode.WhenNotNull();
 
             // The instance 'StartsWith' method does not allow null
             ThrowIfNullConstant(instance, nameof(instance));
@@ -201,8 +201,8 @@ namespace AllOverIt.Expressions.Strings
         /// <see cref="string.EndsWith(string, StringComparison)"/> method based on the provided arguments.</returns>
         public static MethodCallExpression CreateEndsWithCallExpression(Expression instance, Expression value, StringComparison? stringComparison = default)
         {
-            _ = instance.WhenNotNull(nameof(instance));
-            _ = value.WhenNotNull(nameof(value));
+            _ = instance.WhenNotNull();
+            _ = value.WhenNotNull();
 
             // The instance 'EndsWith' method does not allow null
             ThrowIfNullConstant(instance, nameof(instance));
@@ -226,9 +226,9 @@ namespace AllOverIt.Expressions.Strings
         /// <see cref="StringComparisonMode"/> option.</returns>
         public static MethodCallExpression CreateEndsWithCallExpression(Expression instance, Expression value, StringComparisonMode stringComparisonMode)
         {
-            _ = instance.WhenNotNull(nameof(instance));
-            _ = value.WhenNotNull(nameof(value));
-            _ = stringComparisonMode.WhenNotNull(nameof(stringComparisonMode));
+            _ = instance.WhenNotNull();
+            _ = value.WhenNotNull();
+            _ = stringComparisonMode.WhenNotNull();
 
             // The instance 'EndsWith' method does not allow null
             ThrowIfNullConstant(instance, nameof(instance));
@@ -244,7 +244,7 @@ namespace AllOverIt.Expressions.Strings
         /// <returns>A <see cref="MethodCallExpression"/> that will execute the instance method <see cref="string.ToLower()" />.</returns>
         public static MethodCallExpression CreateToLowerCallExpression(Expression value)
         {
-            _ = value.WhenNotNull(nameof(value));
+            _ = value.WhenNotNull();
 
             ThrowIfNullConstant(value, nameof(value));
 
@@ -256,7 +256,7 @@ namespace AllOverIt.Expressions.Strings
         /// <returns>A <see cref="MethodCallExpression"/> that will execute the instance method <see cref="string.ToUpper()" />.</returns>
         public static MethodCallExpression CreateToUpperCallExpression(Expression value)
         {
-            _ = value.WhenNotNull(nameof(value));
+            _ = value.WhenNotNull();
 
             ThrowIfNullConstant(value, nameof(value));
 

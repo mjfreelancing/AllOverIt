@@ -15,7 +15,7 @@ namespace AllOverIt.Helpers
         /// <param name="exception">The exception to add to the aggregator.</param>
         public void AddException(Exception exception)
         {
-            _ = exception.WhenNotNull(nameof(exception));
+            _ = exception.WhenNotNull();
 
             _exceptions.Add(exception);
         }

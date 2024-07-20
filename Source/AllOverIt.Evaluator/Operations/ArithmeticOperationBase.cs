@@ -19,7 +19,7 @@ namespace AllOverIt.Evaluator.Operations
         protected ArithmeticOperationBase(int argumentCount, Func<Expression[], IOperator> creator)
         {
             ArgumentCount = argumentCount;
-            _creator = creator.WhenNotNull(nameof(creator));
+            _creator = creator.WhenNotNull();
         }
 
         /// <inheritdoc />

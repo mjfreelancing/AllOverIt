@@ -17,7 +17,7 @@ namespace AllOverIt.Reactive
         /// <param name="model">The wrapped model instance.</param>
         protected ObservableProxy(TType model)
         {
-            Model = model.WhenNotNull(nameof(model));
+            Model = model.WhenNotNull();
         }
 
         /// <summary>Compares the current and new value of a property on the wrapped <see cref="Model"/>. If the new value is
@@ -67,7 +67,7 @@ namespace AllOverIt.Reactive
         protected bool RaiseAndSetIfChanged<TProperty>(TProperty oldValue, TProperty newValue, Action<TType, TProperty> setValue,
             IEqualityComparer<TProperty>? comparer, Action? onChanging, Action? onChanged, [CallerMemberName] string propertyName = "")
         {
-            _ = setValue.WhenNotNull(nameof(setValue));
+            _ = setValue.WhenNotNull();
 
             comparer ??= EqualityComparer<TProperty>.Default;
 

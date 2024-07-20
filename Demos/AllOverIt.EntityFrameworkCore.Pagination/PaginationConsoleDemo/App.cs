@@ -26,10 +26,10 @@ namespace PaginationConsoleDemo
         public App(IDbContextFactory<BloggingContext> dbContextFactory, IQueryPaginatorFactory queryPaginatorFactory,
             IContinuationTokenValidator continuationTokenValidator, ILogger<App> logger)
         {
-            _dbContextFactory = dbContextFactory.WhenNotNull(nameof(dbContextFactory));
-            _queryPaginatorFactory = queryPaginatorFactory.WhenNotNull(nameof(queryPaginatorFactory));
-            _continuationTokenValidator = continuationTokenValidator.WhenNotNull(nameof(continuationTokenValidator));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _dbContextFactory = dbContextFactory.WhenNotNull();
+            _queryPaginatorFactory = queryPaginatorFactory.WhenNotNull();
+            _continuationTokenValidator = continuationTokenValidator.WhenNotNull();
+            _logger = logger.WhenNotNull();
         }
 
         public override async Task StartAsync(CancellationToken cancellationToken)

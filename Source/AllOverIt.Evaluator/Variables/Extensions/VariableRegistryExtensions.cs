@@ -11,8 +11,8 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <returns>The same registry to provide a fluent syntax.</returns>
         public static IVariableRegistry Add(this IVariableRegistry registry, IVariable variable)
         {
-            _ = registry.WhenNotNull(nameof(registry));
-            _ = variable.WhenNotNull(nameof(variable));
+            _ = registry.WhenNotNull();
+            _ = variable.WhenNotNull();
 
             registry.AddVariable(variable);
 
@@ -25,8 +25,8 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <returns>The same registry to provide a fluent syntax.</returns>
         public static IVariableRegistry Add(this IVariableRegistry registry, params IVariable[] variables)
         {
-            _ = registry.WhenNotNull(nameof(registry));
-            _ = variables.WhenNotNullOrEmpty(nameof(variables));
+            _ = registry.WhenNotNull();
+            _ = variables.WhenNotNullOrEmpty();
 
             foreach (var variable in variables)
             {
@@ -43,8 +43,8 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <returns>The new variable instance.</returns>
         public static IVariable AddConstantVariable(this IVariableRegistry registry, string name, double value)
         {
-            _ = registry.WhenNotNull(nameof(registry));
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = registry.WhenNotNull();
+            _ = name.WhenNotNullOrEmpty();
 
             var variable = new ConstantVariable(name, value);
             registry.AddVariable(variable);
@@ -59,8 +59,8 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <returns>The new variable instance.</returns>
         public static IMutableVariable AddMutableVariable(this IVariableRegistry registry, string name, double value = default)
         {
-            _ = registry.WhenNotNull(nameof(registry));
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = registry.WhenNotNull();
+            _ = name.WhenNotNullOrEmpty();
 
             var variable = new MutableVariable(name, value);
             registry.AddVariable(variable);
@@ -75,9 +75,9 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <returns>The new variable instance.</returns>
         public static IVariable AddDelegateVariable(this IVariableRegistry registry, string name, Func<double> valueResolver)
         {
-            _ = registry.WhenNotNull(nameof(registry));
-            _ = name.WhenNotNullOrEmpty(nameof(name));
-            _ = valueResolver.WhenNotNull(nameof(valueResolver));
+            _ = registry.WhenNotNull();
+            _ = name.WhenNotNullOrEmpty();
+            _ = valueResolver.WhenNotNull();
 
             var variable = new DelegateVariable(name, valueResolver);
             registry.AddVariable(variable);
@@ -93,9 +93,9 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <returns>The new variable instance.</returns>
         public static IVariable AddDelegateVariable(this IVariableRegistry registry, string name, FormulaCompilerResult formulaCompilerResult)
         {
-            _ = registry.WhenNotNull(nameof(registry));
-            _ = name.WhenNotNullOrEmpty(nameof(name));
-            _ = formulaCompilerResult.WhenNotNull(nameof(formulaCompilerResult));
+            _ = registry.WhenNotNull();
+            _ = name.WhenNotNullOrEmpty();
+            _ = formulaCompilerResult.WhenNotNull();
 
             var variable = new DelegateVariable(name, formulaCompilerResult);
             registry.AddVariable(variable);
@@ -110,9 +110,9 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <returns>The new variable instance.</returns>
         public static IVariable AddLazyVariable(this IVariableRegistry registry, string name, Func<double> valueResolver)
         {
-            _ = registry.WhenNotNull(nameof(registry));
-            _ = name.WhenNotNullOrEmpty(nameof(name));
-            _ = valueResolver.WhenNotNull(nameof(valueResolver));
+            _ = registry.WhenNotNull();
+            _ = name.WhenNotNullOrEmpty();
+            _ = valueResolver.WhenNotNull();
 
             var variable = new LazyVariable(name, valueResolver);
             registry.AddVariable(variable);
@@ -128,8 +128,8 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <returns>The new variable instance.</returns>
         public static IVariable AddLazyVariable(this IVariableRegistry registry, string name, FormulaCompilerResult formulaCompilerResult)
         {
-            _ = registry.WhenNotNull(nameof(registry));
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = registry.WhenNotNull();
+            _ = name.WhenNotNullOrEmpty();
 
             var variable = new LazyVariable(name, formulaCompilerResult);
             registry.AddVariable(variable);

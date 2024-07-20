@@ -19,7 +19,7 @@ namespace AllOverIt.Mapping
         /// source and target type combination.</param>
         internal TypedPropertyMatcherOptions(Action<Type, Type, Func<IObjectMapper, object, object>> sourceTargetFactoryRegistration)
         {
-            _sourceTargetFactoryRegistration = sourceTargetFactoryRegistration.WhenNotNull(nameof(sourceTargetFactoryRegistration));
+            _sourceTargetFactoryRegistration = sourceTargetFactoryRegistration.WhenNotNull();
         }
 
         /// <summary>Excludes a source property from object mapping.</summary>
@@ -28,7 +28,7 @@ namespace AllOverIt.Mapping
         /// <returns>The same <see cref="TypedPropertyMatcherOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
         public TypedPropertyMatcherOptions<TSource, TTarget> Exclude<TProperty>(Expression<Func<TSource, TProperty?>> sourceExpression)
         {
-            _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
+            _ = sourceExpression.WhenNotNull();
 
             var sourceName = GetPropertyName(sourceExpression);
 
@@ -45,8 +45,8 @@ namespace AllOverIt.Mapping
         public TypedPropertyMatcherOptions<TSource, TTarget> ExcludeWhen<TProperty>(Expression<Func<TSource, TProperty?>> sourceExpression,
             Func<TProperty?, bool> predicate)
         {
-            _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
-            _ = predicate.WhenNotNull(nameof(predicate));
+            _ = sourceExpression.WhenNotNull();
+            _ = predicate.WhenNotNull();
 
             var sourceName = GetPropertyName(sourceExpression);
 
@@ -61,7 +61,7 @@ namespace AllOverIt.Mapping
         /// <returns>The same <see cref="TypedPropertyMatcherOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
         public TypedPropertyMatcherOptions<TSource, TTarget> DeepCopy<TProperty>(Expression<Func<TSource, TProperty?>> sourceExpression)
         {
-            _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
+            _ = sourceExpression.WhenNotNull();
 
             var sourceName = GetPropertyName(sourceExpression);
 
@@ -79,8 +79,8 @@ namespace AllOverIt.Mapping
         public TypedPropertyMatcherOptions<TSource, TTarget> WithAlias<TSourceProperty, TTargetProperty>(Expression<Func<TSource, TSourceProperty?>> sourceExpression,
             Expression<Func<TTarget, TTargetProperty?>> targetExpression)
         {
-            _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
-            _ = targetExpression.WhenNotNull(nameof(targetExpression));
+            _ = sourceExpression.WhenNotNull();
+            _ = targetExpression.WhenNotNull();
 
             var sourceName = GetPropertyName(sourceExpression);
             var targetName = GetPropertyName(targetExpression);
@@ -99,7 +99,7 @@ namespace AllOverIt.Mapping
         public TypedPropertyMatcherOptions<TSource, TTarget> UseWhenNull<TSourceProperty, TTargetProperty>(Expression<Func<TSource, TSourceProperty?>> sourceExpression,
             TTargetProperty nullReplacement) where TTargetProperty : notnull
         {
-            _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
+            _ = sourceExpression.WhenNotNull();
 
             var sourceName = GetPropertyName(sourceExpression);
             UseWhenNull(sourceName, nullReplacement);
@@ -116,8 +116,8 @@ namespace AllOverIt.Mapping
         public TypedPropertyMatcherOptions<TSource, TTarget> WithConversion<TProperty>(Expression<Func<TSource, TProperty?>> sourceExpression,
             Func<IObjectMapper, TProperty?, object?> converter)
         {
-            _ = sourceExpression.WhenNotNull(nameof(sourceExpression));
-            _ = converter.WhenNotNull(nameof(converter));
+            _ = sourceExpression.WhenNotNull();
+            _ = converter.WhenNotNull();
 
             var sourceName = GetPropertyName(sourceExpression);
 
@@ -131,7 +131,7 @@ namespace AllOverIt.Mapping
         /// <returns>The same <see cref="TypedPropertyMatcherOptions{TSource, TTarget}"/> instance so a fluent syntax can be used.</returns>
         public TypedPropertyMatcherOptions<TSource, TTarget> ConstructUsing(Func<IObjectMapper, TSource, TTarget> targetFactory)
         {
-            _ = targetFactory.WhenNotNull(nameof(targetFactory));
+            _ = targetFactory.WhenNotNull();
 
             _sourceTargetFactoryRegistration.Invoke(typeof(TSource), typeof(TTarget), (mapper, source) => targetFactory.Invoke(mapper, (TSource) source)!);
 

@@ -32,8 +32,8 @@ namespace AllOverIt.Serilog.Extensions
             IFormatProvider? formatProvider = default,
             LoggingLevelSwitch? levelSwitch = default)
         {
-            _ = sinkConfiguration.WhenNotNull(nameof(sinkConfiguration));
-            _ = outputTemplate.WhenNotNullOrEmpty(nameof(outputTemplate));
+            _ = sinkConfiguration.WhenNotNull();
+            _ = outputTemplate.WhenNotNullOrEmpty();
 
             var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
 
@@ -58,8 +58,8 @@ namespace AllOverIt.Serilog.Extensions
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             LoggingLevelSwitch? levelSwitch = default)
         {
-            _ = sinkConfiguration.WhenNotNull(nameof(sinkConfiguration));
-            _ = formatter.WhenNotNull(nameof(formatter));
+            _ = sinkConfiguration.WhenNotNull();
+            _ = formatter.WhenNotNull();
 
             var sink = new CircularBufferSink(sinkMessages, formatter);
 

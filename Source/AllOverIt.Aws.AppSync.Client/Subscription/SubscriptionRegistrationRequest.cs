@@ -11,9 +11,9 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         {
             public SubscriptionRequest(string id, SubscriptionQueryPayload payload)
             {
-                Id = id.WhenNotNull(nameof(id));
+                Id = id.WhenNotNull();
                 Type = ProtocolMessage.Request.Start;
-                Payload = payload.WhenNotNull(nameof(payload));
+                Payload = payload.WhenNotNull();
             }
         }
 
@@ -35,8 +35,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// <param name="payload">The registration payload to be sent to AppSync.</param>
         protected SubscriptionRegistrationRequest(string id, SubscriptionQueryPayload payload)
         {
-            _ = id.WhenNotNullOrEmpty(nameof(id));
-            _ = payload.WhenNotNull(nameof(payload));
+            _ = id.WhenNotNullOrEmpty();
+            _ = payload.WhenNotNull();
 
             Request = new SubscriptionRequest(id, payload);
         }
@@ -59,8 +59,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             IJsonSerializer serializer)
             : base(id, payload)
         {
-            ResponseAction = responseAction.WhenNotNull(nameof(responseAction));
-            _serializer = serializer.WhenNotNull(nameof(serializer));
+            ResponseAction = responseAction.WhenNotNull();
+            _serializer = serializer.WhenNotNull();
         }
 
         /// <summary>Deserializes the received message into a strongly-typed response.</summary>

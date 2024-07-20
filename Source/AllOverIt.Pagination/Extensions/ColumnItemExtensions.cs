@@ -11,8 +11,8 @@ namespace AllOverIt.Pagination.Extensions
         [return: NotNull]
         public static object?[] GetColumnValues(this IReadOnlyCollection<IColumnDefinition> columns, object reference)
         {
-            _ = columns.WhenNotNullOrEmpty(nameof(columns));
-            _ = reference.WhenNotNull(nameof(reference));
+            _ = columns.WhenNotNullOrEmpty();
+            _ = reference.WhenNotNull();
 
             // The reference type could be different to the entity type
             var referenceTypeInfo = reference.GetType().GetTypeInfo();

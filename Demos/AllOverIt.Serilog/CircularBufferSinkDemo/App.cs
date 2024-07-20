@@ -12,8 +12,8 @@ namespace CircularBufferSinkDemo
 
         public App(ICircularBufferSinkMessages sinkMessages, ILogger<App> logger)
         {
-            _sinkMessages = sinkMessages.WhenNotNull(nameof(sinkMessages));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _sinkMessages = sinkMessages.WhenNotNull();
+            _logger = logger.WhenNotNull();
 
             Console.WriteLine();
         }

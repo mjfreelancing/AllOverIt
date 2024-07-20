@@ -20,8 +20,8 @@ namespace AllOverIt.Extensions
         public static Task ForEachAsTaskAsync<TType>(this IEnumerable<TType> items, Func<TType, CancellationToken, Task> func, int degreeOfParallelism,
             CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = func.WhenNotNull(nameof(func));
+            _ = items.WhenNotNull();
+            _ = func.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
 
@@ -50,8 +50,8 @@ namespace AllOverIt.Extensions
         public static Task ForEachAsTaskAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, CancellationToken, Task> func, TInput input,
             int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = func.WhenNotNull(nameof(func));
+            _ = items.WhenNotNull();
+            _ = func.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
 
@@ -82,8 +82,8 @@ namespace AllOverIt.Extensions
         public static Task ForEachAsTaskAsync<TType, TInput1, TInput2>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, CancellationToken, Task> func,
             TInput1 input1, TInput2 input2, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = func.WhenNotNull(nameof(func));
+            _ = items.WhenNotNull();
+            _ = func.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
 
@@ -116,8 +116,8 @@ namespace AllOverIt.Extensions
         public static Task ForEachAsTaskAsync<TType, TInput1, TInput2, TInput3>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, TInput3, CancellationToken, Task> func,
             TInput1 input1, TInput2 input2, TInput3 input3, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = func.WhenNotNull(nameof(func));
+            _ = items.WhenNotNull();
+            _ = func.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
 
@@ -153,8 +153,8 @@ namespace AllOverIt.Extensions
             Func<TType, TInput1, TInput2, TInput3, TInput4, CancellationToken, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
             int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = func.WhenNotNull(nameof(func));
+            _ = items.WhenNotNull();
+            _ = func.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
 
@@ -185,8 +185,8 @@ namespace AllOverIt.Extensions
         public static Task ForEachAsParallelAsync<TType>(this IEnumerable<TType> items, Func<TType, CancellationToken, Task> func, int degreeOfParallelism,
             CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = func.WhenNotNull(nameof(func));
+            _ = items.WhenNotNull();
+            _ = func.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
 
@@ -210,8 +210,8 @@ namespace AllOverIt.Extensions
         public static Task ForEachAsParallelAsync<TType, TInput>(this IEnumerable<TType> items, Func<TType, TInput, CancellationToken, Task> func, TInput input, int degreeOfParallelism,
             CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = func.WhenNotNull(nameof(func));
+            _ = items.WhenNotNull();
+            _ = func.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
 
@@ -237,8 +237,8 @@ namespace AllOverIt.Extensions
         public static Task ForEachAsParallelAsync<TType, TInput1, TInput2>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, CancellationToken, Task> func,
             TInput1 input1, TInput2 input2, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = func.WhenNotNull(nameof(func));
+            _ = items.WhenNotNull();
+            _ = func.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
 
@@ -266,8 +266,8 @@ namespace AllOverIt.Extensions
         public static Task ForEachAsParallelAsync<TType, TInput1, TInput2, TInput3>(this IEnumerable<TType> items, Func<TType, TInput1, TInput2, TInput3, CancellationToken, Task> func,
             TInput1 input1, TInput2 input2, TInput3 input3, int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = func.WhenNotNull(nameof(func));
+            _ = items.WhenNotNull();
+            _ = func.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
 
@@ -298,8 +298,8 @@ namespace AllOverIt.Extensions
             Func<TType, TInput1, TInput2, TInput3, TInput4, CancellationToken, Task> func, TInput1 input1, TInput2 input2, TInput3 input3, TInput4 input4,
             int degreeOfParallelism, CancellationToken cancellationToken = default)
         {
-            _ = items.WhenNotNull(nameof(items));
-            _ = func.WhenNotNull(nameof(func));
+            _ = items.WhenNotNull();
+            _ = func.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(degreeOfParallelism < 1, nameof(degreeOfParallelism), "At least one task must be specified.");
 

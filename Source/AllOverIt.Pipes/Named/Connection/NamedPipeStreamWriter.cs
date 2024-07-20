@@ -13,12 +13,12 @@ namespace AllOverIt.Pipes.Named.Connection
 
         public NamedPipeStreamWriter(PipeStream pipeStream)
         {
-            _pipeStream = pipeStream.WhenNotNull(nameof(pipeStream));
+            _pipeStream = pipeStream.WhenNotNull();
         }
 
         public async Task WriteAsync(byte[] buffer, CancellationToken cancellationToken)
         {
-            _ = buffer.WhenNotNullOrEmpty(nameof(buffer));
+            _ = buffer.WhenNotNullOrEmpty();
 
             cancellationToken.ThrowIfCancellationRequested();
 

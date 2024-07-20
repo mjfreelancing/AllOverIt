@@ -71,8 +71,8 @@ namespace AllOverIt.Aws.AppSync.Client
         /// <param name="configuration">Contains configuration details for the AppSync Graphql subscription client.</param>
         public AppSyncSubscriptionClient(ISubscriptionClientConfiguration configuration)
         {
-            _configuration = configuration.WhenNotNull(nameof(configuration));
-            _ = configuration.RealtimeUrl.WhenNotNullOrEmpty(nameof(configuration.RealtimeUrl));
+            _configuration = configuration.WhenNotNull();
+            _ = configuration.RealtimeUrl.WhenNotNullOrEmpty();
         }
 
         /// <inheritdoc />

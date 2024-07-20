@@ -22,7 +22,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers
         /// This type must inherit <see cref="IResolverRuntime"/>.</param>
         protected GraphqlResolverAttribute(Type resolverType)
         {
-            ResolverType = resolverType.WhenNotNull(nameof(resolverType));
+            ResolverType = resolverType.WhenNotNull();
         }
     }
 }

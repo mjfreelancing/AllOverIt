@@ -8,7 +8,7 @@ namespace AllOverIt.Pagination.TokenEncoding
     {
         public override object ReadValue(IEnrichedBinaryReader reader)
         {
-            _ = reader.WhenNotNull(nameof(reader));
+            _ = reader.WhenNotNull();
 
             var direction = (PaginationDirection) reader.ReadByte();
 

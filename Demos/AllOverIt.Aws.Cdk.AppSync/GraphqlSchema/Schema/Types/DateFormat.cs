@@ -11,7 +11,7 @@ namespace GraphqlSchema.Schema.Types
         public static readonly DateFormat Local = new(1);
 
         private DateFormat(int value, [CallerMemberName] string name = "")
-            : base(value, name.WhenNotNull(nameof(name)))
+            : base(value, name.WhenNotNull())
         {
         }
     }

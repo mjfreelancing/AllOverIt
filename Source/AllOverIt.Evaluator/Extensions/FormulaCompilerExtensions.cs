@@ -13,8 +13,8 @@ namespace AllOverIt.Evaluator.Extensions
         /// <returns>The evaluated result.</returns>
         public static double GetResult(this FormulaCompiler compiler, string formula, IVariableRegistry? variableRegistry = default)
         {
-            _ = compiler.WhenNotNull(nameof(compiler));
-            _ = formula.WhenNotNullOrEmpty(nameof(formula));
+            _ = compiler.WhenNotNull();
+            _ = formula.WhenNotNullOrEmpty();
 
             return compiler
               .Compile(formula, variableRegistry)

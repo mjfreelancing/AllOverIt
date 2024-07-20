@@ -72,7 +72,7 @@ namespace AllOverIt.Cryptography.RSA
         /// <param name="rsa">An instance of the <see cref="RSAAlgorithm"/> algorithm.</param>      // TEST WHAT HAPPENS WHEN THERE IS NO PUBLIC/PRIVATE KEY
         public RsaKeyPair(RSAAlgorithm rsa)
         {
-            _ = rsa.WhenNotNull(nameof(rsa));
+            _ = rsa.WhenNotNull();
 
             var publicKey = rsa.ExportRSAPublicKey();
             var privateKey = rsa.ExportRSAPrivateKey();

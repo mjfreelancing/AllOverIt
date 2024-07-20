@@ -12,7 +12,7 @@ namespace AllOverIt.EntityFrameworkCore.Migrator.Events
         /// <param name="migration">The name of the migration.</param>
         public MigrationEventArgs(string migration)
         {
-            Migration = migration.WhenNotNull(nameof(migration));
+            Migration = migration.WhenNotNull();
         }
     }
 }

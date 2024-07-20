@@ -15,7 +15,7 @@ namespace AllOverIt.Reflection
         /// <returns>The compiled property getter.</returns>
         public static Func<object, object?> CreatePropertyGetter(PropertyInfo propertyInfo)
         {
-            _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+            _ = propertyInfo.WhenNotNull();
 
             return CreatePropertyGetterExpressionLambda(propertyInfo).Compile();
         }
@@ -27,7 +27,7 @@ namespace AllOverIt.Reflection
         /// <returns>The compiled property getter.</returns>
         public static Func<TType, object?> CreatePropertyGetter<TType>(PropertyInfo propertyInfo)
         {
-            _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+            _ = propertyInfo.WhenNotNull();
 
             return CreatePropertyGetterExpressionLambda<TType>(propertyInfo).Compile();
         }
@@ -39,7 +39,7 @@ namespace AllOverIt.Reflection
         /// <returns>The compiled property getter.</returns>
         public static Func<TType, object?> CreatePropertyGetter<TType>(string propertyName)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             var type = typeof(TType);
             var propertyInfo = ReflectionCache.GetPropertyInfo(type.GetTypeInfo(), propertyName);
@@ -54,7 +54,7 @@ namespace AllOverIt.Reflection
         /// <returns>The expression lambda representing a property getter.</returns>
         public static Expression<Func<object, object?>> CreatePropertyGetterExpressionLambda(PropertyInfo propertyInfo)
         {
-            _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+            _ = propertyInfo.WhenNotNull();
 
             AssertPropertyCanRead(propertyInfo);
 
@@ -79,7 +79,7 @@ namespace AllOverIt.Reflection
 
         private static Expression<Func<TType, object?>> CreatePropertyGetterExpressionLambda<TType>(PropertyInfo propertyInfo)
         {
-            _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+            _ = propertyInfo.WhenNotNull();
 
             AssertPropertyCanRead(propertyInfo);
 

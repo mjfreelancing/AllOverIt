@@ -9,7 +9,7 @@ namespace AllOverIt.Collections.Extensions
         /// <returns>A snapshot of the list's current contents.</returns>
         public static List<TType> Clone<TType>(this ILockableList<TType> lockableList)
         {
-            _ = lockableList.WhenNotNull(nameof(lockableList));
+            _ = lockableList.WhenNotNull();
 
             using (lockableList.GetReadLock(false))
             {
@@ -23,8 +23,8 @@ namespace AllOverIt.Collections.Extensions
         /// <param name="items">The collection of items to be added to the lockable list.</param>
         public static void AddRange<TType>(this ILockableList<TType> lockableList, IEnumerable<TType> items)
         {
-            _ = lockableList.WhenNotNull(nameof(lockableList));
-            _ = items.WhenNotNull(nameof(items));
+            _ = lockableList.WhenNotNull();
+            _ = items.WhenNotNull();
 
             if (lockableList is LockableList<TType> lockableList2)
             {

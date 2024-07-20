@@ -23,8 +23,8 @@ namespace AllOverIt.Expressions
         /// <returns>A new expression with the parameter expressions replaced.</returns>
         public static Expression ReplaceParameters(IDictionary<ParameterExpression, ParameterExpression> parameterMap, Expression expression)
         {
-            _ = parameterMap.WhenNotNull(nameof(parameterMap));
-            _ = expression.WhenNotNull(nameof(expression));
+            _ = parameterMap.WhenNotNull();
+            _ = expression.WhenNotNull();
 
             return new ParameterRebinder(parameterMap).Visit(expression);
         }

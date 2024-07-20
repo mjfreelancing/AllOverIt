@@ -63,7 +63,7 @@ namespace AllOverIt.Aspects
         private IInterceptorMethodHandler GetMethodInterceptor([NotNull] MethodInfo? targetMethod)
         {
             // This method only exists so the code analysis can determine targetMethod is not null
-            _ = targetMethod.WhenNotNull(nameof(targetMethod));
+            _ = targetMethod.WhenNotNull();
 
             return _methodInterceptors[targetMethod];
         }

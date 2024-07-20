@@ -20,7 +20,7 @@ namespace AllOverIt.Serilog.Sinks.Observable
         /// <returns>A disposable that when disposed of will unsubscribe the observer.</returns> 
         public IDisposable Subscribe(IObserver<LogEvent> observer)
         {
-            _ = observer.WhenNotNull(nameof(observer));
+            _ = observer.WhenNotNull();
 
             // Important in Unsubscribe() so we can report when a subscriber has lived longer than the sink.
             // This is here for completeness / consistency.
@@ -72,7 +72,7 @@ namespace AllOverIt.Serilog.Sinks.Observable
 
         void ILogEventSink.Emit(LogEvent logEvent)
         {
-            _ = logEvent.WhenNotNull(nameof(logEvent));
+            _ = logEvent.WhenNotNull();
 
             // The enumerator obtains a read-lock for the duration of the enumeration.
             foreach (var observer in _observers)
@@ -99,7 +99,7 @@ namespace AllOverIt.Serilog.Sinks.Observable
             }
 #pragma warning restore CA1513 // Use ObjectDisposedException throw helper
 
-            _ = observer.WhenNotNull(nameof(observer));
+            _ = observer.WhenNotNull();
 
             _observers.Remove(observer);
         }

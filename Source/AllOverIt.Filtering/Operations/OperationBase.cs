@@ -51,7 +51,7 @@ namespace AllOverIt.Filtering.Operations
         private static Expression<Func<TEntity, bool>> CreateResolver(Expression<Func<TEntity, TProperty?>> propertyExpression, SystemExpression constant,
             IOperationFilterOptions options, Func<SystemExpression, SystemExpression, IOperationFilterOptions, SystemExpression> predicateExpressionFactory)
         {
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
+            _ = propertyExpression.WhenNotNull();
 
             var parameter = SystemExpression.Parameter(typeof(TEntity), "entity");
 
@@ -64,7 +64,7 @@ namespace AllOverIt.Filtering.Operations
 
         private static SystemExpression CreateValueExpression<TValue>(TValue value, bool supportsNull, IOperationFilterOptions options)
         {
-            _ = options.WhenNotNull(nameof(options));
+            _ = options.WhenNotNull();
 
             // Need to deal with null strings and nullable values. Could use Nullable.GetUnderlyingType()
             // for nullable types but the approach below works for both cases.

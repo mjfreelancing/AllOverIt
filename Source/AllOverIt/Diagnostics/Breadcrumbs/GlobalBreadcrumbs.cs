@@ -34,7 +34,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         /// <returns>A new <see cref="Breadcrumbs"/> instance.</returns>
         public static IBreadcrumbs Create(BreadcrumbsOptions options)
         {
-            _ = options.WhenNotNull(nameof(options));
+            _ = options.WhenNotNull();
 
             // Re-create the breadcrumbs if called more than once
             _breadcrumbs = new Breadcrumbs(options);

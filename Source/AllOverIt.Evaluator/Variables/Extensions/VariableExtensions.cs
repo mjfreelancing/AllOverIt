@@ -12,8 +12,8 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <remarks>The variable registry replaces any other registry previously associated with the variable.</remarks>
         public static void SetVariableRegistry(this IVariable variable, IVariableRegistry variableRegistry)
         {
-            _ = variable.WhenNotNull(nameof(variable));
-            _ = variableRegistry.WhenNotNull(nameof(variableRegistry));
+            _ = variable.WhenNotNull();
+            _ = variableRegistry.WhenNotNull();
 
             if (variable is VariableBase variableBase)
             {
@@ -24,7 +24,7 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <summary>Gets all variables referenced by the variable (explicit and implicit).</summary>
         public static IEnumerable<IVariable> GetAllReferencedVariables(this IVariable variable)
         {
-            _ = variable.WhenNotNull(nameof(variable));
+            _ = variable.WhenNotNull();
 
             var allVariables = new List<IVariable>();
 

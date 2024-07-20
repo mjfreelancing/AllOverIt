@@ -18,7 +18,7 @@ namespace AllOverIt.Filtering.Extensions
            where TType : class
            where TFilter : class
         {
-            _ = filterBuilder.WhenNotNull(nameof(filterBuilder));
+            _ = filterBuilder.WhenNotNull();
 
             visitor ??= new LinqSpecificationVisitor();
 

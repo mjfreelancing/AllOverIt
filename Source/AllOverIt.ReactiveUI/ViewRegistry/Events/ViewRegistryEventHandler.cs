@@ -21,8 +21,8 @@ namespace AllOverIt.ReactiveUI.ViewRegistry.Events
         /// /// <param name="updateType">Indicates the update type for this event.</param>
         public ViewRegistryEventArgs(Type viewModelType, IViewFor view, ViewItemUpdateType updateType)
         {
-            ViewModelType = viewModelType.WhenNotNull(nameof(viewModelType));
-            View = view.WhenNotNull(nameof(view));
+            ViewModelType = viewModelType.WhenNotNull();
+            View = view.WhenNotNull();
             UpdateType = updateType;
         }
     }

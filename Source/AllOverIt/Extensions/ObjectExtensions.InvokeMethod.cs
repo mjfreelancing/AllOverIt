@@ -14,8 +14,8 @@ namespace AllOverIt.Extensions
         /// <param name="bindingOptions">The binding options to use to find the required method.</param>
         public static object? InvokeMethod(this object instance, string methodName, object?[]? parameters, BindingOptions bindingOptions = BindingOptions.Default)
         {
-            _ = instance.WhenNotNull(nameof(instance));
-            _ = methodName.WhenNotNullOrEmpty(nameof(methodName));
+            _ = instance.WhenNotNull();
+            _ = methodName.WhenNotNullOrEmpty();
 
             return InvokeMethod(instance, instance.GetType(), methodName, parameters, bindingOptions);
         }
@@ -28,8 +28,8 @@ namespace AllOverIt.Extensions
         /// <param name="bindingOptions">The binding options to use to find the required method.</param>
         public static object? InvokeMethod(this object instance, Type instanceType, string methodName, object?[]? parameters, BindingOptions bindingOptions = BindingOptions.Default)
         {
-            _ = instanceType.WhenNotNull(nameof(instanceType));
-            _ = methodName.WhenNotNullOrEmpty(nameof(methodName));
+            _ = instanceType.WhenNotNull();
+            _ = methodName.WhenNotNullOrEmpty();
 
             var methodInfo = instanceType
                 .GetMethodInfo(bindingOptions)
@@ -46,8 +46,8 @@ namespace AllOverIt.Extensions
         /// <param name="parameters">The parameters to pass to the method.</param>
         public static object? InvokeMethod(this object instance, Type instanceType, string methodName, Type[] types, object?[]? parameters)
         {
-            _ = instanceType.WhenNotNull(nameof(instanceType));
-            _ = methodName.WhenNotNullOrEmpty(nameof(methodName));
+            _ = instanceType.WhenNotNull();
+            _ = methodName.WhenNotNullOrEmpty();
 
             var methodInfo = instanceType.GetMethodInfo(methodName, types);
 
@@ -67,7 +67,7 @@ namespace AllOverIt.Extensions
         /// <param name="parameters">The parameters to pass to the method.</param>
         public static object? InvokeMethod(this object instance, MethodInfo methodInfo, object?[]? parameters)
         {
-            _ = methodInfo.WhenNotNull(nameof(methodInfo));
+            _ = methodInfo.WhenNotNull();
 
             return methodInfo.Invoke(instance, parameters);
         }

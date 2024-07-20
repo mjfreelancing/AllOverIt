@@ -12,15 +12,15 @@ namespace AllOverIt.Pagination
         /// <param name="continuationTokenEncoderFactory">A factory to create a continuation token encoder..</param>
         public QueryPaginatorFactory(IContinuationTokenEncoderFactory continuationTokenEncoderFactory)
         {
-            _continuationTokenEncoderFactory = continuationTokenEncoderFactory.WhenNotNull(nameof(continuationTokenEncoderFactory));
+            _continuationTokenEncoderFactory = continuationTokenEncoderFactory.WhenNotNull();
         }
 
         /// <inheritdoc />
         public IQueryPaginator<TEntity> CreatePaginator<TEntity>(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration)
             where TEntity : class
         {
-            _ = query.WhenNotNull(nameof(query));
-            _ = configuration.WhenNotNull(nameof(configuration));
+            _ = query.WhenNotNull();
+            _ = configuration.WhenNotNull();
 
             return new QueryPaginator<TEntity>(query, configuration, _continuationTokenEncoderFactory);
         }

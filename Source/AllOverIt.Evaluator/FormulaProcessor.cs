@@ -60,8 +60,8 @@ namespace AllOverIt.Evaluator
         /// to the <c>UserDefinedMethodFactory</c> for a list of available built-in methods.</param>
         public FormulaProcessor(IArithmeticOperationFactory operationFactory, IUserDefinedMethodFactory userDefinedMethodFactory)
         {
-            _operationFactory = operationFactory.WhenNotNull(nameof(operationFactory));
-            _userDefinedMethodFactory = userDefinedMethodFactory.WhenNotNull(nameof(userDefinedMethodFactory));
+            _operationFactory = operationFactory.WhenNotNull();
+            _userDefinedMethodFactory = userDefinedMethodFactory.WhenNotNull();
 
             // custom operator registration (using TryRegisterOperation as the factory can be shared across threads)
             _operationFactory.TryRegisterOperation(CustomTokens.UnaryMinus, 4, 1, e => new NegateOperator(e[0]));
@@ -81,7 +81,7 @@ namespace AllOverIt.Evaluator
         /// registry before the compiled expression is evaluated.</remarks>
         public FormulaProcessorResult Process(string formula, IVariableRegistry? variableRegistry)
         {
-            _ = formula.WhenNotNullOrEmpty(nameof(formula));
+            _ = formula.WhenNotNullOrEmpty();
 
             _variableRegistry = variableRegistry;   // can be null
             _lastPushIsOperator = true;             // first token cannot be an operator (unary plus/minus is handled)

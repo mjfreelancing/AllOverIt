@@ -55,7 +55,7 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <param name="configuration">The configuration providing the required encryption and signing options.</param>
         public RsaAesHybridEncryptor(IRsaAesHybridEncryptorConfiguration configuration)
         {
-            _ = configuration.WhenNotNull(nameof(configuration));
+            _ = configuration.WhenNotNull();
 
             // The current tests are functional and there's no current need to make these
             // injectable but a new constructor is easy enough to add if this is required.
@@ -89,7 +89,7 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <returns>The byte array populated with the resulting 'cipher text'.</returns>
         public byte[] Encrypt(byte[] plainText)
         {
-            _ = plainText.WhenNotNull(nameof(plainText));
+            _ = plainText.WhenNotNull();
 
             using var cipherTextStream = new MemoryStream();
             using var plainTextStream = new MemoryStream(plainText);
@@ -114,7 +114,7 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <exception cref="RsaAesHybridException">The hash or its signature are invalid.</exception>
         public byte[] Decrypt(byte[] cipherText)
         {
-            _ = cipherText.WhenNotNull(nameof(cipherText));
+            _ = cipherText.WhenNotNull();
 
             using var cipherTextStream = new MemoryStream(cipherText);
             using var plainTextStream = new MemoryStream();
@@ -128,8 +128,8 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <remarks>The <paramref name="plainTextStream"/> must be random access and the entire stream will be processed.</remarks>
         public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = plainTextStream.WhenNotNull();
+            _ = cipherTextStream.WhenNotNull();
 
             // Calculate the hash for the plain text
             plainTextStream.Position = 0;
@@ -157,8 +157,8 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <inheritdoc cref="Decrypt(byte[])" />
         public void Decrypt(Stream cipherTextStream, Stream plainTextStream)
         {
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+            _ = cipherTextStream.WhenNotNull();
+            _ = plainTextStream.WhenNotNull();
 
             // Read the expected hash of the plain text
             var expectedHash = ReadFromStream(cipherTextStream, _signingConfiguration.HashAlgorithmName.GetHashSize() / 8);

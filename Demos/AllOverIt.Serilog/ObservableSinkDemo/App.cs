@@ -12,8 +12,8 @@ namespace ObservableSinkDemo
 
         public App(IObservableSink observableSink, ILogger<App> logger)
         {
-            _observableSink = observableSink.WhenNotNull(nameof(observableSink));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _observableSink = observableSink.WhenNotNull();
+            _logger = logger.WhenNotNull();
 
             Console.WriteLine();
         }

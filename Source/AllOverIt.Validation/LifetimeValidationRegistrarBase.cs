@@ -47,7 +47,7 @@ namespace AllOverIt.Validation
         /// <param name="predicate">An optional predicate to filter discovered validators.</param>
         public void AutoRegisterValidators(ILifetimeValidationRegistry validationRegistry, ServiceLifetime lifetime, Func<Type, Type, bool>? predicate = default)
         {
-            _ = validationRegistry.WhenNotNull(nameof(validationRegistry));
+            _ = validationRegistry.WhenNotNull();
 
             var validatorTypes = GetType().Assembly
                 .GetTypes()

@@ -21,14 +21,14 @@ namespace AllOverIt.Mapping
         /// <param name="configuration">The configuration to be used by the mapper.</param>
         public ObjectMapper(ObjectMapperConfiguration configuration)
         {
-            _configuration = configuration.WhenNotNull(nameof(configuration));
+            _configuration = configuration.WhenNotNull();
         }
 
         /// <summary>Constructor.</summary>
         /// <param name="configuration">Provides the ability to configure the mapper at the time of construction.</param>
         public ObjectMapper(Action<ObjectMapperConfiguration> configuration)
         {
-            _ = configuration.WhenNotNull(nameof(configuration));
+            _ = configuration.WhenNotNull();
 
             _configuration = new ObjectMapperConfiguration();
             configuration.Invoke(_configuration);
@@ -39,8 +39,8 @@ namespace AllOverIt.Mapping
         /// <param name="configuration">Provides the ability to configure the mapper at the time of construction.</param>
         public ObjectMapper(Action<IObjectMapperOptions> defaultOptions, Action<ObjectMapperConfiguration> configuration)
         {
-            _ = defaultOptions.WhenNotNull(nameof(defaultOptions));
-            _ = configuration.WhenNotNull(nameof(configuration));
+            _ = defaultOptions.WhenNotNull();
+            _ = configuration.WhenNotNull();
 
             _configuration = new ObjectMapperConfiguration(defaultOptions);
             configuration.Invoke(_configuration);
@@ -70,8 +70,8 @@ namespace AllOverIt.Mapping
             where TSource : class
             where TTarget : class
         {
-            _ = source.WhenNotNull(nameof(source));
-            _ = target.WhenNotNull(nameof(target));
+            _ = source.WhenNotNull();
+            _ = target.WhenNotNull();
 
             return (TTarget) MapSourceToTarget(source, typeof(TSource), target, typeof(TTarget), false);
         }
@@ -81,10 +81,10 @@ namespace AllOverIt.Mapping
         /// cannot be changed later.</remarks>
         public object? Map(object source, Type sourceType, object target, Type targetType)
         {
-            _ = source.WhenNotNull(nameof(source));
-            _ = sourceType.WhenNotNull(nameof(sourceType));
-            _ = target.WhenNotNull(nameof(target));
-            _ = targetType.WhenNotNull(nameof(targetType));
+            _ = source.WhenNotNull();
+            _ = sourceType.WhenNotNull();
+            _ = target.WhenNotNull();
+            _ = targetType.WhenNotNull();
 
             return MapSourceToTarget(source, sourceType, target, targetType, false);
         }

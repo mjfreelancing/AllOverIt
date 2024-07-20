@@ -39,7 +39,7 @@ namespace AllOverIt.Process
         /// <param name="options">The options used to configure the executor.</param>
         public ProcessExecutor(ProcessExecutorOptions options)
         {
-            _options = options.WhenNotNull(nameof(options));
+            _options = options.WhenNotNull();
 
             _process = ProcessFactory.CreateProcess(_options);
         }

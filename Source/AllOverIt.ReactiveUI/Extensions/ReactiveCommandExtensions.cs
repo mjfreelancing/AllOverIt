@@ -18,8 +18,8 @@ namespace AllOverIt.ReactiveUI.Extensions
         public static IPipelineBuilderAsync<TIn, TNextOut> Pipe<TIn, TPrevOut, TNextOut>(this ReactiveCommand<TIn, TPrevOut> command,
             ReactiveCommand<TPrevOut, TNextOut> step)
         {
-            _ = command.WhenNotNull(nameof(command));
-            _ = step.WhenNotNull(nameof(step));
+            _ = command.WhenNotNull();
+            _ = step.WhenNotNull();
 
             return ReactiveCommandPipelineBuilder.Pipe(command).Pipe(step);
         }

@@ -20,7 +20,7 @@ namespace AllOverIt.Formatters.Objects
         /// <param name="index">When an element within a collection, this is the index of the item.</param>
         public ObjectPropertyParent(string? name, object? value, int? index)
         {
-            Name = name?.WhenNotEmpty(nameof(name));        // Can be null but should not be empty
+            Name = name?.WhenNotEmpty();        // Can be null but should not be empty
             Value = value;
             Index = index;
         }

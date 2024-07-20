@@ -11,7 +11,7 @@ namespace AllOverIt.Pipes.Named.Connection
 
         public NamedPipeStreamReader(PipeStream pipeStream)
         {
-            _pipeStream = pipeStream.WhenNotNull(nameof(pipeStream));
+            _pipeStream = pipeStream.WhenNotNull();
         }
 
         // Reads an array of bytes from the pipe stream. This method waits until bytes are received or the pipe stream is disconnected.

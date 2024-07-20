@@ -15,9 +15,9 @@ public static class EnrichedResultExtensions
     public static EnrichedResult Match(this EnrichedResult result, Func<EnrichedResult, EnrichedResult> onSuccess,
         Func<EnrichedResult, EnrichedResult> onFail)
     {
-        _ = result.WhenNotNull(nameof(result));
-        _ = onSuccess.WhenNotNull(nameof(onSuccess));
-        _ = onFail.WhenNotNull(nameof(onFail));
+        _ = result.WhenNotNull();
+        _ = onSuccess.WhenNotNull();
+        _ = onFail.WhenNotNull();
 
         return result.IsSuccess
             ? onSuccess.Invoke(result)
@@ -49,9 +49,9 @@ public static class EnrichedResultExtensions
         Func<EnrichedResult<TInResult>, EnrichedResult<TOutResult>> onSuccess,
         Func<EnrichedResult<TInResult>, EnrichedResult<TOutResult>> onFail)
     {
-        _ = result.WhenNotNull(nameof(result));
-        _ = onSuccess.WhenNotNull(nameof(onSuccess));
-        _ = onFail.WhenNotNull(nameof(onFail));
+        _ = result.WhenNotNull();
+        _ = onSuccess.WhenNotNull();
+        _ = onFail.WhenNotNull();
 
         return result.IsSuccess
             ? onSuccess.Invoke(result)
@@ -64,9 +64,9 @@ public static class EnrichedResultExtensions
     /// <param name="onFail">The action to invoke if the result has an error status.</param>
     public static void Switch(this EnrichedResult result, Action<EnrichedResult> onSuccess, Action<EnrichedResult> onFail)
     {
-        _ = result.WhenNotNull(nameof(result));
-        _ = onSuccess.WhenNotNull(nameof(onSuccess));
-        _ = onFail.WhenNotNull(nameof(onFail));
+        _ = result.WhenNotNull();
+        _ = onSuccess.WhenNotNull();
+        _ = onFail.WhenNotNull();
 
         if (result.IsSuccess)
         {
@@ -86,9 +86,9 @@ public static class EnrichedResultExtensions
     public static void Switch<TResult>(this EnrichedResult<TResult> result, Action<EnrichedResult<TResult>> onSuccess,
         Action<EnrichedResult<TResult>> onFail)
     {
-        _ = result.WhenNotNull(nameof(result));
-        _ = onSuccess.WhenNotNull(nameof(onSuccess));
-        _ = onFail.WhenNotNull(nameof(onFail));
+        _ = result.WhenNotNull();
+        _ = onSuccess.WhenNotNull();
+        _ = onFail.WhenNotNull();
 
         if (result.IsSuccess)
         {

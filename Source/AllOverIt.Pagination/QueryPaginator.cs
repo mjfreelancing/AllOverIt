@@ -41,9 +41,9 @@ namespace AllOverIt.Pagination
         /// <param name="continuationTokenEncoderFactory">A factory to create a continuation token encoder..</param>
         public QueryPaginator(IQueryable<TEntity> query, QueryPaginatorConfiguration configuration, IContinuationTokenEncoderFactory continuationTokenEncoderFactory)
         {
-            BaseQuery = query.WhenNotNull(nameof(query));
-            _configuration = configuration.WhenNotNull(nameof(configuration));
-            _continuationTokenEncoderFactory = continuationTokenEncoderFactory.WhenNotNull(nameof(continuationTokenEncoderFactory));
+            BaseQuery = query.WhenNotNull();
+            _configuration = configuration.WhenNotNull();
+            _continuationTokenEncoderFactory = continuationTokenEncoderFactory.WhenNotNull();
         }
 
         /// <summary>A factory method to create a query paginator when not using dependency injection. It is preferable to create a
@@ -74,7 +74,7 @@ namespace AllOverIt.Pagination
         /// <inheritdoc />
         public IQueryPaginator<TEntity> ColumnAscending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
-            _ = expression.WhenNotNull(nameof(expression));
+            _ = expression.WhenNotNull();
 
             AddColumnDefinition(expression, true);
             return this;
@@ -83,7 +83,7 @@ namespace AllOverIt.Pagination
         /// <inheritdoc />
         public IQueryPaginator<TEntity> ColumnDescending<TProperty>(Expression<Func<TEntity, TProperty>> expression)
         {
-            _ = expression.WhenNotNull(nameof(expression));
+            _ = expression.WhenNotNull();
 
             AddColumnDefinition(expression, false);
             return this;
@@ -174,7 +174,7 @@ namespace AllOverIt.Pagination
         /// <inheritdoc />
         public bool HasPreviousPage(TEntity reference)
         {
-            _ = reference.WhenNotNull(nameof(reference));
+            _ = reference.WhenNotNull();
 
             AssertColumnsDefined();
 
@@ -188,7 +188,7 @@ namespace AllOverIt.Pagination
         public Task<bool> HasPreviousPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
             CancellationToken cancellationToken)
         {
-            _ = reference.WhenNotNull(nameof(reference));
+            _ = reference.WhenNotNull();
 
             AssertColumnsDefined();
 
@@ -201,7 +201,7 @@ namespace AllOverIt.Pagination
         /// <inheritdoc />
         public bool HasNextPage(TEntity reference)
         {
-            _ = reference.WhenNotNull(nameof(reference));
+            _ = reference.WhenNotNull();
 
             AssertColumnsDefined();
 
@@ -215,7 +215,7 @@ namespace AllOverIt.Pagination
         public Task<bool> HasNextPageAsync(TEntity reference, Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, CancellationToken, Task<bool>> anyResolver,
             CancellationToken cancellationToken)
         {
-            _ = reference.WhenNotNull(nameof(reference));
+            _ = reference.WhenNotNull();
 
             AssertColumnsDefined();
 

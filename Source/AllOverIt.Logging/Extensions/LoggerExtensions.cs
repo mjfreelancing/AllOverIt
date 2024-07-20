@@ -19,8 +19,8 @@ namespace AllOverIt.Logging.Extensions
         public static void LogCall(this ILogger logger, object? caller, LogLevel logLevel = LogLevel.Information,
             [CallerMemberName] string callerName = "")
         {
-            _ = logger.WhenNotNull(nameof(logger));
-            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
+            _ = logger.WhenNotNull();
+            _ = callerName.WhenNotNullOrEmpty();
 
             var fullName = LogCallOptions.GetCallerFullName(caller, callerName);
 
@@ -40,9 +40,9 @@ namespace AllOverIt.Logging.Extensions
         public static void LogCall(this ILogger logger, object? caller, object arguments, LogLevel logLevel = LogLevel.Information,
             [CallerMemberName] string callerName = "")
         {
-            _ = logger.WhenNotNull(nameof(logger));
-            _ = arguments.WhenNotNull(nameof(arguments));
-            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
+            _ = logger.WhenNotNull();
+            _ = arguments.WhenNotNull();
+            _ = callerName.WhenNotNullOrEmpty();
 
             var fullName = LogCallOptions.GetCallerFullName(caller, callerName);
 
@@ -61,8 +61,8 @@ namespace AllOverIt.Logging.Extensions
         public static void LogException(this ILogger logger, Exception exception, string? messageTemplate = default,
             params object?[] arguments)
         {
-            _ = logger.WhenNotNull(nameof(logger));
-            _ = exception.WhenNotNull(nameof(exception));
+            _ = logger.WhenNotNull();
+            _ = exception.WhenNotNull();
 
             if (messageTemplate is null)
             {
@@ -89,8 +89,8 @@ namespace AllOverIt.Logging.Extensions
         public static void LogAllExceptions(this ILogger logger, Exception exception, string? messageTemplate = default,
             params object?[] arguments)
         {
-            _ = logger.WhenNotNull(nameof(logger));
-            _ = exception.WhenNotNull(nameof(exception));
+            _ = logger.WhenNotNull();
+            _ = exception.WhenNotNull();
 
             logger.LogException(exception, messageTemplate, arguments);
 

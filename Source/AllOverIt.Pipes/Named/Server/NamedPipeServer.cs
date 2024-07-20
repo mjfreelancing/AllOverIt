@@ -55,14 +55,14 @@ namespace AllOverIt.Pipes.Named.Server
         /// <inheritdoc />
         public NamedPipeServer(string pipeName, INamedPipeSerializer<TMessage> serializer)
         {
-            PipeName = pipeName.WhenNotNullOrEmpty(nameof(pipeName));
-            _serializer = serializer.WhenNotNull(nameof(serializer));
+            PipeName = pipeName.WhenNotNullOrEmpty();
+            _serializer = serializer.WhenNotNull();
         }
 
         /// <inheritdoc />
         public void Start(Action<PipeSecurity> pipeSecurity)
         {
-            _ = pipeSecurity.WhenNotNull(nameof(pipeSecurity));
+            _ = pipeSecurity.WhenNotNull();
 
             Throw<PipeException>.WhenNotNull(_backgroundTask, "The named pipe server has already been started.");
 
@@ -164,7 +164,7 @@ namespace AllOverIt.Pipes.Named.Server
         /// <param name="cancellationToken">An optional cancellation token.</param>
         public Task WriteAsync(TMessage message, string pipeName, CancellationToken cancellationToken = default)
         {
-            _ = pipeName.WhenNotNullOrEmpty(nameof(pipeName));
+            _ = pipeName.WhenNotNullOrEmpty();
 
             return WriteAsync(message, connection => connection.ConnectionId.Equals(pipeName, StringComparison.OrdinalIgnoreCase), cancellationToken);
         }
@@ -175,8 +175,8 @@ namespace AllOverIt.Pipes.Named.Server
         /// <param name="cancellationToken">An optional cancellation token.</param>
         public async Task WriteAsync(TMessage message, Func<INamedPipeConnection<TMessage>, bool> predicate, CancellationToken cancellationToken = default)
         {
-            _ = message.WhenNotNull(nameof(message));
-            _ = predicate.WhenNotNull(nameof(predicate));
+            _ = message.WhenNotNull();
+            _ = predicate.WhenNotNull();
 
             cancellationToken.ThrowIfCancellationRequested();
 

@@ -15,7 +15,7 @@ namespace AllOverIt.Reflection
         /// <remarks>This overload will only work with structs that are provided as object types.</remarks>
         public static Action<object, object?> CreatePropertySetter(PropertyInfo propertyInfo)
         {
-            _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+            _ = propertyInfo.WhenNotNull();
 
             AssertPropertyCanWrite(propertyInfo);
 
@@ -48,7 +48,7 @@ namespace AllOverIt.Reflection
         /// use <see cref="CreatePropertySetter(PropertyInfo)"/>.</remarks>
         public static Action<TType, object?> CreatePropertySetter<TType>(PropertyInfo propertyInfo)
         {
-            _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+            _ = propertyInfo.WhenNotNull();
 
             AssertPropertyCanWrite(propertyInfo);
 
@@ -64,7 +64,7 @@ namespace AllOverIt.Reflection
         /// use <see cref="CreatePropertySetter(PropertyInfo)"/>.</remarks>
         public static Action<TType, object?> CreatePropertySetter<TType>(string propertyName)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             var type = typeof(TType);
             var propertyInfo = ReflectionCache.GetPropertyInfo(type.GetTypeInfo(), propertyName);
@@ -76,7 +76,7 @@ namespace AllOverIt.Reflection
 
         private static Expression<Action<TType, object?>> CreatePropertySetterExpressionLambda<TType>(PropertyInfo propertyInfo)
         {
-            _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+            _ = propertyInfo.WhenNotNull();
 
             AssertPropertyCanWrite(propertyInfo);
 

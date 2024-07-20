@@ -13,7 +13,7 @@ namespace AllOverIt.Extensions
         /// <returns>All linked <see cref="MemberExpression"/> expressions, including <paramref name="expression"/>.</returns>
         public static IEnumerable<MemberExpression> GetMemberExpressions(this Expression expression)
         {
-            _ = expression.WhenNotNull(nameof(expression));
+            _ = expression.WhenNotNull();
 
             var memberExpression = UnwrapMemberExpression(expression);
 
@@ -41,8 +41,8 @@ namespace AllOverIt.Extensions
         public static MemberExpression? GetPropertyOrFieldExpressionUsingParameter<TType, TProperty>(
             this Expression<Func<TType, TProperty>> propertyOrFieldExpression, ParameterExpression parameterExpression)
         {
-            _ = propertyOrFieldExpression.WhenNotNull(nameof(propertyOrFieldExpression));
-            _ = parameterExpression.WhenNotNull(nameof(parameterExpression));
+            _ = propertyOrFieldExpression.WhenNotNull();
+            _ = parameterExpression.WhenNotNull();
 
             MemberExpression? member = null;
 
@@ -70,7 +70,7 @@ namespace AllOverIt.Extensions
         /// <remarks>Will return <see langword="null"/> when <paramref name="propertyOrFieldExpression"/> yields no member expressions.</remarks>
         public static MemberExpression? GetParameterPropertyOrFieldExpression<TType, TProperty>(this Expression<Func<TType, TProperty>> propertyOrFieldExpression)
         {
-            _ = propertyOrFieldExpression.WhenNotNull(nameof(propertyOrFieldExpression));
+            _ = propertyOrFieldExpression.WhenNotNull();
 
             var parameter = Expression.Parameter(typeof(TType), "entity");
 
@@ -87,7 +87,7 @@ namespace AllOverIt.Extensions
         /// </returns>
         public static MemberExpression? UnwrapMemberExpression([NotNull] this Expression? expression)
         {
-            _ = expression.WhenNotNull(nameof(expression));
+            _ = expression.WhenNotNull();
 
             return expression switch
             {
@@ -103,7 +103,7 @@ namespace AllOverIt.Extensions
         /// <returns>The property or field member.</returns>
         public static MemberInfo GetPropertyOrFieldMemberInfo(this Expression expression)
         {
-            _ = expression.WhenNotNull(nameof(expression));
+            _ = expression.WhenNotNull();
 
             var memberExpression = expression.UnwrapMemberExpression();
 

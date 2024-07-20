@@ -25,7 +25,7 @@ namespace AllOverIt.Mapping
         /// <inheritdoc />
         public void Register<TType>(Func<object> factory)
         {
-            _ = factory.WhenNotNull(nameof(factory));
+            _ = factory.WhenNotNull();
 
             _typeFactory.GetOrAdd(typeof(TType), factory);
         }

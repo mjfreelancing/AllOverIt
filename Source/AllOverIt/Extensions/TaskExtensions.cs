@@ -10,7 +10,7 @@ namespace AllOverIt.Extensions
         /// <param name="exceptionHandler">Reports a faulted task.</param>
         public static void FireAndForget(this Task task, Action<Exception> exceptionHandler)
         {
-            _ = exceptionHandler.WhenNotNull(nameof(exceptionHandler));
+            _ = exceptionHandler.WhenNotNull();
 
             _ = DoFireAndForget(task, exceptionHandler);
         }

@@ -19,7 +19,7 @@ namespace AllOverIt.Wpf.Threading
 
         internal SynchronizationContextAwaiter(SynchronizationContext synchronizationContext)
         {
-            _synchronizationContext = synchronizationContext.WhenNotNull(nameof(synchronizationContext));
+            _synchronizationContext = synchronizationContext.WhenNotNull();
         }
 
         /// <summary>Queues the <paramref name="action"/> on the thread associated with the required

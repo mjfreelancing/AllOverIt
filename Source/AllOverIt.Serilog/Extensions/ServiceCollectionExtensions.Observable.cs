@@ -15,7 +15,7 @@ namespace AllOverIt.Serilog.Extensions
         /// <returns>The same <see cref="IServiceCollection"/> to allow for chained calls.</returns>
         public static IServiceCollection AddSerilogObservable(this IServiceCollection services, ServiceLifetime lifetime = ServiceLifetime.Scoped)
         {
-            _ = services.WhenNotNull(nameof(services));
+            _ = services.WhenNotNull();
 
             var descriptor = new ServiceDescriptor(
                 IObservableSinkType,

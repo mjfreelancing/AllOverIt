@@ -21,7 +21,7 @@ namespace AllOverIt.Reflection
         /// by <typeparamref name="TType"/>.</remarks>
         public static PropertyInfo? GetPropertyInfo<TType>(string propertyName, Func<GenericCacheKeyBase, PropertyInfo>? valueResolver = default)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             var typeInfo = typeof(TType).GetTypeInfo();
 
@@ -36,8 +36,8 @@ namespace AllOverIt.Reflection
         /// <returns>The <see cref="PropertyInfo"/> for a given property on a <see cref="Type"/> from the default cache.</returns>
         public static PropertyInfo? GetPropertyInfo(Type type, string propertyName, Func<GenericCacheKeyBase, PropertyInfo>? valueResolver = default)
         {
-            _ = type.WhenNotNull(nameof(type));
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = type.WhenNotNull();
+            _ = propertyName.WhenNotNullOrEmpty();
 
             return GetPropertyInfo(type.GetTypeInfo(), propertyName, valueResolver);
         }
@@ -51,8 +51,8 @@ namespace AllOverIt.Reflection
         /// <returns>The <see cref="PropertyInfo"/> for a given property on a <see cref="TypeInfo"/> from the default cache.</returns>
         public static PropertyInfo? GetPropertyInfo(TypeInfo typeInfo, string propertyName, Func<GenericCacheKeyBase, PropertyInfo>? valueResolver = default)
         {
-            _ = typeInfo.WhenNotNull(nameof(typeInfo));
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = typeInfo.WhenNotNull();
+            _ = propertyName.WhenNotNullOrEmpty();
 
             var key = new GenericCacheKey<TypeInfo, string>(typeInfo, propertyName);
 
@@ -87,7 +87,7 @@ namespace AllOverIt.Reflection
         public static IEnumerable<PropertyInfo>? GetPropertyInfo(Type type, BindingOptions bindingOptions = BindingOptions.Default, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>>? valueResolver = default)
         {
-            _ = type.WhenNotNull(nameof(type));
+            _ = type.WhenNotNull();
 
             var key = new GenericCacheKey<Type, BindingOptions, bool>(type, bindingOptions, declaredOnly);
 
@@ -104,7 +104,7 @@ namespace AllOverIt.Reflection
         public static IEnumerable<PropertyInfo>? GetPropertyInfo(TypeInfo typeInfo, bool declaredOnly = false,
             Func<GenericCacheKeyBase, IEnumerable<PropertyInfo>>? valueResolver = default)
         {
-            _ = typeInfo.WhenNotNull(nameof(typeInfo));
+            _ = typeInfo.WhenNotNull();
 
             var key = new GenericCacheKey<TypeInfo, bool>(typeInfo, declaredOnly);
 

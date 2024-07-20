@@ -30,7 +30,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft
         /// <inheritdoc />
         public void Configure(JsonSerializerConfiguration configuration)
         {
-            _ = configuration.WhenNotNull(nameof(configuration));
+            _ = configuration.WhenNotNull();
 
             ApplyOptionUseCamelCase(configuration);
             ApplyOptionCaseSensitive(configuration);

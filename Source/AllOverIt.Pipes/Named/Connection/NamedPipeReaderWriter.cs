@@ -12,7 +12,7 @@ namespace AllOverIt.Pipes.Named.Connection
 
         public NamedPipeReaderWriter(PipeStream stream)
         {
-            _pipeStream = stream.WhenNotNull(nameof(stream));   // This class assumes ownership
+            _pipeStream = stream.WhenNotNull();   // This class assumes ownership
 
             _streamReader = new NamedPipeStreamReader(_pipeStream);
             _streamWriter = new NamedPipeStreamWriter(_pipeStream);

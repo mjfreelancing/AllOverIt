@@ -42,7 +42,7 @@ namespace MemoryPaginationDemo
 
         public App(IQueryPaginatorFactory queryPaginatorFactory)
         {
-            _queryPaginatorFactory = queryPaginatorFactory.WhenNotNull(nameof(queryPaginatorFactory));
+            _queryPaginatorFactory = queryPaginatorFactory.WhenNotNull();
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)

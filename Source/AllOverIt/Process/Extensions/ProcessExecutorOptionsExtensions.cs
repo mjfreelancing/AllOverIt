@@ -25,7 +25,7 @@ namespace AllOverIt.Process.Extensions
         /// <returns>A new <see cref="ProcessExecutorOptions"/> with updated arguments.</returns>
         public static ProcessExecutorOptions WithArguments(this ProcessExecutorOptions options, params string[] arguments)
         {
-            _ = arguments.WhenNotNull(nameof(arguments));
+            _ = arguments.WhenNotNull();
 
             return options.WithArguments([.. arguments], true);
         }
@@ -37,7 +37,7 @@ namespace AllOverIt.Process.Extensions
         /// <returns>A new <see cref="ProcessExecutorOptions"/> with updated arguments.</returns>
         public static ProcessExecutorOptions WithArguments(this ProcessExecutorOptions options, IEnumerable<string> arguments, bool escape = true)
         {
-            _ = arguments.WhenNotNull(nameof(arguments));
+            _ = arguments.WhenNotNull();
 
             var stringBuilder = new StringBuilder();
 
@@ -86,7 +86,7 @@ namespace AllOverIt.Process.Extensions
         /// <returns>A new <see cref="ProcessExecutorOptions"/> with updated environment variables.</returns>
         public static ProcessExecutorOptions WithEnvironmentVariables(this ProcessExecutorOptions options, IDictionary<string, string> environmentVariables)
         {
-            _ = environmentVariables.WhenNotNull(nameof(environmentVariables));
+            _ = environmentVariables.WhenNotNull();
 
             return options with { EnvironmentVariables = environmentVariables };
         }
@@ -98,7 +98,7 @@ namespace AllOverIt.Process.Extensions
         /// <returns>A new <see cref="ProcessExecutorOptions"/> with updated environment variables.</returns>
         public static ProcessExecutorOptions WithEnvironmentVariables(this ProcessExecutorOptions options, Action<IDictionary<string, string>> configure)
         {
-            _ = configure.WhenNotNull(nameof(configure));
+            _ = configure.WhenNotNull();
 
             // Supports chaining multiple calls together
             var environmentVariables = options.EnvironmentVariables ?? new Dictionary<string, string>();

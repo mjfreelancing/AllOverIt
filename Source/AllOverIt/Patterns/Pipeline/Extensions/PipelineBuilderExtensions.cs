@@ -112,7 +112,7 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
         public static IPipelineBuilderAsync<TIn, TNextOut> Pipe<TIn, TPrevOut, TNextOut>(
            this IPipelineBuilderAsync<TIn, TPrevOut> prevStep, Func<TPrevOut, TNextOut> step)
         {
-            _ = step.WhenNotNull(nameof(step));
+            _ = step.WhenNotNull();
 
             Task<TNextOut> stepAsync(TPrevOut result, CancellationToken cancellationToken)
             {
@@ -255,7 +255,7 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
         public static IPipelineBuilderAsync<TNextOut> Pipe<TPrevOut, TNextOut>(
            this IPipelineBuilderAsync<TPrevOut> prevStep, Func<TPrevOut, TNextOut> step)
         {
-            _ = step.WhenNotNull(nameof(step));
+            _ = step.WhenNotNull();
 
             Task<TNextOut> stepAsync(TPrevOut result, CancellationToken cancellationToken)
             {

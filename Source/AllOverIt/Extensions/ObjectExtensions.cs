@@ -178,7 +178,7 @@ namespace AllOverIt.Extensions
         /// <returns>Returns a dictionary containing property names and associated values.</returns>
         public static IDictionary<string, object?> ToPropertyDictionary(this object instance, bool includeNulls = false, BindingOptions bindingOptions = BindingOptions.Default)
         {
-            _ = instance.WhenNotNull(nameof(instance));
+            _ = instance.WhenNotNull();
 
             var type = instance.GetType();
 

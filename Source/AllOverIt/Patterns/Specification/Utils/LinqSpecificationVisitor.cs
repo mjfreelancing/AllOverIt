@@ -50,7 +50,7 @@ namespace AllOverIt.Patterns.Specification.Utils
         /// <returns>A query-like string representation of the provided <see cref="ILinqSpecification{TType}"/>.</returns>
         public string AsQueryString<TType>(ILinqSpecification<TType> specification) where TType : class
         {
-            _ = specification.WhenNotNull(nameof(specification));
+            _ = specification.WhenNotNull();
 
             try
             {

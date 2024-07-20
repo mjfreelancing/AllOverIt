@@ -21,7 +21,7 @@ namespace EnrichedEnumModelBindingDemo.Enums
         public static readonly ForecastPeriod Default = ThisWeek;
 
         private ForecastPeriod(int value, [CallerMemberName] string name = "")
-            : base(value, name.WhenNotNull(nameof(name)))
+            : base(value, name.WhenNotNull())
         {
         }
     }

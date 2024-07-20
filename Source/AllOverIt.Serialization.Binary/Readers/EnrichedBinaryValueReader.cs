@@ -15,7 +15,7 @@ namespace AllOverIt.Serialization.Binary.Readers
         /// <param name="type">The value type read by this value reader.</param>
         public EnrichedBinaryValueReader(Type type)
         {
-            Type = type.WhenNotNull(nameof(type));
+            Type = type.WhenNotNull();
 
             _typeFactory = type.GetFactory();
         }

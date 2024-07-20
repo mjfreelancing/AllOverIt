@@ -27,16 +27,16 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
             public ViewRegistryItem(Type viewModelType, IViewHandler viewHandler, ViewRegistryEventHandler onChangeHandler)
             {
-                _viewModelType = viewModelType.WhenNotNull(nameof(viewModelType));
-                _viewHandler = viewHandler.WhenNotNull(nameof(viewHandler));
-                _ = viewHandler.WhenNotNull(nameof(onChangeHandler));
+                _viewModelType = viewModelType.WhenNotNull();
+                _viewHandler = viewHandler.WhenNotNull();
+                _ = viewHandler.WhenNotNull();
 
                 OnChange += onChangeHandler;
             }
 
             public void AddView(IViewFor view, TViewId id)
             {
-                _ = view.WhenNotNull(nameof(view));
+                _ = view.WhenNotNull();
 
                 _ = GetView(view, false);
 
@@ -56,7 +56,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             // returns true if there is at least one view remaining
             public bool RemoveView(IViewFor view)
             {
-                _ = view.WhenNotNull(nameof(view));
+                _ = view.WhenNotNull();
 
                 var viewItem = GetView(view, true);
 
@@ -110,8 +110,8 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         /// will be platform specific.</param>
         public ViewRegistry(IViewFactory viewFactory, IViewHandler viewHandler)
         {
-            _viewFactory = viewFactory.WhenNotNull(nameof(viewFactory));
-            _viewHandler = viewHandler.WhenNotNull(nameof(viewHandler));
+            _viewFactory = viewFactory.WhenNotNull();
+            _viewHandler = viewHandler.WhenNotNull();
         }
 
         /// <inheritdoc />
@@ -155,7 +155,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         public void CreateOrActivateFor<TViewModel>(int maxCount, Func<IReadOnlyCollection<ViewItem<TViewId>>, TViewId> nextViewId,
             Action<TViewModel, IViewFor, TViewId>? configure = default) where TViewModel : class
         {
-            _ = nextViewId.WhenNotNull(nameof(nextViewId));
+            _ = nextViewId.WhenNotNull();
 
             var viewModelType = typeof(TViewModel);
 

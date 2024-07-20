@@ -17,7 +17,7 @@ namespace AllOverIt.Serilog.Extensions
         public static IServiceCollection AddSerilogCircularBuffer(this IServiceCollection services, int capacity,
             ServiceLifetime lifetime = ServiceLifetime.Scoped)
         {
-            _ = services.WhenNotNull(nameof(services));
+            _ = services.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(capacity < 1, nameof(capacity), "The circular buffer requires a capacity of at least 1.");
 
@@ -39,8 +39,8 @@ namespace AllOverIt.Serilog.Extensions
         public static IServiceCollection AddSerilogCircularBuffer(this IServiceCollection services, Func<IServiceProvider, int> configure,
             ServiceLifetime lifetime = ServiceLifetime.Scoped)
         {
-            _ = services.WhenNotNull(nameof(services));
-            _ = configure.WhenNotNull(nameof(configure));
+            _ = services.WhenNotNull();
+            _ = configure.WhenNotNull();
 
             var descriptor = new ServiceDescriptor(
                 ICircularBufferSinkMessagesType,

@@ -23,8 +23,8 @@ namespace AllOverIt.Serilog.Extensions
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             LoggingLevelSwitch? levelSwitch = null)
         {
-            _ = sinkConfiguration.WhenNotNull(nameof(sinkConfiguration));
-            _ = observableSink.WhenNotNull(nameof(observableSink));
+            _ = sinkConfiguration.WhenNotNull();
+            _ = observableSink.WhenNotNull();
 
             return sinkConfiguration.Sink(observableSink, restrictedToMinimumLevel, levelSwitch);
         }

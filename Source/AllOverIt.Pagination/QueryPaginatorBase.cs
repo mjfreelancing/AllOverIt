@@ -30,7 +30,7 @@ namespace AllOverIt.Pagination
                     .GetTypeInfo()
                     .GetMethod(nameof(IComparable.CompareTo), [type])!;
 
-                compareTo.CheckNotNull(nameof(compareTo), $"The type {type.GetFriendlyName()} does not provide a {nameof(IComparable.CompareTo)}() method.");
+                compareTo.CheckNotNull(errorMessage: $"The type {type.GetFriendlyName()} does not provide a {nameof(IComparable.CompareTo)}() method.");
 
                 registry.TryAdd(type, compareTo);
             }

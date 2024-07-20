@@ -22,7 +22,7 @@ namespace AllOverIt.Reflection
         /// value of a field on a strongly typed struct use <see cref="CreateFieldSetterByRef{TType}(FieldInfo)"/>.</remarks>
         public static Action<object, object> CreateFieldSetter(FieldInfo fieldInfo)
         {
-            _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
+            _ = fieldInfo.WhenNotNull();
 
             var declaringType = fieldInfo.DeclaringType!;
 
@@ -54,7 +54,7 @@ namespace AllOverIt.Reflection
         /// use either <see cref="CreateFieldSetter(FieldInfo)"/> or <see cref="CreateFieldSetterByRef{TType}(FieldInfo)"/>.</remarks>
         public static Action<TType, object> CreateFieldSetter<TType>(FieldInfo fieldInfo)
         {
-            _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
+            _ = fieldInfo.WhenNotNull();
 
             var instance = Expression.Parameter(typeof(TType), "item");
 
@@ -70,7 +70,7 @@ namespace AllOverIt.Reflection
         /// use either <see cref="CreateFieldSetter(FieldInfo)"/> or <see cref="CreateFieldSetterByRef{TType}(FieldInfo)"/>.</remarks>
         public static Action<TType, object> CreateFieldSetter<TType>(string fieldName)
         {
-            _ = fieldName.WhenNotNullOrEmpty(nameof(fieldName));
+            _ = fieldName.WhenNotNullOrEmpty();
 
             var type = typeof(TType);
             var fieldInfo = ReflectionCache.GetFieldInfo(type.GetTypeInfo(), fieldName);
@@ -87,7 +87,7 @@ namespace AllOverIt.Reflection
         /// <returns>The compiled field setter.</returns>
         public static SetFieldByRefDelegate<TType> CreateFieldSetterByRef<TType>(FieldInfo fieldInfo)
         {
-            _ = fieldInfo.WhenNotNull(nameof(fieldInfo));
+            _ = fieldInfo.WhenNotNull();
 
             var instance = Expression.Parameter(typeof(TType).MakeByRefType(), "item");
 
@@ -101,7 +101,7 @@ namespace AllOverIt.Reflection
         /// <returns>The compiled field setter.</returns>
         public static SetFieldByRefDelegate<TType> CreateFieldSetterByRef<TType>(string fieldName)
         {
-            _ = fieldName.WhenNotNullOrEmpty(nameof(fieldName));
+            _ = fieldName.WhenNotNullOrEmpty();
 
             var type = typeof(TType);
             var fieldInfo = ReflectionCache.GetFieldInfo(type.GetTypeInfo(), fieldName);

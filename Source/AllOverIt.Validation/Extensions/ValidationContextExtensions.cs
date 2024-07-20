@@ -16,8 +16,8 @@ namespace AllOverIt.Validation.Extensions
         /// <param name="key">The key associated with the data. The default key is "data".</param>
         public static void SetContextData<TType, TContext>(this ValidationContext<TType> context, TContext data, string key = DefaultKeyName)
         {
-            _ = context.WhenNotNull(nameof(context));
-            _ = key.WhenNotNullOrEmpty(nameof(key));
+            _ = context.WhenNotNull();
+            _ = key.WhenNotNullOrEmpty();
 
             context.RootContextData[key] = data;
         }
@@ -30,8 +30,8 @@ namespace AllOverIt.Validation.Extensions
         /// <returns>The context data associated with the key on the validation context.</returns>
         public static TContext GetContextData<TType, TContext>(this ValidationContext<TType> context, string key = DefaultKeyName)
         {
-            _ = context.WhenNotNull(nameof(context));
-            _ = key.WhenNotNullOrEmpty(nameof(key));
+            _ = context.WhenNotNull();
+            _ = key.WhenNotNullOrEmpty();
 
             return (TContext) context.RootContextData[key];
         }

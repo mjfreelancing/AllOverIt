@@ -20,7 +20,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <param name="name">The name of the variable.</param>
         protected VariableBase(string name)
         {
-            Name = name.WhenNotNullOrEmpty(nameof(name));
+            Name = name.WhenNotNullOrEmpty();
         }
     }
 }

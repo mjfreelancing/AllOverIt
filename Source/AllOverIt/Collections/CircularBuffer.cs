@@ -39,7 +39,7 @@ namespace AllOverIt.Collections
         /// the first item, and a called to <see cref="Back"/> will return the last item.</param>
         public CircularBuffer(int capacity, TType[] items)
         {
-            _ = items.WhenNotNull(nameof(items));
+            _ = items.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(capacity < 1, nameof(capacity), "The circular buffer requires a capacity of at least 1.");
             Throw<ArgumentException>.When(items.Length > capacity, "The item count exceeds the circular buffer capacity.");

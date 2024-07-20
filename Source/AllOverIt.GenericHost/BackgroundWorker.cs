@@ -12,7 +12,7 @@ namespace AllOverIt.GenericHost
         /// <param name="applicationLifetime">Provides notification of lifetime events.</param>
         protected BackgroundWorker(IHostApplicationLifetime applicationLifetime)
         {
-            _ = applicationLifetime.WhenNotNull(nameof(applicationLifetime));
+            _ = applicationLifetime.WhenNotNull();
 
             applicationLifetime.ApplicationStarted.Register(OnStarted);
             applicationLifetime.ApplicationStopping.Register(OnStopping);

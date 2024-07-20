@@ -18,10 +18,10 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
 
         public DataSourceFactory(IGraphqlApi graphQlApi, IReadOnlyCollection<GraphqlDataSourceBase> dataSources)
         {
-            _graphQlApi = graphQlApi.WhenNotNull(nameof(graphQlApi));
+            _graphQlApi = graphQlApi.WhenNotNull();
 
             _dataSources = dataSources
-                .WhenNotNull(nameof(dataSources))
+                .WhenNotNull()
                 .Select(dataSource => new KeyValuePair<string, GraphqlDataSourceBase>(dataSource.DataSourceName, dataSource))
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
