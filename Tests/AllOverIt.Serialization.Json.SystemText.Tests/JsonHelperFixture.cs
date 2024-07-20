@@ -18,10 +18,12 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         private readonly string _prop7;
         private readonly double _prop8;
         private readonly DateTime _prop9;
-        private readonly object _value;
         private readonly IReadOnlyCollection<int> _prop11;
         private readonly IReadOnlyCollection<string> _prop12;
         private readonly IReadOnlyCollection<Guid> _prop13;
+        private readonly string[] _prop14;
+        private readonly string[] _prop15;
+        private readonly object _value;
 
         protected JsonHelperFixture()
         {
@@ -35,6 +37,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             _prop11 = CreateMany<int>(3);
             _prop12 = _prop11.SelectToReadOnlyCollection(item => $"{item}");
             _prop13 = CreateMany<Guid>(3);
+            _prop14 = [Create<string>(), null, Create<string>()];
+            _prop15 = null;
 
             _value = new
             {
@@ -59,20 +63,20 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                             {
                                 Prop2b = new[]
                                 {
-                                     new
-                                     {
-                                         Value = _prop2.ElementAt(1)
-                                     }
+                                    new
+                                    {
+                                        Value = _prop2.ElementAt(1)
+                                    }
                                 }
                             },
                             new
                             {
                                 Prop2b = new[]
                                 {
-                                     new
-                                     {
-                                         Value = _prop2.ElementAt(2)
-                                     }
+                                    new
+                                    {
+                                        Value = _prop2.ElementAt(2)
+                                    }
                                 }
                             }
                         }
@@ -85,30 +89,30 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                             {
                                 Prop2b = new[]
                                 {
-                                     new
-                                     {
-                                         Value = _prop2.ElementAt(0) * 2
-                                     }
+                                    new
+                                    {
+                                        Value = _prop2.ElementAt(0) * 2
+                                    }
                                 }
                             },
                             new
                             {
                                 Prop2b = new[]
                                 {
-                                     new
-                                     {
-                                         Value = _prop2.ElementAt(1) * 2
-                                     }
+                                    new
+                                    {
+                                        Value = _prop2.ElementAt(1) * 2
+                                    }
                                 }
                             },
                             new
                             {
                                 Prop2b = new[]
                                 {
-                                     new
-                                     {
-                                         Value = _prop2.ElementAt(2) * 2
-                                     }
+                                    new
+                                    {
+                                        Value = _prop2.ElementAt(2) * 2
+                                    }
                                 }
                             }
                         }
@@ -153,7 +157,19 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                 },
                 Prop11 = _prop11,
                 Prop12 = _prop12,
-                Prop13 = _prop13
+                Prop13 = _prop13,
+                Prop14 = _prop14,
+                Prop15 = _prop15,
+                Prop16 = new
+                {
+                    Prop17 = new
+                    {
+                        Prop18 = new
+                        {
+                            Prop19 = _prop9
+                        }
+                    }
+                }
             };
         }
 
@@ -221,22 +237,30 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             }
 
             [Theory]
-            [InlineData(true, "Prop1", true)]
-            [InlineData(true, "Prop7", true)]
-            [InlineData(true, "Prop8", true)]
-            [InlineData(true, "Prop9", true)]
-            [InlineData(false, "Prop1", true)]
-            [InlineData(false, "Prop7", true)]
-            [InlineData(false, "Prop8", true)]
-            [InlineData(false, "Prop9", true)]
-            [InlineData(true, "Prop1", false)]
-            [InlineData(true, "Prop7", false)]
-            [InlineData(true, "Prop8", false)]
-            [InlineData(true, "Prop9", false)]
             [InlineData(false, "Prop1", false)]
+            [InlineData(false, "Prop1", true)]
+            [InlineData(true, "Prop1", false)]
+            [InlineData(true, "Prop1", true)]
             [InlineData(false, "Prop7", false)]
+            [InlineData(false, "Prop7", true)]
+            [InlineData(true, "Prop7", false)]
+            [InlineData(true, "Prop7", true)]
             [InlineData(false, "Prop8", false)]
+            [InlineData(false, "Prop8", true)]
+            [InlineData(true, "Prop8", false)]
+            [InlineData(true, "Prop8", true)]
             [InlineData(false, "Prop9", false)]
+            [InlineData(false, "Prop9", true)]
+            [InlineData(true, "Prop9", false)]
+            [InlineData(true, "Prop9", true)]
+            [InlineData(false, "Prop14", false)]
+            [InlineData(false, "Prop14", true)]
+            [InlineData(true, "Prop14", false)]
+            [InlineData(true, "Prop14", true)]
+            [InlineData(false, "Prop15", false)]
+            [InlineData(false, "Prop15", true)]
+            [InlineData(true, "Prop15", false)]
+            [InlineData(true, "Prop15", true)]
             public void Should_Get_Value(bool useObject, string propName, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
@@ -249,11 +273,13 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     "Prop7" => _prop7,                      // string type - looks like a double but will be interpreted as a string
                     "Prop8" => _prop8,                      // double type
                     "Prop9" => _prop9,                      // DateTime
+                    "Prop14" => _prop14,                    // string[]
+                    "Prop15" => _prop15,                    // (string[])null
                     _ => throw new InvalidExpressionException($"Unexpected property name {propName}")
                 };
 
                 actual.Should().BeTrue();
-                value.Should().Be(expected);
+                value.Should().BeEquivalentTo(expected);
             }
 
             [Theory]
@@ -295,18 +321,18 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             }
 
             [Theory]
-            [InlineData(true, "Prop1", true)]
-            [InlineData(true, "Prop7", true)]
-            [InlineData(true, "Prop8", true)]
-            [InlineData(false, "Prop1", true)]
-            [InlineData(false, "Prop7", true)]
-            [InlineData(false, "Prop8", true)]
-            [InlineData(true, "Prop1", false)]
-            [InlineData(true, "Prop7", false)]
-            [InlineData(true, "Prop8", false)]
             [InlineData(false, "Prop1", false)]
+            [InlineData(false, "Prop1", true)]
+            [InlineData(true, "Prop1", false)]
+            [InlineData(true, "Prop1", true)]
             [InlineData(false, "Prop7", false)]
+            [InlineData(false, "Prop7", true)]
+            [InlineData(true, "Prop7", false)]
+            [InlineData(true, "Prop7", true)]
             [InlineData(false, "Prop8", false)]
+            [InlineData(false, "Prop8", true)]
+            [InlineData(true, "Prop8", false)]
+            [InlineData(true, "Prop8", true)]
             public void Should_Get_Value(bool useObject, string propName, bool caseSensitive)
             {
                 var jsonHelper = CreateJsonHelper(useObject);
@@ -539,7 +565,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.GetValue<double>("Prop8")
                     : jsonHelper.GetValue<double>("prop8");
 
-                actual.Should().BeApproximately(_prop8, 0.0000001d);
+                actual.Should().Be(_prop8);
             }
 
             [Theory]
@@ -774,6 +800,416 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     .Should()
                     .Throw<JsonHelperException>()
                     .WithMessage($"The property {propName} was not found.");
+            }
+        }
+
+        public class TryGetDescendantElement : JsonHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PropertyNames_Null()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.TryGetDescendantElement(null!, out _);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("propertyNames");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyNames_Empty()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.TryGetDescendantElement([], out _);
+                })
+                .Should()
+                .Throw<ArgumentException>()
+                .WithNamedMessageWhenEmpty("propertyNames");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Not_Get_Element_When_Not_Found(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = jsonHelper.TryGetDescendantElement(["Prop16", "Prop17", "Prop18", "Prop18"], out _);
+
+                actual.Should().BeFalse();
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Not_Get_Element_When_Not_Element(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                // Prop19 is a leaf node
+                var actual = jsonHelper.TryGetDescendantElement(["Prop16", "Prop17", "Prop18", "Prop19"], out _);
+
+                actual.Should().BeFalse();
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Return_Null_When_Not_Found(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                // Prop19 is a leaf node
+                _ = jsonHelper.TryGetDescendantElement(["Prop16", "Prop17", "Prop18", "Prop19"], out var element);
+
+                element.Should().BeNull();
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Get_Element(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                // Prop19 is a leaf node
+                var actual = jsonHelper.TryGetDescendantElement(["Prop16", "Prop17", "Prop18"], out var element);
+
+                actual.Should().BeTrue();
+
+                element.Should().BeEquivalentTo(new Dictionary<string, object>()
+                {
+                    { "Prop19", _prop9 }
+                });
+            }
+        }
+
+        public class GetDescendantElement : JsonHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PropertyNames_Null()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetDescendantElement(null!);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("propertyNames");
+            }
+
+            [Fact]
+            public void Should_Throw_When_PropertyNames_Empty()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetDescendantElement([]);
+                })
+                .Should()
+                .Throw<ArgumentException>()
+                .WithNamedMessageWhenEmpty("propertyNames");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Throw_When_Element_Not_Found(bool useObject)
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(useObject);
+                    _ = jsonHelper.GetDescendantElement(["Prop16", "Prop17", "Prop18", "Prop18"]);
+                })
+                   .Should()
+                   .Throw<JsonHelperException>()
+                   .WithMessage($"The element Prop16.Prop17.Prop18.Prop18 was not found.");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Throw_When_Element_Not_Object(bool useObject)
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(useObject);
+
+                    // Prop19 is a leaf node
+                    _ = jsonHelper.GetDescendantElement(["Prop16", "Prop17", "Prop18", "Prop19"]);
+                })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage($"The element Prop16.Prop17.Prop18.Prop19 was not found.");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Get_Element(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                // Prop19 is a leaf node
+                var actual = jsonHelper.GetDescendantElement(["Prop16", "Prop17", "Prop18"]);
+
+                actual.Should().BeEquivalentTo(new Dictionary<string, object>()
+                {
+                    { "Prop19", _prop9 }
+                });
+            }
+        }
+
+        public class TryGetDescendantValue : JsonHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PropertyNames_Null()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.TryGetDescendantValue(null!, out _);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("propertyNames");
+            }
+
+            [Fact]
+            public void Should_Throw_When_One_Property_Name()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.TryGetDescendantValue([Create<string>()], out _);
+                })
+                .Should()
+                .Throw<ArgumentException>()
+                .WithMessage("Expected at least two property names. (Parameter 'propertyNames')");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Not_Get_Value_When_Not_Found(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = jsonHelper.TryGetDescendantValue([Create<string>(), Create<string>()], out _);
+
+                actual.Should().BeFalse();
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Return_Default_When_Not_Found(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                _ = jsonHelper.TryGetDescendantValue([Create<string>(), Create<string>()], out var element);
+
+                element.Should().BeNull();
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Get_Element(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = jsonHelper.TryGetDescendantValue(["Prop16", "Prop17", "Prop18", "Prop19"], out var element);
+
+                actual.Should().BeTrue();
+
+                element.Should().Be(_prop9);
+            }
+        }
+
+        public class GetDescendantValue : JsonHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PropertyNames_Null()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetDescendantValue(null!);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("propertyNames");
+            }
+
+            [Fact]
+            public void Should_Throw_When_One_Property_Name()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetDescendantValue([Create<string>()]);
+                })
+                .Should()
+                .Throw<ArgumentException>()
+                .WithMessage("Expected at least two property names. (Parameter 'propertyNames')");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Throw_When_Property_Not_Found(bool useObject)
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(useObject);
+
+                    _ = jsonHelper.GetDescendantValue(["Prop16", "Prop17", "Prop18", "Prop18"]);
+                })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage($"The property Prop16.Prop17.Prop18.Prop18 was not found.");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Get_Value(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = jsonHelper.GetDescendantValue(["Prop16", "Prop17", "Prop18", "Prop19"]);
+
+                actual.Should().Be(_prop9);
+            }
+        }
+
+        public class TryGetDescendantValue_Typed : JsonHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PropertyNames_Null()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.TryGetDescendantValue<DateTime>(null!, out _);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("propertyNames");
+            }
+
+            [Fact]
+            public void Should_Throw_When_One_Property_Name()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.TryGetDescendantValue<DateTime>([Create<string>()], out _);
+                })
+                .Should()
+                .Throw<ArgumentException>()
+                .WithMessage("Expected at least two property names. (Parameter 'propertyNames')");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Not_Get_Value_When_Not_Found(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = jsonHelper.TryGetDescendantValue<DateTime>([Create<string>(), Create<string>()], out _);
+
+                actual.Should().BeFalse();
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Return_Default_When_Not_Found(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                _ = jsonHelper.TryGetDescendantValue<DateTime?>([Create<string>(), Create<string>()], out var element);
+
+                element.Should().BeNull();
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Get_Element(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = jsonHelper.TryGetDescendantValue<DateTime>(["Prop16", "Prop17", "Prop18", "Prop19"], out var element);
+
+                actual.Should().BeTrue();
+
+                element.Should().Be(_prop9);
+            }
+        }
+
+        public class GetDescendantValue_Typed : JsonHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PropertyNames_Null()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetDescendantValue<DateTime>(null!);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("propertyNames");
+            }
+
+            [Fact]
+            public void Should_Throw_When_One_Property_Name()
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetDescendantValue<DateTime>([Create<string>()]);
+                })
+                .Should()
+                .Throw<ArgumentException>()
+                .WithMessage("Expected at least two property names. (Parameter 'propertyNames')");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Throw_When_Property_Not_Found(bool useObject)
+            {
+                Invoking(() =>
+                {
+                    var jsonHelper = CreateJsonHelper(useObject);
+
+                    _ = jsonHelper.GetDescendantValue<DateTime>(["Prop16", "Prop17", "Prop18", "Prop18"]);
+                })
+                    .Should()
+                    .Throw<JsonHelperException>()
+                    .WithMessage($"The property Prop16.Prop17.Prop18.Prop18 was not found.");
+            }
+
+            [Theory]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void Should_Get_Value(bool useObject)
+            {
+                var jsonHelper = CreateJsonHelper(useObject);
+
+                var actual = jsonHelper.GetDescendantValue<DateTime>(["Prop16", "Prop17", "Prop18", "Prop19"]);
+
+                actual.Should().Be(_prop9);
             }
         }
 
