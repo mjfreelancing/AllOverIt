@@ -5,6 +5,16 @@
 
 * Correct locking in breadcrumbs enumeration.
 
+
+### AllOverIt.Serialization.Json.Newtonsoft
+* Dropped `EnumerableInterfaceConverter`. No longer required to deserialize collections of interfaces when using the
+  `AddInterfaceConverter()` extension method.
+
+
+### AllOverIt.Serialization.Json.SystemText
+* Dropped `EnumerableInterfaceConverter`. No longer required to deserialize collections of interfaces when using the
+  `AddInterfaceConverter()` extension method.
+
 ---
 
 

@@ -21,27 +21,10 @@ namespace AllOverIt.Serialization.Json.SystemText.Extensions
         /// <typeparam name="TInterface">The interface type to convert from.</typeparam>
         /// <typeparam name="TConcrete">The concrete type to convert to.</typeparam>
         /// <param name="serializer">The serializer performing the deserialization.</param>
-        /// <param name="includeEnumerable">If true, a second converter will be added that will convert <see cref="IEnumerable{T}"/>
-        /// to a <see cref="List{TConcrete}"/>.</param>
-        public static void AddInterfaceConverter<TInterface, TConcrete>(this SystemTextJsonSerializer serializer, bool includeEnumerable = false)
+        public static void AddInterfaceConverter<TInterface, TConcrete>(this SystemTextJsonSerializer serializer)
             where TConcrete : class, TInterface
         {
             serializer.Options.Converters.Add(new InterfaceConverter<TInterface, TConcrete>());
-
-            if (includeEnumerable)
-            {
-                serializer.AddEnumerableInterfaceConverter<TInterface, TConcrete>();
-            }
-        }
-
-        /// <summary>Adds a converter that deserializes an <see cref="IEnumerable{TInterface}"/> to a <see cref="List{TConcrete}"/>..</summary>
-        /// <typeparam name="TInterface">The interface type to convert from.</typeparam>
-        /// <typeparam name="TConcrete">The concrete type to convert to.</typeparam>
-        /// <param name="serializer">The serializer performing the deserialization.</param>
-        public static void AddEnumerableInterfaceConverter<TInterface, TConcrete>(this SystemTextJsonSerializer serializer)
-            where TConcrete : class, TInterface
-        {
-            serializer.Options.Converters.Add(new EnumerableInterfaceConverter<TInterface, TConcrete>());
         }
     }
 }

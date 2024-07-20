@@ -116,9 +116,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnumerationDemo", "Demos\Al
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValueObjectDemo", "Demos\AllOverIt\Patterns\ValueObjectDemo\ValueObjectDemo.csproj", "{94ADD2AF-0D36-4619-A71B-6D01E5CB7D5E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Serialization.NewtonsoftJson", "AllOverIt.Serialization.NewtonsoftJson", "{89A5CF22-C375-4673-A42F-B72F49695667}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Serialization.Json.Newtonsoft", "AllOverIt.Serialization.Json.Newtonsoft", "{89A5CF22-C375-4673-A42F-B72F49695667}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Serialization.SystemTextJson", "AllOverIt.Serialization.SystemTextJson", "{C4C80BCB-C982-4F13-B34D-2B3D61F6CD3D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Serialization.Json.SystemText", "AllOverIt.Serialization.Json.SystemText", "{C4C80BCB-C982-4F13-B34D-2B3D61F6CD3D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Csv", "Source\AllOverIt.Csv\AllOverIt.Csv.csproj", "{446692DF-6B68-4983-A8C0-204CAD8F7910}"
 EndProject
@@ -264,10 +264,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubscribedEventsDemo", "Dem
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountdownTimerAppDemo", "Demos\AllOverIt.ReactiveUI\CountdownTimerAppDemo\CountdownTimerAppDemo.csproj", "{4EB25514-E64E-405D-9C5E-3974BAE0F3A3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceDeserializationDemo", "Demos\AllOverIt.Serialization.NewtonsoftJson\InterfaceDeserializationDemo\InterfaceDeserializationDemo.csproj", "{2A3997FD-9969-4B88-94AC-611B24110BE5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceDeserializationDemo", "Demos\AllOverIt.Serialization.SystemTextJson\InterfaceDeserializationDemo\InterfaceDeserializationDemo.csproj", "{399EA0D7-2372-44EE-A6B8-922EE0AEFD25}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicValidationDemo", "Demos\AllOverIt.Validation\BasicValidationDemo\BasicValidationDemo.csproj", "{92FD8086-1369-4B8D-9A25-C0B4E84B3B44}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidationViaDependencyInjectionDemo", "Demos\AllOverIt.Validation\ValidationViaDependencyInjectionDemo\ValidationViaDependencyInjectionDemo.csproj", "{5AE7AAF3-6C36-4DFD-AA33-90AEAC24221A}"
@@ -400,11 +396,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Logging.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Logging.Testing", "Source\AllOverIt.Logging.Testing\AllOverIt.Logging.Testing.csproj", "{BC7D4BF7-923C-48CC-806F-D965C83B2BAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllOverIt.Logging.Testing.Tests", "Tests\AllOverIt.Logging.Testing.Tests\AllOverIt.Logging.Testing.Tests.csproj", "{EA8DB524-CF6B-42AB-A9E3-A250B79A7439}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllOverIt.Logging.Testing.Tests", "Tests\AllOverIt.Logging.Testing.Tests\AllOverIt.Logging.Testing.Tests.csproj", "{EA8DB524-CF6B-42AB-A9E3-A250B79A7439}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllOverIt.Logging", "AllOverIt.Logging", "{9FFDB1AF-1649-4260-89A6-77B364544FCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleLoggingDemo", "Demos\AllOverIt.Logging\ConsoleLoggingDemo\ConsoleLoggingDemo.csproj", "{2F1E11F2-62FB-48E4-B700-B09F7678CE95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleLoggingDemo", "Demos\AllOverIt.Logging\ConsoleLoggingDemo\ConsoleLoggingDemo.csproj", "{2F1E11F2-62FB-48E4-B700-B09F7678CE95}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceDeserializationDemo", "Demos\AllOverIt.Serialization.Json.Newtonsoft\InterfaceDeserializationDemo\InterfaceDeserializationDemo.csproj", "{2E16231F-AFEF-452E-BDF7-C8F3F3C20000}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceDeserializationDemo", "Demos\AllOverIt.Serialization.Json.SystemText\InterfaceDeserializationDemo\InterfaceDeserializationDemo.csproj", "{F622598C-E8C0-42CC-BD89-3B6DCDE21245}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -752,14 +752,6 @@ Global
 		{4EB25514-E64E-405D-9C5E-3974BAE0F3A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EB25514-E64E-405D-9C5E-3974BAE0F3A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EB25514-E64E-405D-9C5E-3974BAE0F3A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A3997FD-9969-4B88-94AC-611B24110BE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A3997FD-9969-4B88-94AC-611B24110BE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A3997FD-9969-4B88-94AC-611B24110BE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A3997FD-9969-4B88-94AC-611B24110BE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{399EA0D7-2372-44EE-A6B8-922EE0AEFD25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{399EA0D7-2372-44EE-A6B8-922EE0AEFD25}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{399EA0D7-2372-44EE-A6B8-922EE0AEFD25}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{399EA0D7-2372-44EE-A6B8-922EE0AEFD25}.Release|Any CPU.Build.0 = Release|Any CPU
 		{92FD8086-1369-4B8D-9A25-C0B4E84B3B44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{92FD8086-1369-4B8D-9A25-C0B4E84B3B44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92FD8086-1369-4B8D-9A25-C0B4E84B3B44}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -976,6 +968,14 @@ Global
 		{2F1E11F2-62FB-48E4-B700-B09F7678CE95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F1E11F2-62FB-48E4-B700-B09F7678CE95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F1E11F2-62FB-48E4-B700-B09F7678CE95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E16231F-AFEF-452E-BDF7-C8F3F3C20000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E16231F-AFEF-452E-BDF7-C8F3F3C20000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E16231F-AFEF-452E-BDF7-C8F3F3C20000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E16231F-AFEF-452E-BDF7-C8F3F3C20000}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F622598C-E8C0-42CC-BD89-3B6DCDE21245}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F622598C-E8C0-42CC-BD89-3B6DCDE21245}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F622598C-E8C0-42CC-BD89-3B6DCDE21245}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F622598C-E8C0-42CC-BD89-3B6DCDE21245}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1100,8 +1100,6 @@ Global
 		{0E378D80-11F3-4069-AED3-197FD39D58E0} = {CABC42F0-658F-42FF-8FD4-40B7EF8694E3}
 		{BB4FA7DE-6CF3-4B12-9CAA-43571EE93C90} = {5CBF91E4-7BC4-40C4-A68C-55726C4D0E1B}
 		{4EB25514-E64E-405D-9C5E-3974BAE0F3A3} = {CBA4C7C8-2425-4DDB-969E-831048D84BF3}
-		{2A3997FD-9969-4B88-94AC-611B24110BE5} = {89A5CF22-C375-4673-A42F-B72F49695667}
-		{399EA0D7-2372-44EE-A6B8-922EE0AEFD25} = {C4C80BCB-C982-4F13-B34D-2B3D61F6CD3D}
 		{92FD8086-1369-4B8D-9A25-C0B4E84B3B44} = {736417D6-56B0-46F7-9717-5C8E7A2327EA}
 		{5AE7AAF3-6C36-4DFD-AA33-90AEAC24221A} = {736417D6-56B0-46F7-9717-5C8E7A2327EA}
 		{56CBF688-D563-411B-B72F-F0EBE3F5AA51} = {FC8E8DB2-1299-44F4-A233-0EDCE225BB8C}
@@ -1171,6 +1169,8 @@ Global
 		{EA8DB524-CF6B-42AB-A9E3-A250B79A7439} = {0C08FAE6-4CD9-4C7B-A849-EB0DB9BD1451}
 		{9FFDB1AF-1649-4260-89A6-77B364544FCC} = {D9F6B8A1-4B01-4708-8851-741FC19F2440}
 		{2F1E11F2-62FB-48E4-B700-B09F7678CE95} = {9FFDB1AF-1649-4260-89A6-77B364544FCC}
+		{2E16231F-AFEF-452E-BDF7-C8F3F3C20000} = {89A5CF22-C375-4673-A42F-B72F49695667}
+		{F622598C-E8C0-42CC-BD89-3B6DCDE21245} = {C4C80BCB-C982-4F13-B34D-2B3D61F6CD3D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19DD11B3-596E-4862-B5C4-1FFFFB173106}

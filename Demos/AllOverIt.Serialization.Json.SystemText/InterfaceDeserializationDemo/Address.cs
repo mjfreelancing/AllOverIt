@@ -2,8 +2,7 @@
 {
     internal sealed class Address : IAddress
     {
-        public string Street { get; set; }
-
-        public string City { get; set; }
+        public required string Street { get; set; }
+        public required string City { get; set; }
     }
 }
