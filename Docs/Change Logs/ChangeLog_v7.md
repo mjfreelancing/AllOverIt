@@ -1,3 +1,21 @@
+#  Version 7.24.0
+## 21 Jul 2024
+
+### AllOverIt.Serialization.Json.Abstractions
+
+* JsonHelperBase updated to include methods that allow nested elements / property values to be obtained.
+
+
+### AllOverIt.Serialization.Json.Newtonsoft
+* Inherits updates from JsonHelperBase.
+
+
+### AllOverIt.Serialization.Json.SystemText
+* Inherits updates from JsonHelperBase.
+
+---
+
+
 #  Version 7.23.0
 ## 20 Jul 2024
 
