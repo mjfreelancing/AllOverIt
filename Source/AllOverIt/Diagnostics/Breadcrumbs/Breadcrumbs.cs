@@ -103,9 +103,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
                 // Can't yield within a lock, so taking a snapshot and returning it's enumerator
                 lock (_syncRoot)
                 {
-                    using var iterator = _breadcrumbs.GetEnumerator();
-                    {
-                        }
+                    clone.AddRange(_breadcrumbs.Values);
                 }
 
                 return clone.GetEnumerator();
