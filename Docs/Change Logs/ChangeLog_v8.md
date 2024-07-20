@@ -2,7 +2,6 @@
 ## XX XXX 2024
 
 ### PENDING / IN-PROGRESS
-* Remove nameof() from calls such as WhenNotNullOrEmpty(nameof(propertyNames))
 * Change properties and arguments from IReadOnlyCollection<T> to T[], where applicable.
 * Add 'required' to properties, where applicable - including NetStandard 2.1 support.
 * Consider removing extraneous null guard checks in extension methods.

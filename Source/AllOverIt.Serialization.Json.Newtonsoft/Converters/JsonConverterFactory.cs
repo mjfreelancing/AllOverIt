@@ -21,7 +21,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         /// <inheritdoc />
         public sealed override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            var objectType = value.GetType();
+            var objectType = value!.GetType();
             var converter = CreateConverter(objectType);
             converter.WriteJson(writer, value, serializer);
         }
