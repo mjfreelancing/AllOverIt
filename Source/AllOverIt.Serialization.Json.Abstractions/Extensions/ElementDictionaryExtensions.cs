@@ -55,12 +55,12 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
             _ = element.WhenNotNull(nameof(element));
             _ = propertyName.WhenNotNull(nameof(propertyName));
 
-            if (element.TryGetValue<TValue>(propertyName, out var value))
+            if (!element.TryGetValue<TValue>(propertyName, out var value))
             {
-                return value;
+                JsonHelperException.ThrowPropertyNotFound(propertyName);
             }
 
-            throw CreateJsonHelperException(propertyName);
+            return value;
         }
 
         /// <summary>Tries to get an array of values for a specified property on an element. If the element's values are not a
@@ -78,7 +78,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
             _ = element.WhenNotNull(nameof(element));
             _ = propertyName.WhenNotNull(nameof(propertyName));
 
-            values = default;
+            values = null;
 
             if (element.TryGetValue(propertyName, out var array))
             {
@@ -126,12 +126,12 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
             _ = element.WhenNotNull(nameof(element));
             _ = propertyName.WhenNotNull(nameof(propertyName));
 
-            if (element.TryGetValues<TValue>(propertyName, out var values))
+            if (!element.TryGetValues<TValue>(propertyName, out var values))
             {
-                return values;
+                JsonHelperException.ThrowPropertyNotFound(propertyName);
             }
 
-            throw CreateJsonHelperException(propertyName);
+            return values;
         }
 
         /// <summary>Tries to get an array of elements for a specified property on an element.</summary>
@@ -169,13 +169,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
 
                         return true;
                     }
-                    catch (InvalidCastException exception)
+                    catch (InvalidCastException)
                     {
-                        throw new JsonHelperException($"The property {arrayPropertyName} is not an array of objects.", exception);
+                        JsonHelperException.ThrowPropertyNotFound(arrayPropertyName, "is not an array of objects");
                     }
                 }
 
-                throw new JsonHelperException($"The property {arrayPropertyName} is not an array type.");
+                JsonHelperException.ThrowPropertyNotFound(arrayPropertyName, "is not an array type");
             }
 
             return false;
@@ -192,12 +192,12 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
             _ = element.WhenNotNull(nameof(element));
             _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
 
-            if (element.TryGetObjectArray(arrayPropertyName, out var array))
+            if (!element.TryGetObjectArray(arrayPropertyName, out var array))
             {
-                return array;
+                JsonHelperException.ThrowPropertyNotFound(arrayPropertyName);
             }
 
-            throw CreateJsonHelperException(arrayPropertyName);
+            return array;
         }
 
         /// <summary>Tries to get the value of a property from each element in an element's array property.</summary>
@@ -241,12 +241,12 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
             _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
             _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
-            if (element.TryGetObjectArrayValues<TValue>(arrayPropertyName, propertyName, out var arrayValues))
+            if (!element.TryGetObjectArrayValues<TValue>(arrayPropertyName, propertyName, out var arrayValues))
             {
-                return arrayValues;
+                JsonHelperException.ThrowPropertyNotFound([arrayPropertyName, propertyName]);
             }
 
-            throw CreateJsonHelperException([arrayPropertyName, propertyName]);
+            return arrayValues;
         }
 
         /// <summary>Tries to get the value of a property from a collection of elements.</summary>
@@ -292,12 +292,12 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
             var allElements = elements.WhenNotNull(nameof(elements)).AsReadOnlyCollection();
             _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
 
-            if (allElements.TryGetManyObjectValues<TValue>(arrayPropertyName, out var arrayValues))
+            if (!allElements.TryGetManyObjectValues<TValue>(arrayPropertyName, out var arrayValues))
             {
-                return arrayValues;
+                JsonHelperException.ThrowPropertyNotFound([arrayPropertyName]);
             }
 
-            throw CreateJsonHelperException([arrayPropertyName]);
+            return arrayValues;
         }
 
         /// <summary>Tries to get an array of non-<see langword="null" /> child elements from a nested path of array elements.</summary>
@@ -386,12 +386,12 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
             var allElements = elements.WhenNotNull(nameof(elements)).AsReadOnlyCollection();
             var allPropertyNames = arrayPropertyNames.WhenNotNull(nameof(arrayPropertyNames)).AsReadOnlyCollection();
 
-            if (allElements.TryGetDescendantObjectArray(allPropertyNames, out var childArray))
+            if (!allElements.TryGetDescendantObjectArray(allPropertyNames, out var childArray))
             {
-                return childArray;
+                JsonHelperException.ThrowPropertyNotFound(allPropertyNames);
             }
 
-            throw CreateJsonHelperException(allPropertyNames);
+            return childArray;
         }
 
         /// <summary>Tries to get an array of non-<see langword="null" /> child elements from a nested path of array elements.</summary>
@@ -497,12 +497,12 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
             var allPropertyNames = arrayPropertyNames.WhenNotNull(nameof(arrayPropertyNames)).AsReadOnlyCollection();
             _ = childPropertyName.WhenNotNullOrEmpty(nameof(childPropertyName));
 
-            if (allElements.TryGetDescendantObjectArrayValues<TValue>(allPropertyNames, childPropertyName, out var childArrayValues))
+            if (!allElements.TryGetDescendantObjectArrayValues<TValue>(allPropertyNames, childPropertyName, out var childArrayValues))
             {
-                return childArrayValues;
+                JsonHelperException.ThrowPropertyNotFound([.. allPropertyNames, childPropertyName]);
             }
 
-            throw CreateJsonHelperException(allPropertyNames, childPropertyName);
+            return childArrayValues;
         }
 
         /// <summary>Tries to get the value of a property from a nested path of non-<see langword="null" /> child elements.</summary>
@@ -537,25 +537,6 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
             _ = childPropertyName.WhenNotNullOrEmpty(nameof(childPropertyName));
 
             return (new[] { element }).GetDescendantObjectArrayValues<TValue>(allPropertyNames, childPropertyName);
-        }
-
-        private static JsonHelperException CreateJsonHelperException(string propertyName)
-        {
-            return new JsonHelperException($"The property {propertyName} was not found.");
-        }
-
-        private static JsonHelperException CreateJsonHelperException(IEnumerable<string> propertyNames)
-        {
-            return CreateJsonHelperException(propertyNames, string.Empty);
-        }
-
-        private static JsonHelperException CreateJsonHelperException(IEnumerable<string> propertyNames, string propertyName)
-        {
-            var allProperties = propertyName.IsNullOrEmpty()
-                ? propertyNames
-                : propertyNames.Concat([propertyName]);
-
-            return new JsonHelperException($"The property {string.Join(".", allProperties)} was not found.");
         }
     }
 }

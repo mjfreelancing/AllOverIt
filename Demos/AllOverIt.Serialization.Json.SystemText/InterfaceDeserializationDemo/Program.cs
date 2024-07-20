@@ -34,24 +34,26 @@ namespace InterfaceDeserializationDemo
 
             // use a default serializer to serialize the object to a string
             var serialized = JsonSerializer.Serialize(person);
+
             Console.WriteLine($"Serialized to: {serialized}");
+            Console.WriteLine();
 
             // When deserializing a person, we need to tell the serializer to convert IAddress to Address.
 
             // This demo is using SystemTextJsonSerializer but it would work equally as well using the following:
             //
-            //   var options = new JsonSerializerOptions();
-            //   options.Converters.Add(new InterfaceConverter<IAddress, Address>());
-            //   JsonSerializer.Deserialize<Person>(serialized, options);
+            // var options = new JsonSerializerOptions();
+            // options.Converters.Add(new InterfaceConverter<IAddress, Address>());
+            // options.Converters.Add(new InterfaceConverter<IChild, Child>());
+            // JsonSerializer.Deserialize<Person>(serialized, options);
 
             var serializer = new SystemTextJsonSerializer();
             serializer.AddConverters(new InterfaceConverter<IAddress, Address>());
 
-            var deserialized = serializer.DeserializeObject<Person>(serialized);
+            var deserialized = serializer.DeserializeObject<Person>(serialized)!;
 
-            Console.WriteLine(
-                $"Deserialized to '{deserialized.FirstName} {deserialized.LastName}', age {deserialized.Age}, " +
-                $"living on {deserialized.Address.Street} in {deserialized.Address.City}");
+            Console.WriteLine($"Deserialized to: {JsonSerializer.Serialize(deserialized)}");
+            Console.WriteLine();
         }
 
         private static void SerializeMultipleChildren()
@@ -66,7 +68,7 @@ namespace InterfaceDeserializationDemo
                     Street = "Broad St",
                     City = "BroadMeadow"
                 },
-                Children =
+                ChildrenArray =
                 [
                     new Child                       // This property is of type IChild
                     {
@@ -78,37 +80,49 @@ namespace InterfaceDeserializationDemo
                         FirstName = "Roger",
                         Age = 5
                     }
+                ],
+                ChildrenEnumerable =
+                [
+                    new Child                       // This property is of type IChild
+                    {
+                        FirstName = "Peter",
+                        Age = 3
+                    },
+                    new Child
+                    {
+                        FirstName = "Paul",
+                        Age = 5
+                    }
+                ],
+                ChildrenList =
+                [
+                    new Child                       // This property is of type IChild
+                    {
+                        FirstName = "Sally",
+                        Age = 12
+                    },
+                    new Child
+                    {
+                        FirstName = "Lucas",
+                        Age = 14
+                    }
                 ]
             };
 
             var serialized = JsonSerializer.Serialize(parent);
+
             Console.WriteLine($"Serialized to: {serialized}");
+            Console.WriteLine();
 
             var serializer = new SystemTextJsonSerializer();
 
-            // The interface converters can be added via AddConverters() like this:
-            //
-            //   serializer.AddConverters(
-            //       new InterfaceConverter<IAddress, Address>(),                // IAddress => Address
-            //       new EnumerableInterfaceConverter<IChild, Child>());         // IEnumerable<IChild> => List<Child>
-            //
-            // Or manually using:
-            //
-            //   serializer.Options.Converters.Add(...);
-            //
-            // or like this:
-            serializer.AddInterfaceConverter<IAddress, Address>(false);     // If true is passed then IEnumerable<IAddress> => List<Address> would also be supported
-            serializer.AddEnumerableInterfaceConverter<IChild, Child>();
+            serializer.AddInterfaceConverter<IAddress, Address>();
+            serializer.AddInterfaceConverter<IChild, Child>();
 
-            var deserialized = serializer.DeserializeObject<Parent>(serialized);
+            var deserialized = serializer.DeserializeObject<Parent>(serialized)!;
 
-            var child1 = deserialized.Children.ElementAt(0);
-            var child2 = deserialized.Children.ElementAt(1);
-
-            Console.WriteLine(
-                $"Deserialized to '{deserialized.FirstName} {deserialized.LastName}', age {deserialized.Age}, " +
-                $"living on {deserialized.Address.Street} in {deserialized.Address.City}. Children are " +
-                $"{child1.FirstName} ({child1.Age}) and {child2.FirstName} ({child2.Age}).");
+            Console.WriteLine($"Deserialized to: {JsonSerializer.Serialize(deserialized)}");
+            Console.WriteLine();
         }
     }
 }

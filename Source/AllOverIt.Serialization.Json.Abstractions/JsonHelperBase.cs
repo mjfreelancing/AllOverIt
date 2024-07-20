@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using AllOverIt.Serialization.Json.Abstractions.Exceptions;
 using AllOverIt.Serialization.Json.Abstractions.Extensions;
 using System.Diagnostics.CodeAnalysis;
 
@@ -80,7 +81,7 @@ namespace AllOverIt.Serialization.Json.Abstractions
             return _element.GetValue<TValue>(propertyName);
         }
 
-        /// <summary>Tries to get the value of a specified property.</summary>
+        /// <summary>Tries to get the values of a specified enumerable property.</summary>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="propertyName">The property name to get the value of.</param>
         /// <param name="values">The values of the property, if the property exists.</param>
@@ -92,7 +93,7 @@ namespace AllOverIt.Serialization.Json.Abstractions
             return _element.TryGetValues(propertyName, out values);
         }
 
-        /// <summary>Gets the value of a specified property.</summary>
+        /// <summary>Gets the values of a specified enumerable property.</summary>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <param name="propertyName">The property name to get the values of.</param>
         /// <returns>The value of a specified property.</returns>
@@ -101,6 +102,158 @@ namespace AllOverIt.Serialization.Json.Abstractions
             _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
             return _element.GetValues<TValue>(propertyName);
+        }
+
+        /// <summary>Tries to get a child element by traversing the nested property elements.</summary>
+        /// <param name="propertyNames">One or more nested property names.</param>
+        /// <param name="element">The element, if found.</param>
+        /// <returns><see langword="True" /> if the nested property exists, and it is an object element,
+        /// otherwise <see langword="False" />.</returns>
+        public bool TryGetDescendantElement(IEnumerable<string> propertyNames, [NotNullWhen(true)] out IElementDictionary? element)
+        {
+            var allPropertyNames = propertyNames
+                .WhenNotNullOrEmpty(nameof(propertyNames))
+                .AsArray();
+
+            ElementDictionary? candidateLastNode = null;
+            element = null;
+
+            for (var i = 0; i < allPropertyNames.Length; i++)
+            {
+                var propertyName = allPropertyNames[i];
+
+                object? node;
+
+                if (candidateLastNode is null)
+                {
+                    if (!TryGetValue(propertyName, out node))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (!candidateLastNode.TryGetValue(propertyName, out node))
+                    {
+                        return false;
+                    }
+                }
+
+                if (node is null || node is not Dictionary<string, object?> nodeElement)
+                {
+                    return false;
+                }
+
+                candidateLastNode = new ElementDictionary(nodeElement);
+            }
+
+            element = candidateLastNode;
+
+#pragma warning disable CS8762 // lastNode must have a non-null value when exiting
+            return true;
+#pragma warning restore CS8762
+        }
+
+        /// <summary>Gets a child element by traversing the nested property elements.</summary>
+        /// <param name="propertyNames">One or more nested property names.</param>
+        /// <returns>A child element by traversing the nested property elements.</returns>
+        public IElementDictionary? GetDescendantElement(IEnumerable<string> propertyNames)
+        {
+            var allPropertyNames = propertyNames
+                .WhenNotNullOrEmpty(nameof(propertyNames))
+                .AsArray();
+
+            if (!TryGetDescendantElement(allPropertyNames, out IElementDictionary? element))
+            {
+                JsonHelperException.ThrowElementNotFound(allPropertyNames);
+            }
+
+            return element;
+        }
+
+        /// <summary>Tries to get the value of a nested property.</summary>
+        /// <param name="propertyNames">Two or more nested property names.</param>
+        /// <param name="value">The value of the leaf property, if it was found.</param>
+        /// <returns><see langword="True" /> if the nested property exists, otherwise <see langword="False" />.</returns>
+        public bool TryGetDescendantValue(IEnumerable<string> propertyNames, out object? value)
+        {
+            var allPropertyNames = propertyNames
+                .WhenNotNullOrEmpty(nameof(propertyNames))
+                .AsArray();
+
+            var propertyCount = allPropertyNames.Length;
+
+            Throw<ArgumentException>.When(propertyCount < 2, "Expected at least two property names.", nameof(propertyNames));
+
+            value = null;
+
+            if (!TryGetDescendantElement(allPropertyNames[..^1], out IElementDictionary? lastNode))
+            {
+                return false;
+            }
+
+            return lastNode!.TryGetValue(allPropertyNames[propertyCount - 1], out value);
+        }
+
+        /// <summary>Gets the value of a nested property.</summary>
+        /// <param name="propertyNames">Two or more nested property names.</param>
+        /// <returns>The value of the leaf property.</returns>
+        public object? GetDescendantValue(params string[] propertyNames)
+        {
+            var allPropertyNames = propertyNames
+                .WhenNotNullOrEmpty(nameof(propertyNames))
+                .AsArray();
+
+            if (!TryGetDescendantValue(allPropertyNames, out var value))
+            {
+                JsonHelperException.ThrowPropertyNotFound(allPropertyNames);
+            }
+
+            return value;
+        }
+
+        /// <summary>Tries to get the value of a nested property.</summary>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="propertyNames">Two or more nested property names.</param>
+        /// <param name="value">The value of the leaf property, if it was found.</param>
+        /// <returns><see langword="True" /> if the nested property exists, otherwise <see langword="False" />.</returns>
+        public bool TryGetDescendantValue<TValue>(IEnumerable<string> propertyNames, [MaybeNull] out TValue value)
+        {
+            var allPropertyNames = propertyNames
+                .WhenNotNullOrEmpty(nameof(propertyNames))
+                .AsArray();
+
+            var propertyCount = allPropertyNames.Length;
+
+            Throw<ArgumentException>.When(propertyCount < 2, "Expected at least two property names.", nameof(propertyNames));
+
+            value = default;
+
+            if (!TryGetDescendantElement(allPropertyNames[..^1], out IElementDictionary? lastNode))
+            {
+                return false;
+            }
+
+            return lastNode!.TryGetValue<TValue>(allPropertyNames[propertyCount - 1], out value);
+        }
+
+        /// <summary>Gets the value of a nested property.</summary>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="propertyNames">Two or more nested property names.</param>
+        /// <returns>The value of the leaf property.</returns>
+        [return: MaybeNull]
+        public TValue GetDescendantValue<TValue>(params string[] propertyNames)
+        {
+            var allPropertyNames = propertyNames
+                .WhenNotNullOrEmpty(nameof(propertyNames))
+                .AsArray();
+
+            if (!TryGetDescendantValue<TValue>(allPropertyNames, out var value))
+            {
+                JsonHelperException.ThrowPropertyNotFound(allPropertyNames);
+            }
+
+            return value;
         }
 
         /// <summary>Tries to get an array of elements for a specified property.</summary>

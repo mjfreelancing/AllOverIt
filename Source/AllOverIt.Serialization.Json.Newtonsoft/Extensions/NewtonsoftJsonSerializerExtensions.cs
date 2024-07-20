@@ -1,4 +1,5 @@
-﻿using AllOverIt.Serialization.Json.Newtonsoft.Converters;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using Newtonsoft.Json;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Extensions
@@ -21,27 +22,12 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Extensions
         /// <typeparam name="TInterface">The interface type to convert from.</typeparam>
         /// <typeparam name="TConcrete">The concrete type to convert to.</typeparam>
         /// <param name="serializer">The serializer performing the deserialization.</param>
-        /// <param name="includeEnumerable">If true, a second converter will be added that will convert <see cref="IEnumerable{TInterface}"/>
-        /// to a <see cref="List{TConcrete}"/>.</param>
-        public static void AddInterfaceConverter<TInterface, TConcrete>(this NewtonsoftJsonSerializer serializer, bool includeEnumerable = false)
+        public static void AddInterfaceConverter<TInterface, TConcrete>(this NewtonsoftJsonSerializer serializer)
             where TConcrete : class, TInterface
         {
+            _ = serializer.WhenNotNull();
+
             serializer.Settings.Converters.Add(new InterfaceConverter<TInterface, TConcrete>());
-
-            if (includeEnumerable)
-            {
-                serializer.AddEnumerableInterfaceConverter<TInterface, TConcrete>();
-            }
-        }
-
-        /// <summary>Adds a converter that deserializes an <see cref="IEnumerable{TInterface}"/> to a <see cref="List{TConcrete}"/>..</summary>
-        /// <typeparam name="TInterface">The interface type to convert from.</typeparam>
-        /// <typeparam name="TConcrete">The concrete type to convert to.</typeparam>
-        /// <param name="serializer">The serializer performing the deserialization.</param>
-        public static void AddEnumerableInterfaceConverter<TInterface, TConcrete>(this NewtonsoftJsonSerializer serializer)
-            where TConcrete : class, TInterface
-        {
-            serializer.Settings.Converters.Add(new EnumerableInterfaceConverter<TInterface, TConcrete>());
         }
     }
 }

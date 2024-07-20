@@ -4,5 +4,6 @@
     {
         IChild[] ChildrenArray { get; }
         IEnumerable<IChild> ChildrenEnumerable { get; }
+        IList<IChild> ChildrenList { get; }
     }
 }

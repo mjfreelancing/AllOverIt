@@ -28,12 +28,12 @@ namespace AllOverIt.Serialization.Json.Abstractions
         {
             _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
 
-            if (TryGetValue(propertyName, out var value))
+            if (!TryGetValue(propertyName, out var value))
             {
-                return value;
+                JsonHelperException.ThrowPropertyNotFound(propertyName);
             }
 
-            throw new JsonHelperException($"The property {propertyName} was not found.");
+            return value;
         }
 
         public bool TrySetValue(string propertyName, object? value)
@@ -57,7 +57,7 @@ namespace AllOverIt.Serialization.Json.Abstractions
             // Cannot use '_element[propertyName] = value' as this would add a new value if it doesn't exist.
             if (!TrySetValue(propertyName, value))
             {
-                throw new JsonHelperException($"The property {propertyName} was not found.");
+                JsonHelperException.ThrowPropertyNotFound(propertyName);
             }
         }
 

@@ -30,12 +30,11 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
         }
 
         /// <inheritdoc />
-        /// <remarks>The converter only supports deserialization so this method will throw <exception cref="NotImplementedException" /> if called.</remarks>
         [ExcludeFromCodeCoverage]
         public override void Write(Utf8JsonWriter writer, TInterface value, JsonSerializerOptions options)
         {
-            // This method will never be called as CanConvert() doesn't allow it
-            throw new NotImplementedException();
+            // SystemText Json serializers don't support read only, so proxy writes
+            JsonSerializer.Serialize(writer, value);
         }
     }
 }

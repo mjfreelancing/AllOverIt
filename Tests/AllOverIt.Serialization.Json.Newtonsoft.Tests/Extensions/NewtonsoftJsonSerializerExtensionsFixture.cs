@@ -1,4 +1,5 @@
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using AllOverIt.Serialization.Json.Newtonsoft.Extensions;
 using FluentAssertions;
@@ -40,6 +41,18 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Extensions
         public class AddInterfaceConverter : NewtonsoftJsonSerializerExtensionsFixture
         {
             [Fact]
+            public void Should_Throw_When_Serializer_Null()
+            {
+                Invoking(() =>
+                {
+                    NewtonsoftJsonSerializerExtensions.AddInterfaceConverter<IDummyType, DummyType>(null!);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("serializer");
+            }
+
+            [Fact]
             public void Should_Add_Interface_Converter()
             {
                 var serializer = new NewtonsoftJsonSerializer();
@@ -49,37 +62,6 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Extensions
                 serializer.Settings.Converters.Single()
                     .Should()
                     .BeOfType<InterfaceConverter<IDummyType, DummyType>>();
-            }
-
-            [Fact]
-            public void Should_Add_Interface_And_Enumerable_Converter()
-            {
-                var serializer = new NewtonsoftJsonSerializer();
-
-                serializer.AddInterfaceConverter<IDummyType, DummyType>(true);
-
-                serializer.Settings.Converters.ElementAt(0)
-                    .Should()
-                    .BeOfType<InterfaceConverter<IDummyType, DummyType>>();
-
-                serializer.Settings.Converters.ElementAt(1)
-                    .Should()
-                    .BeOfType<EnumerableInterfaceConverter<IDummyType, DummyType>>();
-            }
-        }
-
-        public class AddEnumerableInterfaceConverter : NewtonsoftJsonSerializerExtensionsFixture
-        {
-            [Fact]
-            public void Should_Add_Enumerable_Interface_Converter()
-            {
-                var serializer = new NewtonsoftJsonSerializer();
-
-                serializer.AddEnumerableInterfaceConverter<IDummyType, DummyType>();
-
-                serializer.Settings.Converters.Single()
-                    .Should()
-                    .BeOfType<EnumerableInterfaceConverter<IDummyType, DummyType>>();
             }
         }
     }
