@@ -2,7 +2,6 @@
 ## XX XXX 2024
 
 ### PENDING / IN-PROGRESS
-* Add 'required' to properties, where applicable.
 * Change properties and arguments from IReadOnlyCollection<T> to T[], where applicable.
 * Consider removing extraneous null guard checks in extension methods.
 * Add alternative to ServiceRegistrar to provide a fluent syntax that caters for similar functionality.

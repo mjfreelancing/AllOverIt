@@ -15,10 +15,10 @@ namespace AllOverIt.Filtering.Options
         StringComparisonMode StringComparisonMode { get; }
 
         /// <summary>When building a predicate via a filter builder (as an <see cref="IPredicateFilterBuilder{TType, TFilter}"/>
-        /// or <see cref="ILogicalFilterBuilder{TType, TFilter}"/>) the comparison value is extracted from the provided expression (of
+        /// or <see cref="ILogicalFilterBuilder{TType, TFilter}"/>), the comparison value is extracted from the provided expression (of
         /// type <see cref="IBasicFilterOperation"/> or <see cref="IArrayFilterOperation"/> or <see cref="IStringFilterOperation"/>).
-        /// This option instructs the builder to ignore the predicate if the filter's value is null. This can be handy for automatically
-        /// excluding optional filters.</summary>
+        /// This option instructs the builder to ignore the predicate if the filter's value is <see langword="null"/>. This can be handy
+        /// for automatically excluding optional filters.</summary>
         bool IgnoreDefaultFilterValue { get; }
     }
 }
