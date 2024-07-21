@@ -14,6 +14,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
         /// <summary>Reads a string from the current JSON reader and converts it to the required <typeparamref name="TEnum"/> type.</summary>
         public override TEnum Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
+            // Null values do not pass through here
             var value = reader.GetString()!;
 
             return EnrichedEnum<TEnum>.From(value);
@@ -22,6 +23,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
         /// <summary>Writes the value of a <typeparamref name="TEnum"/> instance to the current JSON writer.</summary>
         public override void Write(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options)
         {
+            // Null values do not pass through here
             writer.WriteStringValue(value.Name);
         }
 

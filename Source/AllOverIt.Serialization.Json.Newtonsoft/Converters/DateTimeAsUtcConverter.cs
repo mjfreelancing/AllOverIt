@@ -31,13 +31,8 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            if (value is null)
-            {
-                writer.WriteNull();
-                return;
-            }
-
-            var utcDateTime = DateTime.SpecifyKind((DateTime) value, DateTimeKind.Utc);
+            // Null values do not pass through here
+            var utcDateTime = DateTime.SpecifyKind((DateTime) value!, DateTimeKind.Utc);
             writer.WriteValue(utcDateTime);
         }
     }

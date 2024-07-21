@@ -23,6 +23,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         {
             var strValue = (string?) reader.Value;
 
+            // Null values do pass through here
             return strValue is null
                 ? null
                 : EnrichedEnum<TEnum>.From(strValue);
@@ -31,13 +32,8 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            if (value is null)
-            {
-                writer.WriteNull();
-                return;
-            }
-
-            var enumValue = ((EnrichedEnum<TEnum>) value).Name;
+            // Null values do not pass through here
+            var enumValue = ((EnrichedEnum<TEnum>) value!).Name;
             writer.WriteValue(enumValue);
         }
 

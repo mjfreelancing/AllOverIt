@@ -94,14 +94,10 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
 
         private void WriteValue(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            if (value is null)
-            {
-                writer.WriteNull();
-                return;
-            }
+            // Null values do not pass through here
 
             // TODO: Check the SystemText serializer does this - also need to add more tests
-            var converter = serializer.Converters.FirstOrDefault(converter => !ReferenceEquals(converter, this) && converter.CanWrite && converter.CanConvert(value.GetType()));
+            var converter = serializer.Converters.FirstOrDefault(converter => !ReferenceEquals(converter, this) && converter.CanWrite && converter.CanConvert(value!.GetType()));
 
             if (converter is not null)
             {
@@ -109,16 +105,16 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
                 return;
             }
 
-            var token = JToken.FromObject(value);
+            var token = JToken.FromObject(value!);
 
             switch (token.Type)
             {
                 case JTokenType.Object:
-                    WriteObject(writer, value, serializer);
+                    WriteObject(writer, value!, serializer);
                     break;
 
                 case JTokenType.Array:
-                    WriteArray(writer, value, serializer);
+                    WriteArray(writer, value!, serializer);
                     break;
 
                 default:

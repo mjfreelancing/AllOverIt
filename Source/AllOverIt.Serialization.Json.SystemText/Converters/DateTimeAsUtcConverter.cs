@@ -24,6 +24,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
         /// <param name="options">Ignored.</param>
         public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
         {
+            // Null values do not pass through here
             var utcDateTime = DateTime.SpecifyKind(value, DateTimeKind.Utc);
             writer.WriteStringValue(utcDateTime);
         }

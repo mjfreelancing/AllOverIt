@@ -71,7 +71,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
             [Fact]
             public void Should_Read_Null_Enum_Value()
             {
-                var value = $@"{{""Prop1"":null}}";
+                var value = @"{""Prop1"":null}";
 
                 var actual = _serializer.DeserializeObject<DummyValue>(value);
 
@@ -87,6 +87,18 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
                 var actual = _serializer.SerializeObject(_dummyValue);
 
                 var expected = $@"{{""Prop1"":""{_dummyValue.Prop1.Name}""}}";
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Write_Null_EnrichedEnum_Name()
+            {
+                _dummyValue.Prop1 = null;
+
+                var expected = @"{""Prop1"":null}";
+
+                var actual = _serializer.SerializeObject(_dummyValue);
 
                 actual.Should().Be(expected);
             }

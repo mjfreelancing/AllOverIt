@@ -59,6 +59,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
         /// <inheritdoc />
         public override void Write(Utf8JsonWriter writer, Dictionary<string, object?> value, JsonSerializerOptions options)
         {
+            // Null (dictionary) values do not pass through here
             writer.WriteStartObject();
 
             foreach (var key in value.Keys)
