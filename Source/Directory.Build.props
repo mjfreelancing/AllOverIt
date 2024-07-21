@@ -42,10 +42,6 @@
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Compile Include="..\DotNetAttributes.cs" Link="DotNetAttributes.cs" />
-    </ItemGroup>
-
     <PropertyGroup>
 		<!--IDE0063 - 'using' statement can be simplified-->
 		<!--IDE0079 - remove unnecessary suppression-->
