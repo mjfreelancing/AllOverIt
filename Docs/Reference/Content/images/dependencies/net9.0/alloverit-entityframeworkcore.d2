@@ -1,0 +1,20 @@
+direction: left
+
+aoi: AllOverIt
+aoi.alloverit-entityframeworkcore: AllOverIt.EntityFrameworkCore
+microsoft-entityframeworkcore-relational_9-0-0-preview-4-24267-1: Microsoft.EntityFrameworkCore.Relational\nv9.0.0-preview.4.24267.1
+microsoft-entityframeworkcore-relational_9-0-0-preview-4-24267-1.style.fill: "#ADD8E6"
+microsoft-entityframeworkcore-relational_9-0-0-preview-4-24267-1.style.opacity: 0.8
+microsoft-entityframeworkcore_9-0-0-preview-4-24267-1: Microsoft.EntityFrameworkCore\nv9.0.0-preview.4.24267.1
+microsoft-entityframeworkcore_9-0-0-preview-4-24267-1.style.fill: "#FFEC96"
+microsoft-entityframeworkcore_9-0-0-preview-4-24267-1.style.opacity: 0.8
+microsoft-entityframeworkcore_9-0-0-preview-4-24267-1 <- microsoft-entityframeworkcore-relational_9-0-0-preview-4-24267-1
+microsoft-extensions-configuration-abstractions_9-0-0-preview-4-24266-19: Microsoft.Extensions.Configuration.Abstractions\nv9.0.0-preview.4.24266.19
+microsoft-extensions-configuration-abstractions_9-0-0-preview-4-24266-19.style.fill: "#FFEC96"
+microsoft-extensions-configuration-abstractions_9-0-0-preview-4-24266-19.style.opacity: 0.8
+microsoft-extensions-configuration-abstractions_9-0-0-preview-4-24266-19 <- microsoft-entityframeworkcore-relational_9-0-0-preview-4-24267-1
+microsoft-entityframeworkcore-relational_9-0-0-preview-4-24267-1 <- aoi.alloverit-entityframeworkcore
+aoi.alloverit: AllOverIt
+aoi.alloverit-assertion: AllOverIt.Assertion
+aoi.alloverit-assertion <- aoi.alloverit
+aoi.alloverit <- aoi.alloverit-entityframeworkcore
