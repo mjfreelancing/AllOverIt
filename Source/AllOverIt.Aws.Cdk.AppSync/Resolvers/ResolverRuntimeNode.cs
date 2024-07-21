@@ -8,11 +8,11 @@
         /// Subscription root nodes are prefixed with 'Subscription'.</remarks>
         public required string Name { get; set; }
 
-        /// <summary>The resolver runtime containing the request and response handler. This can be an instance
+        /// <summary>The resolver runtime containing the request and response handler. This can be an implementation
         /// of <see cref="IJsRuntime"/> or <see cref="IVtlRuntime"/>.</summary>
         public required IResolverRuntime ResolverRuntime { get; set; }
 
         /// <summary>Child nodes, if any, of the current node.</summary>
-        public ResolverRuntimeNode[]? Children { get; set; }
+        public ResolverRuntimeNode[] Children { get; set; } = [];
     }
 }

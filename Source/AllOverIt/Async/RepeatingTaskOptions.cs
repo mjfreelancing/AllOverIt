@@ -7,7 +7,7 @@
         public TimeSpan InitialDelay { get; init; } = TimeSpan.Zero;
 
         /// <summary>The delay period between the end of one invocation, and the start of the next.</summary>
-        public TimeSpan RepeatDelay { get; init; }
+        public required TimeSpan RepeatDelay { get; init; }
 
         /// <summary>Provides flags that control the behavior for the creation and execution of the repeating task.</summary>
         public TaskCreationOptions CreationOptions { get; init; } = TaskCreationOptions.LongRunning;

@@ -1,5 +1,7 @@
 ﻿namespace AllOverIt.Caching
 {
+    // 'init' on the key properties is required to use the record 'with' feature
+
     /// <summary>The base key type for all keys contained in a concrete <see cref="IGenericCache"/>, such as <see cref="GenericCache"/>.</summary>
     public abstract record GenericCacheKeyBase
     {

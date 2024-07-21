@@ -1,5 +1,7 @@
 ﻿namespace AllOverIt.Caching
 {
+    // 'init' on the key properties is required to use the record 'with' feature
+
     /// <summary>A <see cref="GenericCache"/> key based on one strongly-typed key type.</summary>
     /// <typeparam name="TKey1">The key type.</typeparam>
     public record GenericCacheKey<TKey1> : GenericCacheKeyBase
