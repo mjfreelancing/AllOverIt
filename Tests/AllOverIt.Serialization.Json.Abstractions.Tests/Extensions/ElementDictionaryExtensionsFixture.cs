@@ -100,9 +100,21 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests.Extensions
             }
 
             [Fact]
-            public void Should_Return_True_When_Property_Exists()
+            public void Should_Return_True_When_Non_Null_Property_Exists()
             {
                 var actual = ElementDictionaryExtensions.TryGetValue<double>(_elementDictionary, "Prop1", out _);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_True_When_Null_Property_Exists()
+            {
+                _prop1["Prop1"] = null;
+
+                var elementDictionary = new ElementDictionary(_prop1);
+
+                var actual = ElementDictionaryExtensions.TryGetValue<double?>(elementDictionary, "Prop1", out _);
 
                 actual.Should().BeTrue();
             }
