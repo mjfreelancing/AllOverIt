@@ -26,7 +26,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Exceptions
         }
 
         [DoesNotReturn]
-        internal static void ThrowPropertyNotFound(string propertyName, string? reason = default)
+        internal static void ThrowPropertyNotFound(string propertyName, string reason = default)
         {
             reason ??= "was not found";
 
