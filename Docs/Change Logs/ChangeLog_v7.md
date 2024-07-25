@@ -1,3 +1,15 @@
+#  Version 7.25.0
+## 25 Jul 2024
+
+### AllOverIt.ReactiveUI
+* Extend support for creating cancellable commands, via `CommandFactory`, so cancellation can be performed by
+  `IObservable<T>` in addition to the existing `IObservable<Unit>` overload. Includes (breaking) signature changes
+  for tasks that do not return a result. As an example, the signature `Func<CancellationToken, Task<Unit>> action` has
+  been changed to `Func<CancellationToken, Task> action`.
+
+---
+
+
 #  Version 7.24.0
 ## 21 Jul 2024
 
