@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using ReactiveUI;
 using System.Reactive;
@@ -9,19 +7,30 @@ using System.Reactive.Linq;
 
 namespace AllOverIt.ReactiveUI.Factories
 {
+    /*
+            Has Input   Has Result  Custom Cancel   Param       Result      Cancel Type     Signature
+            =========   ==========  =============   =====       ======      ===========     ===========================================================================================================================================================================================
+            No          No          No              Unit        Unit        Unit            ReactiveCommand<Unit, Unit> CreateCancellableCommand(Func<CancellationToken, Task> action, Func<IObservable<Unit>> cancelObservable) { }
+            No          No          Yes             Unit        Unit        TCancel         ReactiveCommand<Unit, Unit> CreateCancellableCommand<TCancel>(Func<CancellationToken, Task> action, Func<IObservable<TCancel>> cancelObservable) { }
+            No          Yes         No              Unit        TResult     Unit            ReactiveCommand<Unit, TResult> CreateCancellableCommand<TResult>(Func<CancellationToken, Task<TResult>> action, Func<IObservable<Unit>> cancelObservable) { }
+            No          Yes         Yes             Unit        TResult     TCancel         ReactiveCommand<Unit, TResult> CreateCancellableCommand<TResult, TCancel>(Func<CancellationToken, Task<TResult>> action, Func<IObservable<TCancel>> cancelObservable) { }
+            Yes         No          No              TParam      Unit        Unit            ReactiveCommand<TParam, Unit> CreateCancellableCommand<TParam>(Func<TParam, CancellationToken, Task> action, Func<IObservable<Unit>> cancelObservable) { }
+            Yes         No          Yes             TParam      Unit        TCancel         ReactiveCommand<TParam, Unit> CreateCancellableCommand<TParam, TCancel>(Func<TParam, CancellationToken, Task> action, Func<IObservable<TCancel>> cancelObservable) { }
+            Yes         Yes         No              TParam      TResult     Unit            ReactiveCommand<TParam, TResult> CreateCancellableCommand<TParam, TResult>(Func<TParam, CancellationToken, Task<TResult>> action, Func<IObservable<Unit>> cancelObservable) { }
+            Yes         Yes         Yes             TParam      TResult     TCancel         ReactiveCommand<TParam, TResult> CreateCancellableCommand<TParam, TResult, TCancel>(Func<TParam, CancellationToken, Task<TResult>> action, Func<IObservable<TCancel>> cancelObservable) { }
+     */
+
     /// <summary>Provides factory methods that help with the creation of specialized reactive commands.</summary>
     public static class CommandFactory
     {
-        /// <summary>Creates a <see cref="ReactiveCommand{Unit, Unit}"/> that can be cancelled when another 'cancel' <see cref="IObservable{Unit}"/>,
-        /// such as another <c>ReactiveCommand</c>, emits a value.</summary>
+        /// <summary>Creates a <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be cancelled when an <c>IObservable&lt;Unit&gt;</c> emits a value.</summary>
         /// <param name="action">The action to execute when the command is executed.</param>
-        /// <param name="cancelObservable"></param>
+        /// <param name="cancelObservable">The observable that will cancel the command when it emits a value.</param>
         /// <param name="canExecute">An optional observable that determines if the command can be executed.</param>
         /// <param name="outputScheduler">An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.</param>
-        /// <returns>A <see cref="ReactiveCommand{Unit, Unit}"/> that can be cancelled when another 'cancel' observable, such as another
-        /// <c>ReactiveCommand</c>, emits a value.</returns>
-        public static ReactiveCommand<Unit, Unit> CreateCancellableCommand(Func<CancellationToken, Task<Unit>> action,
-            Func<IObservable<Unit>> cancelObservable, IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
+        /// <returns>A <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be cancelled when an <c>IObservable&lt;Unit&gt;</c> emits a value.</returns>
+        public static ReactiveCommand<Unit, Unit> CreateCancellableCommand(Func<CancellationToken, Task> action, Func<IObservable<Unit>> cancelObservable,
+            IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
         {
             _ = action.WhenNotNull();
             _ = cancelObservable.WhenNotNull();
@@ -29,39 +38,117 @@ namespace AllOverIt.ReactiveUI.Factories
             return CreateCancellableCommand<Unit>(action, cancelObservable, canExecute, outputScheduler);
         }
 
-        /// <summary>Creates a <see cref="ReactiveCommand{Unit, TResult}"/> that can be cancelled when another 'cancel' <see cref="IObservable{Unit}"/>,
-        /// such as another <c>ReactiveCommand</c>, emits a value.</summary>
-        /// <typeparam name="TResult">The command's result type.</typeparam>
+        /// <summary>Creates a <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be cancelled when an <c>IObservable&lt;TCancel&gt;</c> emits a value.</summary>
+        /// <typeparam name="TCancel">The value type emitted by <paramref name="cancelObservable"/>.</typeparam>
         /// <param name="action">The action to execute when the command is executed.</param>
         /// <param name="cancelObservable">The observable that will cancel the command when it emits a value.</param>
         /// <param name="canExecute">An optional observable that determines if the command can be executed.</param>
         /// <param name="outputScheduler">An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.</param>
-        /// <returns>A <see cref="ReactiveCommand{Unit, TResult}"/> that can be cancelled when another 'cancel' <see cref="IObservable{Unit}"/>,
-        /// such as another <c>ReactiveCommand</c>, emits a value.</returns>
-        public static ReactiveCommand<Unit, TResult> CreateCancellableCommand<TResult>(Func<CancellationToken, Task<TResult>> action,
-            Func<IObservable<Unit>> cancelObservable, IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
+        /// <returns>A <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be cancelled when an <c>IObservable&lt;TCancel&gt;</c> emits a value.</returns>
+        public static ReactiveCommand<Unit, Unit> CreateCancellableCommand<TCancel>(Func<CancellationToken, Task> action, Func<IObservable<TCancel>> cancelObservable,
+            IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
+        {
+            _ = action.WhenNotNull(nameof(action));
+            _ = cancelObservable.WhenNotNull(nameof(cancelObservable));
+
+            return ReactiveCommand
+               .CreateFromObservable<Unit, Unit>(
+                    _ => Observable.StartAsync(async token =>
+                    {
+                        await action.Invoke(token).ConfigureAwait(false);
+
+                        return Unit.Default;
+                    }).TakeUntil(cancelObservable.Invoke()),
+                    canExecute, outputScheduler);
+        }
+
+        /// <summary>Creates a <c>ReactiveCommand&lt;Unit, TResult&gt;</c> that can be cancelled when an <c>IObservable&lt;Unit&gt;</c> emits a value.</summary>
+        /// <typeparam name="TResult">The result type returned by the command.</typeparam>
+        /// <param name="action">The action to execute when the command is executed.</param>
+        /// <param name="cancelObservable">The observable that will cancel the command when it emits a value.</param>
+        /// <param name="canExecute">An optional observable that determines if the command can be executed.</param>
+        /// <param name="outputScheduler">An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.</param>
+        /// <returns>A <c>ReactiveCommand&lt;Unit, TResult&gt;</c> that can be cancelled when an <c>IObservable&lt;Unit&gt;</c> emits a value.</returns>
+        public static ReactiveCommand<Unit, TResult> CreateCancellableCommand<TResult>(Func<CancellationToken, Task<TResult>> action, Func<IObservable<Unit>> cancelObservable,
+            IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
+        {
+            _ = action.WhenNotNull(nameof(action));
+            _ = cancelObservable.WhenNotNull(nameof(cancelObservable));
+
+            return CreateCancellableCommand<TResult, Unit>(action, cancelObservable, canExecute, outputScheduler);
+        }
+
+        /// <summary>Creates a <c>ReactiveCommand&lt;Unit, TResult&gt;</c> that can be cancelled when an <c>IObservable&lt;TCancel&gt;</c> emits a value.</summary>
+        /// <typeparam name="TResult">The result type returned by the command.</typeparam>
+        /// <typeparam name="TCancel">The type emitted by the observable used to cancel the command.</typeparam>
+        /// <param name="action">The action to execute when the command is executed.</param>
+        /// <param name="cancelObservable">The observable that will cancel the command when it emits a value.</param>
+        /// <param name="canExecute">An optional observable that determines if the command can be executed.</param>
+        /// <param name="outputScheduler">An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.</param>
+        /// <returns>A <c>ReactiveCommand&lt;Unit, TResult&gt;</c> that can be cancelled when an <c>IObservable&lt;TCancel&gt;</c> emits a value.</returns>
+        public static ReactiveCommand<Unit, TResult> CreateCancellableCommand<TResult, TCancel>(Func<CancellationToken, Task<TResult>> action, Func<IObservable<TCancel>> cancelObservable,
+            IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
         {
             _ = action.WhenNotNull();
             _ = cancelObservable.WhenNotNull();
 
             return ReactiveCommand
                .CreateFromObservable<Unit, TResult>(
-                    _ => Observable.StartAsync(token => action.Invoke(token)).TakeUntil(cancelObservable.Invoke()),
+                    _ => Observable.StartAsync(action).TakeUntil(cancelObservable.Invoke()),
                     canExecute, outputScheduler);
         }
 
-        /// <summary>Creates a <see cref="ReactiveCommand{TParam, TResult}"/> that can be cancelled when another 'cancel' <see cref="IObservable{Unit}"/>,
-        /// such as another <c>ReactiveCommand</c>, emits a value.</summary>
-        /// <typeparam name="TParam">The command's input type.</typeparam>
-        /// <typeparam name="TResult">The command's result type.</typeparam>
+        /// <summary>Creates a <c>ReactiveCommand&lt;TParam, Unit&gt;</c> that can be cancelled when an <c>IObservable&lt;Unit&gt;</c> emits a value.</summary>
+        /// <typeparam name="TParam">The parameter type forwarded to the command.</typeparam>
         /// <param name="action">The action to execute when the command is executed.</param>
         /// <param name="cancelObservable">The observable that will cancel the command when it emits a value.</param>
         /// <param name="canExecute">An optional observable that determines if the command can be executed.</param>
         /// <param name="outputScheduler">An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.</param>
-        /// <returns>A <see cref="ReactiveCommand{TParam, TResult}"/> that can be cancelled when another 'cancel' <see cref="IObservable{Unit}"/>,
-        /// such as another <c>ReactiveCommand</c>, emits a value.</returns>
-        public static ReactiveCommand<TParam, TResult> CreateCancellableCommand<TParam, TResult>(Func<TParam, CancellationToken, Task<TResult>> action,
-            Func<IObservable<Unit>> cancelObservable, IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
+        /// <returns>A <c>ReactiveCommand&lt;TParam, Unit&gt;</c> that can be cancelled when an <c>IObservable&lt;Unit&gt;</c> emits a value.</returns>
+        public static ReactiveCommand<TParam, Unit> CreateCancellableCommand<TParam>(Func<TParam, CancellationToken, Task> action, Func<IObservable<Unit>> cancelObservable,
+            IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
+        {
+            _ = action.WhenNotNull(nameof(action));
+            _ = cancelObservable.WhenNotNull(nameof(cancelObservable));
+
+            return CreateCancellableCommand<TParam, Unit>(action, cancelObservable, canExecute, outputScheduler);
+        }
+
+        /// <summary>Creates a <c>ReactiveCommand&lt;TParam, Unit&gt;</c> that can be cancelled when an <c>IObservable&lt;TCancel&gt;</c> emits a value.</summary>
+        /// <typeparam name="TParam">The parameter type forwarded to the command.</typeparam>
+        /// <typeparam name="TCancel">The value type emitted by <paramref name="cancelObservable"/>.</typeparam>
+        /// <param name="action">The action to execute when the command is executed.</param>
+        /// <param name="cancelObservable">The observable that will cancel the command when it emits a value.</param>
+        /// <param name="canExecute">An optional observable that determines if the command can be executed.</param>
+        /// <param name="outputScheduler">An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.</param>
+        /// <returns>A <c>ReactiveCommand&lt;TParam, Unit&gt;</c> that can be cancelled when an <c>IObservable&lt;TCancel&gt;</c> emits a value.</returns>
+        public static ReactiveCommand<TParam, Unit> CreateCancellableCommand<TParam, TCancel>(Func<TParam, CancellationToken, Task> action, Func<IObservable<TCancel>> cancelObservable,
+            IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
+        {
+            _ = action.WhenNotNull(nameof(action));
+            _ = cancelObservable.WhenNotNull(nameof(cancelObservable));
+
+            return ReactiveCommand
+               .CreateFromObservable<TParam, Unit>(
+                    param => Observable.StartAsync(async token =>
+                    {
+                        await action.Invoke(param, token).ConfigureAwait(false);
+
+                        return Unit.Default;
+                    }).TakeUntil(cancelObservable.Invoke()),
+                    canExecute, outputScheduler);
+        }
+
+        /// <summary>Creates a <c>ReactiveCommand&lt;TParam, TResult&gt;</c> that can be cancelled when an <c>IObservable&lt;Unit&gt;</c> emits a value.</summary>
+        /// <typeparam name="TParam">The parameter type forwarded to the command.</typeparam>
+        /// <typeparam name="TResult">The result type returned by the command.</typeparam>
+        /// <param name="action">The action to execute when the command is executed.</param>
+        /// <param name="cancelObservable">The observable that will cancel the command when it emits a value.</param>
+        /// <param name="canExecute">An optional observable that determines if the command can be executed.</param>
+        /// <param name="outputScheduler">An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.</param>
+        /// <returns>A <c>ReactiveCommand&lt;TParam, TResult&gt;</c> that can be cancelled when an <c>IObservable&lt;Unit&gt;</c> emits a value.</returns>
+        public static ReactiveCommand<TParam, TResult> CreateCancellableCommand<TParam, TResult>(Func<TParam, CancellationToken, Task<TResult>> action, Func<IObservable<Unit>> cancelObservable,
+            IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
         {
             _ = action.WhenNotNull();
             _ = cancelObservable.WhenNotNull();
@@ -69,20 +156,17 @@ namespace AllOverIt.ReactiveUI.Factories
             return CreateCancellableCommand<TParam, TResult, Unit>(action, cancelObservable, canExecute, outputScheduler);
         }
 
-
-        /// <summary>Creates a <see cref="ReactiveCommand{TParam, TResult}"/> that can be cancelled when another 'cancel' <see cref="IObservable{TCancelResult}"/>,
-        /// such as another <c>ReactiveCommand</c>, emits a value.</summary>
-        /// <typeparam name="TParam">The command's input type.</typeparam>
-        /// <typeparam name="TResult">The command's result type.</typeparam>
-        /// <typeparam name="TCancelResult">The type emitted by the observable used to cancel the command.</typeparam>
+        /// <summary>Creates a <c>ReactiveCommand&lt;TParam, TResult&gt;</c> that can be cancelled when an <c>IObservable&lt;TCancel&gt;</c> emits a value.</summary>
+        /// <typeparam name="TParam">The parameter type forwarded to the command.</typeparam>
+        /// <typeparam name="TResult">The result type returned by the command.</typeparam>
+        /// <typeparam name="TCancel">The value type emitted by <paramref name="cancelObservable"/>.</typeparam>
         /// <param name="action">The action to execute when the command is executed.</param>
         /// <param name="cancelObservable">The observable that will cancel the command when it emits a value.</param>
         /// <param name="canExecute">An optional observable that determines if the command can be executed.</param>
         /// <param name="outputScheduler">An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.</param>
-        /// <returns>A <see cref="ReactiveCommand{TParam, TResult}"/> that can be cancelled when another 'cancel' <see cref="IObservable{TCancelResult}"/>,
-        /// such as another <c>ReactiveCommand</c>, emits a value.</returns>
-        public static ReactiveCommand<TParam, TResult> CreateCancellableCommand<TParam, TResult, TCancelResult>(Func<TParam, CancellationToken, Task<TResult>> action,
-            Func<IObservable<TCancelResult>> cancelObservable, IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
+        /// <returns>A <c>ReactiveCommand&lt;TParam, TResult&gt;</c> that can be cancelled when an <c>IObservable&lt;TCancel&gt;</c> emits a value.</returns>
+        public static ReactiveCommand<TParam, TResult> CreateCancellableCommand<TParam, TResult, TCancel>(Func<TParam, CancellationToken, Task<TResult>> action, Func<IObservable<TCancel>> cancelObservable,
+            IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
         {
             _ = action.WhenNotNull();
             _ = cancelObservable.WhenNotNull();
@@ -93,9 +177,9 @@ namespace AllOverIt.ReactiveUI.Factories
                     canExecute, outputScheduler);
         }
 
-        /// <summary>Creates a <see cref="ReactiveCommand{Unit, Unit}"/> that can be used to cancel one or more other commands.</summary>
+        /// <summary>Creates a <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</summary>
         /// <param name="observables">One or more observables that, individually, determine if the returned command can be executed.</param>
-        /// <returns>A <see cref="ReactiveCommand{Unit, Unit}"/> that can be used to cancel one or more other commands.</returns>
+        /// <returns>A <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</returns>
         public static ReactiveCommand<Unit, Unit> CreateCancelCommand(params IObservable<bool>[] observables)
         {
             _ = observables.WhenNotNullOrEmpty(errorMessage: "At least one observable is required.");
@@ -172,9 +256,9 @@ namespace AllOverIt.ReactiveUI.Factories
             return ReactiveCommand.Create(() => { }, canExecute);
         }
 
-        /// <summary>Creates a <see cref="ReactiveCommand{Unit, Unit}"/> that can be used to cancel one or more other commands.</summary>
+        /// <summary>Creates a <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</summary>
         /// <param name="cancellableCommands">One or more commands created by one of the <c>CreateCancellableCommand()</c> overloads.</param>
-        /// <returns>A <see cref="ReactiveCommand{Unit, Unit}"/> that can be used to cancel one or more other commands.</returns>
+        /// <returns>A <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</returns>
         public static ReactiveCommand<Unit, Unit> CreateCancelCommand(params IReactiveCommand[] cancellableCommands)
         {
             _ = cancellableCommands.WhenNotNullOrEmpty(errorMessage: "At least one cancellable command is required.");
