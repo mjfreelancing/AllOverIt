@@ -12,14 +12,14 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
 {
     public class CommandFactoryFixture : FixtureBase
     {
-        public class CreateCancellableCommand_Unit_Unit : CommandFactoryFixture
+        public class CreateCancellableCommand_Unit_Unit_Unit : CommandFactoryFixture
         {
             [Fact]
             public void Should_Throw_When_Action_Null()
             {
                 Invoking(() =>
                 {
-                    _ = CommandFactory.CreateCancellableCommand((Func<CancellationToken, Task<Unit>>) null, () => null);
+                    _ = CommandFactory.CreateCancellableCommand((Func<CancellationToken, Task>) null, () => null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -31,7 +31,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             {
                 Invoking(() =>
                 {
-                    _ = CommandFactory.CreateCancellableCommand(token => Task.FromResult(Unit.Default), null);
+                    _ = CommandFactory.CreateCancellableCommand(token => Task.CompletedTask, null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -41,7 +41,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             [Fact]
             public void Should_Create_CreateCancellableCommand()
             {
-                var command = CommandFactory.CreateCancellableCommand(token => Task.FromResult(Unit.Default), () => ReactiveCommand.Create(() => { }));
+                var command = CommandFactory.CreateCancellableCommand(token => Task.CompletedTask, () => ReactiveCommand.Create(() => { }));
 
                 command.Should().BeOfType<ReactiveCommand<Unit, Unit>>();
             }
@@ -67,8 +67,6 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
 
                         actual = true;
                         resetEvent.Set();
-
-                        return Unit.Default;
                     },
                     () => cancelCommand);
 
@@ -93,7 +91,87 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             }
         }
 
-        public class CreateCancellableCommand_Unit_Result : CommandFactoryFixture
+        public class CreateCancellableCommand_Unit_Unit_Cancel : CommandFactoryFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Action_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = CommandFactory.CreateCancellableCommand<bool>((Func<CancellationToken, Task>) null, () => null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("action");
+            }
+
+            [Fact]
+            public void Should_Throw_When_CancelCommand_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = CommandFactory.CreateCancellableCommand<bool>(token => Task.CompletedTask, null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("cancelObservable");
+            }
+
+            [Fact]
+            public void Should_Create_CreateCancellableCommand()
+            {
+                var command = CommandFactory.CreateCancellableCommand<bool>(token => Task.CompletedTask, () => ReactiveCommand.Create<bool>(() => true));
+
+                command.Should().BeOfType<ReactiveCommand<Unit, Unit>>();
+            }
+
+            [Fact]
+            public void Should_Cancel_Cancellable_Command()
+            {
+                var resetEvent = new ManualResetEventSlim(false);
+                var actual = false;
+
+                Subject<bool> cancelObservable = default;
+
+                var cancellableCommand = CommandFactory
+                    .CreateCancellableCommand<bool>(async cancellationToken =>
+                    {
+                        try
+                        {
+                            await Task.Delay(-1, cancellationToken);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                        }
+
+                        actual = true;
+                        resetEvent.Set();
+                    },
+                    () => cancelObservable);
+
+                var canCancelStates = new List<bool>();
+
+                cancellableCommand.CanExecute
+                    .Subscribe(canCancel =>
+                    {
+                        canCancelStates.Add(canCancel);
+                    });
+
+                // Show this can be created after the command has been created
+                cancelObservable = new Subject<bool>();
+
+                cancellableCommand.Execute().Subscribe();
+
+                cancelObservable.OnNext(true);
+
+                resetEvent.Wait(TimeSpan.FromMilliseconds(100));
+
+                actual.Should().BeTrue();
+                canCancelStates.Should().BeEquivalentTo([true, false, true]);
+            }
+        }
+
+        public class CreateCancellableCommand_Unit_Result_Unit : CommandFactoryFixture
         {
             [Fact]
             public void Should_Throw_When_Action_Null()
@@ -186,7 +264,260 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             }
         }
 
-        public class CreateCancellableCommand_Param_Result : CommandFactoryFixture
+        public class CreateCancellableCommand_Unit_Result_Cancel : CommandFactoryFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Action_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = CommandFactory.CreateCancellableCommand<int, bool>((Func<CancellationToken, Task<int>>) null, () => null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("action");
+            }
+
+            [Fact]
+            public void Should_Throw_When_CancelCommand_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = CommandFactory.CreateCancellableCommand<int, bool>(token => Task.FromResult(Create<int>()), null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("cancelObservable");
+            }
+
+            [Fact]
+            public void Should_Create_CreateCancellableCommand()
+            {
+                var command = CommandFactory.CreateCancellableCommand<int, bool>(token => Task.FromResult(Create<int>()), () => ReactiveCommand.Create<bool>(() => true));
+
+                command.Should().BeOfType<ReactiveCommand<Unit, int>>();
+            }
+
+            [Fact]
+            public async Task Should_Return_Result()
+            {
+                var expected = Create<int>();
+
+                var command = CommandFactory.CreateCancellableCommand<int, bool>(token => Task.FromResult(expected), () => ReactiveCommand.Create<bool>(() => true));
+
+                var actual = await command.Execute();
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Cancel_Cancellable_Command()
+            {
+                var resetEvent = new ManualResetEventSlim(false);
+                var actual = false;
+
+                Subject<bool> cancelObservable = default;
+
+                var cancellableCommand = CommandFactory
+                    .CreateCancellableCommand<int, bool>(async cancellationToken =>
+                    {
+                        try
+                        {
+                            await Task.Delay(-1, cancellationToken);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                        }
+
+                        actual = true;
+                        resetEvent.Set();
+
+                        return Create<int>();
+                    },
+                    () => cancelObservable);
+
+                var canCancelStates = new List<bool>();
+
+                cancellableCommand.CanExecute
+                    .Subscribe(canCancel =>
+                    {
+                        canCancelStates.Add(canCancel);
+                    });
+
+                // Show this can be created after the command has been created
+                cancelObservable = new Subject<bool>();
+
+                cancellableCommand.Execute().Subscribe();
+
+                cancelObservable.OnNext(true);
+
+                resetEvent.Wait(TimeSpan.FromMilliseconds(100));
+
+                actual.Should().BeTrue();
+                canCancelStates.Should().BeEquivalentTo([true, false, true]);
+            }
+        }
+
+        public class CreateCancellableCommand_Param_Unit_Unit : CommandFactoryFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Action_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = CommandFactory.CreateCancellableCommand<string>((Func<string, CancellationToken, Task>) null, () => null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("action");
+            }
+
+            [Fact]
+            public void Should_Throw_When_CancelCommand_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = CommandFactory.CreateCancellableCommand<string>((value, token) => Task.CompletedTask, null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("cancelObservable");
+            }
+
+            [Fact]
+            public void Should_Create_CreateCancellableCommand()
+            {
+                var command = CommandFactory.CreateCancellableCommand<string>((value, token) => Task.CompletedTask, () => ReactiveCommand.Create(() => { }));
+
+                command.Should().BeOfType<ReactiveCommand<string, Unit>>();
+            }
+
+            [Fact]
+            public async Task Should_Cancel_Cancellable_Command()
+            {
+                var resetEvent = new ManualResetEventSlim(false);
+                var actual = false;
+
+                ReactiveCommand<Unit, Unit> cancelCommand = default;
+
+                var cancellableCommand = CommandFactory
+                    .CreateCancellableCommand<string>(async (value, cancellationToken) =>
+                    {
+                        try
+                        {
+                            await Task.Delay(-1, cancellationToken);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                        }
+
+                        actual = true;
+                        resetEvent.Set();
+                    },
+                    () => cancelCommand);
+
+                var canCancelStates = new List<bool>();
+
+                cancellableCommand.CanExecute
+                    .Subscribe(canCancel =>
+                    {
+                        canCancelStates.Add(canCancel);
+                    });
+
+                cancelCommand = CommandFactory.CreateCancelCommand(cancellableCommand);
+
+                cancellableCommand.Execute().Subscribe();
+
+                await cancelCommand.Execute();
+
+                resetEvent.Wait(TimeSpan.FromMilliseconds(100));
+
+                actual.Should().BeTrue();
+                canCancelStates.Should().BeEquivalentTo([true, false, true]);
+            }
+        }
+
+        public class CreateCancellableCommand_Param_Unit_Cancel : CommandFactoryFixture
+        {
+            [Fact]
+            public void Should_Throw_When_Action_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = CommandFactory.CreateCancellableCommand<string, bool>((Func<string, CancellationToken, Task>) null, () => null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("action");
+            }
+
+            [Fact]
+            public void Should_Throw_When_CancelCommand_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = CommandFactory.CreateCancellableCommand<string, bool>((value, token) => Task.CompletedTask, null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("cancelObservable");
+            }
+
+            [Fact]
+            public void Should_Create_CreateCancellableCommand()
+            {
+                var command = CommandFactory.CreateCancellableCommand<string, bool>((value, token) => Task.CompletedTask, () => ReactiveCommand.Create<bool>(() => true));
+
+                command.Should().BeOfType<ReactiveCommand<string, Unit>>();
+            }
+
+            [Fact]
+            public void Should_Cancel_Cancellable_Command()
+            {
+                var resetEvent = new ManualResetEventSlim(false);
+                var actual = false;
+
+                Subject<bool> cancelObservable = default;
+
+                var cancellableCommand = CommandFactory
+                    .CreateCancellableCommand<string, bool>(async (value, cancellationToken) =>
+                    {
+                        try
+                        {
+                            await Task.Delay(-1, cancellationToken);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                        }
+
+                        actual = true;
+                        resetEvent.Set();
+                    },
+                    () => cancelObservable);
+
+                var canCancelStates = new List<bool>();
+
+                cancellableCommand.CanExecute
+                    .Subscribe(canCancel =>
+                    {
+                        canCancelStates.Add(canCancel);
+                    });
+
+                // Show this can be created after the command has been created
+                cancelObservable = new Subject<bool>();
+
+                cancellableCommand.Execute().Subscribe();
+
+                cancelObservable.OnNext(true);
+
+                resetEvent.Wait(TimeSpan.FromMilliseconds(100));
+
+                actual.Should().BeTrue();
+                canCancelStates.Should().BeEquivalentTo([true, false, true]);
+            }
+        }
+
+        public class CreateCancellableCommand_Param_Result_Unit : CommandFactoryFixture
         {
             [Fact]
             public void Should_Throw_When_Action_Null()
@@ -280,7 +611,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             }
         }
 
-        public class CreateCancellableCommand_Param_Result_CancelResult : CommandFactoryFixture
+        public class CreateCancellableCommand_Param_Result_Cancel : CommandFactoryFixture
         {
             [Fact]
             public void Should_Throw_When_Action_Null()
