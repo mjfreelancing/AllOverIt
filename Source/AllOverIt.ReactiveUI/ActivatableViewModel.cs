@@ -13,6 +13,7 @@ namespace AllOverIt.ReactiveUI
     public abstract class ActivatableViewModel : ReactiveObject, IActivatableViewModel
     {
         private readonly Subject<bool> _deactivating = new();
+        private CancellationTokenSource _rootCancellationTokenSource;
 
         /// <inheritdoc />
         public ViewModelActivator Activator { get; } = new ViewModelActivator();
@@ -22,6 +23,10 @@ namespace AllOverIt.ReactiveUI
         {
             this.WhenActivated(disposables =>
             {
+                // Must be explicitly disposed of in OnDeactivated(). Cannot dispose via 'disposables'
+                // as it will be disposed of before OnDeactivated() is called.
+                _rootCancellationTokenSource = new();
+
                 OnActivated(disposables);
 
                 Disposable.Create(OnDeactivated).DisposeWith(disposables);
@@ -42,9 +47,33 @@ namespace AllOverIt.ReactiveUI
         protected virtual void OnDeactivated()
         {
             _deactivating.OnNext(true);
+
+            _rootCancellationTokenSource.Cancel();
+            _rootCancellationTokenSource.Dispose();
+            _rootCancellationTokenSource = null;
         }
 
-        /// <summary>Creates a <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that will be automatically cancelled, if running. when <see cref="OnDeactivated"/> is called.</summary>
+        /// <summary>Creates a new <see cref="CancellationTokenSource"/> that will be automatically cancelled, if not already cancelled,
+        /// when <see cref="OnDeactivated"/> is called.</summary>
+        /// <returns>A new <see cref="CancellationTokenSource"/> that will be automatically cancelled, if not already cancelled,
+        /// when <see cref="OnDeactivated"/> is called.</returns>
+        protected CancellationTokenSource CreateAutoCancellingTokenSource()
+        {
+            return CreateAutoCancellingTokenSource(CancellationToken.None);
+        }
+
+        /// <summary>Creates a new <see cref="CancellationTokenSource"/> that will be linked with the provided <paramref name="cancellationToken"/>
+        /// and automatically cancelled, if not already cancelled, when <see cref="OnDeactivated"/> is called.</summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Anew <see cref="CancellationTokenSource"/> that will be linked with the provided <paramref name="cancellationToken"/>
+        /// and automatically cancelled, if not already cancelled, when <see cref="OnDeactivated"/> is called.</returns>
+        protected CancellationTokenSource CreateAutoCancellingTokenSource(CancellationToken cancellationToken)
+        {
+            Throw<InvalidOperationException>.WhenNull(_rootCancellationTokenSource, "Cannot create an auto-cancelling token source before activation or after deactivation.");
+
+            return CancellationTokenSource.CreateLinkedTokenSource(_rootCancellationTokenSource.Token, cancellationToken);
+        }
+
         /// <summary>Creates a <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that will be automatically cancelled, if running, when <see cref="OnDeactivated"/> is called.</summary>
         /// <param name="action">The action to execute when the command is executed.</param>
         /// <param name="canExecute">An optional observable that determines if the command can be executed.</param>

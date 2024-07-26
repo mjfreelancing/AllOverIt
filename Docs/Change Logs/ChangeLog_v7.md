@@ -4,6 +4,8 @@
 ### AllOverIt.ReactiveUI
 * Add CreateAutoCancellingCommand() overloads to ActivatableViewModel. These methods create commands that will auto
   cancel when the view model is deactivated.
+* Added CreateAutoCancellingTokenSource() overloads to ActivatableViewModel. These methods create cancellation token
+  sources that will auto cancel when the view model is deactivated.
 
 ---
 

@@ -32,6 +32,16 @@ namespace AllOverIt.ReactiveUI.Tests
                 _deactivated?.Invoke();
             }
 
+            public CancellationTokenSource DoCreateAutoCancellingTokenSource()
+            {
+                return CreateAutoCancellingTokenSource();
+            }
+
+            public CancellationTokenSource DoCreateAutoCancellingTokenSource(CancellationToken cancellationToken)
+            {
+                return CreateAutoCancellingTokenSource(cancellationToken);
+            }
+
             public ReactiveCommand<Unit, Unit> DoCreateAutoCancellingCommand(Func<CancellationToken, Task> action)
             {
                 return CreateAutoCancellingCommand(action);
@@ -85,6 +95,144 @@ namespace AllOverIt.ReactiveUI.Tests
             }
         }
 
+        public class CreateAutoCancellingTokenSource : ActivatableViewModelFixture
+        {
+            [Fact]
+            public void Should_Throw_Before_Activation()
+            {
+                var viewModel = new ViewModelDummy(null, null);
+
+                Invoking(() =>
+                {
+                    _ = viewModel.DoCreateAutoCancellingTokenSource();
+                })
+                .Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("Cannot create an auto-cancelling token source before activation or after deactivation.");
+            }
+
+            [Fact]
+            public void Should_Throw_After_Deactivation()
+            {
+                var viewModel = new ViewModelDummy(null, null);
+
+                using (viewModel.Activator.Activate())
+                {
+                }
+
+                Invoking(() =>
+                {
+                    _ = viewModel.DoCreateAutoCancellingTokenSource();
+                })
+                .Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("Cannot create an auto-cancelling token source before activation or after deactivation.");
+            }
+
+            [Fact]
+            public void Should_Auto_Cancel_Token_Source()
+            {
+                var viewModel = new ViewModelDummy(null, null);
+
+                var cts = new CancellationTokenSource[3];
+
+                using (viewModel.Activator.Activate())
+                {
+                    cts[0] = viewModel.DoCreateAutoCancellingTokenSource();
+                    cts[1] = viewModel.DoCreateAutoCancellingTokenSource();
+                    cts[2] = viewModel.DoCreateAutoCancellingTokenSource();
+
+                    cts[0].IsCancellationRequested.Should().BeFalse();
+                    cts[1].IsCancellationRequested.Should().BeFalse();
+                    cts[2].IsCancellationRequested.Should().BeFalse();
+                }
+
+                cts[0].IsCancellationRequested.Should().BeTrue();
+                cts[1].IsCancellationRequested.Should().BeTrue();
+                cts[2].IsCancellationRequested.Should().BeTrue();
+
+                cts[0].Dispose();
+                cts[1].Dispose();
+                cts[2].Dispose();
+            }
+        }
+
+        public class CreateAutoCancellingTokenSource_CancellingToken : ActivatableViewModelFixture
+        {
+            [Fact]
+            public void Should_Throw_Before_Activation()
+            {
+                var viewModel = new ViewModelDummy(null, null);
+
+                Invoking(() =>
+                {
+                    _ = viewModel.DoCreateAutoCancellingTokenSource(CancellationToken.None);
+                })
+                .Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("Cannot create an auto-cancelling token source before activation or after deactivation.");
+            }
+
+            [Fact]
+            public void Should_Throw_After_Deactivation()
+            {
+                var viewModel = new ViewModelDummy(null, null);
+
+                using (viewModel.Activator.Activate())
+                {
+                }
+
+                Invoking(() =>
+                {
+                    _ = viewModel.DoCreateAutoCancellingTokenSource(CancellationToken.None);
+                })
+                .Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("Cannot create an auto-cancelling token source before activation or after deactivation.");
+            }
+
+            [Fact]
+            public void Should_Auto_Cancel_Token_Source()
+            {
+                var viewModel = new ViewModelDummy(null, null);
+
+                using var otherCts1 = new CancellationTokenSource();
+                using var otherCts2 = new CancellationTokenSource();
+                using var otherCts3 = new CancellationTokenSource();
+
+                var cts = new CancellationTokenSource[3];
+
+                using (viewModel.Activator.Activate())
+                {
+                    cts[0] = viewModel.DoCreateAutoCancellingTokenSource(otherCts1.Token);
+                    cts[1] = viewModel.DoCreateAutoCancellingTokenSource(otherCts2.Token);
+                    cts[2] = viewModel.DoCreateAutoCancellingTokenSource(otherCts3.Token);
+
+                    otherCts1.IsCancellationRequested.Should().BeFalse();
+                    otherCts2.IsCancellationRequested.Should().BeFalse();
+                    otherCts3.IsCancellationRequested.Should().BeFalse();
+
+                    cts[0].IsCancellationRequested.Should().BeFalse();
+                    cts[1].IsCancellationRequested.Should().BeFalse();
+                    cts[2].IsCancellationRequested.Should().BeFalse();
+                }
+
+                // These will still be non-cancelled
+                otherCts1.IsCancellationRequested.Should().BeFalse();
+                otherCts2.IsCancellationRequested.Should().BeFalse();
+                otherCts3.IsCancellationRequested.Should().BeFalse();
+
+                // But the linked tokens will be cancelled
+                cts[0].IsCancellationRequested.Should().BeTrue();
+                cts[1].IsCancellationRequested.Should().BeTrue();
+                cts[2].IsCancellationRequested.Should().BeTrue();
+
+                cts[0].Dispose();
+                cts[1].Dispose();
+                cts[2].Dispose();
+            }
+        }
+
         public class CreateAutoCancellingCommand_Unit_Unit : ActivatableViewModelFixture
         {
             [Fact]
@@ -102,7 +250,7 @@ namespace AllOverIt.ReactiveUI.Tests
             }
 
             [Fact]
-            public void Should_Cancel_Command()
+            public void Should_Auto_Cancel_Command()
             {
                 var viewModel = new ViewModelDummy(null, null);
 
@@ -140,7 +288,7 @@ namespace AllOverIt.ReactiveUI.Tests
             }
 
             [Fact]
-            public void Should_Cancel_Command()
+            public void Should_Auto_Cancel_Command()
             {
                 var viewModel = new ViewModelDummy(null, null);
 
@@ -183,7 +331,7 @@ namespace AllOverIt.ReactiveUI.Tests
             }
 
             [Fact]
-            public void Should_Cancel_Command()
+            public void Should_Auto_Cancel_Command()
             {
                 var viewModel = new ViewModelDummy(null, null);
 
@@ -221,7 +369,7 @@ namespace AllOverIt.ReactiveUI.Tests
             }
 
             [Fact]
-            public void Should_Cancel_Command()
+            public void Should_Auto_Cancel_Command()
             {
                 var viewModel = new ViewModelDummy(null, null);
 
