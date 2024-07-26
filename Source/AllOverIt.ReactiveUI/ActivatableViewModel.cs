@@ -49,8 +49,6 @@ namespace AllOverIt.ReactiveUI
         /// <param name="action">The action to execute when the command is executed.</param>
         /// <param name="canExecute">An optional observable that determines if the command can be executed.</param>
         /// <param name="outputScheduler">An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.</param>
-        /// <returns>A <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that will be automatically cancelled, if running. when <see cref="OnDeactivated"/> is called.</returns>
-        protected ReactiveCommand<Unit, Unit> CreateAutoCancellingCommand(Func<CancellationToken, Task> action, IObservable<bool>? canExecute = default,
         /// <returns>A <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that will be automatically cancelled, if running, when <see cref="OnDeactivated"/> is called.</returns>
         protected ReactiveCommand<Unit, Unit> CreateAutoCancellingCommand(Func<CancellationToken, Task> action, IObservable<bool> canExecute = default,
             IScheduler outputScheduler = default)
@@ -60,12 +58,10 @@ namespace AllOverIt.ReactiveUI
             return CommandFactory.CreateCancellableCommand(action, () => _deactivating, canExecute, outputScheduler);
         }
 
-        /// <summary>Creates a <c>ReactiveCommand&lt;Unit, TResult&gt;</c> that will be automatically cancelled, if running. when <see cref="OnDeactivated"/> is called.</summary>
         /// <summary>Creates a <c>ReactiveCommand&lt;Unit, TResult&gt;</c> that will be automatically cancelled, if running, when <see cref="OnDeactivated"/> is called.</summary>
         /// <param name="action">The action to execute when the command is executed.</param>
         /// <param name="canExecute">An optional observable that determines if the command can be executed.</param>
         /// <param name="outputScheduler">An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.</param>
-        /// <returns>A <c>ReactiveCommand&lt;Unit, TResult&gt;</c> that will be automatically cancelled, if running. when <see cref="OnDeactivated"/> is called.</returns>
         /// <returns>A <c>ReactiveCommand&lt;Unit, TResult&gt;</c> that will be automatically cancelled, if running, when <see cref="OnDeactivated"/> is called.</returns>
         protected ReactiveCommand<Unit, TResult> CreateAutoCancellingCommand<TResult>(Func<CancellationToken, Task<TResult>> action,
             IObservable<bool> canExecute = default, IScheduler outputScheduler = default)
