@@ -1,3 +1,13 @@
+#  Version 7.26.0
+## 27 Jul 2024
+
+### AllOverIt.ReactiveUI
+* Add CreateAutoCancellingCommand() overloads to ActivatableViewModel. These methods create commands that will auto
+  cancel when the view model is deactivated.
+
+---
+
+
 #  Version 7.25.0
 ## 25 Jul 2024
 
