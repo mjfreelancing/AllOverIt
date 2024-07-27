@@ -488,6 +488,31 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        public class IsRecordType : TypeExtensionsFixture
+        {
+            private record DummyRecord;
+            private class DummyClass;
+            private struct DummyStruct;
+
+            [Fact]
+            public void Should_Return_True_When_A_Record()
+            {
+                typeof(DummyRecord).IsRecordType().Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Return_False_When_A_Class()
+            {
+                typeof(DummyClass).IsRecordType().Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Return_False_When_A_Struct()
+            {
+                typeof(DummyStruct).IsRecordType().Should().BeFalse();
+            }
+        }
+
         public class IsIntegralType : TypeExtensionsFixture
         {
             [Theory]

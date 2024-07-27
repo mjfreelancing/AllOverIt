@@ -144,17 +144,15 @@ namespace AllOverIt.Extensions
               null, types, null);
         }
 
-
-
+        /// <summary>Indicates if the <see cref="Type"/> is a record type.</summary>
+        /// <param name="type">The type to determine if it is a record type.</param>
+        /// <returns><see langword="True" /> if the <see cref="Type"/> is a record type, otherwise <see langword="False" />.</returns>
         public static bool IsRecordType(this Type type)
         {
             return type
                 .GetPropertyInfo(BindingOptions.Instance | BindingOptions.Virtual | BindingOptions.Protected, false)
                 .Any(item => item.Name.Equals("EqualityContract") && item.IsCompilerGenerated());
         }
-
-
-
 
         /// <summary>Indicates if the <see cref="Type"/> represents an integral type.</summary>
         /// <param name="type">The type to compare.</param>
