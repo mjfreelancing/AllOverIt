@@ -60,7 +60,7 @@ namespace AllOverIt.Csv.Exporter
             // _writer will be null if there was no data to process
             if (_writer is not null)
             {
-                await _writer.FlushAsync(cancellationToken);
+                await _writer.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -68,11 +68,11 @@ namespace AllOverIt.Csv.Exporter
         public async Task CloseAsync(CancellationToken cancellationToken)
         {
             // Force the _writer to be created and data flushed if the buffer has not been exhausted
-            await FlushAsync(cancellationToken);
+            await FlushAsync(cancellationToken).ConfigureAwait(false);
 
             if (_writer is not null)
             {
-                await _writer.DisposeAsync();
+                await _writer.DisposeAsync().ConfigureAwait(false);
                 _writer = null;
 
                 _csvSerializer = null;
@@ -126,7 +126,7 @@ namespace AllOverIt.Csv.Exporter
                     _writer = new StreamWriter(Stream, null, -1, false);
                 }
 
-                await _csvSerializer.SerializeAsync(_writer, _data, includeHeaders, true, cancellationToken);
+                await _csvSerializer.SerializeAsync(_writer, _data, includeHeaders, true, cancellationToken).ConfigureAwait(false);
 
                 _data.Clear();
             }
