@@ -488,76 +488,6 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class IsEnumType : TypeExtensionsFixture
-        {
-            [Theory]
-            [InlineData(typeof(DummyEnum), true)]
-            [InlineData(typeof(int), false)]
-            [InlineData(typeof(string), false)]
-            [InlineData(typeof(bool), false)]
-            [InlineData(typeof(char), false)]
-            [InlineData(typeof(PropertySuperClass), false)]
-            public void Should_Determine_If_Is_Enum_Type(Type type, bool expected)
-            {
-                var actual = AllOverIt.Extensions.TypeExtensions.IsEnumType(type);
-
-                actual.Should().Be(expected);
-            }
-        }
-
-        public class IsClassType : TypeExtensionsFixture
-        {
-            [Theory]
-            [InlineData(typeof(DummyEnum), false)]
-            [InlineData(typeof(int), false)]
-            [InlineData(typeof(string), true)]
-            [InlineData(typeof(bool), false)]
-            [InlineData(typeof(char), false)]
-            [InlineData(typeof(PropertySuperClass), true)]
-            [InlineData(typeof(IEnumerable<int>), false)]
-            public void Should_Determine_If_Is_Class_Type(Type type, bool expected)
-            {
-                var actual = AllOverIt.Extensions.TypeExtensions.IsClassType(type);
-
-                actual.Should().Be(expected);
-            }
-        }
-
-        public class IsValueType : TypeExtensionsFixture
-        {
-            [Theory]
-            [InlineData(typeof(DummyEnum), true)]
-            [InlineData(typeof(int), true)]
-            [InlineData(typeof(string), false)]
-            [InlineData(typeof(bool), true)]
-            [InlineData(typeof(char), true)]
-            [InlineData(typeof(PropertySuperClass), false)]
-            [InlineData(typeof(IEnumerable<int>), false)]
-            public void Should_Determine_If_Is_Value_Type(Type type, bool expected)
-            {
-                var actual = AllOverIt.Extensions.TypeExtensions.IsValueType(type);
-
-                actual.Should().Be(expected);
-            }
-        }
-
-        public class IsPrimitiveType : TypeExtensionsFixture
-        {
-            [Theory]
-            [InlineData(typeof(DummyEnum), false)]
-            [InlineData(typeof(int), true)]
-            [InlineData(typeof(string), false)]
-            [InlineData(typeof(bool), true)]
-            [InlineData(typeof(char), true)]
-            [InlineData(typeof(PropertySuperClass), false)]
-            public void Should_Determine_If_Is_Primitive_Type(Type type, bool expected)
-            {
-                var actual = AllOverIt.Extensions.TypeExtensions.IsPrimitiveType(type);
-
-                actual.Should().Be(expected);
-            }
-        }
-
         public class IsIntegralType : TypeExtensionsFixture
         {
             [Theory]
@@ -673,22 +603,6 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Return_If_Is_Generic_Enumerable_Type(Type type, bool expected)
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.IsGenericEnumerableType(type);
-
-                actual.Should().Be(expected);
-            }
-        }
-
-        public class IsGenericType : TypeExtensionsFixture
-        {
-            [Theory]
-            [InlineData(typeof(int), false)]
-            [InlineData(typeof(string), false)]
-            [InlineData(typeof(Lazy<int>), true)]
-            [InlineData(typeof(IList<int>), true)]
-            [InlineData(typeof(IEnumerable<int>), true)]
-            public void Should_Return_If_Is_Generic_Type(Type type, bool expected)
-            {
-                var actual = AllOverIt.Extensions.TypeExtensions.IsGenericType(type);
 
                 actual.Should().Be(expected);
             }

@@ -144,37 +144,17 @@ namespace AllOverIt.Extensions
               null, types, null);
         }
 
-        /// <summary>Indicates if the <see cref="Type"/> represents an enumeration type.</summary>
-        /// <param name="type">The type to compare.</param>
-        /// <returns><see langword="True" /> if the <see cref="Type"/> represents an enumeration type, otherwise <see langword="False" />.</returns>
-        public static bool IsEnumType(this Type type)
+
+
+        public static bool IsRecordType(this Type type)
         {
-            return type.GetTypeInfo().IsEnum;
+            return type
+                .GetPropertyInfo(BindingOptions.Instance | BindingOptions.Virtual | BindingOptions.Protected, false)
+                .Any(item => item.Name.Equals("EqualityContract") && item.IsCompilerGenerated());
         }
 
-        /// <summary>Indicates if the <see cref="Type"/> represents a class type.</summary>
-        /// <param name="type">The type to compare.</param>
-        /// <returns><see langword="True" /> if the <see cref="Type"/> represents a class type, otherwise <see langword="False" />.</returns>
-        public static bool IsClassType(this Type type)
-        {
-            return type.GetTypeInfo().IsClass;
-        }
 
-        /// <summary>Indicates if the <see cref="Type"/> represents a value type.</summary>
-        /// <param name="type">The type to compare.</param>
-        /// <returns><see langword="True" /> if the <see cref="Type"/> represents a value type, otherwise <see langword="False" />.</returns>
-        public static bool IsValueType(this Type type)
-        {
-            return type.GetTypeInfo().IsValueType;
-        }
 
-        /// <summary>Indicates if the <see cref="Type"/> represents a primitive type.</summary>
-        /// <param name="type">The type to compare.</param>
-        /// <returns><see langword="True" /> if the <see cref="Type"/> represents a primitive type, otherwise <see langword="False" />.</returns>
-        public static bool IsPrimitiveType(this Type type)
-        {
-            return type.GetTypeInfo().IsPrimitive;
-        }
 
         /// <summary>Indicates if the <see cref="Type"/> represents an integral type.</summary>
         /// <param name="type">The type to compare.</param>
@@ -248,15 +228,7 @@ namespace AllOverIt.Extensions
         /// <returns><see langword="True" /> if the <see cref="Type"/> represents a generic enumerable type, otherwise <see langword="False" />.</returns>
         public static bool IsGenericEnumerableType(this Type type)
         {
-            return type.IsGenericType() && CommonTypes.IEnumerableType.IsAssignableFrom(type);
-        }
-
-        /// <summary>Indicates if the <see cref="Type"/> represents a generic type.</summary>
-        /// <param name="type">The type to compare.</param>
-        /// <returns><see langword="True" /> if the <see cref="Type"/> represents a generic type, otherwise <see langword="False" />.</returns>
-        public static bool IsGenericType(this Type type)
-        {
-            return type.GetTypeInfo().IsGenericType;
+            return type.IsGenericType && CommonTypes.IEnumerableType.IsAssignableFrom(type);
         }
 
         /// <summary>Determines if a type is derived from another base type, including unbound generic types such as List&lt;>. Similar to
@@ -316,7 +288,7 @@ namespace AllOverIt.Extensions
         /// <returns><see langword="True" /> if the <see cref="Type"/> represents a generic nullable type, otherwise <see langword="False" />.</returns>
         public static bool IsNullableType(this Type type)
         {
-            return type.IsGenericType() && (type.GetGenericTypeDefinition() == CommonTypes.NullableGenericType);
+            return type.IsGenericType && (type.GetGenericTypeDefinition() == CommonTypes.NullableGenericType);
         }
 
         /// <summary>Recursively looks for a base generic type definition of a specified type. As an example, given a <c>List&lt;string></c>, looking for
@@ -383,7 +355,7 @@ namespace AllOverIt.Extensions
                 return GetFullyQualifiedPrefix(type.DeclaringType, $"{type.DeclaringType.GetFriendlyName()}.{current}");
             }
 
-            if (type.IsGenericType() && !type.IsNullableType())
+            if (type.IsGenericType && !type.IsNullableType())
             {
                 var typeName = type.Name;
 

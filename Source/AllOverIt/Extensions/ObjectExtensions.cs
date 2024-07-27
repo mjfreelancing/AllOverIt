@@ -95,7 +95,7 @@ namespace AllOverIt.Extensions
             private static object? AsFromIntegralToEnum(object? instance, Type instanceType, Type convertToType)
             {
                 // Converting from byte, sbyte, short, ushort, int, uint, long, or ulong to Enum
-                if (convertToType.IsEnumType() && instance.IsIntegral())
+                if (convertToType.IsEnum && instance.IsIntegral())
                 {
                     // cater for when Enum has an underlying type other than 'int'
                     var underlyingValue = GetEnumAsUnderlyingValue(instance, convertToType);
@@ -130,7 +130,7 @@ namespace AllOverIt.Extensions
                     return null;
                 }
 
-                if (convertToType.IsClassType() && convertToType != CommonTypes.StringType)
+                if (convertToType.IsClass && convertToType != CommonTypes.StringType)
                 {
                     // return the same value if the instance is a class inheriting `TType`
                     if (instanceType.IsDerivedFrom(convertToType))
@@ -153,7 +153,7 @@ namespace AllOverIt.Extensions
 
             private static object? AsUsingInstanceTypeConverter(object? instance, Type instanceType, Type convertToType)
             {
-                if (instanceType.IsClassType() && instanceType != CommonTypes.StringType)
+                if (instanceType.IsClass && instanceType != CommonTypes.StringType)
                 {
                     var typeConverter = TypeDescriptor.GetConverter(instanceType);
 

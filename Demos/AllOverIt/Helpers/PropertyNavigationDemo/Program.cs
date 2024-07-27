@@ -86,7 +86,7 @@ namespace PropertyNavigationDemo
 
             var typeToCheck = elementType ?? leafNodeType;
 
-            if (typeToCheck.IsClassType() && typeToCheck != CommonTypes.StringType)
+            if (typeToCheck.IsClass && typeToCheck != CommonTypes.StringType)
             {
                 Console.WriteLine("The leaf node/element is a class type");
             }

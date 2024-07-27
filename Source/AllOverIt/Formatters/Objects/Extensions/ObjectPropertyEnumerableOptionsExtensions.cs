@@ -46,7 +46,7 @@ namespace AllOverIt.Formatters.Objects.Extensions
                 // elementType is null when not an array or IEnumerable
                 var typeToCheck = elementType ?? leafNodeType;
 
-                if (typeToCheck.IsClassType() && typeToCheck != CommonTypes.StringType)
+                if (typeToCheck.IsClass && typeToCheck != CommonTypes.StringType)
                 {
                     throw new ObjectPropertyFilterException($"The leaf property on path '{fullNodePath}' cannot be a class type ({item.ObjectType.GetFriendlyName()}).");
                 }

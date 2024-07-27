@@ -389,7 +389,7 @@ namespace AllOverIt.Formatters.Objects
             // Only allowing the collation of primitive types - collating complex types is not very helpful / readable
             var elementType = GetEnumerableElementType(enumerable);
 
-            if (elementType.IsClassType() && elementType != CommonTypes.StringType)
+            if (elementType.IsClass && elementType != CommonTypes.StringType)
             {
                 return false;
             }
