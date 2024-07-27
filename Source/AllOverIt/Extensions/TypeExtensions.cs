@@ -89,7 +89,7 @@ namespace AllOverIt.Extensions
             }
         }
 
-        /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <see cref="Type"/> and binding option.</summary>
+        /// <summary>Gets <see cref="MethodInfo"/> for a given <see cref="Type"/> and binding option.</summary>
         /// <param name="type">The type to obtain method metadata for.</param>
         /// <param name="bindingOptions">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
         /// <param name="declaredOnly">If False, the metadata of properties in the declared class as well as base class(es) are returned.
@@ -120,7 +120,7 @@ namespace AllOverIt.Extensions
             }
         }
 
-        /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <see cref="Type"/> method with a given name and no arguments.</summary>
+        /// <summary>Gets <see cref="MethodInfo"/> for a given <see cref="Type"/> method with a given name and no arguments.</summary>
         /// <param name="type">The type to obtain method metadata for.</param>
         /// <param name="name">The name of the method.</param>
         /// <returns>The method metadata, as <see cref="MethodInfo"/>, of a provided <see cref="Type"/> with a given name and no arguments.</returns>
@@ -130,7 +130,7 @@ namespace AllOverIt.Extensions
             return GetMethodInfo(type, name, Type.EmptyTypes);
         }
 
-        /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <see cref="Type"/> method with a given name and argument types.</summary>
+        /// <summary>Gets <see cref="MethodInfo"/> for a given <see cref="Type"/> method with a given name and argument types.</summary>
         /// <param name="type">The type to obtain method metadata for.</param>
         /// <param name="name">The name of the method.</param>
         /// <param name="types">The argument types expected on the method</param>

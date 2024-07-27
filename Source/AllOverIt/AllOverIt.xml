@@ -1628,7 +1628,7 @@
             by <paramref name="type"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.GetMethodInfo(System.Type,AllOverIt.Reflection.BindingOptions,System.Boolean)">
-            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <see cref="T:System.Type"/> and binding option.</summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> for a given <see cref="T:System.Type"/> and binding option.</summary>
             <param name="type">The type to obtain method metadata for.</param>
             <param name="binding">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
             <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned.
@@ -1638,14 +1638,14 @@
             by <paramref name="type"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.GetMethodInfo(System.Type,System.String)">
-            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <see cref="T:System.Type"/> method with a given name and no arguments.</summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> for a given <see cref="T:System.Type"/> method with a given name and no arguments.</summary>
             <param name="type">The type to obtain method metadata for.</param>
             <param name="name">The name of the method.</param>
             <returns>The method metadata, as <see cref="T:System.Reflection.MethodInfo"/>, of a provided <see cref="T:System.Type"/> with a given name and no arguments.</returns>
             <remarks>All instance, static, public, and non-public methods are searched.</remarks>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.GetMethodInfo(System.Type,System.String,System.Type[])">
-            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <see cref="T:System.Type"/> method with a given name and argument types.</summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> for a given <see cref="T:System.Type"/> method with a given name and argument types.</summary>
             <param name="type">The type to obtain method metadata for.</param>
             <param name="name">The name of the method.</param>
             <param name="types">The argument types expected on the method</param>
@@ -2770,7 +2770,7 @@
             by <typeparamref name="TType"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetMethodInfo``1(AllOverIt.Reflection.BindingOptions,System.Boolean)">
-            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> and binding option.</summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> for a given <typeparamref name="TType"/> and binding option.</summary>
             <typeparam name="TType">The type to obtain method metadata for.</typeparam>
             <param name="binding">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
             <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned.
@@ -2780,14 +2780,14 @@
             by <typeparamref name="TType"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetMethodInfo``1(System.String)">
-            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> method with a given name and no arguments.</summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> for a given <typeparamref name="TType"/> method with a given name and no arguments.</summary>
             <typeparam name="TType">The type to obtain method metadata for.</typeparam>
             <param name="name">The name of the method.</param>
             <returns>The method metadata, as <see cref="T:System.Reflection.MethodInfo"/>, of a specified <typeparamref name="TType"/> with a given name and no arguments.</returns>
             <remarks>All instance, static, public, and non-public methods are searched.</remarks>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetMethodInfo``1(System.String,System.Type[])">
-            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> method with a given name and argument types.</summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> for a given <typeparamref name="TType"/> method with a given name and argument types.</summary>
             <typeparam name="TType">The type to obtain method metadata for.</typeparam>
             <param name="name">The name of the method.</param>
             <param name="types">The argument types expected on the method</param>

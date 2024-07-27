@@ -9,7 +9,7 @@ namespace AllOverIt.Reflection
     {
         private static readonly GenericCache MethodInfoCache = [];
 
-        /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> and binding options.</summary>
+        /// <summary>Gets <see cref="MethodInfo"/> for a given <typeparamref name="TType"/> and binding options.</summary>
         /// <typeparam name="TType">The type to obtain method metadata for.</typeparam>
         /// <param name="bindingOptions">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
         /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned.
@@ -24,7 +24,7 @@ namespace AllOverIt.Reflection
             return GetMethodInfo(typeof(TType), bindingOptions, declaredOnly, valueResolver ?? GetMethodInfoFromTypeBindingDeclaredOnly()) ?? [];
         }
 
-        /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <paramref name="type"/> and binding options.</summary>
+        /// <summary>Gets <see cref="MethodInfo"/> for a given <paramref name="type"/> and binding options.</summary>
         /// <param name="type">The type to obtain method metadata for.</param>
         /// <param name="bindingOptions">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
         /// <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned.
@@ -43,7 +43,7 @@ namespace AllOverIt.Reflection
                 ?.AsArray() ?? [];
         }
 
-        /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> and method name.</summary>
+        /// <summary>Gets <see cref="MethodInfo"/> for a given <typeparamref name="TType"/> and method name.</summary>
         /// <typeparam name="TType">The type to obtain method metadata for.</typeparam>
         /// <param name="name">The name of the method.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="MethodInfo"/>.</param>
@@ -54,7 +54,7 @@ namespace AllOverIt.Reflection
             return GetMethodInfo<TType>(name, Type.EmptyTypes, valueResolver);
         }
 
-        /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <paramref name="type"/> and method name.</summary>
+        /// <summary>Gets <see cref="MethodInfo"/> for a given <paramref name="type"/> and method name.</summary>
         /// <param name="type">The type to obtain method metadata for.</param>
         /// <param name="name">The name of the method.</param>
         /// <param name="valueResolver">The factory method to obtain the required <see cref="MethodInfo"/>.</param>
@@ -65,7 +65,7 @@ namespace AllOverIt.Reflection
             return GetMethodInfo(type, name, Type.EmptyTypes, valueResolver);
         }
 
-        /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> method with a given name and argument types.</summary>
+        /// <summary>Gets <see cref="MethodInfo"/> for a given <typeparamref name="TType"/> method with a given name and argument types.</summary>
         /// <typeparam name="TType">The type to obtain method metadata for.</typeparam>
         /// <param name="name">The name of the method.</param>
         /// <param name="types">The argument types expected on the method</param>
@@ -77,7 +77,7 @@ namespace AllOverIt.Reflection
             return GetMethodInfo(typeof(TType), name, types, valueResolver ?? GetMethodInfoFromTypeMethodNameArgTypes());
         }
 
-        /// <summary>Gets <see cref="MethodInfo"/> (method metadata) for a given <paramref name="type"/> method with a given name and argument types.</summary>
+        /// <summary>Gets <see cref="MethodInfo"/> for a given <paramref name="type"/> method with a given name and argument types.</summary>
         /// <param name="type">The type to obtain method metadata for.</param>
         /// <param name="name">The name of the method.</param>
         /// <param name="types">The argument types expected on the method</param>
