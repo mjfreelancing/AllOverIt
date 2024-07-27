@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using System.Diagnostics;

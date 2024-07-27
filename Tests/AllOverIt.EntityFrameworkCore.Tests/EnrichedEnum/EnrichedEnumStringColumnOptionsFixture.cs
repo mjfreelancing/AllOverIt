@@ -1,4 +1,4 @@
-using AllOverIt.EntityFrameworkCore.EnrichedEnum;
+﻿using AllOverIt.EntityFrameworkCore.EnrichedEnum;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Assertions;
@@ -7,21 +7,21 @@ using FluentAssertions;
 
 namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
 {
-    public class EnrichedEnumColumnOptionsFixture : FixtureBase
+    public class EnrichedEnumStringColumnOptionsFixture : FixtureBase
     {
         [Fact]
         public void Should_Be_Record_Type()
         {
-            typeof(EnrichedEnumColumnOptions).IsRecordType().Should().BeTrue();
+            typeof(EnrichedEnumStringColumnOptions).IsRecordType().Should().BeTrue();
         }
 
         [Fact]
         public void Should_Have_Expected_Property_Definition()
         {
             Properties
-                .For<EnrichedEnumColumnOptions>()
+                .For<EnrichedEnumStringColumnOptions>()
                 .Should()
-                .MatchNames([nameof(EnrichedEnumColumnOptions.ColumnType)])
+                .MatchNames([nameof(EnrichedEnumStringColumnOptions.ColumnType), nameof(EnrichedEnumStringColumnOptions.MaxLength)])
                 .And
                 .BeDefinedAs(propertyInfo =>
                 {
