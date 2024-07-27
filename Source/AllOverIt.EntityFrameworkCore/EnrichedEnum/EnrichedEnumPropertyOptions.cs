@@ -19,9 +19,9 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         }
 
         /// <summary>Configures the property to be stored as a string.</summary>
-        /// <param name="columnType">Optional. When not <see langowrd="null"/>, this configures the data type of the column that the property maps to when targeting a relational database.
+        /// <param name="columnType">Optional. When not <see langword="null"/>, this configures the data type of the column that the property maps to when targeting a relational database.
         /// This should be the complete type name, including its length.</param>
-        /// <param name="maxLength">Optional. When not <see langowrd="null"/>, this value specifies the column's maximum length. This parameter is not required if the [MaxLength] attribute is used.</param>
+        /// <param name="maxLength">Optional. When not <see langword="null"/>, this value specifies the column's maximum length. This parameter is not required if the [MaxLength] attribute is used.</param>
         [MemberNotNull(nameof(TypeConverter))]
         public void AsName(string? columnType = default, int? maxLength = default)
         {
@@ -37,7 +37,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         }
 
         /// <summary>Configures the property to be stored as an integer.</summary>
-        /// <param name="columnType">Optional. When not <see langowrd="null"/>, this configures the data type of the column that the property maps to when targeting a relational database.</param>
+        /// <param name="columnType">Optional. When not <see langword="null"/>, this configures the data type of the column that the property maps to when targeting a relational database.</param>
         [MemberNotNull(nameof(TypeConverter))]
         public void AsValue(string? columnType = default)
         {
