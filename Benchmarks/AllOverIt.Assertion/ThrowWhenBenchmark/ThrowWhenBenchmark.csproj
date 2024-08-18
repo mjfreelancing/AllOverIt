@@ -9,7 +9,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\Source\AllOverIt.Assertion\AllOverIt.Assertion.csproj" />
+        <ProjectReference Include="..\..\..\Source\AllOverIt.Assertion\AllOverIt.Assertion.csproj" />
     </ItemGroup>
 
 </Project>

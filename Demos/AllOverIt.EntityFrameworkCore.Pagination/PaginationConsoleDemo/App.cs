@@ -52,7 +52,11 @@ namespace PaginationConsoleDemo
                             // required for access to "citext"
                             using (var connection = (NpgsqlConnection) dbContext.Database.GetDbConnection())
                             {
-                                connection.Open();
+                                if (connection.State != System.Data.ConnectionState.Open)
+                                {
+                                    connection.Open();
+                                }
+
                                 connection.ReloadTypes();
                             }
                             break;
