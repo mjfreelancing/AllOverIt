@@ -7,6 +7,10 @@
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+	</ItemGroup>
+
     <PropertyGroup>
 		<!--IDE0063 - 'using' statement can be simplified-->
 		<!--IDE0290 - use primary constructor-->
