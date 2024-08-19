@@ -9,23 +9,10 @@ namespace AllOverIt.Logging.Tests
 {
     public class LogCallOptionsFixture : FixtureBase
     {
-        private const string _callPrefixDefault = "Call: ";
-        private const string _exceptionPrefixDefault = "Error: ";
-        private const string _methodNamePropertyDefault = "MethodName";
-        private const string _exceptionMessagePropertyDefault = "ErrorMessage";
-        private const string _argumentsPrefixDefault = "Arguments = ";
-        private const string _argumentsPropertyDefault = "Arguments";
-
         public LogCallOptionsFixture()
         {
             // Restore state between each test
-            LogCallOptions.UseCallPrefix(_callPrefixDefault);
-            LogCallOptions.UseExceptionPrefix(_exceptionPrefixDefault);
-            LogCallOptions.UseMethodNameProperty(_methodNamePropertyDefault);
-            LogCallOptions.UseExceptionMessageProperty(_exceptionMessagePropertyDefault);
-            LogCallOptions.UseArgumentsPrefix(_argumentsPrefixDefault);
-            LogCallOptions.UseArgumentsDestructureProperty(_argumentsPropertyDefault);
-            LogCallOptions.IncludeCallerNamespace(true);
+            LogCallOptions.Instance.Reset();
         }
 
         [Collection("LogCall")]

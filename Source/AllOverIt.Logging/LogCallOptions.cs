@@ -3,6 +3,7 @@
 using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Logging
 {
@@ -13,19 +14,17 @@ namespace AllOverIt.Logging
     /// <see cref="Extensions.LoggerExtensions.LogAllExceptions(ILogger, Exception, string?, object?[])"/>.</summary>
     public sealed class LogCallOptions
     {
-        private string? _logTemplateWithNoArguments = null;     // "Call: {MethodName}";
-        private string? _logTemplateWithArguments = null;       // "Call: {MethodName}, Arguments = {@Arguments}";
-        private string? _logExceptionTemplate = null;           // "Error: {ErrorMessage}";
-        private bool _includeCallerNamespace = true;
+        private string? _logTemplateWithNoArguments;    // "Call: {MethodName}";
+        private string? _logTemplateWithArguments;      // "Call: {MethodName}, Arguments = {@Arguments}";
+        private string? _logExceptionTemplate;          // "Error: {ErrorMessage}";
+        private bool _includeCallerNamespace;
 
-        internal static readonly LogCallOptions Instance = new();
-
-        internal string _callPrefix = "Call: ";
-        internal string _exceptionPrefix = "Error: ";
-        internal string _methodNameProperty = "MethodName";
-        internal string _argumentsPrefix = "Arguments = ";
-        internal string _argumentsDestructureProperty = "Arguments";
-        internal string _exceptionMessageProperty = "ErrorMessage";
+        internal string _callPrefix;
+        internal string _exceptionPrefix;
+        internal string _methodNameProperty;
+        internal string _argumentsPrefix;
+        internal string _argumentsDestructureProperty;
+        internal string _exceptionMessageProperty;
 
         internal string LogTemplateWithNoArguments
         {
@@ -35,6 +34,33 @@ namespace AllOverIt.Logging
 
                 return _logTemplateWithNoArguments;
             }
+        }
+
+        internal static readonly LogCallOptions Instance = new();
+
+        public LogCallOptions()
+        {
+            Reset();
+        }
+
+        // Also used for resetting between tests
+        [MemberNotNull(
+            nameof(_logTemplateWithNoArguments), nameof(_logTemplateWithArguments), nameof(_logExceptionTemplate),
+            nameof(_includeCallerNamespace), nameof(_callPrefix), nameof(_exceptionPrefix), nameof(_methodNameProperty),
+            nameof(_argumentsPrefix), nameof(_argumentsDestructureProperty), nameof(_exceptionMessageProperty))]
+        internal void Reset()
+        {
+            _logTemplateWithNoArguments = null;
+            _logTemplateWithArguments = null;
+            _logExceptionTemplate = null;
+            _includeCallerNamespace = true;
+
+            _callPrefix = "Call: ";
+            _exceptionPrefix = "Error: ";
+            _methodNameProperty = "MethodName";
+            _argumentsPrefix = "Arguments = ";
+            _argumentsDestructureProperty = "Arguments";
+            _exceptionMessageProperty = "ErrorMessage";
         }
 
         internal string LogTemplateWithArguments

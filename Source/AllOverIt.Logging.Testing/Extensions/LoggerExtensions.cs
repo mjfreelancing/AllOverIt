@@ -166,7 +166,10 @@ namespace AllOverIt.Logging.Testing.Extensions
                         var callContext = new MethodCallContext.Item
                         {
                             LogLevel = args.ArgAt<LogLevel>(0),
+
+                            // Is actually of type FormattedLogValues, but this isn't public
                             Metadata = args.ArgAt<IReadOnlyList<KeyValuePair<string, object?>>>(2).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+
                             Exception = args.ArgAt<Exception?>(3)
                         };
 
