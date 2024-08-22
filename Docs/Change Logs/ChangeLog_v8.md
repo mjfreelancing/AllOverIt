@@ -25,6 +25,7 @@
 * Renamed `ElementDictionaryExtensions.TryGetManyObjectArrayValues<TValue>()` to `ElementDictionaryExtensions.TryGetManyObjectValues<TValue>()`.
 * Methods such as `ElementDictionaryExtensions.TryGetDescendantObjectArray()` previously returned an empty array for
   the out argument when the method returned false. These methods now return null for this argument.
+* Removed extension methods already available as properties on `Type`: IsGenericType(), IsEnumType(), IsClassType(), IsValueType(), IsPrimitiveType()
 
 
 ### AllOverIt.Aws.Cdk.AppSync
