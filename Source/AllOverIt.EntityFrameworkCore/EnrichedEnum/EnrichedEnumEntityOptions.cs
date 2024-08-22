@@ -25,7 +25,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         /// inherit <see cref="EnrichedEnum{TEnum}"/>. To filter the properties, call one of the <c>Property()</c> or
         /// <c>Properties()</c> methods.</summary>
         /// <param name="entityTypes">One or more entity types to be configured.</param>
-        public EnrichedEnumEntityOptions(IEnumerable<Type> entityTypes)
+        public EnrichedEnumEntityOptions(Type[] entityTypes)
         {
             EntityPredicate = entity => entityTypes.Contains(entity.ClrType);
             PropertyPredicate = property => property.PropertyType.IsEnrichedEnum();

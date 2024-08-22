@@ -1,7 +1,10 @@
-﻿using AllOverIt.Patterns.Enumeration;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Patterns.Enumeration;
 
 namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 {
+    // This is also tested via ModelBuilderExtensions.UseEnrichedEnum()
+
     /// <summary>Provides model builder options to configure entities containing properties that inherit <see cref="EnrichedEnum{TEnum}"/>.</summary>
     public sealed class EnrichedEnumModelBuilderOptions
     {
@@ -23,6 +26,8 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         /// <returns>An options instance for the specified entity type.</returns>
         public EnrichedEnumEntityOptions Entity(Type entityType)
         {
+            _ = entityType.WhenNotNull();
+
             return Entities(entityType);
         }
 
@@ -31,7 +36,10 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         /// <returns>An options instance for the specified entity types.</returns>
         public EnrichedEnumEntityOptions Entities(params Type[] entityTypes)
         {
+            _ = entityTypes.WhenNotNullOrEmpty();
+
             var entityOption = new EnrichedEnumEntityOptions(entityTypes);
+
             _entityOptions.Add(entityOption);
 
             return entityOption;
@@ -65,6 +73,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
             if (_entityOptions.Count == 0)
             {
                 var options = new EnrichedEnumEntityOptions();
+
                 _entityOptions.Add(options);
             }
 
