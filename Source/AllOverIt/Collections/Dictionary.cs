@@ -6,14 +6,14 @@
         private sealed class EmptyReadOnlyDictionary<TKey, TValue>
             where TKey : notnull
         {
-            internal static readonly IReadOnlyDictionary<TKey, TValue> Instance = new ReadOnlyDictionary<TKey, TValue>();
+            internal static readonly ReadOnlyDictionary<TKey, TValue> Instance = [];
         }
 
-        /// <summary>Gets a static instance of a <see cref="IReadOnlyDictionary{TKey, TValue}"/>.</summary>
+        /// <summary>Gets a static instance of a <see cref="ReadOnlyDictionary{TKey, TValue}"/>.</summary>
         /// <typeparam name="TKey">The dictionary key type.</typeparam>
         /// <typeparam name="TValue">The dictionary value type.</typeparam>
-        /// <returns>A static empty dictionary as an <see cref="IReadOnlyDictionary{TKey, TValue}"/>.</returns>
-        public static IReadOnlyDictionary<TKey, TValue> EmptyReadOnly<TKey, TValue>()
+        /// <returns>A static empty dictionary as a <see cref="ReadOnlyDictionary{TKey, TValue}"/>.</returns>
+        public static ReadOnlyDictionary<TKey, TValue> EmptyReadOnly<TKey, TValue>()
             where TKey : notnull
         {
             return EmptyReadOnlyDictionary<TKey, TValue>.Instance;
