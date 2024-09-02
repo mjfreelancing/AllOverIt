@@ -5,7 +5,7 @@ namespace AllOverIt.Pagination.TokenEncoding
 {
     internal sealed class ContinuationTokenWriter : EnrichedBinaryValueWriter<ContinuationToken>
     {
-        private static readonly Type ValuesType = typeof(IReadOnlyCollection<object>);
+        private static readonly Type ValuesType = typeof(object[]);
 
         public override void WriteValue(IEnrichedBinaryWriter writer, object value)
         {
