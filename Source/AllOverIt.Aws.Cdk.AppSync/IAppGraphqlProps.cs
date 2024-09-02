@@ -12,7 +12,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
     {
         /// <summary>Provides a list of all DataSources, each having a <see cref="GraphqlDataSourceBase.DataSourceName"/>. This unique name
         /// is referenced by a resolver attribute, such as <see cref="UnitResolverAttribute"/>, to associate it with a field.</summary>
-        IReadOnlyCollection<GraphqlDataSourceBase> DataSources { get; }
+        GraphqlDataSourceBase[] DataSources { get; }
 
         /// <summary>Provides name overrides for types discovered without a <see cref="SchemaTypeBaseAttribute"/>,
         /// such as <see cref="SchemaEnumAttribute"/>. This would normally be used with other types, such as enumerations,

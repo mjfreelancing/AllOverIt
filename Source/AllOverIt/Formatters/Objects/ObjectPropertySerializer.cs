@@ -348,7 +348,7 @@ namespace AllOverIt.Formatters.Objects
             Filter.PropertyPath = propertyPath;
             Filter.Name = name;     // Is null when iterating over a collection (Index will be non-null)
             Filter.Index = index;
-            Filter.Parents = references.Values.AsReadOnlyCollection();
+            Filter.Parents = [.. references.Values];
         }
 
         private bool IncludeProperty(Type type, object value, string path, string? name, int? index, IDictionary<object, ObjectPropertyParent> references)

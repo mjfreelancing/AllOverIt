@@ -177,7 +177,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             public ShapeStyle ShapeStyle { get; }
 
             /// <summary>The entity types associated with the group.</summary>
-            public IReadOnlyCollection<Type> EntityTypes => _entityTypes;
+            public Type[] EntityTypes => [.. _entityTypes];
 
             /// <summary>Constructor.</summary>
             /// <param name="title">The group's title. Set to <see langword="null"/> if not required.</param>

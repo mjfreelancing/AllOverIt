@@ -141,7 +141,7 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 if (EnumerableOptions.AutoCollatedPaths.IsNullOrEmpty())
                 {
-                    EnumerableOptions.CollateValues = Parents.Any() && Parents.Count >= 3;
+                    EnumerableOptions.CollateValues = Parents.Any() && Parents.Length >= 3;
                 }
 
                 return true;

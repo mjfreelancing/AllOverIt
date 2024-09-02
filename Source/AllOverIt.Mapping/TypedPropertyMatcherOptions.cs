@@ -144,7 +144,7 @@ namespace AllOverIt.Mapping
                 .For<TType>()
                 .Navigate(sourceExpression);
 
-            if (propertyNodes.Nodes.Count > 1)
+            if (propertyNodes.Nodes.Length > 1)
             {
                 throw new ObjectMapperException($"ObjectMapper do not support nested mappings ({sourceExpression}).");
             }

@@ -42,7 +42,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
         private static EntityColumns GetEntityColumnDescriptors(DbContext dbContext)
         {
-            var entityDescriptors = new Dictionary<EntityIdentifier, IReadOnlyCollection<IColumnDescriptor>>();
+            var entityDescriptors = new Dictionary<EntityIdentifier, IColumnDescriptor[]>();
 
             var entityTypes = dbContext.Model.GetEntityTypes();
 

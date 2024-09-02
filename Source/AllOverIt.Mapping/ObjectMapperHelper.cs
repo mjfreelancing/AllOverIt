@@ -8,7 +8,7 @@ namespace AllOverIt.Mapping
     // These methods are indirectly tested via ObjectMapper and ObjectExtensions (AllOverIt.Mapping.Extensions)
     internal static class ObjectMapperHelper
     {
-        internal static IReadOnlyCollection<PropertyInfo> GetMappableProperties(Type sourceType, Type targetType, PropertyMatcherOptions options)
+        internal static PropertyInfo[] GetMappableProperties(Type sourceType, Type targetType, PropertyMatcherOptions options)
         {
             _ = options.WhenNotNull();
 
@@ -20,7 +20,7 @@ namespace AllOverIt.Mapping
                     targetProps,
                     src => GetTargetAliasName(src.Name, options),
                     target => target.Name)
-                .AsReadOnlyCollection();
+                .ToArray();
         }
 
         internal static string GetTargetAliasName(string sourceName, PropertyMatcherOptions options)

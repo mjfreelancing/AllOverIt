@@ -23,7 +23,7 @@
         public int? Index { get; internal set; }
 
         /// <summary>Provides a collection of parent objects associated with the current value.</summary>
-        public IReadOnlyCollection<ObjectPropertyParent>? Parents { get; internal set; }
+        public ObjectPropertyParent[]? Parents { get; internal set; }
 
         /// <summary>Provides options that allow array values to be collated to a single value.</summary>
         /// <remarks>These options override the serializer's global array handling options.</remarks>

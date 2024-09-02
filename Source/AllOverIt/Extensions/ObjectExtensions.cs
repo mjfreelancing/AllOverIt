@@ -15,7 +15,7 @@ namespace AllOverIt.Extensions
         private static class ObjectConversionHelper
         {
             // instance, instance type, convertTo type, convertTo value
-            private static readonly IReadOnlyCollection<Func<object?, Type, Type, object?>> AsConverters =
+            private static readonly Func<object?, Type, Type, object?>[] AsConverters =
             [
                 AsSameTypeOrObject,
                 AsFromIntegralToBool,

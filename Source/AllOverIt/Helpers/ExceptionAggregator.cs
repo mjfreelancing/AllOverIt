@@ -8,7 +8,7 @@ namespace AllOverIt.Helpers
         private readonly List<Exception> _exceptions = [];
 
         /// <summary>Provides all exceptions currently added to the aggregator.</summary>
-        public IReadOnlyCollection<Exception> Exceptions => _exceptions;
+        public Exception[] Exceptions => [.. _exceptions];
 
         /// <summary>Adds a new exception to the aggregator. If it is an AggregateException it will be flattened into
         /// the resulting AggregateException thrown at the time of calling <see cref="ThrowIfAnyExceptions"/>.</summary>

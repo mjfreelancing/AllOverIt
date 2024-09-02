@@ -44,7 +44,7 @@ namespace SerializeObjectPropertiesDemo
         {
             lastParent = null;
 
-            if (Parents is null || Parents.Count == 0)
+            if (Parents is null || Parents.Length == 0)
             {
                 return false;
             }

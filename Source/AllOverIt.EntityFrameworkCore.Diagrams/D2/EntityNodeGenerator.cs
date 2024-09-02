@@ -23,7 +23,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             _defaultShapeStyle = defaultShapeStyle;     // can be string.Empty
         }
 
-        public string CreateNode(EntityIdentifier entityIdentifier, IReadOnlyCollection<IColumnDescriptor> columns, Action<string> onRelationship)
+        public string CreateNode(EntityIdentifier entityIdentifier, IColumnDescriptor[] columns, Action<string> onRelationship)
         {
             _ = entityIdentifier.WhenNotNull();
             _ = columns.WhenNotNullOrEmpty();
@@ -102,7 +102,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             return sb.ToString();
         }
 
-        private static IEnumerable<IColumnDescriptor> GetPreservedColumnOrder(EntityIdentifier entityIdentifier, IReadOnlyCollection<IColumnDescriptor> columns)
+        private static IEnumerable<IColumnDescriptor> GetPreservedColumnOrder(EntityIdentifier entityIdentifier, IColumnDescriptor[] columns)
         {
             List<string> orderedPropertyNames = [];
             List<Type> orderedPropertyTypes = [];

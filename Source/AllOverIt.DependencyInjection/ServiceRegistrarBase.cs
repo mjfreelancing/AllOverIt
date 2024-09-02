@@ -13,20 +13,20 @@ namespace AllOverIt.DependencyInjection
     /// </summary>
     public abstract class ServiceRegistrarBase : IServiceRegistrar, IServiceRegistrarOptions
     {
-        private readonly Lazy<IReadOnlyCollection<Type>> _implementationCandidates;
+        private readonly Lazy<Type[]> _implementationCandidates;
         private Func<Type, Type, bool>? _registrationFilter;
 
-        private IReadOnlyCollection<Type> ImplementationCandidates => _implementationCandidates.Value;
+        private Type[] ImplementationCandidates => _implementationCandidates.Value;
 
         /// <summary>Constructor.</summary>
         public ServiceRegistrarBase()
         {
-            _implementationCandidates = new Lazy<IReadOnlyCollection<Type>>(() =>
+            _implementationCandidates = new Lazy<Type[]>(() =>
             {
                 return GetType().Assembly
                     .GetTypes()
                     .Where(type => type.IsClass && !type.IsGenericType && !type.IsNested && !type.IsAbstract)
-                    .AsReadOnlyCollection();
+                    .ToArray();
             });
         }
 

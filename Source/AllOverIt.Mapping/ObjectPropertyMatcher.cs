@@ -43,7 +43,7 @@ namespace AllOverIt.Mapping
                 .GetPropertyInfo(targetType, matcherOptions.Binding)!
                 .ToDictionary(prop => prop.Name);
 
-            var matchedProps = new List<PropertyMatchInfo>(matches.Count);
+            var matchedProps = new List<PropertyMatchInfo>(matches.Length);
 
             foreach (var match in matches)
             {
