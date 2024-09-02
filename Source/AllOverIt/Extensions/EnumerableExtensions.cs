@@ -47,6 +47,9 @@ namespace AllOverIt.Extensions
             return items as IList<TType> ?? items.ToList();
         }
 
+        // Note: This method intentionally returns IReadOnlyList{T} so ANY class implementing
+        // this interface will be returned as the same instance.
+        //
         /// <summary>Returns the source items as an <see cref="IReadOnlyList{T}"/>.</summary>
         /// <typeparam name="TType">The type stored in the source collection.</typeparam>
         /// <param name="items">The source of items to be returned as an IReadOnlyList.</param>
@@ -60,6 +63,9 @@ namespace AllOverIt.Extensions
             return items as IReadOnlyList<TType> ?? items.ToList();
         }
 
+        // Note: This method intentionally returns IReadOnlyCollection{T} so ANY class implementing
+        // this interface will be returned as the same instance.
+        //
         /// <summary>Returns the source items as an <see cref="IReadOnlyCollection{T}"/>.</summary>
         /// <typeparam name="TType">The type stored in the source collection.</typeparam>
         /// <param name="items">The source of items to be returned as an IReadOnlyCollection.</param>
