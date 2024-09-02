@@ -12,7 +12,7 @@ namespace AllOverIt.Pagination.Tests
             public void Should_Create_From_Other_Results()
             {
                 var firstResults = Create<PageResult<string>>();
-                var results = CreateMany<int>(firstResults.Results.Count);
+                var results = CreateMany<int>(firstResults.Results.Length);
 
                 var actual = PageResult<int>.CreateFrom(firstResults, results);
 

@@ -47,8 +47,8 @@ namespace AllOverIt.EntityFrameworkCore.Pagination.Extensions
         {
             var totalCount = await queryPaginator.BaseQuery.CountAsync(cancellationToken).ConfigureAwait(false);
             var pageQuery = queryPaginator.GetPageQuery(continuationToken);
-            var pageResults = await pageQuery.ToListAsync(cancellationToken).ConfigureAwait(false);
-            var hasResults = pageResults.Count != 0;
+            var pageResults = await pageQuery.ToArrayAsync(cancellationToken).ConfigureAwait(false);
+            var hasResults = pageResults.Length != 0;
 
             string? previousToken = null;
             string? nextToken = null;

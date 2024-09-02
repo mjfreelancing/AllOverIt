@@ -10,7 +10,7 @@ namespace AllOverIt.Pagination
     public class PageResult<TResult>
     {
         /// <summary>A page of results.</summary>
-        public required IReadOnlyCollection<TResult> Results { get; init; }
+        public required TResult[] Results { get; init; }
 
         /// <summary>The total number of records, across all pages, that satisfies the query.</summary>
         public required int TotalCount { get; init; }
@@ -38,7 +38,7 @@ namespace AllOverIt.Pagination
         {
             return new PageResult<TResult>
             {
-                Results = results.AsReadOnlyCollection(),
+                Results = results.AsArray(),
                 TotalCount = firstResults.TotalCount,
                 CurrentToken = firstResults.CurrentToken,
                 PreviousToken = firstResults.PreviousToken,
