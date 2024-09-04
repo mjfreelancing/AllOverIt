@@ -21,7 +21,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
             public event ViewRegistryEventHandler OnChange;     // raised when a view is added or removed
 
-            public IReadOnlyCollection<ViewItem<TViewId>> Views => _viewItems.AsReadOnlyCollection();
+            public ViewItem<TViewId>[] Views => [.. _viewItems];
 
             public int ViewCount => _viewItems.Count;
 
@@ -117,23 +117,23 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         /// <inheritdoc />
         public int GetViewCountFor<TViewModel>() where TViewModel : class
         {
-            return GetViewsFor<TViewModel>().Count;
+            return GetViewsFor<TViewModel>().Length;
         }
 
         /// <inheritdoc />
         public int GetViewCountFor(Type viewModelType)
         {
-            return GetViewsFor(viewModelType).Count;
+            return GetViewsFor(viewModelType).Length;
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<Type> GetViewModelTypes()
+        public Type[] GetViewModelTypes()
         {
-            return _viewRegistry.Keys.AsReadOnlyCollection();
+            return [.. _viewRegistry.Keys];
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<ViewItem<TViewId>> GetViewsFor<TViewModel>() where TViewModel : class
+        public ViewItem<TViewId>[] GetViewsFor<TViewModel>() where TViewModel : class
         {
             var viewModelType = typeof(TViewModel);
 
@@ -141,18 +141,18 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<ViewItem<TViewId>> GetViewsFor(Type viewModelType)
+        public ViewItem<TViewId>[] GetViewsFor(Type viewModelType)
         {
             if (!_viewRegistry.TryGetValue(viewModelType, out var registryItem))
             {
-                return Collections.Collection.EmptyReadOnly<ViewItem<TViewId>>();
+                return [];
             }
 
             return registryItem.Views;
         }
 
         /// <inheritdoc />
-        public void CreateOrActivateFor<TViewModel>(int maxCount, Func<IReadOnlyCollection<ViewItem<TViewId>>, TViewId> nextViewId,
+        public void CreateOrActivateFor<TViewModel>(int maxCount, Func<ViewItem<TViewId>[], TViewId> nextViewId,
             Action<TViewModel, IViewFor, TViewId>? configure = default) where TViewModel : class
         {
             _ = nextViewId.WhenNotNull();

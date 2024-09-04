@@ -27,17 +27,17 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
         /// <summary>Gets the currently registered view model types.</summary>
         /// <returns>A readonly collection of the currently registered view model types.</returns>
-        IReadOnlyCollection<Type> GetViewModelTypes();
+        Type[] GetViewModelTypes();
 
         /// <summary>Gets a readonly collection of all currently registered views associated with the <typeparamref name="TViewModel"/> type.</summary>
         /// <typeparam name="TViewModel">The view model type.</typeparam>
         /// <returns>A readonly collection of all currently registered views associated with the <typeparamref name="TViewModel"/> type.</returns>
-        IReadOnlyCollection<ViewItem<TViewId>> GetViewsFor<TViewModel>() where TViewModel : class;
+        ViewItem<TViewId>[] GetViewsFor<TViewModel>() where TViewModel : class;
 
         /// <summary>Gets a readonly collection of all currently registered views associated with the <see cref="Type"/> specified by <paramref name="viewModelType"/>.</summary>
         /// <param name="viewModelType">The view model type.</param>
         /// <returns>A readonly collection of all currently registered views associated with the <see cref="Type"/> specified by <paramref name="viewModelType"/>.</returns>
-        IReadOnlyCollection<ViewItem<TViewId>> GetViewsFor(Type viewModelType);
+        ViewItem<TViewId>[] GetViewsFor(Type viewModelType);
 
         /// <summary>Creates a new view or activates existing views associated with the <typeparamref name="TViewModel"/> type. A new
         /// view will be created if the number of views for the specified <typeparamref name="TViewModel"/> type is fewer than
@@ -48,10 +48,10 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         /// <param name="maxCount">The maximum number of views allowed for the <typeparamref name="TViewModel"/> type. The registry doesn't
         /// enforce this value between calls; it is only used to compare against the number of views already present in the registry.</param>
         /// <param name="nextViewId">A callback that allows the caller to provide an identifier for each newly created view. The callback provides
-        /// a readonly collection of all currently registered views for the specified <typeparamref name="TViewModel"/> type.</param>
+        /// an array of all currently registered views for the specified <typeparamref name="TViewModel"/> type.</param>
         /// <param name="configure">An optional callback that allows the caller to configure the view model associated with each newly
         /// created view. The callback also includes the view instance and its' Id as provided by the <paramref name="nextViewId"/> callback.</param>
-        void CreateOrActivateFor<TViewModel>(int maxCount, Func<IReadOnlyCollection<ViewItem<TViewId>>, TViewId> nextViewId,
+        void CreateOrActivateFor<TViewModel>(int maxCount, Func<ViewItem<TViewId>[], TViewId> nextViewId,
             Action<TViewModel, IViewFor, TViewId>? configure = default) where TViewModel : class;
 
         /// <summary>Attempts to close all currently registered views. Views that cancel being closed will remain registered.</summary>
