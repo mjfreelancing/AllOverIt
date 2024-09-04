@@ -79,12 +79,12 @@ namespace AllOverIt.DependencyInjection.Extensions
                 descriptor.Lifetime);
         }
 
-        private static IReadOnlyCollection<ServiceDescriptor> GetServiceDescriptors<TServiceType>(IServiceCollection services)
+        private static ServiceDescriptor[] GetServiceDescriptors<TServiceType>(IServiceCollection services)
         {
             var serviceType = typeof(TServiceType);
-            var descriptors = services.Where(service => service.ServiceType == serviceType).AsReadOnlyCollection();
+            var descriptors = services.Where(service => service.ServiceType == serviceType).ToArray();
 
-            if (descriptors.Count == 0)
+            if (descriptors.Length == 0)
             {
                 throw new DependencyRegistrationException($"No registered services found for the type '{serviceType.GetFriendlyName()}'.");
             }

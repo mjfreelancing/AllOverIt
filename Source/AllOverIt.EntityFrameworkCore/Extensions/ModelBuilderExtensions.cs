@@ -57,7 +57,7 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
         }
 
         private static void ConfigureUnprocessed(ModelBuilder modelBuilder, IEnumerable<IMutableEntityType> allEntityTypes,
-            IReadOnlyCollection<(IMutableEntityType entityType, PropertyInfo propertyInfo)> processed)
+            List<(IMutableEntityType entityType, PropertyInfo propertyInfo)> processed)
         {
             var unprocessed =
                 from entityType in allEntityTypes

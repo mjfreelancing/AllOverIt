@@ -88,7 +88,7 @@ namespace AllOverIt.Serialization.Binary.Writers
         };
 
         private readonly Dictionary<string, int> _userDefinedTypeCache = [];
-        private readonly IReadOnlyCollection<Func<Type, TypeIdentifier?>> _typeIdLookups;
+        private readonly Func<Type, TypeIdentifier?>[] _typeIdLookups;
 
         /// <inheritdoc />
         /// <remarks>If a property type doesn't have a registered writer the <see cref="EnrichedBinaryWriter"/> will use a
