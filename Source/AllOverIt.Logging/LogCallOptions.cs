@@ -45,7 +45,6 @@ namespace AllOverIt.Logging
 
         // Also used for resetting between tests
         [MemberNotNull(
-            nameof(_logTemplateWithNoArguments), nameof(_logTemplateWithArguments), nameof(_logExceptionTemplate),
             nameof(_includeCallerNamespace), nameof(_callPrefix), nameof(_exceptionPrefix), nameof(_methodNameProperty),
             nameof(_argumentsPrefix), nameof(_argumentsDestructureProperty), nameof(_exceptionMessageProperty))]
         internal void Reset()
