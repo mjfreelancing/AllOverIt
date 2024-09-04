@@ -46,7 +46,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     .MustHaveHappened();
 
                 _binaryWriter
-                    .CallsTo(call => call.WriteObject(token.Values, typeof(IReadOnlyCollection<object>)))
+                    .CallsTo(call => call.WriteObject(token.Values, typeof(object[])))
                     .MustHaveHappened();
             }
         }
