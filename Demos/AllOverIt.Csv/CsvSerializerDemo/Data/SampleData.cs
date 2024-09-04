@@ -10,9 +10,9 @@
 
         // The serializer will be configured to identify each item by index and the header name will
         // be in the format "Latitude #" and "Longitude #" (both properties exported individually)
-        public required IReadOnlyCollection<Coordinates> Coordinates { get; set; }
+        public required Coordinates[] Coordinates { get; set; }
 
         // Each item will be exported as 'Type-Name' for the header and the Value is what will be exported
-        public required IReadOnlyCollection<SampleMetadata> Metadata { get; set; }
+        public required SampleMetadata[] Metadata { get; set; }
     }
 }

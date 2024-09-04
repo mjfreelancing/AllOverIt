@@ -34,7 +34,7 @@ namespace CsvExporterDemo
                 item =>
                 {
                     return Enumerable
-                        .Range(0, item.Count)
+                        .Range(0, item.Length)
                         .Select(idx =>
                         {
                             // Using an 'int' to uniquely identify each set of headers
@@ -53,7 +53,7 @@ namespace CsvExporterDemo
                 (item, headerId) =>
                 {
                     // The 'Id' indicates the element index being exported
-                    if (headerId.Id < item.Count)
+                    if (headerId.Id < item.Length)
                     {
                         var coordinate = item.ElementAt(headerId.Id);
 
