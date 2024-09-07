@@ -15,6 +15,16 @@ tab_width = 4
 end_of_line = crlf
 insert_final_newline = false
 
+#### .NET Code Actions ####
+
+# Type members
+dotnet_hide_advanced_members = false
+dotnet_member_insertion_location = with_other_members_of_the_same_kind
+dotnet_property_generation_behavior = prefer_throwing_properties
+
+# Symbol search
+dotnet_search_reference_assemblies = true
+
 #### .NET Coding Conventions ####
 
 # Organize usings
@@ -42,6 +52,7 @@ dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity
 dotnet_style_require_accessibility_modifiers = for_non_interface_members
 
 # Expression-level preferences
+dotnet_prefer_system_hash_code = true
 dotnet_style_coalesce_expression = true
 dotnet_style_collection_initializer = true
 dotnet_style_explicit_tuple_names = true
@@ -77,9 +88,9 @@ dotnet_style_allow_statement_immediately_after_block_experimental = true
 #### C# Coding Conventions ####
 
 # var preferences
-csharp_style_var_elsewhere = false
-csharp_style_var_for_built_in_types = false
-csharp_style_var_when_type_is_apparent = false
+csharp_style_var_elsewhere = true
+csharp_style_var_for_built_in_types = true
+csharp_style_var_when_type_is_apparent = true
 
 # Expression-bodied members
 csharp_style_expression_bodied_accessors = true
@@ -112,7 +123,8 @@ csharp_style_prefer_readonly_struct_member = true
 # Code-block preferences
 csharp_prefer_braces = true
 csharp_prefer_simple_using_statement = true
-csharp_style_namespace_declarations = block_scoped
+csharp_prefer_system_threading_lock = true
+csharp_style_namespace_declarations = file_scoped
 csharp_style_prefer_method_group_conversion = true
 csharp_style_prefer_primary_constructors = true
 csharp_style_prefer_top_level_statements = true
@@ -162,7 +174,7 @@ csharp_indent_labels = one_less_than_current
 csharp_indent_switch_labels = true
 
 # Space preferences
-csharp_space_after_cast = true
+csharp_space_after_cast = false
 csharp_space_after_colon_in_inheritance_clause = true
 csharp_space_after_comma = true
 csharp_space_after_dot = false
@@ -205,11 +217,19 @@ dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = suggestion
 dotnet_naming_rule.non_field_members_should_be_pascal_case.symbols = non_field_members
 dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
 
+dotnet_naming_rule.private_or_internal_field_should_be_private_field_name.severity = suggestion
+dotnet_naming_rule.private_or_internal_field_should_be_private_field_name.symbols = private_or_internal_field
+dotnet_naming_rule.private_or_internal_field_should_be_private_field_name.style = private_field_name
+
 # Symbol specifications
 
 dotnet_naming_symbols.interface.applicable_kinds = interface
 dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
 dotnet_naming_symbols.interface.required_modifiers = 
+
+dotnet_naming_symbols.private_or_internal_field.applicable_kinds = field
+dotnet_naming_symbols.private_or_internal_field.applicable_accessibilities = internal, private, private_protected
+dotnet_naming_symbols.private_or_internal_field.required_modifiers = 
 
 dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum
 dotnet_naming_symbols.types.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
@@ -230,3 +250,8 @@ dotnet_naming_style.begins_with_i.required_prefix = I
 dotnet_naming_style.begins_with_i.required_suffix = 
 dotnet_naming_style.begins_with_i.word_separator = 
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+dotnet_naming_style.private_field_name.required_prefix = _
+dotnet_naming_style.private_field_name.required_suffix = 
+dotnet_naming_style.private_field_name.word_separator = 
+dotnet_naming_style.private_field_name.capitalization = camel_case
