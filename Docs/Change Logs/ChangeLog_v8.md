@@ -2,6 +2,7 @@
 ## XX XXX 2024
 
 ### PENDING / IN-PROGRESS
+* Review locking where .NET 9's new Lock would be of benefit.
 * Add alternative to ServiceRegistrar to provide a fluent syntax that caters for similar functionality.
   plus the ability to resolve the same instance for multiple interfaces, and handle open generics.
 * Update / replace how Throw<> works to save on string allocations.
