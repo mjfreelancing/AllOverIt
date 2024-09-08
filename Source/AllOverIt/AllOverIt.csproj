@@ -14,5 +14,9 @@
         <InternalsVisibleTo Include="AllOverIt.Tests" />
         <InternalsVisibleTo Include="AllOverIt.ReactiveUI.Tests" />
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Backport.System.Threading.Lock" Version="2.0.0" />
+    </ItemGroup>
     
 </Project>

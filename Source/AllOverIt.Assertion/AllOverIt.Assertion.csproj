@@ -6,4 +6,8 @@
         <PackageTags>AllOverIt;Utilities;Asssertion;Guard</PackageTags>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Backport.System.Threading.Lock" Version="2.0.0" />
+    </ItemGroup>
+
 </Project>

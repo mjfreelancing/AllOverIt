@@ -49,6 +49,11 @@
           "Newtonsoft.Json": "13.0.3"
         }
       },
+      "Backport.System.Threading.Lock": {
+        "type": "Transitive",
+        "resolved": "2.0.0",
+        "contentHash": "3keAYH0XBTD79l+Eb7nlmPljWavxAQnQDMmZ9vRdcVDunt4G0b07nJjojOvqLWm/xGR950ol5bbenqplQWxrgQ=="
+      },
       "Cdklabs.AwsCdkAppsyncUtils": {
         "type": "Transitive",
         "resolved": "0.0.484",
@@ -198,16 +203,20 @@
       "alloverit": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt.Assertion": "[7.25.0, )"
+          "AllOverIt.Assertion": "[7.26.0, )",
+          "Backport.System.Threading.Lock": "[2.0.0, )"
         }
       },
       "alloverit.assertion": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "Backport.System.Threading.Lock": "[2.0.0, )"
+        }
       },
       "alloverit.aws.cdk.appsync": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt": "[7.25.0, )",
+          "AllOverIt": "[7.26.0, )",
           "Amazon.CDK.Lib": "[2.150.0, )",
           "Cdklabs.AwsCdkAppsyncUtils": "[0.0.484, )"
         }
