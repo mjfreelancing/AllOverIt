@@ -84,11 +84,11 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
 
         public class UseEnrichedEnum_Default_All_Integer : ModelBuilderExtensionsFixture
         {
-            public sealed class DummyDbContext1 : DbContext
+            public sealed class DummyDbContext : DbContext
             {
                 public DbSet<DummyEntity> Entities { get; set; }
 
-                public DummyDbContext1(DbContextOptions<DummyDbContext1> options) : base(options) { }
+                public DummyDbContext(DbContextOptions<DummyDbContext> options) : base(options) { }
 
                 protected override void OnModelCreating(ModelBuilder modelBuilder)
                 {
@@ -103,7 +103,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
             {
                 await using var container = await GetPostgreSqlContainerAsync();
 
-                using var dbContext = new DummyDbContext1(GetDbContextOptions<DummyDbContext1>(container.Context));
+                using var dbContext = new DummyDbContext(GetDbContextOptions<DummyDbContext>(container.Context));
 
                 AssertPropertyExpectations(dbContext, typeof(int), typeof(int), typeof(int), typeof(int));
             }
@@ -111,11 +111,11 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
 
         public class UseEnrichedEnum_Property_Generic : ModelBuilderExtensionsFixture
         {
-            public sealed class DummyDbContext2 : DbContext
+            public sealed class DummyDbContext : DbContext
             {
                 public DbSet<DummyEntity> Entities { get; set; }
 
-                public DummyDbContext2(DbContextOptions<DummyDbContext2> options) : base(options) { }
+                public DummyDbContext(DbContextOptions<DummyDbContext> options) : base(options) { }
 
                 protected override void OnModelCreating(ModelBuilder modelBuilder)
                 {
@@ -136,7 +136,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
             {
                 await using var container = await GetPostgreSqlContainerAsync();
 
-                using var dbContext = new DummyDbContext2(GetDbContextOptions<DummyDbContext2>(container.Context));
+                using var dbContext = new DummyDbContext(GetDbContextOptions<DummyDbContext>(container.Context));
 
                 AssertPropertyExpectations(dbContext, typeof(int), typeof(int), typeof(string), typeof(string));
             }
@@ -144,11 +144,11 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
 
         public class UseEnrichedEnum_Property_Type : ModelBuilderExtensionsFixture
         {
-            public sealed class DummyDbContext2 : DbContext
+            public sealed class DummyDbContext : DbContext
             {
                 public DbSet<DummyEntity> Entities { get; set; }
 
-                public DummyDbContext2(DbContextOptions<DummyDbContext2> options) : base(options) { }
+                public DummyDbContext(DbContextOptions<DummyDbContext> options) : base(options) { }
 
                 protected override void OnModelCreating(ModelBuilder modelBuilder)
                 {
@@ -169,7 +169,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
             {
                 await using var container = await GetPostgreSqlContainerAsync();
 
-                using var dbContext = new DummyDbContext2(GetDbContextOptions<DummyDbContext2>(container.Context));
+                using var dbContext = new DummyDbContext(GetDbContextOptions<DummyDbContext>(container.Context));
 
                 AssertPropertyExpectations(dbContext, typeof(int), typeof(int), typeof(string), typeof(string));
             }
@@ -177,11 +177,11 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
 
         public class UseEnrichedEnum_Property_Name : ModelBuilderExtensionsFixture
         {
-            public sealed class DummyDbContext2 : DbContext
+            public sealed class DummyDbContext : DbContext
             {
                 public DbSet<DummyEntity> Entities { get; set; }
 
-                public DummyDbContext2(DbContextOptions<DummyDbContext2> options) : base(options) { }
+                public DummyDbContext(DbContextOptions<DummyDbContext> options) : base(options) { }
 
                 protected override void OnModelCreating(ModelBuilder modelBuilder)
                 {
@@ -207,7 +207,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
             {
                 await using var container = await GetPostgreSqlContainerAsync();
 
-                using var dbContext = new DummyDbContext2(GetDbContextOptions<DummyDbContext2>(container.Context));
+                using var dbContext = new DummyDbContext(GetDbContextOptions<DummyDbContext>(container.Context));
 
                 AssertPropertyExpectations(dbContext, typeof(int), typeof(int), typeof(string), typeof(string));
             }
@@ -215,11 +215,11 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
 
         public class UseEnrichedEnum_Properties_Type : ModelBuilderExtensionsFixture
         {
-            public sealed class DummyDbContext2 : DbContext
+            public sealed class DummyDbContext : DbContext
             {
                 public DbSet<DummyEntity> Entities { get; set; }
 
-                public DummyDbContext2(DbContextOptions<DummyDbContext2> options) : base(options) { }
+                public DummyDbContext(DbContextOptions<DummyDbContext> options) : base(options) { }
 
                 protected override void OnModelCreating(ModelBuilder modelBuilder)
                 {
@@ -240,7 +240,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
             {
                 await using var container = await GetPostgreSqlContainerAsync();
 
-                using var dbContext = new DummyDbContext2(GetDbContextOptions<DummyDbContext2>(container.Context));
+                using var dbContext = new DummyDbContext(GetDbContextOptions<DummyDbContext>(container.Context));
 
                 AssertPropertyExpectations(dbContext, typeof(int), typeof(int), typeof(string), typeof(string));
             }
@@ -248,11 +248,11 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
 
         public class UseEnrichedEnum_All_String : ModelBuilderExtensionsFixture
         {
-            public sealed class DummyDbContext2 : DbContext
+            public sealed class DummyDbContext : DbContext
             {
                 public DbSet<DummyEntity> Entities { get; set; }
 
-                public DummyDbContext2(DbContextOptions<DummyDbContext2> options) : base(options) { }
+                public DummyDbContext(DbContextOptions<DummyDbContext> options) : base(options) { }
 
                 protected override void OnModelCreating(ModelBuilder modelBuilder)
                 {
@@ -270,7 +270,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
             {
                 await using var container = await GetPostgreSqlContainerAsync();
 
-                using var dbContext = new DummyDbContext2(GetDbContextOptions<DummyDbContext2>(container.Context));
+                using var dbContext = new DummyDbContext(GetDbContextOptions<DummyDbContext>(container.Context));
 
                 AssertPropertyExpectations(dbContext, typeof(string), typeof(string), typeof(string), typeof(string));
             }
@@ -278,11 +278,11 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
 
         public class UseEnrichedEnum_By_Name : ModelBuilderExtensionsFixture
         {
-            public sealed class DummyDbContext3 : DbContext
+            public sealed class DummyDbContext : DbContext
             {
                 public DbSet<DummyEntity> Entities { get; set; }
 
-                public DummyDbContext3(DbContextOptions<DummyDbContext3> options) : base(options) { }
+                public DummyDbContext(DbContextOptions<DummyDbContext> options) : base(options) { }
 
                 protected override void OnModelCreating(ModelBuilder modelBuilder)
                 {
@@ -303,7 +303,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
             {
                 await using var container = await GetPostgreSqlContainerAsync();
 
-                using var dbContext = new DummyDbContext3(GetDbContextOptions<DummyDbContext3>(container.Context));
+                using var dbContext = new DummyDbContext(GetDbContextOptions<DummyDbContext>(container.Context));
 
                 AssertPropertyExpectations(dbContext, typeof(int), typeof(string), typeof(string), typeof(int));
             }
