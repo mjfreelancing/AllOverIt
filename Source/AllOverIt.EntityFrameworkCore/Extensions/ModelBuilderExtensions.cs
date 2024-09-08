@@ -26,7 +26,7 @@ namespace AllOverIt.EntityFrameworkCore.Extensions
 
         private static void UseEnrichedEnum(ModelBuilder modelBuilder, EnrichedEnumModelBuilderOptions options)
         {
-            var allEntityTypes = modelBuilder.Model.GetEntityTypes().AsReadOnlyCollection();
+            var allEntityTypes = modelBuilder.Model.GetEntityTypes().ToArray();
             var processed = new List<(IMutableEntityType entityType, PropertyInfo propertyInfo)>();
 
             var entityOptions = options.EntityOptions.AsReadOnlyCollection();
