@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 
 namespace AllOverIt.Patterns.Result.Extensions;
 

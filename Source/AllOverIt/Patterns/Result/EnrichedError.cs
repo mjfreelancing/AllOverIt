@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-namespace AllOverIt.Patterns.Result;
+﻿namespace AllOverIt.Patterns.Result;
 
 /// <summary>Represents an error reported by a failed <see cref="EnrichedResult"/>.</summary>
 public class EnrichedError

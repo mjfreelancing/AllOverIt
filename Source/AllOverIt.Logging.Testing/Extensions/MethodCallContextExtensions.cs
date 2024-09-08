@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
 
 namespace AllOverIt.Logging.Testing.Extensions

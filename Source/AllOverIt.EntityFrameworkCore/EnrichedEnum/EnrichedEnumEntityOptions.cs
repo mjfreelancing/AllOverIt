@@ -6,6 +6,8 @@ using System.Reflection;
 
 namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 {
+    // Tested via ModelBuilderExtensionsFixture
+
     /// <summary>Provides options for entities containing <see cref="EnrichedEnum{TEnum}"/> properties.</summary>
     public sealed class EnrichedEnumEntityOptions
     {

@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using Microsoft.Extensions.Logging;
 using System.Runtime.CompilerServices;
 
