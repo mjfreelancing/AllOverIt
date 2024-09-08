@@ -59,16 +59,16 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
 
         public async Task<RaiiAsync<PostgreSqlContainer>> GetPostgreSqlContainerAsync()
         {
-            var postgresContainer = new PostgreSqlBuilder()
+            var postgreSqlContainer = new PostgreSqlBuilder()
                 .WithDatabase(Guid.NewGuid().ToString())
                 .WithUsername(Create<string>())
                 .WithPassword(Create<string>())
                 .Build();
 
-            await postgresContainer.StartAsync();
+            await postgreSqlContainer.StartAsync();
 
             return new RaiiAsync<PostgreSqlContainer>(
-                () => postgresContainer,
+                () => postgreSqlContainer,
                 async container =>
                 {
                     await container.StopAsync();
@@ -109,7 +109,111 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
             }
         }
 
-        public class UseEnrichedEnum_Of_Property_Type : ModelBuilderExtensionsFixture
+        public class UseEnrichedEnum_Property_Generic : ModelBuilderExtensionsFixture
+        {
+            public sealed class DummyDbContext2 : DbContext
+            {
+                public DbSet<DummyEntity> Entities { get; set; }
+
+                public DummyDbContext2(DbContextOptions<DummyDbContext2> options) : base(options) { }
+
+                protected override void OnModelCreating(ModelBuilder modelBuilder)
+                {
+                    base.OnModelCreating(modelBuilder);
+
+                    modelBuilder.UseEnrichedEnum(options =>
+                    {
+                        options
+                            .Entity<DummyEntity>()
+                            .Property<DummyEnum2>()
+                            .AsName();
+                    });
+                }
+            }
+
+            [Fact]
+            public async Task Should_Configure_Properties_Of_Type_As_String()
+            {
+                await using var container = await GetPostgreSqlContainerAsync();
+
+                using var dbContext = new DummyDbContext2(GetDbContextOptions<DummyDbContext2>(container.Context));
+
+                AssertPropertyExpectations(dbContext, typeof(int), typeof(int), typeof(string), typeof(string));
+            }
+        }
+
+        public class UseEnrichedEnum_Property_Type : ModelBuilderExtensionsFixture
+        {
+            public sealed class DummyDbContext2 : DbContext
+            {
+                public DbSet<DummyEntity> Entities { get; set; }
+
+                public DummyDbContext2(DbContextOptions<DummyDbContext2> options) : base(options) { }
+
+                protected override void OnModelCreating(ModelBuilder modelBuilder)
+                {
+                    base.OnModelCreating(modelBuilder);
+
+                    modelBuilder.UseEnrichedEnum(options =>
+                    {
+                        options
+                            .Entity<DummyEntity>()
+                            .Property(typeof(DummyEnum2))
+                            .AsName();
+                    });
+                }
+            }
+
+            [Fact]
+            public async Task Should_Configure_Properties_Of_Type_As_String()
+            {
+                await using var container = await GetPostgreSqlContainerAsync();
+
+                using var dbContext = new DummyDbContext2(GetDbContextOptions<DummyDbContext2>(container.Context));
+
+                AssertPropertyExpectations(dbContext, typeof(int), typeof(int), typeof(string), typeof(string));
+            }
+        }
+
+        public class UseEnrichedEnum_Property_Name : ModelBuilderExtensionsFixture
+        {
+            public sealed class DummyDbContext2 : DbContext
+            {
+                public DbSet<DummyEntity> Entities { get; set; }
+
+                public DummyDbContext2(DbContextOptions<DummyDbContext2> options) : base(options) { }
+
+                protected override void OnModelCreating(ModelBuilder modelBuilder)
+                {
+                    base.OnModelCreating(modelBuilder);
+
+                    modelBuilder.UseEnrichedEnum(options =>
+                    {
+                        options
+                            .Entity<DummyEntity>()
+                            .Property(nameof(DummyEntity.Prop2a))
+                            .AsName();
+
+                        options
+                            .Entity<DummyEntity>()
+                            .Property(nameof(DummyEntity.Prop2b))
+                            .AsName();
+                    });
+                }
+            }
+
+            [Fact]
+            public async Task Should_Configure_Properties_Of_Type_As_String()
+            {
+                await using var container = await GetPostgreSqlContainerAsync();
+
+                using var dbContext = new DummyDbContext2(GetDbContextOptions<DummyDbContext2>(container.Context));
+
+                AssertPropertyExpectations(dbContext, typeof(int), typeof(int), typeof(string), typeof(string));
+            }
+        }
+
+        public class UseEnrichedEnum_Properties_Type : ModelBuilderExtensionsFixture
         {
             public sealed class DummyDbContext2 : DbContext
             {
