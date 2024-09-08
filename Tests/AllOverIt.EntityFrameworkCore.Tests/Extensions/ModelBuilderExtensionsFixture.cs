@@ -213,6 +213,120 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
             }
         }
 
+        public class UseEnrichedEnum_Property_Name_With_ColumnType_And_MaxLength : ModelBuilderExtensionsFixture
+        {
+            public sealed class DummyDbContext : DbContext
+            {
+                public DbSet<DummyEntity> Entities { get; set; }
+
+                public DummyDbContext(DbContextOptions<DummyDbContext> options) : base(options) { }
+
+                protected override void OnModelCreating(ModelBuilder modelBuilder)
+                {
+                    base.OnModelCreating(modelBuilder);
+
+                    modelBuilder.UseEnrichedEnum(options =>
+                    {
+                        options
+                            .Entity<DummyEntity>()
+                            .Property<DummyEnum2>()
+                            .AsName(columnType: "character varying(50)", maxLength: 50);
+                    });
+                }
+            }
+
+            [Fact]
+            public async Task Should_Configure_Properties_Of_Type_As_String()
+            {
+                await using var container = await GetPostgreSqlContainerAsync();
+
+                using var dbContext = new DummyDbContext(GetDbContextOptions<DummyDbContext>(container.Context));
+
+                var columnDefinitions = new Dictionary<string, (string columnType, int? columnLength)>();
+
+                columnDefinitions.Add(nameof(DummyEntity.Prop2a), ("character varying(50)", 50));
+                columnDefinitions.Add(nameof(DummyEntity.Prop2b), ("character varying(50)", 50));
+
+                AssertPropertyExpectations(dbContext, typeof(int), typeof(int), typeof(string), typeof(string), columnDefinitions);
+            }
+        }
+
+        public class UseEnrichedEnum_Property_Name_With_ColumnType : ModelBuilderExtensionsFixture
+        {
+            public sealed class DummyDbContext : DbContext
+            {
+                public DbSet<DummyEntity> Entities { get; set; }
+
+                public DummyDbContext(DbContextOptions<DummyDbContext> options) : base(options) { }
+
+                protected override void OnModelCreating(ModelBuilder modelBuilder)
+                {
+                    base.OnModelCreating(modelBuilder);
+
+                    modelBuilder.UseEnrichedEnum(options =>
+                    {
+                        options
+                            .Entity<DummyEntity>()
+                            .Property<DummyEnum2>()
+                            .AsName(columnType: "citext");
+                    });
+                }
+            }
+
+            [Fact]
+            public async Task Should_Configure_Properties_Of_Type_As_String()
+            {
+                await using var container = await GetPostgreSqlContainerAsync();
+
+                using var dbContext = new DummyDbContext(GetDbContextOptions<DummyDbContext>(container.Context));
+
+                var columnDefinitions = new Dictionary<string, (string columnType, int? columnLength)>();
+
+                columnDefinitions.Add(nameof(DummyEntity.Prop2a), ("citext", null));
+                columnDefinitions.Add(nameof(DummyEntity.Prop2b), ("citext", null));
+
+                AssertPropertyExpectations(dbContext, typeof(int), typeof(int), typeof(string), typeof(string), columnDefinitions);
+            }
+        }
+
+        public class UseEnrichedEnum_Property_Name_With_MaxLength : ModelBuilderExtensionsFixture
+        {
+            public sealed class DummyDbContext : DbContext
+            {
+                public DbSet<DummyEntity> Entities { get; set; }
+
+                public DummyDbContext(DbContextOptions<DummyDbContext> options) : base(options) { }
+
+                protected override void OnModelCreating(ModelBuilder modelBuilder)
+                {
+                    base.OnModelCreating(modelBuilder);
+
+                    modelBuilder.UseEnrichedEnum(options =>
+                    {
+                        options
+                            .Entity<DummyEntity>()
+                            .Property<DummyEnum2>()
+                            .AsName(maxLength: 25);     // Will become "character varying(25)"
+                    });
+                }
+            }
+
+            [Fact]
+            public async Task Should_Configure_Properties_Of_Type_As_String()
+            {
+                await using var container = await GetPostgreSqlContainerAsync();
+
+                using var dbContext = new DummyDbContext(GetDbContextOptions<DummyDbContext>(container.Context));
+
+                var columnDefinitions = new Dictionary<string, (string columnType, int? columnLength)>();
+
+                columnDefinitions.Add(nameof(DummyEntity.Prop2a), ("character varying(25)", 25));
+                columnDefinitions.Add(nameof(DummyEntity.Prop2b), ("character varying(25)", 25));
+
+                AssertPropertyExpectations(dbContext, typeof(int), typeof(int), typeof(string), typeof(string), columnDefinitions);
+            }
+        }
+
         public class UseEnrichedEnum_Properties_Type : ModelBuilderExtensionsFixture
         {
             public sealed class DummyDbContext : DbContext
@@ -317,7 +431,8 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
                 .ToArray();
         }
 
-        protected Dictionary<string, object> GetExpectations(Type prop1aType, Type prop1bType, Type prop2aType, Type prop2bType)
+        protected Dictionary<string, object> GetExpectations(Type prop1aType, Type prop1bType, Type prop2aType, Type prop2bType,
+            Dictionary<string, (string columnType, int? columnLength)> columnDefinitions)
         {
             static string GetPropType(Type type) => type == typeof(int) ? "integer" : "text";
 
@@ -345,43 +460,68 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
                     : typeof(EnrichedEnumNameConverter<DummyEnum2>);
             }
 
+            (string columnType, int? columnLength) GetColumnDefinition(string propertyName)
+            {
+                if (columnDefinitions is null || !columnDefinitions.TryGetValue(propertyName, out var value))
+                {
+                    return (null, null);
+                }
+
+                return value;
+            }
+
             var expectations = new Dictionary<string, object>();
+
+            (string ColumnType, int? ColumnLength) columnDefinition = GetColumnDefinition(nameof(DummyEntity.Prop1a));
 
             expectations[nameof(DummyEntity.Prop1a)] = new
             {
                 PropertyName = nameof(DummyEntity.Prop1a),
-                ColumnType = GetPropType(prop1aType),
+                ColumnType = columnDefinition.ColumnType ?? GetPropType(prop1aType),
+                MaxLength = columnDefinition.ColumnLength,
                 ValueConverter = GetProp1ValueConverter(prop1aType)
             };
+
+            columnDefinition = GetColumnDefinition(nameof(DummyEntity.Prop1b));
 
             expectations[nameof(DummyEntity.Prop1b)] = new
             {
                 PropertyName = nameof(DummyEntity.Prop1b),
-                ColumnType = GetPropType(prop1bType),
+                ColumnType = columnDefinition.ColumnType ?? GetPropType(prop1bType),
+                MaxLength = columnDefinition.ColumnLength,
                 ValueConverter = GetProp1ValueConverter(prop1bType)
             };
+
+            columnDefinition = GetColumnDefinition(nameof(DummyEntity.Prop2a));
 
             expectations[nameof(DummyEntity.Prop2a)] = new
             {
                 PropertyName = nameof(DummyEntity.Prop2a),
-                ColumnType = GetPropType(prop2aType),
+                ColumnType = columnDefinition.ColumnType ?? GetPropType(prop2aType),
+                MaxLength = columnDefinition.ColumnLength,
                 ValueConverter = GetProp2ValueConverter(prop2aType)
             };
+
+            columnDefinition = GetColumnDefinition(nameof(DummyEntity.Prop2b));
 
             expectations[nameof(DummyEntity.Prop2b)] = new
             {
                 PropertyName = nameof(DummyEntity.Prop2b),
-                ColumnType = GetPropType(prop2bType),
+                ColumnType = columnDefinition.ColumnType ?? GetPropType(prop2bType),
+                MaxLength = columnDefinition.ColumnLength,
                 ValueConverter = GetProp2ValueConverter(prop2bType)
             };
 
             return expectations;
         }
 
-        protected void AssertPropertyExpectations(DbContext dbContext, Type prop1aType, Type prop1bType, Type prop2aType, Type prop2bType)
+        protected void AssertPropertyExpectations(DbContext dbContext, Type prop1aType, Type prop1bType, Type prop2aType, Type prop2bType,
+            Dictionary<string, (string columnType, int? columnLength)> columnDefinitions = default)
         {
+            dbContext.Database.EnsureCreated();
+
             var properties = GetConfiguredProperties(dbContext);
-            var expectations = GetExpectations(prop1aType, prop1bType, prop2aType, prop2bType);
+            var expectations = GetExpectations(prop1aType, prop1bType, prop2aType, prop2bType, columnDefinitions);
 
             foreach (var property in properties)
             {
@@ -391,6 +531,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
                 {
                     PropertyName = property.Name,
                     ColumnType = property.GetColumnType(),
+                    MaxLength = property.GetMaxLength(),
                     ValueConverter = valueConverter is null ? null : valueConverter.GetType()
                 };
 
