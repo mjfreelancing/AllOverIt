@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Backport.System.Threading.Lock" Version="2.0.0" />
+      <PackageReference Include="Backport.System.Threading.Lock" Version="2.0.3" />
     </ItemGroup>
 
 </Project>

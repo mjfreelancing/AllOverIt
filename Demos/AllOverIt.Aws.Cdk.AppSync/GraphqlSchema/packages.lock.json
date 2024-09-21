@@ -51,8 +51,8 @@
       },
       "Backport.System.Threading.Lock": {
         "type": "Transitive",
-        "resolved": "2.0.0",
-        "contentHash": "3keAYH0XBTD79l+Eb7nlmPljWavxAQnQDMmZ9vRdcVDunt4G0b07nJjojOvqLWm/xGR950ol5bbenqplQWxrgQ=="
+        "resolved": "2.0.3",
+        "contentHash": "19pZp8yyZcYZzuF7XreDvxPmnlYpkvNuKNxoqVLy/HJbCgMmlFoA1m/ohw19RCdiAoFaqM7I4Z2VHEWix2yiKg=="
       },
       "Cdklabs.AwsCdkAppsyncUtils": {
         "type": "Transitive",
@@ -204,13 +204,13 @@
         "type": "Project",
         "dependencies": {
           "AllOverIt.Assertion": "[7.26.0, )",
-          "Backport.System.Threading.Lock": "[2.0.0, )"
+          "Backport.System.Threading.Lock": "[2.0.3, )"
         }
       },
       "alloverit.assertion": {
         "type": "Project",
         "dependencies": {
-          "Backport.System.Threading.Lock": "[2.0.0, )"
+          "Backport.System.Threading.Lock": "[2.0.3, )"
         }
       },
       "alloverit.aws.cdk.appsync": {
