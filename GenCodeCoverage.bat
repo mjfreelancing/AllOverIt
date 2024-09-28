@@ -13,10 +13,12 @@ rmdir /s /q TestResults
 
 copy ".\TestCoverage\summary.html" ".\Docs\Code Coverage\summary.html"
 copy ".\TestCoverage\Summary.md" ".\Docs\Code Coverage\summary.md"
-copy ".\TestCoverage\badge_linecoverage.png" ".\Docs\Code Coverage\badge_linecoverage.png"
-copy ".\TestCoverage\badge_branchcoverage.png" ".\Docs\Code Coverage\badge_branchcoverage.png"
-copy ".\TestCoverage\badge_methodcoverage.png" ".\Docs\Code Coverage\badge_methodcoverage.png"
+copy ".\TestCoverage\badge_linecoverage.svg" ".\Docs\Code Coverage\badge_linecoverage.svg"
+copy ".\TestCoverage\badge_branchcoverage.svg" ".\Docs\Code Coverage\badge_branchcoverage.svg"
+copy ".\TestCoverage\badge_methodcoverage.svg" ".\Docs\Code Coverage\badge_methodcoverage.svg"
 
 cd TestCoverage
+
+rem pause
 
 explorer index.html
