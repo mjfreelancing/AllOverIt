@@ -98,7 +98,7 @@ namespace AllOverIt.Evaluator.Tests
                     OperatorType = default(Func<Expression, Expression>)
                 };
 
-                negateOperator.Should().BeEquivalentTo(expected, option => option.Excluding(subject => subject.OperatorType));
+                expected.Should().BeEquivalentTo(negateOperator, options => options.IncludingInternalFields());
             }
         }
 

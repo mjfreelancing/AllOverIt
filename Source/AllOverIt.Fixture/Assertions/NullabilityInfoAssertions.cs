@@ -205,7 +205,9 @@ namespace AllOverIt.Fixture.Assertions
 
         private static string GetCurrentScopeGenericArgValue()
         {
-            return AssertionScope.Current.Context?.Value ?? "generic arg";
+            var value = AssertionScope.Current.Context?.Value ?? string.Empty;
+
+            return value.IsEmpty() ? "<Generic>" : string.Empty;
         }
 
         private static string GetNullableString(bool inverted)
