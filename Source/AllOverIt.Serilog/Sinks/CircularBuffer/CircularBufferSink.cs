@@ -8,6 +8,13 @@ namespace AllOverIt.Serilog.Sinks.CircularBuffer
     /// <summary>A destination for log events that are stored in a fixed-sized circular buffer.</summary>
     public class CircularBufferSink : ILogEventSink
     {
+        // TODO: Update when NET 8 is no longer supported
+#if NET9_0_OR_GREATER
+        private readonly Lock _syncRoot = new();
+#else
+        private readonly object _syncRoot = new();
+#endif
+
         private readonly ICircularBufferSinkMessages _sinkMessages;
         private readonly ITextFormatter _formatter;
 
@@ -33,7 +40,7 @@ namespace AllOverIt.Serilog.Sinks.CircularBuffer
 
                 var bufferMessage = new CircularBufferSinkMessage(logEvent, formattedMessage);
 
-                lock (_sinkMessages)
+                lock (_syncRoot)
                 {
                     _sinkMessages.PushBack(bufferMessage);
                 }
