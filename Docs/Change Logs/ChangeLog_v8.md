@@ -4,8 +4,6 @@
 ### PENDING / IN-PROGRESS
 * Add alternative to ServiceRegistrar to provide a fluent syntax that caters for similar functionality.
   plus the ability to resolve the same instance for multiple interfaces, and handle open generics.
-* Update / replace how Throw<> works to save on string allocations.
-* Throw<> => add overloads that support params for string formatting.
 * Update EnrichedEnumModelBindingDemo so it is based on minimal API and the built-in problem details.
 * Deprecate FakeItEasy package. Switch to NSubstitute, including incorporating TestUtils project.
 * Run BinarySerializationBenchmark - see if the reader/writer can be made more efficient.
@@ -24,6 +22,10 @@
 * Methods such as `ElementDictionaryExtensions.TryGetDescendantObjectArray()` previously returned an empty array for
   the out argument when the method returned false. These methods now return null for this argument.
 * Removed extension methods already available as properties on `Type`: IsGenericType(), IsEnumType(), IsClassType(), IsValueType(), IsPrimitiveType()
+
+
+### AllOverIt
+* Added overloads for each of the Throw<T> methods that allows exception arguments to be lazily resolved.
 
 
 ### AllOverIt.Aws.Cdk.AppSync
