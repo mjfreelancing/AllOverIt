@@ -1,12 +1,13 @@
 #  Version 8.0.0
 ## XX XXX 2024
 
-### PENDING / IN-PROGRESS
+
+### Future Consideration
+* Update EnrichedEnumModelBindingDemo so it is based on minimal API and the built-in problem details.
+* Run BinarySerializationBenchmark - see if the reader/writer can be made more efficient.
 * Add alternative to ServiceRegistrar to provide a fluent syntax that caters for similar functionality.
   plus the ability to resolve the same instance for multiple interfaces, and handle open generics.
-* Update EnrichedEnumModelBindingDemo so it is based on minimal API and the built-in problem details.
 * Deprecate FakeItEasy package. Switch to NSubstitute, including incorporating TestUtils project.
-* Run BinarySerializationBenchmark - see if the reader/writer can be made more efficient.
 
 
 ### Applicable to all packages
