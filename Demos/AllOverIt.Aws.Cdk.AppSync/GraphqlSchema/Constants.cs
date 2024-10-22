@@ -5,6 +5,11 @@
         internal const string AppName = "AppSyncDemo";
         internal const int ServiceVersion = 1;
 
+        internal static class EventBridgeDataSource
+        {
+            internal const string Default = "Default";
+        }
+
         internal static class LambdaDataSource
         {
             internal const string GetLanguages = "GetLanguages";

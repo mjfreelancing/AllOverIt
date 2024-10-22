@@ -11,6 +11,9 @@ namespace GraphqlSchema.Schema
 {
     internal interface IAppSyncDemoMutationDefinition : IMutationDefinition
     {
+        [UnitResolver(typeof(SendEmailResolver), Constants.EventBridgeDataSource.Default)]
+        bool SendEmail(string email);
+
         [SchemaTypeRequired]
         [UnitResolver(typeof(AddCountryResolver), Constants.LambdaDataSource.AddCountry)]
         ICountry AddCountry([SchemaTypeRequired] ICountryInput country);
