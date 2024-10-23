@@ -94,12 +94,18 @@ namespace GraphqlSchema
 
                 DataSources =
                 [
+                    .. CreateEventBridgeDataSources(),
                     .. CreateLambdaDataSources(),
                     .. CreateHttpDataSources(),
                     .. CreateNoneDataSources(),
                     .. CreateSubscriptionDataSources()
                 ]
             };
+        }
+
+        private static IEnumerable<GraphqlDataSourceBase> CreateEventBridgeDataSources()
+        {
+            yield return new EventBridgeGraphqlDataSource(Constants.EventBridgeDataSource.Default, "default");
         }
 
         private static IEnumerable<GraphqlDataSourceBase> CreateLambdaDataSources()

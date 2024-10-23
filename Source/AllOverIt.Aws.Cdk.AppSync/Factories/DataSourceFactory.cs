@@ -5,6 +5,7 @@ using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using Amazon.CDK.AWS.Lambda;
+using Amazon.CDK.AWS.Events;
 using System.Text.RegularExpressions;
 
 namespace AllOverIt.Aws.Cdk.AppSync.Factories
@@ -43,6 +44,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
                 {
                     dataSource = graphqlDataSource switch
                     {
+                        EventBridgeGraphqlDataSource eventBridge => CreateEventBridgeDataSource(dataSourceId, eventBridge.EventBusName, eventBridge.Description),
                         LambdaGraphqlDataSource lambda => CreateLambdaDataSource(dataSourceId, lambda.FunctionName, lambda.Description),
                         HttpGraphqlDataSource http => CreateHttpDataSource(dataSourceId, http.DataSourceName, http.Endpoint, http.Description),
                         NoneGraphqlDataSource none => CreateNoneDataSource(dataSourceId, none.DataSourceName, none.Description),
@@ -76,6 +78,20 @@ namespace AllOverIt.Aws.Cdk.AppSync.Factories
         {
             // Exclude everything except alphanumeric and dashes.
             return Regex.Replace(value, @"[^\w]", "", RegexOptions.None);
+        }
+
+        private EventBridgeDataSource CreateEventBridgeDataSource(string dataSourceId, string eventBusName, string? description)
+        {
+            var stack = Stack.Of(_graphQlApi);
+
+            return new EventBridgeDataSource(stack, dataSourceId, new EventBridgeDataSourceProps
+            {
+                Api = _graphQlApi,
+                Name = GetFullDataSourceName("EventBridge", eventBusName),
+                Description = description,
+                EventBus = EventBus.FromEventBusArn(stack, $"{eventBusName}EventBus",
+                    $"arn:aws:events:{stack.Region}:{stack.Account}:event-bus/{eventBusName}")
+            });
         }
 
         private LambdaDataSource CreateLambdaDataSource(string dataSourceId, string functionName, string? description)
