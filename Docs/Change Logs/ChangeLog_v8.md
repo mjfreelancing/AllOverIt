@@ -32,6 +32,7 @@
 ### AllOverIt.Aws.Cdk.AppSync
 * [Breaking Change] Complete rework of how resolvers and request/response handlers are configured. Datasources can
   now be shared and resolvers now support VTL and JS Code based request/response handlers.
+* Added support for event bridge datasources.
 
 
 ### AllOverIt.Cryptography
