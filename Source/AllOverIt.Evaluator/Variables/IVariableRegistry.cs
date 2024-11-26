@@ -23,7 +23,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <param name="name">The name of the variable.</param>
         /// <param name="variable">The variable to try to get from the variable registry.</param>
         /// <returns><see langword="True"/> if the variable was retrieved, otherwise <see langword="False"/>.</returns>
-        bool TryGetVariable(string name, out IVariable variable);
+        bool TryGetVariable(string name, out IVariable? variable);
 
         /// <summary>Gets a variable from the variable registry, by name.</summary>
         /// <param name="name">The name of the variable.</param>

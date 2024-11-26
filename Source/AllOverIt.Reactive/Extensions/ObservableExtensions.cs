@@ -15,10 +15,10 @@ namespace AllOverIt.Reactive.Extensions
         public static IObservable<TResult> WaitUntil<TResult>(
             this IObservable<TResult> observable,
             Func<TResult, bool> predicate,
-            Func<TResult, TResult> action = default)
+            Func<TResult, TResult>? action = default)
         {
-            _ = observable.WhenNotNull(nameof(observable));
-            _ = predicate.WhenNotNull(nameof(predicate));
+            _ = observable.WhenNotNull();
+            _ = predicate.WhenNotNull();
 
             action ??= result => result;
 
@@ -37,9 +37,9 @@ namespace AllOverIt.Reactive.Extensions
             Func<TType, bool> predicate,
             Func<TType, TResult> action)
         {
-            _ = observable.WhenNotNull(nameof(observable));
-            _ = predicate.WhenNotNull(nameof(predicate));
-            _ = action.WhenNotNull(nameof(action));
+            _ = observable.WhenNotNull();
+            _ = predicate.WhenNotNull();
+            _ = action.WhenNotNull();
 
             return observable
                 .TakeUntil(predicate.Invoke)
@@ -56,10 +56,10 @@ namespace AllOverIt.Reactive.Extensions
         public static Task<TResult> WaitUntilAsync<TResult>(
             this IObservable<TResult> observable,
             Func<TResult, bool> predicate,
-            Func<TResult, Task<TResult>> action = default)
+            Func<TResult, Task<TResult>>? action = default)
         {
-            _ = observable.WhenNotNull(nameof(observable));
-            _ = predicate.WhenNotNull(nameof(predicate));
+            _ = observable.WhenNotNull();
+            _ = predicate.WhenNotNull();
 
             action ??= Task.FromResult;
 
@@ -78,9 +78,9 @@ namespace AllOverIt.Reactive.Extensions
             Func<TType, bool> predicate,
             Func<TType, Task<TResult>> action)
         {
-            _ = observable.WhenNotNull(nameof(observable));
-            _ = predicate.WhenNotNull(nameof(predicate));
-            _ = action.WhenNotNull(nameof(action));
+            _ = observable.WhenNotNull();
+            _ = predicate.WhenNotNull();
+            _ = action.WhenNotNull();
 
             var tcs = new TaskCompletionSource<TResult>();
 

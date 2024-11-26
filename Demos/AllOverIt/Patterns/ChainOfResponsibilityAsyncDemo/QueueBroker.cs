@@ -12,7 +12,7 @@ namespace ChainOfResponsibilityAsyncDemo
 
             // throws ThrowArgumentNullException when null and ArgumentException when whitespace
             // and will be processed by NullMessageExceptionHandler / EmptyMessageExceptionHandler
-            _ = message.Payload.WhenNotNullOrEmpty(nameof(message));
+            _ = message.Payload.WhenNotNullOrEmpty();
 
             // this will be processed by UnhandledExceptionHandler
             throw new InvalidOperationException();

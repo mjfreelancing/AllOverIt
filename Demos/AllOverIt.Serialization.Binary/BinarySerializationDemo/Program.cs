@@ -69,7 +69,7 @@ namespace BinarySerializationDemo
                     reader.Readers.Add(new TeacherReader());
                     reader.Readers.Add(new ClassroomReader());
 
-                    var classroom = (Classroom) reader.ReadObject();
+                    var classroom = (Classroom) reader.ReadObject()!;
                     OutputObjectAsJson("Decoded, via ReadObject()", classroom);
                 }
             }

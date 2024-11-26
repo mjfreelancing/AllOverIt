@@ -31,15 +31,26 @@ namespace AllOverIt.Tests.Reflection
             [Fact]
             public void Should_Create_Setter_Class()
             {
-                var expected = Create<int>();
                 var model = new DummyBaseClass();
 
-                var propInfo = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop1));
-                var setter = PropertyHelper.CreatePropertySetter(propInfo);
+                var prop1Info = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop1));
+                var setter1 = PropertyHelper.CreatePropertySetter(prop1Info);
 
-                setter.Invoke(model, expected);
+                var prop2Info = typeof(DummyBaseClass).GetProperty(nameof(DummyBaseClass.Prop2));   // testing null string
+                var setter2 = PropertyHelper.CreatePropertySetter(prop2Info);
 
-                model.Prop1.Should().Be(expected);
+                var expected1 = Create<int>();
+
+                setter1.Invoke(model, expected1);
+                model.Prop1.Should().Be(expected1);
+
+                var expected2 = Create<string>();
+
+                setter2.Invoke(model, expected2);
+                model.Prop2.Should().Be(expected2);
+
+                setter2.Invoke(model, null);
+                model.Prop2.Should().BeNull();
             }
 
             [Fact]

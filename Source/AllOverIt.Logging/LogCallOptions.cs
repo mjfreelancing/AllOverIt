@@ -1,8 +1,7 @@
-﻿#nullable enable
-
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Logging
 {
@@ -13,19 +12,17 @@ namespace AllOverIt.Logging
     /// <see cref="Extensions.LoggerExtensions.LogAllExceptions(ILogger, Exception, string?, object?[])"/>.</summary>
     public sealed class LogCallOptions
     {
-        private string? _logTemplateWithNoArguments = null;     // "Call: {MethodName}";
-        private string? _logTemplateWithArguments = null;       // "Call: {MethodName}, Arguments = {@Arguments}";
-        private string? _logExceptionTemplate = null;           // "Error: {ErrorMessage}";
-        private bool _includeCallerNamespace = true;
+        private string? _logTemplateWithNoArguments;    // "Call: {MethodName}";
+        private string? _logTemplateWithArguments;      // "Call: {MethodName}, Arguments = {@Arguments}";
+        private string? _logExceptionTemplate;          // "Error: {ErrorMessage}";
+        private bool _includeCallerNamespace;
 
-        internal static readonly LogCallOptions Instance = new();
-
-        internal string _callPrefix = "Call: ";
-        internal string _exceptionPrefix = "Error: ";
-        internal string _methodNameProperty = "MethodName";
-        internal string _argumentsPrefix = "Arguments = ";
-        internal string _argumentsDestructureProperty = "Arguments";
-        internal string _exceptionMessageProperty = "ErrorMessage";
+        internal string _callPrefix;
+        internal string _exceptionPrefix;
+        internal string _methodNameProperty;
+        internal string _argumentsPrefix;
+        internal string _argumentsDestructureProperty;
+        internal string _exceptionMessageProperty;
 
         internal string LogTemplateWithNoArguments
         {
@@ -35,6 +32,32 @@ namespace AllOverIt.Logging
 
                 return _logTemplateWithNoArguments;
             }
+        }
+
+        internal static readonly LogCallOptions Instance = new();
+
+        public LogCallOptions()
+        {
+            Reset();
+        }
+
+        // Also used for resetting between tests
+        [MemberNotNull(
+            nameof(_includeCallerNamespace), nameof(_callPrefix), nameof(_exceptionPrefix), nameof(_methodNameProperty),
+            nameof(_argumentsPrefix), nameof(_argumentsDestructureProperty), nameof(_exceptionMessageProperty))]
+        internal void Reset()
+        {
+            _logTemplateWithNoArguments = null;
+            _logTemplateWithArguments = null;
+            _logExceptionTemplate = null;
+            _includeCallerNamespace = true;
+
+            _callPrefix = "Call: ";
+            _exceptionPrefix = "Error: ";
+            _methodNameProperty = "MethodName";
+            _argumentsPrefix = "Arguments = ";
+            _argumentsDestructureProperty = "Arguments";
+            _exceptionMessageProperty = "ErrorMessage";
         }
 
         internal string LogTemplateWithArguments
@@ -65,7 +88,7 @@ namespace AllOverIt.Logging
         /// <param name="callPrefix">The call prefix to use.</param>
         public static void UseCallPrefix(string callPrefix)
         {
-            Instance._callPrefix = callPrefix.WhenNotNullOrEmpty(nameof(callPrefix));
+            Instance._callPrefix = callPrefix.WhenNotNullOrEmpty();
 
             Instance._logTemplateWithNoArguments = null;
             Instance._logTemplateWithArguments = null;
@@ -76,7 +99,7 @@ namespace AllOverIt.Logging
         /// <param name="exceptionPrefix">The exception prefix to use.</param>
         public static void UseExceptionPrefix(string exceptionPrefix)
         {
-            Instance._exceptionPrefix = exceptionPrefix.WhenNotNullOrEmpty(nameof(exceptionPrefix));
+            Instance._exceptionPrefix = exceptionPrefix.WhenNotNullOrEmpty();
 
             Instance._logExceptionTemplate = null;
         }
@@ -89,7 +112,7 @@ namespace AllOverIt.Logging
         /// <param name="methodNameProperty">The method name property to use.</param>
         public static void UseMethodNameProperty(string methodNameProperty)
         {
-            Instance._methodNameProperty = methodNameProperty.WhenNotNullOrEmpty(nameof(methodNameProperty));
+            Instance._methodNameProperty = methodNameProperty.WhenNotNullOrEmpty();
 
             Instance._logTemplateWithNoArguments = null;
             Instance._logTemplateWithArguments = null;
@@ -100,7 +123,7 @@ namespace AllOverIt.Logging
         /// <param name="exceptionMessageProperty">The exception message property to use.</param>
         public static void UseExceptionMessageProperty(string exceptionMessageProperty)
         {
-            Instance._exceptionMessageProperty = exceptionMessageProperty.WhenNotNullOrEmpty(nameof(exceptionMessageProperty));
+            Instance._exceptionMessageProperty = exceptionMessageProperty.WhenNotNullOrEmpty();
 
             Instance._logExceptionTemplate = null;
         }
@@ -110,7 +133,7 @@ namespace AllOverIt.Logging
         /// <param name="argumentsPrefix">The arguments prefix to use.</param>
         public static void UseArgumentsPrefix(string argumentsPrefix)
         {
-            Instance._argumentsPrefix = argumentsPrefix.WhenNotNullOrEmpty(nameof(argumentsPrefix));
+            Instance._argumentsPrefix = argumentsPrefix.WhenNotNullOrEmpty();
 
             Instance._logTemplateWithArguments = null;
         }
@@ -120,7 +143,7 @@ namespace AllOverIt.Logging
         /// <param name="argumentsProperty">The arguments property to use.</param>
         public static void UseArgumentsDestructureProperty(string argumentsProperty)
         {
-            Instance._argumentsDestructureProperty = argumentsProperty.WhenNotNullOrEmpty(nameof(argumentsProperty));
+            Instance._argumentsDestructureProperty = argumentsProperty.WhenNotNullOrEmpty();
 
             Instance._logTemplateWithArguments = null;
         }

@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ValueObject;
 using AllOverIt.Patterns.ValueObject.Exceptions;
 using FluentAssertions;
@@ -8,6 +7,24 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 {
     public class ValueObjectFixture : FixtureBase
     {
+        private class DisallowPalindromeStringValueObject : ValueObject<string, DisallowPalindromeStringValueObject>
+        {
+            public DisallowPalindromeStringValueObject()
+            {
+            }
+
+            public DisallowPalindromeStringValueObject(string value)
+                : base(value)
+            {
+            }
+
+            protected override bool ValidateValue(string value)
+            {
+                // not allowing palindrome
+                return value is null || value != ReverseString(value);
+            }
+        }
+
         private class StringValueObject : ValueObject<string, StringValueObject>
         {
             public StringValueObject()
@@ -17,12 +34,6 @@ namespace AllOverIt.Tests.Patterns.ValueObject
             public StringValueObject(string value)
                 : base(value)
             {
-            }
-
-            protected override bool ValidateValue(string value)
-            {
-                // not allowing palindrome
-                return value == null || value != ReverseString(value);
             }
         }
 
@@ -41,7 +52,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
             {
                 Invoking(() =>
                 {
-                    _ = new StringValueObject("aba");
+                    _ = new DisallowPalindromeStringValueObject("aba");
                 })
                 .Should()
                 .Throw<ValueObjectValidationException>()
@@ -71,6 +82,29 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var actual = string1.Equals(string2);
 
                 actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Not_Be_Equal_When_Object_Null()
+            {
+                var value = Create<string>();
+                var string1 = new StringValueObject(value);
+                string string2 = null;
+
+                var actual = string1.Equals(string2);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Not_Be_Equal_When_Object_Null_And_Value_Null()
+            {
+                var string1 = new StringValueObject(null);
+                string string2 = null;
+
+                var actual = string1.Equals(string2);
+
+                actual.Should().BeFalse();
             }
 
             [Fact]
@@ -113,6 +147,28 @@ namespace AllOverIt.Tests.Patterns.ValueObject
             }
 
             [Fact]
+            public void Should_Be_Equal_When_Values_Null()
+            {
+                var string1 = new StringValueObject(null);
+                var string2 = new StringValueObject(null);
+
+                var actual = string1.Equals(string2);
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Not_Be_Equal_When_One_Value_Null()
+            {
+                var string1 = new StringValueObject(Create<string>());
+                var string2 = new StringValueObject(null);
+
+                var actual = string1.Equals(string2);
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
             public void Should_Be_Equal_By_Reference()
             {
                 var value = Create<string>();
@@ -122,18 +178,6 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var actual = string1.Equals(string2);
 
                 actual.Should().BeTrue();
-            }
-
-            [Fact]
-            public void Should_Not_Be_Equal_When_Null()
-            {
-                var value = Create<string>();
-                var string1 = new StringValueObject(value);
-                StringValueObject string2 = null;
-
-                var actual = string1.Equals(string2);
-
-                actual.Should().BeFalse();
             }
         }
 
@@ -161,17 +205,47 @@ namespace AllOverIt.Tests.Patterns.ValueObject
             }
 
             [Fact]
-            public void Should_Throw_When_Null()
+            public void Should_Compare_Ascending()
             {
-                Invoking(() =>
-                {
-                    var value = new StringValueObject(Create<string>());
+                var value = Create<string>();
+                var string1 = new StringValueObject("a");
+                var string2 = new StringValueObject("b");
 
-                    value.CompareTo(null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("other");
+                var actual = string1.CompareTo(string2);
+                actual.Should().Be(-1);
+            }
+
+            [Fact]
+            public void Should_Compare_Ascending_With_Null()
+            {
+                var value = Create<string>();
+                var string1 = new StringValueObject(null);
+                var string2 = new StringValueObject("b");
+
+                var actual = string1.CompareTo(string2);
+                actual.Should().Be(-1);
+            }
+
+            [Fact]
+            public void Should_Compare_Descending()
+            {
+                var value = Create<string>();
+                var string1 = new StringValueObject("b");
+                var string2 = new StringValueObject("a");
+
+                var actual = string1.CompareTo(string2);
+                actual.Should().Be(1);
+            }
+
+            [Fact]
+            public void Should_Compare_Descending_With_Null()
+            {
+                var value = Create<string>();
+                var string1 = new StringValueObject("b");
+                var string2 = new StringValueObject(null);
+
+                var actual = string1.CompareTo(string2);
+                actual.Should().Be(1);
             }
         }
 
@@ -195,7 +269,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var value = Create<string>();
                 var string1 = new StringValueObject(value);
 
-                var actual = string1 == null;
+                var actual = string1 is null;
 
                 actual.Should().BeFalse();
             }
@@ -243,7 +317,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var value = Create<string>();
                 var string1 = new StringValueObject(value);
 
-                var actual = string1 != null;
+                var actual = string1 is not null;
 
                 actual.Should().BeTrue();
             }
@@ -257,6 +331,17 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var actual = string1 != string2;
 
                 actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Be_Equal_When_Both_Null()
+            {
+                StringValueObject string1 = null;
+                StringValueObject string2 = null;
+
+                var actual = string1 != string2;
+
+                actual.Should().BeFalse();
             }
         }
 
@@ -296,17 +381,14 @@ namespace AllOverIt.Tests.Patterns.ValueObject
             }
 
             [Fact]
-            public void Should_Throw_When_Null()
+            public void Should_Be_GreaterThan_Null()
             {
-                Invoking(() =>
-                {
-                    var string1 = new StringValueObject("ab");
+                var string1 = new StringValueObject("ab");
+                var string2 = new StringValueObject(null);
 
-                    var actual = string1 > null;
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("other");
+                var actual = string1 > string2;
+
+                actual.Should().BeTrue();
             }
         }
 
@@ -346,17 +428,25 @@ namespace AllOverIt.Tests.Patterns.ValueObject
             }
 
             [Fact]
-            public void Should_Throw_When_Null()
+            public void Should_Be_GreaterThanOrEqual_Null()
             {
-                Invoking(() =>
-                {
-                    var string1 = new StringValueObject("ab");
+                var string1 = new StringValueObject("ab");
+                var string2 = new StringValueObject(null);
 
-                    var actual = string1 >= null;
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("other");
+                var actual = string1 >= string2;
+
+                actual.Should().BeTrue();
+            }
+
+            [Fact]
+            public void Should_Be_GreaterThanOrEqual_Null_When_Both_Null()
+            {
+                var string1 = new StringValueObject(null);
+                var string2 = new StringValueObject(null);
+
+                var actual = string1 >= string2;
+
+                actual.Should().BeTrue();
             }
         }
 
@@ -396,17 +486,14 @@ namespace AllOverIt.Tests.Patterns.ValueObject
             }
 
             [Fact]
-            public void Should_Throw_When_Null()
+            public void Should_Not_Be_LessThan_Null()
             {
-                Invoking(() =>
-                {
-                    var string1 = new StringValueObject("ab");
+                var string1 = new StringValueObject("ab");
+                var string2 = new StringValueObject(null);
 
-                    var actual = string1 < null;
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("other");
+                var actual = string1 < string2;
+
+                actual.Should().BeFalse();
             }
         }
 
@@ -446,17 +533,25 @@ namespace AllOverIt.Tests.Patterns.ValueObject
             }
 
             [Fact]
-            public void Should_Throw_When_Null()
+            public void Should_Be_LessThanOrEqual_Null()
             {
-                Invoking(() =>
-                {
-                    var string1 = new StringValueObject("ab");
+                var string1 = new StringValueObject("ab");
+                var string2 = new StringValueObject(null);
 
-                    var actual = string1 <= null;
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("other");
+                var actual = string1 <= string2;
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Be_LessThanOrEqual_Null_When_Both_Null()
+            {
+                var string1 = new StringValueObject(null);
+                var string2 = new StringValueObject(null);
+
+                var actual = string1 <= string2;
+
+                actual.Should().BeTrue();
             }
         }
 
@@ -491,7 +586,18 @@ namespace AllOverIt.Tests.Patterns.ValueObject
         public class GetHashCodeMethod : ValueObjectFixture
         {
             [Fact]
-            public void Should_Convert()
+            public void Should_Return_Zero_When_Null()
+            {
+                string value = null;
+                var string1 = (ValueObject<string, StringValueObject>) value;
+
+                var actual = string1.GetHashCode();
+
+                actual.Should().Be(0);
+            }
+
+            [Fact]
+            public void Should_Have_Same_Hash_Value()
             {
                 var value = Create<string>();
                 var string1 = (ValueObject<string, StringValueObject>) value;
@@ -502,6 +608,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 actual.Should().Be(expected);
             }
         }
+
         private static string ReverseString(string value)
         {
             var array = value.ToCharArray();

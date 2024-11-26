@@ -3,7 +3,6 @@ using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Evaluator.Variables;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq.Expressions;
 
@@ -36,7 +35,8 @@ namespace AllOverIt.Evaluator
         private readonly IArithmeticOperationFactory _operationFactory;
         private readonly IUserDefinedMethodFactory _userDefinedMethodFactory;
 
-        private IVariableRegistry _variableRegistry;
+        private IVariableRegistry? _variableRegistry;
+
         private IVariableRegistry VariableRegistry
         {
             get
@@ -60,8 +60,8 @@ namespace AllOverIt.Evaluator
         /// to the <c>UserDefinedMethodFactory</c> for a list of available built-in methods.</param>
         public FormulaProcessor(IArithmeticOperationFactory operationFactory, IUserDefinedMethodFactory userDefinedMethodFactory)
         {
-            _operationFactory = operationFactory.WhenNotNull(nameof(operationFactory));
-            _userDefinedMethodFactory = userDefinedMethodFactory.WhenNotNull(nameof(userDefinedMethodFactory));
+            _operationFactory = operationFactory.WhenNotNull();
+            _userDefinedMethodFactory = userDefinedMethodFactory.WhenNotNull();
 
             // custom operator registration (using TryRegisterOperation as the factory can be shared across threads)
             _operationFactory.TryRegisterOperation(CustomTokens.UnaryMinus, 4, 1, e => new NegateOperator(e[0]));
@@ -79,9 +79,9 @@ namespace AllOverIt.Evaluator
         /// and will be returned as part of the result. Second, if a variable registry is provided then that instance will be used (and will always
         /// be returned with the result, even if there are no variables in the formula). It is the caller's responsibility to populate the variable
         /// registry before the compiled expression is evaluated.</remarks>
-        public FormulaProcessorResult Process(string formula, IVariableRegistry variableRegistry)
+        public FormulaProcessorResult Process(string formula, IVariableRegistry? variableRegistry)
         {
-            _ = formula.WhenNotNullOrEmpty(nameof(formula));
+            _ = formula.WhenNotNullOrEmpty();
 
             _variableRegistry = variableRegistry;   // can be null
             _lastPushIsOperator = true;             // first token cannot be an operator (unary plus/minus is handled)
@@ -96,10 +96,10 @@ namespace AllOverIt.Evaluator
                 var lastExpression = _expressionStack.Pop();
                 var funcExpression = Expression.Lambda<Func<double>>(lastExpression);
 
-                var referencedVariableNames = _referencedVariableNames.Count > 0
+                string[]? referencedVariableNames = _referencedVariableNames.Count > 0
 
                     // Must return a copy of the referenced variable names
-                    ? new ReadOnlyCollection<string>([.. _referencedVariableNames])
+                    ? [.. _referencedVariableNames]
 
                     // FormulaProcessorResult handles this so it points to an empty ReadOnlyCollection
                     : null;
@@ -407,9 +407,9 @@ namespace AllOverIt.Evaluator
             return FormulaExpressionFactory.CreateExpression(operation, _expressionStack);
         }
 
-        private void ProcessOperators(Stack<string> operators, Stack<Expression> expressions, Func<bool> condition = null)
+        private void ProcessOperators(Stack<string> operators, Stack<Expression> expressions, Func<bool>? condition = default)
         {
-            while (operators.Count > 0 && (condition == null || condition.Invoke()))
+            while (operators.Count > 0 && (condition is null || condition.Invoke()))
             {
                 var nextOperator = operators.Pop();
                 var operation = _operationFactory.GetOperation(nextOperator);

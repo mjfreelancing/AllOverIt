@@ -6,39 +6,39 @@ namespace AllOverIt.Serialization.Json.Abstractions
 {
     internal sealed class ElementDictionary : IElementDictionary
     {
-        private readonly IDictionary<string, object> _element;
+        private readonly IDictionary<string, object?> _element;
 
         public IEnumerable<string> Names => _element.Keys;
 
-        public IEnumerable<object> Values => _element.Values;
+        public IEnumerable<object?> Values => _element.Values;
 
-        public ElementDictionary(IDictionary<string, object> element)
+        public ElementDictionary(IDictionary<string, object?> element)
         {
-            _element = element.WhenNotNull(nameof(element));
+            _element = element.WhenNotNull();
         }
 
-        public bool TryGetValue(string propertyName, out object value)
+        public bool TryGetValue(string propertyName, out object? value)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             return _element.TryGetValue(propertyName, out value);
         }
 
-        public object GetValue(string propertyName)
+        public object? GetValue(string propertyName)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
-            if (TryGetValue(propertyName, out var value))
+            if (!TryGetValue(propertyName, out var value))
             {
-                return value;
+                JsonHelperException.ThrowPropertyNotFound(propertyName);
             }
 
-            throw new JsonHelperException($"The property {propertyName} was not found.");
+            return value;
         }
 
-        public bool TrySetValue(string propertyName, object value)
+        public bool TrySetValue(string propertyName, object? value)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             if (!_element.ContainsKey(propertyName))
             {
@@ -50,18 +50,18 @@ namespace AllOverIt.Serialization.Json.Abstractions
             return true;
         }
 
-        public void SetValue(string propertyName, object value)
+        public void SetValue(string propertyName, object? value)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             // Cannot use '_element[propertyName] = value' as this would add a new value if it doesn't exist.
             if (!TrySetValue(propertyName, value))
             {
-                throw new JsonHelperException($"The property {propertyName} was not found.");
+                JsonHelperException.ThrowPropertyNotFound(propertyName);
             }
         }
 
-        public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+        public IEnumerator<KeyValuePair<string, object?>> GetEnumerator()
         {
             return _element.GetEnumerator();
         }

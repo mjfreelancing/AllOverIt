@@ -101,7 +101,7 @@ namespace AllOverIt.Patterns.Pipeline
 
         public PipelineBuilder(Func<TIn, TOut> step)
         {
-            _step = step.WhenNotNull(nameof(step));
+            _step = step.WhenNotNull();
         }
 
         public Func<TIn, TOut> Build()
@@ -118,8 +118,8 @@ namespace AllOverIt.Patterns.Pipeline
 
         public PipelineBuilder(IPipelineBuilder<TIn, TPrevOut> prevStep, Func<TPrevOut, TNextOut> step)
         {
-            _prevStep = prevStep.WhenNotNull(nameof(prevStep));
-            _step = step.WhenNotNull(nameof(step));
+            _prevStep = prevStep.WhenNotNull();
+            _step = step.WhenNotNull();
         }
 
         // Create a func that invokes the previous func and uses its result as the input to the next func (step)

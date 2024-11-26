@@ -1,7 +1,4 @@
-﻿#if !NETSTANDARD2_1
-
-using AllOverIt.Assertion;
-using System;
+﻿using AllOverIt.Assertion;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.Loader;
@@ -28,7 +25,7 @@ namespace AllOverIt.Plugin
         }
 
         /// <inheritdoc/>
-        protected override Assembly Load(AssemblyName assemblyName)
+        protected override Assembly? Load(AssemblyName assemblyName)
         {
             var assemblyPath = _resolver.ResolveAssemblyToPath(assemblyName);
 
@@ -48,5 +45,3 @@ namespace AllOverIt.Plugin
         }
     }
 }
-
-#endif

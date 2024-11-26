@@ -4,10 +4,10 @@
     public interface IContinuationTokenOptions
     {
         /// <summary>Indicates if the serialized continuation token should include an embedded hash value. Including a hash value
-        /// can be useful for determining if the decoded token will be valid. This is not enabled by default.</summary>
+        /// can be useful for determining if the decoded token will be valid. This is disabled by default.</summary>
         bool IncludeHash { get; }
 
-        /// <summary>Indicates if the serialized continuation token should be compressed. This is not enabled by default.</summary>
+        /// <summary>Indicates if the serialized continuation token should be compressed. This is disabled by default.</summary>
         bool UseCompression { get; }
     }
 }

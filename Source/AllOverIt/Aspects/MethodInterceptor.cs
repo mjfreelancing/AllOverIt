@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using AllOverIt.Assertion;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace AllOverIt.Aspects
 {
@@ -29,33 +31,41 @@ namespace AllOverIt.Aspects
         /// <summary>Determines if an intercept handler has been registered for the provided <paramref name="targetMethod"/>.</summary>
         /// <param name="targetMethod">The <see cref="MethodInfo"/> of the method to determine if there is a registered interceptor.</param>
         /// <returns><see langword="True"/> if an interceptor is registered, otherwise <see langword="False"/>.</returns>
-        protected override bool CanInterceptMethod(MethodInfo targetMethod)
+        protected override bool CanInterceptMethod([NotNullWhen(true)] MethodInfo? targetMethod)
         {
-            return _methodInterceptors.ContainsKey(targetMethod);
+            return base.CanInterceptMethod(targetMethod) && _methodInterceptors.ContainsKey(targetMethod);
         }
 
         /// <inheritdoc />
-        protected override InterceptorState BeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        protected override InterceptorState BeforeInvoke(MethodInfo? targetMethod, ref object?[]? args)
         {
-            var methodInterceptor = _methodInterceptors[targetMethod];
+            var methodInterceptor = GetMethodInterceptor(targetMethod);
 
             return methodInterceptor.BeforeInvoke(targetMethod, ref args);
         }
 
         /// <inheritdoc />
-        protected override void AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+        protected override void AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
-            var methodInterceptor = _methodInterceptors[targetMethod];
+            var methodInterceptor = GetMethodInterceptor(targetMethod);
 
             methodInterceptor.AfterInvoke(targetMethod, args, state);
         }
 
         /// <inheritdoc />
-        protected override void Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        protected override void Faulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
-            var methodInterceptor = _methodInterceptors[targetMethod];
+            var methodInterceptor = GetMethodInterceptor(targetMethod);
 
             methodInterceptor.Faulted(targetMethod, args, state, exception);
+        }
+
+        private IInterceptorMethodHandler GetMethodInterceptor([NotNull] MethodInfo? targetMethod)
+        {
+            // This method only exists so the code analysis can determine targetMethod is not null
+            _ = targetMethod.WhenNotNull();
+
+            return _methodInterceptors[targetMethod];
         }
     }
 }

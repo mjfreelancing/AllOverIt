@@ -11,7 +11,7 @@ namespace AllOverIt.GenericHost
         /// <param name="args">The application's command line arguments.</param>
         /// <returns>A <see cref="IHostBuilder"/> instance.</returns>
         /// <remarks>This overload requires a call to <see cref="IHostBuilder.ConfigureServices"/> to register a Singleton <see cref="IConsoleApp"/> instance.</remarks>
-        public static IHostBuilder CreateConsoleHostBuilder(string[] args = default)
+        public static IHostBuilder CreateConsoleHostBuilder(string[]? args = default)
         {
             // HostedConsoleService injects the implementation as an IConsoleApp
             return CreateHostedConsoleServiceBuilder(args);
@@ -21,7 +21,7 @@ namespace AllOverIt.GenericHost
         /// <typeparam name="TConsoleApp">An <see cref="IConsoleApp"/> derived class that will be registered as a Singleton for injection into the hosted service.</typeparam>
         /// <param name="args">The application's command line arguments.</param>
         /// <returns>A <see cref="IHostBuilder"/> instance.</returns>
-        public static IHostBuilder CreateConsoleHostBuilder<TConsoleApp>(string[] args = default) where TConsoleApp : class, IConsoleApp
+        public static IHostBuilder CreateConsoleHostBuilder<TConsoleApp>(string[]? args = default) where TConsoleApp : class, IConsoleApp
         {
             // HostedConsoleService injects the implementation as an IConsoleApp
             return CreateHostedConsoleServiceBuilder(args)
@@ -36,7 +36,7 @@ namespace AllOverIt.GenericHost
         /// <typeparam name="THostedService">The hosted service type implementing <see cref="IHostedService"/>.</typeparam>
         /// <param name="args">The application's command line arguments.</param>
         /// <returns>The initialized <see cref="HostBuilder" /> instance.</returns>
-        public static IHostBuilder CreateHostBuilder<THostedService>(string[] args)
+        public static IHostBuilder CreateHostBuilder<THostedService>(string[]? args)
             where THostedService : class, IHostedService
         {
             /*
@@ -69,7 +69,7 @@ namespace AllOverIt.GenericHost
                 });
         }
 
-        private static IHostBuilder CreateHostedConsoleServiceBuilder(string[] args)
+        private static IHostBuilder CreateHostedConsoleServiceBuilder(string[]? args)
         {
             return CreateHostBuilder<HostedConsoleService>(args)
                 .ConfigureHostConfiguration(configBuilder =>

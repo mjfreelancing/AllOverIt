@@ -11,7 +11,7 @@ namespace AllOverIt.DependencyInjection
 
         public NamedServiceBuilder(IServiceCollection services)
         {
-            _services = services.WhenNotNull(nameof(services));
+            _services = services.WhenNotNull();
         }
 
         public INamedServiceBuilder<TService> AsTransient<TImplementation>(string name) where TImplementation : class, TService
@@ -88,14 +88,14 @@ namespace AllOverIt.DependencyInjection
 
         private void RegisterImplementation<TImplementation>(string name) where TImplementation : class, TService
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             ((INamedServiceRegistration<TService>) _resolver).Register<TImplementation>(name);
         }
 
         private void RegisterImplementation(string name, Type implementationType)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             ((INamedServiceRegistration<TService>) _resolver).Register(name, implementationType);
         }

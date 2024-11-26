@@ -256,7 +256,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 services.AddSingleton<IDummyDecoratorInterface, DummyDecorator1>();
 
-                DummyInterceptor actual = default;
+                DummyInterceptor actual = null;
 
                 _ = ServiceCollectionExtensions.DecorateWithInterceptor<IDummyDecoratorInterface, DummyInterceptor>(services, (_, interceptor) =>
                 {

@@ -24,7 +24,7 @@ namespace AllOverIt.Helpers.ProgressReport
         /// then a value greater than 100 may be returned (depending on the value of <paramref name="incrementToReport"/>).</remarks>
         public static Action<GetProgressText> Create(int total, int incrementToReport, Action<ProgressState> notifier)
         {
-            _ = notifier.WhenNotNull(nameof(notifier));
+            _ = notifier.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.WhenNot(total > 0, nameof(total), "The total count must be greater than zero.");
             Throw<ArgumentOutOfRangeException>.WhenNot(incrementToReport > 0 && incrementToReport <= 100, nameof(incrementToReport), "The reporting increment must have a value between 1 and 100.");

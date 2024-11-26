@@ -52,10 +52,9 @@ namespace AllOverIt.Cryptography.RSA
         /// <returns>An array that contains the supported key sizes.</returns>
         public static KeySizes[] GetLegalKeySizes()
         {
-            using (var rsa = RSAAlgorithm.Create())
-            {
-                return rsa.LegalKeySizes;
-            }
+            using var rsa = RSAAlgorithm.Create();
+
+            return rsa.LegalKeySizes;
         }
 
         /// <summary>Indicates if the provided key size, in bits, is valid for the RSA algorithm.</summary>

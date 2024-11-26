@@ -1,4 +1,5 @@
-﻿using AllOverIt.Pipes.Exceptions;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Pipes.Exceptions;
 using AllOverIt.Pipes.Named.Connection;
 using AllOverIt.Pipes.Named.Events;
 using AllOverIt.Pipes.Named.Serialization;
@@ -10,17 +11,17 @@ namespace AllOverIt.Pipes.Named.Server
         where TMessage : class, new()
     {
         /// <inheritdoc />
-        public event EventHandler<NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeServerConnection<TMessage>>> OnMessageReceived;
+        public event EventHandler<NamedPipeConnectionMessageEventArgs<TMessage, INamedPipeServerConnection<TMessage>>>? OnMessageReceived;
 
         /// <inheritdoc />
-        public event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeServerConnection<TMessage>>> OnDisconnected;
+        public event EventHandler<NamedPipeConnectionEventArgs<TMessage, INamedPipeServerConnection<TMessage>>>? OnDisconnected;
 
         /// <inheritdoc />
-        public event EventHandler<NamedPipeConnectionExceptionEventArgs<TMessage, INamedPipeServerConnection<TMessage>>> OnException;
+        public event EventHandler<NamedPipeConnectionExceptionEventArgs<TMessage, INamedPipeServerConnection<TMessage>>>? OnException;
 
         /// <summary>Constructor.</summary>
         /// <param name="pipeStream">The underlying pipe stream.</param>
-        /// <param name="connectionId">Gets the conection's unique identifier.</param>
+        /// <param name="connectionId">Gets the connection's unique identifier.</param>
         /// <param name="serializer">The message serializer.</param>
         public NamedPipeServerConnection(PipeStream pipeStream, string connectionId, INamedPipeSerializer<TMessage> serializer)
             : base(pipeStream, connectionId, serializer)
@@ -30,10 +31,10 @@ namespace AllOverIt.Pipes.Named.Server
         /// <inheritdoc />
         public string GetImpersonationUserName()
         {
-            if (PipeStream is not NamedPipeServerStream serverStream)
-            {
-                throw new PipeException($"The pipe stream must be a {nameof(NamedPipeServerStream)}.");
-            }
+            // ServerStream is a property getter that performs a cast
+            var serverStream = ServerStream;
+
+            Throw<PipeException>.WhenNull(serverStream, $"The pipe stream must be a {nameof(NamedPipeServerStream)}.");
 
             // IOException will be raised of the pipe connection has been broken or
             // the user name is longer than 19 characters.

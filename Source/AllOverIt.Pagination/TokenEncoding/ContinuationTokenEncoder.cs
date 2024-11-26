@@ -15,9 +15,9 @@ namespace AllOverIt.Pagination.TokenEncoding
         internal ContinuationTokenEncoder(IReadOnlyCollection<IColumnDefinition> columns, PaginationDirection paginationDirection,
             IContinuationTokenSerializer continuationTokenSerializer)
         {
-            _columns = columns.WhenNotNullOrEmpty(nameof(columns)).AsReadOnlyCollection();
+            _columns = columns.WhenNotNullOrEmpty().AsReadOnlyCollection();
             _paginationDirection = paginationDirection;
-            Serializer = continuationTokenSerializer.WhenNotNull(nameof(continuationTokenSerializer));
+            Serializer = continuationTokenSerializer.WhenNotNull();
         }
 
         public string EncodePreviousPage<TEntity>(IReadOnlyCollection<TEntity> references) where TEntity : class

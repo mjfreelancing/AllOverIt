@@ -6,13 +6,13 @@ namespace AllOverIt.Aws.AppSync.Client.Configuration
     /// <inheritdoc cref="ISubscriptionClientConfiguration" />
     public sealed class SubscriptionClientConfiguration : ISubscriptionClientConfiguration
     {
-        private string _realTimeUrl;
+        private string? _realTimeUrl;
 
         /// <inheritdoc />
-        public string Host { get; init; }
+        public required string Host { get; init; }
 
         /// <inheritdoc />
-        public string RealtimeUrl
+        public string? RealtimeUrl
         {
             get
             {
@@ -24,10 +24,10 @@ namespace AllOverIt.Aws.AppSync.Client.Configuration
         }
 
         /// <inheritdoc />
-        public IJsonSerializer Serializer { get; init; }
+        public required IJsonSerializer Serializer { get; init; }
 
         /// <inheritdoc />
-        public IAppSyncAuthorization DefaultAuthorization { get; init; }
+        public required IAppSyncAuthorization DefaultAuthorization { get; init; }
 
         /// <inheritdoc />
         public SubscriptionClientConnectionOptions ConnectionOptions { get; init; } = new();

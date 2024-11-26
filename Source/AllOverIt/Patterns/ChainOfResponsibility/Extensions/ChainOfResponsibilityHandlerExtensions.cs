@@ -1,5 +1,6 @@
 using AllOverIt.Assertion;
 using AllOverIt.Extensions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
 {
@@ -9,15 +10,16 @@ namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
         private sealed class ChainOfResponsibilityNode<TInput, TOutput> : IChainOfResponsibilityHandler<TInput, TOutput>
         {
             private readonly IChainOfResponsibilityHandler<TInput, TOutput> _first;
-            private IChainOfResponsibilityHandler<TInput, TOutput> _last;
+            private IChainOfResponsibilityHandler<TInput, TOutput>? _last;
 
             public ChainOfResponsibilityNode(IChainOfResponsibilityHandler<TInput, TOutput> first, IChainOfResponsibilityHandler<TInput, TOutput> next)
             {
-                _first = first.WhenNotNull(nameof(first));
+                _first = first.WhenNotNull();
 
                 ((IChainOfResponsibilityHandler<TInput, TOutput>) this).SetNext(next);
             }
 
+            [return: MaybeNull]
             public TOutput Handle(TInput state)
             {
                 return _first.Handle(state);
@@ -40,16 +42,16 @@ namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
         private sealed class ChainOfResponsibilityAsyncNode<TInput, TOutput> : IChainOfResponsibilityHandlerAsync<TInput, TOutput>
         {
             private readonly IChainOfResponsibilityHandlerAsync<TInput, TOutput> _first;
-            private IChainOfResponsibilityHandlerAsync<TInput, TOutput> _last;
+            private IChainOfResponsibilityHandlerAsync<TInput, TOutput>? _last;
 
             public ChainOfResponsibilityAsyncNode(IChainOfResponsibilityHandlerAsync<TInput, TOutput> first, IChainOfResponsibilityHandlerAsync<TInput, TOutput> next)
             {
-                _first = first.WhenNotNull(nameof(first));
+                _first = first.WhenNotNull();
 
                 ((IChainOfResponsibilityHandlerAsync<TInput, TOutput>) this).SetNext(next);
             }
 
-            public Task<TOutput> HandleAsync(TInput state, CancellationToken cancellationToken)
+            public Task<TOutput?> HandleAsync(TInput state, CancellationToken cancellationToken)
             {
                 return _first.HandleAsync(state, cancellationToken);
             }
@@ -76,7 +78,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
         public static IChainOfResponsibilityHandler<TInput, TOutput> Compose<TInput, TOutput>(this IEnumerable<IChainOfResponsibilityHandler<TInput, TOutput>> handlers)
         {
             var allHandlers = handlers
-                .WhenNotNullOrEmpty(nameof(handlers))
+                .WhenNotNullOrEmpty()
                 .AsReadOnlyCollection();
 
             var firstHandler = allHandlers.First();
@@ -99,7 +101,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
         public static IChainOfResponsibilityHandlerAsync<TInput, TOutput> Compose<TInput, TOutput>(this IEnumerable<IChainOfResponsibilityHandlerAsync<TInput, TOutput>> handlers)
         {
             var allHandlers = handlers
-                .WhenNotNullOrEmpty(nameof(handlers))
+                .WhenNotNullOrEmpty()
                 .AsReadOnlyCollection();
 
             var firstHandler = allHandlers.First();
@@ -124,8 +126,8 @@ namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
         public static IChainOfResponsibilityHandler<TInput, TOutput> Then<TInput, TOutput>(this IChainOfResponsibilityHandler<TInput, TOutput> first,
            IChainOfResponsibilityHandler<TInput, TOutput> next)
         {
-            _ = first.WhenNotNull(nameof(first));
-            _ = next.WhenNotNull(nameof(next));
+            _ = first.WhenNotNull();
+            _ = next.WhenNotNull();
 
             return new ChainOfResponsibilityNode<TInput, TOutput>(first, next);
         }
@@ -140,8 +142,8 @@ namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
         public static IChainOfResponsibilityHandlerAsync<TInput, TOutput> Then<TInput, TOutput>(this IChainOfResponsibilityHandlerAsync<TInput, TOutput> first,
           IChainOfResponsibilityHandlerAsync<TInput, TOutput> next)
         {
-            _ = first.WhenNotNull(nameof(first));
-            _ = next.WhenNotNull(nameof(next));
+            _ = first.WhenNotNull();
+            _ = next.WhenNotNull();
 
             return new ChainOfResponsibilityAsyncNode<TInput, TOutput>(first, next);
         }

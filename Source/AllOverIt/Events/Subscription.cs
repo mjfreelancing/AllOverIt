@@ -8,7 +8,7 @@ namespace AllOverIt.Events
 
         public Subscription(Delegate handler)
         {
-            _handler = handler.WhenNotNull(nameof(handler));
+            _handler = handler.WhenNotNull();
         }
 
         public Action<TMessage> GetHandler<TMessage>()

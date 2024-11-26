@@ -5,6 +5,6 @@
         public static readonly ContinuationToken None = new();
 
         public PaginationDirection Direction { get; init; }
-        public IReadOnlyCollection<object> Values { get; init; }
+        public object?[]? Values { get; init; }
     }
 }

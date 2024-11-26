@@ -80,7 +80,7 @@ namespace AllOverIt.Tests.Extensions
 
         private abstract class DummyEnrichedEnum : EnrichedEnum<DummyEnrichedEnum>
         {
-            protected DummyEnrichedEnum(int value, [CallerMemberName] string name = null)
+            protected DummyEnrichedEnum(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }
@@ -91,7 +91,7 @@ namespace AllOverIt.Tests.Extensions
             public static readonly SuperEnrichedEnumDummy Value1 = new(1);
             public static readonly SuperEnrichedEnumDummy Value2 = new(2);
 
-            private SuperEnrichedEnumDummy(int value, [CallerMemberName] string name = null)
+            private SuperEnrichedEnumDummy(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }
@@ -488,73 +488,28 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        public class IsEnumType : TypeExtensionsFixture
+        public class IsRecordType : TypeExtensionsFixture
         {
-            [Theory]
-            [InlineData(typeof(DummyEnum), true)]
-            [InlineData(typeof(int), false)]
-            [InlineData(typeof(string), false)]
-            [InlineData(typeof(bool), false)]
-            [InlineData(typeof(char), false)]
-            [InlineData(typeof(PropertySuperClass), false)]
-            public void Should_Determine_If_Is_Enum_Type(Type type, bool expected)
-            {
-                var actual = AllOverIt.Extensions.TypeExtensions.IsEnumType(type);
+            private record DummyRecord;
+            private class DummyClass;
+            private struct DummyStruct;
 
-                actual.Should().Be(expected);
+            [Fact]
+            public void Should_Return_True_When_A_Record()
+            {
+                typeof(DummyRecord).IsRecordType().Should().BeTrue();
             }
-        }
 
-        public class IsClassType : TypeExtensionsFixture
-        {
-            [Theory]
-            [InlineData(typeof(DummyEnum), false)]
-            [InlineData(typeof(int), false)]
-            [InlineData(typeof(string), true)]
-            [InlineData(typeof(bool), false)]
-            [InlineData(typeof(char), false)]
-            [InlineData(typeof(PropertySuperClass), true)]
-            [InlineData(typeof(IEnumerable<int>), false)]
-            public void Should_Determine_If_Is_Class_Type(Type type, bool expected)
+            [Fact]
+            public void Should_Return_False_When_A_Class()
             {
-                var actual = AllOverIt.Extensions.TypeExtensions.IsClassType(type);
-
-                actual.Should().Be(expected);
+                typeof(DummyClass).IsRecordType().Should().BeFalse();
             }
-        }
 
-        public class IsValueType : TypeExtensionsFixture
-        {
-            [Theory]
-            [InlineData(typeof(DummyEnum), true)]
-            [InlineData(typeof(int), true)]
-            [InlineData(typeof(string), false)]
-            [InlineData(typeof(bool), true)]
-            [InlineData(typeof(char), true)]
-            [InlineData(typeof(PropertySuperClass), false)]
-            [InlineData(typeof(IEnumerable<int>), false)]
-            public void Should_Determine_If_Is_Value_Type(Type type, bool expected)
+            [Fact]
+            public void Should_Return_False_When_A_Struct()
             {
-                var actual = AllOverIt.Extensions.TypeExtensions.IsValueType(type);
-
-                actual.Should().Be(expected);
-            }
-        }
-
-        public class IsPrimitiveType : TypeExtensionsFixture
-        {
-            [Theory]
-            [InlineData(typeof(DummyEnum), false)]
-            [InlineData(typeof(int), true)]
-            [InlineData(typeof(string), false)]
-            [InlineData(typeof(bool), true)]
-            [InlineData(typeof(char), true)]
-            [InlineData(typeof(PropertySuperClass), false)]
-            public void Should_Determine_If_Is_Primitive_Type(Type type, bool expected)
-            {
-                var actual = AllOverIt.Extensions.TypeExtensions.IsPrimitiveType(type);
-
-                actual.Should().Be(expected);
+                typeof(DummyStruct).IsRecordType().Should().BeFalse();
             }
         }
 
@@ -673,22 +628,6 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Return_If_Is_Generic_Enumerable_Type(Type type, bool expected)
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.IsGenericEnumerableType(type);
-
-                actual.Should().Be(expected);
-            }
-        }
-
-        public class IsGenericType : TypeExtensionsFixture
-        {
-            [Theory]
-            [InlineData(typeof(int), false)]
-            [InlineData(typeof(string), false)]
-            [InlineData(typeof(Lazy<int>), true)]
-            [InlineData(typeof(IList<int>), true)]
-            [InlineData(typeof(IEnumerable<int>), true)]
-            public void Should_Return_If_Is_Generic_Type(Type type, bool expected)
-            {
-                var actual = AllOverIt.Extensions.TypeExtensions.IsGenericType(type);
 
                 actual.Should().Be(expected);
             }
@@ -973,14 +912,12 @@ namespace AllOverIt.Tests.Extensions
         {
             private class StaticMethodClass
             {
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
 #pragma warning disable CA1822 // Mark members as static
                 public static void Method1()
 #pragma warning restore CA1822 // Mark members as static
                 {
                 }
 
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
                 [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
 #pragma warning disable CA1822 // Mark members as static
                 private static void Method2()
@@ -988,7 +925,6 @@ namespace AllOverIt.Tests.Extensions
                 {
                 }
 
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
                 [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
 #pragma warning disable CA1822 // Mark members as static
                 internal static void Method3()
@@ -1034,14 +970,12 @@ namespace AllOverIt.Tests.Extensions
         {
             private class InstanceMethodClass
             {
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
 #pragma warning disable CA1822 // Mark members as static
                 public void Method1()
 #pragma warning restore CA1822 // Mark members as static
                 {
                 }
 
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
                 [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
 #pragma warning disable CA1822 // Mark members as static
                 private void Method2()
@@ -1049,7 +983,6 @@ namespace AllOverIt.Tests.Extensions
                 {
                 }
 
-                [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Prevent CA1822")]
                 [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Part of the test")]
 #pragma warning disable CA1822 // Mark members as static
                 internal void Method3()

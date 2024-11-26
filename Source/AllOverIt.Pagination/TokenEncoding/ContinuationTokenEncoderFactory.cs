@@ -8,14 +8,14 @@ namespace AllOverIt.Pagination.TokenEncoding
 
         public ContinuationTokenEncoderFactory(IContinuationTokenSerializerFactory serializerFactory)
         {
-            _serializerFactory = serializerFactory.WhenNotNull(nameof(serializerFactory));
+            _serializerFactory = serializerFactory.WhenNotNull();
         }
 
         public IContinuationTokenEncoder CreateContinuationTokenEncoder(IReadOnlyCollection<IColumnDefinition> columns, PaginationDirection paginationDirection,
             ContinuationTokenOptions continuationTokenOptions)
         {
-            _ = columns.WhenNotNullOrEmpty(nameof(columns));
-            _ = continuationTokenOptions.WhenNotNull(nameof(continuationTokenOptions));
+            _ = columns.WhenNotNullOrEmpty();
+            _ = continuationTokenOptions.WhenNotNull();
 
             var tokenSerializer = _serializerFactory.CreateContinuationTokenSerializer(continuationTokenOptions);
 

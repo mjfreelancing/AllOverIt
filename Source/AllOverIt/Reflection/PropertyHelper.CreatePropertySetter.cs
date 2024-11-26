@@ -13,19 +13,19 @@ namespace AllOverIt.Reflection
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property setter.</param>
         /// <returns>The compiled property setter.</returns>
         /// <remarks>This overload will only work with structs that are provided as object types.</remarks>
-        public static Action<object, object> CreatePropertySetter(PropertyInfo propertyInfo)
+        public static Action<object, object?> CreatePropertySetter(PropertyInfo propertyInfo)
         {
-            _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+            _ = propertyInfo.WhenNotNull();
 
             AssertPropertyCanWrite(propertyInfo);
 
-            var setterMethodInfo = propertyInfo.GetSetMethod(true);
+            var setterMethodInfo = propertyInfo.GetSetMethod(true)!;
 
             var declaringType = propertyInfo.ReflectedType;
 
             var instanceExpression = Expression.Parameter(typeof(object), "item");
 
-            var castTargetExpression = declaringType.IsValueType
+            var castTargetExpression = declaringType!.IsValueType
                 ? Expression.Unbox(instanceExpression, declaringType)
                 : Expression.Convert(instanceExpression, declaringType);
 
@@ -35,7 +35,7 @@ namespace AllOverIt.Reflection
             var setterCall = Expression.Call(castTargetExpression, setterMethodInfo, valueParamExpression);
 
             return Expression
-                .Lambda<Action<object, object>>(setterCall, instanceExpression, argumentExpression)
+                .Lambda<Action<object, object?>>(setterCall, instanceExpression, argumentExpression)
                 .Compile();
         }
 
@@ -46,9 +46,9 @@ namespace AllOverIt.Reflection
         /// <returns>The compiled property setter.</returns>
         /// <remarks>This overload will not work with strongly typed structs. To set the value of a property on a struct
         /// use <see cref="CreatePropertySetter(PropertyInfo)"/>.</remarks>
-        public static Action<TType, object> CreatePropertySetter<TType>(PropertyInfo propertyInfo)
+        public static Action<TType, object?> CreatePropertySetter<TType>(PropertyInfo propertyInfo)
         {
-            _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+            _ = propertyInfo.WhenNotNull();
 
             AssertPropertyCanWrite(propertyInfo);
 
@@ -62,9 +62,9 @@ namespace AllOverIt.Reflection
         /// <returns>The compiled property setter.</returns>
         /// <remarks>This overload will not work with strongly typed structs. To set the value of a property on a struct
         /// use <see cref="CreatePropertySetter(PropertyInfo)"/>.</remarks>
-        public static Action<TType, object> CreatePropertySetter<TType>(string propertyName)
+        public static Action<TType, object?> CreatePropertySetter<TType>(string propertyName)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             var type = typeof(TType);
             var propertyInfo = ReflectionCache.GetPropertyInfo(type.GetTypeInfo(), propertyName);
@@ -74,18 +74,18 @@ namespace AllOverIt.Reflection
             return CreatePropertySetterExpressionLambda<TType>(propertyInfo).Compile();
         }
 
-        private static Expression<Action<TType, object>> CreatePropertySetterExpressionLambda<TType>(PropertyInfo propertyInfo)
+        private static Expression<Action<TType, object?>> CreatePropertySetterExpressionLambda<TType>(PropertyInfo propertyInfo)
         {
-            _ = propertyInfo.WhenNotNull(nameof(propertyInfo));
+            _ = propertyInfo.WhenNotNull();
 
             AssertPropertyCanWrite(propertyInfo);
 
-            var setterMethodInfo = propertyInfo.GetSetMethod(true);
+            var setterMethodInfo = propertyInfo.GetSetMethod(true)!;
 
             var instance = Expression.Parameter(typeof(TType), "item");
 
             var instanceType = typeof(TType) != propertyInfo.DeclaringType
-                ? (Expression) Expression.TypeAs(instance, propertyInfo.DeclaringType)
+                ? (Expression) Expression.TypeAs(instance, propertyInfo.DeclaringType!)
                 : instance;
 
             var argument = Expression.Parameter(typeof(object), "arg");
@@ -93,14 +93,14 @@ namespace AllOverIt.Reflection
 
             var setterCall = Expression.Call(instanceType, setterMethodInfo, valueParam);
 
-            return Expression.Lambda<Action<TType, object>>(setterCall, instance, argument);
+            return Expression.Lambda<Action<TType, object?>>(setterCall, instance, argument);
         }
 
         private static void AssertPropertyCanWrite(PropertyInfo propertyInfo)
         {
             if (!propertyInfo.CanWrite)
             {
-                throw new ReflectionException($"The property {propertyInfo.Name} on type {propertyInfo.DeclaringType.GetFriendlyName()} does not have a setter.");
+                throw new ReflectionException($"The property {propertyInfo.Name} on type {propertyInfo.DeclaringType!.GetFriendlyName()} does not have a setter.");
             }
         }
     }

@@ -17,10 +17,10 @@ namespace AllOverIt.Formatters.Objects.Extensions
         /// <remarks>This method also validates the property to be collated is not a class type (the <see cref="ObjectPropertyFilter"/> does not support collating class types).</remarks>
         public static void SetAutoCollatedPaths(this ObjectPropertyEnumerableOptions options, params IPropertyNodes[] propertyNodes)
         {
-            _ = options.WhenNotNull(nameof(options));
-            _ = propertyNodes.WhenNotNullOrEmpty(nameof(propertyNodes));
+            _ = options.WhenNotNull();
+            _ = propertyNodes.WhenNotNullOrEmpty();
 
-            var fullPaths = propertyNodes.Select(item =>
+            var fullPaths = propertyNodes.SelectToArray(item =>
             {
                 var fullNodePath = item.GetFullNodePath();
 
@@ -28,7 +28,7 @@ namespace AllOverIt.Formatters.Objects.Extensions
 
                 var leafNodeType = member.Member.GetMemberType();
 
-                Type elementType = null;
+                Type? elementType = null;
 
                 if (leafNodeType.IsArray)
                 {
@@ -46,7 +46,7 @@ namespace AllOverIt.Formatters.Objects.Extensions
                 // elementType is null when not an array or IEnumerable
                 var typeToCheck = elementType ?? leafNodeType;
 
-                if (typeToCheck.IsClassType() && typeToCheck != CommonTypes.StringType)
+                if (typeToCheck.IsClass && typeToCheck != CommonTypes.StringType)
                 {
                     throw new ObjectPropertyFilterException($"The leaf property on path '{fullNodePath}' cannot be a class type ({item.ObjectType.GetFriendlyName()}).");
                 }
@@ -54,7 +54,7 @@ namespace AllOverIt.Formatters.Objects.Extensions
                 return fullNodePath;
             });
 
-            options.AutoCollatedPaths = new List<string>(fullPaths);
+            options.AutoCollatedPaths = fullPaths;
         }
     }
 }

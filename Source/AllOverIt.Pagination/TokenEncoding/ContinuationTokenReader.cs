@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Assertion;
-using AllOverIt.Extensions;
 using AllOverIt.Serialization.Binary.Readers;
 using AllOverIt.Serialization.Binary.Readers.Extensions;
 
@@ -9,13 +8,13 @@ namespace AllOverIt.Pagination.TokenEncoding
     {
         public override object ReadValue(IEnrichedBinaryReader reader)
         {
-            _ = reader.WhenNotNull(nameof(reader));
+            _ = reader.WhenNotNull();
 
             var direction = (PaginationDirection) reader.ReadByte();
 
             // Not using reader.ReadEnumerable() as this would assume at least one value and the token Values can be null.
             // ReadObject(), when provided a type, caters for null values.
-            var values = reader.ReadObject<IEnumerable<object>>()?.AsReadOnlyCollection();
+            var values = reader.ReadObject<IEnumerable<object?>>()?.ToArray();
 
             return new ContinuationToken
             {

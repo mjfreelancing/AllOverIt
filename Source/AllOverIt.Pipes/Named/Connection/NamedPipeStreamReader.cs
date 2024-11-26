@@ -11,7 +11,7 @@ namespace AllOverIt.Pipes.Named.Connection
 
         public NamedPipeStreamReader(PipeStream pipeStream)
         {
-            _pipeStream = pipeStream.WhenNotNull(nameof(pipeStream));
+            _pipeStream = pipeStream.WhenNotNull();
         }
 
         // Reads an array of bytes from the pipe stream. This method waits until bytes are received or the pipe stream is disconnected.
@@ -28,16 +28,15 @@ namespace AllOverIt.Pipes.Named.Connection
         {
             var bytes = await ReadAsync(sizeof(int), false, cancellationToken).ConfigureAwait(false);
 
-            if (bytes.Length == 0)
-            {
-                return 0;
-            }
-
-            return IPAddress.NetworkToHostOrder(BitConverter.ToInt32(bytes, 0));
+            return bytes.Length == 0
+                ? 0
+                : IPAddress.NetworkToHostOrder(BitConverter.ToInt32(bytes, 0));
         }
 
         private async Task<byte[]> ReadAsync(int length, bool throwIfInsufficientBytes, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var buffer = new byte[length];
 
             var bytesRead = await _pipeStream.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);

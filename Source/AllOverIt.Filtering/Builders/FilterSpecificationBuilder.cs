@@ -45,26 +45,26 @@ namespace AllOverIt.Filtering.Builders
 
         public FilterSpecificationBuilder(TFilter filter, IDefaultQueryFilterOptions options)
         {
-            _filter = filter.WhenNotNull(nameof(filter));
-            _options = options.WhenNotNull(nameof(options));
+            _filter = filter.WhenNotNull();
+            _options = options.WhenNotNull();
         }
 
         #region Create
 
-        public ILinqSpecification<TType> Create(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation,
-            Action<OperationFilterOptions> options = default)
+        public ILinqSpecification<TType> Create(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IStringFilterOperation> operation,
+            Action<OperationFilterOptions>? options = default)
         {
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = operation.WhenNotNull(nameof(operation));
+            _ = propertyExpression.WhenNotNull();
+            _ = operation.WhenNotNull();
 
             return GetFilterSpecification(propertyExpression, operation, options);
         }
 
-        public ILinqSpecification<TType> Create<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions> options = default)
+        public ILinqSpecification<TType> Create<TProperty>(Expression<Func<TType, TProperty?>> propertyExpression,
+            Func<TFilter, IBasicFilterOperation> operation, Action<OperationFilterOptions>? options = default)
         {
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = operation.WhenNotNull(nameof(operation));
+            _ = propertyExpression.WhenNotNull();
+            _ = operation.WhenNotNull();
 
             return GetFilterSpecification(propertyExpression, operation, options);
         }
@@ -73,12 +73,12 @@ namespace AllOverIt.Filtering.Builders
 
         #region AND
 
-        public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IBasicFilterOperation<string>> operation1,
-            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options = default)
+        public ILinqSpecification<TType> And(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IBasicFilterOperation<string?>> operation1,
+            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions>? options = default)
         {
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = operation1.WhenNotNull(nameof(operation1));
-            _ = operation2.WhenNotNull(nameof(operation2));
+            _ = propertyExpression.WhenNotNull();
+            _ = operation1.WhenNotNull();
+            _ = operation2.WhenNotNull();
 
             var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
             var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
@@ -86,12 +86,12 @@ namespace AllOverIt.Filtering.Builders
             return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.And);
         }
 
-        public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
-            Func<TFilter, IBasicFilterOperation<string>> operation2, Action<OperationFilterOptions> options = default)
+        public ILinqSpecification<TType> And(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
+            Func<TFilter, IBasicFilterOperation<string?>> operation2, Action<OperationFilterOptions>? options = default)
         {
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = operation1.WhenNotNull(nameof(operation1));
-            _ = operation2.WhenNotNull(nameof(operation2));
+            _ = propertyExpression.WhenNotNull();
+            _ = operation1.WhenNotNull();
+            _ = operation2.WhenNotNull();
 
             var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
             var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
@@ -99,12 +99,12 @@ namespace AllOverIt.Filtering.Builders
             return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.And);
         }
 
-        public ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
-            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options = default)
+        public ILinqSpecification<TType> And(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
+            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions>? options = default)
         {
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = operation1.WhenNotNull(nameof(operation1));
-            _ = operation2.WhenNotNull(nameof(operation2));
+            _ = propertyExpression.WhenNotNull();
+            _ = operation1.WhenNotNull();
+            _ = operation2.WhenNotNull();
 
             var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
             var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
@@ -112,12 +112,12 @@ namespace AllOverIt.Filtering.Builders
             return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.And);
         }
 
-        public ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation1,
-            Func<TFilter, IBasicFilterOperation> operation2, Action<OperationFilterOptions> options = default)
+        public ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty?>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation1,
+            Func<TFilter, IBasicFilterOperation> operation2, Action<OperationFilterOptions>? options = default)
         {
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = operation1.WhenNotNull(nameof(operation1));
-            _ = operation2.WhenNotNull(nameof(operation2));
+            _ = propertyExpression.WhenNotNull();
+            _ = operation1.WhenNotNull();
+            _ = operation2.WhenNotNull();
 
             var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
             var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
@@ -129,12 +129,12 @@ namespace AllOverIt.Filtering.Builders
 
         #region OR
 
-        public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IBasicFilterOperation<string>> operation1,
-            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options = default)
+        public ILinqSpecification<TType> Or(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IBasicFilterOperation<string?>> operation1,
+            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions>? options = default)
         {
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = operation1.WhenNotNull(nameof(operation1));
-            _ = operation2.WhenNotNull(nameof(operation2));
+            _ = propertyExpression.WhenNotNull();
+            _ = operation1.WhenNotNull();
+            _ = operation2.WhenNotNull();
 
             var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
             var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
@@ -142,12 +142,12 @@ namespace AllOverIt.Filtering.Builders
             return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.Or);
         }
 
-        public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
-            Func<TFilter, IBasicFilterOperation<string>> operation2, Action<OperationFilterOptions> options = default)
+        public ILinqSpecification<TType> Or(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
+            Func<TFilter, IBasicFilterOperation<string?>> operation2, Action<OperationFilterOptions>? options = default)
         {
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = operation1.WhenNotNull(nameof(operation1));
-            _ = operation2.WhenNotNull(nameof(operation2));
+            _ = propertyExpression.WhenNotNull();
+            _ = operation1.WhenNotNull();
+            _ = operation2.WhenNotNull();
 
             var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
             var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
@@ -155,12 +155,12 @@ namespace AllOverIt.Filtering.Builders
             return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.Or);
         }
 
-        public ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
-            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options = default)
+        public ILinqSpecification<TType> Or(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
+            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions>? options = default)
         {
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = operation1.WhenNotNull(nameof(operation1));
-            _ = operation2.WhenNotNull(nameof(operation2));
+            _ = propertyExpression.WhenNotNull();
+            _ = operation1.WhenNotNull();
+            _ = operation2.WhenNotNull();
 
             var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
             var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
@@ -168,12 +168,12 @@ namespace AllOverIt.Filtering.Builders
             return CombineSpecifications(specification1, specification2, LinqSpecificationExtensions.Or);
         }
 
-        public ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation1,
-            Func<TFilter, IBasicFilterOperation> operation2, Action<OperationFilterOptions> options = default)
+        public ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty?>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation1,
+            Func<TFilter, IBasicFilterOperation> operation2, Action<OperationFilterOptions>? options = default)
         {
-            _ = propertyExpression.WhenNotNull(nameof(propertyExpression));
-            _ = operation1.WhenNotNull(nameof(operation1));
-            _ = operation2.WhenNotNull(nameof(operation2));
+            _ = propertyExpression.WhenNotNull();
+            _ = operation1.WhenNotNull();
+            _ = operation2.WhenNotNull();
 
             var specification1 = GetFilterSpecification(propertyExpression, operation1, options);
             var specification2 = GetFilterSpecification(propertyExpression, operation2, options);
@@ -182,7 +182,7 @@ namespace AllOverIt.Filtering.Builders
         }
         #endregion
 
-        private OperationFilterOptions GetOperationFilterOptions(Action<OperationFilterOptions> action)
+        private OperationFilterOptions GetOperationFilterOptions(Action<OperationFilterOptions>? action)
         {
             var filterOptions = new OperationFilterOptions
             {
@@ -196,8 +196,8 @@ namespace AllOverIt.Filtering.Builders
             return filterOptions;
         }
 
-        private ILinqSpecification<TType> GetFilterSpecification(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> filterOperation,
-            Action<OperationFilterOptions> options)
+        private ILinqSpecification<TType> GetFilterSpecification(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IStringFilterOperation> filterOperation,
+            Action<OperationFilterOptions>? options)
         {
             var operation = filterOperation.Invoke(_filter);
 
@@ -209,7 +209,7 @@ namespace AllOverIt.Filtering.Builders
             {
                 switch (operation)
                 {
-                    case IStringFilterOperation op1 when op1.Value is null:
+                    case IStringFilterOperation stringFilter when stringFilter.Value is null:
                         return SpecificationTrue;
 
                     default:    // fall through, continue processing                        
@@ -236,7 +236,7 @@ namespace AllOverIt.Filtering.Builders
         }
 
         private ILinqSpecification<TType> GetFilterSpecification<TProperty>(Expression<Func<TType, TProperty>> propertyExpression,
-            Func<TFilter, IBasicFilterOperation> filterOperation, Action<OperationFilterOptions> options)
+            Func<TFilter, IBasicFilterOperation> filterOperation, Action<OperationFilterOptions>? options)
         {
             var operation = filterOperation.Invoke(_filter);
 
@@ -317,21 +317,21 @@ namespace AllOverIt.Filtering.Builders
             {
                 // The InnerException will never be null - it holds the underlying exception thrown by the invoked method
                 // The operation may throw a NullNotSupportedException
-                throw exception.InnerException;
+                throw exception.InnerException!;
             }
         }
 
         private static ILinqSpecification<TType> CreateBasicSpecificationOperation<TProperty>(Type genericOperation,
-            Expression<Func<TType, TProperty>> propertyExpression, object value, IOperationFilterOptions options)
+            Expression<Func<TType, TProperty>> propertyExpression, object? value, IOperationFilterOptions options)
         {
             // No special consideration is required when the value is double (for example) and TProperty is double?
-            var ctor = genericOperation.GetConstructor([typeof(Expression<Func<TType, TProperty>>), typeof(TProperty), typeof(IOperationFilterOptions)]);
+            var ctor = genericOperation.GetConstructor([typeof(Expression<Func<TType, TProperty>>), typeof(TProperty), typeof(IOperationFilterOptions)])!;
 
             return (ILinqSpecification<TType>) ctor.Invoke([propertyExpression, value, options]);
         }
 
         private static ILinqSpecification<TType> CreateArraySpecificationOperation<TProperty>(Type genericOperation,
-            Expression<Func<TType, TProperty>> propertyExpression, object values, IOperationFilterOptions options)
+            Expression<Func<TType, TProperty>> propertyExpression, object? values, IOperationFilterOptions options)
         {
             Throw<InvalidOperationException>.When(values is not IList, "Array based specifications expect an IList<T>.");
 
@@ -345,7 +345,7 @@ namespace AllOverIt.Filtering.Builders
                 values = ConvertListElements((IEnumerable) values, typeof(TProperty));
             }
 
-            var ctor = genericOperation.GetConstructor([typeof(Expression<Func<TType, TProperty>>), typeof(IList<TProperty>), typeof(IOperationFilterOptions)]);
+            var ctor = genericOperation.GetConstructor([typeof(Expression<Func<TType, TProperty>>), typeof(IList<TProperty>), typeof(IOperationFilterOptions)])!;
 
             return (ILinqSpecification<TType>) ctor.Invoke([propertyExpression, values, options]);
         }
@@ -364,20 +364,19 @@ namespace AllOverIt.Filtering.Builders
                 : specification1;
         }
 
-        private static object GetOperationValue<TProperty>(Type operationType, object operation)
+        private static object? GetOperationValue<TProperty>(Type operationType, object operation)
         {
             var key = new GenericCacheKey<Type>(operationType);
 
             var propertyGetter = OperationTypePropertyGetters.GetOrAdd(key, cacheKey =>
             {
-                var opType = ((GenericCacheKey<Type>) cacheKey).Key1;
-                var propInfo = opType.GetProperty(nameof(IFilterOperationType<TProperty>.Value));
+                var opType = ((GenericCacheKey<Type>) cacheKey).Key1!;
+                var propInfo = opType.GetProperty(nameof(IFilterOperationType<TProperty>.Value))!;
 
                 return PropertyHelper.CreatePropertyGetter(propInfo);
             });
 
-
-            return propertyGetter.Invoke(operation);
+            return propertyGetter!.Invoke(operation);
 
             // For reference, the non-cached approach is:
             //

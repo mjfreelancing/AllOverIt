@@ -13,8 +13,8 @@ namespace AllOverIt.Patterns.ResourceInitialization
         /// <param name="cleanUp">The cleanup action to perform when the object is disposed.</param>
         public Raii(Action initialize, Action cleanUp)
         {
-            _ = initialize.WhenNotNull(nameof(initialize));
-            _cleanUp = cleanUp.WhenNotNull(nameof(cleanUp));
+            _ = initialize.WhenNotNull();
+            _cleanUp = cleanUp.WhenNotNull();
 
             initialize.Invoke();
         }
@@ -57,8 +57,8 @@ namespace AllOverIt.Patterns.ResourceInitialization
         /// <param name="cleanUp">The cleanup action to perform when the object is disposed.</param>
         public Raii(Func<TType> initialize, Action<TType> cleanUp)
         {
-            _ = initialize.WhenNotNull(nameof(initialize));
-            _cleanUp = cleanUp.WhenNotNull(nameof(cleanUp));
+            _ = initialize.WhenNotNull();
+            _cleanUp = cleanUp.WhenNotNull();
 
             Context = initialize.Invoke();
         }
@@ -80,7 +80,6 @@ namespace AllOverIt.Patterns.ResourceInitialization
                 if (disposing)
                 {
                     _cleanUp.Invoke(Context);
-                    Context = default;
                 }
 
                 _disposed = true;

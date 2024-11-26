@@ -11,7 +11,7 @@ namespace AllOverIt.Pagination
 
         public ColumnDefinition(PropertyInfo property, bool isAscending)
         {
-            Property = property.WhenNotNull(nameof(property));
+            Property = property.WhenNotNull();
             IsAscending = isAscending;
         }
 
@@ -38,8 +38,8 @@ namespace AllOverIt.Pagination
 
         private IOrderedQueryable<TEntity> OrderBy(IQueryable<TEntity> queryable, PaginationDirection paginationDirection)
         {
-            _ = queryable.WhenNotNull(nameof(queryable));
-            _ = Property.WhenNotNull(nameof(Property));
+            _ = queryable.WhenNotNull();
+            _ = Property.WhenNotNull();
 
             var accessExpression = Property.CreateMemberAccessLambda<TEntity, TProp>("entity");
 
@@ -50,8 +50,8 @@ namespace AllOverIt.Pagination
 
         private IOrderedQueryable<TEntity> ThenOrderBy(IOrderedQueryable<TEntity> queryable, PaginationDirection paginationDirection)
         {
-            _ = queryable.WhenNotNull(nameof(queryable));
-            _ = Property.WhenNotNull(nameof(Property));
+            _ = queryable.WhenNotNull();
+            _ = Property.WhenNotNull();
 
             var accessExpression = Property.CreateMemberAccessLambda<TEntity, TProp>("entity");
 

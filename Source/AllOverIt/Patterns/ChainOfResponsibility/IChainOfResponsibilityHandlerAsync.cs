@@ -15,6 +15,6 @@
         /// by the current handler.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>An output state.</returns>
-        Task<TOutput> HandleAsync(TInput state, CancellationToken cancellationToken);
+        Task<TOutput?> HandleAsync(TInput state, CancellationToken cancellationToken);
     }
 }

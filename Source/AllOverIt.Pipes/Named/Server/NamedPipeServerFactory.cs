@@ -13,7 +13,7 @@ namespace AllOverIt.Pipes.Named.Server
         /// <param name="serializer">The message serializer.</param>
         public NamedPipeServerFactory(INamedPipeSerializer<TMessage> serializer)
         {
-            _serializer = serializer.WhenNotNull(nameof(serializer));
+            _serializer = serializer.WhenNotNull();
         }
 
         /// <inheritdoc />

@@ -21,8 +21,8 @@ namespace AllOverIt.ReactiveUI.ViewRegistry.Events
         /// /// <param name="updateType">Indicates the update type for this event.</param>
         public ViewRegistryEventArgs(Type viewModelType, IViewFor view, ViewItemUpdateType updateType)
         {
-            ViewModelType = viewModelType.WhenNotNull(nameof(viewModelType));
-            View = view.WhenNotNull(nameof(view));
+            ViewModelType = viewModelType.WhenNotNull();
+            View = view.WhenNotNull();
             UpdateType = updateType;
         }
     }
@@ -30,5 +30,5 @@ namespace AllOverIt.ReactiveUI.ViewRegistry.Events
     /// <summary>Describes an event handler raised by an <see cref="IViewRegistry{TViewId}"/>.</summary>
     /// <param name="sender">The sender raising the event.</param>
     /// <param name="eventArgs">The arguments for the event.</param>
-    public delegate void ViewRegistryEventHandler(object sender, ViewRegistryEventArgs eventArgs);
+    public delegate void ViewRegistryEventHandler(object? sender, ViewRegistryEventArgs eventArgs);
 }

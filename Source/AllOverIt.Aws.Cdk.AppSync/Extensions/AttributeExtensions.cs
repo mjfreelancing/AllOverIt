@@ -5,8 +5,13 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
     internal static class AttributeExtensions
     {
-        public static Directive[] GetAuthDirectivesOrDefault(this IEnumerable<AuthDirectiveBaseAttribute> attributes)
+        public static Directive[]? GetAuthDirectivesOrDefault(this AuthDirectiveBaseAttribute[] attributes)
         {
+            if (attributes.Length == 0)
+            {
+                return null;
+            }
+
             var directives = new List<Directive>();
 
             foreach (var attribute in attributes)
@@ -24,9 +29,7 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 directives.Add(directive);
             }
 
-            return directives.Count != 0
-                ? [.. directives]
-                : null;
+            return [.. directives];
         }
     }
 }

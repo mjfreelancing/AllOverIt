@@ -24,40 +24,40 @@ namespace AllOverIt.DependencyInjection.Extensions
                 { ServiceLifetime.Singleton, (serviceCollection, serviceType, factory) => serviceCollection.AddSingleton(serviceType, factory) }
             };
 
-        private static IServiceCollection AutoRegisterWithLifetime<TServiceRegistrar, TServiceType>(IServiceCollection serviceCollection, Action<IServiceRegistrarOptions> configure,
+        private static IServiceCollection AutoRegisterWithLifetime<TServiceRegistrar, TServiceType>(IServiceCollection serviceCollection, Action<IServiceRegistrarOptions>? configure,
             ServiceLifetime lifetime)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
+            _ = serviceCollection.WhenNotNull();
 
             return AutoRegisterWithLifetime(serviceCollection, new TServiceRegistrar(), [typeof(TServiceType)], configure, lifetime);
         }
 
         private static IServiceCollection AutoRegisterWithLifetime<TServiceRegistrar>(this IServiceCollection serviceCollection, IEnumerable<Type> serviceTypes,
-            Action<IServiceRegistrarOptions> configure, ServiceLifetime lifetime)
+            Action<IServiceRegistrarOptions>? configure, ServiceLifetime lifetime)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty(nameof(serviceTypes)).AsReadOnlyCollection();
+            _ = serviceCollection.WhenNotNull();
+            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty().AsReadOnlyCollection();
 
             return AutoRegisterWithLifetime(serviceCollection, new TServiceRegistrar(), allServiceTypes, configure, lifetime);
         }
 
         private static IServiceCollection AutoRegisterWithLifetime<TServiceType>(this IServiceCollection serviceCollection, IServiceRegistrar serviceRegistrar,
-            Action<IServiceRegistrarOptions> configure, ServiceLifetime lifetime)
+            Action<IServiceRegistrarOptions>? configure, ServiceLifetime lifetime)
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            _ = serviceRegistrar.WhenNotNull(nameof(serviceRegistrar));
+            _ = serviceCollection.WhenNotNull();
+            _ = serviceRegistrar.WhenNotNull();
 
             return AutoRegisterWithLifetime(serviceCollection, serviceRegistrar, [typeof(TServiceType)], configure, lifetime);
         }
 
         private static IServiceCollection AutoRegisterWithLifetime(this IServiceCollection serviceCollection, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
-            Action<IServiceRegistrarOptions> configure, ServiceLifetime lifetime)
+            Action<IServiceRegistrarOptions>? configure, ServiceLifetime lifetime)
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            _ = serviceRegistrar.WhenNotNull(nameof(serviceRegistrar));
-            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty(nameof(serviceTypes)).AsReadOnlyCollection();
+            _ = serviceCollection.WhenNotNull();
+            _ = serviceRegistrar.WhenNotNull();
+            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty().AsReadOnlyCollection();
 
             serviceRegistrar.AutoRegisterServices(
                 allServiceTypes,
@@ -71,7 +71,7 @@ namespace AllOverIt.DependencyInjection.Extensions
                     {
                         var firstMismatch = descriptors.FirstOrDefault(item => item.Lifetime != lifetime);
 
-                        if (firstMismatch != null)
+                        if (firstMismatch is not null)
                         {
                             throw new DependencyRegistrationException($"The service type {serviceType.GetFriendlyName()} is already registered to the implementation type " +
                                                                       $"{implementationType.GetFriendlyName()} but has a different lifetime ({firstMismatch.Lifetime}).");
@@ -89,11 +89,11 @@ namespace AllOverIt.DependencyInjection.Extensions
         }
 
         private static IServiceCollection AutoRegisterWithLifetime(this IServiceCollection serviceCollection, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
-            Action<IServiceRegistrarOptions> configure, ServiceLifetime lifetime)
+            Action<IServiceRegistrarOptions>? configure, ServiceLifetime lifetime)
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            var allServiceRegistrars = serviceRegistrars.WhenNotNullOrEmpty(nameof(serviceRegistrars)).AsReadOnlyCollection();
-            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty(nameof(serviceTypes)).AsReadOnlyCollection();
+            _ = serviceCollection.WhenNotNull();
+            var allServiceRegistrars = serviceRegistrars.WhenNotNullOrEmpty().AsReadOnlyCollection();
+            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty().AsReadOnlyCollection();
 
             foreach (var serviceRegistrar in allServiceRegistrars)
             {
@@ -104,23 +104,23 @@ namespace AllOverIt.DependencyInjection.Extensions
         }
 
         private static IServiceCollection AutoRegisterWithLifetime<TServiceRegistrar>(this IServiceCollection serviceCollection, IEnumerable<Type> serviceTypes,
-            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure, ServiceLifetime lifetime)
+            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions>? configure, ServiceLifetime lifetime)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty(nameof(serviceTypes)).AsReadOnlyCollection();
-            _ = constructorArgsResolver.WhenNotNull(nameof(constructorArgsResolver));
+            _ = serviceCollection.WhenNotNull();
+            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty().AsReadOnlyCollection();
+            _ = constructorArgsResolver.WhenNotNull();
 
             return AutoRegisterWithLifetime(serviceCollection, new TServiceRegistrar(), allServiceTypes, constructorArgsResolver, configure, lifetime);
         }
 
         private static IServiceCollection AutoRegisterWithLifetime(this IServiceCollection serviceCollection, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
-            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure, ServiceLifetime lifetime)
+            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions>? configure, ServiceLifetime lifetime)
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            _ = serviceRegistrar.WhenNotNull(nameof(serviceRegistrar));
-            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty(nameof(serviceTypes)).AsReadOnlyCollection();
-            _ = constructorArgsResolver.WhenNotNull(nameof(constructorArgsResolver));
+            _ = serviceCollection.WhenNotNull();
+            _ = serviceRegistrar.WhenNotNull();
+            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty().AsReadOnlyCollection();
+            _ = constructorArgsResolver.WhenNotNull();
 
             serviceRegistrar.AutoRegisterServices(
                 allServiceTypes,
@@ -129,7 +129,7 @@ namespace AllOverIt.DependencyInjection.Extensions
                     object CreateImplementation(IServiceProvider provider)
                     {
                         var args = constructorArgsResolver.Invoke(provider, implementationType);
-                        return Activator.CreateInstance(implementationType, args.ToArray());
+                        return Activator.CreateInstance(implementationType, args.ToArray())!;
                     }
 
                     // Call AddScoped(), AddTransient(), AddSingleton() with the factory as required
@@ -141,12 +141,12 @@ namespace AllOverIt.DependencyInjection.Extensions
         }
 
         private static IServiceCollection AutoRegisterWithLifetime(this IServiceCollection serviceCollection, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
-            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure, ServiceLifetime lifetime)
+            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions>? configure, ServiceLifetime lifetime)
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
-            var allServiceRegistrars = serviceRegistrars.WhenNotNullOrEmpty(nameof(serviceRegistrars));
-            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty(nameof(serviceTypes)).AsReadOnlyCollection();
-            _ = constructorArgsResolver.WhenNotNull(nameof(constructorArgsResolver));
+            _ = serviceCollection.WhenNotNull();
+            var allServiceRegistrars = serviceRegistrars.WhenNotNullOrEmpty();
+            var allServiceTypes = serviceTypes.WhenNotNullOrEmpty().AsReadOnlyCollection();
+            _ = constructorArgsResolver.WhenNotNull();
 
             foreach (var serviceRegistrar in allServiceRegistrars)
             {

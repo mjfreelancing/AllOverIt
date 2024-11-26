@@ -13,10 +13,10 @@ namespace ValidationViaDependencyInjectionDemo
         private readonly ILogger<App> _logger;
         public App(IValidator<Person> personValidator, ILogger<App> logger)
         {
-            _personValidator = personValidator.WhenNotNull(nameof(personValidator));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _personValidator = personValidator.WhenNotNull();
+            _logger = logger.WhenNotNull();
 
-            _logger.LogInformation($"The {personValidator.GetType().GetFriendlyName()} validator has been injected");
+            _logger.LogInformation("The {ValidatorName} validator has been injected", personValidator.GetType().GetFriendlyName());
 
             Console.WriteLine();
         }
@@ -32,7 +32,7 @@ namespace ValidationViaDependencyInjectionDemo
 
             var errors = validationResult.Errors.Select(item => item.ErrorMessage);
 
-            _logger.LogError(string.Join($"  {Environment.NewLine}", errors));
+            _logger.LogError("{Errors}", string.Join($"  {Environment.NewLine}", errors));
 
             ExitCode = 0;
 

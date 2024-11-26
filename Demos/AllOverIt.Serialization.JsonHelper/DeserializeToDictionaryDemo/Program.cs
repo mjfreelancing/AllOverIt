@@ -36,33 +36,61 @@ namespace DeserializeToDictionaryDemo
 
             var jsonHelper = new JsonHelper(anonymousObject);
 
+            /*             
+                {
+                    "errors": [
+                        {
+                            "errorInfo": [
+                                {
+                                    "errorMessage": ""
+                                },
+                                {
+                                    "errorMessage": ""
+                                }
+                            ]
+                        },
+                        {
+                            "errorInfo": [
+                                {
+                                    "errorMessage": ""
+                                },
+                                {
+                                    "errorMessage": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            */
+
             // Each of the queries below return the same result
 
-            //var errorMessages = jsonHelper
-            //    .GetArray("errors")
-            //    .SelectMany(error => error.GetArray("errorInfo"))
-            //    .SelectAsReadOnlyCollection(errorInfo => errorInfo.GetValue<string>("errorMessage"));
+            var errorMessages1 = jsonHelper
+                .GetObjectArray("errors")!
+                .SelectMany(error => error.GetObjectArray("errorInfo")!)
+                .SelectToArray(errorInfo => errorInfo.GetValue<string>("errorMessage"));
 
-            //var errorMessages = jsonHelper
-            //    .GetArray("errors")
-            //    .SelectMany(error => error.GetArrayValues<string>("errorInfo", "errorMessage"))
-            //    .AsReadOnlyCollection();
+            var errorMessages2 = jsonHelper
+                .GetObjectArray("errors")!
+                .SelectMany(error => error.GetObjectArrayValues<string>("errorInfo", "errorMessage")!)
+                .ToArray();
 
-            //var errorMessages = jsonHelper
-            //    .GetArray("errors")
-            //    .GetChildArray("errorInfo")
-            //    .SelectAsReadOnlyCollection(errorInfo => errorInfo.GetValue<string>("errorMessage"));
+            var errorMessages3 = jsonHelper
+                .GetObjectArray("errors")!
+                .GetDescendantObjectArray(["errorInfo"])!
+                .SelectToArray(errorInfo => errorInfo.GetValue<string>("errorMessage"));
 
-            //var errorMessages = jsonHelper
-            //    .GetArray("errors")
-            //    .GetChildArrayValues<string>(new[] { "errorInfo" }, "errorMessage")
-            //    .AsReadOnlyCollection();
+            var errorMessages4 = jsonHelper
+                .GetObjectArray("errors")!
+                .GetDescendantObjectArrayValues<string>(["errorInfo"], "errorMessage")!
+                .ToArray();
 
-            //var errorMessages = jsonHelper
-            //    .GetChildArray("errors", "errorInfo")
-            //    .SelectAsReadOnlyCollection(errorInfo => errorInfo.GetValue<string>("errorMessage"));
+            var errorMessages5 = jsonHelper
+                .GetDescendantObjectArray(["errors", "errorInfo"])!
+                .SelectToArray(errorInfo => errorInfo.GetValue<string>("errorMessage"));
 
-            var errorMessages = jsonHelper.GetDescendantObjectArrayValues<string>(["errors", "errorInfo"], "errorMessage");
+            // Get each 'errorMessage' on each array element named 'errorInfo' on each array element named 'errors'
+            var errorMessages = jsonHelper.GetDescendantObjectArrayValues<string>(["errors", "errorInfo"], "errorMessage")!;
 
             foreach (var error in errorMessages)
             {
@@ -90,7 +118,7 @@ namespace DeserializeToDictionaryDemo
 
             var errorMessages =
                 from element in objectArray
-                where element.GetValue("errorCode").As<int>() == 401
+                where element.GetValue<int>("errorCode") == 401
                 select element.GetDescendantObjectArrayValues<string>(["errorInfo"], "errorMessage");
 
             foreach (var error in errorMessages.SelectMany(item => item))
@@ -105,11 +133,11 @@ namespace DeserializeToDictionaryDemo
 
             var jsonHelper = new JsonHelper(anonymousObject);
 
-            var arguments = jsonHelper.GetDescendantObjectArray(["arguments"]);
+            var arguments = jsonHelper.GetDescendantObjectArray(["arguments"])!;
 
             // Use IEnumerable<> to find the 'arguments' element where the property 'Name' has a value of 'id'
             var idArgument = arguments
-                .Where(argument => argument.GetValue("name").As<string>().Equals("id", StringComparison.CurrentCultureIgnoreCase))
+                .Where(argument => argument.GetValue<string>("name")!.Equals("id", StringComparison.CurrentCultureIgnoreCase))
                 .Single();
 
             // The returned element has a 'Name' and 'Value' property - we can search (as above) and get values with case-insensitivity.
@@ -130,7 +158,7 @@ namespace DeserializeToDictionaryDemo
             {
                 data = new
                 {
-                    queryPerson = (object) null
+                    queryPerson = (object?) null
                 },
                 errors = new[]
                 {
@@ -139,8 +167,8 @@ namespace DeserializeToDictionaryDemo
                         path = new[]{ "queryPerson" },
                         data = new
                         {
-                            fullName = (string)null,
-                            childNames = (string[])null
+                            fullName = (string?)null,
+                            childNames = (string[]?)null
                         },
                         errorInfo = new[]
                         {

@@ -8,13 +8,18 @@ namespace AllOverIt.Evaluator.Variables.Extensions
         /// <summary>Gets all referenced variables for a compiled formula.</summary>
         /// <param name="formulaCompilerResult">The compiled formula result.</param>
         /// <returns>All referenced variables for a compiled formula.</returns>
-        public static IEnumerable<IVariable> GetReferencedVariables(this FormulaCompilerResult formulaCompilerResult)
+        public static IVariable[] GetReferencedVariables(this FormulaCompilerResult formulaCompilerResult)
         {
             var registry = formulaCompilerResult.VariableRegistry;
+
+            if (registry is null)
+            {
+                return [];
+            }
+
             var referencedNames = formulaCompilerResult.ReferencedVariableNames;
 
-            return referencedNames.SelectAsReadOnlyCollection(variableName =>
-                registry.Single(item => item.Key == variableName).Value);
+            return referencedNames.SelectToArray(variableName => registry.Single(item => item.Key == variableName).Value);
         }
     }
 }

@@ -14,7 +14,7 @@
 
         /// <summary>When not <see langword="null"/>, specifies the font color of the label.
         /// When <see langword="null"/>, the diagram's default will be used.</summary>
-        public string FontColor { get; set; }
+        public string? FontColor { get; set; }
 
         /// <summary>When not <see langword="null"/>, indicates if the font weight of the label will be bold or not.
         /// When <see langword="null"/>, the diagram's default will be used.</summary>

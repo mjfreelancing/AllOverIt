@@ -18,10 +18,10 @@ namespace AllOverIt.Reactive.Extensions
         public static IObservable<TProperty> WhenPropertyChanging<TType, TProperty>(this TType source, Expression<Func<TType, TProperty>> propertyExpression)
             where TType : class, INotifyPropertyChanging
         {
-            _ = source.WhenNotNull(nameof(source));
+            _ = source.WhenNotNull();
 
             var propertyName = propertyExpression
-                .WhenNotNull(nameof(propertyExpression))
+                .WhenNotNull()
                 .GetPropertyOrFieldMemberInfo().Name;
 
             return Observable
@@ -41,10 +41,10 @@ namespace AllOverIt.Reactive.Extensions
         public static IObservable<TProperty> WhenPropertyChanged<TType, TProperty>(this TType source, Expression<Func<TType, TProperty>> propertyExpression)
             where TType : class, INotifyPropertyChanged
         {
-            _ = source.WhenNotNull(nameof(source));
+            _ = source.WhenNotNull();
 
             var propertyName = propertyExpression
-                .WhenNotNull(nameof(propertyExpression))
+                .WhenNotNull()
                 .GetPropertyOrFieldMemberInfo().Name;
 
             return Observable

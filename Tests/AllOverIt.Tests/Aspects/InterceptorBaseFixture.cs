@@ -412,7 +412,7 @@ namespace AllOverIt.Tests.Aspects
         }
 
         [Fact]
-        public void Should_Default_Fault()      // When the Fault() method is not overriden
+        public void Should_Default_Fault()      // When the Fault() method is not overridden
         {
             var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor2>();
 

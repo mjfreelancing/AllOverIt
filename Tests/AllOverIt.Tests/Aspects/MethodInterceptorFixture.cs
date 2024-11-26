@@ -2,6 +2,7 @@
 using AllOverIt.Assertion;
 using AllOverIt.Fixture;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace AllOverIt.Tests.Aspects
@@ -379,9 +380,12 @@ namespace AllOverIt.Tests.Aspects
         {
             var service = new DummyService();
 
+            var serviceCollection = new ServiceCollection();
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
             // Interceptors cannot be new'd up - can only be created via this factory method.
             // This method returns a proxied IDummyService.
-            var proxy = InterceptorFactory.CreateInterceptor<IDummyService, MethodInterceptor<IDummyService>>(service, null, configure);
+            var proxy = InterceptorFactory.CreateInterceptor<IDummyService, MethodInterceptor<IDummyService>>(service, serviceProvider, configure);
 
             return (service, proxy, (MethodInterceptor<IDummyService>) proxy);
         }

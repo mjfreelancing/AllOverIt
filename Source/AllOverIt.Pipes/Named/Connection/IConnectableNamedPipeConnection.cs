@@ -4,10 +4,10 @@
     /// <typeparam name="TMessage">The message type serialized by the connection.</typeparam>
     public interface IConnectableNamedPipeConnection<TMessage> : INamedPipeConnection<TMessage>
     {
-        /// <summary>Utilizes an underlying pipe stream to send and receive messages.</summary>
+        /// <summary>Connects to an underlying pipe stream.</summary>
         void Connect();
 
-        /// <summary>Discontinues serializing messages and disposes of the underlying pipe stream.</summary>
+        /// <summary>Disconnects from an underlying pipe stream.</summary>
         Task DisconnectAsync();
     }
 }

@@ -602,7 +602,6 @@ namespace AllOverIt.Tests.Caching
             }
         }
 
-#if !NETSTANDARD2_1
         public class TryRemove_TValue_KeyValuePair : GenericCacheFixture
         {
             [Fact]
@@ -632,7 +631,6 @@ namespace AllOverIt.Tests.Caching
                 actual.Should().BeFalse();
             }
         }
-#endif
 
         public class TryUpdate_TValue : GenericCacheFixture
         {

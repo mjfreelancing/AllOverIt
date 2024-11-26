@@ -25,10 +25,9 @@ namespace AllOverIt.Serialization.Binary.Readers
         /// <inheritdoc />
         public override object ReadValue(IEnrichedBinaryReader reader)
         {
-            _ = reader.WhenNotNull(nameof(reader));
+            _ = reader.WhenNotNull();
 
-            // Create an instance of the required type
-            var instance = Activator.CreateInstance(Type);
+            var instance = CreateType();
 
             var properties = Type
                .GetPropertyInfo()

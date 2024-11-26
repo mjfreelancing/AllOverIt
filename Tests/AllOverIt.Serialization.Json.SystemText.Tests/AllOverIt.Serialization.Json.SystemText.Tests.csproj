@@ -5,4 +5,8 @@
         <ProjectReference Include="..\..\Source\AllOverIt.Serialization.Json.SystemText\AllOverIt.Serialization.Json.SystemText.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    </ItemGroup>
+
 </Project>

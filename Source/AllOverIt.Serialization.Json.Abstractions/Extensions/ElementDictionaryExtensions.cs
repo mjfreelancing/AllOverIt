@@ -2,6 +2,7 @@
 using AllOverIt.Extensions;
 using AllOverIt.Serialization.Json.Abstractions.Exceptions;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Serialization.Json.Abstractions.Extensions
 {
@@ -17,10 +18,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <param name="propertyName">The name of the property on the element to get the value from.</param>
         /// <param name="value">The value of the property, if the property exists.</param>
         /// <returns><see langword="True" /> if the property exists, otherwise <see langword="False" />.</returns>
-        public static bool TryGetValue<TValue>(this IElementDictionary element, string propertyName, out TValue value)
+        public static bool TryGetValue<TValue>(this IElementDictionary element, string propertyName, [MaybeNull] out TValue value)
         {
-            _ = element.WhenNotNull(nameof(element));
-            _ = propertyName.WhenNotNull(nameof(propertyName));
+            _ = element.WhenNotNull();
+            _ = propertyName.WhenNotNull();
 
             value = default;
 
@@ -48,10 +49,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <param name="propertyName">The name of the property on the element to get the value from.</param>
         /// <returns>The value of the specified property.</returns>
         /// <remarks>A <seealso cref="JsonHelperException"/> exception will be thrown if the property does not exist.</remarks>
+        [return: MaybeNull]
         public static TValue GetValue<TValue>(this IElementDictionary element, string propertyName)
         {
-            _ = element.WhenNotNull(nameof(element));
-            _ = propertyName.WhenNotNull(nameof(propertyName));
+            _ = element.WhenNotNull();
+            _ = propertyName.WhenNotNull();
 
             if (!element.TryGetValue<TValue>(propertyName, out var value))
             {
@@ -71,10 +73,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// This can also be <see langword="null" /> if the property exists, but is itself <see langword="null" />.</param>
         /// <returns><see langword="True" /> if the property exists and it is a collection that can have its values returned
         /// as an array, otherwise <see langword="False" />.</returns>
-        public static bool TryGetValues<TValue>(this IElementDictionary element, string propertyName, out IReadOnlyCollection<TValue> values)
+        public static bool TryGetValues<TValue>(this IElementDictionary element, string propertyName, out TValue?[]? values)
         {
-            _ = element.WhenNotNull(nameof(element));
-            _ = propertyName.WhenNotNull(nameof(propertyName));
+            _ = element.WhenNotNull();
+            _ = propertyName.WhenNotNull();
 
             values = null;
 
@@ -94,7 +96,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
 
                 if (array is IEnumerable arrayItems)
                 {
-                    var castValues = new List<TValue>();
+                    var castValues = new List<TValue?>();
 
                     foreach (var arrayItem in arrayItems)
                     {
@@ -119,10 +121,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <returns>The array of values for a specified property.</returns>
         /// <remarks>A <seealso cref="JsonHelperException"/> exception will be thrown if the property does not exist
         /// or the property's value cannot be returned as an array of values.</remarks>
-        public static IReadOnlyCollection<TValue> GetValues<TValue>(this IElementDictionary element, string propertyName)
+        public static TValue?[]? GetValues<TValue>(this IElementDictionary element, string propertyName)
         {
-            _ = element.WhenNotNull(nameof(element));
-            _ = propertyName.WhenNotNull(nameof(propertyName));
+            _ = element.WhenNotNull();
+            _ = propertyName.WhenNotNull();
 
             if (!element.TryGetValues<TValue>(propertyName, out var values))
             {
@@ -140,10 +142,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         ///  <see langword="null" /> if the property exists, but is itself <see langword="null" />..</param>
         /// <returns><see langword="True" /> if the array property exists, otherwise <see langword="False" />.</returns>
         /// <remarks>A <seealso cref="JsonHelperException"/> exception will be thrown if the property is present but it is not an array of objects.</remarks>
-        public static bool TryGetObjectArray(this IElementDictionary element, string arrayPropertyName, out IEnumerable<IElementDictionary> elements)
+        public static bool TryGetObjectArray(this IElementDictionary element, string arrayPropertyName, out IElementDictionary[]? elements)
         {
-            _ = element.WhenNotNull(nameof(element));
-            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
+            _ = element.WhenNotNull();
+            _ = arrayPropertyName.WhenNotNullOrEmpty();
 
             elements = null;
 
@@ -162,7 +164,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
                         // Not supporting this, but it could be somewhat handled by adding an optional predicate to the method
                         // so null (or other) elements could be filtered out.
                         elements = items
-                            .Cast<Dictionary<string, object>>()
+                            .Cast<Dictionary<string, object?>>()
                             .SelectToArray(item => new ElementDictionary(item));
 
                         return true;
@@ -185,10 +187,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <returns>The array of non-<see langword="null" /> elements for the specified property.</returns>
         /// <remarks>A <seealso cref="JsonHelperException"/> exception will be thrown if the property does not exist, or
         /// if the property is present but it is not an array of objects.</remarks>
-        public static IEnumerable<IElementDictionary> GetObjectArray(this IElementDictionary element, string arrayPropertyName)
+        public static IElementDictionary[]? GetObjectArray(this IElementDictionary element, string arrayPropertyName)
         {
-            _ = element.WhenNotNull(nameof(element));
-            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
+            _ = element.WhenNotNull();
+            _ = arrayPropertyName.WhenNotNullOrEmpty();
 
             if (!element.TryGetObjectArray(arrayPropertyName, out var array))
             {
@@ -208,11 +210,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <returns><see langword="True" /> if the array property exists and all elements have the required <paramref name="propertyName"/>,
         /// otherwise <see langword="False" />.</returns>
         public static bool TryGetObjectArrayValues<TValue>(this IElementDictionary element, string arrayPropertyName, string propertyName,
-            out IEnumerable<TValue> propertyValues)
+            out TValue?[]? propertyValues)
         {
-            _ = element.WhenNotNull(nameof(element));
-            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = element.WhenNotNull();
+            _ = arrayPropertyName.WhenNotNullOrEmpty();
+            _ = propertyName.WhenNotNullOrEmpty();
 
             propertyValues = null;
 
@@ -233,11 +235,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// is <see langword="null" />.</returns>
         /// <remarks>A <seealso cref="JsonHelperException"/> exception will be thrown if the array property does not exist, or
         /// it is not an array of objects, or not all objects have the required property name.</remarks>
-        public static IEnumerable<TValue> GetObjectArrayValues<TValue>(this IElementDictionary element, string arrayPropertyName, string propertyName)
+        public static TValue?[]? GetObjectArrayValues<TValue>(this IElementDictionary element, string arrayPropertyName, string propertyName)
         {
-            _ = element.WhenNotNull(nameof(element));
-            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = element.WhenNotNull();
+            _ = arrayPropertyName.WhenNotNullOrEmpty();
+            _ = propertyName.WhenNotNullOrEmpty();
 
             if (!element.TryGetObjectArrayValues<TValue>(arrayPropertyName, propertyName, out var arrayValues))
             {
@@ -255,12 +257,12 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <see langword="null"/> if the method returns <see langword="False"/>.</param>
         /// <returns><see langword="True" /> if the property exists on all elements, otherwise <see langword="False" />.</returns>
         public static bool TryGetManyObjectValues<TValue>(this IEnumerable<IElementDictionary> elements, string propertyName,
-            out IEnumerable<TValue> propertyValues)
+            out TValue?[]? propertyValues)
         {
-            var allElements = elements.WhenNotNull(nameof(elements)).AsReadOnlyCollection();
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            var allElements = elements.WhenNotNull().AsReadOnlyCollection();
+            _ = propertyName.WhenNotNullOrEmpty();
 
-            var values = new List<TValue>();
+            var values = new List<TValue?>();
 
             foreach (var element in allElements)
             {
@@ -285,10 +287,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <param name="arrayPropertyName">The property name of the array element.</param>
         /// <returns>The value of each element in the specified array property.</returns>
         /// <remarks>A <seealso cref="JsonHelperException"/> exception will be thrown if the array property does not exist.</remarks>
-        public static IEnumerable<TValue> GetManyObjectArrayValues<TValue>(IEnumerable<IElementDictionary> elements, string arrayPropertyName)
+        public static TValue?[]? GetManyObjectArrayValues<TValue>(IEnumerable<IElementDictionary> elements, string arrayPropertyName)
         {
-            var allElements = elements.WhenNotNull(nameof(elements)).AsReadOnlyCollection();
-            _ = arrayPropertyName.WhenNotNullOrEmpty(nameof(arrayPropertyName));
+            var allElements = elements.WhenNotNull().AsReadOnlyCollection();
+            _ = arrayPropertyName.WhenNotNullOrEmpty();
 
             if (!allElements.TryGetManyObjectValues<TValue>(arrayPropertyName, out var arrayValues))
             {
@@ -304,10 +306,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <param name="childArray">The deepest child array of non-<see langword="null" /> elements.</param>
         /// <returns>An array of non-<see langword="null" /> child elements from a nested path of array elements.</returns>
         public static bool TryGetDescendantObjectArray(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames,
-            out IEnumerable<IElementDictionary> childArray)
+            out IElementDictionary[]? childArray)
         {
-            var allElements = elements.WhenNotNull(nameof(elements)).AsReadOnlyCollection();
-            var allPropertyNames = arrayPropertyNames.WhenNotNull(nameof(arrayPropertyNames)).AsReadOnlyCollection();
+            var allElements = elements.WhenNotNull().AsReadOnlyCollection();
+            var allPropertyNames = arrayPropertyNames.WhenNotNull().AsReadOnlyCollection();
 
             /*
              * To get each 'node3' from 'elements' which contains the 'node1' items
@@ -379,10 +381,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <param name="arrayPropertyNames">One or more nested child array property names.</param>
         /// <returns>An array of non-<see langword="null" /> child elements from a nested path of array elements.</returns>
         /// <remarks>A <seealso cref="JsonHelperException"/> exception will be thrown if the nested path of array properties do not exist.</remarks>
-        public static IEnumerable<IElementDictionary> GetDescendantObjectArray(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames)
+        public static IElementDictionary[]? GetDescendantObjectArray(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames)
         {
-            var allElements = elements.WhenNotNull(nameof(elements)).AsReadOnlyCollection();
-            var allPropertyNames = arrayPropertyNames.WhenNotNull(nameof(arrayPropertyNames)).AsReadOnlyCollection();
+            var allElements = elements.WhenNotNull().AsReadOnlyCollection();
+            var allPropertyNames = arrayPropertyNames.WhenNotNull().AsReadOnlyCollection();
 
             if (!allElements.TryGetDescendantObjectArray(allPropertyNames, out var childArray))
             {
@@ -397,10 +399,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <param name="arrayPropertyNames">One or more nested child array property names.</param>
         /// <param name="childArray">The deepest child array of non-<see langword="null" /> elements.</param>
         /// <returns>An array of non-<see langword="null" /> child elements from a nested path of array elements.</returns>
-        public static bool TryGetDescendantObjectArray(this IElementDictionary element, IEnumerable<string> arrayPropertyNames, out IEnumerable<IElementDictionary> childArray)
+        public static bool TryGetDescendantObjectArray(this IElementDictionary element, IEnumerable<string> arrayPropertyNames, out IElementDictionary[]? childArray)
         {
-            _ = element.WhenNotNull(nameof(element));
-            var allPropertyNames = arrayPropertyNames.WhenNotNull(nameof(arrayPropertyNames)).AsReadOnlyCollection();
+            _ = element.WhenNotNull();
+            var allPropertyNames = arrayPropertyNames.WhenNotNull().AsReadOnlyCollection();
 
             /*
              * To get each 'node3' from 'node0' (element)
@@ -447,10 +449,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <param name="arrayPropertyNames">One or more nested child array property names.</param>
         /// <returns>An array of non-<see langword="null" /> child elements from a nested path of array elements.</returns>
         /// <remarks>A <seealso cref="JsonHelperException"/> exception will be thrown if the nested path of array properties do not exist.</remarks>
-        public static IEnumerable<IElementDictionary> GetDescendantObjectArray(this IElementDictionary element, IEnumerable<string> arrayPropertyNames)
+        public static IElementDictionary[]? GetDescendantObjectArray(this IElementDictionary element, IEnumerable<string> arrayPropertyNames)
         {
-            _ = element.WhenNotNull(nameof(element));
-            var allPropertyNames = arrayPropertyNames.WhenNotNull(nameof(arrayPropertyNames));
+            _ = element.WhenNotNull();
+            var allPropertyNames = arrayPropertyNames.WhenNotNull();
 
             return (new[] { element }).GetDescendantObjectArray(allPropertyNames);
         }
@@ -464,11 +466,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <param name="childValues">The value of each element in the deepest child element.</param>
         /// <returns><see langword="True" /> if the arrays and property exists, otherwise <see langword="False" />.</returns>
         public static bool TryGetDescendantObjectArrayValues<TValue>(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames,
-            string childPropertyName, out IEnumerable<TValue> childValues)
+            string childPropertyName, out TValue?[]? childValues)
         {
-            var allElements = elements.WhenNotNull(nameof(elements)).AsReadOnlyCollection();
-            var allPropertyNames = arrayPropertyNames.WhenNotNull(nameof(arrayPropertyNames)).AsReadOnlyCollection();
-            _ = childPropertyName.WhenNotNullOrEmpty(nameof(childPropertyName));
+            var allElements = elements.WhenNotNull().AsReadOnlyCollection();
+            var allPropertyNames = arrayPropertyNames.WhenNotNull().AsReadOnlyCollection();
+            _ = childPropertyName.WhenNotNullOrEmpty();
 
             childValues = null;
 
@@ -488,12 +490,12 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <param name="childPropertyName">The property name of the child element to get the value from.</param>
         /// <returns>The value of each element in the deepest child element.</returns>
         /// <remarks>A <seealso cref="JsonHelperException"/> exception will be thrown if the nested path of array properties do not exist.</remarks>
-        public static IEnumerable<TValue> GetDescendantObjectArrayValues<TValue>(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames,
+        public static TValue?[]? GetDescendantObjectArrayValues<TValue>(this IEnumerable<IElementDictionary> elements, IEnumerable<string> arrayPropertyNames,
             string childPropertyName)
         {
-            var allElements = elements.WhenNotNull(nameof(elements)).AsReadOnlyCollection();
-            var allPropertyNames = arrayPropertyNames.WhenNotNull(nameof(arrayPropertyNames)).AsReadOnlyCollection();
-            _ = childPropertyName.WhenNotNullOrEmpty(nameof(childPropertyName));
+            var allElements = elements.WhenNotNull().AsReadOnlyCollection();
+            var allPropertyNames = arrayPropertyNames.WhenNotNull().AsReadOnlyCollection();
+            _ = childPropertyName.WhenNotNullOrEmpty();
 
             if (!allElements.TryGetDescendantObjectArrayValues<TValue>(allPropertyNames, childPropertyName, out var childArrayValues))
             {
@@ -512,11 +514,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <see langword="null"/> if the method returns <see langword="False"/>.</param>
         /// <returns><see langword="True" /> if the nested child element arrays and property exists, otherwise <see langword="False" />.</returns>
         public static bool TryGetDescendantObjectArrayValues<TValue>(this IElementDictionary element, IEnumerable<string> arrayPropertyNames, string childPropertyName,
-            out IEnumerable<TValue> childArrayValues)
+            out TValue?[]? childArrayValues)
         {
-            _ = element.WhenNotNull(nameof(element));
-            var allPropertyNames = arrayPropertyNames.WhenNotNull(nameof(arrayPropertyNames)).AsReadOnlyCollection();
-            _ = childPropertyName.WhenNotNullOrEmpty(nameof(childPropertyName));
+            _ = element.WhenNotNull();
+            var allPropertyNames = arrayPropertyNames.WhenNotNull().AsReadOnlyCollection();
+            _ = childPropertyName.WhenNotNullOrEmpty();
 
             return new[] { element }.TryGetDescendantObjectArrayValues<TValue>(allPropertyNames, childPropertyName, out childArrayValues);
         }
@@ -528,11 +530,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Extensions
         /// <param name="childPropertyName">The property name of the child element to get the value from.</param>
         /// <returns>The value of each element in the specified child array property. This will be
         /// <see langword="null"/> if the method returns <see langword="False"/>.</returns>
-        public static IEnumerable<TValue> GetDescendantObjectArrayValues<TValue>(this IElementDictionary element, IEnumerable<string> arrayPropertyNames, string childPropertyName)
+        public static TValue?[]? GetDescendantObjectArrayValues<TValue>(this IElementDictionary element, IEnumerable<string> arrayPropertyNames, string childPropertyName)
         {
-            _ = element.WhenNotNull(nameof(element));
-            var allPropertyNames = arrayPropertyNames.WhenNotNull(nameof(arrayPropertyNames)).AsReadOnlyCollection();
-            _ = childPropertyName.WhenNotNullOrEmpty(nameof(childPropertyName));
+            _ = element.WhenNotNull();
+            var allPropertyNames = arrayPropertyNames.WhenNotNull().AsReadOnlyCollection();
+            _ = childPropertyName.WhenNotNullOrEmpty();
 
             return (new[] { element }).GetDescendantObjectArrayValues<TValue>(allPropertyNames, childPropertyName);
         }

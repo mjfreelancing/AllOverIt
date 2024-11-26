@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 
 namespace AllOverIt.Patterns.Result;
 
@@ -15,7 +13,7 @@ public class AggregateEnrichedError : EnrichedError
     /// <param name="errors">The errors to compose as an aggregate.</param>
     public AggregateEnrichedError(params EnrichedError[] errors)
     {
-        _ = errors.WhenNotNullOrEmpty(nameof(errors));
+        _ = errors.WhenNotNullOrEmpty();
 
         Errors = [.. errors];
     }
@@ -26,7 +24,7 @@ public class AggregateEnrichedError : EnrichedError
     public AggregateEnrichedError(string description, params EnrichedError[] errors)
         : base(description)
     {
-        _ = errors.WhenNotNullOrEmpty(nameof(errors));
+        _ = errors.WhenNotNullOrEmpty();
 
         Errors = [.. errors];
     }
@@ -41,7 +39,7 @@ public class AggregateEnrichedError : EnrichedError
     public AggregateEnrichedError(string type, string description, params EnrichedError[] errors)
         : base(type, description)
     {
-        _ = errors.WhenNotNullOrEmpty(nameof(errors));
+        _ = errors.WhenNotNullOrEmpty();
 
         Errors = [.. errors];
     }
@@ -58,7 +56,7 @@ public class AggregateEnrichedError : EnrichedError
     public AggregateEnrichedError(string? type, string? code, string? description, params EnrichedError[] errors)
         : base(type, code, description)
     {
-        _ = errors.WhenNotNullOrEmpty(nameof(errors));
+        _ = errors.WhenNotNullOrEmpty();
 
         Errors = [.. errors];
     }

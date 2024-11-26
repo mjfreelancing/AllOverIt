@@ -11,14 +11,14 @@ namespace AllOverIt.Events
 
         public WeakSubscription(Delegate handler)
         {
-            _ = handler.WhenNotNull(nameof(handler));
+            _ = handler.WhenNotNull();
 
             _weakReference = new WeakReference(handler.Target);
             _handlerMethod = handler.GetMethodInfo();
             _handlerType = handler.GetType();
         }
 
-        public Action<TMessage> GetHandler<TMessage>()
+        public Action<TMessage>? GetHandler<TMessage>()
         {
             if (_handlerMethod.IsStatic)
             {
@@ -27,7 +27,7 @@ namespace AllOverIt.Events
 
             var target = _weakReference.Target;
 
-            if (target != null)
+            if (target is not null)
             {
                 return (Action<TMessage>) _handlerMethod.CreateDelegate(_handlerType, target);
             }

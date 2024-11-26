@@ -20,8 +20,8 @@ namespace AllOverIt.Validation.Validators
         /// <param name="toValueResolver">The resolver to obtain the upper limit from the validation context.</param>
         protected ContextRangeValidator(Func<TContext, TProperty> fromValueResolver, Func<TContext, TProperty> toValueResolver)
         {
-            _fromValueResolver = fromValueResolver.WhenNotNull(nameof(fromValueResolver));
-            _toValueResolver = toValueResolver.WhenNotNull(nameof(toValueResolver));
+            _fromValueResolver = fromValueResolver.WhenNotNull();
+            _toValueResolver = toValueResolver.WhenNotNull();
         }
 
         /// <inheritdoc />
@@ -46,7 +46,7 @@ namespace AllOverIt.Validation.Validators
         /// <param name="value">The property value.</param>
         /// <param name="fromValue">The lower limit value to compare to the property value.</param>
         /// <param name="toValue">The upper limit value to compare to the property value.</param>
-        /// <returns><see langword="true" /> if the property value is valid, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the property value is valid, otherwise <see langword="False" />.</returns>
         protected abstract bool IsValid(TProperty value, TProperty fromValue, TProperty toValue);
     }
 }

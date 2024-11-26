@@ -7,12 +7,12 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
     /// <typeparam name="TOutput">The output state type.</typeparam>
     public abstract class ChainOfResponsibilityHandlerAsync<TInput, TOutput> : IChainOfResponsibilityHandlerAsync<TInput, TOutput>
     {
-        private IChainOfResponsibilityHandlerAsync<TInput, TOutput> _nextHandler;
+        private IChainOfResponsibilityHandlerAsync<TInput, TOutput>? _nextHandler;
 
         /// <inheritdoc />
         public IChainOfResponsibilityHandlerAsync<TInput, TOutput> SetNext(IChainOfResponsibilityHandlerAsync<TInput, TOutput> handler)
         {
-            _nextHandler = handler.WhenNotNull(nameof(handler));
+            _nextHandler = handler.WhenNotNull();
             return handler;
         }
 
@@ -20,7 +20,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
         /// <remarks>If the current handler cannot process the request then it should call base.Handle() to give
         /// the next handler in the chain an opportunity to process the request. To terminate the processing
         /// at the current handler do not call the base method.</remarks>
-        public virtual Task<TOutput> HandleAsync(TInput state, CancellationToken cancellationToken)
+        public virtual Task<TOutput?> HandleAsync(TInput state, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -29,7 +29,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
             // that does not call base.Handle() at the end of its processing.
             if (_nextHandler is null)
             {
-                return Task.FromResult((TOutput) default);
+                return Task.FromResult(default(TOutput));
             }
 
             return _nextHandler.HandleAsync(state, cancellationToken);

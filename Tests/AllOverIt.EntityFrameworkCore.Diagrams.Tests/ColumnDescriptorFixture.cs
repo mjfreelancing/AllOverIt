@@ -22,7 +22,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                 var descriptors = _dbContext.Model
                     .FindEntityType(typeof(Author))
                     .GetProperties()
-                    .SelectAsReadOnlyCollection(ColumnDescriptor.Create);
+                    .SelectToReadOnlyCollection(ColumnDescriptor.Create);
 
                 foreach (var descriptor in descriptors)
                 {
@@ -37,7 +37,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             IsNullable = false,
                             MaxLength = (int?) null,
                             Constraint = ConstraintType.PrimaryKey,
-                            ForeignKeyPrincipals = (IReadOnlyCollection<PrincipalForeignKey>) null
+                            ForeignKeyPrincipals = Array.Empty<PrincipalForeignKey>()
                         };
                     }
                     else if (descriptor.ColumnName == nameof(Author.FirstName))
@@ -49,7 +49,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             IsNullable = false,
                             MaxLength = 50,
                             Constraint = ConstraintType.None,
-                            ForeignKeyPrincipals = (IReadOnlyCollection<PrincipalForeignKey>) null
+                            ForeignKeyPrincipals = Array.Empty<PrincipalForeignKey>()
                         };
                     }
                     else if (descriptor.ColumnName == nameof(Author.LastName))
@@ -61,7 +61,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             IsNullable = true,
                             MaxLength = 50,
                             Constraint = ConstraintType.None,
-                            ForeignKeyPrincipals = (IReadOnlyCollection<PrincipalForeignKey>) null
+                            ForeignKeyPrincipals = Array.Empty<PrincipalForeignKey>()
                         };
                     }
                     else if (descriptor.ColumnName == nameof(Author.Email))
@@ -73,7 +73,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             IsNullable = false,
                             MaxLength = 50,
                             Constraint = ConstraintType.None,
-                            ForeignKeyPrincipals = (IReadOnlyCollection<PrincipalForeignKey>) null
+                            ForeignKeyPrincipals = Array.Empty<PrincipalForeignKey>()
                         };
                     }
 
@@ -98,7 +98,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                 var descriptors = _dbContext.Model
                     .FindEntityType(typeof(AuthorBlog))
                     .GetProperties()
-                    .SelectAsReadOnlyCollection(ColumnDescriptor.Create);
+                    .SelectToReadOnlyCollection(ColumnDescriptor.Create);
 
                 foreach (var descriptor in descriptors)
                 {
@@ -113,7 +113,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                             IsNullable = false,
                             MaxLength = (int?) null,
                             Constraint = ConstraintType.PrimaryKey,
-                            ForeignKeyPrincipals = (IReadOnlyCollection<PrincipalForeignKey>) null
+                            ForeignKeyPrincipals = Array.Empty<PrincipalForeignKey>()
                         };
                     }
                     else if (descriptor.ColumnName == $"{nameof(AuthorBlog.Author)}Id")

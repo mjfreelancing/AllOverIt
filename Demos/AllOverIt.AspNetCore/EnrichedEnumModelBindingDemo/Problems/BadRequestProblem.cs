@@ -17,10 +17,10 @@ namespace EnrichedEnumModelBindingDemo.Problems
             TryAddTraceId(context.HttpContext);
         }
 
-        private static void AppendErrorCodes(IDictionary<string, object> extensions, IEnumerable<ValidationFailure> errors)
+        private static void AppendErrorCodes(IDictionary<string, object?> extensions, IEnumerable<ValidationFailure> errors)
         {
             var errorDetails = errors
-                .SelectAsReadOnlyCollection(error => new
+                .SelectToArray(error => new
                 {
                     Field = error.PropertyName,
                     error.ErrorCode,

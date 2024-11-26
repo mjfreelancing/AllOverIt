@@ -1,11 +1,12 @@
 ﻿#nullable enable
 
+using AllOverIt;
 using AllOverIt.Fixture.Assertions;
 using FluentAssertions;
 using System.Text;
 using Xunit.Sdk;
 
-namespace AllOverIt.Fixture.Tests
+namespace AllOverIt.Fixture.Tests.Assertions
 {
     // Other tests for ClassPropertiesAssertions are indirectly tested as part of PropertyInfoAssertionsFixture
 

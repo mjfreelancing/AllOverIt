@@ -1,4 +1,6 @@
-﻿namespace AllOverIt.Serialization.Binary.Writers
+﻿using AllOverIt.Assertion;
+
+namespace AllOverIt.Serialization.Binary.Writers
 {
     /// <inheritdoc cref="IEnrichedBinaryValueWriter"/>
     public abstract class EnrichedBinaryValueWriter : IEnrichedBinaryValueWriter
@@ -10,7 +12,7 @@
         /// <param name="type">The value type this writer write to a stream.</param>
         public EnrichedBinaryValueWriter(Type type)
         {
-            Type = type;
+            Type = type.WhenNotNull();
         }
 
         /// <inheritdoc />

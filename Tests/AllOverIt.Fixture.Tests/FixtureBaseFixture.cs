@@ -396,7 +396,7 @@ namespace AllOverIt.Fixture.Tests
                 public static readonly DummyEnrichedEnum Three = new(3);
                 public static readonly DummyEnrichedEnum Four = new(4);
 
-                private DummyEnrichedEnum(int value, [CallerMemberName] string name = null)
+                private DummyEnrichedEnum(int value, [CallerMemberName] string name = "")
                     : base(value, name)
                 {
                 }

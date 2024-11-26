@@ -200,7 +200,7 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
 
         internal static void AssertExpectation<TServiceType>(IServiceProvider provider, IEnumerable<Type> expectedTypes)
         {
-            var actual = provider.GetService<IEnumerable<TServiceType>>()!.SelectAsReadOnlyCollection(item => item.GetType());
+            var actual = provider.GetService<IEnumerable<TServiceType>>()!.SelectToArray(item => item.GetType());
 
             expectedTypes.Should().BeEquivalentTo(actual);
         }

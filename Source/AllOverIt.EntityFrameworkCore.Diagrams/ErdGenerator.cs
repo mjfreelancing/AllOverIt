@@ -4,16 +4,17 @@
     public static class ErdGenerator
     {
         /// <summary>Creates an instance of an entity relationship diagram generator.</summary>
-        /// <typeparam name="TGenerator">The entity relationship diagram generator type.</typeparam>
+        /// <typeparam name="TGenerator">The entity relationship diagram generator type. This type must inherit <see cref="ErdGeneratorBase"/>
+        /// and contain a constructor accepting an <see cref="ErdOptions"/>.</typeparam>
         /// <param name="configure">An action used to configure the generator,</param>
         /// <returns>The entity relationship diagram generator.</returns>
-        public static TGenerator Create<TGenerator>(Action<ErdOptions> configure = default) where TGenerator : ErdGeneratorBase
+        public static TGenerator Create<TGenerator>(Action<ErdOptions>? configure = default) where TGenerator : ErdGeneratorBase
         {
             var options = new ErdOptions();
 
             configure?.Invoke(options);
 
-            var formatter = (TGenerator) Activator.CreateInstance(typeof(TGenerator), [options]);
+            var formatter = (TGenerator) Activator.CreateInstance(typeof(TGenerator), [options])!;
 
             return formatter;
         }

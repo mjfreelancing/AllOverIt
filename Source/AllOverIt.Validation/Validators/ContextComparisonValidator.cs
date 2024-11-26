@@ -18,7 +18,7 @@ namespace AllOverIt.Validation.Validators
         /// <param name="valueResolver">The resolver to obtain the comparison value from the validation context.</param>
         protected ContextComparisonValidator(Func<TContext, TProperty> valueResolver)
         {
-            _valueResolver = valueResolver.WhenNotNull(nameof(valueResolver));
+            _valueResolver = valueResolver.WhenNotNull();
         }
 
         /// <inheritdoc />
@@ -40,7 +40,7 @@ namespace AllOverIt.Validation.Validators
         /// <summary>Override in a concrete validator to indicate if the property value is valid compared to the specified comparison value.</summary>
         /// <param name="value">The property value.</param>
         /// <param name="comparisonValue">The value to compare to the property value.</param>
-        /// <returns><see langword="true" /> if the property value is valid, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the property value is valid, otherwise <see langword="False" />.</returns>
         protected abstract bool IsValid(TProperty value, TProperty comparisonValue);
     }
 }

@@ -13,18 +13,18 @@ namespace AllOverIt.Serialization.Json.SystemText
         private static readonly Type ConverterType = typeof(NestedDictionaryConverter);
 
         /// <inheritdoc />
-        public JsonHelper(object value, JsonSerializerOptions options = default)
+        public JsonHelper(object value, JsonSerializerOptions? options = default)
             : base(value, CreateJsonSerializer(options))
         {
         }
 
         /// <inheritdoc />
-        public JsonHelper(string value, JsonSerializerOptions options = default)
+        public JsonHelper(string value, JsonSerializerOptions? options = default)
             : base(value, CreateJsonSerializer(options))
         {
         }
 
-        private static SystemTextJsonSerializer CreateJsonSerializer(JsonSerializerOptions options)
+        private static SystemTextJsonSerializer CreateJsonSerializer(JsonSerializerOptions? options)
         {
             options ??= new JsonSerializerOptions();
 

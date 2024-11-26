@@ -3,6 +3,7 @@ using AllOverIt.Cryptography.AES;
 using AllOverIt.Cryptography.Extensions;
 using AllOverIt.Cryptography.Hybrid.Exceptions;
 using AllOverIt.Cryptography.RSA;
+using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.Hybrid
 {
@@ -54,7 +55,7 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <param name="configuration">The configuration providing the required encryption and signing options.</param>
         public RsaAesHybridEncryptor(IRsaAesHybridEncryptorConfiguration configuration)
         {
-            _ = configuration.WhenNotNull(nameof(configuration));
+            _ = configuration.WhenNotNull();
 
             // The current tests are functional and there's no current need to make these
             // injectable but a new constructor is easy enough to add if this is required.
@@ -88,17 +89,14 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <returns>The byte array populated with the resulting 'cipher text'.</returns>
         public byte[] Encrypt(byte[] plainText)
         {
-            _ = plainText.WhenNotNull(nameof(plainText));
+            _ = plainText.WhenNotNull();
 
-            using (var cipherTextStream = new MemoryStream())
-            {
-                using (var plainTextStream = new MemoryStream(plainText))
-                {
-                    Encrypt(plainTextStream, cipherTextStream);
+            using var cipherTextStream = new MemoryStream();
+            using var plainTextStream = new MemoryStream(plainText);
 
-                    return cipherTextStream.ToArray();
-                }
-            }
+            Encrypt(plainTextStream, cipherTextStream);
+
+            return cipherTextStream.ToArray();
         }
 
         /// <summary>
@@ -116,25 +114,22 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <exception cref="RsaAesHybridException">The hash or its signature are invalid.</exception>
         public byte[] Decrypt(byte[] cipherText)
         {
-            _ = cipherText.WhenNotNull(nameof(cipherText));
+            _ = cipherText.WhenNotNull();
 
-            using (var cipherTextStream = new MemoryStream(cipherText))
-            {
-                using (var plainTextStream = new MemoryStream())
-                {
-                    Decrypt(cipherTextStream, plainTextStream);
+            using var cipherTextStream = new MemoryStream(cipherText);
+            using var plainTextStream = new MemoryStream();
 
-                    return plainTextStream.ToArray();
-                }
-            }
+            Decrypt(cipherTextStream, plainTextStream);
+
+            return plainTextStream.ToArray();
         }
 
         /// <inheritdoc cref="Encrypt(byte[])"/>
         /// <remarks>The <paramref name="plainTextStream"/> must be random access and the entire stream will be processed.</remarks>
         public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = plainTextStream.WhenNotNull();
+            _ = cipherTextStream.WhenNotNull();
 
             // Calculate the hash for the plain text
             plainTextStream.Position = 0;
@@ -162,8 +157,8 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <inheritdoc cref="Decrypt(byte[])" />
         public void Decrypt(Stream cipherTextStream, Stream plainTextStream)
         {
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+            _ = cipherTextStream.WhenNotNull();
+            _ = plainTextStream.WhenNotNull();
 
             // Read the expected hash of the plain text
             var expectedHash = ReadFromStream(cipherTextStream, _signingConfiguration.HashAlgorithmName.GetHashSize() / 8);
@@ -202,48 +197,55 @@ namespace AllOverIt.Cryptography.Hybrid
 
         private byte[] CalculateHash(byte[] plainText)
         {
+#if NET9_0_OR_GREATER
+            return CryptographicOperations.HashData(_signingConfiguration.HashAlgorithmName, plainText);
+#else
             using (var hashAlgorithm = _signingConfiguration.HashAlgorithmName.CreateHashAlgorithm())
             {
                 return hashAlgorithm.ComputeHash(plainText);
             }
+#endif
         }
 
         private byte[] CalculateHash(Stream plainText)
         {
+#if NET9_0_OR_GREATER
+            return CryptographicOperations.HashData(_signingConfiguration.HashAlgorithmName, plainText);
+#else
             using (var hashAlgorithm = _signingConfiguration.HashAlgorithmName.CreateHashAlgorithm())
             {
                 return hashAlgorithm.ComputeHash(plainText);
             }
+#endif
         }
 
         private byte[] SignHash(byte[] hash)
         {
-            using (var rsa = _rsaFactory.Create())
-            {
-                var rsaPrivateKey = _signingConfiguration.Keys.PrivateKey;
+            using var rsa = _rsaFactory.Create();
 
-                rsa.ImportRSAPrivateKey(rsaPrivateKey, out _);
+            var rsaPrivateKey = _signingConfiguration.Keys.PrivateKey;
 
-                return rsa.SignHash(hash, _signingConfiguration.HashAlgorithmName, _signingConfiguration.Padding);
-            }
+            rsa.ImportRSAPrivateKey(rsaPrivateKey, out _);
+
+            return rsa.SignHash(hash, _signingConfiguration.HashAlgorithmName, _signingConfiguration.Padding);
         }
 
         private void VerifyHashSignature(byte[] plainTextHash, byte[] signature)
         {
-            using (var rsa = _rsaFactory.Create())
-            {
-                rsa.ImportRSAPublicKey(_signingConfiguration.Keys.PublicKey, out _);
+            using var rsa = _rsaFactory.Create();
 
-                var isValid = rsa.VerifyHash(plainTextHash, signature, _signingConfiguration.HashAlgorithmName, _signingConfiguration.Padding);
+            rsa.ImportRSAPublicKey(_signingConfiguration.Keys.PublicKey, out _);
 
-                Throw<RsaAesHybridException>.WhenNot(isValid, "The digital signature is invalid.");
-            }
+            var isValid = rsa.VerifyHash(plainTextHash, signature, _signingConfiguration.HashAlgorithmName, _signingConfiguration.Padding);
+
+            Throw<RsaAesHybridException>.WhenNot(isValid, "The digital signature is invalid.");
         }
 
         private static byte[] ReadFromStream(Stream stream, int length)
         {
             var data = new byte[length];
-            stream.Read(data);
+
+            stream.ReadExactly(data);
 
             return data;
         }

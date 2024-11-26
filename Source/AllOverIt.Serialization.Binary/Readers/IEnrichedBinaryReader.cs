@@ -84,6 +84,6 @@ namespace AllOverIt.Serialization.Binary.Readers
         /// <summary>Reads type information and its associated value from the stream. This method can only read values previously written by
         /// <see cref="IEnrichedBinaryWriter.WriteObject(object)"/> or <see cref="IEnrichedBinaryWriter.WriteObject(object, Type)"/>.</summary>
         /// <returns>The appropriately typed value, as an object.</returns>
-        object ReadObject();
+        object? ReadObject();
     }
 }

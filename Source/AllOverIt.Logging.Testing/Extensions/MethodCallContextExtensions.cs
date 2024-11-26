@@ -1,9 +1,7 @@
-﻿#nullable enable
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
 
-namespace AllOverIt.Logging.Testing
+namespace AllOverIt.Logging.Testing.Extensions
 {
     /// <summary>Contains extensions methods for <see cref="MethodCallContext"/> to help with asserting captured logging data.</summary>
     public static class MethodCallsWithArgumentsExtensions
@@ -140,9 +138,9 @@ namespace AllOverIt.Logging.Testing
         /// <param name="methodCallContext">The context containing logger information collected during the invocation of one or more methods.</param>
         /// <param name="index">The index within the collection of gathered information.</param>
         /// <param name="logTemplate">The expecting logging template.</param>
-        /// <param name="arguments">The expected arguments, as a <c>Dictionary&lt;string, object&gt;</c>, expected to be included with the logging information.</param>
+        /// <param name="arguments">The expected arguments, as a <c>Dictionary&lt;string, object?&gt;</c>, expected to be included with the logging information.</param>
         /// <param name="logLevel">The expected logging level.</param>
-        public static void AssertMessageWithArgumentsEntry(this MethodCallContext methodCallContext, int index, string logTemplate, IDictionary<string, object> arguments,
+        public static void AssertMessageWithArgumentsEntry(this MethodCallContext methodCallContext, int index, string logTemplate, IDictionary<string, object?> arguments,
             LogLevel logLevel)
         {
             var expected = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(logTemplate, arguments);

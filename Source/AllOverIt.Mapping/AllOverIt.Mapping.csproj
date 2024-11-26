@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
         <Description>This package contains an object mapper that is mostly configuration free but also capable of property exclusion, aliasing, null replacement, value conversion, and deep copying.</Description>
         <PackageTags>AllOverIt;Utilities;Mapping</PackageTags>
     </PropertyGroup>

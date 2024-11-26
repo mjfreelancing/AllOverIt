@@ -22,7 +22,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft
 
         /// <summary>Constructor.</summary>
         /// <param name="settings">The Newtonsoft serialization settings to use..</param>
-        public NewtonsoftJsonSerializer(JsonSerializerSettings settings = default)
+        public NewtonsoftJsonSerializer(JsonSerializerSettings? settings = default)
         {
             Settings = settings ?? new JsonSerializerSettings();
         }
@@ -30,7 +30,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft
         /// <inheritdoc />
         public void Configure(JsonSerializerConfiguration configuration)
         {
-            _ = configuration.WhenNotNull(nameof(configuration));
+            _ = configuration.WhenNotNull();
 
             ApplyOptionUseCamelCase(configuration);
             ApplyOptionCaseSensitive(configuration);
@@ -51,13 +51,13 @@ namespace AllOverIt.Serialization.Json.Newtonsoft
         }
 
         /// <inheritdoc />
-        public TType DeserializeObject<TType>(string value)
+        public TType? DeserializeObject<TType>(string value)
         {
             return JsonConvert.DeserializeObject<TType>(value, Settings);
         }
 
         /// <inheritdoc />
-        public Task<TType> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken)
+        public Task<TType?> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -109,14 +109,14 @@ namespace AllOverIt.Serialization.Json.Newtonsoft
 
             if (configuration.SupportEnrichedEnums.Value)
             {
-                if (enrichedEnumConverterFactory == null)
+                if (enrichedEnumConverterFactory is null)
                 {
                     Settings.Converters.Add(new EnrichedEnumJsonConverterFactory());
                 }
             }
             else
             {
-                if (enrichedEnumConverterFactory != null)
+                if (enrichedEnumConverterFactory is not null)
                 {
                     Settings.Converters.Remove(enrichedEnumConverterFactory);
                 }

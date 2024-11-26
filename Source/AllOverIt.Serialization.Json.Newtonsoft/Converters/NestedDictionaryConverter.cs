@@ -5,11 +5,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
 {
-    /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object>. All object and array
-    /// properties are also converted to and from a Dictionary&lt;string, object>.</summary>
+    /// <summary>Implements a JSON Converter that converts to and from a Dictionary&lt;string, object?>. All object and array
+    /// properties are also converted to and from a Dictionary&lt;string, object?>.</summary>
     internal sealed class NestedDictionaryConverter : JsonConverter
     {
-        private static readonly Type DictionaryType = typeof(Dictionary<string, object>);
+        private static readonly Type DictionaryType = typeof(Dictionary<string, object?>);
 
         /// <inheritdoc />
         public override bool CanConvert(Type objectType)
@@ -18,18 +18,18 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         }
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             return ReadValue(reader);
         }
 
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             WriteValue(writer, value, serializer);
         }
 
-        private object ReadValue(JsonReader reader)
+        private object? ReadValue(JsonReader reader)
         {
             return reader.TokenType switch
             {
@@ -43,9 +43,9 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
             };
         }
 
-        private List<object> ReadArray(JsonReader reader)
+        private List<object?> ReadArray(JsonReader reader)
         {
-            var list = new List<object>();
+            var list = new List<object?>();
 
             while (reader.Read())
             {
@@ -64,9 +64,9 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
             throw CreateJsonSerializationException();
         }
 
-        private Dictionary<string, object> ReadObject(JsonReader reader)
+        private Dictionary<string, object?> ReadObject(JsonReader reader)
         {
-            var dictionary = new Dictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
+            var dictionary = new Dictionary<string, object?>(StringComparer.InvariantCultureIgnoreCase);
 
             while (reader.Read())
             {
@@ -92,27 +92,29 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
             throw CreateJsonSerializationException();
         }
 
-        private void WriteValue(JsonWriter writer, object value, JsonSerializer serializer)
+        private void WriteValue(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            // TODO: Check the SystemText serializer does this - also need to add more tests
-            var converter = serializer.Converters.FirstOrDefault(converter => !ReferenceEquals(converter, this) && converter.CanWrite && converter.CanConvert(value.GetType()));
+            // Null values do not pass through here
 
-            if (converter != null)
+            // TODO: Check the SystemText serializer does this - also need to add more tests
+            var converter = serializer.Converters.FirstOrDefault(converter => !ReferenceEquals(converter, this) && converter.CanWrite && converter.CanConvert(value!.GetType()));
+
+            if (converter is not null)
             {
                 converter.WriteJson(writer, value, serializer);
                 return;
             }
 
-            var token = JToken.FromObject(value);
+            var token = JToken.FromObject(value!);
 
             switch (token.Type)
             {
                 case JTokenType.Object:
-                    WriteObject(writer, value, serializer);
+                    WriteObject(writer, value!, serializer);
                     break;
 
                 case JTokenType.Array:
-                    WriteArray(writer, value, serializer);
+                    WriteArray(writer, value!, serializer);
                     break;
 
                 default:
@@ -125,9 +127,10 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         {
             writer.WriteStartObject();
 
-            var element = value as Dictionary<string, object>;
+            // Assumed to be a 'DictionaryType'
+            var element = value as Dictionary<string, object?>;
 
-            foreach (var kvp in element)
+            foreach (var kvp in element!)
             {
                 writer.WritePropertyName(kvp.Key);
 

@@ -32,11 +32,11 @@ namespace AllOverIt.DependencyInjection.Tests
 
                 .BuildServiceProvider();
 
-            var int1Instance = provider.GetService<IEnumerable<IBaseInterface1>>()!.SelectAsReadOnlyCollection(item => item.GetType());
+            var int1Instance = provider.GetService<IEnumerable<IBaseInterface1>>()!.SelectToArray(item => item.GetType());
 
             int1Instance.Should().BeEquivalentTo(new[] { typeof(ConcreteClassF), typeof(ConcreteClassG) });
 
-            var int4Instance = provider.GetService<IEnumerable<IBaseInterface4>>()!.SelectAsReadOnlyCollection(item => item.GetType());
+            var int4Instance = provider.GetService<IEnumerable<IBaseInterface4>>()!.SelectToArray(item => item.GetType());
 
             int4Instance.Should().BeEquivalentTo(new[] { typeof(ConcreteClassG) });
         }

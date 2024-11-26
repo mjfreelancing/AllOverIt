@@ -12,26 +12,28 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
 
         /// <summary>Returns true if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</summary>
         /// <param name="objectType">The object type.</param>
-        /// <returns><see langword="true" /> if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</returns>
+        /// <returns><see langword="True" /> if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</returns>
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(TEnum);
         }
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
-            var strValue = (string) reader.Value;
+            var strValue = (string?) reader.Value;
 
-            return strValue == null
+            // Null values do pass through here
+            return strValue is null
                 ? null
                 : EnrichedEnum<TEnum>.From(strValue);
         }
 
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            var enumValue = ((EnrichedEnum<TEnum>) value).Name;
+            // Null values do not pass through here
+            var enumValue = ((EnrichedEnum<TEnum>) value!).Name;
             writer.WriteValue(enumValue);
         }
 
@@ -39,7 +41,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         /// <returns>A new JsonConverter instance.</returns>
         public static JsonConverter Create()
         {
-            return (JsonConverter) Activator.CreateInstance(EnrichedEnumJsonConverterType);
+            return (JsonConverter) Activator.CreateInstance(EnrichedEnumJsonConverterType)!;
         }
     }
 }

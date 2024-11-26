@@ -26,11 +26,11 @@ namespace AllOverIt.Filtering.Extensions
         /// <returns>An updated <paramref name="queryable"/> that includes all predicates or specifications that were added via the filter
         /// builder.</returns>
         public static IQueryable<TType> ApplyFilter<TType, TFilter>(this IQueryable<TType> queryable, TFilter filter,
-            Action<IFilterSpecificationBuilder<TType, TFilter>, IFilterBuilder<TType, TFilter>> action, DefaultQueryFilterOptions options = default)
+            Action<IFilterSpecificationBuilder<TType, TFilter>, IFilterBuilder<TType, TFilter>> action, DefaultQueryFilterOptions? options = default)
             where TType : class
             where TFilter : class
         {
-            _ = filter.WhenNotNull(nameof(filter));
+            _ = filter.WhenNotNull();
 
             // defaults to using parameterized queries as this is mostly likely to be used with EF (or similar) queries
             options ??= new DefaultQueryFilterOptions();

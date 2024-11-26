@@ -25,8 +25,8 @@ namespace AllOverIt.Serialization.Binary.Writers
         /// <inheritdoc />
         public override void WriteValue(IEnrichedBinaryWriter writer, object instance)
         {
-            _ = writer.WhenNotNull(nameof(writer));
-            _ = instance.WhenNotNull(nameof(instance));
+            _ = writer.WhenNotNull();
+            _ = instance.WhenNotNull();
 
             var properties = Type
                 .GetPropertyInfo()

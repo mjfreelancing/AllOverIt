@@ -21,8 +21,8 @@ namespace AllOverIt.Evaluator
         /// <param name="processor">The delegate used for processing a given token.</param>
         public FormulaTokenProcessorContext(Func<char, bool, bool> predicate, Func<char, bool, bool> processor)
         {
-            Predicate = predicate.WhenNotNull(nameof(predicate));
-            Processor = processor.WhenNotNull(nameof(processor));
+            Predicate = predicate.WhenNotNull();
+            Processor = processor.WhenNotNull();
         }
     }
 }

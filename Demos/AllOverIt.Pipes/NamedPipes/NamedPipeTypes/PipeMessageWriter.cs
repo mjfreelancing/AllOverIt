@@ -11,7 +11,8 @@ namespace NamedPipeTypes
 
             writer.WriteGuid(message.Id);
             writer.WriteSafeString(message.Text);
-            writer.WriteObject(message.Child, typeof(PipeMessage.ChildClass));
+            writer.WriteBoolean(message.PingBack);
+            writer.WriteObject(message.Child, typeof(PipeMessage.ChildClass));    // not doing anything with this, just demonstrating objects can be serialized
         }
     }
 }

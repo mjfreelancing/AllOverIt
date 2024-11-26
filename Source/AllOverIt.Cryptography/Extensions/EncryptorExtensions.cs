@@ -40,15 +40,15 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>A byte array containing the 'cipher text' content.</returns>
         public static byte[] EncryptStreamToBytes(this IStreamEncryptor encryptor, Stream plainTextStream)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+            _ = encryptor.WhenNotNull();
+            _ = plainTextStream.WhenNotNull();
 
-            using (var cipherTextStream = new MemoryStream())
-            {
-                encryptor.Encrypt(plainTextStream, cipherTextStream);
+            using var cipherTextStream = new MemoryStream();
 
-                return cipherTextStream.ToArray();
-            }
+            encryptor.Encrypt(plainTextStream, cipherTextStream);
+
+            return cipherTextStream.ToArray();
+
         }
 
         /// <summary>Encrypts a source stream containing the 'plain text' data to a base64 encoded string.</summary>
@@ -57,8 +57,8 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>A base64 encoded string containing the 'cipher text' content.</returns>
         public static string EncryptStreamToBase64(this IStreamEncryptor encryptor, Stream plainTextStream)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+            _ = encryptor.WhenNotNull();
+            _ = plainTextStream.WhenNotNull();
 
             var cipherTextBytes = EncryptStreamToBytes(encryptor, plainTextStream);
 
@@ -75,8 +75,8 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>A base64 encoded string containing the 'cipher text' content.</returns>
         public static string EncryptBytesToBase64(this IEncryptor encryptor, byte[] plainTextBytes)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = plainTextBytes.WhenNotNull(nameof(plainTextBytes));
+            _ = encryptor.WhenNotNull();
+            _ = plainTextBytes.WhenNotNull();
 
             var cipherTextBytes = encryptor.Encrypt(plainTextBytes);
 
@@ -89,14 +89,13 @@ namespace AllOverIt.Cryptography.Extensions
         /// <param name="cipherTextStream">The destination stream containing the 'cipher text' content.</param>
         public static void EncryptBytesToStream(this IStreamEncryptor encryptor, byte[] plainTextBytes, Stream cipherTextStream)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = plainTextBytes.WhenNotNull(nameof(plainTextBytes));
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = encryptor.WhenNotNull();
+            _ = plainTextBytes.WhenNotNull();
+            _ = cipherTextStream.WhenNotNull();
 
-            using (var plainTextStream = new MemoryStream(plainTextBytes))
-            {
-                encryptor.Encrypt(plainTextStream, cipherTextStream);
-            }
+            using var plainTextStream = new MemoryStream(plainTextBytes);
+
+            encryptor.Encrypt(plainTextStream, cipherTextStream);
         }
 
         #endregion
@@ -109,8 +108,8 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>A byte array containing the 'cipher text' content.</returns>
         public static byte[] EncryptPlainTextToBytes(this IEncryptor encryptor, string plainText)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = plainText.WhenNotNull(nameof(plainText));
+            _ = encryptor.WhenNotNull();
+            _ = plainText.WhenNotNull();
 
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 
@@ -123,8 +122,8 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>A base64 encoded string containing the 'cipher text' content.</returns>
         public static string EncryptPlainTextToBase64(this IEncryptor encryptor, string plainText)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = plainText.WhenNotNull(nameof(plainText));
+            _ = encryptor.WhenNotNull();
+            _ = plainText.WhenNotNull();
 
             var cipherTextBytes = EncryptPlainTextToBytes(encryptor, plainText);
 
@@ -137,9 +136,9 @@ namespace AllOverIt.Cryptography.Extensions
         /// <param name="cipherTextStream">The destination stream containing the 'cipher text' content.</param>
         public static void EncryptPlainTextToStream(this IStreamEncryptor encryptor, string plainText, Stream cipherTextStream)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = plainText.WhenNotNull(nameof(plainText));
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = encryptor.WhenNotNull();
+            _ = plainText.WhenNotNull();
+            _ = cipherTextStream.WhenNotNull();
 
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 
@@ -156,8 +155,8 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>A byte array containing the 'cipher text' content.</returns>
         public static byte[] EncryptBase64ToBytes(this IEncryptor encryptor, string plainTextBase64)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = plainTextBase64.WhenNotNull(nameof(plainTextBase64));
+            _ = encryptor.WhenNotNull();
+            _ = plainTextBase64.WhenNotNull();
 
             var plainTextBytes = Convert.FromBase64String(plainTextBase64);
 
@@ -170,9 +169,9 @@ namespace AllOverIt.Cryptography.Extensions
         /// <param name="cipherTextStream">The destination stream containing the 'cipher text' content.</param>
         public static void EncryptBase64ToStream(this IStreamEncryptor encryptor, string plainTextBase64, Stream cipherTextStream)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = plainTextBase64.WhenNotNull(nameof(plainTextBase64));
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = encryptor.WhenNotNull();
+            _ = plainTextBase64.WhenNotNull();
+            _ = cipherTextStream.WhenNotNull();
 
             var plainTextBytes = Convert.FromBase64String(plainTextBase64);
 
@@ -183,21 +182,20 @@ namespace AllOverIt.Cryptography.Extensions
 
         #region Decrypt from stream to ...
 
-        /// <summary>Dencrypts a source stream containing the 'cipher text' data to a byte array.</summary>
+        /// <summary>Decrypts a source stream containing the 'cipher text' data to a byte array.</summary>
         /// <param name="encryptor">The encryptor instance.</param>
         /// <param name="cipherTextStream">The source stream containing the 'cipher text' data to decrypt.</param>
         /// <returns>A byte array containing the 'plain text' content.</returns>
         public static byte[] DecryptStreamToBytes(this IStreamEncryptor encryptor, Stream cipherTextStream)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = encryptor.WhenNotNull();
+            _ = cipherTextStream.WhenNotNull();
 
-            using (var plainTextStream = new MemoryStream())
-            {
-                encryptor.Decrypt(cipherTextStream, plainTextStream);
+            using var plainTextStream = new MemoryStream();
 
-                return plainTextStream.ToArray();
-            }
+            encryptor.Decrypt(cipherTextStream, plainTextStream);
+
+            return plainTextStream.ToArray();
         }
 
         /// <summary>Decrypts a source stream containing the 'cipher text' data to a base64 encoded string.</summary>
@@ -206,8 +204,8 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>A base64 encoded string containing the 'plain text' content.</returns>
         public static string DecryptStreamToBase64(this IStreamEncryptor encryptor, Stream cipherTextStream)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = encryptor.WhenNotNull();
+            _ = cipherTextStream.WhenNotNull();
 
             var plainTextBytes = DecryptStreamToBytes(encryptor, cipherTextStream);
 
@@ -220,8 +218,8 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>A string containing the 'plain text' content.</returns>
         public static string DecryptStreamToPlainText(this IStreamEncryptor encryptor, Stream cipherTextStream)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = encryptor.WhenNotNull();
+            _ = cipherTextStream.WhenNotNull();
 
             var plainTextBytes = DecryptStreamToBytes(encryptor, cipherTextStream);
 
@@ -238,8 +236,8 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>A base64 encoded string containing the 'plain text' content.</returns>
         public static string DecryptBytesToBase64(this IEncryptor encryptor, byte[] cipherTextBytes)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = cipherTextBytes.WhenNotNull(nameof(cipherTextBytes));
+            _ = encryptor.WhenNotNull();
+            _ = cipherTextBytes.WhenNotNull();
 
             var plainTextBytes = encryptor.Decrypt(cipherTextBytes);
 
@@ -252,8 +250,8 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>A string containing the 'plain text' content.</returns>
         public static string DecryptBytesToPlainText(this IEncryptor encryptor, byte[] cipherTextBytes)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = cipherTextBytes.WhenNotNull(nameof(cipherTextBytes));
+            _ = encryptor.WhenNotNull();
+            _ = cipherTextBytes.WhenNotNull();
 
             var plainTextBytes = encryptor.Decrypt(cipherTextBytes);
 
@@ -266,14 +264,13 @@ namespace AllOverIt.Cryptography.Extensions
         /// <param name="plainTextStream">The destination stream containing the 'plain text' content.</param>
         public static void DecryptBytesToStream(this IStreamEncryptor encryptor, byte[] cipherTextBytes, Stream plainTextStream)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = cipherTextBytes.WhenNotNull(nameof(cipherTextBytes));
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+            _ = encryptor.WhenNotNull();
+            _ = cipherTextBytes.WhenNotNull();
+            _ = plainTextStream.WhenNotNull();
 
-            using (var cipherTextStream = new MemoryStream(cipherTextBytes))
-            {
-                encryptor.Decrypt(cipherTextStream, plainTextStream);
-            }
+            using var cipherTextStream = new MemoryStream(cipherTextBytes);
+
+            encryptor.Decrypt(cipherTextStream, plainTextStream);
         }
 
         #endregion
@@ -286,8 +283,8 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>A byte array containing the 'plain text' content.</returns>
         public static byte[] DecryptBase64ToBytes(this IEncryptor encryptor, string cipherTextBase64)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = cipherTextBase64.WhenNotNull(nameof(cipherTextBase64));
+            _ = encryptor.WhenNotNull();
+            _ = cipherTextBase64.WhenNotNull();
 
             var cipherTextBytes = Convert.FromBase64String(cipherTextBase64);
 
@@ -300,8 +297,8 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>A string containing the 'plain text' content.</returns>
         public static string DecryptBase64ToPlainText(this IEncryptor encryptor, string cipherTextBase64)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = cipherTextBase64.WhenNotNull(nameof(cipherTextBase64));
+            _ = encryptor.WhenNotNull();
+            _ = cipherTextBase64.WhenNotNull();
 
             var cipherTextBytes = Convert.FromBase64String(cipherTextBase64);
 
@@ -314,9 +311,9 @@ namespace AllOverIt.Cryptography.Extensions
         /// <param name="plainTextStream">The destination stream containing the 'plain text' content.</param>
         public static void DecryptBase64ToStream(this IStreamEncryptor encryptor, string cipherTextBase64, Stream plainTextStream)
         {
-            _ = encryptor.WhenNotNull(nameof(encryptor));
-            _ = cipherTextBase64.WhenNotNull(nameof(cipherTextBase64));
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+            _ = encryptor.WhenNotNull();
+            _ = cipherTextBase64.WhenNotNull();
+            _ = plainTextStream.WhenNotNull();
 
             var cipherTextBytes = Convert.FromBase64String(cipherTextBase64);
 

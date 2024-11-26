@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using Microsoft.Extensions.Logging;
 using System.Runtime.CompilerServices;
 
@@ -19,12 +17,14 @@ namespace AllOverIt.Logging.Extensions
         public static void LogCall(this ILogger logger, object? caller, LogLevel logLevel = LogLevel.Information,
             [CallerMemberName] string callerName = "")
         {
-            _ = logger.WhenNotNull(nameof(logger));
-            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
+            _ = logger.WhenNotNull();
+            _ = callerName.WhenNotNullOrEmpty();
 
             var fullName = LogCallOptions.GetCallerFullName(caller, callerName);
 
+#pragma warning disable CA2254 // Template should be a static expression - will be statically initialized
             logger.Log(logLevel, LogCallOptions.Instance.LogTemplateWithNoArguments, fullName);
+#pragma warning restore CA2254 // Template should be a static expression
         }
 
         /// <summary>Logs a method call and its arguments.</summary>
@@ -38,13 +38,15 @@ namespace AllOverIt.Logging.Extensions
         public static void LogCall(this ILogger logger, object? caller, object arguments, LogLevel logLevel = LogLevel.Information,
             [CallerMemberName] string callerName = "")
         {
-            _ = logger.WhenNotNull(nameof(logger));
-            _ = arguments.WhenNotNull(nameof(arguments));
-            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
+            _ = logger.WhenNotNull();
+            _ = arguments.WhenNotNull();
+            _ = callerName.WhenNotNullOrEmpty();
 
             var fullName = LogCallOptions.GetCallerFullName(caller, callerName);
 
+#pragma warning disable CA2254 // Template should be a static expression - will be statically initialized
             logger.Log(logLevel, LogCallOptions.Instance.LogTemplateWithArguments, fullName, arguments);
+#pragma warning restore CA2254 // Template should be a static expression
         }
 
         /// <summary>Logs an exception with a logging level of <see cref="LogLevel.Error"/>.</summary>
@@ -57,16 +59,20 @@ namespace AllOverIt.Logging.Extensions
         public static void LogException(this ILogger logger, Exception exception, string? messageTemplate = default,
             params object?[] arguments)
         {
-            _ = logger.WhenNotNull(nameof(logger));
-            _ = exception.WhenNotNull(nameof(exception));
+            _ = logger.WhenNotNull();
+            _ = exception.WhenNotNull();
 
             if (messageTemplate is null)
             {
+#pragma warning disable CA2254 // Template should be a static expression - will be statically initialized
                 logger.LogError(exception, LogCallOptions.Instance.LogExceptionTemplate, exception.Message);
+#pragma warning restore CA2254 // Template should be a static expression
             }
             else
             {
+#pragma warning disable CA2254 // Template should be a static expression - will be statically initialized
                 logger.LogError(exception, messageTemplate, arguments);
+#pragma warning restore CA2254 // Template should be a static expression
             }
         }
 
@@ -81,8 +87,8 @@ namespace AllOverIt.Logging.Extensions
         public static void LogAllExceptions(this ILogger logger, Exception exception, string? messageTemplate = default,
             params object?[] arguments)
         {
-            _ = logger.WhenNotNull(nameof(logger));
-            _ = exception.WhenNotNull(nameof(exception));
+            _ = logger.WhenNotNull();
+            _ = exception.WhenNotNull();
 
             logger.LogException(exception, messageTemplate, arguments);
 

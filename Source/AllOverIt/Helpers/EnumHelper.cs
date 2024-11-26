@@ -1,8 +1,5 @@
-﻿#if NET7_0_OR_GREATER
-using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Runtime.InteropServices;
-#endif
 
 namespace AllOverIt.Helpers
 {
@@ -18,7 +15,6 @@ namespace AllOverIt.Helpers
             return (TEnumType[]) Enum.GetValues(typeof(TEnumType));
         }
 
-#if NET7_0_OR_GREATER
         /// <summary>Given a bit mask as a numeric value, get an array of corresponding enum values for a given
         /// enumeration type. It is assumed each enum value will be a multiple of two.</summary>
         /// <typeparam name="TEnumType">The enumeration type.</typeparam>
@@ -37,7 +33,7 @@ namespace AllOverIt.Helpers
             // Iterate the size of the mask value since:
             // * If it is too big then we'll get an ArgumentOutOfRangeException exception.
             // * We don't care if it is smaller than the enum's underlying type.
-            var bits = Marshal.SizeOf(typeof(TMaskType)) * 8;
+            var bits = Marshal.SizeOf<TMaskType>() * 8;
 
             for (var i = 0; i < bits; i++)
             {
@@ -82,6 +78,5 @@ namespace AllOverIt.Helpers
 
             return [.. enumValues];
         }
-#endif
     }
 }

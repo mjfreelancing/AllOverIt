@@ -11,7 +11,7 @@ namespace ObservableDemo.Models
         {
         }
 
-        public string FirstName
+        public string? FirstName
         {
             get => Model.FirstName;
             set
@@ -24,7 +24,7 @@ namespace ObservableDemo.Models
             }
         }
 
-        public string LastName
+        public string? LastName
         {
             get => Model.LastName;
             set
@@ -37,6 +37,6 @@ namespace ObservableDemo.Models
             }
         }
 
-        public string FullName => Model.FullName;
+        public string? FullName => Model.FullName;
     }
 }

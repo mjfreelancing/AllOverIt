@@ -20,7 +20,7 @@ namespace AllOverIt.Evaluator.Variables
         public DelegateVariable(string name, Func<double> valueResolver)
             : base(name)
         {
-            _valueResolver = valueResolver.WhenNotNull(nameof(valueResolver));
+            _valueResolver = valueResolver.WhenNotNull();
         }
 
         /// <summary>Constructor.</summary>

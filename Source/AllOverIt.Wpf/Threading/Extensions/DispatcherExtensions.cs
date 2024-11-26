@@ -13,7 +13,7 @@ namespace AllOverIt.Wpf.Threading.Extensions
         /// <returns>An awaitable object that when awaited completes when the dispatcher is bound to.</returns>
         public static DispatcherAwaitable BindTo(this Dispatcher dispatcher)
         {
-            _ = dispatcher.WhenNotNull(nameof(dispatcher));
+            _ = dispatcher.WhenNotNull();
 
             return new DispatcherAwaitable(dispatcher);
         }

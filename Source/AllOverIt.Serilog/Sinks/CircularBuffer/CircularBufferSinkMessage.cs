@@ -17,8 +17,8 @@ namespace AllOverIt.Serilog.Sinks.CircularBuffer
         /// <param name="formattedMessage">A formatted version of the text message, as per the sink's format configuration.</param>
         public CircularBufferSinkMessage(LogEvent logEvent, string formattedMessage)
         {
-            LogEvent = logEvent.WhenNotNull(nameof(logEvent));
-            FormattedMessage = formattedMessage.WhenNotNullOrEmpty(nameof(formattedMessage));
+            LogEvent = logEvent.WhenNotNull();
+            FormattedMessage = formattedMessage.WhenNotNullOrEmpty();
         }
     }
 }

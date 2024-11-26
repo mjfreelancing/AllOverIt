@@ -12,7 +12,7 @@ namespace HostedConsoleAppDemo
         public ConsoleBackgroundWorker(IHostApplicationLifetime applicationLifetime, ILogger<ConsoleBackgroundWorker> logger)
             : base(applicationLifetime)
         {
-            _logger = logger.WhenNotNull(nameof(logger));
+            _logger = logger.WhenNotNull();
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -37,7 +37,7 @@ namespace HostedConsoleAppDemo
 
             while (!cancellationToken.IsCancellationRequested)
             {
-                _logger.LogInformation($"Background Worker: {DateTimeOffset.Now}");
+                _logger.LogInformation("Background Worker: {DateTimeOffset}", DateTimeOffset.Now);
 
                 await Task.Delay(1000, cancellationToken);
             }

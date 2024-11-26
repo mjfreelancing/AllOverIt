@@ -13,21 +13,21 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
         private const string ForeignKey = "foreign_key";
 
         private readonly ErdOptions _options;
-        private readonly IReadOnlyCollection<IEntityType> _dbContextEntityTypes;
+        private readonly IEntityType[] _dbContextEntityTypes;
         private readonly string _defaultShapeStyle;
 
-        public EntityNodeGenerator(ErdOptions options, IReadOnlyCollection<IEntityType> dbContextEntityTypes, string defaultShapeStyle)
+        public EntityNodeGenerator(ErdOptions options, IEntityType[] dbContextEntityTypes, string defaultShapeStyle)
         {
-            _options = options.WhenNotNull(nameof(options));
-            _dbContextEntityTypes = dbContextEntityTypes.WhenNotNullOrEmpty(nameof(dbContextEntityTypes)) as IReadOnlyCollection<IEntityType>;
-            _defaultShapeStyle = defaultShapeStyle;     // can be null
+            _options = options.WhenNotNull();
+            _dbContextEntityTypes = dbContextEntityTypes.WhenNotNullOrEmpty().AsArray();
+            _defaultShapeStyle = defaultShapeStyle;     // can be string.Empty
         }
 
-        public string CreateNode(EntityIdentifier entityIdentifier, IReadOnlyCollection<IColumnDescriptor> columns, Action<string> onRelationship)
+        public string CreateNode(EntityIdentifier entityIdentifier, IColumnDescriptor[] columns, Action<string> onRelationship)
         {
-            _ = entityIdentifier.WhenNotNull(nameof(entityIdentifier));
-            _ = columns.WhenNotNullOrEmpty(nameof(columns));
-            _ = onRelationship.WhenNotNull(nameof(onRelationship));
+            _ = entityIdentifier.WhenNotNull();
+            _ = columns.WhenNotNullOrEmpty();
+            _ = onRelationship.WhenNotNull();
 
             var sb = new StringBuilder();
 
@@ -84,7 +84,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
                 sb.AppendLine($"  {columnName}: {columnType} {columnConstraint}");
 
-                if (column.ForeignKeyPrincipals != null)
+                if (column.ForeignKeyPrincipals is not null)
                 {
                     var relationshipNodeGenerator = new RelationshipNodeGenerator(_options);
 
@@ -102,7 +102,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             return sb.ToString();
         }
 
-        private static IEnumerable<IColumnDescriptor> GetPreservedColumnOrder(EntityIdentifier entityIdentifier, IReadOnlyCollection<IColumnDescriptor> columns)
+        private static IEnumerable<IColumnDescriptor> GetPreservedColumnOrder(EntityIdentifier entityIdentifier, IColumnDescriptor[] columns)
         {
             List<string> orderedPropertyNames = [];
             List<Type> orderedPropertyTypes = [];
@@ -123,7 +123,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
                     return index;
                 }
 
-                if (column.ForeignKeyPrincipals.Count > 0)
+                if (column.ForeignKeyPrincipals.Length > 0)
                 {
                     var foreignKey = column.ForeignKeyPrincipals.First();
 

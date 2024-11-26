@@ -13,6 +13,6 @@
         /// <summary>An optional set of property paths that will be auto-collated.</summary>
         /// <remarks>Only string and primitive collections can be collated. Paths referencing non-collections or a collection
         /// of complex types are ignored.</remarks>
-        public IReadOnlyCollection<string> AutoCollatedPaths { get; set; }
+        public string[]? AutoCollatedPaths { get; set; }
     }
 }

@@ -9,19 +9,19 @@ namespace AllOverIt.Aspects
         public abstract MethodInfo[] TargetMethods { get; }
 
         /// <inheritdoc />
-        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object?[]? args)
         {
             return BeforeMethodInvoke(targetMethod, ref args);
         }
 
         /// <inheritdoc />
-        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
             AfterMethodInvoke(targetMethod, args, state);
         }
 
         /// <inheritdoc />
-        void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
             MethodFaulted(targetMethod, args, state as InterceptorState, exception);
         }
@@ -31,7 +31,7 @@ namespace AllOverIt.Aspects
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <returns>The interceptor state that will be forwarded to the <see cref="AfterMethodInvoke(MethodInfo, object[], InterceptorState)"/>
         /// method.</returns>
-        protected virtual InterceptorState BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
+        protected virtual InterceptorState BeforeMethodInvoke(MethodInfo targetMethod, ref object?[]? args)
         {
             return new InterceptorState();
         }
@@ -40,7 +40,7 @@ namespace AllOverIt.Aspects
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <param name="state">The interceptor state returned from the <see cref="BeforeMethodInvoke(MethodInfo, ref object[])"/> method.</param>
-        protected virtual void AfterMethodInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+        protected virtual void AfterMethodInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
         }
 
@@ -49,7 +49,7 @@ namespace AllOverIt.Aspects
         /// <param name="args">The arguments passed to the intercepted method.</param>
         /// <param name="state">The state object returned by <see cref="BeforeMethodInvoke(MethodInfo, ref object[])"/>.</param>
         /// <param name="exception">The exception that was thrown by the instance method.</param>
-        protected virtual void MethodFaulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        protected virtual void MethodFaulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
         }
     }
@@ -61,21 +61,21 @@ namespace AllOverIt.Aspects
         public abstract MethodInfo[] TargetMethods { get; }
 
         /// <inheritdoc />
-        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object?[]? args)
         {
             return BeforeMethodInvoke(targetMethod, ref args);
         }
 
         /// <inheritdoc />
-        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
-            AfterMethodInvoke(targetMethod, args, state as InterceptorState<TResult>);
+            AfterMethodInvoke(targetMethod, args, (InterceptorState<TResult>) state);
         }
 
         /// <inheritdoc />
-        void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
-            MethodFaulted(targetMethod, args, state as InterceptorState<TResult>, exception);
+            MethodFaulted(targetMethod, args, (InterceptorState<TResult>) state, exception);
         }
 
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
@@ -83,7 +83,7 @@ namespace AllOverIt.Aspects
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <returns>The interceptor state that will be forwarded to the <see cref="AfterMethodInvoke(MethodInfo, object[], InterceptorState{TResult})"/>
         /// method.</returns>
-        protected virtual InterceptorState<TResult> BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
+        protected virtual InterceptorState<TResult> BeforeMethodInvoke(MethodInfo targetMethod, ref object?[]? args)
         {
             return new InterceptorState<TResult>();
         }
@@ -92,7 +92,7 @@ namespace AllOverIt.Aspects
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <param name="state">The interceptor state returned from the <see cref="BeforeMethodInvoke(MethodInfo, ref object[])"/> method.</param>
-        protected virtual void AfterMethodInvoke(MethodInfo targetMethod, object[] args, InterceptorState<TResult> state)
+        protected virtual void AfterMethodInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState<TResult> state)
         {
         }
 
@@ -101,7 +101,7 @@ namespace AllOverIt.Aspects
         /// <param name="args">The arguments passed to the intercepted method.</param>
         /// <param name="state">The state object returned by <see cref="BeforeMethodInvoke(MethodInfo, ref object[])"/>.</param>
         /// <param name="exception">The exception that was thrown by the instance method.</param>
-        protected virtual void MethodFaulted(MethodInfo targetMethod, object[] args, InterceptorState<TResult> state, Exception exception)
+        protected virtual void MethodFaulted(MethodInfo targetMethod, object?[]? args, InterceptorState<TResult> state, Exception exception)
         {
         }
     }
@@ -113,21 +113,21 @@ namespace AllOverIt.Aspects
         public abstract MethodInfo[] TargetMethods { get; }
 
         /// <inheritdoc />
-        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object?[]? args)
         {
             return BeforeMethodInvoke(targetMethod, ref args);
         }
 
         /// <inheritdoc />
-        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
-            AfterMethodInvoke(targetMethod, args, state as InterceptorState<Task>);
+            AfterMethodInvoke(targetMethod, args, (InterceptorState<Task>) state);
         }
 
         /// <inheritdoc />
-        void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
-            MethodFaulted(targetMethod, args, state as InterceptorState<Task>, exception);
+            MethodFaulted(targetMethod, args, (InterceptorState<Task>) state, exception);
         }
 
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
@@ -135,7 +135,7 @@ namespace AllOverIt.Aspects
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <returns>The interceptor state that will be forwarded to the <see cref="AfterMethodInvoke(MethodInfo, object[], InterceptorState{Task})"/>
         /// method.</returns>
-        protected virtual InterceptorState<Task> BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
+        protected virtual InterceptorState<Task> BeforeMethodInvoke(MethodInfo targetMethod, ref object?[]? args)
         {
             return new InterceptorState<Task>();
         }
@@ -144,7 +144,7 @@ namespace AllOverIt.Aspects
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <param name="state">The interceptor state returned from the <see cref="BeforeMethodInvoke(MethodInfo, ref object[])"/> method.</param>
-        protected virtual void AfterMethodInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task> state)
+        protected virtual void AfterMethodInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState<Task> state)
         {
         }
 
@@ -153,7 +153,7 @@ namespace AllOverIt.Aspects
         /// <param name="args">The arguments passed to the intercepted method.</param>
         /// <param name="state">The state object returned by <see cref="BeforeMethodInvoke(MethodInfo, ref object[])"/>.</param>
         /// <param name="exception">The exception that was thrown by the instance method.</param>
-        protected virtual void MethodFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task> state, Exception exception)
+        protected virtual void MethodFaulted(MethodInfo targetMethod, object?[]? args, InterceptorState<Task> state, Exception exception)
         {
         }
     }
@@ -165,21 +165,21 @@ namespace AllOverIt.Aspects
         public abstract MethodInfo[] TargetMethods { get; }
 
         /// <inheritdoc />
-        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object[] args)
+        InterceptorState IInterceptorMethodHandler.BeforeInvoke(MethodInfo targetMethod, ref object?[]? args)
         {
             return BeforeMethodInvoke(targetMethod, ref args);
         }
 
         /// <inheritdoc />
-        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object[] args, InterceptorState state)
+        void IInterceptorMethodHandler.AfterInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState state)
         {
-            AfterMethodInvoke(targetMethod, args, state as InterceptorState<Task<TResult>>);
+            AfterMethodInvoke(targetMethod, args, (InterceptorState<Task<TResult>>) state);
         }
 
         /// <inheritdoc />
-        void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object[] args, InterceptorState state, Exception exception)
+        void IInterceptorMethodHandler.Faulted(MethodInfo targetMethod, object?[]? args, InterceptorState state, Exception exception)
         {
-            MethodFaulted(targetMethod, args, state as InterceptorState<Task<TResult>>, exception);
+            MethodFaulted(targetMethod, args, (InterceptorState<Task<TResult>>) state, exception);
         }
 
         /// <summary>This method is called before the intercepted method is called on the decorated instance.</summary>
@@ -187,7 +187,7 @@ namespace AllOverIt.Aspects
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <returns>The interceptor state that will be forwarded to the <see cref="AfterMethodInvoke(MethodInfo, object[], InterceptorState{Task{TResult}})"/>
         /// method.</returns>
-        protected virtual InterceptorState<Task<TResult>> BeforeMethodInvoke(MethodInfo targetMethod, ref object[] args)
+        protected virtual InterceptorState<Task<TResult>> BeforeMethodInvoke(MethodInfo targetMethod, ref object?[]? args)
         {
             return new InterceptorState<Task<TResult>>();
         }
@@ -196,7 +196,7 @@ namespace AllOverIt.Aspects
         /// <param name="targetMethod">The <see cref="MethodInfo"/> for the method being intercepted.</param>
         /// <param name="args">The arguments provided to the method being intercepted.</param>
         /// <param name="state">The interceptor state returned from the <see cref="BeforeMethodInvoke(MethodInfo, ref object[])"/> method.</param>
-        protected virtual void AfterMethodInvoke(MethodInfo targetMethod, object[] args, InterceptorState<Task<TResult>> state)
+        protected virtual void AfterMethodInvoke(MethodInfo targetMethod, object?[]? args, InterceptorState<Task<TResult>> state)
         {
         }
 
@@ -205,7 +205,7 @@ namespace AllOverIt.Aspects
         /// <param name="args">The arguments passed to the intercepted method.</param>
         /// <param name="state">The state object returned by <see cref="BeforeMethodInvoke(MethodInfo, ref object[])"/>.</param>
         /// <param name="exception">The exception that was thrown by the instance method.</param>
-        protected virtual void MethodFaulted(MethodInfo targetMethod, object[] args, InterceptorState<Task<TResult>> state, Exception exception)
+        protected virtual void MethodFaulted(MethodInfo targetMethod, object?[]? args, InterceptorState<Task<TResult>> state, Exception exception)
         {
         }
     }

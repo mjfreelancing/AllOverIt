@@ -2,6 +2,7 @@
 using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.DependencyInjection
 {
@@ -9,18 +10,19 @@ namespace AllOverIt.DependencyInjection
                                                            INamedServiceResolver<TService> where TService : class
     {
         private readonly Dictionary<string, Type> _namedImplementations = [];
-        internal IServiceProvider _provider;        // assigned through field injection
+        internal IServiceProvider? _provider;        // assigned through field injection
 
+        [SuppressMessage("Usage", "CA2263:Prefer generic overload when type is known", Justification = "Would be a recursive call, resulting in a stack overflow")]
         void INamedServiceRegistration<TService>.Register<TImplementation>(string name)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
-            ((INamedServiceRegistration<TService>) this).Register(name, typeof(TImplementation));
+            (this as INamedServiceRegistration<TService>).Register(name, typeof(TImplementation));
         }
 
         void INamedServiceRegistration<TService>.Register(string name, Type implementationType)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             if (_namedImplementations.TryGetValue(name, out var namedType))
             {
@@ -37,10 +39,12 @@ namespace AllOverIt.DependencyInjection
 
         TService INamedServiceResolver<TService>.GetRequiredNamedService(string name)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             if (_namedImplementations.TryGetValue(name, out var implementationType))
             {
+                Throw<InvalidOperationException>.WhenNull(_provider, "The service provider has not been assigned.");
+
                 return _provider
                     .GetRequiredService<IEnumerable<TService>>()
                     .Single(service => service.GetType() == implementationType);
@@ -56,12 +60,12 @@ namespace AllOverIt.DependencyInjection
 
         public NamedServiceResolver(IServiceProvider provider)
         {
-            _provider = provider.WhenNotNull(nameof(provider));
+            _provider = provider.WhenNotNull();
         }
 
         TService INamedServiceResolver.GetRequiredNamedService<TService>(string name)
         {
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = name.WhenNotNullOrEmpty();
 
             var resolver = _provider.GetRequiredService<INamedServiceResolver<TService>>();
 

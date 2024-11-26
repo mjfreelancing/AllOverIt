@@ -13,7 +13,7 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
         /// <returns>The underlying Func for a provided <see cref="IPipelineStep{TIn, TOut}"/>.</returns>
         public static Func<TIn, TOut> AsFunc<TIn, TOut>(this IPipelineStep<TIn, TOut> step)
         {
-            _ = step.WhenNotNull(nameof(step));
+            _ = step.WhenNotNull();
 
             return step.Execute;
         }
@@ -25,7 +25,7 @@ namespace AllOverIt.Patterns.Pipeline.Extensions
         /// <returns>The underlying asynchronous Func for a provided <see cref="IPipelineStepAsync{TIn, TOut}"/>.</returns>
         public static Func<TIn, CancellationToken, Task<TOut>> AsFunc<TIn, TOut>(this IPipelineStepAsync<TIn, TOut> step)
         {
-            _ = step.WhenNotNull(nameof(step));
+            _ = step.WhenNotNull();
 
             return step.ExecuteAsync;
         }

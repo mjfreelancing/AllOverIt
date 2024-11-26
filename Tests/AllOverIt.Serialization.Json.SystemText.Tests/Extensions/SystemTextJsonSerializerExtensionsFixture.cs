@@ -1,4 +1,5 @@
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.Json.SystemText.Converters;
 using AllOverIt.Serialization.Json.SystemText.Extensions;
 using FluentAssertions;
@@ -39,6 +40,18 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Extensions
 
         public class AddInterfaceConverter : SystemTextJsonSerializerExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Serializer_Null()
+            {
+                Invoking(() =>
+                {
+                    SystemTextJsonSerializerExtensions.AddInterfaceConverter<IDummyType, DummyType>(null!);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("serializer");
+            }
+
             [Fact]
             public void Should_Add_Interface_Converter()
             {

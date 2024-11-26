@@ -11,7 +11,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs.Extensions
         /// <returns>A wrapper that provides the ability to mutate the breadcrumb data's metadata and tags.</returns>
         public static IBreadcrumbDataMutator AsMutable(this BreadcrumbData breadcrumbData)
         {
-            _ = breadcrumbData.WhenNotNull(nameof(breadcrumbData));
+            _ = breadcrumbData.WhenNotNull();
 
             return new BreadcrumbDataMutator(breadcrumbData);
         }

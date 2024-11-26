@@ -83,7 +83,7 @@ namespace AllOverIt.Evaluator.Tests
             }
 
             [Fact]
-            public void Should_Throw_When_Invalid_Expression()
+            public void Should_Throw_When_Invalid_Expression_1()
             {
                 Invoking(() =>
                     {
@@ -99,7 +99,7 @@ namespace AllOverIt.Evaluator.Tests
             }
 
             [Fact]
-            public void Should_Throw_When_Invalid_Expression0000()
+            public void Should_Throw_When_Invalid_Expression_2()
             {
                 Invoking(() =>
                     {

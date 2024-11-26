@@ -1,9 +1,11 @@
 ﻿using AllOverIt.Aws.Cdk.AppSync;
+using AllOverIt.Aws.Cdk.AppSync.DataSources;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
-using AllOverIt.Aws.Cdk.AppSync.Mapping;
+using AllOverIt.Aws.Cdk.AppSync.Resolvers;
 using Amazon.CDK;
 using Amazon.CDK.AWS.AppSync;
 using Constructs;
+
 using SystemType = System.Type;
 
 #if DEBUG
@@ -17,12 +19,13 @@ namespace GraphqlSchema
     internal sealed class AppSyncDemoGraphql : AppGraphqlBase
     {
         public AppSyncDemoGraphql(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode, IReadOnlyDictionary<SystemType, string> typeNameOverrides,
-            MappingTemplates mappingTemplates, MappingTypeFactory mappingTypeFactory)
-            : base(scope, "GraphQl", GetAppGraphqlProps(scope, appProps, authMode), typeNameOverrides, mappingTemplates, mappingTypeFactory)
+            ResolverRegistry resolverRegistry, ResolverFactory resolverFactory)
+            : base(scope, "GraphQl", GetAppGraphqlProps(scope, appProps, authMode, typeNameOverrides, resolverRegistry, resolverFactory))
         {
         }
 
-        private static AppGraphqlProps GetAppGraphqlProps(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode)
+        private static AppGraphqlProps GetAppGraphqlProps(Construct scope, AppSyncDemoAppProps appProps, IAuthorizationMode authMode,
+            IReadOnlyDictionary<SystemType, string> typeNameOverrides, ResolverRegistry resolverRegistry, ResolverFactory resolverFactory)
         {
             return new AppGraphqlProps
             {
@@ -82,11 +85,56 @@ namespace GraphqlSchema
                     ]
 #endif
                 },
-                EndpointLookup = new Dictionary<string, string>
-                {
-                    [Constants.Lookup.GetCountriesUrlKey] = Fn.Join("/", [Fn.ImportValue(Constants.Import.GetCountriesUrlImportName), "lookup"])
-                }
+
+                TypeNameOverrides = typeNameOverrides,
+
+                ResolverRegistry = resolverRegistry,
+
+                ResolverFactory = resolverFactory,
+
+                DataSources =
+                [
+                    .. CreateEventBridgeDataSources(),
+                    .. CreateLambdaDataSources(),
+                    .. CreateHttpDataSources(),
+                    .. CreateNoneDataSources(),
+                    .. CreateSubscriptionDataSources()
+                ]
             };
+        }
+
+        private static IEnumerable<GraphqlDataSourceBase> CreateEventBridgeDataSources()
+        {
+            yield return new EventBridgeGraphqlDataSource(Constants.EventBridgeDataSource.Default, "default");
+        }
+
+        private static IEnumerable<GraphqlDataSourceBase> CreateLambdaDataSources()
+        {
+            yield return new LambdaGraphqlDataSource(Constants.LambdaDataSource.GetLanguages, Constants.LambdaDataSource.GetLanguages);
+            yield return new LambdaGraphqlDataSource(Constants.LambdaDataSource.AddCountry, Constants.LambdaDataSource.AddCountry);
+            yield return new LambdaGraphqlDataSource(Constants.LambdaDataSource.UpdateCountry, Constants.LambdaDataSource.UpdateCountry);
+        }
+
+        private static IEnumerable<GraphqlDataSourceBase> CreateHttpDataSources()
+        {
+            yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetPopulationUrl, "https://www.microsoft.com", "An example Http data source");
+            yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetLanguageUrlExportName, "https://www.google.com");
+            yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetCountriesUrlImportName, Fn.Join("/", [Fn.ImportValue(Constants.HttpDataSource.GetCountriesUrlImportName), "lookup"]));
+            yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetCountryCodesUrl, "https://www.yahoo.com");
+            yield return new HttpGraphqlDataSource(Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName, System.Environment.GetEnvironmentVariable(Constants.HttpDataSource.GetAllContinentsUrlEnvironmentName)!);
+        }
+
+        private static IEnumerable<GraphqlDataSourceBase> CreateNoneDataSources()
+        {
+            // Demonstrating use of shared NONE datasources
+            yield return new NoneGraphqlDataSource(Constants.NoneDataSource.Query);
+            yield return new NoneGraphqlDataSource(Constants.NoneDataSource.Mutation);
+        }
+
+        private static IEnumerable<GraphqlDataSourceBase> CreateSubscriptionDataSources()
+        {
+            // Datasources are optional for subscriptions
+            yield return new NoneGraphqlDataSource(Constants.SubscriptionDataSource.AddedLanguage);
         }
     }
 }

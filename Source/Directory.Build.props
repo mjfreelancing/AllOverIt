@@ -1,8 +1,9 @@
 <Project>
     <PropertyGroup>
         <LangVersion>Latest</LangVersion>
+        <Nullable>Enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Version>7.26.0</Version>
+        <Version>8.0.0</Version>
         <Authors>Malcolm Smith</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -41,15 +42,11 @@
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Compile Include="..\DotNetAttributes.cs" Link="DotNetAttributes.cs" />
-    </ItemGroup>
-
     <PropertyGroup>
-        <!--IDE0063 - 'using' statement can be simplified-->
-        <!--IDE0079 - remove unnecessary suppression-->
-        <!--IDE0290 - use primary constructor-->
-        <!--CS0618 - 'member' is obsolete-->
-        <NoWarn>$(NoWarn);IDE0063;IDE0079;IDE0290;CS0618</NoWarn>
-    </PropertyGroup>
+		<!--IDE0063 - 'using' statement can be simplified-->
+		<!--IDE0079 - remove unnecessary suppression-->
+		<!--IDE0290 - use primary constructor-->
+		<!--CS0618 - 'member' is obsolete-->
+		<NoWarn>$(NoWarn);IDE0063;IDE0079;IDE0290;CS0618</NoWarn>
+	</PropertyGroup>
 </Project>

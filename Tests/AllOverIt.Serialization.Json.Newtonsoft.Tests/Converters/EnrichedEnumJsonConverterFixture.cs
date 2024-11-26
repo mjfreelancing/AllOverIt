@@ -19,7 +19,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
             {
             }
 
-            private DummyEnrichedEnum(int value, [CallerMemberName] string name = null)
+            private DummyEnrichedEnum(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }
@@ -71,7 +71,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
             [Fact]
             public void Should_Read_Null_Enum_Value()
             {
-                var value = $@"{{""Prop1"":null}}";
+                var value = @"{""Prop1"":null}";
 
                 var actual = _serializer.DeserializeObject<DummyValue>(value);
 
@@ -85,6 +85,18 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
             public void Should_Write_EnrichedEnum_Name()
             {
                 var expected = $@"{{""Prop1"":""{_dummyValue.Prop1.Name}""}}";
+
+                var actual = _serializer.SerializeObject(_dummyValue);
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Write_Null_EnrichedEnum_Name()
+            {
+                _dummyValue.Prop1 = null;
+
+                var expected = @"{""Prop1"":null}";
 
                 var actual = _serializer.SerializeObject(_dummyValue);
 

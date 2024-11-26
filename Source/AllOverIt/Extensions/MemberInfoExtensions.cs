@@ -12,8 +12,8 @@ namespace AllOverIt.Extensions
         /// <param name="value">The value to assign to the property or field.</param>
         public static void SetValue(this MemberInfo memberInfo, object target, object value)
         {
-            _ = memberInfo.WhenNotNull(nameof(memberInfo));
-            _ = target.WhenNotNull(nameof(target));
+            _ = memberInfo.WhenNotNull();
+            _ = target.WhenNotNull();
 
             switch (memberInfo)
             {
@@ -34,10 +34,10 @@ namespace AllOverIt.Extensions
         /// <param name="memberInfo">The <see cref="MemberInfo"/> of the property or field being read.</param>
         /// <param name="target">The target object being read.</param>
         /// <returns>The value of the property or field referred to by <paramref name="memberInfo" />.</returns>
-        public static object GetValue(this MemberInfo memberInfo, object target)
+        public static object? GetValue(this MemberInfo memberInfo, object target)
         {
-            _ = memberInfo.WhenNotNull(nameof(memberInfo));
-            _ = target.WhenNotNull(nameof(target));
+            _ = memberInfo.WhenNotNull();
+            _ = target.WhenNotNull();
 
             return memberInfo switch
             {
@@ -52,7 +52,7 @@ namespace AllOverIt.Extensions
         /// <returns>The property, field or method call return type.</returns>
         public static Type GetMemberType(this MemberInfo memberInfo)
         {
-            _ = memberInfo.WhenNotNull(nameof(memberInfo));
+            _ = memberInfo.WhenNotNull();
 
             return memberInfo switch
             {

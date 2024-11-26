@@ -11,7 +11,7 @@ namespace EnumerationDemo
         public static readonly OrderStatus Delivered = new(3);                               // Defaults to Delivered
         public static readonly OrderStatus ClientAccepted = new(4, "Client_Accepted");       // A custom name
 
-        public OrderStatus(int value, [CallerMemberName] string name = null)
+        public OrderStatus(int value, [CallerMemberName] string name = "")
             : base(value, name)
         {
         }

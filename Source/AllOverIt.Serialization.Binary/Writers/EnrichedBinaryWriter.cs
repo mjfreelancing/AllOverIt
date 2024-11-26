@@ -60,7 +60,7 @@ namespace AllOverIt.Serialization.Binary.Writers
                 TypeIdentifier.Cached, (writer, value) =>
                 {
                     var valueType = value.GetType();
-                    var assemblyTypeName = valueType.AssemblyQualifiedName;
+                    var assemblyTypeName = valueType.AssemblyQualifiedName!;
 
                     var index = writer._userDefinedTypeCache[assemblyTypeName];
                     writer.Write(index);
@@ -73,7 +73,7 @@ namespace AllOverIt.Serialization.Binary.Writers
                 TypeIdentifier.UserDefined, (writer, value) =>
                 {
                     var valueType = value.GetType();
-                    var assemblyTypeName = valueType.AssemblyQualifiedName;
+                    var assemblyTypeName = valueType.AssemblyQualifiedName!;
 
                     // cache for later, to write the value as a cached user defined type
                     var cacheIndex = writer._userDefinedTypeCache.Keys.Count + 1;
@@ -88,7 +88,7 @@ namespace AllOverIt.Serialization.Binary.Writers
         };
 
         private readonly Dictionary<string, int> _userDefinedTypeCache = [];
-        private readonly IReadOnlyCollection<Func<Type, TypeIdentifier?>> _typeIdLookups;
+        private readonly Func<Type, TypeIdentifier?>[] _typeIdLookups;
 
         /// <inheritdoc />
         /// <remarks>If a property type doesn't have a registered writer the <see cref="EnrichedBinaryWriter"/> will use a
@@ -119,13 +119,13 @@ namespace AllOverIt.Serialization.Binary.Writers
         /// <inheritdoc />
         public void WriteObject(object value)
         {
-            _ = value.WhenNotNull(nameof(value));
+            _ = value.WhenNotNull();
 
             WriteObject(value, value.GetType());
         }
 
         /// <inheritdoc />
-        public void WriteObject(object value, Type type)
+        public void WriteObject(object? value, Type type)
         {
             // Including null checking in case the values come from something like Enumerable.Range()
             if ((type is null || type == CommonTypes.ObjectType) && value is not null)
@@ -138,7 +138,7 @@ namespace AllOverIt.Serialization.Binary.Writers
                 throw new BinaryWriterException("All binary serialized values must be typed or have a non-null value.");
             }
 
-            var rawTypeId = GetRawTypeId(type);
+            var rawTypeId = GetRawTypeId(type!);
 
             var typeId = (byte) rawTypeId;
 
@@ -151,7 +151,7 @@ namespace AllOverIt.Serialization.Binary.Writers
 
             if ((typeId & (byte) TypeIdentifier.DefaultValue) == 0)
             {
-                TypeIdWriter[rawTypeId].Invoke(this, value);
+                TypeIdWriter[rawTypeId].Invoke(this, value!);
             }
         }
 
@@ -197,7 +197,7 @@ namespace AllOverIt.Serialization.Binary.Writers
         {
             if (type.IsNullableType())
             {
-                var underlyingType = Nullable.GetUnderlyingType(type);
+                var underlyingType = Nullable.GetUnderlyingType(type)!;
 
                 if (TypeIdRegistry.TryGetValue(underlyingType, out var rawTypeId))
                 {
@@ -205,19 +205,19 @@ namespace AllOverIt.Serialization.Binary.Writers
                 }
             }
 
-            return default;
+            return null;
         }
 
         private TypeIdentifier? IsUserDefinedOrCached(Type type)
         {
             var converter = Writers.SingleOrDefault(converter => converter.Type == type);
 
-            if (converter == null)
+            if (converter is null)
             {
-                return default;
+                return null;
             }
 
-            var assemblyTypeName = type.AssemblyQualifiedName;
+            var assemblyTypeName = type.AssemblyQualifiedName!;
 
             return _userDefinedTypeCache.ContainsKey(assemblyTypeName)
                 ? TypeIdentifier.Cached
@@ -231,7 +231,7 @@ namespace AllOverIt.Serialization.Binary.Writers
                 return TypeIdentifier.Dictionary;
             }
 
-            return default;
+            return null;
         }
 
         private TypeIdentifier? IsEnumerable(Type type)
@@ -250,7 +250,7 @@ namespace AllOverIt.Serialization.Binary.Writers
                 return TypeIdentifier.Enumerable;
             }
 
-            return default;
+            return null;
         }
 
         private TypeIdentifier? AddDynamicWriter(Type type)

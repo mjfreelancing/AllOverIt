@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Cryptography.AES.Exceptions;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.AES
@@ -55,15 +56,15 @@ namespace AllOverIt.Cryptography.AES
         /// the secret key.</summary>
         public AesEncryptorConfiguration(byte[] key, byte[] iv)
         {
-            _ = iv.WhenNotNull(nameof(iv));
-            _ = key.WhenNotNull(nameof(key));
+            _ = key.WhenNotNull();
+            _ = iv.WhenNotNull();
 
             var keySizeBits = key.Length * 8;
 
             Throw<AesException>.When(!AesUtils.IsKeySizeValid(keySizeBits), $"AES Key size {keySizeBits} is invalid.");
             Throw<AesException>.When(iv.Length != 16, "The AES Initialization Vector must be 16 bytes.");
 
-            _keySize = keySizeBits;             // Using _keySize to avoid the Key being generated
+            _keySize = keySizeBits;         // Using _keySize to avoid the Key being generated
             Key = key;
             IV = iv;
         }
@@ -71,31 +72,29 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public void RegenerateKey()
         {
-            using (var aes = Aes.Create())
-            {
-                aes.KeySize = KeySize;          // The aes.Key will be updated if this is not the default
-                Key = aes.Key;
-            }
+            using var aes = Aes.Create();
+
+            aes.KeySize = KeySize;          // The aes.Key will be updated if this is not the default
+            Key = aes.Key;
         }
 
         /// <inheritdoc />
         public void RegenerateIV()
         {
-            using (var aes = Aes.Create())
-            {
-                IV = aes.IV;
-            }
+            using var aes = Aes.Create();
+
+            IV = aes.IV;
         }
 
         /// <inheritdoc />
+        [MemberNotNull(nameof(Key), nameof(IV))]
         public void RegenerateKeyAndIV()
         {
-            using (var aes = Aes.Create())
-            {
-                aes.KeySize = KeySize;          // The aes.Key will be updated if this is not the default
-                Key = aes.Key;
-                IV = aes.IV;
-            }
+            using var aes = Aes.Create();
+
+            aes.KeySize = KeySize;          // The aes.Key will be updated if this is not the default
+            Key = aes.Key;
+            IV = aes.IV;
         }
     }
 }

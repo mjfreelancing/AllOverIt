@@ -5,6 +5,6 @@
     public interface INamedPipeEvents<TMessage> where TMessage : class, new()
     {
         /// <summary>Event raised when an exception is thrown during a read or write operation on the named pipe.</summary>
-        event EventHandler<NamedPipeExceptionEventArgs> OnException;
+        event EventHandler<NamedPipeExceptionEventArgs>? OnException;
     }
 }

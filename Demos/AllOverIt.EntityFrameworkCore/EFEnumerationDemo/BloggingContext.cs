@@ -2,7 +2,7 @@
 using EFEnumerationDemo.Entities;
 using EFEnumerationDemo.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace EFEnumerationDemo
 {
@@ -15,13 +15,27 @@ namespace EFEnumerationDemo
         {
             base.OnConfiguring(options);
 
-            var connectionString = "server=localhost;user=root;password=password;database=BlogPosts";
-            var serverVersion = new MySqlServerVersion(new Version(8, 0, 26));
+            if (DemoStartupOptions.Use == DatabaseChoice.Mysql)
+            {
+                throw new UnreachableException("Disabled until Pomelo.EntityFrameworkCore.MySql supports NET 9");
 
-            options
-                .UseMySql(connectionString, serverVersion)
-                .LogTo(Console.WriteLine, LogLevel.Information)
-                .EnableDetailedErrors();
+                //var connectionString = "server=localhost;user=root;password=password;database=BlogPosts";
+                //var serverVersion = new MySqlServerVersion(new Version(8, 0, 26));
+
+                //options
+                //    .UseMySql(connectionString, serverVersion)
+                //    .LogTo(Console.WriteLine, LogLevel.Information)
+                //    .EnableDetailedErrors();
+            }
+            else
+            {
+                options.UseNpgsql("Host=localhost;Database=BlogPosts;Username=postgres;Password=password", options =>
+                {
+                    options.SetPostgresVersion(new Version(10, 18));
+                    //options.SetPostgresVersion(new Version(13, 6));
+                });
+            }
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

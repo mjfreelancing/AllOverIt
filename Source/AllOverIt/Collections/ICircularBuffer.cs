@@ -1,4 +1,6 @@
-﻿namespace AllOverIt.Collections
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace AllOverIt.Collections
 {
     /// <summary>Represents a fixed-size circular buffer providing insert, pop, and push operations.</summary>
     public interface ICircularBuffer<TType> : IEnumerable<TType>
@@ -22,10 +24,12 @@
 
         /// <summary>Gets the element at the front of the buffer.</summary>
         /// <returns>The element at the front of the buffer.</returns>
+        [return: MaybeNull]
         TType Front();
 
         /// <summary>Gets the element at the end of the buffer.</summary>
         /// <returns>The element at the end of the buffer.</returns>
+        [return: MaybeNull]
         TType Back();
 
         /// <summary>Inserts a new element at the front of the buffer. If the buffer is full then the last
@@ -40,10 +44,12 @@
 
         /// <summary>Removes and returns the element at the front of the buffer.</summary>
         /// <returns>The element removed from the front of the buffer.</returns>
+        [return: MaybeNull]
         TType PopFront();
 
         /// <summary>Removes and returns the element at the back of the buffer.</summary>
         /// <returns>The element removed from the back of the buffer.</returns>
+        [return: MaybeNull]
         TType PopBack();
 
         /// <summary>Clears the buffer.</summary>

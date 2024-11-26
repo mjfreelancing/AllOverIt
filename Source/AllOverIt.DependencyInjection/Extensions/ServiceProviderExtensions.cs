@@ -14,8 +14,8 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <returns>The required service implementation instance.</returns>
         public static TService GetRequiredNamedService<TService>(this IServiceProvider provider, string name) where TService : class
         {
-            _ = provider.WhenNotNull(nameof(provider));
-            _ = name.WhenNotNullOrEmpty(nameof(name));
+            _ = provider.WhenNotNull();
+            _ = name.WhenNotNullOrEmpty();
 
             return provider
                 .GetRequiredService<INamedServiceResolver<TService>>()

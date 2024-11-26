@@ -13,18 +13,18 @@ namespace AllOverIt.Serialization.Json.Newtonsoft
         private static readonly Type ConverterType = typeof(NestedDictionaryConverter);
 
         /// <inheritdoc />
-        public JsonHelper(object value, JsonSerializerSettings settings = default)
+        public JsonHelper(object value, JsonSerializerSettings? settings = default)
             : base(value, CreateJsonSerializer(settings))
         {
         }
 
         /// <inheritdoc />
-        public JsonHelper(string value, JsonSerializerSettings settings = default)
+        public JsonHelper(string value, JsonSerializerSettings? settings = default)
             : base(value, CreateJsonSerializer(settings))
         {
         }
 
-        private static NewtonsoftJsonSerializer CreateJsonSerializer(JsonSerializerSettings settings)
+        private static NewtonsoftJsonSerializer CreateJsonSerializer(JsonSerializerSettings? settings)
         {
             settings ??= new JsonSerializerSettings();
 

@@ -4,6 +4,8 @@
 #if USE_ALLOVERIT
 #endif
 
+using AllOverIt.Async;
+
 namespace GCCollectorStartupHookProxy
 {
     public sealed class GCMetricsCollector
@@ -12,12 +14,17 @@ namespace GCCollectorStartupHookProxy
         {
 #if USE_ALLOVERIT
             // Wouldn't normally do it this way - just demonstrating the packages can be loaded
-            AllOverIt.Async.RepeatingTask.Start(() =>
+            RepeatingTask.StartAsync(() =>
             {
                 OutputGCMetrics();
 
                 return Task.CompletedTask;
-            }, 1000, CancellationToken.None);
+            },
+            new RepeatingTaskOptions
+            {
+                RepeatDelay = TimeSpan.FromSeconds(3)
+            },
+            CancellationToken.None);
 #else
             new Thread(PollGCMetrics)
             {

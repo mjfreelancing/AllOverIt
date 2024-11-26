@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Extensions
 {
@@ -21,7 +22,7 @@ namespace AllOverIt.Extensions
         /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         /// <param name="candidates">The elements to apply the specification against.</param>
         /// <param name="specification">The specification to apply against a collection of elements.</param>
-        /// <returns><see langword="true" /> if any of the candidates meet the criteria of the provided specification.</returns>
+        /// <returns><see langword="True" /> if any of the candidates meet the criteria of the provided specification.</returns>
         public static bool Any<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
             return candidates.Any(specification.Expression);
@@ -31,7 +32,7 @@ namespace AllOverIt.Extensions
         /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         /// <param name="candidates">The elements to apply the specification against.</param>
         /// <param name="specification">The specification to apply against a collection of elements.</param>
-        /// <returns><see langword="true" /> if all of the candidates meet the criteria of the provided specification.</returns>
+        /// <returns><see langword="True" /> if all of the candidates meet the criteria of the provided specification.</returns>
         public static bool All<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
             return candidates.All(specification.Expression);
@@ -64,6 +65,7 @@ namespace AllOverIt.Extensions
         /// <param name="specification">The specification to apply against a collection of elements.</param>
         /// <returns>The first candidate that meets the criteria of a provided specification or the type's
         /// default if there are no matches.</returns>
+        [return: MaybeNull]
         public static TType FirstOrDefault<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
             return candidates.FirstOrDefault(specification.Expression);
@@ -86,6 +88,7 @@ namespace AllOverIt.Extensions
         /// <param name="specification">The specification to apply against a collection of elements.</param>
         /// <returns>The last candidate that meets the criteria of a provided specification or the type's
         /// default if there are no matches.</returns>
+        [return: MaybeNull]
         public static TType LastOrDefault<TType>(this IQueryable<TType> candidates, ILinqSpecification<TType> specification)
         {
             return candidates.LastOrDefault(specification.Expression);

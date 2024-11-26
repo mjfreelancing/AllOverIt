@@ -1,4 +1,5 @@
-﻿using AllOverIt.Converters;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Converters;
 using AllOverIt.Patterns.Enumeration;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -19,8 +20,8 @@ namespace EnrichedEnumModelBindingDemo.Enums
 
         public static readonly ForecastPeriod Default = ThisWeek;
 
-        private ForecastPeriod(int value, [CallerMemberName] string name = null)
-            : base(value, name)
+        private ForecastPeriod(int value, [CallerMemberName] string name = "")
+            : base(value, name.WhenNotNull())
         {
         }
     }

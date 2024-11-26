@@ -9,16 +9,16 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
     {
         /// <summary>Returns true if the object to be converted is a <see cref="DateTime"/>.</summary>
         /// <param name="objectType">The object type.</param>
-        /// <returns><see langword="true" /> if the object to be converted is a <see cref="DateTime"/>.</returns>
+        /// <returns><see langword="True" /> if the object to be converted is a <see cref="DateTime"/>.</returns>
         public override bool CanConvert(Type objectType)
         {
             return CommonTypes.DateTimeType == objectType || CommonTypes.NullableDateTimeType == objectType;
         }
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
-            if (reader.Value == null)
+            if (reader.Value is null)
             {
                 return null;
             }
@@ -29,9 +29,10 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         }
 
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            var utcDateTime = DateTime.SpecifyKind((DateTime) value, DateTimeKind.Utc);
+            // Null values do not pass through here
+            var utcDateTime = DateTime.SpecifyKind((DateTime) value!, DateTimeKind.Utc);
             writer.WriteValue(utcDateTime);
         }
     }

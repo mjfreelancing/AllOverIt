@@ -14,8 +14,8 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public IAesEncryptor Create(byte[] key, byte[] iv)
         {
-            _ = key.WhenNotNullOrEmpty(nameof(key));
-            _ = iv.WhenNotNullOrEmpty(nameof(iv));
+            _ = key.WhenNotNullOrEmpty();
+            _ = iv.WhenNotNullOrEmpty();
 
             return new AesEncryptor(key, iv);
         }

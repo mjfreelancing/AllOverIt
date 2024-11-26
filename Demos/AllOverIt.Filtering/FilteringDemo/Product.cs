@@ -2,10 +2,10 @@
 {
     internal sealed class Product
     {
-        public bool Active { get; set; }
-        public string Category { get; set; }
-        public string Name { get; set; }
-        public double Price { get; set; }
-        public DateTimeValue LastUpdated { get; set; }      // Demonstrating how to use 'value types'
+        public required bool Active { get; set; }
+        public required string Category { get; set; }
+        public required string Name { get; set; }
+        public required double Price { get; set; }
+        public required DateTimeValue LastUpdated { get; set; }      // Demonstrating how to use 'value types'
     }
 }

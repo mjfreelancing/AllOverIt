@@ -11,7 +11,7 @@ namespace AllOverIt.Tests.Extensions
         [InlineData(true)]
         public void Should_Deconstruct(bool expected)
         {
-            int? actual = default;
+            int? actual = null;
 
             if (expected)
             {

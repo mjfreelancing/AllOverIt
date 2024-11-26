@@ -24,7 +24,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
         /// <param name="typeToConvert">The type to be converted.</param>
         /// <param name="options">The JSON serializer options.</param>
         /// <returns>An instance of type <typeparamref name="TConcrete"/>, which is a <typeparamref name="TInterface"/>.</returns>
-        public override TInterface Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override TInterface? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             return JsonSerializer.Deserialize<TConcrete>(ref reader, options);
         }

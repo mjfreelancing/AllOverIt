@@ -1,12 +1,34 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Factories;
-using AllOverIt.Aws.Cdk.AppSync.Mapping;
+﻿// The .csproj has commented out definition for USE_CODE_FIRST_RESOLVERS.
+//
+// When not registering resolvers via code, the schema definition requires a resolver attribute (such as UnitResolver)
+// that provides the VTL or Code based resolver type, as well as a datasourceId.
+//
+// When registering the VTL or Code based resolver via code, the schema still requires a resolver attribute
+// but it only needs to provide the datasourceId.
+//
+// This demo code shows two equivalent approaches to performing the code-based registration; which may be
+// required for resolvers that require arguments to be passed to their constructor.
+
+#if USE_CODE_FIRST_RESOLVERS        // Defined in the project
+//#define CODE_FIRST_APPROACH_1
+#define CODE_FIRST_APPROACH_2
+#endif
+
+using AllOverIt.Aws.Cdk.AppSync.Factories;
+using AllOverIt.Aws.Cdk.AppSync.Resolvers;
 using Amazon.CDK.AWS.AppSync;
 using Constructs;
 using GraphqlSchema.Schema;
-using GraphqlSchema.Schema.Mappings;
-using GraphqlSchema.Schema.Mappings.Query;
+using GraphqlSchema.Schema.Resolvers;
+using GraphqlSchema.Schema.Resolvers.Query;
 using GraphqlSchema.Schema.Types;
 using SystemType = System.Type;
+
+#if CODE_FIRST_APPROACH_2
+using AllOverIt.Aws.Cdk.AppSync.Extensions;
+using GraphqlSchema.Schema.Types.Globe;
+using Resolver = AllOverIt.Aws.Cdk.AppSync.Resolvers.Resolver;
+#endif
 
 namespace GraphqlSchema.Constructs
 {
@@ -15,64 +37,64 @@ namespace GraphqlSchema.Constructs
         public AppSyncConstruct(Construct scope, AppSyncDemoAppProps appProps, AuthorizationMode authMode)
             : base(scope, "AppSync")
         {
-            // Providing the mapping for IAppSyncDemoQueryDefinition.CountryLanguage manually via code (see below)
-            var mappingTemplates = new MappingTemplates();
+            var resolverRegistry = new ResolverRegistry();
 
-            // using these just for convenience of explanation
-            var noneMapping = new NoneResponseMapping();
+#if USE_CODE_FIRST_RESOLVERS
+            var noneResolver = new NoneVtlResolver();
 
-#if false
+            const string apiKey = "super_secret_api_key";
 
-            // This demo is using the [RequestResponseMapping] attributes to define all mappings, but they can alternatively be coded
-            // using either of the two approaches below, and pass the 'mappingTemplates' to the AppSyncDemoGraphql instance, which can
-            // then be passed to the base AppGraphqlBase class.
+            var countriesResolver = new ContinentsCountriesResolver(apiKey);
+            var countryCodesResolver = new ContinentsCountryCodesResolver();
+            var continentsResolver = new AllContinentsResolver(apiKey);
 
-            var countriesMapping = new HttpGetResponseMapping("/countries", "ApiKey");
-            var countryCodesMapping = new HttpGetResponseMapping("/countryCodes", "ApiKey");
-            var continentsMapping = new HttpGetResponseMapping("/continents", "ApiKey");
-
+#if CODE_FIRST_APPROACH_1
             // Coded approach #1
-            mappingTemplates.RegisterMappings("Query.Continents", noneMapping.RequestMapping, noneMapping.ResponseMapping);
-            mappingTemplates.RegisterMappings("Query.Continents.Countries", countriesMapping.RequestMapping, countriesMapping.ResponseMapping);
-            mappingTemplates.RegisterMappings("Query.Continents.CountryCodes", countryCodesMapping.RequestMapping, countryCodesMapping.ResponseMapping);
-            mappingTemplates.RegisterMappings("Query.AllContinents", continentsMapping.RequestMapping, continentsMapping.ResponseMapping);
-
+            resolverRegistry.RegisterResolver("Query.Continents", noneResolver);
+            resolverRegistry.RegisterResolver("Query.Continents.Countries", countriesResolver);
+            resolverRegistry.RegisterResolver("Query.Continents.CountryCodes", countryCodesResolver);
+            resolverRegistry.RegisterResolver("Query.AllContinents", continentsResolver);
+#else
             // Coded approach #2
-            mappingTemplates.RegisterQueryMappings(
+            resolverRegistry.RegisterQueryResolvers(
                 // Query.Continents
-                Mapping.Template(nameof(IAppSyncDemoQueryDefinition.Continents), noneMapping.RequestMapping,noneMapping.ResponseMapping,
-                    new[]
-                    {
+                Resolver.Template(nameof(IAppSyncDemoQueryDefinition.Continents), noneResolver,
+                    [
                         // Query.Continents.Countries
-                        Mapping.Template(nameof(IContinent.Countries), countriesMapping.RequestMapping, countriesMapping.ResponseMapping),
+                        Resolver.Template(nameof(IContinent.Countries), countriesResolver),
                         
                         // Query.Continents.CountryCodes
-                        Mapping.Template(nameof(IContinent.CountryCodes), countryCodesMapping.RequestMapping,countryCodesMapping.ResponseMapping)
-                    }),
+                        Resolver.Template(nameof(IContinent.CountryCodes), countryCodesResolver)
+                    ]),
 
                 // Query.AllContinents
-                Mapping.Template(nameof(IAppSyncDemoQueryDefinition.AllContinents), continentsMapping.RequestMapping,continentsMapping.ResponseMapping)
+                Resolver.Template(nameof(IAppSyncDemoQueryDefinition.AllContinents), continentsResolver)
             );
+#endif
 
 #endif
 
-            mappingTemplates.RegisterMappings("Query.CountryLanguage", noneMapping.RequestMapping, noneMapping.ResponseMapping);
+            // The 'CountryLanguage' field has '[UnitResolver(Constants.NoneDataSource.CountryLanguage)]', where 
+            // Constants.NoneDataSource.CountryLanguage refers to the Id of the datasource to use. The datasources
+            // are registered in AppSyncDemoGraphql. This shows how a resolver can be created in advance that requires
+            // additional arguments (known at the time of registration).
+            resolverRegistry.RegisterResolver("Query.CountryLanguage", new CountryLanguageResolver("country_code", "country_name"));
 
-            // Registering mapping types that don't have a default constructor (so runtime arguments can be provided)
-            var mappingTypeFactory = new MappingTypeFactory();
-            mappingTypeFactory.Register<ContinentLanguagesMapping>(() => new ContinentLanguagesMapping(true));
+            // Registering resolver types that don't have a default constructor (so runtime arguments can be provided).
+            var resolverFactory = new ResolverFactory();
+            resolverFactory.Register<ContinentLanguagesResolver>(() => new ContinentLanguagesResolver(true));
 
-            // Based on a base class type
-            mappingTypeFactory.Register<HttpGetResponseMapping>(type => (IRequestResponseMapping) Activator.CreateInstance(type, "super_secret_api_key"));
+            // Register a factory method based on a base class type.
+            resolverFactory.Register<HttpGetVtlResolver>(type => (IVtlRuntime) Activator.CreateInstance(type, "super_secret_api_key")!);
 
-            // DateType doesn't have an attribute. Without one, it would be named "DateType", except when overriden like so:
+            // DateType doesn't have an attribute. Without one, it would be named "DateType", except when overridden like so:
             var typeNameOverrides = new Dictionary<SystemType, string>
             {
                 { typeof(DateType), "CustomDateType" },
                 { typeof(DateFormat), "CustomDateFormat" },
             };
 
-            var graphql = new AppSyncDemoGraphql(this, appProps, authMode, typeNameOverrides, mappingTemplates, mappingTypeFactory);
+            var graphql = new AppSyncDemoGraphql(this, appProps, authMode, typeNameOverrides, resolverRegistry, resolverFactory);
 
             graphql
                 .AddSchemaQuery<IAppSyncDemoQueryDefinition>()

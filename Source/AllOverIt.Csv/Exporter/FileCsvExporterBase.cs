@@ -25,7 +25,7 @@ namespace AllOverIt.Csv.Exporter
         public FileCsvExporterBase(string filePath, FileMode fileMode, BufferedCsvExporterConfiguration configuration)
             : base(configuration)
         {
-            _filePath = filePath.WhenNotNullOrEmpty(nameof(filePath));
+            _filePath = filePath.WhenNotNullOrEmpty();
             _fileMode = fileMode;
         }
 

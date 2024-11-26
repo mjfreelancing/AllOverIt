@@ -10,24 +10,24 @@ namespace AllOverIt.AspNetCore.ModelBinders
     public sealed class EnrichedEnumModelBinderProvider : IModelBinderProvider
     {
         /// <inheritdoc />
-        public IModelBinder GetBinder(ModelBinderProviderContext context)
+        public IModelBinder? GetBinder(ModelBinderProviderContext context)
         {
-            _ = context.WhenNotNull(nameof(context));
+            _ = context.WhenNotNull();
 
             var fullyQualifiedName = context.Metadata.ModelType.FullName;
 
-            if (fullyQualifiedName == null)
+            if (fullyQualifiedName is null)
             {
                 return null;
             }
 
             var enumType = context.Metadata.ModelType.Assembly.GetType(fullyQualifiedName, false);
 
-            if (enumType.IsEnrichedEnum())
+            if (enumType is not null && enumType.IsEnrichedEnum())
             {
                 var methodInfo = typeof(EnrichedEnumModelBinder).GetMethod("CreateInstance", BindingFlags.Static | BindingFlags.Public);
 
-                methodInfo.CheckNotNull(nameof(methodInfo));
+                methodInfo.CheckNotNull();
 
                 return methodInfo!
                     .MakeGenericMethod(enumType)

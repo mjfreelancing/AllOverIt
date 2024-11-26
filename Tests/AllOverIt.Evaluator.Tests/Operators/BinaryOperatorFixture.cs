@@ -65,7 +65,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
                     OperatorType = _operatorType
                 };
 
-                _operator.Should().BeEquivalentTo(expected);
+                expected.Should().BeEquivalentTo(_operator, options => options.IncludingInternalFields());
             }
         }
 

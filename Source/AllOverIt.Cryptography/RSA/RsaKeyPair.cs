@@ -27,14 +27,14 @@ namespace AllOverIt.Cryptography.RSA
         assumption that the effort required to break RSA is about the same as the effort required to perform a brute-force search on a symmetric key.
    */
 
-    /// <summary>A container for an RSA public and provate key.</summary>
+    /// <summary>A container for an RSA public and private key.</summary>
     public sealed class RsaKeyPair
     {
         /// <summary>An RSA public key. This can be <see langword="null"/> if it is not required, such as when performing a decryption operation.</summary>
-        public byte[] PublicKey { get; private set; }
+        public byte[]? PublicKey { get; private set; }
 
         /// <summary>An RSA private key. This can be <see langword="null"/> if it is not required, such as when performing an encryption operation.</summary>
-        public byte[] PrivateKey { get; private set; }
+        public byte[]? PrivateKey { get; private set; }
 
         /// <summary>Gets the size, in bits, of the key used by the RSA algorithm.</summary>
         public int KeySize { get; private set; }
@@ -52,7 +52,7 @@ namespace AllOverIt.Cryptography.RSA
         /// <param name="privateKey">>The RSA private key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing
         /// an encryption operation.</param>
         /// <remarks>At least one of the public / private keys must be provided.</remarks>
-        public RsaKeyPair(byte[] publicKey, byte[] privateKey)
+        public RsaKeyPair(byte[]? publicKey, byte[]? privateKey)
         {
             SetKeys(publicKey, privateKey);
         }
@@ -72,7 +72,7 @@ namespace AllOverIt.Cryptography.RSA
         /// <param name="rsa">An instance of the <see cref="RSAAlgorithm"/> algorithm.</param>      // TEST WHAT HAPPENS WHEN THERE IS NO PUBLIC/PRIVATE KEY
         public RsaKeyPair(RSAAlgorithm rsa)
         {
-            _ = rsa.WhenNotNull(nameof(rsa));
+            _ = rsa.WhenNotNull();
 
             var publicKey = rsa.ExportRSAPublicKey();
             var privateKey = rsa.ExportRSAPrivateKey();
@@ -100,7 +100,7 @@ namespace AllOverIt.Cryptography.RSA
         /// <param name="privateKey">>The RSA private key to use. This can be <see langword="null"/> (or empty) if it is not required, such as when performing
         /// an encryption operation.</param>
         /// <remarks>At least one of the public / private keys must be provided.</remarks>
-        public void SetKeys(byte[] publicKey, byte[] privateKey)
+        public void SetKeys(byte[]? publicKey, byte[]? privateKey)
         {
             Throw<RsaException>.When(
                 publicKey.IsNullOrEmpty() && privateKey.IsNullOrEmpty(),
@@ -129,7 +129,7 @@ namespace AllOverIt.Cryptography.RSA
             SetKeys(publicKey, privateKey);
         }
 
-        private static byte[] GetAsBytes(string key)
+        private static byte[]? GetAsBytes(string key)
         {
             if (key.IsNullOrEmpty())
             {
@@ -141,19 +141,18 @@ namespace AllOverIt.Cryptography.RSA
 
         private int GetKeySize()
         {
-            using (var rsa = RSAAlgorithm.Create())
-            {
-                if (PublicKey is not null)
-                {
-                    rsa.ImportRSAPublicKey(PublicKey, out _);
-                }
-                else
-                {
-                    rsa.ImportRSAPrivateKey(PrivateKey, out _);
-                }
+            using var rsa = RSAAlgorithm.Create();
 
-                return rsa.KeySize;
+            if (PublicKey is not null)
+            {
+                rsa.ImportRSAPublicKey(PublicKey, out _);
             }
+            else
+            {
+                rsa.ImportRSAPrivateKey(PrivateKey, out _);
+            }
+
+            return rsa.KeySize;
         }
 
         private static RSAAlgorithm CreateRsaFromXml(string xmlKeys)

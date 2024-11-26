@@ -445,7 +445,7 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Get_Empty_Array()
             {
-                var buffer = new CircularBuffer<int>(3);
+                var buffer = new CircularBuffer<string>(3);
 
                 buffer.ToArray().Should().BeEmpty();
             }
@@ -453,8 +453,8 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Get_Array()
             {
-                var expected = CreateMany<int>(3).ToArray();
-                var buffer = new CircularBuffer<int>(3, expected);
+                var expected = CreateMany<int?>(3).ToArray();
+                var buffer = new CircularBuffer<int?>(3, expected);
 
                 buffer.ToArray().Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
             }
@@ -477,8 +477,8 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Explicit_Enumerate()
             {
-                var expected = CreateMany<int>(3).ToArray();
-                var buffer = new CircularBuffer<int>(3, expected);
+                var expected = CreateMany<int?>(3).ToArray();
+                var buffer = new CircularBuffer<int?>(3, expected);
 
                 var enumerator = ((IEnumerable) buffer).GetEnumerator();
 

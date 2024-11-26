@@ -1,4 +1,4 @@
-﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.DataSources;
+﻿using AllOverIt.Aws.Cdk.AppSync.Attributes.Resolvers;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
 using AllOverIt.Extensions;
 using Amazon.CDK.AWS.AppSync;
@@ -8,16 +8,19 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
 {
     internal static class MemberInfoExtensions
     {
-        public static BaseDataSource GetDataSource(this MemberInfo memberInfo, DataSourceFactory dataSourceFactory)
+        public static BaseDataSource? GetDataSource(this MemberInfo memberInfo, DataSourceFactory dataSourceFactory)
         {
-            var attribute = memberInfo.GetCustomAttribute<DataSourceAttribute>(true);
+            var resolverAttribute = memberInfo.GetCustomAttribute<GraphqlResolverAttribute>(true);
 
-            return attribute == null
-                ? null
-                : dataSourceFactory.CreateDataSource(attribute);
+            if (resolverAttribute is not null)
+            {
+                return dataSourceFactory.CreateDataSource(resolverAttribute);
+            }
+
+            return null;
         }
 
-        public static string GetFieldName(this MemberInfo memberInfo, string parentName)
+        public static string GetFieldName(this MemberInfo memberInfo, string? parentName)
         {
             return parentName.IsNullOrEmpty()
                 ? memberInfo.Name

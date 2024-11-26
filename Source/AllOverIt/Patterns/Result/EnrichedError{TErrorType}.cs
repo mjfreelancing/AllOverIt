@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-namespace AllOverIt.Patterns.Result;
+﻿namespace AllOverIt.Patterns.Result;
 
 /// <summary>Enhances <see cref="EnrichedError"/> by providing the ability to store the error type
 /// as another type that is more suitable for comparisons, such as an <see langword="int"/> or <see langword="enum"/>.</summary>

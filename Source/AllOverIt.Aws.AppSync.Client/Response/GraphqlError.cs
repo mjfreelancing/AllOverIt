@@ -4,6 +4,6 @@
     public sealed class GraphqlError
     {
         /// <summary>One or more detailed graphql errors reported by AppSync.</summary>
-        public IEnumerable<GraphqlErrorDetail> Errors { get; init; }
+        public required GraphqlErrorDetail[] Errors { get; init; }
     }
 }

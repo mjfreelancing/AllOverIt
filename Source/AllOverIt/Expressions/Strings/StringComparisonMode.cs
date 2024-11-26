@@ -1,4 +1,5 @@
-﻿using AllOverIt.Patterns.Enumeration;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Patterns.Enumeration;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -40,8 +41,8 @@ namespace AllOverIt.Expressions.Strings
             // Required for some serialization scenarios
         }
 
-        private StringComparisonMode(int value, [CallerMemberName] string name = null)
-            : base(value, name)
+        private StringComparisonMode(int value, [CallerMemberName] string name = "")
+            : base(value, name.WhenNotNull())
         {
         }
     }

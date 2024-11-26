@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using FluentAssertions;
@@ -53,7 +51,7 @@ namespace AllOverIt.Fixture.Assertions
         /// <param name="propertyNames">The property names to be included.</param>
         protected void IncludeProperties(params string[] propertyNames)
         {
-            _ = propertyNames.WhenNotNullOrEmpty(nameof(propertyNames));
+            _ = propertyNames.WhenNotNullOrEmpty();
 
             _properties = (_properties ?? _allProperties).Where(propInfo => propertyNames.Contains(propInfo.Name));
         }
@@ -63,7 +61,7 @@ namespace AllOverIt.Fixture.Assertions
         /// <param name="propertyNames">The property names to be excluded.</param>
         protected void ExcludeProperties(params string[] propertyNames)
         {
-            _ = propertyNames.WhenNotNullOrEmpty(nameof(propertyNames));
+            _ = propertyNames.WhenNotNullOrEmpty();
 
             _properties = (_properties ?? _allProperties).Where(propInfo => !propertyNames.Contains(propInfo.Name));
         }
@@ -74,7 +72,7 @@ namespace AllOverIt.Fixture.Assertions
         /// <param name="predicate">The predicate to filter the properties.</param>
         protected void AddFilter(Func<PropertyInfo, bool> predicate)
         {
-            _ = predicate.WhenNotNull(nameof(predicate));
+            _ = predicate.WhenNotNull();
 
             _properties = (_properties ?? _allProperties).Where(predicate);
         }

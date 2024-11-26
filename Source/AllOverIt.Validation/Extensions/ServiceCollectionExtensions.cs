@@ -14,9 +14,9 @@ namespace AllOverIt.Validation.Extensions
         /// <remarks>All registered validators must have a default constructor, and will all be treated as a singleton. If the validators
         /// require a different lifetime, or if they require dependencies to be injected, then use
         /// <see cref="AddLifetimeValidationInvoker(IServiceCollection, Action{ILifetimeValidationRegistry})"/>.</remarks>
-        public static IValidationRegistry AddValidationInvoker(this IServiceCollection services, Action<IValidationRegistry> configure = default)
+        public static IValidationRegistry AddValidationInvoker(this IServiceCollection services, Action<IValidationRegistry>? configure = default)
         {
-            _ = services.WhenNotNull(nameof(services));
+            _ = services.WhenNotNull();
 
             var validationInvoker = new ValidationInvoker();
 
@@ -36,9 +36,9 @@ namespace AllOverIt.Validation.Extensions
         /// <returns>An <see cref="ILifetimeValidationRegistry"/> that can be used to register additional validators.</returns>
         /// <remarks>If all registered validators have a default constructor and can be treated as a singleton, then a simpler alternative
         /// is to use <see cref="AddValidationInvoker(IServiceCollection, Action{IValidationRegistry})"/>.</remarks>
-        public static ILifetimeValidationRegistry AddLifetimeValidationInvoker(this IServiceCollection services, Action<ILifetimeValidationRegistry> configure = default)
+        public static ILifetimeValidationRegistry AddLifetimeValidationInvoker(this IServiceCollection services, Action<ILifetimeValidationRegistry>? configure = default)
         {
-            _ = services.WhenNotNull(nameof(services));
+            _ = services.WhenNotNull();
 
             var validationInvoker = new LifetimeValidationInvoker(services);
 

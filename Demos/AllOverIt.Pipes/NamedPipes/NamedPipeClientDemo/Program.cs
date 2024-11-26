@@ -8,7 +8,7 @@ namespace NamedPipeClientDemo
         {
             var pipeName = "named_pipe_test_server";
 
-            await PipeClient.RunAsync(pipeName, Constants.UseCustomReaderWriter).ConfigureAwait(false);
+            await PipeClient.RunAsync(pipeName, false, Constants.UseCustomReaderWriter).ConfigureAwait(false);
 
             Console.WriteLine();
             Console.WriteLine("All Over It.");

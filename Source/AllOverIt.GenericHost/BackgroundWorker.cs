@@ -12,7 +12,7 @@ namespace AllOverIt.GenericHost
         /// <param name="applicationLifetime">Provides notification of lifetime events.</param>
         protected BackgroundWorker(IHostApplicationLifetime applicationLifetime)
         {
-            _ = applicationLifetime.WhenNotNull(nameof(applicationLifetime));
+            _ = applicationLifetime.WhenNotNull();
 
             applicationLifetime.ApplicationStarted.Register(OnStarted);
             applicationLifetime.ApplicationStopping.Register(OnStopping);
@@ -38,8 +38,8 @@ namespace AllOverIt.GenericHost
         }
 
         /// <summary>Waits for the application to start, or enter the 'Stopping' state if the application fails to start.</summary>
-        /// <returns><see langword="true" /> if the application has completely started or False if the application is stopping after failing to start.</returns>
-        /// <remarks>Calling this method at the start of the overriden <see cref="BackgroundService.ExecuteAsync"/> method is useful
+        /// <returns><see langword="True" /> if the application has completely started or False if the application is stopping after failing to start.</returns>
+        /// <remarks>Calling this method at the start of the overridden <see cref="BackgroundService.ExecuteAsync"/> method is useful
         /// to ensure the application has completely started before continuing.</remarks>
         protected Task<bool> WaitForStartup()
         {

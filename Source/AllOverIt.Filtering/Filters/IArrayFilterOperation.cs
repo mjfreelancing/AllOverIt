@@ -8,7 +8,7 @@
 
     /// <inheritdoc />
     /// <typeparam name="TProperty">The property type supported by this filter operation.</typeparam>
-    public interface IArrayFilterOperation<TProperty> : IArrayFilterOperation, IFilterOperationType<IList<TProperty>>
+    public interface IArrayFilterOperation<TProperty> : IArrayFilterOperation, IFilterOperationType<IList<TProperty?>?>
     {
     }
 }

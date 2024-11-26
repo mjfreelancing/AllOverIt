@@ -8,7 +8,7 @@
     {
         /// <summary>Implemented by concrete classes to perform the required specification test.</summary>
         /// <param name="candidate">The subject to be tested against the specification.</param>
-        /// <returns><see langword="true" /> if the candidate satisfies the specification, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the candidate satisfies the specification, otherwise <see langword="False" />.</returns>
         public abstract bool IsSatisfiedBy(TType candidate);
 
         /// <summary>Required in combination with operator &amp; and | to support operator &amp;&amp; and ||.</summary>

@@ -15,7 +15,7 @@ namespace AllOverIt.Evaluator.Operations
 
         /// <summary>Indicates if the provided user-defined method name is registered with the factory.</summary>
         /// <param name="methodName">The name of the user-defined method to check.</param>
-        /// <returns><see langword="true" /> if the user-defined method name is registered.</returns>
+        /// <returns><see langword="True" /> if the user-defined method name is registered.</returns>
         bool IsRegistered(string methodName);
 
         /// <summary>Gets an instance of the class implementing the user-defined method identified by the provided method name.</summary>

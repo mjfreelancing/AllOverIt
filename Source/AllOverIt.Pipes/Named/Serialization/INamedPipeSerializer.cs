@@ -12,6 +12,6 @@
         /// <summary>Deserializes a byte array to a <typeparamref name="TMessage"/> instance.</summary>
         /// <param name="bytes">The serialized byte array.</param>
         /// <returns>An initialized instance of the required type.</returns>
-        public TMessage Deserialize(byte[] bytes);
+        public TMessage? Deserialize(byte[]? bytes);
     }
 }

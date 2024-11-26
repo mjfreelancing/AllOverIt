@@ -5,7 +5,7 @@ namespace WindowWrapperDemo
 {
     public partial class MainWindow : Window
     {
-        private WindowWrapper _wrapper;
+        private WindowWrapper? _wrapper;
 
         public MainWindow()
         {
@@ -23,58 +23,58 @@ namespace WindowWrapperDemo
         {
             base.OnDeactivated(e);
 
-            _wrapper.Dispose();
+            _wrapper!.Dispose();
             _wrapper = null;
         }
 
         private void DisableMinimize_Click(object sender, RoutedEventArgs e)
         {
-            _wrapper.DisableMinimizeButton();
+            _wrapper!.DisableMinimizeButton();
         }
 
         private void EnableMinimize_Click(object sender, RoutedEventArgs e)
         {
-            _wrapper.EnableMinimizeButton();
+            _wrapper!.EnableMinimizeButton();
         }
 
         private void DisableMaximize_Click(object sender, RoutedEventArgs e)
         {
-            _wrapper.DisableMaximizeButton();
+            _wrapper!.DisableMaximizeButton();
         }
 
         private void EnableMaximize_Click(object sender, RoutedEventArgs e)
         {
-            _wrapper.EnableMaximizeButton();
+            _wrapper!.EnableMaximizeButton();
         }
 
         private void HideMinimizeMaximize_Click(object sender, RoutedEventArgs e)
         {
-            _wrapper.HideMinimizeAndMaximizeButtons();
+            _wrapper!.HideMinimizeAndMaximizeButtons();
         }
 
         private void ShowMinimizeMaximize_Click(object sender, RoutedEventArgs e)
         {
-            _wrapper.ShowMinimizeAndMaximizeButtons();
+            _wrapper!.ShowMinimizeAndMaximizeButtons();
         }
 
         private void HideClose_Click(object sender, RoutedEventArgs e)
         {
-            _wrapper.DisableCloseButton();
+            _wrapper!.DisableCloseButton();
         }
 
         private void EnableClose_Click(object sender, RoutedEventArgs e)
         {
-            _wrapper.EnableCloseButton();
+            _wrapper!.EnableCloseButton();
         }
 
         private void HideAll_Click(object sender, RoutedEventArgs e)
         {
-            _wrapper.HideAllButtons();
+            _wrapper!.HideAllButtons();
         }
 
         private void ShowAll_Click(object sender, RoutedEventArgs e)
         {
-            _wrapper.ShowAllButtons();
+            _wrapper!.ShowAllButtons();
         }
     }
 }

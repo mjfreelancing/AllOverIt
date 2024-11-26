@@ -52,7 +52,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
                 var resetEvent = new ManualResetEventSlim(false);
                 var actual = false;
 
-                ReactiveCommand<Unit, Unit> cancelCommand = default;
+                ReactiveCommand<Unit, Unit> cancelCommand = null;
 
                 var cancellableCommand = CommandFactory
                     .CreateCancellableCommand(async cancellationToken =>
@@ -223,7 +223,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
                 var resetEvent = new ManualResetEventSlim(false);
                 var actual = false;
 
-                ReactiveCommand<Unit, Unit> cancelCommand = default;
+                ReactiveCommand<Unit, Unit> cancelCommand = null;
 
                 var cancellableCommand = CommandFactory
                     .CreateCancellableCommand<int>(async cancellationToken =>
@@ -570,7 +570,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
                 var resetEvent = new ManualResetEventSlim(false);
                 var actual = false;
 
-                ReactiveCommand<Unit, Unit> cancelCommand = default;
+                ReactiveCommand<Unit, Unit> cancelCommand = null;
 
                 var cancellableCommand = CommandFactory
                     .CreateCancellableCommand<bool, int>(async (_, cancellationToken) =>
@@ -753,7 +753,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
 
                 var command = CommandFactory.CreateCancelCommand(subjects);
 
-                bool? actual = default;
+                bool? actual = null;
 
                 using var subscription = command.CanExecute
                     .Subscribe(result =>
@@ -867,7 +867,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
                 var resetEvent = new ManualResetEventSlim(false);
                 var actual = false;
 
-                ReactiveCommand<Unit, Unit> cancelCommand = default;
+                ReactiveCommand<Unit, Unit> cancelCommand = null;
 
                 var cancellableCommand = CommandFactory
                     .CreateCancellableCommand(async cancellationToken =>
@@ -907,7 +907,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
                 var actual1 = false;
                 var actual2 = false;
 
-                ReactiveCommand<Unit, Unit> cancelCommand = default;
+                ReactiveCommand<Unit, Unit> cancelCommand = null;
 
                 var cancellableCommand1 = CommandFactory
                     .CreateCancellableCommand(async cancellationToken =>

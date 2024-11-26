@@ -14,7 +14,7 @@ namespace SpecificationDemo
             // Alternative to creating a concrete Specification class and using as:
             // var multipleOfThree = new IsMultipleOf(3);
             // Note: Must cast to Specification<int> when using this factory method if using operator && or ||
-            var multipleOfThree = Specification<int>.Create(candidate => candidate % 3 == 0) as Specification<int>;
+            var multipleOfThree = (Specification<int>.Create(candidate => candidate % 3 == 0) as Specification<int>)!;
 
             var multipleOfSeven = new IsMultipleOf(7);
 

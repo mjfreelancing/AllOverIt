@@ -89,6 +89,23 @@ namespace AllOverIt.Tests.Async
                 disposableFakes.Count.Should().NotBe(0);
                 count.Should().Be(disposableFakes.Count);
             }
+
+            [Fact]
+            public void Should_Not_Throw_When_Disposed_More_Than_Once()
+            {
+                var disposableFakes = this.CreateManyFakes<IAsyncDisposable>();
+                var disposables = disposableFakes.Select(item => item.FakedObject).ToArray();
+                var sut = new CompositeAsyncDisposable(disposables);
+
+                sut.Dispose();
+
+                Invoking(() =>
+                {
+                    sut.Dispose();
+                })
+                .Should()
+                .NotThrow();
+            }
         }
 
         public class DisposeAsync : CompositeAsyncDisposableFixture
@@ -113,6 +130,23 @@ namespace AllOverIt.Tests.Async
 
                 disposableFakes.Count.Should().NotBe(0);
                 count.Should().Be(disposableFakes.Count);
+            }
+
+            [Fact]
+            public async Task Should_Not_Throw_When_Disposed_More_Than_Once()
+            {
+                var disposableFakes = this.CreateManyFakes<IAsyncDisposable>();
+                var disposables = disposableFakes.Select(item => item.FakedObject).ToArray();
+                var sut = new CompositeAsyncDisposable(disposables);
+
+                await sut.DisposeAsync();
+
+                await Invoking(async () =>
+                {
+                    await sut.DisposeAsync();
+                })
+                .Should()
+                .NotThrowAsync();
             }
         }
     }

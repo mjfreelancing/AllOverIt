@@ -17,7 +17,7 @@ namespace AllOverIt.Serialization.Binary.Tests
         public void Should_Read_Write_Enumerable_Using_Custom_Reader_Writer()
         {
             var expected = CreateMany<Classroom>();
-            IEnumerable<Classroom> actual = default;
+            IEnumerable<Classroom> actual = null;
 
             byte[] bytes;
 

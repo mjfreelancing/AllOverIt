@@ -19,7 +19,7 @@ namespace AllOverIt.Serialization.Json.SystemText
 
         /// <summary>Constructor.</summary>
         /// <param name="options">The System.Text serialization options to use. If no options are provided then a default set will be applied.</param>
-        public SystemTextJsonSerializer(JsonSerializerOptions options = default)
+        public SystemTextJsonSerializer(JsonSerializerOptions? options = default)
         {
             Options = options ?? new JsonSerializerOptions();
         }
@@ -27,7 +27,7 @@ namespace AllOverIt.Serialization.Json.SystemText
         /// <inheritdoc />
         public void Configure(JsonSerializerConfiguration configuration)
         {
-            _ = configuration.WhenNotNull(nameof(configuration));
+            _ = configuration.WhenNotNull();
 
             ApplyOptionUseCamelCase(configuration);
             ApplyOptionCaseSensitive(configuration);
@@ -47,13 +47,13 @@ namespace AllOverIt.Serialization.Json.SystemText
         }
 
         /// <inheritdoc />
-        public TType DeserializeObject<TType>(string value)
+        public TType? DeserializeObject<TType>(string value)
         {
             return JsonSerializer.Deserialize<TType>(value, Options);
         }
 
         /// <inheritdoc />
-        public Task<TType> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken)
+        public Task<TType?> DeserializeObjectAsync<TType>(Stream stream, CancellationToken cancellationToken)
         {
             return JsonSerializer
                 .DeserializeAsync<TType>(stream, Options, cancellationToken)
@@ -93,14 +93,14 @@ namespace AllOverIt.Serialization.Json.SystemText
 
             if (configuration.SupportEnrichedEnums.Value)
             {
-                if (enrichedEnumConverterFactory == null)
+                if (enrichedEnumConverterFactory is null)
                 {
                     Options.Converters.Add(new EnrichedEnumJsonConverterFactory());
                 }
             }
             else
             {
-                if (enrichedEnumConverterFactory != null)
+                if (enrichedEnumConverterFactory is not null)
                 {
                     Options.Converters.Remove(enrichedEnumConverterFactory);
                 }

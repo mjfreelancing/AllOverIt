@@ -12,7 +12,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         public bool IsNullable { get; }
         public int? MaxLength { get; }
         public ConstraintType Constraint { get; } = ConstraintType.None;
-        public IReadOnlyCollection<PrincipalForeignKey> ForeignKeyPrincipals { get; }
+        public PrincipalForeignKey[] ForeignKeyPrincipals { get; } = [];
 
         internal ColumnDescriptor(IProperty column)
         {
@@ -22,9 +22,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
             var maxLength = column.GetAnnotations().SingleOrDefault(annotation => annotation.Name == nameof(MaxLength));
 
-            if (maxLength is not null)
+            if (maxLength?.Value is not null)
             {
-                MaxLength = (int) maxLength.Value;
+                MaxLength = (int)maxLength.Value;
             }
 
             if (column.IsPrimaryKey())
@@ -44,7 +44,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             return new ColumnDescriptor(column);
         }
 
-        private static List<PrincipalForeignKey> GetForeignKeys(IProperty column)
+        private static PrincipalForeignKey[] GetForeignKeys(IProperty column)
         {
             var foreignKeys = new List<PrincipalForeignKey>();
 
@@ -64,7 +64,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
                 var entityColumn = new PrincipalForeignKey
                 {
                     Type = principalEntity.ClrType,
-                    EntityName = principalEntity.GetTableName(),
+                    EntityName = principalEntity.GetTableName()!,
                     ColumnName = string.Join(", ", foreignKey.PrincipalKey.Properties.Select(property => property.Name)),
                     IsOneToMany = isOneToMany
                 };
@@ -72,7 +72,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
                 foreignKeys.Add(entityColumn);
             }
 
-            return foreignKeys;
+            return [.. foreignKeys];
         }
     }
 }

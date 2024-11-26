@@ -6,7 +6,7 @@ namespace AllOverIt.Evaluator.Operators
     /// <summary>An expression operator that returns the smallest integral value greater than or equal to the given operand.</summary>
     public sealed class CeilingOperator : UnaryOperator
     {
-        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Ceiling", [typeof(double)]);
+        private static readonly MethodInfo OperatorMethodInfo = typeof(Math).GetMethod("Ceiling", [typeof(double)])!;
 
         /// <summary>Constructor.</summary>
         /// <param name="operand">The operand (argument) to be evaluated.</param>

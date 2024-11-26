@@ -12,7 +12,7 @@ namespace AllOverIt.Evaluator
         /// <summary>Constructor.</summary>
         /// <param name="operationFactory">The arithmetic operation factory used for building expressions.</param>
         /// <param name="userMethodFactory">The user-defined method factory used for evaluating higher level operations.</param>
-        public FormulaCompiler(IArithmeticOperationFactory operationFactory = null, IUserDefinedMethodFactory userMethodFactory = null)
+        public FormulaCompiler(IArithmeticOperationFactory? operationFactory = default, IUserDefinedMethodFactory? userMethodFactory = default)
         {
             // Note: FormulaCompiler must be created per-thread because the FormulaProcessor maintains state between each call to Process().
             //       The FormulaCompiler *could* be made thread safe by creating a new FormulaProcessor instance each time Process() was
@@ -30,7 +30,7 @@ namespace AllOverIt.Evaluator
         /// and the formula contains variables then an instance will be created and provided as part of the result.</param>
         /// <returns>The compiler result containing the variable registry (if originally provided or variables are found in the formula),
         /// the compiled delegate, and a list of variables referenced by the formula (if applicable).</returns>
-        public FormulaCompilerResult Compile(string formula, IVariableRegistry variableRegistry = null)
+        public FormulaCompilerResult Compile(string formula, IVariableRegistry? variableRegistry = default)
         {
             if (formula.IsNullOrEmpty())
             {
@@ -39,7 +39,7 @@ namespace AllOverIt.Evaluator
 
             var processorResult = _formulaProcessor.Process(formula, variableRegistry);
             var compiledExpression = processorResult.FormulaExpression.Compile();
-            var referencedVariableNames = processorResult.ReferencedVariableNames;  // will be a static, empty, ReadOnlyCollection if there were no variables
+            var referencedVariableNames = processorResult.ReferencedVariableNames;  // will be [] if there were no variables
 
             // The result's variable registry will be the same reference as the passed in variableRegistry.
             // If the caller did not provide a registry but the formula contained variables then the _formulaProcessor will have created a registry.

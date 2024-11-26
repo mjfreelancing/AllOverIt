@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
         <Description>This package provides enhanced support for binary serialization. Complex object graphs, lists, dictionaries and nullable values can all be dynamically serialized using reflection-based readers and writers or, for greater performance, a custom serializer per object within the graph.</Description>
         <PackageTags>AllOverIt;Utilities;Binary;Serialization;Deserialization</PackageTags>
     </PropertyGroup>

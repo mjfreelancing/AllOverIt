@@ -19,6 +19,21 @@ namespace AllOverIt.Tests.Extensions
 
             public int Compare(DummyString lhs, DummyString rhs)
             {
+                if (lhs is null && rhs is null)
+                {
+                    return 0;
+                }
+
+                if (lhs is null)
+                {
+                    return -1;
+                }
+
+                if (rhs is null)
+                {
+                    return 1;
+                }
+
                 return string.Compare(lhs.First, rhs.First);
             }
         }
@@ -29,6 +44,21 @@ namespace AllOverIt.Tests.Extensions
 
             public int Compare(DummyString lhs, DummyString rhs)
             {
+                if (lhs is null && rhs is null)
+                {
+                    return 0;
+                }
+
+                if (lhs is null)
+                {
+                    return -1;
+                }
+
+                if (rhs is null)
+                {
+                    return 1;
+                }
+
                 return string.Compare(lhs.Second, rhs.Second);
             }
         }
@@ -56,7 +86,37 @@ namespace AllOverIt.Tests.Extensions
 
                 values.Sort(DummyFirstComparer.Instance.Reverse());
 
-                values.Select(item => item.First).Should().BeInDescendingOrder();
+                var expected = values.SelectToList(item => item.First);
+
+                expected.Should().BeInDescendingOrder();
+            }
+
+            [Theory]
+            [InlineData(0, 1)]
+            [InlineData(1, 1)]
+            [InlineData(2, 1)]
+            [InlineData(0, 2)]
+            [InlineData(0, 3)]
+            [InlineData(1, 1)]
+            [InlineData(1, 2)]
+            public void Should_Not_Throw_When_Contains_Nulls(int startIndex, int count)
+            {
+                var values = CreateMany<DummyString>(3).ToList();
+
+                for (var offset = startIndex; offset < startIndex + count; offset++)
+                {
+                    values[offset] = null;
+                }
+
+                var nonNulls = values.Where(item => item is not null).OrderByDescending(item => item.First);
+
+                var expected = nonNulls
+                    .Concat(values.Where(item => item is null))
+                    .ToList();
+
+                values.Sort(DummyFirstComparer.Instance.Reverse());
+
+                values.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
             }
         }
 
@@ -93,20 +153,25 @@ namespace AllOverIt.Tests.Extensions
                 {
                    new DummyString{ First = "a", Second = Create<string>() },
                    new DummyString{ First = "b", Second = Create<string>() },
+                   new DummyString{ First = null, Second = Create<string>() },
                    new DummyString{ First = "a", Second = Create<string>() },
                    new DummyString{ First = "b", Second = Create<string>() },
                    new DummyString{ First = "a", Second = Create<string>() },
+                   new DummyString{ First = "b", Second = null },
                    new DummyString{ First = "b", Second = Create<string>() },
                    new DummyString{ First = "a", Second = Create<string>() },
                 };
 
-                var expected = values.OrderBy(item => item.First).ThenBy(item => item.Second).ToList();
+                var expected = values
+                    .OrderBy(item => item.First)
+                    .ThenBy(item => item.Second)
+                    .ToList();
 
                 var sorter = DummyFirstComparer.Instance.Then(DummySecondComparer.Instance);
 
                 values.Sort(sorter);
 
-                values.Should().ContainInOrder(expected);
+                values.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
             }
         }
     }

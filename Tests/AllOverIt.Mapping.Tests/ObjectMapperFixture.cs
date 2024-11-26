@@ -89,7 +89,7 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Set_Configuration()
             {
-                PropertyMatcherCache actual = default;
+                PropertyMatcherCache actual = null;
 
                 var objectMapper = new ObjectMapper(config =>
                 {
@@ -156,7 +156,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 var allowNullCollections = Create<bool>();
 
-                PropertyMatcherCache actual = default;
+                PropertyMatcherCache actual = null;
 
                 var objectMapper = new ObjectMapper(
                     options =>
@@ -205,7 +205,7 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Set_Configuration()
             {
-                PropertyMatcherCache actual = default;
+                PropertyMatcherCache actual = null;
 
                 var objectMapper = new ObjectMapper(
                     options => { },

@@ -26,10 +26,10 @@ namespace PaginationConsoleDemo
         public App(IDbContextFactory<BloggingContext> dbContextFactory, IQueryPaginatorFactory queryPaginatorFactory,
             IContinuationTokenValidator continuationTokenValidator, ILogger<App> logger)
         {
-            _dbContextFactory = dbContextFactory.WhenNotNull(nameof(dbContextFactory));
-            _queryPaginatorFactory = queryPaginatorFactory.WhenNotNull(nameof(queryPaginatorFactory));
-            _continuationTokenValidator = continuationTokenValidator.WhenNotNull(nameof(continuationTokenValidator));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _dbContextFactory = dbContextFactory.WhenNotNull();
+            _queryPaginatorFactory = queryPaginatorFactory.WhenNotNull();
+            _continuationTokenValidator = continuationTokenValidator.WhenNotNull();
+            _logger = logger.WhenNotNull();
         }
 
         public override async Task StartAsync(CancellationToken cancellationToken)
@@ -52,7 +52,11 @@ namespace PaginationConsoleDemo
                             // required for access to "citext"
                             using (var connection = (NpgsqlConnection) dbContext.Database.GetDbConnection())
                             {
-                                connection.Open();
+                                if (connection.State != System.Data.ConnectionState.Open)
+                                {
+                                    connection.Open();
+                                }
+
                                 connection.ReloadTypes();
                             }
                             break;
@@ -142,7 +146,7 @@ namespace PaginationConsoleDemo
                     .CreatePaginator(query, paginatorConfig)
                     .ColumnAscending(item => item.Description, item => item.Title, item => item.BlogId, item => item.PostId);
 
-                string continuationToken = default;
+                string? continuationToken = null;
                 var key = 'n';
 
                 var stopwatch = Stopwatch.StartNew();
@@ -319,26 +323,16 @@ namespace PaginationConsoleDemo
 
                 for (var blogIndex = 0; blogIndex < batchSize; blogIndex++)
                 {
-                    string description = default;
+                    string? description = null;
 
-                    switch ((startIndex + blogIndex) % 4)
+                    description = ((startIndex + blogIndex) % 4) switch
                     {
-                        case 0:
-                            description = $"Description {startIndex + blogIndex}";
-                            break;
-
-                        case 1:
-                            description = $"description {startIndex + blogIndex}";
-                            break;
-
-                        case 2:
-                            description = $"DESCRIPTION {startIndex + blogIndex}";
-                            break;
-
-                        case 3:
-                            description = $"DeScRiPtIoN {startIndex + blogIndex}";
-                            break;
-                    }
+                        0 => $"Description {startIndex + blogIndex}",
+                        1 => $"description {startIndex + blogIndex}",
+                        2 => $"DESCRIPTION {startIndex + blogIndex}",
+                        3 => $"DeScRiPtIoN {startIndex + blogIndex}",
+                        _ => throw new UnreachableException(),
+                    };
 
                     var blog = new Blog
                     {

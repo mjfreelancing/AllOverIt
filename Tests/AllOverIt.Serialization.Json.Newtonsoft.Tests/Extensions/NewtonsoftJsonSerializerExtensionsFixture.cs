@@ -1,4 +1,5 @@
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using AllOverIt.Serialization.Json.Newtonsoft.Extensions;
 using FluentAssertions;
@@ -39,6 +40,18 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Extensions
 
         public class AddInterfaceConverter : NewtonsoftJsonSerializerExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Serializer_Null()
+            {
+                Invoking(() =>
+                {
+                    NewtonsoftJsonSerializerExtensions.AddInterfaceConverter<IDummyType, DummyType>(null!);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("serializer");
+            }
+
             [Fact]
             public void Should_Add_Interface_Converter()
             {

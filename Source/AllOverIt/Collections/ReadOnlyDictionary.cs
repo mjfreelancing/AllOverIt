@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Collections
 {
@@ -6,8 +7,9 @@ namespace AllOverIt.Collections
     /// <typeparam name="TKey">The key type.</typeparam>
     /// <typeparam name="TValue">The value type.</typeparam>
     public class ReadOnlyDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
+        where TKey : notnull
     {
-        private readonly IDictionary<TKey, TValue> _dictionary;
+        private readonly Dictionary<TKey, TValue> _dictionary;
 
         /// <inheritdoc />
         public TValue this[TKey key] => _dictionary[key];
@@ -23,8 +25,8 @@ namespace AllOverIt.Collections
 
         /// <summary>Constructor.</summary>
         public ReadOnlyDictionary()
+            : this([])
         {
-            _dictionary = new Dictionary<TKey, TValue>();
         }
 
         /// <summary>Constructor.</summary>
@@ -61,7 +63,9 @@ namespace AllOverIt.Collections
         }
 
         /// <inheritdoc />
-        public bool TryGetValue(TKey key, out TValue value)
+#pragma warning disable CS8767  // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
+        public bool TryGetValue(TKey key, [MaybeNull] out TValue value)
+#pragma warning restore CS8767  // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         {
             return _dictionary.TryGetValue(key, out value);
         }

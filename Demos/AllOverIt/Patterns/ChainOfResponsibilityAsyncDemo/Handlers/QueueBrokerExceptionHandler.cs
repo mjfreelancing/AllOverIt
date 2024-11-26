@@ -16,7 +16,7 @@ namespace ChainOfResponsibilityAsyncDemo.Handlers
         {
         }
 
-        public Task<QueueMessageHandlerState> HandleAsync(QueueMessage queueMessage, QueueBroker queueBroker, Exception exception, CancellationToken cancellationToken)
+        public Task<QueueMessageHandlerState?> HandleAsync(QueueMessage queueMessage, QueueBroker queueBroker, Exception exception, CancellationToken cancellationToken)
         {
             // Create state that can be passed from one handler to the next
             var state = new QueueMessageHandlerState(queueMessage, queueBroker, exception);

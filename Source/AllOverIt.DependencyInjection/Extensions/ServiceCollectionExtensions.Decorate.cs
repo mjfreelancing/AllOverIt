@@ -18,7 +18,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         public static IServiceCollection Decorate<TServiceType, TDecoratorType>(this IServiceCollection serviceCollection)
             where TDecoratorType : TServiceType
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
+            _ = serviceCollection.WhenNotNull();
 
             ReplaceServiceDescriptor<TServiceType>(serviceCollection, descriptor => Decorate(descriptor, typeof(TDecoratorType)));
 
@@ -33,10 +33,10 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <param name="serviceCollection">The service collection.</param>
         /// <param name="configure">An optional action that can be used to configure the interceptor instance decorating the <typeparamref name="TServiceType"/>.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
-        public static IServiceCollection DecorateWithInterceptor<TServiceType, TInterceptor>(this IServiceCollection serviceCollection, Action<IServiceProvider, TInterceptor> configure = default)
+        public static IServiceCollection DecorateWithInterceptor<TServiceType, TInterceptor>(this IServiceCollection serviceCollection, Action<IServiceProvider, TInterceptor>? configure = default)
             where TInterceptor : InterceptorBase<TServiceType>
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
+            _ = serviceCollection.WhenNotNull();
 
             ReplaceServiceDescriptor<TServiceType>(serviceCollection, descriptor => DecorateWithInterceptor<TServiceType, TInterceptor>(descriptor, configure));
 
@@ -66,7 +66,7 @@ namespace AllOverIt.DependencyInjection.Extensions
                 descriptor.Lifetime);
         }
 
-        private static ServiceDescriptor DecorateWithInterceptor<TServiceType, TInterceptor>(ServiceDescriptor descriptor, Action<IServiceProvider, TInterceptor> configure)
+        private static ServiceDescriptor DecorateWithInterceptor<TServiceType, TInterceptor>(ServiceDescriptor descriptor, Action<IServiceProvider, TInterceptor>? configure)
             where TInterceptor : InterceptorBase<TServiceType>
         {
             return ServiceDescriptor.Describe(
@@ -74,17 +74,17 @@ namespace AllOverIt.DependencyInjection.Extensions
                 provider =>
                 {
                     var instance = (TServiceType) GetInstance(provider, descriptor);
-                    return InterceptorFactory.CreateInterceptor(instance, provider, configure);
+                    return InterceptorFactory.CreateInterceptor(instance, provider, configure)!;
                 },
                 descriptor.Lifetime);
         }
 
-        private static IReadOnlyCollection<ServiceDescriptor> GetServiceDescriptors<TServiceType>(IServiceCollection services)
+        private static ServiceDescriptor[] GetServiceDescriptors<TServiceType>(IServiceCollection services)
         {
             var serviceType = typeof(TServiceType);
-            var descriptors = services.Where(service => service.ServiceType == serviceType).AsReadOnlyCollection();
+            var descriptors = services.Where(service => service.ServiceType == serviceType).ToArray();
 
-            if (descriptors.Count == 0)
+            if (descriptors.Length == 0)
             {
                 throw new DependencyRegistrationException($"No registered services found for the type '{serviceType.GetFriendlyName()}'.");
             }
@@ -94,12 +94,12 @@ namespace AllOverIt.DependencyInjection.Extensions
 
         private static object GetInstance(IServiceProvider provider, ServiceDescriptor descriptor)
         {
-            if (descriptor.ImplementationInstance != null)
+            if (descriptor.ImplementationInstance is not null)
             {
                 return descriptor.ImplementationInstance;
             }
 
-            return descriptor.ImplementationType != null
+            return descriptor.ImplementationType is not null
                 ? ActivatorUtilities.GetServiceOrCreateInstance(provider, descriptor.ImplementationType)
                 : descriptor.ImplementationFactory!.Invoke(provider);
         }

@@ -510,7 +510,7 @@ namespace AllOverIt.Serialization.Binary.Tests
         {
             var expected = Enumerable.Range(1, 10);     // returns a RangeIterator - no generic arguments
 
-            IEnumerable<int> actual = default;
+            IEnumerable<int> actual = null;
 
             byte[] bytes;
 
@@ -540,7 +540,7 @@ namespace AllOverIt.Serialization.Binary.Tests
         {
             var expected = Enumerable.Range(1, 10);     // returns a RangeIterator - no generic arguments
 
-            IEnumerable<int> actual = default;
+            IEnumerable<int> actual = null;
 
             byte[] bytes;
 
@@ -571,7 +571,7 @@ namespace AllOverIt.Serialization.Binary.Tests
         {
             var expected = CreateMany<int>().Select(item => item);     // returns SelectListIterator<int?, object> - two generic arguments
 
-            IEnumerable<int> actual = default;
+            IEnumerable<int> actual = null;
 
             byte[] bytes;
 
@@ -601,7 +601,7 @@ namespace AllOverIt.Serialization.Binary.Tests
         {
             var expected = CreateMany<int>().Select(item => item);     // returns SelectListIterator<int?, object> - two generic arguments
 
-            IEnumerable<int> actual = default;
+            IEnumerable<int> actual = null;
 
             byte[] bytes;
 
@@ -632,7 +632,7 @@ namespace AllOverIt.Serialization.Binary.Tests
         {
             var expected = Create<int>();
 
-            int actual = default;
+            var actual = 0;
 
             byte[] bytes;
 
@@ -661,7 +661,7 @@ namespace AllOverIt.Serialization.Binary.Tests
         public void Should_Write_Non_Generic_Dictionary()
         {
             var expected = Environment.GetEnvironmentVariables();       // IDictionary
-            IDictionary<string, string> actual = default;               // Expected to be read back as
+            IDictionary<string, string> actual = null;                  // Expected to be read back as
 
             byte[] bytes;
 
@@ -696,7 +696,7 @@ namespace AllOverIt.Serialization.Binary.Tests
             knownTypes.EmptyDoubleArray = Array.Empty<double>();
             knownTypes.EmptyDoubles = new List<double>();
             knownTypes.NullDoubles = null;
-            knownTypes.NullString = default;
+            knownTypes.NullString = null;
             knownTypes.EmptyString = string.Empty;
 
             return knownTypes;

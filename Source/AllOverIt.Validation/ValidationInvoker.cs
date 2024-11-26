@@ -3,6 +3,7 @@ using AllOverIt.Validation.Exceptions;
 using AllOverIt.Validation.Extensions;
 using FluentValidation;
 using FluentValidation.Results;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Validation
 {
@@ -32,6 +33,7 @@ namespace AllOverIt.Validation
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Usage", "CA2263:Prefer generic overload when type is known", Justification = "Would be a recursive call, resulting in a stack overflow")]
         bool IValidationRegistry.ContainsModelRegistration<TType>()
         {
             return ValidationRegistry.ContainsModelRegistration(typeof(TType));
@@ -54,7 +56,7 @@ namespace AllOverIt.Validation
                 throw new ValidationRegistryException($"The type '{validatorType.GetFriendlyName()}' is not a validator.");
             }
 
-            if (validatorType.GetConstructor(Type.EmptyTypes) == null)
+            if (validatorType.GetConstructor(Type.EmptyTypes) is null)
             {
                 throw new ValidationRegistryException($"The type '{validatorType.GetFriendlyName()}' must have a default constructor.");
             }
@@ -66,7 +68,7 @@ namespace AllOverIt.Validation
                 throw new ValidationRegistryException($"The type '{validatorType.GetFriendlyName()}' cannot validate a {modelType.GetFriendlyName()} type.");
             }
 
-            AddToValidatorCache(modelType, new Lazy<IValidator>(() => (IValidator) Activator.CreateInstance(validatorType)));
+            AddToValidatorCache(modelType, new Lazy<IValidator>(() => (IValidator) Activator.CreateInstance(validatorType)!));
 
             return this;
         }

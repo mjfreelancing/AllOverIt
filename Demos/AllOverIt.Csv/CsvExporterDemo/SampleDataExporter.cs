@@ -1,4 +1,5 @@
-﻿using AllOverIt.Csv;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Csv;
 using AllOverIt.Csv.Exporter;
 using AllOverIt.Csv.Extensions;
 using CsvExporterDemo.Data;
@@ -8,8 +9,10 @@ namespace CsvExporterDemo
     internal sealed class SampleDataExporter : MemoryCsvExporterBase<SampleData>
     {
         // Only need to pass in as much data is as required to configure the dynamic headers
-        protected override ICsvSerializer<SampleData> CreateSerializer(IEnumerable<SampleData> sampleData)
+        protected override ICsvSerializer<SampleData> CreateSerializer(IEnumerable<SampleData>? sampleData)
         {
+            _ = sampleData.WhenNotNull();
+
             var serializer = new CsvSerializer<SampleData>();
 
             // Add fixed, known, columns
@@ -31,7 +34,7 @@ namespace CsvExporterDemo
                 item =>
                 {
                     return Enumerable
-                        .Range(0, item.Count)
+                        .Range(0, item.Length)
                         .Select(idx =>
                         {
                             // Using an 'int' to uniquely identify each set of headers
@@ -50,7 +53,7 @@ namespace CsvExporterDemo
                 (item, headerId) =>
                 {
                     // The 'Id' indicates the element index being exported
-                    if (headerId.Id < item.Count)
+                    if (headerId.Id < item.Length)
                     {
                         var coordinate = item.ElementAt(headerId.Id);
 
@@ -89,7 +92,7 @@ namespace CsvExporterDemo
 
                     var metadata = item.SingleOrDefault(data => data.Type == dataType && data.Name == typeName);
 
-                    return metadata == null
+                    return metadata is null
                         ? null
                         : new object[]
                         {

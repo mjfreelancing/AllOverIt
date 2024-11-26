@@ -9,10 +9,9 @@ namespace AllOverIt.Cryptography.AES
         /// <returns>An array that contains the supported key sizes.</returns>
         public static KeySizes[] GetLegalKeySizes()
         {
-            using (var aes = Aes.Create())
-            {
-                return aes.LegalKeySizes;
-            }
+            using var aes = Aes.Create();
+
+            return aes.LegalKeySizes;
         }
 
         /// <summary>Indicates if the provided key size, in bits, is valid for the AES algorithm.</summary>
@@ -28,25 +27,23 @@ namespace AllOverIt.Cryptography.AES
         /// <returns>An array of bytes containing a new secret key.</returns>
         public static byte[] GenerateKey(int keySize)
         {
-            using (var aes = Aes.Create())
-            {
-                aes.KeySize = keySize;
-                aes.GenerateKey();
+            using var aes = Aes.Create();
 
-                return aes.Key;
-            }
+            aes.KeySize = keySize;
+            aes.GenerateKey();
+
+            return aes.Key;
         }
 
         /// <summary>Generates a random initialization vector for use with the AES algorithm.</summary>
         /// <returns>An array of bytes containing a new initialization vector.</returns>
         public static byte[] GenerateIV()
         {
-            using (var aes = Aes.Create())
-            {
-                aes.GenerateIV();
+            using var aes = Aes.Create();
 
-                return aes.IV;
-            }
+            aes.GenerateIV();
+
+            return aes.IV;
         }
     }
 }

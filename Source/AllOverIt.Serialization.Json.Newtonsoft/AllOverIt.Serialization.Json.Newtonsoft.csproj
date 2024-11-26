@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
         <Description>This package contains a wrapper for Newtonsoft.Json serialization based on AllOverIt.Serialization.Json.Abstractions.</Description>
         <PackageTags>AllOverIt;Utilities;Serialization;Deserialization;JSON;Newtonsoft</PackageTags>
     </PropertyGroup>

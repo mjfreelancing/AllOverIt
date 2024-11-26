@@ -1781,7 +1781,7 @@ namespace AllOverIt.Pagination.Tests
         {
             var all = Enumerable
                 .Range(1, 12)
-                .SelectAsReadOnlyCollection(index =>
+                .SelectToReadOnlyCollection(index =>
                 {
                     var entity = Create<DummyEntity>();
                     entity.Id = index;

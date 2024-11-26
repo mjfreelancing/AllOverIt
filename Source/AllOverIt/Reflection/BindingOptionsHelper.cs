@@ -34,7 +34,7 @@ namespace AllOverIt.Reflection
                     options |= BindingOptions.DefaultVisibility;
                 }
 
-                // calls such as bindingOptions.HasFlag(BindingOptions.Static) are slower than using bitwise operations (See Code Analysis warning RCS1096)
+                // Calls such as bindingOptions.HasFlag(BindingOptions.Static) are slower than using bitwise operations (See Code Analysis warning RCS1096)
                 var scopePredicate = OrBindProperty(null, () => (options & BindingOptions.Static) != 0, info => info.IsStatic)
                     .OrBindProperty(() => (options & BindingOptions.Instance) != 0, info => !info.IsStatic);
 
@@ -47,8 +47,9 @@ namespace AllOverIt.Reflection
                     .OrBindProperty(() => (options & BindingOptions.Private) != 0, info => info.IsPrivate)
                     .OrBindProperty(() => (options & BindingOptions.Internal) != 0, info => info.IsAssembly);
 
-                return scopePredicate.And(accessorPredicate).And(visibilityPredicate).Compile();
-            });
+                // At least one scope, accessor, and visibility predicate will succeed
+                return scopePredicate!.And(accessorPredicate!).And(visibilityPredicate!).Compile();
+            })!;
         }
 
         internal static Func<FieldInfo, bool> BuildFieldInfoBindingPredicate(BindingOptions bindingOptions)
@@ -87,11 +88,12 @@ namespace AllOverIt.Reflection
                     .OrBindField(() => (options & BindingOptions.Private) != 0, info => info.IsPrivate)
                     .OrBindField(() => (options & BindingOptions.Internal) != 0, info => info.IsAssembly);
 
-                return scopePredicate.And(visibilityPredicate).Compile();
-            });
+                // At least one scope and visibility predicate will succeed
+                return scopePredicate!.And(visibilityPredicate!).Compile();
+            })!;
         }
 
-        private static Expression<Func<MethodBase, bool>> OrBindProperty(this Expression<Func<MethodBase, bool>> expression,
+        private static Expression<Func<MethodBase, bool>>? OrBindProperty(this Expression<Func<MethodBase, bool>>? expression,
             Func<bool> predicate, Expression<Func<MethodBase, bool>> creator)
         {
             if (!predicate.Invoke())
@@ -99,12 +101,12 @@ namespace AllOverIt.Reflection
                 return expression;
             }
 
-            return expression == null
+            return expression is null
               ? PredicateBuilder.Where(creator)
               : expression.Or(creator);
         }
 
-        private static Expression<Func<FieldInfo, bool>> OrBindField(this Expression<Func<FieldInfo, bool>> expression,
+        private static Expression<Func<FieldInfo, bool>>? OrBindField(this Expression<Func<FieldInfo, bool>>? expression,
             Func<bool> predicate, Expression<Func<FieldInfo, bool>> creator)
         {
             if (!predicate.Invoke())
@@ -112,7 +114,7 @@ namespace AllOverIt.Reflection
                 return expression;
             }
 
-            return expression == null
+            return expression is null
               ? PredicateBuilder.Where(creator)
               : expression.Or(creator);
         }

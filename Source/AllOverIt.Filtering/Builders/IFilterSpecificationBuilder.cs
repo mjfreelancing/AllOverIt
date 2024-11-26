@@ -25,8 +25,8 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>A specification for performing an operation or comparison against a specified string property on a <typeparamref name="TType"/>
         /// instance.</returns>
-        ILinqSpecification<TType> Create(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation,
-            Action<OperationFilterOptions> options = default);
+        ILinqSpecification<TType> Create(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IStringFilterOperation> operation,
+            Action<OperationFilterOptions>? options = default);
 
         /// <summary>Create a specification for a single <see cref="IBasicFilterOperation"/> (or <see cref="IArrayFilterOperation"/>) operation
         /// or comparison against a property on a <typeparamref name="TType"/> instance.</summary>
@@ -35,8 +35,8 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>A specification for performing an operation or comparison against a specified property on a <typeparamref name="TType"/>
         /// instance.</returns>
-        ILinqSpecification<TType> Create<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation,
-            Action<OperationFilterOptions> options = default);
+        ILinqSpecification<TType> Create<TProperty>(Expression<Func<TType, TProperty?>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation,
+            Action<OperationFilterOptions>? options = default);
 
         #endregion
 
@@ -51,8 +51,8 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An AND combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
-        ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IBasicFilterOperation<string>> operation1,
-            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options = default);
+        ILinqSpecification<TType> And(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IBasicFilterOperation<string?>> operation1,
+            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions>? options = default);
 
         /// <summary>Create a specification that ANDs an <see cref="IStringFilterOperation"/> with an <see cref="IBasicFilterOperation"/>
         /// (or <see cref="IArrayFilterOperation"/>) operation or comparison against a string property on a <typeparamref name="TType"/> instance.</summary>
@@ -62,8 +62,8 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An AND combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
-        ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
-            Func<TFilter, IBasicFilterOperation<string>> operation2, Action<OperationFilterOptions> options = default);
+        ILinqSpecification<TType> And(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
+            Func<TFilter, IBasicFilterOperation<string?>> operation2, Action<OperationFilterOptions>? options = default);
 
         /// <summary>Create a specification that ANDs two <see cref="IStringFilterOperation"/> operations or comparisons against a string
         /// property on a <typeparamref name="TType"/> instance.</summary>
@@ -73,8 +73,8 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An AND combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
-        ILinqSpecification<TType> And(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
-            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options = default);
+        ILinqSpecification<TType> And(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
+            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions>? options = default);
 
         /// <summary>Create a specification that ANDs two <see cref="IBasicFilterOperation"/> (or <see cref="IArrayFilterOperation"/>) operations
         /// or comparisons against a string property on a <typeparamref name="TType"/> instance.</summary>
@@ -84,8 +84,8 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An AND combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
-        ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation1,
-            Func<TFilter, IBasicFilterOperation> operation2, Action<OperationFilterOptions> options = default);
+        ILinqSpecification<TType> And<TProperty>(Expression<Func<TType, TProperty?>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation1,
+            Func<TFilter, IBasicFilterOperation> operation2, Action<OperationFilterOptions>? options = default);
 
         #endregion
 
@@ -100,8 +100,8 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An OR combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
-        ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IBasicFilterOperation<string>> operation1,
-            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options = default);
+        ILinqSpecification<TType> Or(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IBasicFilterOperation<string?>> operation1,
+            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions>? options = default);
 
         /// <summary>Create a specification that ORs an <see cref="IStringFilterOperation"/> with an <see cref="IBasicFilterOperation"/>
         /// (or <see cref="IArrayFilterOperation"/>) operation or comparison against a string property on a <typeparamref name="TType"/> instance.</summary>
@@ -111,8 +111,8 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An OR combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
-        ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
-            Func<TFilter, IBasicFilterOperation<string>> operation2, Action<OperationFilterOptions> options = default);
+        ILinqSpecification<TType> Or(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
+            Func<TFilter, IBasicFilterOperation<string?>> operation2, Action<OperationFilterOptions>? options = default);
 
         /// <summary>Create a specification that ORs two <see cref="IStringFilterOperation"/> operations or comparisons against a string
         /// property on a <typeparamref name="TType"/> instance.</summary>
@@ -122,8 +122,8 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An OR combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
-        ILinqSpecification<TType> Or(Expression<Func<TType, string>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
-            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions> options = default);
+        ILinqSpecification<TType> Or(Expression<Func<TType, string?>> propertyExpression, Func<TFilter, IStringFilterOperation> operation1,
+            Func<TFilter, IStringFilterOperation> operation2, Action<OperationFilterOptions>? options = default);
 
         /// <summary>Create a specification that ORs two <see cref="IBasicFilterOperation"/> (or <see cref="IArrayFilterOperation"/>) operations
         /// or comparisons against a string property on a <typeparamref name="TType"/> instance.</summary>
@@ -133,8 +133,8 @@ namespace AllOverIt.Filtering.Builders
         /// <param name="options">Optional options that control how the specification is constructed.</param>
         /// <returns>An OR combined specification that performs an operation or comparison against a specified string property on a
         /// <typeparamref name="TType"/> instance.</returns>
-        ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation1,
-            Func<TFilter, IBasicFilterOperation> operation2, Action<OperationFilterOptions> options = default);
+        ILinqSpecification<TType> Or<TProperty>(Expression<Func<TType, TProperty?>> propertyExpression, Func<TFilter, IBasicFilterOperation> operation1,
+            Func<TFilter, IBasicFilterOperation> operation2, Action<OperationFilterOptions>? options = default);
 
         #endregion
     }

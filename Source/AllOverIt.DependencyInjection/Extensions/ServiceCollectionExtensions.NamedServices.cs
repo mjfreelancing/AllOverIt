@@ -14,7 +14,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <returns>An <see cref="INamedServiceBuilder{TService}"/> that can be used to register the implementation types by name.</returns>
         public static INamedServiceBuilder<TService> AddNamedServices<TService>(this IServiceCollection serviceCollection) where TService : class
         {
-            _ = serviceCollection.WhenNotNull(nameof(serviceCollection));
+            _ = serviceCollection.WhenNotNull();
 
             // The builder provides a mechanism for the caller to register named services in the IServiceCollection and an INamedDependencyResolver
             var builder = new NamedServiceBuilder<TService>(serviceCollection);

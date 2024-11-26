@@ -5,7 +5,12 @@
         internal const string AppName = "AppSyncDemo";
         internal const int ServiceVersion = 1;
 
-        internal static class Function
+        internal static class EventBridgeDataSource
+        {
+            internal const string Default = "Default";
+        }
+
+        internal static class LambdaDataSource
         {
             internal const string GetLanguages = "GetLanguages";
             internal const string AddCountry = "AddCountry";
@@ -15,18 +20,23 @@
         internal static class HttpDataSource
         {
             // need a real URL for the deployment to succeed
-            internal const string GetLanguageUrlExplicit = "https://www.google.com";
-            internal const string GetAllContinentsUrlEnvironmentName = "GetAllContinents";
+            internal const string GetLanguageUrlExportName = "GetLanguageUrl";
+            internal const string GetAllContinentsUrlEnvironmentName = "GetAllContinentsUrl";
+            internal const string GetPopulationUrl = nameof(GetPopulationUrl);
+            internal const string GetCountriesUrlImportName = "GetCountriesUrl";
+            internal const string GetCountryCodesUrl = nameof(GetCountryCodesUrl);
         }
 
-        internal static class Import
+        internal static class NoneDataSource
         {
-            internal const string GetCountriesUrlImportName = "GetCountriesImport";
+            // Demonstrating use of shared NONE datasources
+            internal const string Query = nameof(Query);
+            internal const string Mutation = nameof(Mutation);
         }
 
-        internal static class Lookup
+        internal static class SubscriptionDataSource
         {
-            internal const string GetCountriesUrlKey = "GetCountriesLookup";
+            internal const string AddedLanguage = "AddedLanguage";
         }
     }
 }

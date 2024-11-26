@@ -6,7 +6,8 @@ namespace ExecuteCommandOnEnterKeyBehavior
 {
     public sealed class MainWindowViewModel : ObservableObject
     {
-        private IDisposable _intervalSubscription;
+        private bool _disposed;
+        private readonly IDisposable _intervalSubscription;
 
         private DateTime _currentDateTime;
         public DateTime CurrentDateTime
@@ -20,7 +21,7 @@ namespace ExecuteCommandOnEnterKeyBehavior
         public MainWindowViewModel()
         {
             // Approach #1
-            var uiSynchronizationContext = SynchronizationContext.Current;
+            var uiSynchronizationContext = SynchronizationContext.Current!;
 
             _intervalSubscription = Observable
                 .Interval(TimeSpan.FromSeconds(1))
@@ -47,10 +48,14 @@ namespace ExecuteCommandOnEnterKeyBehavior
         // Doing it this way out of convenience - wouldn't do this in production.
         public void OnClosing()
         {
-            // Need to make sure the subscription is disposed to prevent the ObserveOnUIThread()
-            // method attempting to access the application's dispatcher when it is no longer available.
-            _intervalSubscription?.Dispose();
-            _intervalSubscription = null;
+            if (!_disposed)
+            {
+                // Need to make sure the subscription is disposed to prevent the ObserveOnUIThread()
+                // method attempting to access the application's dispatcher when it is no longer available.
+                _intervalSubscription?.Dispose();
+
+                _disposed = true;
+            }
         }
     }
 }

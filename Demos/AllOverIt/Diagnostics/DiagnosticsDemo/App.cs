@@ -16,8 +16,8 @@ namespace DiagnosticsDemo
 
         public App(IBreadcrumbs breadcrumbs, ILogger<App> logger)
         {
-            _breadcrumbs = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _breadcrumbs = breadcrumbs.WhenNotNull();
+            _logger = logger.WhenNotNull();
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -59,7 +59,7 @@ namespace DiagnosticsDemo
 
                 if (breadcrumb.CallerName.IsNotNullOrEmpty())
                 {
-                    _logger.LogInformation($"Called from {breadcrumb.CallerName} at {breadcrumb.FilePath}:{breadcrumb.LineNumber}");
+                    _logger.LogInformation("Called from {CallerName} at {FilePath}:{LineNumber}", breadcrumb.CallerName, breadcrumb.FilePath, breadcrumb.LineNumber);
                 }
 
                 Console.WriteLine();

@@ -15,10 +15,10 @@ namespace AllOverIt.Formatters.Objects
         /// <remarks>Excludes {Task} and {Task&lt;>} by default.</remarks>
         public IEnumerable<Type> IgnoredTypes => _ignoredTypes;
 
-        /// <summary>If true then null value properties will be included, otherwise they will be omitted.</summary>
+        /// <summary>When <see langword="True"/> then <see langword="null"/> value properties will be included, otherwise they will be omitted.</summary>
         public bool IncludeNulls { get; set; }
 
-        /// <summary>If true then empty collection properties will be included, otherwise they will be omitted.</summary>
+        /// <summary>If <see langword="True"/> then empty collection properties will be included, otherwise they will be omitted.</summary>
         public bool IncludeEmptyCollections { get; set; }
 
         /// <summary>Binding options that determine how properties are resolved.</summary>

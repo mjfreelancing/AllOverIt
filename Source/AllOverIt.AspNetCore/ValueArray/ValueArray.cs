@@ -5,6 +5,6 @@
     public abstract class ValueArray<TType>
     {
         /// <summary>The values converted from the query string.</summary>
-        public IReadOnlyCollection<TType> Values { get; init; }
+        public TType[]? Values { get; init; }
     }
 }

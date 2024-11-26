@@ -12,11 +12,11 @@ namespace AllOverIt.Mapping.Extensions
         /// <param name="mapper">The object mapper instance.</param>
         /// <param name="sources">The source elements.</param>
         /// <returns>An <see cref="IEnumerable"/> of elements mapped to the <typeparamref name="TTarget"/> type.</returns>
-        public static IEnumerable<TTarget> MapMany<TTarget>(this IObjectMapper mapper, IEnumerable sources)
+        public static IEnumerable<TTarget?> MapMany<TTarget>(this IObjectMapper mapper, IEnumerable sources)
            where TTarget : class, new()
         {
-            _ = mapper.WhenNotNull(nameof(mapper));
-            _ = sources.WhenNotNull(nameof(sources));
+            _ = mapper.WhenNotNull();
+            _ = sources.WhenNotNull();
 
             var enumerator = sources.GetEnumerator();
 
@@ -32,12 +32,12 @@ namespace AllOverIt.Mapping.Extensions
         /// <param name="mapper">The object mapper instance.</param>
         /// <param name="sources">The source elements.</param>
         /// <returns>An <see cref="IEnumerable"/> of elements mapped to the <typeparamref name="TTarget"/> type.</returns>
-        public static IEnumerable<TTarget> MapMany<TSource, TTarget>(this IObjectMapper mapper, IEnumerable<TSource> sources)
+        public static IEnumerable<TTarget?> MapMany<TSource, TTarget>(this IObjectMapper mapper, IEnumerable<TSource> sources)
             where TSource : class
             where TTarget : class, new()
         {
-            _ = mapper.WhenNotNull(nameof(mapper));
-            _ = sources.WhenNotNull(nameof(sources));
+            _ = mapper.WhenNotNull();
+            _ = sources.WhenNotNull();
 
             return sources.Select(source =>
             {

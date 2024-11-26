@@ -1,5 +1,5 @@
-﻿using AllOverIt.Reactive;
-using AllOverIt.Reactive.Extensions;
+﻿using AllOverIt.Reactive.Extensions;
+using AllOverIt.Reactive.Messaging;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;

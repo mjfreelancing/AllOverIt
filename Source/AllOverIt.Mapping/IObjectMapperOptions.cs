@@ -5,10 +5,10 @@
     {
         /// <summary>
         /// <para>The default mapping behaviour of collections when the source is <see langword="null"/> is to create an empty array, list, or
-        /// dictionary. This option changes that behaviour so a <see langword="null"/> source value is mapped as a <see langword="null"/>
-        /// target value.</para>
-        /// <para>If the target collection cannot be assigned an array, list, or dictionary then the mapper should be configured
-        /// to construct or convert the source value to the required type.</para>
+        /// dictionary. When <see langword="True"/>, this option changes that behaviour so a <see langword="null"/> source value is mapped as
+        /// a <see langword="null"/> target value.</para>
+        /// <para>If the target collection cannot be assigned an array, list, or dictionary, then the mapper should be configured
+        /// to construct, or convert, the source value to the required type.</para>
         /// </summary>
         bool AllowNullCollections { get; set; }
 

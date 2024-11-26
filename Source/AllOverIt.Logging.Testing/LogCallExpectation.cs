@@ -16,7 +16,7 @@ namespace AllOverIt.Logging.Testing
         /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedStaticLogCallMetadata(string callerName)
         {
-            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
+            _ = callerName.WhenNotNullOrEmpty();
 
             return new Dictionary<string, object>
             {
@@ -31,7 +31,7 @@ namespace AllOverIt.Logging.Testing
         /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedLogCallMetadata<TCaller>(string callerName)
         {
-            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
+            _ = callerName.WhenNotNullOrEmpty();
 
             var callerType = typeof(TCaller);
 
@@ -48,8 +48,8 @@ namespace AllOverIt.Logging.Testing
         /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedStaticLogCallWithArgumentsMetadata(string callerName, object arguments)
         {
-            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
-            _ = arguments.WhenNotNull(nameof(arguments));
+            _ = callerName.WhenNotNullOrEmpty();
+            _ = arguments.WhenNotNull();
 
             return new Dictionary<string, object>
             {
@@ -66,8 +66,8 @@ namespace AllOverIt.Logging.Testing
         /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedLogCallWithArgumentsMetadata<TCaller>(string callerName, object arguments)
         {
-            _ = callerName.WhenNotNullOrEmpty(nameof(callerName));
-            _ = arguments.WhenNotNull(nameof(arguments));
+            _ = callerName.WhenNotNullOrEmpty();
+            _ = arguments.WhenNotNull();
 
             var callerType = typeof(TCaller);
 
@@ -84,7 +84,7 @@ namespace AllOverIt.Logging.Testing
         /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedExceptionMetadata(Exception exception)
         {
-            _ = exception.WhenNotNull(nameof(exception));
+            _ = exception.WhenNotNull();
 
             return new Dictionary<string, object>
             {
@@ -98,7 +98,7 @@ namespace AllOverIt.Logging.Testing
         /// <returns>The expected metadata.</returns>
         public static IDictionary<string, object> GetExpectedLogMessageMetadata(string message)
         {
-            _ = message.WhenNotNullOrEmpty(nameof(message));
+            _ = message.WhenNotNullOrEmpty();
 
             return new Dictionary<string, object>
             {
@@ -110,10 +110,10 @@ namespace AllOverIt.Logging.Testing
         /// <param name="logTemplate">The log template expected to be captured.</param>
         /// <param name="arguments">The arguments expected to be captured.</param>
         /// <returns>The expected metadata.</returns>
-        public static IDictionary<string, object> GetExpectedLogTemplateWithArgumentsMetadata(string logTemplate, object arguments)
+        public static IDictionary<string, object?> GetExpectedLogTemplateWithArgumentsMetadata(string logTemplate, object arguments)
         {
-            _ = logTemplate.WhenNotNullOrEmpty(nameof(logTemplate));
-            _ = arguments.WhenNotNull(nameof(arguments));
+            _ = logTemplate.WhenNotNullOrEmpty();
+            _ = arguments.WhenNotNull();
 
             return GetExpectedLogTemplateWithArgumentsMetadata(logTemplate, arguments.ToPropertyDictionary());
         }
@@ -122,12 +122,12 @@ namespace AllOverIt.Logging.Testing
         /// <param name="logTemplate">The log template expected to be captured.</param>
         /// <param name="arguments">The arguments, as a <c>Dictionary&lt;string, object&gt;</c>, expected to be captured.</param>
         /// <returns>The expected metadata.</returns>
-        public static IDictionary<string, object> GetExpectedLogTemplateWithArgumentsMetadata(string logTemplate, IDictionary<string, object> arguments)
+        public static IDictionary<string, object?> GetExpectedLogTemplateWithArgumentsMetadata(string logTemplate, IDictionary<string, object?> arguments)
         {
-            _ = logTemplate.WhenNotNullOrEmpty(nameof(logTemplate));
-            _ = arguments.WhenNotNull(nameof(arguments));
+            _ = logTemplate.WhenNotNullOrEmpty();
+            _ = arguments.WhenNotNull();
 
-            return new Dictionary<string, object>(arguments)
+            return new Dictionary<string, object?>(arguments)
             {
                 { OriginalFormat, logTemplate }
             };

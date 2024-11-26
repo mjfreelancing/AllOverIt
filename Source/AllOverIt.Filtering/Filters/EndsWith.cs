@@ -1,11 +1,11 @@
 ﻿namespace AllOverIt.Filtering.Filters
 {
-    /// <summary>Provides a filter that returns true when the element ends with the value of this filter.</summary>
+    /// <summary>Provides a filter that returns <see langword="True"/> when the element ends with the value of this filter.</summary>
     public sealed class EndsWith : IEndsWith
     {
-        /// <summary>The filter value used for comparison. The comparison returns true when the
+        /// <summary>The filter value used for comparison. The comparison returns <see langword="True"/> when the
         /// element ends with the value of this property.</summary>
-        public string Value { get; set; }
+        public string? Value { get; set; }
 
         /// <summary>Default constructor.</summary>
         public EndsWith()
@@ -21,14 +21,14 @@
 
         /// <summary>Explicit operator to return the provided <see cref="EndsWith"/> instance as a string.</summary>
         /// <param name="value">The <see cref="EndsWith"/> instance.</param>
-        public static explicit operator string(EndsWith value)
+        public static explicit operator string?(EndsWith value)
         {
             return value.Value;
         }
 
         /// <summary>Implicit operator to return the provided string as a <see cref="EndsWith"/> instance.</summary>
         /// <param name="value">The string value.</param>
-        public static implicit operator EndsWith(string value)
+        public static implicit operator EndsWith(string? value)
         {
             return new EndsWith
             {

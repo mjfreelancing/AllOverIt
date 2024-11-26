@@ -28,8 +28,8 @@ namespace AllOverIt.Cryptography.RSA
         /// <remarks>At least one of the public / private keys must be provided.</remarks>
         public RsaEncryptorConfiguration(byte[] publicKey, byte[] privateKey)
         {
-            _ = publicKey.WhenNotNull(nameof(publicKey));
-            _ = privateKey.WhenNotNull(nameof(privateKey));
+            _ = publicKey.WhenNotNull();
+            _ = privateKey.WhenNotNull();
 
             Keys = new RsaKeyPair(publicKey, privateKey);
         }
@@ -42,8 +42,8 @@ namespace AllOverIt.Cryptography.RSA
         /// <remarks>At least one of the public / private keys must be provided.</remarks>
         public RsaEncryptorConfiguration(string publicKeyBase64, string privateKeyBase64)
         {
-            _ = publicKeyBase64.WhenNotNull(nameof(publicKeyBase64));
-            _ = privateKeyBase64.WhenNotNull(nameof(privateKeyBase64));
+            _ = publicKeyBase64.WhenNotNull();
+            _ = privateKeyBase64.WhenNotNull();
 
             Keys = new RsaKeyPair(publicKeyBase64, privateKeyBase64);
         }
@@ -59,7 +59,7 @@ namespace AllOverIt.Cryptography.RSA
         /// <param name="rsaKeyPair">The RSA public / private key pair to use with encryption or decryption operations.</param>
         public RsaEncryptorConfiguration(RsaKeyPair rsaKeyPair)
         {
-            Keys = rsaKeyPair.WhenNotNull(nameof(rsaKeyPair));
+            Keys = rsaKeyPair.WhenNotNull();
         }
     }
 }

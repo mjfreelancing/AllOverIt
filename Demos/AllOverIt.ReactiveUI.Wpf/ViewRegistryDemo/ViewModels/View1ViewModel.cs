@@ -11,6 +11,7 @@ namespace ViewRegistryDemo.ViewModels
 
         protected override void OnActivated(CompositeDisposable disposables)
         {
+
         }
     }
 }

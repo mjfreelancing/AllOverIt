@@ -23,7 +23,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
         /// <inheritdoc />
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            _ = bindingContext.WhenNotNull(nameof(bindingContext));
+            _ = bindingContext.WhenNotNull();
 
             var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.FieldName);
 
@@ -34,7 +34,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
 
             var enumerationValue = valueProviderResult.FirstValue;
 
-            if (TryGetEnrichedEnum(enumerationValue, out var result))
+            if (enumerationValue is not null && TryGetEnrichedEnum(enumerationValue, out var result))
             {
                 bindingContext.Result = ModelBindingResult.Success(result);
             }
@@ -48,10 +48,11 @@ namespace AllOverIt.AspNetCore.ModelBinders
             return Task.CompletedTask;
         }
 
-        private static bool TryGetEnrichedEnum(string value, out TEnum result)
+        private static bool TryGetEnrichedEnum(string value, out TEnum? result)
         {
             // Removing leading/trailing quotes in case they are provided on a query string
             value = value.Trim('"');
+
             return EnrichedEnum<TEnum>.TryFromNameOrValue(value, out result);
         }
     }

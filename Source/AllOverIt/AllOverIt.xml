@@ -744,42 +744,42 @@
             <typeparam name="TType">The value type.</typeparam>
             <param name="comparable">The left operand of the comparison.</param>
             <param name="other">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is less than the right operand.</returns>
+            <returns><see langword="True" /> if the left operand is less than the right operand.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.ComparableExtensions.LessThanOrEqual``1(System.IComparable{``0},``0)">
             <summary>Compares one comparable with another and returns a result indicating if it is less than or equal to the other.</summary>
             <typeparam name="TType">The value type.</typeparam>
             <param name="comparable">The left operand of the comparison.</param>
             <param name="other">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is less than or equal to the right operand.</returns>
+            <returns><see langword="True" /> if the left operand is less than or equal to the right operand.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.ComparableExtensions.GreaterThan``1(System.IComparable{``0},``0)">
             <summary>Compares one comparable with another and returns a result indicating if it is greater than the other.</summary>
             <typeparam name="TType">The value type.</typeparam>
             <param name="comparable">The left operand of the comparison.</param>
             <param name="other">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is greater than the right operand.</returns>
+            <returns><see langword="True" /> if the left operand is greater than the right operand.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.ComparableExtensions.GreaterThanOrEqual``1(System.IComparable{``0},``0)">
             <summary>Compares one comparable with another and returns a result indicating if it is greater than or equal to the other.</summary>
             <typeparam name="TType">The value type.</typeparam>
             <param name="comparable">The left operand of the comparison.</param>
             <param name="other">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is greater than or equal to the right operand.</returns>
+            <returns><see langword="True" /> if the left operand is greater than or equal to the right operand.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.ComparableExtensions.EqualTo``1(System.IComparable{``0},``0)">
             <summary>Compares one comparable with another and returns a result indicating if it is equal to the other.</summary>
             <typeparam name="TType">The value type.</typeparam>
             <param name="comparable">The left operand of the comparison.</param>
             <param name="other">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is equal to the right operand.</returns>
+            <returns><see langword="True" /> if the left operand is equal to the right operand.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.ComparableExtensions.NotEqualTo``1(System.IComparable{``0},``0)">
             <summary>Compares one comparable with another and returns a result indicating if it is not equal to the other.</summary>
             <typeparam name="TType">The value type.</typeparam>
             <param name="comparable">The left operand of the comparison.</param>
             <param name="other">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is not equal to the right operand.</returns>
+            <returns><see langword="True" /> if the left operand is not equal to the right operand.</returns>
         </member>
         <member name="T:AllOverIt.Extensions.DictionaryExtensions">
             <summary>Provides a variety of extension methods for <see cref="T:System.Collections.Generic.IDictionary`2"/>.</summary>
@@ -808,7 +808,7 @@
         <member name="M:AllOverIt.Extensions.DoubleExtensions.IsZero(System.Double)">
             <summary>Determines if the provided value is considered to be zero.</summary>
             <param name="value">The value to be compared.</param>
-            <returns><see langword="true" /> if the value is considered to be zero, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the value is considered to be zero, otherwise <see langword="False" />.</returns>
             <remarks>The value is considered to be zero if the absolute value is less than an internal value of
             Epsilon (1E-7). Use the <see cref="M:AllOverIt.Extensions.DoubleExtensions.IsZero(System.Double,System.Double)"/> overload to provide an alternative value
             of Epsilon.</remarks>
@@ -817,7 +817,7 @@
             <summary>Determines if the provided value is considered to be zero based on a provided value of Epsilon.</summary>
             <param name="value">The value to be compared.</param>
             <param name="epsilon">The value of Epsilon to determine if the value should be considered as zero.</param>
-            <returns><see langword="true" /> if the value is considered to be zero, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the value is considered to be zero, otherwise <see langword="False" />.</returns>
             <remarks>The value is considered to be zero if the absolute value is less than the provided value of
             Epsilon.</remarks>
         </member>
@@ -827,7 +827,7 @@
             of Epsilon.</summary>
             <param name="lhs">The left double value to be compared.</param>
             <param name="rhs">The right double value to be compared.</param>
-            <returns><see langword="true" /> if the values are considered to be equal, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the values are considered to be equal, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.DoubleExtensions.IsEqualTo(System.Double,System.Double,System.Double)">
             <summary>Compares two double values and considers them equal if their absolute difference is less than the provided
@@ -835,7 +835,7 @@
             <param name="lhs">The left double value to be compared.</param>
             <param name="rhs">The right double value to be compared.</param>
             <param name="epsilon"></param>
-            <returns><see langword="true" /> if the values are considered to be equal, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the values are considered to be equal, otherwise <see langword="False" />.</returns>
         </member>
         <member name="T:AllOverIt.Extensions.EnumerableExtensions">
             <summary>Provides a variety of extension methods for <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</summary>
@@ -908,7 +908,7 @@
             Applicable to strings and collections, this method determines if the instance is null or empty.
             </summary>
             <param name="items">The object of interest.</param>
-            <returns><see langword="true" /> if the object is null or empty.</returns>
+            <returns><see langword="True" /> if the object is null or empty.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.EnumerableExtensions.Batch``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
             <summary>
@@ -1103,14 +1103,14 @@
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
             <param name="candidates">The elements to apply the specification against.</param>
             <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns><see langword="true" /> if any of the candidates meet the criteria of the provided specification.</returns>
+            <returns><see langword="True" /> if any of the candidates meet the criteria of the provided specification.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.EnumerableExtensions.All``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
             <summary>Determines if all candidates meet the criteria of a provided specification.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
             <param name="candidates">The elements to apply the specification against.</param>
             <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns><see langword="true" /> if all of the candidates meet the criteria of the provided specification.</returns>
+            <returns><see langword="True" /> if all of the candidates meet the criteria of the provided specification.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.EnumerableExtensions.Count``1(System.Collections.Generic.IEnumerable{``0},AllOverIt.Patterns.Specification.ISpecification{``0})">
             <summary>Counts the number of candidates that meet the criteria of a provided specification.</summary>
@@ -1369,56 +1369,56 @@
             Determines if the provided <paramref name="propertyInfo"/> is for an abstract property.
             </summary>
             <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> for a property.</param>
-            <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for an abstract property, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <paramref name="propertyInfo"/> is for an abstract property, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.PropertyInfoExtensions.IsInternal(System.Reflection.PropertyInfo)">
             <summary>
             Determines of the <paramref name="propertyInfo"/> is for an internal property.
             </summary>
             <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> for a property.</param>
-            <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for an internal property, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <paramref name="propertyInfo"/> is for an internal property, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.PropertyInfoExtensions.IsPrivate(System.Reflection.PropertyInfo)">
             <summary>
             Determines of the <paramref name="propertyInfo"/> is for a private property.
             </summary>
             <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> for a property.</param>
-            <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a virtual property, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <paramref name="propertyInfo"/> is for a virtual property, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.PropertyInfoExtensions.IsProtected(System.Reflection.PropertyInfo)">
             <summary>
             Determines of the <paramref name="propertyInfo"/> is for a protected property.
             </summary>
             <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> for a property.</param>
-            <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a protected property, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <paramref name="propertyInfo"/> is for a protected property, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.PropertyInfoExtensions.IsPublic(System.Reflection.PropertyInfo)">
             <summary>
             Determines of the <paramref name="propertyInfo"/> is for a public property.
             </summary>
             <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> for a property.</param>
-            <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a public property, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <paramref name="propertyInfo"/> is for a public property, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.PropertyInfoExtensions.IsStatic(System.Reflection.PropertyInfo)">
             <summary>
             Determines of the <paramref name="propertyInfo"/> is for a static property.
             </summary>
             <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> for a property.</param>
-            <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a static property, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <paramref name="propertyInfo"/> is for a static property, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.PropertyInfoExtensions.IsVirtual(System.Reflection.PropertyInfo)">
             <summary>
             Determines of the <paramref name="propertyInfo"/> is for a virtual property.
             </summary>
             <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> for a property.</param>
-            <returns><see langword="true" /> if the <paramref name="propertyInfo"/> is for a virtual property, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <paramref name="propertyInfo"/> is for a virtual property, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.PropertyInfoExtensions.IsIndexer(System.Reflection.PropertyInfo)">
             <summary>
             Determines if a property is an indexer.
             </summary>
             <param name="propertyInfo">The <see cref="T:System.Reflection.PropertyInfo"/> for a property.</param>
-            <returns><see langword="true" /> if the property is an indexer.</returns>
+            <returns><see langword="True" /> if the property is an indexer.</returns>
         </member>
         <member name="T:AllOverIt.Extensions.QueryableExtensions">
             <summary>Provides a variety of extension methods for <see cref="T:System.Linq.IQueryable`1"/>.</summary>
@@ -1435,14 +1435,14 @@
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
             <param name="candidates">The elements to apply the specification against.</param>
             <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns><see langword="true" /> if any of the candidates meet the criteria of the provided specification.</returns>
+            <returns><see langword="True" /> if any of the candidates meet the criteria of the provided specification.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.QueryableExtensions.All``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
             <summary>Determines if all candidates meet the criteria of a provided specification.</summary>
             <typeparam name="TType">The candidate type the specification applies to.</typeparam>
             <param name="candidates">The elements to apply the specification against.</param>
             <param name="specification">The specification to apply against a collection of elements.</param>
-            <returns><see langword="true" /> if all of the candidates meet the criteria of the provided specification.</returns>
+            <returns><see langword="True" /> if all of the candidates meet the criteria of the provided specification.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.QueryableExtensions.Count``1(System.Linq.IQueryable{``0},AllOverIt.Patterns.Specification.ILinqSpecification{``0})">
             <summary>Counts the number of candidates that meet the criteria of a provided specification.</summary>
@@ -1560,7 +1560,7 @@
             <summary>Determines if a string contains a specified character.</summary>
             <param name="str">The string to be tested.</param>
             <param name="value">The character value to be searched for within the string.</param>
-            <returns><see langword="true" /> if the string contains the specified character, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the string contains the specified character, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.StringExtensions.As``1(System.String,``0)">
             <summary>Converts a given string to another type.</summary>
@@ -1584,7 +1584,7 @@
         <member name="M:AllOverIt.Extensions.StringExtensions.IsNullOrEmpty(System.String)">
             <summary>Determines if a string is null, empty, or contains whitespace.</summary>
             <param name="value">The string value to compare.</param>
-            <returns><see langword="true" /> if the string is null, empty, or contains whitespace, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the string is null, empty, or contains whitespace, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.StringExtensions.ToBase64(System.String)">
             <summary>Encodes a string value using base-64 digits.</summary>
@@ -1628,7 +1628,7 @@
             by <paramref name="type"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.GetMethodInfo(System.Type,AllOverIt.Reflection.BindingOptions,System.Boolean)">
-            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <see cref="T:System.Type"/> and binding option.</summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> for a given <see cref="T:System.Type"/> and binding option.</summary>
             <param name="type">The type to obtain method metadata for.</param>
             <param name="binding">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
             <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned.
@@ -1638,14 +1638,14 @@
             by <paramref name="type"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.GetMethodInfo(System.Type,System.String)">
-            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <see cref="T:System.Type"/> method with a given name and no arguments.</summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> for a given <see cref="T:System.Type"/> method with a given name and no arguments.</summary>
             <param name="type">The type to obtain method metadata for.</param>
             <param name="name">The name of the method.</param>
             <returns>The method metadata, as <see cref="T:System.Reflection.MethodInfo"/>, of a provided <see cref="T:System.Type"/> with a given name and no arguments.</returns>
             <remarks>All instance, static, public, and non-public methods are searched.</remarks>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.GetMethodInfo(System.Type,System.String,System.Type[])">
-            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <see cref="T:System.Type"/> method with a given name and argument types.</summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> for a given <see cref="T:System.Type"/> method with a given name and argument types.</summary>
             <param name="type">The type to obtain method metadata for.</param>
             <param name="name">The name of the method.</param>
             <param name="types">The argument types expected on the method</param>
@@ -1655,43 +1655,43 @@
         <member name="M:AllOverIt.Extensions.TypeExtensions.IsEnumType(System.Type)">
             <summary>Indicates if the <see cref="T:System.Type"/> represents an enumeration type.</summary>
             <param name="type">The type to compare.</param>
-            <returns><see langword="true" /> if the <see cref="T:System.Type"/> represents an enumeration type, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <see cref="T:System.Type"/> represents an enumeration type, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.IsClassType(System.Type)">
             <summary>Indicates if the <see cref="T:System.Type"/> represents a class type.</summary>
             <param name="type">The type to compare.</param>
-            <returns><see langword="true" /> if the <see cref="T:System.Type"/> represents a class type, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <see cref="T:System.Type"/> represents a class type, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.IsPrimitiveType(System.Type)">
             <summary>Indicates if the <see cref="T:System.Type"/> represents a primitive type.</summary>
             <param name="type">The type to compare.</param>
-            <returns><see langword="true" /> if the <see cref="T:System.Type"/> represents a primitive type, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <see cref="T:System.Type"/> represents a primitive type, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.IsIntegralType(System.Type)">
             <summary>Indicates if the <see cref="T:System.Type"/> represents an integral type.</summary>
             <param name="type">The type to compare.</param>
-            <returns><see langword="true" /> if the <see cref="T:System.Type"/> represents an integral type, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <see cref="T:System.Type"/> represents an integral type, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.IsFloatingType(System.Type)">
             <summary>Indicates if the <see cref="T:System.Type"/> represents a floating type.</summary>
             <param name="type">The type to compare.</param>
-            <returns><see langword="true" /> if the <see cref="T:System.Type"/> represents a floating type, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <see cref="T:System.Type"/> represents a floating type, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.IsEnumerableType(System.Type,System.Boolean)">
             <summary>Indicates if the <see cref="T:System.Type"/> represents an enumerable type.</summary>
             <param name="type">The type to compare.</param>
             <param name="includeString">Indicates if a string type should be considered as an enumerable (of char).</param>
-            <returns><see langword="true" /> if the <see cref="T:System.Type"/> represents an enumerable type, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <see cref="T:System.Type"/> represents an enumerable type, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.IsGenericEnumerableType(System.Type)">
             <summary>Indicates if the <see cref="T:System.Type"/> represents a generic enumerable type.</summary>
             <param name="type">The type to compare.</param>
-            <returns><see langword="true" /> if the <see cref="T:System.Type"/> represents a generic enumerable type, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <see cref="T:System.Type"/> represents a generic enumerable type, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.IsGenericType(System.Type)">
             <summary>Indicates if the <see cref="T:System.Type"/> represents a generic type.</summary>
             <param name="type">The type to compare.</param>
-            <returns><see langword="true" /> if the <see cref="T:System.Type"/> represents a generic type, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <see cref="T:System.Type"/> represents a generic type, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.GetGenericArguments(System.Type)">
             <summary>Gets an array of the generic type arguments for this type.</summary>
@@ -1702,12 +1702,12 @@
             <summary>Determines if a type (or interface) inherits from another type (or interface).</summary>
             <param name="type">The type to be tested.</param>
             <param name="fromType">The generic type, such as typeof(List&lt;T&gt;).</param>
-            <returns><see langword="true" /> if <paramref name="type"/> inherits from <paramref name="fromType"/>, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if <paramref name="type"/> inherits from <paramref name="fromType"/>, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.IsGenericNullableType(System.Type)">
             <summary>Indicates if the <see cref="T:System.Type"/> represents a generic nullable type.</summary>
             <param name="type">The type to compare.</param>
-            <returns><see langword="true" /> if the <see cref="T:System.Type"/> represents a generic nullable type, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the <see cref="T:System.Type"/> represents a generic nullable type, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Extensions.TypeExtensions.GetFriendlyName(System.Type)">
             <summary>A utility method that returns a print-friendly name for a given type.</summary>
@@ -1940,7 +1940,7 @@
             <summary>Determines if the provided child path is a subfolder of the provided parent path.</summary>
             <param name="parentPath">The parent path.</param>
             <param name="childPath">The child path.</param>
-            <returns><see langword="true" /> if the child path is an immediate subfolder of the parent path.</returns>
+            <returns><see langword="True" /> if the child path is an immediate subfolder of the parent path.</returns>
         </member>
         <member name="M:AllOverIt.Io.FileUtils.GetAbsolutePath(System.String,System.String)">
             <summary>Creates an absolute path from a source path and a relative path.</summary>
@@ -2168,37 +2168,37 @@
             <summary>Attempts to convert the provided value to an enumeration instance.</summary>
             <param name="nameOrValue">The string name, or integer value (as a string), to convert to an equivalent enumeration instance.</param>
             <param name="enumeration">The matching enumeration instance if a match is found.</param>
-            <returns><see langword="true" /> if the conversion was successful, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the conversion was successful, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Enumeration.EnrichedEnum`1.op_Equality(AllOverIt.Patterns.Enumeration.EnrichedEnum{`0},AllOverIt.Patterns.Enumeration.EnrichedEnum{`0})">
             <param name="left">The left operand of the comparison.</param>
             <param name="right">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the enumerations are equal, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the enumerations are equal, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Enumeration.EnrichedEnum`1.op_Inequality(AllOverIt.Patterns.Enumeration.EnrichedEnum{`0},AllOverIt.Patterns.Enumeration.EnrichedEnum{`0})">
             <param name="left">The left operand of the comparison.</param>
             <param name="right">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the enumerations are not equal, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the enumerations are not equal, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Enumeration.EnrichedEnum`1.op_GreaterThan(AllOverIt.Patterns.Enumeration.EnrichedEnum{`0},AllOverIt.Patterns.Enumeration.EnrichedEnum{`0})">
             <param name="left">The left operand of the comparison.</param>
             <param name="right">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is greater than the right operand, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the left operand is greater than the right operand, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Enumeration.EnrichedEnum`1.op_GreaterThanOrEqual(AllOverIt.Patterns.Enumeration.EnrichedEnum{`0},AllOverIt.Patterns.Enumeration.EnrichedEnum{`0})">
             <param name="left">The left operand of the comparison.</param>
             <param name="right">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is greater than or equal to the right operand, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the left operand is greater than or equal to the right operand, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Enumeration.EnrichedEnum`1.op_LessThan(AllOverIt.Patterns.Enumeration.EnrichedEnum{`0},AllOverIt.Patterns.Enumeration.EnrichedEnum{`0})">
             <param name="left">The left operand of the comparison.</param>
             <param name="right">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is less than the right operand, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the left operand is less than the right operand, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Enumeration.EnrichedEnum`1.op_LessThanOrEqual(AllOverIt.Patterns.Enumeration.EnrichedEnum{`0},AllOverIt.Patterns.Enumeration.EnrichedEnum{`0})">
             <param name="left">The left operand of the comparison.</param>
             <param name="right">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is less than or equal to the right operand, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the left operand is less than or equal to the right operand, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Enumeration.EnrichedEnum`1.op_Implicit(AllOverIt.Patterns.Enumeration.EnrichedEnum{`0})~System.Int32">
             <summary>Implicit operator to convert an enumeration to its integer equivalent.</summary>
@@ -2224,7 +2224,7 @@
             A virtual method that is called at the time of disposal. For this class, the cleanup action provided at the time
             of construction is invoked.
             </summary>
-            <param name="disposing">Is true when the object is being disposed, otherwise <see langword="false" />.</param>
+            <param name="disposing">Is true when the object is being disposed, otherwise <see langword="False" />.</param>
         </member>
         <member name="T:AllOverIt.Patterns.ResourceInitialization.Raii`1">
             <summary>A strongly-type disposable object implementing the Resource Acquisition Is Initialization idiom.</summary>
@@ -2247,7 +2247,7 @@
             A virtual method that is called at the time of disposal. For this class, the cleanup action provided at the time
             of construction is invoked.
             </summary>
-            <param name="disposing">Is true when the object is being disposed, otherwise <see langword="false" />.</param>
+            <param name="disposing">Is true when the object is being disposed, otherwise <see langword="False" />.</param>
         </member>
         <member name="T:AllOverIt.Patterns.ResourceInitialization.RaiiAsync">
             <summary>An async disposable object implementing the Resource Acquisition Is Initialization idiom.</summary>
@@ -2376,7 +2376,7 @@
         <member name="M:AllOverIt.Patterns.Specification.ISpecification`1.IsSatisfiedBy(`0)">
             <summary>Applies a specification against a candidate subject.</summary>
             <param name="candidate">The subject to be tested against the specification.</param>
-            <returns><see langword="true" /> if the candidate satisfies the specification, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the candidate satisfies the specification, otherwise <see langword="False" />.</returns>
         </member>
         <member name="T:AllOverIt.Patterns.Specification.LinqSpecification`1">
             <inheritdoc cref="T:AllOverIt.Patterns.Specification.SpecificationBase`1"/>
@@ -2521,7 +2521,7 @@
         <member name="M:AllOverIt.Patterns.Specification.SpecificationBase`1.IsSatisfiedBy(`0)">
             <summary>Implemented by concrete classes to perform the required specification test.</summary>
             <param name="candidate">The subject to be tested against the specification.</param>
-            <returns><see langword="true" /> if the candidate satisfies the specification, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the candidate satisfies the specification, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.Specification.SpecificationBase`1.op_True(AllOverIt.Patterns.Specification.SpecificationBase{`0})">
             <summary>Required in combination with operator &amp; and | to support operator &amp;&amp; and ||.</summary>
@@ -2577,32 +2577,32 @@
         <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_Equality(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1},AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
             <param name="left">The left operand of the comparison.</param>
             <param name="right">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the ValueObject instances are equal, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the ValueObject instances are equal, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_Inequality(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1},AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
             <param name="left">The left operand of the comparison.</param>
             <param name="right">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the ValueObject instances are not equal, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the ValueObject instances are not equal, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_GreaterThan(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1},AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
             <param name="left">The left operand of the comparison.</param>
             <param name="right">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is greater than the right operand, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the left operand is greater than the right operand, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_GreaterThanOrEqual(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1},AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
             <param name="left">The left operand of the comparison.</param>
             <param name="right">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is greater than or equal to the right operand, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the left operand is greater than or equal to the right operand, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_LessThan(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1},AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
             <param name="left">The left operand of the comparison.</param>
             <param name="right">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is less than the right operand, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the left operand is less than the right operand, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_LessThanOrEqual(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1},AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})">
             <param name="left">The left operand of the comparison.</param>
             <param name="right">The right operand of the comparison.</param>
-            <returns><see langword="true" /> if the left operand is less than or equal to the right operand, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the left operand is less than or equal to the right operand, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Patterns.ValueObject.ValueObject`2.op_Implicit(AllOverIt.Patterns.ValueObject.ValueObject{`0,`1})~`0">
             <summary>Implicit operator to convert a ValueObject to its underlying value equivalent.</summary>
@@ -2770,7 +2770,7 @@
             by <typeparamref name="TType"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetMethodInfo``1(AllOverIt.Reflection.BindingOptions,System.Boolean)">
-            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> and binding option.</summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> for a given <typeparamref name="TType"/> and binding option.</summary>
             <typeparam name="TType">The type to obtain method metadata for.</typeparam>
             <param name="binding">The binding option that determines the scope, access, and visibility rules to apply when searching for the metadata.</param>
             <param name="declaredOnly">If true, the metadata of properties in the declared class as well as base class(es) are returned.
@@ -2780,14 +2780,14 @@
             by <typeparamref name="TType"/>.</remarks>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetMethodInfo``1(System.String)">
-            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> method with a given name and no arguments.</summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> for a given <typeparamref name="TType"/> method with a given name and no arguments.</summary>
             <typeparam name="TType">The type to obtain method metadata for.</typeparam>
             <param name="name">The name of the method.</param>
             <returns>The method metadata, as <see cref="T:System.Reflection.MethodInfo"/>, of a specified <typeparamref name="TType"/> with a given name and no arguments.</returns>
             <remarks>All instance, static, public, and non-public methods are searched.</remarks>
         </member>
         <member name="M:AllOverIt.Reflection.ReflectionHelper.GetMethodInfo``1(System.String,System.Type[])">
-            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> (method metadata) for a given <typeparamref name="TType"/> method with a given name and argument types.</summary>
+            <summary>Gets <see cref="T:System.Reflection.MethodInfo"/> for a given <typeparamref name="TType"/> method with a given name and argument types.</summary>
             <typeparam name="TType">The type to obtain method metadata for.</typeparam>
             <param name="name">The name of the method.</param>
             <param name="types">The argument types expected on the method</param>
@@ -2826,7 +2826,7 @@
             <param name="millisecondsTimeout">The timeout period to block the calling thread while trying to acquire the read lock.
             A value of 0 indicates the method should return if the lock cannot be immediately acquired.
             A value of -1 will result in the calling thread being blocked indefinitely, until the lock is acquired.</param>
-            <returns><see langword="true" /> if the lock was acquired, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the lock was acquired, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Threading.IReadWriteLock.ExitReadLock">
             <summary>Exists a previously acquired read lock.</summary>
@@ -2839,7 +2839,7 @@
             <param name="millisecondsTimeout">The timeout period to block the calling thread while trying to acquire the write lock.
             A value of 0 indicates the method should return if the lock cannot be immediately acquired.
             A value of -1 will result in the calling thread being blocked indefinitely, until the lock is acquired.</param>
-            <returns><see langword="true" /> if the lock was acquired, otherwise <see langword="false" />.</returns>
+            <returns><see langword="True" /> if the lock was acquired, otherwise <see langword="False" />.</returns>
         </member>
         <member name="M:AllOverIt.Threading.IReadWriteLock.ExitWriteLock">
             <summary>Exists a previously acquired write lock.</summary>

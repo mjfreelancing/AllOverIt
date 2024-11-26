@@ -1,6 +1,6 @@
 ﻿namespace AllOverIt.Aws.AppSync.Client.Subscription
 {
-    // messages related to the AppSync realtime protocol for subscriptions.
+    // Messages related to the AppSync realtime protocol for subscriptions.
     internal static class ProtocolMessage
     {
         public static class Request

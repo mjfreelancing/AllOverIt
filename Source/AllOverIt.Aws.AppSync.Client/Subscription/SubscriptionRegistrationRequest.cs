@@ -11,14 +11,14 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         {
             public SubscriptionRequest(string id, SubscriptionQueryPayload payload)
             {
-                Id = id.WhenNotNull(nameof(id));
+                Id = id.WhenNotNull();
                 Type = ProtocolMessage.Request.Start;
-                Payload = payload.WhenNotNull(nameof(payload));
+                Payload = payload.WhenNotNull();
             }
         }
 
         /// <summary>The subscription identifier.</summary>
-        public string Id => Request.Id;
+        public string Id => Request.Id!;
 
         /// <summary>The subscription message used for registration with AppSync.</summary>
         public SubscriptionRequest Request { get; }
@@ -35,8 +35,8 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// <param name="payload">The registration payload to be sent to AppSync.</param>
         protected SubscriptionRegistrationRequest(string id, SubscriptionQueryPayload payload)
         {
-            _ = id.WhenNotNull(nameof(id));
-            _ = payload.WhenNotNull(nameof(payload));
+            _ = id.WhenNotNullOrEmpty();
+            _ = payload.WhenNotNull();
 
             Request = new SubscriptionRequest(id, payload);
         }
@@ -59,15 +59,16 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
             IJsonSerializer serializer)
             : base(id, payload)
         {
-            ResponseAction = responseAction.WhenNotNull(nameof(responseAction));
-            _serializer = serializer.WhenNotNull(nameof(serializer));
+            ResponseAction = responseAction.WhenNotNull();
+            _serializer = serializer.WhenNotNull();
         }
 
         /// <summary>Deserializes the received message into a strongly-typed response.</summary>
         /// <param name="message">The response data as a serialized string.</param>
         public override void NotifyResponse(string message)
         {
-            var response = _serializer.DeserializeObject<WebSocketSubscriptionResponse<GraphqlSubscriptionResponse<TResponse>>>(message);
+            var response = _serializer.DeserializeObject<WebSocketSubscriptionResponse<GraphqlSubscriptionResponse<TResponse>>>(message)!;
+
             ResponseAction.Invoke(response.Payload);
         }
     }

@@ -7,6 +7,6 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
     internal sealed class WebSocketSubscriptionResponse<TPayload> : WebSocketGraphqlResponse<TPayload>
     {
         /// <summary>The subscription identifier this response is associated with.</summary>
-        public string Id { get; init; }
+        public required string Id { get; init; }
     }
 }

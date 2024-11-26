@@ -16,7 +16,7 @@ namespace DiagnosticsDemo
         public ConsoleBackgroundWorker(IBreadcrumbs breadcrumbs, IHostApplicationLifetime applicationLifetime)
             : base(applicationLifetime)
         {
-            _breadcrumbs = breadcrumbs.WhenNotNull(nameof(breadcrumbs));
+            _breadcrumbs = breadcrumbs.WhenNotNull();
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -42,7 +42,7 @@ namespace DiagnosticsDemo
 
             var tasks = Enumerable
                 .Range(1, 10)
-                .SelectAsReadOnlyCollection(item =>
+                .SelectToReadOnlyCollection(item =>
                 {
                     return Task.Run(async () =>
                     {

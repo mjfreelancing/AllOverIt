@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Objects;
 using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Patterns.Enumeration;
@@ -70,7 +71,7 @@ namespace AllOverIt.Tests.Extensions
         {
             public static readonly DummyEnrichedEnum Value1 = new(1);
 
-            protected DummyEnrichedEnum(int value, [CallerMemberName] string name = null)
+            protected DummyEnrichedEnum(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }
@@ -80,7 +81,7 @@ namespace AllOverIt.Tests.Extensions
         {
             public static readonly SuperEnrichedEnumDummy Value2 = new(2);
 
-            private SuperEnrichedEnumDummy(int value, [CallerMemberName] string name = null)
+            private SuperEnrichedEnumDummy(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }
@@ -134,6 +135,18 @@ namespace AllOverIt.Tests.Extensions
 
         public class ToPropertyDictionary : ObjectExtensionsFixture
         {
+            [Fact]
+            public void Should_Throw_When_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ObjectExtensions.ToPropertyDictionary(null, Create<bool>(), BindingOptions.Instance | BindingOptions.Public);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("instance");
+            }
+
             [Fact]
             public void Should_Return_Public_PropertyDictionary()
             {
@@ -265,7 +278,11 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = new Dictionary<string, object>
                 {
-                    { "Comparer", source.Comparer }, { "Count", source.Count }, { "Keys", source.Keys }, { "Values", source.Values }
+                    { "Comparer", source.Comparer }, { "Count", source.Count }, { "Keys", source.Keys }, { "Values", source.Values },
+
+#if NET9_0_OR_GREATER
+                    { "Capacity", source.Capacity }
+#endif
                 };
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source);

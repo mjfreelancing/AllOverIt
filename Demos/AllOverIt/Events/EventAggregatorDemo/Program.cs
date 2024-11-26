@@ -17,7 +17,7 @@ namespace EventAggregatorDemo
             Console.WriteLine("Messages will be published for 5 seconds...");
             Console.WriteLine();
 
-            var task1 = RepeatingTask.Start(() =>
+            var task1 = RepeatingTask.StartAsync(() =>
             {
                 var message = new StringMessage
                 {
@@ -25,9 +25,13 @@ namespace EventAggregatorDemo
                 };
 
                 aggregator.Publish(message);
-            }, 1000, cts.Token);
+            },
+            new RepeatingTaskOptions
+            {
+                RepeatDelay = TimeSpan.FromSeconds(1)
+            }, cts.Token);
 
-            var task2 = RepeatingTask.Start(async () =>
+            var task2 = RepeatingTask.StartAsync(async () =>
             {
                 var message = new LongMessage
                 {
@@ -35,7 +39,11 @@ namespace EventAggregatorDemo
                 };
 
                 await aggregator.PublishAsync(message);
-            }, 1000, cts.Token);
+            },
+            new RepeatingTaskOptions
+            {
+                RepeatDelay = TimeSpan.FromSeconds(1)
+            }, cts.Token);
 
             try
             {

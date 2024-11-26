@@ -16,7 +16,7 @@ namespace ValidationInvokerDemo
         {
             _validationInvoker = validationInvoker.WhenNotNull();
             _lifetimeValidationInvoker = lifetimeValidationInvoker.WhenNotNull();
-            _logger = logger.WhenNotNull(nameof(logger));
+            _logger = logger.WhenNotNull();
 
             //_logger.LogInformation($"The {personValidator.GetType().GetFriendlyName()} validator has been injected");
 
@@ -29,13 +29,13 @@ namespace ValidationInvokerDemo
 
             var errors = UseValidationInvoker();
 
-            _logger.LogError(string.Join($"  {Environment.NewLine}", errors));
+            _logger.LogError("{Errors}", string.Join($"  {Environment.NewLine}", errors));
 
             Console.WriteLine();
 
             errors = UseLifetimeValidationInvoker();
 
-            _logger.LogError(string.Join($"  {Environment.NewLine}", errors));
+            _logger.LogError("{Errors}", string.Join($"  {Environment.NewLine}", errors));
 
             ExitCode = 0;
 

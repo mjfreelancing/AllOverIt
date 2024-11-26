@@ -1,4 +1,5 @@
-﻿using AllOverIt.Serialization.Json.SystemText.Converters;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Serialization.Json.SystemText.Converters;
 using System.Text.Json.Serialization;
 
 namespace AllOverIt.Serialization.Json.SystemText.Extensions
@@ -24,6 +25,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Extensions
         public static void AddInterfaceConverter<TInterface, TConcrete>(this SystemTextJsonSerializer serializer)
             where TConcrete : class, TInterface
         {
+            _ = serializer.WhenNotNull();
+
             serializer.Options.Converters.Add(new InterfaceConverter<TInterface, TConcrete>());
         }
     }

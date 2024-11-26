@@ -204,6 +204,10 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
             [Fact]
             public void Should_Throw_When_Value_Null_Empty_Whitespace()
             {
+                var value = "{768:\"0000\",\"evt\":{\"handle\":\"000e\",\"type\":\"charValue\",\"uuid\":\"65333333-a115-11e2-9e9a-0800200ca101\"}}";
+
+                var helper = new JsonHelper(value);
+
                 AssertThrowsWhenStringNullOrEmptyOrWhitespace(
                     stringValue =>
                     {
@@ -887,6 +891,9 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
                 });
             }
         }
+
+
+
 
         public class GetDescendantElement : JsonHelperFixture
         {
@@ -1919,10 +1926,10 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
             {
                 AssertThrowsWhenStringNullOrEmptyOrWhitespace(
                     stringValue =>
-                    {
-                        var jsonHelper = CreateJsonHelper(true);
-                        _ = jsonHelper.GetDescendantObjectArrayValues<int>(CreateMany<string>(), stringValue);
-                    }, "childPropertyName");
+                {
+                    var jsonHelper = CreateJsonHelper(true);
+                    _ = jsonHelper.GetDescendantObjectArrayValues<int>(CreateMany<string>(), stringValue);
+                }, "childPropertyName");
             }
 
             [Theory]

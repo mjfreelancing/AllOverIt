@@ -10,7 +10,7 @@ namespace AllOverIt.Helpers.PropertyNavigation.Extensions
         /// <returns>The name of the property node.</returns>
         public static string Name(this PropertyNode node)
         {
-            _ = node.WhenNotNull(nameof(node));
+            _ = node.WhenNotNull();
 
             return node.Expression.Member.Name;
         }

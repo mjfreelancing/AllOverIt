@@ -59,12 +59,13 @@ namespace PropertyNavigationDemo
 
             var leafNodeType = member.Member.GetMemberType();
 
-            Type elementType = null;
+            Type? elementType = null;
 
             if (leafNodeType.IsArray)
             {
-                elementType = leafNodeType.GetElementType();
-                Console.WriteLine($"with a leaf node of type {elementType.GetFriendlyName()}[].");
+                elementType = leafNodeType.GetElementType()!;
+
+                Console.WriteLine($"With a leaf node of type {elementType.GetFriendlyName()}[].");
             }
 
             if (typeof(IEnumerable).IsAssignableFrom(leafNodeType))
@@ -72,19 +73,20 @@ namespace PropertyNavigationDemo
                 if (leafNodeType.IsGenericType)
                 {
                     elementType = leafNodeType.GetGenericArguments()[0];
-                    Console.WriteLine($"with a leaf node of type IEnumerable<{elementType.GetFriendlyName()}>.");
+
+                    Console.WriteLine($"With a leaf node of type IEnumerable<{elementType.GetFriendlyName()}>.");
                 }
             }
 
-            if (elementType == null)
+            if (elementType is null)
             {
                 // not an array or IEnumerable<T>
-                Console.WriteLine($"with a leaf node of type {leafNodeType.GetFriendlyName()}.");
+                Console.WriteLine($"With a leaf node of type {leafNodeType.GetFriendlyName()}.");
             }
 
             var typeToCheck = elementType ?? leafNodeType;
 
-            if (typeToCheck.IsClassType() && typeToCheck != CommonTypes.StringType)
+            if (typeToCheck.IsClass && typeToCheck != CommonTypes.StringType)
             {
                 Console.WriteLine("The leaf node/element is a class type");
             }

@@ -50,6 +50,18 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
                 expected.Should().BeEquivalentTo(actual);
             }
+
+            [Fact]
+            public void Should_Throw_When_Options_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new AllOverIt.Diagnostics.Breadcrumbs.Breadcrumbs(null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("options");
+            }
         }
 
         public class Enabled : BreadcrumbsFixture

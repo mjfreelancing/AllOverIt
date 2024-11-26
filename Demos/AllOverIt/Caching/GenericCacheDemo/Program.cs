@@ -118,7 +118,7 @@ namespace GenericCacheDemo
             var byBindingKey1 = new PropKeyByBinding(binding1);
             var byBindingResult = typeof(InfoModel)
                 .GetPropertyInfo(binding1)
-                .AsReadOnlyCollection();
+                .ToArray();
 
             cache.Add(byBindingKey1, byBindingResult);
 
@@ -135,12 +135,12 @@ namespace GenericCacheDemo
 
             // Read the data back - using index operator because we know the data exists - would otherwise use TryGetValue() or GetOrAdd().
             // Casting is safe when you know what to expected based on the key type.
-            var result1 = (IReadOnlyCollection<PropertyInfo>) cache[byBindingKey1];
+            var result1 = (PropertyInfo[]) cache[byBindingKey1]!;
             OutputPropertyInfo($"Result via key type '{nameof(PropKeyByBinding)}'", result1);
 
             Console.WriteLine();
 
-            var result2 = (PropertyInfo) cache[byBindingKey2];
+            var result2 = (PropertyInfo) cache[byBindingKey2]!;
             OutputPropertyInfo($"Result via key type '{nameof(PropKeyByBindingAndName)}'", [result2]);
 
             cache.Clear();

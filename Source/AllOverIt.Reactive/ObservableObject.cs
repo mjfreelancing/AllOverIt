@@ -8,10 +8,10 @@ namespace AllOverIt.Reactive
     public abstract class ObservableObject : INotifyPropertyChanged, INotifyPropertyChanging
     {
         /// <inheritdoc cref="INotifyPropertyChanging.PropertyChanging"/>
-        public event PropertyChangingEventHandler PropertyChanging;
+        public event PropertyChangingEventHandler? PropertyChanging;
 
         /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged"/>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>Compares the current and new value of a property. If the new value is different then the <see cref="PropertyChanging"/> event
         /// is called, then the value is updated, then the <see cref="PropertyChanged"/> event is called.</summary>
@@ -19,8 +19,8 @@ namespace AllOverIt.Reactive
         /// <param name="backingField">The backing field storing the property value.</param>
         /// <param name="newValue">The new property value to be set.</param>
         /// <param name="propertyName">The name of the property that is changing. Optional</param>
-        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="false"/>.</returns>
-        protected bool RaiseAndSetIfChanged<TProperty>(ref TProperty backingField, TProperty newValue, [CallerMemberName] string propertyName = "")
+        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="False"/>.</returns>
+        protected bool RaiseAndSetIfChanged<TProperty>(ref TProperty? backingField, TProperty? newValue, [CallerMemberName] string propertyName = "")
         {
             return RaiseAndSetIfChanged(ref backingField, newValue, null, null, null, propertyName);
         }
@@ -33,8 +33,8 @@ namespace AllOverIt.Reactive
         /// <param name="onChanging">An action to be invoked before the property value is changed. Optional.</param>
         /// <param name="onChanged">An action to be invoked after the property value is changed. Optional.</param>
         /// <param name="propertyName">The name of the property that is changing. Optional</param>
-        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="false"/>.</returns>
-        protected bool RaiseAndSetIfChanged<TProperty>(ref TProperty backingField, TProperty newValue, Action onChanging, Action onChanged,
+        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="False"/>.</returns>
+        protected bool RaiseAndSetIfChanged<TProperty>(ref TProperty? backingField, TProperty? newValue, Action? onChanging, Action? onChanged,
             [CallerMemberName] string propertyName = "")
         {
             return RaiseAndSetIfChanged(ref backingField, newValue, null, onChanging, onChanged, propertyName);
@@ -49,9 +49,9 @@ namespace AllOverIt.Reactive
         /// <param name="onChanging">An action to be invoked before the property value is changed. Optional.</param>
         /// <param name="onChanged">An action to be invoked after the property value is changed. Optional.</param>
         /// <param name="propertyName">The name of the property that is changing. Optional</param>
-        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="false"/>.</returns>
-        protected bool RaiseAndSetIfChanged<TProperty>(ref TProperty backingField, TProperty newValue, IEqualityComparer<TProperty> comparer,
-            Action onChanging, Action onChanged, [CallerMemberName] string propertyName = "")
+        /// <returns><see langword="True"/> if the property value was changed, otherwise <see langword="False"/>.</returns>
+        protected bool RaiseAndSetIfChanged<TProperty>(ref TProperty backingField, TProperty newValue, IEqualityComparer<TProperty>? comparer,
+            Action? onChanging, Action? onChanged, [CallerMemberName] string propertyName = "")
         {
             comparer ??= EqualityComparer<TProperty>.Default;
 
@@ -87,14 +87,14 @@ namespace AllOverIt.Reactive
 
         private void RaisePropertyChanging(PropertyChangingEventArgs eventArgs)
         {
-            _ = eventArgs.WhenNotNull(nameof(eventArgs));
+            _ = eventArgs.WhenNotNull();
 
             PropertyChanging?.Invoke(this, eventArgs);
         }
 
         private void RaisePropertyChanged(PropertyChangedEventArgs eventArgs)
         {
-            _ = eventArgs.WhenNotNull(nameof(eventArgs));
+            _ = eventArgs.WhenNotNull();
 
             PropertyChanged?.Invoke(this, eventArgs);
         }

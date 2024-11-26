@@ -21,8 +21,8 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions
         public static async Task ExportAsync(this D2ErdGenerator generator, DbContext dbContext, D2ErdExportOptions options,
             CancellationToken cancellationToken = default)
         {
-            _ = dbContext.WhenNotNull(nameof(dbContext));
-            _ = options.WhenNotNull(nameof(options));
+            _ = dbContext.WhenNotNull();
+            _ = options.WhenNotNull();
 
             var content = generator.Generate(dbContext);
 

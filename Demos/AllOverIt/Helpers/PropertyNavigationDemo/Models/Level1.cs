@@ -2,6 +2,6 @@
 {
     public class Level1
     {
-        public Level2 Level2 { get; }
+        public Level2 Level2 { get; } = new();
     }
 }

@@ -12,7 +12,7 @@ namespace AllOverIt.Evaluator.Variables
         /// <param name="variableRegistry">The variable registry used for lookup operations.</param>
         public VariableLookup(IVariableRegistry variableRegistry)
         {
-            _variableRegistry = variableRegistry.WhenNotNull(nameof(variableRegistry));
+            _variableRegistry = variableRegistry.WhenNotNull();
         }
 
         /// <inheritdoc />

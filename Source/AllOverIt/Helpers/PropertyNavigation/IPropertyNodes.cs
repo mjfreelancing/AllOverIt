@@ -7,7 +7,7 @@
         Type ObjectType { get; }
 
         /// <summary>One or more chained property nodes in sequence from root to leaf.</summary>
-        IReadOnlyCollection<PropertyNode> Nodes { get; }
+        PropertyNode[] Nodes { get; }
     }
 
     /// <summary>Provides information for all property nodes in an object graph of a specified type.</summary>

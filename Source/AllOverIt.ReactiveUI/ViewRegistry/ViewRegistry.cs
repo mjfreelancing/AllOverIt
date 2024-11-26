@@ -11,7 +11,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
     /// to implement <see cref="IViewFor{T}"/>, where <c>T</c> is any view model type. The registry is enumerable to provide
     /// easy access to each of the currently registered view models and associated views.</summary>
     /// <typeparam name="TViewId">The type used for identifying each view within the registry.</typeparam>
-    public class ViewRegistry<TViewId> : IViewRegistry<TViewId>
+    public class ViewRegistry<TViewId> : IViewRegistry<TViewId> where TViewId : notnull
     {
         private class ViewRegistryItem
         {
@@ -21,19 +21,22 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
 
             public event ViewRegistryEventHandler OnChange;     // raised when a view is added or removed
 
-            public IReadOnlyCollection<ViewItem<TViewId>> Views => _viewItems.AsReadOnlyCollection();
+            public ViewItem<TViewId>[] Views => [.. _viewItems];
 
             public int ViewCount => _viewItems.Count;
 
-            public ViewRegistryItem(Type viewModelType, IViewHandler viewHandler)
+            public ViewRegistryItem(Type viewModelType, IViewHandler viewHandler, ViewRegistryEventHandler onChangeHandler)
             {
-                _viewModelType = viewModelType.WhenNotNull(nameof(viewModelType));
-                _viewHandler = viewHandler.WhenNotNull(nameof(viewHandler));
+                _viewModelType = viewModelType.WhenNotNull();
+                _viewHandler = viewHandler.WhenNotNull();
+                _ = viewHandler.WhenNotNull();
+
+                OnChange += onChangeHandler;
             }
 
             public void AddView(IViewFor view, TViewId id)
             {
-                _ = view.WhenNotNull(nameof(view));
+                _ = view.WhenNotNull();
 
                 _ = GetView(view, false);
 
@@ -53,7 +56,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             // returns true if there is at least one view remaining
             public bool RemoveView(IViewFor view)
             {
-                _ = view.WhenNotNull(nameof(view));
+                _ = view.WhenNotNull();
 
                 var viewItem = GetView(view, true);
 
@@ -87,7 +90,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
                     shouldExist && viewItem is null,
                     "The view was not found in the view registry.");
 
-                return viewItem;
+                return viewItem!;
             }
         }
 
@@ -96,7 +99,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         private readonly IViewHandler _viewHandler;
 
         /// <inheritdoc />
-        public event ViewRegistryEventHandler OnUpdate;     // raised when a view is added or removed
+        public event ViewRegistryEventHandler? OnUpdate;     // raised when a view is added or removed
 
         /// <inheritdoc />
         public bool IsEmpty => _viewRegistry.Keys.Count == 0;
@@ -107,30 +110,30 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         /// will be platform specific.</param>
         public ViewRegistry(IViewFactory viewFactory, IViewHandler viewHandler)
         {
-            _viewFactory = viewFactory.WhenNotNull(nameof(viewFactory));
-            _viewHandler = viewHandler.WhenNotNull(nameof(viewHandler));
+            _viewFactory = viewFactory.WhenNotNull();
+            _viewHandler = viewHandler.WhenNotNull();
         }
 
         /// <inheritdoc />
         public int GetViewCountFor<TViewModel>() where TViewModel : class
         {
-            return GetViewsFor<TViewModel>().Count;
+            return GetViewsFor<TViewModel>().Length;
         }
 
         /// <inheritdoc />
         public int GetViewCountFor(Type viewModelType)
         {
-            return GetViewsFor(viewModelType).Count;
+            return GetViewsFor(viewModelType).Length;
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<Type> GetViewModelTypes()
+        public Type[] GetViewModelTypes()
         {
-            return _viewRegistry.Keys.AsReadOnlyCollection();
+            return [.. _viewRegistry.Keys];
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<ViewItem<TViewId>> GetViewsFor<TViewModel>() where TViewModel : class
+        public ViewItem<TViewId>[] GetViewsFor<TViewModel>() where TViewModel : class
         {
             var viewModelType = typeof(TViewModel);
 
@@ -138,21 +141,21 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<ViewItem<TViewId>> GetViewsFor(Type viewModelType)
+        public ViewItem<TViewId>[] GetViewsFor(Type viewModelType)
         {
             if (!_viewRegistry.TryGetValue(viewModelType, out var registryItem))
             {
-                return Collections.Collection.EmptyReadOnly<ViewItem<TViewId>>();
+                return [];
             }
 
             return registryItem.Views;
         }
 
         /// <inheritdoc />
-        public void CreateOrActivateFor<TViewModel>(int maxCount, Func<IReadOnlyCollection<ViewItem<TViewId>>, TViewId> nextViewId,
-            Action<TViewModel, IViewFor, TViewId> configure = default) where TViewModel : class
+        public void CreateOrActivateFor<TViewModel>(int maxCount, Func<ViewItem<TViewId>[], TViewId> nextViewId,
+            Action<TViewModel, IViewFor, TViewId>? configure = default) where TViewModel : class
         {
-            _ = nextViewId.WhenNotNull(nameof(nextViewId));
+            _ = nextViewId.WhenNotNull();
 
             var viewModelType = typeof(TViewModel);
 
@@ -165,16 +168,14 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
                 return;
             }
 
-            // Create a new instance of the view typw.
+            // Create a new instance of the view type.
             var view = _viewFactory.CreateViewFor<TViewModel>();
-            var viewModel = view.ViewModel;
+            var viewModel = view.ViewModel!;
 
             // If there were no instances of the view then create the initial cache item.
             if (registryItem is null)
             {
-                registryItem = new ViewRegistryItem(viewModelType, _viewHandler);
-
-                registryItem.OnChange += OnViewRegistryUpdate;
+                registryItem = new ViewRegistryItem(viewModelType, _viewHandler, OnViewRegistryUpdate);
 
                 _viewRegistry.Add(viewModelType, registryItem);
             }
@@ -194,7 +195,7 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
         public bool TryCloseAllViews()
         {
             // Need to get all views in advance as they cannot be closed during iteration (the collection will be modified)
-            var views = this.SelectAsReadOnlyCollection(item => item.View);
+            var views = this.SelectToReadOnlyCollection(item => item.View);
 
             foreach (var view in views)
             {
@@ -229,14 +230,14 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             return GetEnumerator();
         }
 
-        private void OnViewClosedHandler(object sender, EventArgs eventArgs)
+        private void OnViewClosedHandler(object? sender, EventArgs eventArgs)
         {
-            var view = sender as IViewFor;
+            var view = (sender as IViewFor)!;
 
             _viewHandler.SetOnClosedHandler(view, OnViewClosedHandler, false);
 
             var viewModelType = view.GetType()
-                .GetBaseGenericTypeDefinition(typeof(IViewFor<>))
+                .GetBaseGenericTypeDefinition(typeof(IViewFor<>))!
                 .GenericTypeArguments[0];
 
             var registryItem = _viewRegistry[viewModelType];
@@ -250,9 +251,11 @@ namespace AllOverIt.ReactiveUI.ViewRegistry
             }
         }
 
-        private void OnViewRegistryUpdate(object sender, EventArgs eventArgs)
+        private void OnViewRegistryUpdate(object? sender, EventArgs eventArgs)
         {
-            OnUpdate?.Invoke(sender, eventArgs as ViewRegistryEventArgs);
+            var viewRegistryEventArgs = eventArgs as ViewRegistryEventArgs;
+
+            OnUpdate?.Invoke(sender, viewRegistryEventArgs!);
         }
     }
 }

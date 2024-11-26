@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Formatters.Objects;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SerializeObjectPropertiesDemo
 {
@@ -28,7 +29,7 @@ namespace SerializeObjectPropertiesDemo
             // Reformat the remainder of the values
             if (AtValuesNode(out var lastParent) && Index == MaxItemCount - 1)
             {
-                var itemCount = ((IEnumerable<int>) lastParent.Value).Count();
+                var itemCount = ((IEnumerable<int>) lastParent.Value!).Count();
                 var remainder = itemCount - MaxItemCount;
 
                 return remainder == 0
@@ -39,17 +40,18 @@ namespace SerializeObjectPropertiesDemo
             return value;
         }
 
-        private bool AtValuesNode(out ObjectPropertyParent lastParent)
+        private bool AtValuesNode([NotNullWhen(true)] out ObjectPropertyParent? lastParent)
         {
-            if (Parents.Count != 0)
-            {
-                lastParent = Parents.Last();
+            lastParent = null;
 
-                return lastParent.Name == nameof(ComplexObject.ComplexItem.ComplexItemData.Values);
+            if (Parents is null || Parents.Length == 0)
+            {
+                return false;
             }
 
-            lastParent = null;
-            return false;
+            lastParent = Parents.Last();
+
+            return lastParent.Name == nameof(ComplexObject.ComplexItem.ComplexItemData.Values);
         }
     }
 }

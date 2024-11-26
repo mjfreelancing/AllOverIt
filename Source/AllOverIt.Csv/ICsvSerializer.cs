@@ -9,7 +9,7 @@ namespace AllOverIt.Csv
         /// <summary>Configures a field for export.</summary>
         /// <param name="headerName">The column header name to be exported.</param>
         /// <param name="valueResolver">Returns the value to be exported for the current field.</param>
-        void AddField(string headerName, Func<TCsvData, object> valueResolver);
+        void AddField(string headerName, Func<TCsvData, object?> valueResolver);
 
         /// <summary>Configures a field to export multiple property values with associated column header names.</summary>
         /// <param name="headerNames">The header names to export.</param>
@@ -17,7 +17,7 @@ namespace AllOverIt.Csv
         /// <remarks>Also refer to <see cref="CsvSerializerExtensions.AddDynamicFields{TCsvData, TField}"/> and
         /// <see cref="CsvSerializerExtensions.AddDynamicFields{TCsvData, TField, TFieldId}"/> for an alternative, and
         /// potentially easier, approach to adding multiple columns from a complex property.</remarks>
-        void AddFields(IEnumerable<string> headerNames, Func<TCsvData, IEnumerable<object>> valuesResolver);
+        void AddFields(string[] headerNames, Func<TCsvData, object?[]> valuesResolver);
 
         /// <summary>Serializes data to CSV format.</summary>
         /// <param name="writer">Writes the exported data to CSV format.</param>

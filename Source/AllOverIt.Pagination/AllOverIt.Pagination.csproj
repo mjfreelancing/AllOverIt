@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
         <Description>An advanced keyset-based pagination package that uses a fluent-style builder to create queries that cater for forward and backward navigation for any given deterministic base query. Each page of results includes a 'continuation token' for the current, next, and previous page. These tokens can be used at a later time to navigate to the same location within the dataset, thereby somewhat overcoming the inability of random access traditionally associated with keyset-based navigation.</Description>
         <PackageTags>AllOverIt;Utilities;Query;Pagination;KeySet</PackageTags>
     </PropertyGroup>
@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>

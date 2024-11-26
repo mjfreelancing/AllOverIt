@@ -96,7 +96,7 @@ namespace AllOverIt.Csv.Tests.Exporter
             }
 
             [Fact]
-            public async Task Should_Return_Empty_Array_When_Headers_And_No_Data()
+            public async Task Should_Return_Empty_Array_When_No_Headers_And_No_Data()
             {
                 var configuration = new BufferedCsvExporterConfiguration
                 {

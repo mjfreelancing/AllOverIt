@@ -11,7 +11,7 @@ namespace AllOverIt.Extensions
         /// <returns>The first element.</returns>
         public static TType FirstElement<TType>(this IReadOnlyList<TType> list)
         {
-            _ = list.WhenNotNullOrEmpty(nameof(list));
+            _ = list.WhenNotNullOrEmpty();
 
             return list[0];
         }
@@ -22,7 +22,7 @@ namespace AllOverIt.Extensions
         /// <returns>The last element.</returns>
         public static TType LastElement<TType>(this IReadOnlyList<TType> list)
         {
-            _ = list.WhenNotNullOrEmpty(nameof(list));
+            _ = list.WhenNotNullOrEmpty();
 
             return list[list.Count - 1];
         }
@@ -33,7 +33,7 @@ namespace AllOverIt.Extensions
         /// <returns>The first element.</returns>
         public static TType FirstElement<TType>(this IList<TType> list)
         {
-            _ = list.WhenNotNullOrEmpty(nameof(list));
+            _ = list.WhenNotNullOrEmpty();
 
             return list[0];
         }
@@ -44,7 +44,7 @@ namespace AllOverIt.Extensions
         /// <returns>The last element.</returns>
         public static TType LastElement<TType>(this IList<TType> list)
         {
-            _ = list.WhenNotNullOrEmpty(nameof(list));
+            _ = list.WhenNotNullOrEmpty();
 
             return list[list.Count - 1];
         }
@@ -55,8 +55,8 @@ namespace AllOverIt.Extensions
         /// <param name="items">The collection of elements to append to the source list.</param>
         public static void AddMany<TType>(this IList<TType> list, IEnumerable<TType> items)
         {
-            _ = list.WhenNotNull(nameof(list));
-            _ = items.WhenNotNull(nameof(items));
+            _ = list.WhenNotNull();
+            _ = items.WhenNotNull();
 
             if (list is List<TType> sourceList)
             {

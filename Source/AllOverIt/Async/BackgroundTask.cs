@@ -24,12 +24,12 @@ namespace AllOverIt.Async
         /// <param name="action">The action to invoke asynchronously in a background task. Use the <paramref name="cancellationToken"/>
         /// to detect if the action should be cancelled.</param>
         /// <param name="exceptionHandler">An exception handler that is invoked if an exception is raised. The handler must return
-        /// <see langword="true"/> if the exception is handled. If the handler returns <see langword="false"/> the exception will be re-thrown.</param>
+        /// <see langword="True"/> if the exception is handled. If the handler returns <see langword="False"/> the exception will be re-thrown.</param>
         /// <param name="cancellationToken">An optional cancellation token that will cancel the task if cancelled.</param>
         public BackgroundTask(Func<CancellationToken, Task> action, Func<Exception, bool> exceptionHandler, CancellationToken cancellationToken = default)
         {
-            _ = action.WhenNotNull(nameof(action));
-            _ = exceptionHandler.WhenNotNull(nameof(exceptionHandler));
+            _ = action.WhenNotNull();
+            _ = exceptionHandler.WhenNotNull();
 
             var taskToken = CreateTaskCancellationToken(cancellationToken);
 
@@ -61,13 +61,13 @@ namespace AllOverIt.Async
         /// <param name="creationOptions">A <see cref="TaskCreationOptions"/> value that controls the behavior of the created task.</param>
         /// <param name="scheduler">The <see cref="TaskScheduler"/> that is used to schedule the created task.</param>
         /// <param name="exceptionHandler">An exception handler that is invoked if an exception is raised. The handler must return
-        /// <see langword="true"/> if the exception is handled. If the handler returns <see langword="false"/> the exception will be re-thrown.</param>
+        /// <see langword="True"/> if the exception is handled. If the handler returns <see langword="False"/> the exception will be re-thrown.</param>
         /// <param name="cancellationToken">An optional cancellation token that will cancel the task if cancelled.</param>
         public BackgroundTask(Func<CancellationToken, Task> action, TaskCreationOptions creationOptions, TaskScheduler scheduler,
             Func<Exception, bool> exceptionHandler, CancellationToken cancellationToken = default)
         {
-            _ = action.WhenNotNull(nameof(action));
-            _ = exceptionHandler.WhenNotNull(nameof(exceptionHandler));
+            _ = action.WhenNotNull();
+            _ = exceptionHandler.WhenNotNull();
 
             var taskToken = CreateTaskCancellationToken(cancellationToken);
 
@@ -81,9 +81,10 @@ namespace AllOverIt.Async
                 .Unwrap();
         }
 
-        /// <summary>An implicit operator that returns a <see cref="BackgroundTask"/> as a <see cref="Task"/>.</summary>
+        /// <summary>An implicit operator that returns a <see cref="BackgroundTask"/> as a <see cref="Task"/>.
+        /// If <paramref name="backgroundTask"/> is <see langword="null"/>, then the operator will return <see langword="null"/>.</summary>
         /// <param name="backgroundTask">The <see cref="BackgroundTask"/> to implicitly convert to a <see cref="Task"/>.</param>
-        public static implicit operator Task(BackgroundTask backgroundTask)
+        public static implicit operator Task?(BackgroundTask? backgroundTask)
         {
             return backgroundTask?._task;
         }
@@ -98,6 +99,11 @@ namespace AllOverIt.Async
         /// <inheritdoc />
         public async ValueTask DisposeAsync()
         {
+            if (_isDisposing)
+            {
+                return;
+            }
+
             _isDisposing = true;
 
             try

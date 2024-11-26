@@ -191,6 +191,22 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2
             }, DiagramExpectations.WithEntityCustomStyle());
         }
 
+        [Fact]
+        public void Should_Set_All_Entities_Style()
+        {
+            AssertDiagram(options =>
+            {
+                options.Entities.ShapeStyle = new ShapeStyle
+                {
+                    Fill = "black",
+                    Stroke = "#ccbb88",
+                    Opacity = 0.4,
+                    StrokeDash = 2,
+                    StrokeWidth = 4
+                };
+            }, DiagramExpectations.WithAllEntitiesStyle());
+        }
+
         private static void AddEntityGroups(ErdOptions options)
         {
             // The first, without an explicit style...

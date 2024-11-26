@@ -2,6 +2,6 @@
 {
     public class Level4d
     {
-        public string Value { get; set; }
+        public string? Value { get; set; }
     }
 }

@@ -26,10 +26,10 @@ namespace AllOverIt.Patterns.Specification.Utils
         {
             [CommonTypes.StringType] = value => $"'{value}'",
             [CommonTypes.DateTimeType] = value => $"'{((DateTime) value).ToUniversalTime():yyyy-MM-ddTHH:mm:ss.fffZ}'",
-            [CommonTypes.BoolType] = value => value.ToString()
+            [CommonTypes.BoolType] = value => value.ToString()!
         };
 
-        private Dictionary<Type, Func<object, string>> _customTypeValueConverters;
+        private Dictionary<Type, Func<object, string>>? _customTypeValueConverters;
         private readonly StringBuilder _queryStringBuilder = new();
         private readonly Stack<string> _fieldNames = new();
 
@@ -50,7 +50,7 @@ namespace AllOverIt.Patterns.Specification.Utils
         /// <returns>A query-like string representation of the provided <see cref="ILinqSpecification{TType}"/>.</returns>
         public string AsQueryString<TType>(ILinqSpecification<TType> specification) where TType : class
         {
-            _ = specification.WhenNotNull(nameof(specification));
+            _ = specification.WhenNotNull();
 
             try
             {
@@ -148,7 +148,9 @@ namespace AllOverIt.Patterns.Specification.Utils
         /// <inheritdoc />
         protected override Expression VisitConstant(ConstantExpression node)
         {
-            _queryStringBuilder.Append(GetValue(node.Value));
+            var value = GetValue(node.Value!);
+
+            _queryStringBuilder.Append(value);
 
             return node;
         }
@@ -156,7 +158,7 @@ namespace AllOverIt.Patterns.Specification.Utils
         /// <inheritdoc />
         protected override Expression VisitMember(MemberExpression node)
         {
-            switch (node.Expression.NodeType)
+            switch (node.Expression!.NodeType)
             {
                 case ExpressionType.Constant:
                 case ExpressionType.MemberAccess:
@@ -209,15 +211,15 @@ namespace AllOverIt.Patterns.Specification.Utils
                     var fieldName = _fieldNames.Pop();
                     var fieldInfo = type.GetField(fieldName);
 
-                    var value = fieldInfo == null
-                        ? type.GetProperty(fieldName).GetValue(input)
+                    var value = fieldInfo is null
+                        ? type.GetProperty(fieldName)!.GetValue(input)
                         : fieldInfo.GetValue(input);
 
-                    return GetValue(value);
+                    return GetValue(value!);
                 }
             }
 
-            return input.ToString();
+            return input.ToString()!;
         }
     }
 }

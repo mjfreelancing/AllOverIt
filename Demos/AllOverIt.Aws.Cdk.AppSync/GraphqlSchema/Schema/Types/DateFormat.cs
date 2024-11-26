@@ -1,4 +1,5 @@
-﻿using AllOverIt.Patterns.Enumeration;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Patterns.Enumeration;
 using System.Runtime.CompilerServices;
 
 namespace GraphqlSchema.Schema.Types
@@ -9,8 +10,8 @@ namespace GraphqlSchema.Schema.Types
         public static readonly DateFormat Universal = new(0);
         public static readonly DateFormat Local = new(1);
 
-        private DateFormat(int value, [CallerMemberName] string name = null)
-            : base(value, name)
+        private DateFormat(int value, [CallerMemberName] string name = "")
+            : base(value, name.WhenNotNull())
         {
         }
     }

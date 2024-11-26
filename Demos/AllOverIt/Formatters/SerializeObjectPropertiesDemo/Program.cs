@@ -187,7 +187,7 @@ namespace SerializeObjectPropertiesDemo
         private static void SerializeFilteredObject()
         {
             var filter = new ComplexObjectFilter();
-            var serializer = new ObjectPropertySerializer(null, filter);
+            var serializer = new ObjectPropertySerializer(filter);
 
             var complexObject = new ComplexObject
             {
@@ -200,7 +200,7 @@ namespace SerializeObjectPropertiesDemo
                         Data = new ComplexObject.ComplexItem.ComplexItemData
                         {
                             Timestamp = DateTime.Now,
-                            Values = Enumerable.Range(1, 5).SelectAsReadOnlyCollection(value => value)
+                            Values = Enumerable.Range(1, 5).SelectToReadOnlyCollection(value => value)
                         }
                     },
                     new()
@@ -210,7 +210,7 @@ namespace SerializeObjectPropertiesDemo
                         Data = new ComplexObject.ComplexItem.ComplexItemData
                         {
                             Timestamp = DateTime.Now,
-                            Values = Enumerable.Range(11, 5).SelectAsReadOnlyCollection(value => value)
+                            Values = Enumerable.Range(11, 5).SelectToReadOnlyCollection(value => value)
                         }
                     },
                     new()
@@ -220,7 +220,7 @@ namespace SerializeObjectPropertiesDemo
                         Data = new ComplexObject.ComplexItem.ComplexItemData
                         {
                             Timestamp = DateTime.Now,
-                            Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
+                            Values = Enumerable.Range(21, 5).SelectToReadOnlyCollection(value => value)
                         }
                     },
                 ]
@@ -250,7 +250,7 @@ namespace SerializeObjectPropertiesDemo
                         Data = new ComplexObject.ComplexItem.ComplexItemData
                         {
                             Timestamp = DateTime.Now,
-                            Values = Enumerable.Range(1, 5).SelectAsReadOnlyCollection(value => value)
+                            Values = Enumerable.Range(1, 5).SelectToReadOnlyCollection(value => value)
                         }
                     },
                     new()
@@ -260,7 +260,7 @@ namespace SerializeObjectPropertiesDemo
                         Data = new ComplexObject.ComplexItem.ComplexItemData
                         {
                             Timestamp = DateTime.Now,
-                            Values = Enumerable.Range(11, 5).SelectAsReadOnlyCollection(value => value)
+                            Values = Enumerable.Range(11, 5).SelectToReadOnlyCollection(value => value)
                         }
                     },
                     new()
@@ -270,7 +270,7 @@ namespace SerializeObjectPropertiesDemo
                         Data = new ComplexObject.ComplexItem.ComplexItemData
                         {
                             Timestamp = DateTime.Now,
-                            Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
+                            Values = Enumerable.Range(21, 5).SelectToReadOnlyCollection(value => value)
                         }
                     },
                 ]
@@ -358,7 +358,7 @@ namespace SerializeObjectPropertiesDemo
                                     Data = new ComplexObject.ComplexItem.ComplexItemData
                                     {
                                         Timestamp = DateTime.Now,
-                                        Values = Enumerable.Range(1, 5).SelectAsReadOnlyCollection(value => value)
+                                        Values = Enumerable.Range(1, 5).SelectToReadOnlyCollection(value => value)
                                     }
                                 },
                                 new()
@@ -368,7 +368,7 @@ namespace SerializeObjectPropertiesDemo
                                     Data = new ComplexObject.ComplexItem.ComplexItemData
                                     {
                                         Timestamp = DateTime.Now,
-                                        Values = Enumerable.Range(11, 5).SelectAsReadOnlyCollection(value => value)
+                                        Values = Enumerable.Range(11, 5).SelectToReadOnlyCollection(value => value)
                                     }
                                 },
                                 new()
@@ -378,7 +378,7 @@ namespace SerializeObjectPropertiesDemo
                                     Data = new ComplexObject.ComplexItem.ComplexItemData
                                     {
                                         Timestamp = DateTime.Now,
-                                        Values = Enumerable.Range(21, 5).SelectAsReadOnlyCollection(value => value)
+                                        Values = Enumerable.Range(21, 5).SelectToReadOnlyCollection(value => value)
                                     }
                                 },
                             ]
@@ -386,7 +386,7 @@ namespace SerializeObjectPropertiesDemo
 
                         _ = registry.GetObjectPropertySerializer(complexObject, out var serializer);
 
-                        var items = serializer.SerializeToDictionary(complexObject).SelectAsReadOnlyCollection(kvp => $"{kvp.Key} = {kvp.Value}");
+                        var items = serializer.SerializeToDictionary(complexObject).SelectToReadOnlyCollection(kvp => $"{kvp.Key} = {kvp.Value}");
 
                         foreach (var item in items)
                         {

@@ -16,7 +16,7 @@ namespace AllOverIt.Tests
         {
             var propInfo = request as PropertyInfo;
 
-            if (propInfo != null && names.Contains(propInfo.Name))
+            if (propInfo is not null && names.Contains(propInfo.Name))
             {
                 return new OmitSpecimen();
             }

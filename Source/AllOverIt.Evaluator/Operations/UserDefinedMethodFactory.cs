@@ -28,11 +28,11 @@
     /// </remarks>
     public sealed class UserDefinedMethodFactory : IUserDefinedMethodFactory
     {
-        // shared across all instances
+        // Shared across all instances
         private static readonly Dictionary<string, Lazy<ArithmeticOperationBase>> BuiltInMethodsRegistry = [];
 
-        // unique to each instance created (unless created as a Singleton of course) - created when the first method is registered
-        private Dictionary<string, Lazy<ArithmeticOperationBase>> _userMethodsRegistry;
+        // Unique to each instance created (unless created as a Singleton of course) - created when the first method is registered
+        private Dictionary<string, Lazy<ArithmeticOperationBase>>? _userMethodsRegistry;
 
         /// <summary>Provides a list of all built-in and custom registered methods.</summary>
         public IEnumerable<string> RegisteredMethods => GetRegisteredMethods();
@@ -83,13 +83,13 @@
 
         /// <summary>Indicates if the requested method name has been registered.</summary>
         /// <param name="methodName">The case-insensitive method name being queried.</param>
-        /// <returns><see langword="true" /> if the requested method name has been registered, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the requested method name has been registered, otherwise <see langword="False" />.</returns>
         public bool IsRegistered(string methodName)
         {
             var upperMethodName = methodName.ToUpperInvariant();
 
             return BuiltInMethodsRegistry.ContainsKey(upperMethodName) ||
-                   _userMethodsRegistry != null && _userMethodsRegistry.ContainsKey(upperMethodName);
+                   _userMethodsRegistry is not null && _userMethodsRegistry.ContainsKey(upperMethodName);
         }
 
         /// <summary>Gets an instance of the operation type that was registered using the provided method name.</summary>
@@ -105,7 +105,7 @@
                 return builtInOperation.Value;
             }
 
-            if (_userMethodsRegistry != null && _userMethodsRegistry.TryGetValue(upperMethodName, out var userDefinedOperation))
+            if (_userMethodsRegistry is not null && _userMethodsRegistry.TryGetValue(upperMethodName, out var userDefinedOperation))
             {
                 return userDefinedOperation.Value;
             }

@@ -48,7 +48,7 @@ namespace ParallelEvaluationDemo
                       var offset = yv * bmpData.Stride;
 
                       // get a thread specific calculator
-                      var calculator = Calculators.Value;
+                      var calculator = Calculators.Value!;
 
                       calculator.SetX((x - 128.0d) * mult);
                       calculator.SetY(yValue);

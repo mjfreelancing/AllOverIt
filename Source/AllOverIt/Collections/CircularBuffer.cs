@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Collections
 {
@@ -38,7 +39,7 @@ namespace AllOverIt.Collections
         /// the first item, and a called to <see cref="Back"/> will return the last item.</param>
         public CircularBuffer(int capacity, TType[] items)
         {
-            _ = items.WhenNotNull(nameof(items));
+            _ = items.WhenNotNull();
 
             Throw<ArgumentOutOfRangeException>.When(capacity < 1, nameof(capacity), "The circular buffer requires a capacity of at least 1.");
             Throw<ArgumentException>.When(items.Length > capacity, "The item count exceeds the circular buffer capacity.");
@@ -53,6 +54,7 @@ namespace AllOverIt.Collections
         }
 
         /// <inheritdoc />
+        [return: MaybeNull]
         public TType Front()
         {
             Throw<InvalidOperationException>.When(IsEmpty, "The circular buffer contains no elements.");
@@ -61,6 +63,7 @@ namespace AllOverIt.Collections
         }
 
         /// <inheritdoc />
+        [return: MaybeNull]
         public TType Back()
         {
             Throw<InvalidOperationException>.When(IsEmpty, "The circular buffer contains no elements.");
@@ -122,26 +125,36 @@ namespace AllOverIt.Collections
         }
 
         /// <inheritdoc />
+        [return: MaybeNull]
         public TType PopFront()
         {
             Throw<InvalidOperationException>.When(IsEmpty, "The circular buffer contains no elements.");
 
             var value = _buffer[_start];
-            _buffer[_start] = default;
+
+            // Can't use _buffer[_start] = default; when nullable references are enabled
+            _buffer.SetValue(default(TType), _start);
+
             IncrementWithWrap(ref _start);
+
             --_length;
 
             return value;
         }
 
         /// <inheritdoc />
+        [return: MaybeNull]
         public TType PopBack()
         {
             Throw<InvalidOperationException>.When(IsEmpty, "The circular buffer contains no elements.");
 
             DecrementWithWrap(ref _end);
+
             var value = _buffer[_end];
-            _buffer[_end] = default;
+
+            // Can't use _buffer[_end] = default; when nullable references are enabled
+            _buffer.SetValue(default(TType), _end);
+
             --_length;
 
             return value;
@@ -166,7 +179,7 @@ namespace AllOverIt.Collections
 
             foreach (var segment in segments)
             {
-                Array.Copy(segment.Array, segment.Offset, array, offset, segment.Count);
+                Array.Copy(segment.Array!, segment.Offset, array, offset, segment.Count);
                 offset += segment.Count;
             }
 

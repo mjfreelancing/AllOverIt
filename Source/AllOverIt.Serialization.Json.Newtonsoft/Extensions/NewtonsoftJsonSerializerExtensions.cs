@@ -1,4 +1,5 @@
-﻿using AllOverIt.Serialization.Json.Newtonsoft.Converters;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Serialization.Json.Newtonsoft.Converters;
 using Newtonsoft.Json;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Extensions
@@ -24,6 +25,8 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Extensions
         public static void AddInterfaceConverter<TInterface, TConcrete>(this NewtonsoftJsonSerializer serializer)
             where TConcrete : class, TInterface
         {
+            _ = serializer.WhenNotNull();
+
             serializer.Settings.Converters.Add(new InterfaceConverter<TInterface, TConcrete>());
         }
     }

@@ -33,7 +33,7 @@ namespace CountdownTimerAppDemo
         {
             await _host.StartAsync();
 
-            var mainWindow = _host.Services.GetService<MainWindow>();
+            var mainWindow = _host.Services.GetService<MainWindow>()!;
             mainWindow.Show();
         }
     }

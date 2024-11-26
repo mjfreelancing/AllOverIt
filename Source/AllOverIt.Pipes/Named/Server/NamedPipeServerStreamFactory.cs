@@ -6,7 +6,7 @@ namespace AllOverIt.Pipes.Named.Server
     [ExcludeFromCodeCoverage]
     internal static class NamedPipeServerStreamFactory
     {
-        public static NamedPipeServerStream CreateStream(string pipeName, PipeSecurity pipeSecurity = default)
+        public static NamedPipeServerStream CreateStream(string pipeName, PipeSecurity? pipeSecurity = default)
         {
             return NamedPipeServerStreamAcl.Create(
                 pipeName: pipeName,

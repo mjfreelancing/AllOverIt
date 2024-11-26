@@ -19,7 +19,7 @@ namespace AllOverIt.Tests.Converters
 
             public static readonly DummyEnrichedEnum Value2 = new(2, "Value 2");
 
-            private DummyEnrichedEnum(int value, [CallerMemberName] string name = null)
+            private DummyEnrichedEnum(int value, [CallerMemberName] string name = "")
                 : base(value, name)
             {
             }

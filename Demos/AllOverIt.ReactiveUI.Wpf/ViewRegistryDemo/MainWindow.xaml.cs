@@ -10,7 +10,7 @@ namespace ViewRegistryDemo
     public partial class MainWindow : Window
     {
         private readonly IDemoViewRegistry _viewRegistry;
-        private WindowWrapper _windowWrapper;
+        private WindowWrapper _windowWrapper = null!;
 
         public MainWindow(IDemoViewRegistry viewRegistry)
         {
@@ -45,7 +45,7 @@ namespace ViewRegistryDemo
             // Maximum 1 window, starting with an Id of 1
             _viewRegistry.CreateOrActivateFor<View1ViewModel>(1, _ => 1, (vm, view, id) =>
             {
-                (view as Window).Owner = this;
+                (view as Window)!.Owner = this;
 
                 // Set the new Id on the view model so it will be displayed on the Window
                 vm.Id = id;
@@ -76,7 +76,7 @@ namespace ViewRegistryDemo
             },
             (vm, view, id) =>
             {
-                (view as Window).Owner = this;
+                (view as Window)!.Owner = this;
 
                 // Set the new Id on the view model so it will be displayed on the Window
                 vm.Id = id;
@@ -88,13 +88,13 @@ namespace ViewRegistryDemo
             // Maximum 3 windows, each new Id is always 1 more than the existing max
             _viewRegistry.CreateOrActivateFor<View3ViewModel>(3, viewItems =>
             {
-                return viewItems.Count != 0
+                return viewItems.Length != 0
                     ? viewItems.Max(item => item.Id) + 1
                     : 1;
             },
             (vm, view, id) =>
             {
-                (view as Window).Owner = this;
+                (view as Window)!.Owner = this;
 
                 // Set the new Id on the view model so it will be displayed on the Window
                 vm.Id = id;

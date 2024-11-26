@@ -35,8 +35,8 @@ namespace AppSyncSubscriptionDemo
         private readonly IJsonSerializer _jsonSerializer;
         private readonly ILogger<SubscriptionWorker> _logger;
 
-        private CompositeAsyncDisposable _compositeSubscriptions = new();
-        private IAppSyncClient _appSyncClient;
+        private readonly CompositeAsyncDisposable _compositeSubscriptions = new();
+        private IAppSyncClient? _appSyncClient;
 
         // The demo can be configured to register a client explicitly, or use a named client - determine which approach was configured.
         // Note: The DI setup has configured the name as "Public". As many named clients can be configured as required.
@@ -58,15 +58,15 @@ namespace AppSyncSubscriptionDemo
             IWorkerReady workerReady, IJsonSerializer jsonSerializer, ILogger<SubscriptionWorker> logger)
             : base(applicationLifetime)
         {
-            _subscriptionClient = subscriptionClient.WhenNotNull(nameof(subscriptionClient));
+            _subscriptionClient = subscriptionClient.WhenNotNull();
 
             // Program.cs can be setup to use a named, or unnamed, client - comment out as required 
-            //_appSyncClient = appSyncClient.WhenNotNull(nameof(appSyncClient));
-            _appSyncNamedClientProvider = appSyncNamedClientProvider.WhenNotNull(nameof(appSyncNamedClientProvider));
+            //_appSyncClient = appSyncClient.WhenNotNull();
+            _appSyncNamedClientProvider = appSyncNamedClientProvider.WhenNotNull();
 
-            _workerReady = workerReady.WhenNotNull(nameof(workerReady));
-            _jsonSerializer = jsonSerializer.WhenNotNull(nameof(jsonSerializer));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _workerReady = workerReady.WhenNotNull();
+            _jsonSerializer = jsonSerializer.WhenNotNull();
+            _logger = logger.WhenNotNull();
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -128,12 +128,12 @@ namespace AppSyncSubscriptionDemo
 
             // collate all exceptions raised during the subscription process
             var subscriptionErrors = new[] { subscription1, subscription2, subscription3 }
-                .Where(item => item.Exceptions != null)
+                .Where(item => item.Exceptions is not null)
                 .Select(item => item)
                 .GroupBy(item => item.Id)
-                .AsReadOnlyCollection();
+                .AsArray();
 
-            if (subscriptionErrors.Count != 0)
+            if (subscriptionErrors.Length != 0)
             {
                 LogMessage("Subscription errors received:");
 
@@ -141,7 +141,7 @@ namespace AppSyncSubscriptionDemo
                 {
                     LogMessage($" - Subscription '{subscription.Key}'");
 
-                    var exceptions = subscription.SelectMany(item => item.Exceptions);
+                    var exceptions = subscription.SelectMany(item => item.Exceptions!);
 
                     foreach (var exception in exceptions)
                     {
@@ -242,15 +242,14 @@ namespace AppSyncSubscriptionDemo
 
         protected override void OnStopping()
         {
-            _logger.LogInformation($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - The background worker is stopping");
+            _logger.LogInformation("{DateTime} - The background worker is stopping", $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
 
             _compositeSubscriptions.Dispose();
-            _compositeSubscriptions = null;
         }
 
         protected override void OnStopped()
         {
-            _logger.LogInformation($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - The background worker is done");
+            _logger.LogInformation("{DateTime} - The background worker is done", $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
 
             // shutdown is not graceful after this returns
         }
@@ -323,7 +322,7 @@ namespace AppSyncSubscriptionDemo
             return subscription;
         }
 
-        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription(IAppSyncSubscriptionClient client, string name, string query, object variables = null)
+        private static async Task<IAppSyncSubscriptionRegistration> GetSubscription(IAppSyncSubscriptionClient client, string name, string query, object? variables = null)
         {
             var subscriptionQuery = new SubscriptionQuery
             {
@@ -353,9 +352,9 @@ namespace AppSyncSubscriptionDemo
 
             string GetFailureMessage()
             {
-                var errors = subscription.Exceptions != null
+                var errors = subscription.Exceptions is not null
                     ? subscription.Exceptions.Select(item => item.Message)
-                    : subscription.GraphqlErrors.Select(item => item.Message);
+                    : subscription.GraphqlErrors!.Select(item => item.Message!);
 
                 return string.Join(", ", errors);
             }
@@ -369,17 +368,19 @@ namespace AppSyncSubscriptionDemo
 
         private static string GetErrorMessage(GraphqlErrorDetail detail)
         {
+            var errorMessage = detail.Message ?? string.Empty;
+
             if (detail.ErrorCode.HasValue)
             {
-                return $"({detail.ErrorCode}): {detail.Message}";
+                return $"({detail.ErrorCode}): {errorMessage}";
             }
 
-            if (!detail.ErrorType.IsNullOrEmpty())
+            if (detail.ErrorType.IsNotNullOrEmpty())
             {
-                return $"({detail.ErrorType}): {detail.Message}";
+                return $"({detail.ErrorType}): {errorMessage}";
             }
 
-            return detail.Message;
+            return errorMessage;
         }
 
         private static void LogMessage(string message)
@@ -405,7 +406,7 @@ namespace AppSyncSubscriptionDemo
             var counter = 0;
             var codes = new[] { "LNG1", "LNG2", "LNG3" };
 
-            RepeatingTask.Start(async () =>
+            RepeatingTask.StartAsync(async () =>
             {
                 mutation.Variables = new
                 {
@@ -429,7 +430,12 @@ namespace AppSyncSubscriptionDemo
                     LogMessage($"Error sending mutation: {exception.Message}");
                     throw;
                 }
-            }, 3000, cancellationToken);
+            },
+            new RepeatingTaskOptions
+            {
+                RepeatDelay = TimeSpan.FromSeconds(3)
+            },
+            cancellationToken);
         }
     }
 }

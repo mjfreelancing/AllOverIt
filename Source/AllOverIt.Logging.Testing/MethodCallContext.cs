@@ -10,22 +10,22 @@ namespace AllOverIt.Logging.Testing
         public sealed record Item
         {
             /// <summary>The captured log level.</summary>
-            public LogLevel LogLevel { get; init; }
+            public required LogLevel LogLevel { get; init; }
 
             /// <summary>The captured metadata, such as logger message templates and arguments, as key-value pairs.</summary>
-            public Dictionary<string, object> Metadata { get; init; }
+            public required Dictionary<string, object?> Metadata { get; init; }
 
             /// <summary>The captured exception, if there is one.</summary>
-            public Exception Exception { get; init; }
+            public required Exception? Exception { get; init; }
         }
 
         /// <summary>A collection of captured log levels.</summary>
         public LogLevel[] LogLevels => this.SelectToArray(item => item.LogLevel);
 
         /// <summary>A collection of metadata, such as logger message templates and arguments, as key-value pairs.</summary>
-        public IDictionary<string, object>[] Metadata => this.SelectToArray(item => item.Metadata);
+        public IDictionary<string, object?>[] Metadata => this.SelectToArray(item => item.Metadata);
 
         /// <summary>A collection of captured exceptions. A <see langword="null"/> value indicates no exception.</summary>
-        public Exception[] Exceptions => this.SelectToArray(item => item.Exception);
+        public Exception?[] Exceptions => this.SelectToArray(item => item.Exception);
     }
 }

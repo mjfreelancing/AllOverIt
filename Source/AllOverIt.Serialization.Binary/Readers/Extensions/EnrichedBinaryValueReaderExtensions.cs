@@ -12,8 +12,8 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
         /// <returns>The value read from the stream cast to a <typeparamref name="TValue"/>.</returns>
         public static TValue ReadValue<TValue>(this IEnrichedBinaryValueReader valueReader, IEnrichedBinaryReader reader)
         {
-            _ = valueReader.WhenNotNull(nameof(valueReader));
-            _ = reader.WhenNotNull(nameof(reader));
+            _ = valueReader.WhenNotNull();
+            _ = reader.WhenNotNull();
 
             return (TValue) valueReader.ReadValue(reader);
         }

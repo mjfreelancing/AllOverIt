@@ -34,33 +34,30 @@ namespace AllOverIt.Cryptography.AES
 
         private AesEncryptor(IAesFactory aesFactory, IAesEncryptorConfiguration configuration)
         {
-            _aesFactory = aesFactory.WhenNotNull(nameof(aesFactory));
-            Configuration = configuration.WhenNotNull(nameof(configuration));
+            _aesFactory = aesFactory.WhenNotNull();
+            Configuration = configuration.WhenNotNull();
         }
 
-#if !NETSTANDARD2_1
         /// <inheritdoc />
         public int GetCipherTextLength(int plainTextLength)
         {
-            using (var aes = _aesFactory.Create(Configuration))
-            {
-                // AES cannot be created for modes other than those listed below
-                return Configuration.Mode switch
-                {
-                    CipherMode.CBC => aes.GetCiphertextLengthCbc(plainTextLength, Configuration.Padding),
-                    CipherMode.CFB => aes.GetCiphertextLengthCfb(plainTextLength, Configuration.Padding),
-                    CipherMode.ECB => aes.GetCiphertextLengthEcb(plainTextLength, Configuration.Padding),
+            using var aes = _aesFactory.Create(Configuration);
 
-                    _ => throw new InvalidOperationException($"Unexpected cipher mode '{Configuration.Mode}' for the AES algorithm."),
-                };
-            }
+            // AES cannot be created for modes other than those listed below
+            return Configuration.Mode switch
+            {
+                CipherMode.CBC => aes.GetCiphertextLengthCbc(plainTextLength, Configuration.Padding),
+                CipherMode.CFB => aes.GetCiphertextLengthCfb(plainTextLength, Configuration.Padding),
+                CipherMode.ECB => aes.GetCiphertextLengthEcb(plainTextLength, Configuration.Padding),
+
+                _ => throw new InvalidOperationException($"Unexpected cipher mode '{Configuration.Mode}' for the AES algorithm."),
+            };
         }
-#endif
 
         /// <inheritdoc />
         public byte[] Encrypt(byte[] plainText)
         {
-            _ = plainText.WhenNotNull(nameof(plainText));
+            _ = plainText.WhenNotNull();
 
             using (var memoryStream = new MemoryStream())
             {
@@ -69,10 +66,9 @@ namespace AllOverIt.Cryptography.AES
                 {
                     var encryptor = aes.CreateEncryptor();
 
-                    using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
-                    {
-                        cryptoStream.Write(plainText, 0, plainText.Length);
-                    }
+                    using var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
+
+                    cryptoStream.Write(plainText, 0, plainText.Length);
                 }
 
                 return memoryStream.ToArray();
@@ -82,7 +78,7 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public byte[] Decrypt(byte[] cipherText)
         {
-            _ = cipherText.WhenNotNullOrEmpty(nameof(cipherText));
+            _ = cipherText.WhenNotNullOrEmpty();
 
             using (var memoryStream = new MemoryStream())
             {
@@ -91,10 +87,9 @@ namespace AllOverIt.Cryptography.AES
                 {
                     var decryptor = aes.CreateDecryptor();
 
-                    using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
-                    {
-                        cryptoStream.Write(cipherText, 0, cipherText.Length);
-                    }
+                    using var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write);
+
+                    cryptoStream.Write(cipherText, 0, cipherText.Length);
                 }
 
                 return memoryStream.ToArray();
@@ -104,36 +99,34 @@ namespace AllOverIt.Cryptography.AES
         /// <inheritdoc />
         public void Encrypt(Stream plainTextStream, Stream cipherTextStream)
         {
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
+            _ = plainTextStream.WhenNotNull();
+            _ = cipherTextStream.WhenNotNull();
 
             // Aes will throw if not appropriately configured
             using (var aes = _aesFactory.Create(Configuration))
             {
                 var encryptor = aes.CreateEncryptor();
 
-                using (var cryptoStream = new CryptoStream(cipherTextStream, encryptor, CryptoStreamMode.Write, true))
-                {
-                    plainTextStream.CopyTo(cryptoStream);
-                }
+                using var cryptoStream = new CryptoStream(cipherTextStream, encryptor, CryptoStreamMode.Write, true);
+
+                plainTextStream.CopyTo(cryptoStream);
             }
         }
 
         /// <inheritdoc />
         public void Decrypt(Stream cipherTextStream, Stream plainTextStream)
         {
-            _ = cipherTextStream.WhenNotNull(nameof(cipherTextStream));
-            _ = plainTextStream.WhenNotNull(nameof(plainTextStream));
+            _ = cipherTextStream.WhenNotNull();
+            _ = plainTextStream.WhenNotNull();
 
             // Aes will throw if not appropriately configured
             using (var aes = _aesFactory.Create(Configuration))
             {
                 var decryptor = aes.CreateDecryptor();
 
-                using (var cryptoStream = new CryptoStream(cipherTextStream, decryptor, CryptoStreamMode.Read, true))
-                {
-                    cryptoStream.CopyTo(plainTextStream);
-                }
+                using var cryptoStream = new CryptoStream(cipherTextStream, decryptor, CryptoStreamMode.Read, true);
+
+                cryptoStream.CopyTo(plainTextStream);
             }
         }
     }

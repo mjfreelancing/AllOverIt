@@ -3,6 +3,7 @@ using AllOverIt.Process.Exceptions;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+
 using SystemProcess = System.Diagnostics.Process;
 
 namespace AllOverIt.Process
@@ -30,14 +31,15 @@ namespace AllOverIt.Process
             }
         }
 
-        internal SystemProcess _process;
+        private bool _disposed;
+        internal readonly SystemProcess _process;
         internal readonly ProcessExecutorOptions _options;
 
         /// <summary>Constructor.</summary>
         /// <param name="options">The options used to configure the executor.</param>
         public ProcessExecutor(ProcessExecutorOptions options)
         {
-            _options = options.WhenNotNull(nameof(options));
+            _options = options.WhenNotNull();
 
             _process = ProcessFactory.CreateProcess(_options);
         }
@@ -62,14 +64,17 @@ namespace AllOverIt.Process
         [ExcludeFromCodeCoverage]
         public void Dispose()
         {
-            _process?.Close();
-            _process?.Dispose();
+            if (!_disposed)
+            {
+                _process.Close();
+                _process.Dispose();
 
-            _process = null;
+                _disposed = true;
+            }
         }
 
         [ExcludeFromCodeCoverage]
-        private async Task DoExecuteAsync(DataReceivedEventHandler standardOutputHandler, DataReceivedEventHandler errorOutputHandler,
+        private async Task DoExecuteAsync(DataReceivedEventHandler? standardOutputHandler, DataReceivedEventHandler? errorOutputHandler,
             CancellationToken cancellationToken)
         {
             if (standardOutputHandler is not null)
@@ -96,34 +101,24 @@ namespace AllOverIt.Process
                 _process.BeginErrorReadLine();
             }
 
-            Exception processException = null;
+            Exception? processException = null;
 
             try
             {
                 var milliseconds = (int) _options.Timeout.TotalMilliseconds;
 
-#if NETSTANDARD2_1
-                // A value of -1 will wait indefinitely
-                Throw<ProcessException>.When(milliseconds == 0, "A non-zero timeout must be specified when using the NETSTANDARD2_1 target.");
-
-                await WaitForProcessAsync(milliseconds).ConfigureAwait(false);
-#else
                 // Cater for an explicit timeout for the scenario where the provided cancellationToken does not have an associated timeout (via a CancellationTokenSource)
                 if (milliseconds != 0)        // -1 means indefinite
                 {
-                    using (var cts = new CancellationTokenSource(milliseconds))
-                    {
-                        using (var linked = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, cancellationToken))
-                        {
-                            await WaitForProcessAsync(linked.Token).ConfigureAwait(false);
-                        }
-                    }
+                    using var cts = new CancellationTokenSource(milliseconds);
+                    using var linked = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, cancellationToken);
+
+                    await WaitForProcessAsync(linked.Token).ConfigureAwait(false);
                 }
                 else
                 {
                     await WaitForProcessAsync(cancellationToken).ConfigureAwait(false);
                 }
-#endif
             }
             catch (OperationCanceledException)
             {
@@ -150,7 +145,7 @@ namespace AllOverIt.Process
                 }
             }
 
-            if (processException != null)
+            if (processException is not null)
             {
                 throw new ProcessException("Process execution failed.", processException);
             }
@@ -167,30 +162,16 @@ namespace AllOverIt.Process
             return new ProcessExecutorBufferedResult(_process, standardOutput.ToString(), errorOutput.ToString());
         }
 
-#if NETSTANDARD2_1
-        [ExcludeFromCodeCoverage]
-        private Task WaitForProcessAsync(int milliseconds)
-        {
-            _process.WaitForExit(milliseconds);
-
-            return Task.CompletedTask;
-        }
-#else
         [ExcludeFromCodeCoverage]
         private Task WaitForProcessAsync(CancellationToken cancellationToken)
         {
             return _process.WaitForExitAsync(cancellationToken);
         }
-#endif
 
         [ExcludeFromCodeCoverage]
         private void KillProcess()
         {
-#if NETSTANDARD2_1
-            _process.Kill();
-#else
             _process.Kill(true);
-#endif
         }
     }
 }

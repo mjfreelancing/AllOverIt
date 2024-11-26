@@ -11,7 +11,7 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>The public key within a <see cref="RsaKeyPair"/> to a base64 encoded string.</returns>
         public static string GetPublicKeyAsBase64(this RsaKeyPair rsaKeyPair)
         {
-            _ = rsaKeyPair.WhenNotNull(nameof(rsaKeyPair));
+            _ = rsaKeyPair.WhenNotNull();
 
             Throw<ArgumentException>.WhenNull(rsaKeyPair.PublicKey, "The public key cannot be null.");
 
@@ -23,7 +23,7 @@ namespace AllOverIt.Cryptography.Extensions
         /// <returns>The private key within a <see cref="RsaKeyPair"/> to a base64 encoded string.</returns>
         public static string GetPrivateKeyAsBase64(this RsaKeyPair rsaKeyPair)
         {
-            _ = rsaKeyPair.WhenNotNull(nameof(rsaKeyPair));
+            _ = rsaKeyPair.WhenNotNull();
 
             Throw<ArgumentException>.WhenNull(rsaKeyPair.PrivateKey, "The private key cannot be null.");
 

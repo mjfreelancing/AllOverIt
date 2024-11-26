@@ -8,7 +8,7 @@ namespace AllOverIt.Extensions
     public static class FileInfoExtensions
     {
         /// <summary>Gets the fully qualified path of the directory or file.</summary>
-        /// <param name="fileInfo">The <c>FileInfo</c> instance containing information about a file or directory.</param>
+        /// <param name="fileInfo">The <see cref="FileInfo"/> instance containing information about a file or directory.</param>
         /// <returns>Returns the fully qualified path of the directory or file.</returns>
         /// <remarks>This method returns the equivalent of <c>fileInfo.FullName</c> with the exception that if the length of the string is 260 or
         /// more characters the method falls back to using reflection to obtain the string rather than throw a <c>PathTooLongException</c> exception.</remarks>
@@ -22,7 +22,7 @@ namespace AllOverIt.Extensions
             {
                 return (string) fileInfo.GetType()
                   .GetField("FullPath", BindingFlags.Instance | BindingFlags.NonPublic)!
-                  .GetValue(fileInfo);
+                  .GetValue(fileInfo)!;
             }
         }
 

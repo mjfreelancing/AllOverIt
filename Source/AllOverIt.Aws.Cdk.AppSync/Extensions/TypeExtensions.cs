@@ -5,6 +5,7 @@ using AllOverIt.Aws.Cdk.AppSync.Exceptions;
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
 using Cdklabs.AwsCdkAppsyncUtils;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using SystemType = System.Type;
 
@@ -15,11 +16,11 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
         public static SystemType GetElementTypeIfArray(this SystemType type)
         {
             return type.IsArray
-                ? type.GetElementType()
+                ? type.GetElementType()!
                 : type;
         }
 
-        private static bool TryGetSchemaAttribute<TType>(TypeInfo typeInfo, out SchemaTypeBaseAttribute attribute)
+        private static bool TryGetSchemaAttribute<TType>(TypeInfo typeInfo, [NotNullWhen(true)] out SchemaTypeBaseAttribute? attribute)
             where TType : SchemaTypeBaseAttribute
         {
             var schemaTypeAttributes = typeInfo
@@ -37,7 +38,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
                 return true;
             }
 
-            attribute = default;
+            attribute = null;
+
             return false;
         }
 
@@ -64,6 +66,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             // SchemaTypeAttribute indicates if this is a scalar, enum, interface, or input type (cannot be on an array)
             if (TryGetSchemaAttribute<SchemaTypeBaseAttribute>(typeInfo, out var schemaTypeAttribute))
             {
+                Throw<InvalidOperationException>.WhenNull(type.Namespace, $"The {type.Name} type requires a namespace.");
+
                 var schemaTypeName = GetNamespaceBasedName(type.Namespace, schemaTypeAttribute.ExcludeNamespacePrefix, schemaTypeAttribute.Name);
 
                 if (typeNameOverride.IsNotNullOrEmpty() && schemaTypeName.IsNotNullOrEmpty())
@@ -92,16 +96,16 @@ namespace AllOverIt.Aws.Cdk.AppSync.Extensions
             return new GraphqlSchemaTypeDescriptor(elementType, GraphqlSchemaType.Scalar, elementType!.Name);
         }
 
-        public static Directive[] GetAuthDirectivesOrDefault(this SystemType type)
+        public static Directive[]? GetAuthDirectivesOrDefault(this SystemType type)
         {
             var attributes = type
                 .GetCustomAttributes<AuthDirectiveBaseAttribute>(true)
-                .AsReadOnlyCollection();
+                .ToArray();
 
             return attributes.GetAuthDirectivesOrDefault();
         }
 
-        private static string GetNamespaceBasedName(string typeNamespace, string excludeNamespacePrefix, string name)
+        private static string? GetNamespaceBasedName(string typeNamespace, string? excludeNamespacePrefix, string? name)
         {
             excludeNamespacePrefix ??= string.Empty;
 

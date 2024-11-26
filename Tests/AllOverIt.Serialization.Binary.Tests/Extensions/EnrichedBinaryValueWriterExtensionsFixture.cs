@@ -37,13 +37,36 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
             }
 
             [Fact]
+            public void Should_Throw_When_Value_Null()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryValueWriterExtensions.WriteValue(this.CreateStub<IEnrichedBinaryValueWriter>(), this.CreateStub<IEnrichedBinaryWriter>(), (string) null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("value");
+            }
+
+            [Fact]
+            public void Should_Not_Throw_When_Value_Not_Reference_Default()
+            {
+                Invoking(() =>
+                {
+                    EnrichedBinaryValueWriterExtensions.WriteValue(this.CreateStub<IEnrichedBinaryValueWriter>(), this.CreateStub<IEnrichedBinaryWriter>(), (int) default);
+                })
+                .Should()
+                .NotThrow();
+            }
+
+            [Fact]
             public void Should_Write_Value()
             {
                 var valueWriterFake = new Fake<IEnrichedBinaryValueWriter>();
                 var writerFake = this.CreateStub<IEnrichedBinaryWriter>();
 
                 var expected = Create<string>();
-                string actual = default;
+                string actual = null;
 
                 valueWriterFake
                     .CallsTo(fake => fake.WriteValue(writerFake, expected))

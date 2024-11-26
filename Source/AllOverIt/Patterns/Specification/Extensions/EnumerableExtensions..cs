@@ -1,4 +1,6 @@
-﻿namespace AllOverIt.Patterns.Specification.Extensions
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace AllOverIt.Patterns.Specification.Extensions
 {
     /// <summary>Provides a variety of specification extension methods for <see cref="IEnumerable{T}"/>.</summary>
     public static class EnumerableExtensions
@@ -17,7 +19,7 @@
         /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         /// <param name="candidates">The elements to apply the specification against.</param>
         /// <param name="specification">The specification to apply against a collection of elements.</param>
-        /// <returns><see langword="true" /> if any of the candidates meet the criteria of the provided specification.</returns>
+        /// <returns><see langword="True" /> if any of the candidates meet the criteria of the provided specification.</returns>
         public static bool Any<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
         {
             return candidates.Any(specification.IsSatisfiedBy);
@@ -27,7 +29,7 @@
         /// <typeparam name="TType">The candidate type the specification applies to.</typeparam>
         /// <param name="candidates">The elements to apply the specification against.</param>
         /// <param name="specification">The specification to apply against a collection of elements.</param>
-        /// <returns><see langword="true" /> if all of the candidates meet the criteria of the provided specification.</returns>
+        /// <returns><see langword="True" /> if all of the candidates meet the criteria of the provided specification.</returns>
         public static bool All<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
         {
             return candidates.All(specification.IsSatisfiedBy);
@@ -60,6 +62,7 @@
         /// <param name="specification">The specification to apply against a collection of elements.</param>
         /// <returns>The first candidate that meets the criteria of a provided specification or the type's
         /// default if there are no matches.</returns>
+        [return: MaybeNull]
         public static TType FirstOrDefault<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
         {
             return candidates.FirstOrDefault(specification.IsSatisfiedBy);
@@ -82,6 +85,7 @@
         /// <param name="specification">The specification to apply against a collection of elements.</param>
         /// <returns>The last candidate that meets the criteria of a provided specification or the type's
         /// default if there are no matches.</returns>
+        [return: MaybeNull]
         public static TType LastOrDefault<TType>(this IEnumerable<TType> candidates, ISpecification<TType> specification)
         {
             return candidates.LastOrDefault(specification.IsSatisfiedBy);

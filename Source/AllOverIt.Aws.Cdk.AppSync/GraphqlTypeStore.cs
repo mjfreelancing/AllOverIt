@@ -1,9 +1,9 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.Aws.Cdk.AppSync.Extensions;
 using AllOverIt.Aws.Cdk.AppSync.Factories;
-using AllOverIt.Aws.Cdk.AppSync.Mapping;
 using AllOverIt.Aws.Cdk.AppSync.Schema.Types;
 using AllOverIt.Extensions;
+using Amazon.CDK.AWS.AppSync;
 using Cdklabs.AwsCdkAppsyncUtils;
 using SystemType = System.Type;
 
@@ -12,10 +12,10 @@ namespace AllOverIt.Aws.Cdk.AppSync
     internal sealed class GraphqlTypeStore
     {
         private readonly List<SystemType> _typeUnderConstruction = [];
-        private readonly CodeFirstSchema _schema;
-        private readonly IReadOnlyDictionary<SystemType, string> _typeNameOverrides;
-        private readonly MappingTemplates _mappingTemplates;
-        private readonly MappingTypeFactory _mappingTypeFactory;
+
+        private readonly GraphqlApi _graphqlApi;
+        private readonly GraphqlSchema _schema;
+        private readonly IAppGraphqlProps _apiProps;
         private readonly DataSourceFactory _dataSourceFactory;
 
         private readonly Dictionary<string, Func<RequiredTypeInfo, GraphqlType>> _fieldTypes = new()
@@ -37,21 +37,19 @@ namespace AllOverIt.Aws.Cdk.AppSync
             {nameof(String), requiredTypeInfo => GraphqlType.String(CreateTypeOptions(requiredTypeInfo))}
         };
 
-        public GraphqlTypeStore(CodeFirstSchema schema, IReadOnlyDictionary<SystemType, string> typeNameOverrides, MappingTemplates mappingTemplates,
-            MappingTypeFactory mappingTypeFactory, DataSourceFactory dataSourceFactory)
+        public GraphqlTypeStore(GraphqlApi graphqlApi, GraphqlSchema schema, IAppGraphqlProps apiProps, DataSourceFactory dataSourceFactory)
         {
+            _graphqlApi = graphqlApi.WhenNotNull();
             _schema = schema.WhenNotNull();
-            _typeNameOverrides = typeNameOverrides.WhenNotNull();
-            _mappingTemplates = mappingTemplates.WhenNotNull();
-            _mappingTypeFactory = mappingTypeFactory.WhenNotNull();
+            _apiProps = apiProps.WhenNotNull();
             _dataSourceFactory = dataSourceFactory.WhenNotNull();
         }
 
-        public GraphqlType GetGraphqlType(string fieldName, RequiredTypeInfo requiredTypeInfo, Action<IIntermediateType> typeCreated)
+        public GraphqlType GetGraphqlType(string? fieldName, RequiredTypeInfo requiredTypeInfo, Action<IIntermediateType> typeCreated)
         {
             SchemaUtils.AssertNoProperties(requiredTypeInfo.Type);
 
-            var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor(_typeNameOverrides);
+            var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor(_apiProps.TypeNameOverrides);
             var typeName = typeDescriptor.Name;
 
             var fieldTypeCreator = GetTypeCreator(fieldName, requiredTypeInfo.Type, typeName, typeDescriptor, typeCreated);
@@ -59,7 +57,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             return fieldTypeCreator.Invoke(requiredTypeInfo);
         }
 
-        private Func<RequiredTypeInfo, GraphqlType> GetTypeCreator(string parentName, SystemType type, string lookupTypeName,
+        private Func<RequiredTypeInfo, GraphqlType> GetTypeCreator(string? parentName, SystemType type, string lookupTypeName,
             GraphqlSchemaTypeDescriptor typeDescriptor, Action<IIntermediateType> typeCreated)
         {
             if (!_fieldTypes.TryGetValue(lookupTypeName, out var fieldTypeCreator))
@@ -123,7 +121,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             return enumType;
         }
 
-        private IIntermediateType CreateInterfaceType(string parentName, SystemType type, GraphqlSchemaTypeDescriptor typeDescriptor)
+        private IIntermediateType CreateInterfaceType(string? parentName, SystemType type, GraphqlSchemaTypeDescriptor typeDescriptor)
         {
             SchemaUtils.AssertNoProperties(type);
 
@@ -139,7 +137,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
                 var classDefinition = new Dictionary<string, IField>();
 
-                ParseInterfaceTypeMethods(parentName, classDefinition, type);
+                ParseInterfaceTypeMethods(parentName, classDefinition, type, typeDescriptor);
 
                 var intermediateType = CreateIntermediateType(typeDescriptor, classDefinition);
 
@@ -161,7 +159,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             }
         }
 
-        private void ParseInterfaceTypeMethods(string parentName, Dictionary<string, IField> classDefinition, SystemType type)
+        private void ParseInterfaceTypeMethods(string? parentName, Dictionary<string, IField> classDefinition, SystemType type, GraphqlSchemaTypeDescriptor parentTypeDescriptor)
         {
             var methods = type.GetMethodInfo();
 
@@ -177,7 +175,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 methodInfo.AssertReturnSchemaType(type);
 
                 var requiredTypeInfo = methodInfo.GetRequiredTypeInfo();
-                var fieldMapping = methodInfo.GetFieldName(parentName);
+                var fieldMapping = methodInfo.GetFieldName(parentName);     // Such as Query.Parent.Child.Field
 
                 GraphqlType returnObjectType;
 
@@ -185,7 +183,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 {
                     // the type is already under construction - we can get away with a dummy intermediate type
                     // that has the name and no definition.
-                    var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor(_typeNameOverrides);
+                    var typeDescriptor = requiredTypeInfo.Type.GetGraphqlTypeDescriptor(_apiProps.TypeNameOverrides);
                     var intermediateType = CreateIntermediateType(typeDescriptor);
 
                     returnObjectType = intermediateType.Attribute(CreateTypeOptions(requiredTypeInfo));
@@ -202,39 +200,36 @@ namespace AllOverIt.Aws.Cdk.AppSync
                 // Note: Directives work at the field level so you need to give the same access to the declaring type too.
                 var authDirectives = methodInfo.GetAuthDirectivesOrDefault();
 
-                // optionally specified via a custom attribute
+                // Optionally specified via a custom attribute
+                var fieldName = methodInfo.Name.GetGraphqlName();
                 var dataSource = methodInfo.GetDataSource(_dataSourceFactory);
 
-                if (dataSource == null)
-                {
-                    classDefinition.Add(
-                        methodInfo.Name.GetGraphqlName(),
-                        new Field(
-                            new FieldOptions
-                            {
-                                Args = methodInfo.GetMethodArgs(_schema, this),
-                                ReturnType = returnObjectType,
-                                Directives = authDirectives
-                            })
-                    );
-                }
-                else
-                {
-                    methodInfo.RegisterRequestResponseMappings(fieldMapping, _mappingTemplates, _mappingTypeFactory);
+                classDefinition.Add(
+                    fieldName,
+                    new Field(
+                        new FieldOptions
+                        {
+                            Args = methodInfo.GetMethodArgs(_schema, this),
+                            ReturnType = returnObjectType,
+                            Directives = authDirectives
+                        })
+                );
 
-                    classDefinition.Add(
-                        methodInfo.Name.GetGraphqlName(),
-                        new ResolvableField(
-                            new ResolvableFieldOptions
-                            {
-                                DataSource = dataSource,
-                                RequestMappingTemplate = _mappingTemplates.GetRequestMapping(fieldMapping),
-                                ResponseMappingTemplate = _mappingTemplates.GetResponseMapping(fieldMapping),
-                                Args = methodInfo.GetMethodArgs(_schema, this),
-                                ReturnType = returnObjectType,
-                                Directives = authDirectives
-                            })
-                    );
+                // Can be null for subscriptions
+                if (dataSource is not null)
+                {
+                    methodInfo.RegisterResolver(fieldMapping, _apiProps.ResolverRegistry, _apiProps.ResolverFactory);
+
+                    var resolverProps = new ExtendedResolverProps
+                    {
+                        TypeName = parentTypeDescriptor.Name,
+                        FieldName = fieldName,
+                        DataSource = dataSource
+                    };
+
+                    _apiProps.ResolverRegistry.SetResolverProps(fieldMapping, resolverProps);
+
+                    _graphqlApi.CreateResolver($"{parentTypeDescriptor.Name}{fieldName}Resolver", resolverProps);
                 }
             }
         }
@@ -255,7 +250,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
             };
         }
 
-        private static IIntermediateType CreateIntermediateType(GraphqlSchemaTypeDescriptor typeDescriptor, IDictionary<string, IField> classDefinition = null)
+        private static IIntermediateType CreateIntermediateType(GraphqlSchemaTypeDescriptor typeDescriptor, IDictionary<string, IField>? classDefinition = default)
         {
             // TODO: currently handles Input and Type - haven't yet looked at these below
 

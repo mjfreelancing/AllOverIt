@@ -27,7 +27,7 @@ namespace AllOverIt.Cryptography.Hybrid
         /// <param name="keys">The keys used for RSA signature creation and verification.</param>
         public RsaSigningConfiguration(RsaKeyPair keys)
         {
-            Keys = keys.WhenNotNull(nameof(keys));
+            Keys = keys.WhenNotNull();
         }
     }
 }

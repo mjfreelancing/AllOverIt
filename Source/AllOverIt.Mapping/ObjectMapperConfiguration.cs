@@ -24,7 +24,7 @@ namespace AllOverIt.Mapping
             : this()
         {
             configure
-                .WhenNotNull(nameof(configure))
+                .WhenNotNull()
                 .Invoke(Options);
         }
 
@@ -32,7 +32,7 @@ namespace AllOverIt.Mapping
         /// <typeparam name="TSource">The source type.</typeparam>
         /// <typeparam name="TTarget">The target type.</typeparam>
         /// <param name="configure">The action that allows the property matching options to be configured.</param>
-        public void Configure<TSource, TTarget>(Action<TypedPropertyMatcherOptions<TSource, TTarget>> configure = default)
+        public void Configure<TSource, TTarget>(Action<TypedPropertyMatcherOptions<TSource, TTarget>>? configure = default)
         {
             var sourceType = typeof(TSource);
             var targetType = typeof(TTarget);
@@ -53,8 +53,8 @@ namespace AllOverIt.Mapping
 
         internal Func<object> GetOrAdd(Type type, Func<object> factory)
         {
-            _ = type.WhenNotNull(nameof(type));
-            _ = factory.WhenNotNull(nameof(factory));
+            _ = type.WhenNotNull();
+            _ = factory.WhenNotNull();
 
             return _typeFactory.GetOrAdd(type, factory);
         }
@@ -66,7 +66,7 @@ namespace AllOverIt.Mapping
 
         internal Func<object> GetTypeFactory(Type type)
         {
-            _ = type.WhenNotNull(nameof(type));
+            _ = type.WhenNotNull();
 
             return _typeFactory.GetOrLazilyAdd(type, type.GetFactory);
         }

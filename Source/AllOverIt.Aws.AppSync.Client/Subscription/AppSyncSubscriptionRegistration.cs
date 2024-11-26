@@ -8,28 +8,30 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
     /// subscription Id and any errors that occurred during connection / registration.</summary>
     internal sealed class AppSyncSubscriptionRegistration : IAppSyncSubscriptionRegistration
     {
+        private bool _disposed;
+
         // The subscription registration being decorated. When disposed, the registration is unregistered from AppSync.
-        private IAsyncDisposable _disposable;
+        private readonly IAsyncDisposable? _disposable;
 
         /// <summary>The subscription Id.</summary>
         public string Id { get; }
 
-        /// <summary>When not null, contains exceptions raised during registration, such as connection issues.</summary>
-        public IReadOnlyCollection<Exception> Exceptions { get; }
+        /// <summary>When not <see langword="null"/>, contains exceptions raised during registration, such as connection issues.</summary>
+        public Exception[]? Exceptions { get; }
 
-        /// <summary>When not null, contains graphql errors raised during registration, such as request/response mapping errors.</summary>
-        public IReadOnlyCollection<GraphqlErrorDetail> GraphqlErrors { get; }
+        /// <summary>When not <see langword="null"/>, contains graphql errors raised during registration, such as request/response mapping errors.</summary>
+        public GraphqlErrorDetail[]? GraphqlErrors { get; }
 
         /// <summary>Returns true if the registration was completed successfully (no graphql errors or exceptions).</summary>
-        public bool Success => _disposable != null;     // Same as: Exceptions == null && GraphqlErrors == null;
+        public bool Success => Exceptions is null && GraphqlErrors is null;
 
         /// <summary>Constructor. Used when a successful subscription is registered with AppSync.</summary>
         /// <param name="id">The subscription identifier.</param>
         /// <param name="disposable">The subscription that will unregister from AppSync when disposed.</param>
         public AppSyncSubscriptionRegistration(string id, IAsyncDisposable disposable)
         {
-            Id = id.WhenNotNullOrEmpty(nameof(id));
-            _disposable = disposable.WhenNotNull(nameof(disposable));
+            Id = id.WhenNotNullOrEmpty();
+            _disposable = disposable.WhenNotNull();
         }
 
         /// <summary>Constructor.</summary>
@@ -38,10 +40,11 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// are typically associated with connectivity issues.</param>
         public AppSyncSubscriptionRegistration(string id, IEnumerable<Exception> exceptions)
         {
-            Id = id.WhenNotNullOrEmpty(nameof(id));
+            Id = id.WhenNotNullOrEmpty();
+
             Exceptions = exceptions
-                .WhenNotNullOrEmpty(nameof(exceptions))
-                .AsReadOnlyCollection();
+                .WhenNotNullOrEmpty()
+                .AsArray();
         }
 
         /// <summary>Constructor.</summary>
@@ -50,18 +53,19 @@ namespace AllOverIt.Aws.AppSync.Client.Subscription
         /// are typically associated with invalid queries or request/response mappings.</param>
         public AppSyncSubscriptionRegistration(string id, IEnumerable<GraphqlErrorDetail> errors)
         {
-            Id = id.WhenNotNullOrEmpty(nameof(id));
-            GraphqlErrors = errors.AsReadOnlyCollection();
+            Id = id.WhenNotNullOrEmpty();
+            GraphqlErrors = errors.AsArray();
         }
 
         /// <summary>Disposes of the subscription including unsubscribing from AppSync.</summary>
         public async ValueTask DisposeAsync()
         {
             // Unsubscribe from AppSync
-            if (_disposable != null)
+            if (!_disposed && _disposable is not null)
             {
                 await _disposable.DisposeAsync();
-                _disposable = null;
+
+                _disposed = true;
             }
         }
     }

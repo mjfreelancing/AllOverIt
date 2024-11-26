@@ -16,7 +16,7 @@ namespace AllOverIt.IO
         [ExcludeFromCodeCoverage]
         public static string CreateUniqueFilename(string filename)
         {
-            _ = filename.WhenNotNullOrEmpty(nameof(filename));
+            _ = filename.WhenNotNullOrEmpty();
 
             if (!File.Exists(filename))
             {
@@ -40,11 +40,11 @@ namespace AllOverIt.IO
         /// <summary>Determines if the provided child path is a subfolder of the provided parent path.</summary>
         /// <param name="parentPath">The parent path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <returns><see langword="true" /> if the child path is an immediate subfolder of the parent path.</returns>
+        /// <returns><see langword="True" /> if the child path is an immediate subfolder of the parent path.</returns>
         public static bool PathIsSubFolder(string parentPath, string childPath)
         {
-            _ = parentPath.WhenNotNullOrEmpty(nameof(parentPath));
-            _ = childPath.WhenNotNullOrEmpty(nameof(childPath));
+            _ = parentPath.WhenNotNullOrEmpty();
+            _ = childPath.WhenNotNullOrEmpty();
 
             var parent = Path.GetFullPath(parentPath);
             var child = Path.GetFullPath(childPath);
@@ -58,8 +58,8 @@ namespace AllOverIt.IO
         /// <returns>The absolute path derived from combining the source and relative paths.</returns>
         public static string GetAbsolutePath(string sourcePath, string relativePath)
         {
-            _ = sourcePath.WhenNotNullOrEmpty(nameof(sourcePath));
-            _ = relativePath.WhenNotNull(nameof(relativePath));   // can be empty
+            _ = sourcePath.WhenNotNullOrEmpty();
+            _ = relativePath.WhenNotNull();   // can be empty
 
             var outputDirectory = Path.Combine(sourcePath, relativePath);
 
@@ -71,12 +71,15 @@ namespace AllOverIt.IO
         /// <param name="relativePath">The relative path to apply to the path portion of the source filename.</param>
         /// <param name="newFileName">If not null then the source filename is replaced.</param>
         /// <returns>The absolute filename derived from applying a relative path to the original source filename.</returns>
-        public static string GetAbsoluteFileName(string sourceFileName, string relativePath, string newFileName = null)
+        public static string GetAbsoluteFileName(string sourceFileName, string relativePath, string? newFileName = null)
         {
-            _ = sourceFileName.WhenNotNullOrEmpty(nameof(sourceFileName));
-            _ = relativePath.WhenNotNullOrEmpty(nameof(relativePath));
+            _ = sourceFileName.WhenNotNullOrEmpty();
+            _ = relativePath.WhenNotNullOrEmpty();
 
             var sourceDirectory = Path.GetDirectoryName(sourceFileName);
+
+            Throw<InvalidOperationException>.WhenNull(sourceDirectory, $"'{sourceDirectory}' does not contain a path.");
+
             var outputPath = GetAbsolutePath(sourceDirectory, relativePath);
 
             return Path.Combine(outputPath, newFileName ?? Path.GetFileName(sourceFileName));
@@ -90,8 +93,8 @@ namespace AllOverIt.IO
         [ExcludeFromCodeCoverage]
         public static Task CreateFileWithContentAsync(string content, string fileName, CancellationToken cancellationToken = default)
         {
-            _ = content.WhenNotNullOrEmpty(nameof(content));
-            _ = fileName.WhenNotNullOrEmpty(nameof(fileName));
+            _ = content.WhenNotNullOrEmpty();
+            _ = fileName.WhenNotNullOrEmpty();
 
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(content));
 
@@ -101,23 +104,22 @@ namespace AllOverIt.IO
         /// <summary>Creates a new file and writes the stream content to it.</summary>
         /// <param name="stream">The stream containing the content to be written to the file.</param>
         /// <param name="fileName">The name of the file to create.</param>
-        /// <param name="leaveOpen"><see langword="true" /> to leave the <paramref name="stream"/> open when the file has been written, otherwise <see langword="false" />.</param>
+        /// <param name="leaveOpen"><see langword="True" /> to leave the <paramref name="stream"/> open when the file has been written, otherwise <see langword="False" />.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>A task that completes when the file has been completely written.</returns>
         [ExcludeFromCodeCoverage]
         public static async Task CreateFileWithContentAsync(Stream stream, string fileName, bool leaveOpen = false, CancellationToken cancellationToken = default)
         {
-            _ = stream.WhenNotNull(nameof(stream));
-            _ = fileName.WhenNotNullOrEmpty(nameof(fileName));
+            _ = stream.WhenNotNull();
+            _ = fileName.WhenNotNullOrEmpty();
 
-            using (var fileStream = File.Create(fileName))
+            using var fileStream = File.Create(fileName);
+
+            await stream.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
+
+            if (!leaveOpen)
             {
-                await stream.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
-
-                if (!leaveOpen)
-                {
-                    stream.Dispose();
-                }
+                stream.Dispose();
             }
         }
     }

@@ -6,6 +6,8 @@ using System.Reflection;
 
 namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 {
+    // Tested via ModelBuilderExtensionsFixture
+
     /// <summary>Provides options for entities containing <see cref="EnrichedEnum{TEnum}"/> properties.</summary>
     public sealed class EnrichedEnumEntityOptions
     {
@@ -13,18 +15,22 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         internal Func<PropertyInfo, bool> PropertyPredicate { get; private set; }
         internal EnrichedEnumPropertyOptions PropertyOptions { get; } = new();
 
-        /// <summary>Constructor. The default behaviour is to include all properties on all entities that inherit <see cref="EnrichedEnum{TEnum}"/>.</summary>
+        /// <summary>Constructor. The default behaviour is to include all properties on all entities that inherit
+        /// <see cref="EnrichedEnum{TEnum}"/>.</summary>
         public EnrichedEnumEntityOptions()
         {
             EntityPredicate = _ => true;
             PropertyPredicate = property => property.PropertyType.IsEnrichedEnum();
         }
 
-        /// <summary>Constructor. The property options to be configured will be applied to the specified entity types.</summary>
+        /// <summary>Constructor. The default behaviour is to include all properties on the specified entity types that
+        /// inherit <see cref="EnrichedEnum{TEnum}"/>. To filter the properties, call one of the <c>Property()</c> or
+        /// <c>Properties()</c> methods.</summary>
         /// <param name="entityTypes">One or more entity types to be configured.</param>
-        public EnrichedEnumEntityOptions(IEnumerable<Type> entityTypes)
+        public EnrichedEnumEntityOptions(Type[] entityTypes)
         {
             EntityPredicate = entity => entityTypes.Contains(entity.ClrType);
+            PropertyPredicate = property => property.PropertyType.IsEnrichedEnum();
         }
 
         /// <summary>Gets options for all properties of the specified type on the entity types being configured.</summary>
@@ -67,7 +73,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         /// <returns>An options instance for the specified property on the entity types being configured.</returns>
         public EnrichedEnumPropertyOptions Property(string propertyName)
         {
-            _ = propertyName.WhenNotNullOrEmpty(nameof(propertyName));
+            _ = propertyName.WhenNotNullOrEmpty();
 
             return Properties(propertyName);
         }
@@ -77,7 +83,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         /// <returns>An options instance for the specified properties on the entity types being configured.</returns>
         public EnrichedEnumPropertyOptions Properties(params string[] propertyNames)
         {
-            _ = propertyNames.WhenNotNullOrEmpty(nameof(propertyNames));
+            _ = propertyNames.WhenNotNullOrEmpty();
 
             PropertyPredicate = property =>
             {
@@ -97,14 +103,14 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         /// <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.
         /// This should be the complete type name, including its length.</param>
         /// <param name="maxLength">Optional. If provided this value specifies the column's maximum length. This parameter is not required if the [MaxLength] attribute is used.</param>
-        public void AsName(string columnType = default, int? maxLength = default)
+        public void AsName(string? columnType = default, int? maxLength = default)
         {
             PropertyOptions.AsName(columnType, maxLength);
         }
 
         /// <summary>Configures all properties on the entity types being configured to store their values as an integer.</summary>
         /// <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.</param>
-        public void AsValue(string columnType = default)
+        public void AsValue(string? columnType = default)
         {
             PropertyOptions.AsValue(columnType);
         }

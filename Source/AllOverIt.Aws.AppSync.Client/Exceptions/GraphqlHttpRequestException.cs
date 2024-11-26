@@ -10,21 +10,21 @@ namespace AllOverIt.Aws.AppSync.Client.Exceptions
         /// <summary>The HTTP status code.</summary>
         public HttpStatusCode StatusCode { get; }
 
-        /// <summary>When not null, this provides all graphql errors associated with the query or mutation request.</summary>
+        /// <summary>When not <see langword="null"/>, this provides all graphql errors associated with the query or mutation request.</summary>
         /// <remarks>The <see cref="StatusCode"/> may be 200 in some circumstances, such as when an invalid query is provided.</remarks>
-        public IEnumerable<GraphqlErrorDetail> Errors { get; }
+        public GraphqlErrorDetail[]? Errors { get; }
 
         /// <summary>The raw HTT response content returned.</summary>
         public string Content { get; }
 
         /// <summary>Constructor.</summary>
         /// <param name="statusCode">The HTTP status code.</param>
-        /// <param name="errors">When not null, this provides all graphql errors associated with the query or mutation request.</param>
+        /// <param name="errors">When not <see langword="null"/>, this provides all graphql errors associated with the query or mutation request.</param>
         /// <param name="content">The raw HTT response content returned.</param>
-        internal GraphqlHttpRequestException(HttpStatusCode statusCode, IEnumerable<GraphqlErrorDetail> errors, string content)
+        internal GraphqlHttpRequestException(HttpStatusCode statusCode, IEnumerable<GraphqlErrorDetail>? errors, string content)
         {
             StatusCode = statusCode;
-            Errors = errors?.AsReadOnlyCollection();    // can be null
+            Errors = errors?.AsArray();
             Content = content;
         }
     }

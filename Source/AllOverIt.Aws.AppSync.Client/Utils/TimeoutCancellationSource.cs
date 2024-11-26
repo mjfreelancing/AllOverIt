@@ -3,7 +3,9 @@
     // A CancellationTokenSource that can timeout and be linked with another CancellationTokenSource.
     internal sealed class TimeoutCancellationSource : IDisposable
     {
-        private CancellationTokenSource _cts;
+        private bool _disposed;
+
+        private readonly CancellationTokenSource _cts;
 
         public CancellationToken Token => _cts.Token;
         public TimeSpan Timeout { get; }
@@ -21,8 +23,14 @@
 
         public void Dispose()
         {
-            _cts?.Dispose();
-            _cts = null;
+            if (_disposed)
+            {
+                return;
+
+            }
+
+            _cts.Dispose();
+            _disposed = true;
         }
     }
 }

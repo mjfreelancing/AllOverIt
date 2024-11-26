@@ -8,9 +8,9 @@ namespace AllOverIt.Mapping
     // These methods are indirectly tested via ObjectMapper and ObjectExtensions (AllOverIt.Mapping.Extensions)
     internal static class ObjectMapperHelper
     {
-        internal static IReadOnlyCollection<PropertyInfo> GetMappableProperties(Type sourceType, Type targetType, PropertyMatcherOptions options)
+        internal static PropertyInfo[] GetMappableProperties(Type sourceType, Type targetType, PropertyMatcherOptions options)
         {
-            _ = options.WhenNotNull(nameof(options));
+            _ = options.WhenNotNull();
 
             var sourceProps = GetFilteredSourcePropertyInfo(sourceType, options);
             var targetProps = GetFilteredTargetPropertyInfo(targetType, options);
@@ -20,18 +20,19 @@ namespace AllOverIt.Mapping
                     targetProps,
                     src => GetTargetAliasName(src.Name, options),
                     target => target.Name)
-                .AsReadOnlyCollection();
+                .ToArray();
         }
 
         internal static string GetTargetAliasName(string sourceName, PropertyMatcherOptions options)
         {
-            return options.GetAliasName(sourceName) ?? sourceName;
+            // will return sourceName if there is no alias
+            return options.GetAliasName(sourceName);
         }
 
         private static List<PropertyInfo> GetFilteredSourcePropertyInfo(Type sourceType, PropertyMatcherOptions options)
         {
             var propertyInfo = ReflectionCache
-                .GetPropertyInfo(sourceType, options.Binding)
+                .GetPropertyInfo(sourceType, options.Binding)!
                 .AsReadOnlyCollection();
 
             var sourceProps = new List<PropertyInfo>(propertyInfo.Count);
@@ -45,7 +46,7 @@ namespace AllOverIt.Mapping
                 // that property name being added twice, resulting in a duplicate key error.
                 if (propInfo.CanRead &&
                     !options.IsExcluded(propInfo.Name) &&
-                    (options.Filter == null || options.Filter.Invoke(propInfo)))
+                    (options.Filter is null || options.Filter.Invoke(propInfo)))
                 {
                     sourceProps.Add(propInfo);
                 }
@@ -57,7 +58,7 @@ namespace AllOverIt.Mapping
         private static List<PropertyInfo> GetFilteredTargetPropertyInfo(Type targetType, PropertyMatcherOptions options)
         {
             var propertyInfo = ReflectionCache
-                .GetPropertyInfo(targetType, options.Binding)
+                .GetPropertyInfo(targetType, options.Binding)!
                 .AsReadOnlyCollection();
 
             var targetProps = new List<PropertyInfo>(propertyInfo.Count);

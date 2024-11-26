@@ -12,7 +12,7 @@ namespace AllOverIt.Pipes.Named.Events
         /// <param name="exception">The exception associated with the event.</param>
         public NamedPipeExceptionEventArgs(Exception exception)
         {
-            Exception = exception.WhenNotNull(nameof(exception));
+            Exception = exception.WhenNotNull();
         }
     }
 }

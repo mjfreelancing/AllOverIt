@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using AllOverIt.Assertion;
+﻿using AllOverIt.Assertion;
 using AllOverIt.Extensions;
 using ReactiveUI;
 using System.Reactive;
@@ -34,8 +32,8 @@ namespace AllOverIt.ReactiveUI.Factories
         public static ReactiveCommand<Unit, Unit> CreateCancellableCommand(Func<CancellationToken, Task> action, Func<IObservable<Unit>> cancelObservable,
             IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
         {
-            _ = action.WhenNotNull(nameof(action));
-            _ = cancelObservable.WhenNotNull(nameof(cancelObservable));
+            _ = action.WhenNotNull();
+            _ = cancelObservable.WhenNotNull();
 
             return CreateCancellableCommand<Unit>(action, cancelObservable, canExecute, outputScheduler);
         }
@@ -91,8 +89,8 @@ namespace AllOverIt.ReactiveUI.Factories
         public static ReactiveCommand<Unit, TResult> CreateCancellableCommand<TResult, TCancel>(Func<CancellationToken, Task<TResult>> action, Func<IObservable<TCancel>> cancelObservable,
             IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
         {
-            _ = action.WhenNotNull(nameof(action));
-            _ = cancelObservable.WhenNotNull(nameof(cancelObservable));
+            _ = action.WhenNotNull();
+            _ = cancelObservable.WhenNotNull();
 
             return ReactiveCommand
                .CreateFromObservable<Unit, TResult>(
@@ -152,8 +150,8 @@ namespace AllOverIt.ReactiveUI.Factories
         public static ReactiveCommand<TParam, TResult> CreateCancellableCommand<TParam, TResult>(Func<TParam, CancellationToken, Task<TResult>> action, Func<IObservable<Unit>> cancelObservable,
             IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
         {
-            _ = action.WhenNotNull(nameof(action));
-            _ = cancelObservable.WhenNotNull(nameof(cancelObservable));
+            _ = action.WhenNotNull();
+            _ = cancelObservable.WhenNotNull();
 
             return CreateCancellableCommand<TParam, TResult, Unit>(action, cancelObservable, canExecute, outputScheduler);
         }
@@ -170,8 +168,8 @@ namespace AllOverIt.ReactiveUI.Factories
         public static ReactiveCommand<TParam, TResult> CreateCancellableCommand<TParam, TResult, TCancel>(Func<TParam, CancellationToken, Task<TResult>> action, Func<IObservable<TCancel>> cancelObservable,
             IObservable<bool>? canExecute = default, IScheduler? outputScheduler = default)
         {
-            _ = action.WhenNotNull(nameof(action));
-            _ = cancelObservable.WhenNotNull(nameof(cancelObservable));
+            _ = action.WhenNotNull();
+            _ = cancelObservable.WhenNotNull();
 
             return ReactiveCommand
                .CreateFromObservable<TParam, TResult>(
@@ -184,7 +182,7 @@ namespace AllOverIt.ReactiveUI.Factories
         /// <returns>A <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</returns>
         public static ReactiveCommand<Unit, Unit> CreateCancelCommand(params IObservable<bool>[] observables)
         {
-            _ = observables.WhenNotNullOrEmpty(nameof(observables), errorMessage: "At least one observable is required.");
+            _ = observables.WhenNotNullOrEmpty(errorMessage: "At least one observable is required.");
 
             var obs = observables.SelectToArray(canExecute => canExecute.StartWith(false));
 
@@ -263,7 +261,7 @@ namespace AllOverIt.ReactiveUI.Factories
         /// <returns>A <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</returns>
         public static ReactiveCommand<Unit, Unit> CreateCancelCommand(params IReactiveCommand[] cancellableCommands)
         {
-            _ = cancellableCommands.WhenNotNullOrEmpty(nameof(cancellableCommands), errorMessage: "At least one cancellable command is required.");
+            _ = cancellableCommands.WhenNotNullOrEmpty(errorMessage: "At least one cancellable command is required.");
 
             return cancellableCommands.Length == 1
                 ? ReactiveCommand.Create(() => { }, cancellableCommands[0].IsExecuting)

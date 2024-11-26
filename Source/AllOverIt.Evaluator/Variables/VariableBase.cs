@@ -5,7 +5,7 @@ namespace AllOverIt.Evaluator.Variables
     /// <summary>An abstract base class for a named variable.</summary>
     public abstract class VariableBase : IVariable
     {
-        internal IVariableRegistry VariableRegistry { get; set; }
+        internal IVariableRegistry? VariableRegistry { get; set; }
 
         /// <inheritdoc />
         public string Name { get; }
@@ -14,13 +14,13 @@ namespace AllOverIt.Evaluator.Variables
         public abstract double Value { get; }
 
         /// <summary>Gets all variables this variable references. Only applicable to variables constructed from a FormulaCompilerResult.</summary>
-        public IEnumerable<IVariable> ReferencedVariables { get; protected init; } = [];
+        public IVariable[] ReferencedVariables { get; protected init; } = [];
 
         /// <summary>Constructor.</summary>
-        /// <param name="name">The name of the ariable.</param>
+        /// <param name="name">The name of the variable.</param>
         protected VariableBase(string name)
         {
-            Name = name.WhenNotNullOrEmpty(nameof(name));
+            Name = name.WhenNotNullOrEmpty();
         }
     }
 }

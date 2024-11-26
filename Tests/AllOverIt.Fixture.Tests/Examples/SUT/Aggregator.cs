@@ -8,7 +8,7 @@ namespace AllOverIt.Fixture.Tests.Examples.SUT
 
         public Aggregator(ICalculator calculator)
         {
-            _calculator = calculator.WhenNotNull(nameof(calculator));
+            _calculator = calculator.WhenNotNull();
         }
 
         public double Summate(params double[] values)

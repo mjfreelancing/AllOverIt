@@ -5,9 +5,9 @@
     public abstract class GraphqlResponseBase<TResponse>
     {
         /// <summary>In the absence of errors, this contains the response data.</summary>
-        public TResponse Data { get; init; }
+        public required TResponse Data { get; init; }
 
         /// <summary>When a query error occurs this contains the error information reported by AppSync.</summary>
-        public IEnumerable<GraphqlErrorDetail> Errors { get; init; }
+        public GraphqlErrorDetail[]? Errors { get; init; }
     }
 }

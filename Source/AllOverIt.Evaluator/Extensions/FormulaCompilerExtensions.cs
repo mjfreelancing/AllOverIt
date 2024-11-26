@@ -11,10 +11,10 @@ namespace AllOverIt.Evaluator.Extensions
         /// <param name="formula">The formula as a string.</param>
         /// <param name="variableRegistry">An optional registry where, if required, contains previously populated variables required for the evaluation of the formula.</param>
         /// <returns>The evaluated result.</returns>
-        public static double GetResult(this FormulaCompiler compiler, string formula, IVariableRegistry variableRegistry = null)
+        public static double GetResult(this FormulaCompiler compiler, string formula, IVariableRegistry? variableRegistry = default)
         {
-            _ = compiler.WhenNotNull(nameof(compiler));
-            _ = formula.WhenNotNullOrEmpty(nameof(compiler));
+            _ = compiler.WhenNotNull();
+            _ = formula.WhenNotNullOrEmpty();
 
             return compiler
               .Compile(formula, variableRegistry)

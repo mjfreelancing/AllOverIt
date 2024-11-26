@@ -106,16 +106,16 @@ namespace ObservableDemo
             Console.ReadKey();
         }
 
-        private static void ObservableParent_PropertyChanging(object sender, System.ComponentModel.PropertyChangingEventArgs e)
+        private static void ObservableParent_PropertyChanging(object? sender, System.ComponentModel.PropertyChangingEventArgs e)
         {
-            var value = sender.GetPropertyValue<string>(e.PropertyName);
+            var value = sender!.GetPropertyValue<string>(e.PropertyName!);
 
             Console.WriteLine($"PropertyChanging: {e.PropertyName} from {value}");
         }
 
-        private static void ObservableParent_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private static void ObservableParent_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            var value = sender.GetPropertyValue<string>(e.PropertyName);
+            var value = sender!.GetPropertyValue<string>(e.PropertyName!);
 
             Console.WriteLine($"PropertyChanged: {e.PropertyName} to {value}");
         }
@@ -125,7 +125,7 @@ namespace ObservableDemo
             return new PersonEntity
             {
                 FirstName = "Roger",
-                LastName = "Lindore"
+                LastName = "Robertson"
             };
         }
     }

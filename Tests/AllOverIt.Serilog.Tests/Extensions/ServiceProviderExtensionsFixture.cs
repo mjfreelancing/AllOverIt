@@ -2,6 +2,7 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serilog.Extensions;
 using AllOverIt.Serilog.Sinks.CircularBuffer;
+using AllOverIt.Serilog.Sinks.Observable;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -36,6 +37,20 @@ namespace AllOverIt.Serilog.Tests.Extensions
             actual.Should().BeOfType<CircularBufferSinkMessages>();
 
             actual.Capacity.Should().Be(bufferSize);
+        }
+
+        [Fact]
+        public void Should_Resolve_ObservableSink()
+        {
+            var services = new ServiceCollection();
+
+            services.AddSingleton<IObservableSink>(new ObservableSink());
+
+            var provider = services.BuildServiceProvider();
+
+            var actual = ServiceProviderExtensions.GetObservableSink(provider);
+
+            actual.Should().BeOfType<ObservableSink>();
         }
     }
 }

@@ -30,11 +30,11 @@ namespace AllOverIt.Extensions
         /// by <paramref name="typeInfo"/>. If the property is overidden, this means the base class <see cref="PropertyInfo"/> will not be
         /// returned. If you require the base class <see cref="PropertyInfo"/> then use the <see cref="GetPropertyInfo(TypeInfo,bool)"/>
         /// method.</remarks>
-        public static PropertyInfo GetPropertyInfo(this TypeInfo typeInfo, string propertyName)
+        public static PropertyInfo? GetPropertyInfo(this TypeInfo typeInfo, string propertyName)
         {
             var propertyInfo = typeInfo.GetDeclaredProperty(propertyName);
 
-            if (propertyInfo == null && typeInfo.BaseType != null)
+            if (propertyInfo is null && typeInfo.BaseType is not null)
             {
                 var baseTypeInfo = typeInfo.BaseType.GetTypeInfo();
                 propertyInfo = GetPropertyInfo(baseTypeInfo, propertyName);
@@ -68,11 +68,11 @@ namespace AllOverIt.Extensions
         /// by <paramref name="typeInfo"/>. If the field is overidden, this means the base class <see cref="FieldInfo"/> will not be
         /// returned. If you require the base class <see cref="FieldInfo"/> then use the <see cref="GetFieldInfo(TypeInfo,bool)"/>
         /// method.</remarks>
-        public static FieldInfo GetFieldInfo(this TypeInfo typeInfo, string fieldName)
+        public static FieldInfo? GetFieldInfo(this TypeInfo typeInfo, string fieldName)
         {
             var propertyInfo = typeInfo.GetDeclaredField(fieldName);
 
-            if (propertyInfo == null && typeInfo.BaseType != null)
+            if (propertyInfo is null && typeInfo.BaseType is not null)
             {
                 var baseTypeInfo = typeInfo.BaseType.GetTypeInfo();
                 propertyInfo = GetFieldInfo(baseTypeInfo, fieldName);
@@ -83,7 +83,7 @@ namespace AllOverIt.Extensions
 
         private static void GetPropertyInfo(TypeInfo typeInfo, bool declaredOnly, ICollection<PropertyInfo> propInfoList)
         {
-            if (!declaredOnly && typeInfo.BaseType != null)
+            if (!declaredOnly && typeInfo.BaseType is not null)
             {
                 var baseTypeInfo = typeInfo.BaseType.GetTypeInfo();
                 GetPropertyInfo(baseTypeInfo, false, propInfoList);
@@ -100,7 +100,7 @@ namespace AllOverIt.Extensions
 
         private static void GetFieldInfo(TypeInfo typeInfo, bool declaredOnly, ICollection<FieldInfo> fieldInfoList)
         {
-            if (!declaredOnly && typeInfo.BaseType != null)
+            if (!declaredOnly && typeInfo.BaseType is not null)
             {
                 var baseTypeInfo = typeInfo.BaseType.GetTypeInfo();
                 GetFieldInfo(baseTypeInfo, false, fieldInfoList);

@@ -17,8 +17,8 @@ namespace AllOverIt.Helpers.PropertyNavigation.Extensions
         /// <remarks></remarks>
         public static IPropertyNodes<TProperty> Navigate<TType, TProperty>(this IPropertyNodes<TType> propertyNodes, Expression<Func<TType, TProperty>> expression)
         {
-            _ = propertyNodes.WhenNotNull(nameof(propertyNodes));
-            _ = expression.WhenNotNull(nameof(expression));
+            _ = propertyNodes.WhenNotNull();
+            _ = expression.WhenNotNull();
 
             return CreateFrom(propertyNodes, expression);
         }
@@ -32,8 +32,8 @@ namespace AllOverIt.Helpers.PropertyNavigation.Extensions
         /// <returns>The same <see cref="IPropertyNodes{TType}"/> instance so subsequent navigation calls can be chained in a fluent syntax.</returns>
         public static IPropertyNodes<TProperty> Navigate<TType, TProperty>(this IPropertyNodes<TType> propertyNodes, Expression<Func<TType, IEnumerable<TProperty>>> expression)
         {
-            _ = propertyNodes.WhenNotNull(nameof(propertyNodes));
-            _ = expression.WhenNotNull(nameof(expression));
+            _ = propertyNodes.WhenNotNull();
+            _ = expression.WhenNotNull();
 
             return CreateFrom(propertyNodes, expression);
         }
@@ -43,7 +43,7 @@ namespace AllOverIt.Helpers.PropertyNavigation.Extensions
         /// <returns>The full, dot separated, property path.</returns>
         public static string GetFullNodePath(this IPropertyNodes propertyNodes)
         {
-            _ = propertyNodes.WhenNotNull(nameof(propertyNodes));
+            _ = propertyNodes.WhenNotNull();
 
             return string.Join(".", propertyNodes.Nodes.Select(item => item.Name()));
         }

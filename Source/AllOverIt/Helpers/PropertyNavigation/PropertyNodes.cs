@@ -8,7 +8,7 @@ namespace AllOverIt.Helpers.PropertyNavigation
         private readonly List<PropertyNode> _nodes = [];
 
         /// <summary>Provides a <see cref="MemberExpression"/> for each navigated property node.</summary>
-        public IReadOnlyCollection<PropertyNode> Nodes => _nodes;
+        public PropertyNode[] Nodes => [.. _nodes];
 
         /// <inheritdoc />
         public Type ObjectType => typeof(TType);

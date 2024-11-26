@@ -12,7 +12,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <param name="serviceCollection">The service collection.</param>
         /// <param name="configure">Optional configuration options that provide the ability to exclude or otherwise filter service or implementation types.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
-        public static IServiceCollection AutoRegisterSingleton<TServiceRegistrar, TServiceType>(this IServiceCollection serviceCollection, Action<IServiceRegistrarOptions> configure = default)
+        public static IServiceCollection AutoRegisterSingleton<TServiceRegistrar, TServiceType>(this IServiceCollection serviceCollection, Action<IServiceRegistrarOptions>? configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
             return AutoRegisterWithLifetime<TServiceRegistrar, TServiceType>(serviceCollection, configure, ServiceLifetime.Singleton);
@@ -27,7 +27,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <param name="configure">Optional configuration options that provide the ability to exclude or otherwise filter service or implementation types.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
         public static IServiceCollection AutoRegisterSingleton<TServiceRegistrar>(this IServiceCollection serviceCollection, IEnumerable<Type> serviceTypes,
-            Action<IServiceRegistrarOptions> configure = default)
+            Action<IServiceRegistrarOptions>? configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
             return AutoRegisterWithLifetime<TServiceRegistrar>(serviceCollection, serviceTypes, configure, ServiceLifetime.Singleton);
@@ -42,7 +42,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <param name="configure">Optional configuration options that provide the ability to exclude or otherwise filter service or implementation types.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
         public static IServiceCollection AutoRegisterSingleton<TServiceType>(this IServiceCollection serviceCollection, IServiceRegistrar serviceRegistrar,
-            Action<IServiceRegistrarOptions> configure = default)
+            Action<IServiceRegistrarOptions>? configure = default)
         {
             return AutoRegisterWithLifetime<TServiceType>(serviceCollection, serviceRegistrar, configure, ServiceLifetime.Singleton);
         }
@@ -56,7 +56,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <param name="configure">Optional configuration options that provide the ability to exclude or otherwise filter service or implementation types.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
         public static IServiceCollection AutoRegisterSingleton(this IServiceCollection serviceCollection, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
-            Action<IServiceRegistrarOptions> configure = default)
+            Action<IServiceRegistrarOptions>? configure = default)
         {
             return AutoRegisterWithLifetime(serviceCollection, serviceRegistrar, serviceTypes, configure, ServiceLifetime.Singleton);
         }
@@ -70,7 +70,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <param name="configure">Optional configuration options that provide the ability to exclude or otherwise filter service or implementation types.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
         public static IServiceCollection AutoRegisterSingleton(this IServiceCollection serviceCollection, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
-            Action<IServiceRegistrarOptions> configure = default)
+            Action<IServiceRegistrarOptions>? configure = default)
         {
             return AutoRegisterWithLifetime(serviceCollection, serviceRegistrars, serviceTypes, configure, ServiceLifetime.Singleton);
         }
@@ -85,7 +85,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <param name="configure">Optional configuration options that provide the ability to exclude or otherwise filter service or implementation types.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
         public static IServiceCollection AutoRegisterSingleton<TServiceRegistrar>(this IServiceCollection serviceCollection, IEnumerable<Type> serviceTypes,
-            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
+            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions>? configure = default)
             where TServiceRegistrar : IServiceRegistrar, new()
         {
             return AutoRegisterWithLifetime<TServiceRegistrar>(serviceCollection, serviceTypes, constructorArgsResolver, configure, ServiceLifetime.Singleton);
@@ -101,7 +101,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <param name="configure">Optional configuration options that provide the ability to exclude or otherwise filter service or implementation types.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
         public static IServiceCollection AutoRegisterSingleton(this IServiceCollection serviceCollection, IServiceRegistrar serviceRegistrar, IEnumerable<Type> serviceTypes,
-            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
+            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions>? configure = default)
         {
             return AutoRegisterWithLifetime(serviceCollection, serviceRegistrar, serviceTypes, constructorArgsResolver, configure, ServiceLifetime.Singleton);
         }
@@ -116,7 +116,7 @@ namespace AllOverIt.DependencyInjection.Extensions
         /// <param name="configure">Optional configuration options that provide the ability to exclude or otherwise filter service or implementation types.</param>
         /// <returns>The original service collection to allow for a fluent syntax.</returns>
         public static IServiceCollection AutoRegisterSingleton(this IServiceCollection serviceCollection, IEnumerable<IServiceRegistrar> serviceRegistrars, IEnumerable<Type> serviceTypes,
-            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions> configure = default)
+            Func<IServiceProvider, Type, IEnumerable<object>> constructorArgsResolver, Action<IServiceRegistrarOptions>? configure = default)
         {
             return AutoRegisterWithLifetime(serviceCollection, serviceRegistrars, serviceTypes, constructorArgsResolver, configure, ServiceLifetime.Singleton);
         }

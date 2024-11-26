@@ -1,5 +1,6 @@
 using AllOverIt.Assertion;
 using AllOverIt.Patterns.ChainOfResponsibility.Extensions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Patterns.ChainOfResponsibility
 {
@@ -23,6 +24,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
         /// <param name="state">The input state to be processed.</param>
         /// <returns>The final output state of the input was processed. If the input state is not processed by one of the handlers
         /// then the default value for <typeparamref name="TInput" /> is returned (null if it is a reference type).</returns>
+        [return: MaybeNull]
         public TOutput Handle(TInput state)
         {
             return _firstHandler.Handle(state);

@@ -161,11 +161,17 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
             }
         }
 
+        /// <summary>Constructor. Applies a default constructed <see cref="BreadcrumbsOptions"/>.</summary>
+        public Breadcrumbs()
+            : this(new BreadcrumbsOptions())
+        {
+        }
+
         /// <summary>Constructor.</summary>
         /// <param name="options">Provides options that control how breadcrumb items are inserted and cached.</param>
-        public Breadcrumbs(BreadcrumbsOptions options = default)
+        public Breadcrumbs(BreadcrumbsOptions options)
         {
-            Options = options ?? new BreadcrumbsOptions();
+            Options = options.WhenNotNull();
 
             _breadcrumbs = Options.ThreadSafe
                 ? new MultiThreadListWrapper(Options)
@@ -188,7 +194,7 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         /// <inheritdoc />
         public void Add(BreadcrumbData breadcrumb)
         {
-            _ = breadcrumb.WhenNotNull(nameof(breadcrumb));
+            _ = breadcrumb.WhenNotNull();
 
             if (Enabled)
             {

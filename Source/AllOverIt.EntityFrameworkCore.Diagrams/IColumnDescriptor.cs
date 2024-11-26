@@ -19,6 +19,6 @@
         ConstraintType Constraint { get; }
 
         /// <summary>Provides foreign key principles.</summary>
-        IReadOnlyCollection<PrincipalForeignKey> ForeignKeyPrincipals { get; }
+        PrincipalForeignKey[] ForeignKeyPrincipals { get; }
     }
 }

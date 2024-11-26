@@ -23,7 +23,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
 
         /// <summary>Returns true if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</summary>
         /// <param name="typeToConvert">The object type.</param>
-        /// <returns><see langword="true" /> if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</returns>
+        /// <returns><see langword="True" /> if the object to be converted is a <see cref="EnrichedEnum{TEnum}"/>.</returns>
         public override bool CanConvert(Type typeToConvert)
         {
             // The typeToConvert is derived from EnrichedEnum<TEnum>, so need to get the generic from the base class.
@@ -47,7 +47,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Converters
             var genericArg = objectType.BaseType!.GenericTypeArguments[0];
             var genericType = typeof(EnrichedEnumJsonConverter<>).MakeGenericType(genericArg);
 
-            return (JsonConverter) Activator.CreateInstance(genericType);
+            return (JsonConverter) Activator.CreateInstance(genericType)!;
         }
     }
 }

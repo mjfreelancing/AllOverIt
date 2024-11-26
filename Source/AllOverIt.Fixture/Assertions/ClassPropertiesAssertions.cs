@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using System.Diagnostics;
@@ -47,20 +45,8 @@ namespace AllOverIt.Fixture.Assertions
             if (success)
             {
                 // Not using BeEquivalentTo() here since we want to customize the message rather than it pick up the expression.
-                var actual = _classProperties.Properties
-                    .Select(propertyInfo => propertyInfo.Name)
-#if NET8_0_OR_GREATER
-                    .Order();
-#else
-                    .OrderBy(item => item);
-#endif
-
-                var expected = propertyNames
-#if NET8_0_OR_GREATER
-                    .Order();
-#else
-                    .OrderBy(item => item);
-#endif
+                var actual = _classProperties.Properties.Select(propertyInfo => propertyInfo.Name).Order();
+                var expected = propertyNames.Order();
 
                 static string GetQuoted(IEnumerable<string> values) => "{{" + string.Join(",", values.Select(item => $"\"{item}\"")) + "}}";
 

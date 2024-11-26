@@ -14,7 +14,7 @@ namespace AllOverIt.ReactiveUI
         /// <summary>Indicates if the timer is currently counting down. This property is observable.</summary>
         bool IsRunning { get; }
 
-        /// <summary>Gets the reminaing countdown period, in milliseconds. This property is observable.</summary>
+        /// <summary>Gets the remaining countdown period, in milliseconds. This property is observable.</summary>
         double RemainingMilliseconds { get; }
 
         /// <summary>Gets the remaining countdown period, as a <see cref="TimeSpan"/>. This property is observable.</summary>
@@ -25,14 +25,14 @@ namespace AllOverIt.ReactiveUI
         /// <param name="updateIntervalMilliseconds">The update interval, in milliseconds.</param>
         /// <param name="scheduler">The scheduler to notify updates.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the timer when it is running.</param>
-        void Configure(double totalMilliseconds, double updateIntervalMilliseconds, IScheduler scheduler = null, CancellationToken cancellationToken = default);
+        void Configure(double totalMilliseconds, double updateIntervalMilliseconds, IScheduler? scheduler = default, CancellationToken cancellationToken = default);
 
         /// <summary>Configures the countdown timer total period and update interval.</summary>
         /// <param name="totalTimeSpan">The total <see cref="TimeSpan"/> to count down from.</param>
         /// <param name="updateInterval">The update interval.</param>
         /// <param name="scheduler">The scheduler to notify updates.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the timer when it is running.</param>
-        void Configure(TimeSpan totalTimeSpan, TimeSpan updateInterval, IScheduler scheduler = null, CancellationToken cancellationToken = default);
+        void Configure(TimeSpan totalTimeSpan, TimeSpan updateInterval, IScheduler? scheduler = default, CancellationToken cancellationToken = default);
 
         /// <summary>Starts the countdown timer.</summary>
         /// <param name="skipMilliseconds">The number of milliseconds to skip (subtract from the remaining period).</param>

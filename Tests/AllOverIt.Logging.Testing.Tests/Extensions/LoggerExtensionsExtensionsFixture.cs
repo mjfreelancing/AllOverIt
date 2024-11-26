@@ -67,7 +67,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                 _logger.LogDebug(message);
             }
 
-            public void LogInformationMethodWithArguments(string template, params object?[] arguments)
+            public void LogInformationMethodWithArguments(string template, params object[] arguments)
             {
                 _logger.LogInformation(template, arguments);
             }

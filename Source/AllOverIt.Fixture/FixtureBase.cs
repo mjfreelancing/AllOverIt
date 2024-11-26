@@ -28,7 +28,7 @@ namespace AllOverIt.Fixture
 #if NET8_0_OR_GREATER
             _random = Random.Shared;
 #else
-            _random = new Random((int) DateTime.Now.Ticks);
+            _random = new Random((int)DateTime.Now.Ticks);
 #endif
 
             Fixture.Customize<float>(composer => composer.FromFactory<int>(value => value * (0.5f + (float) _random.NextDouble())));
@@ -65,14 +65,7 @@ namespace AllOverIt.Fixture
         /// <returns>The same action passed to the method.</returns>
         protected static Action Invoking(Action action)
         {
-#if NET8_0_OR_GREATER
             ArgumentNullException.ThrowIfNull(action);
-#else
-            if (action == null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
-#endif
 
             return action;
         }
@@ -82,7 +75,7 @@ namespace AllOverIt.Fixture
         /// <param name="action">The action to be invoked.</param>
         /// <param name="name">The name of the argument expected to cause an <see cref="ArgumentNullException"/> or <see cref="ArgumentException"/> to be thrown.</param>
         /// <param name="errorMessage">The expected exception message.</param>
-        protected static void AssertThrowsWhenStringNullOrEmptyOrWhitespace(Action<string> action, string name, string errorMessage = null)
+        protected static void AssertThrowsWhenStringNullOrEmptyOrWhitespace(Action<string?> action, string name, string? errorMessage = default)
         {
             Invoking(() =>
             {
@@ -115,7 +108,7 @@ namespace AllOverIt.Fixture
         /// <param name="name">The name of the argument expected to cause an <see cref="ArgumentNullException"/> or <see cref="ArgumentException"/> to be thrown.</param>
         /// <param name="errorMessage">The expected exception message.</param>
         /// <returns>A <see cref="Task"/> that completes when awaited.</returns>
-        protected static async Task AssertThrowsWhenStringNullOrEmptyOrWhitespace(Func<string, Task> action, string name, string errorMessage = null)
+        protected static async Task AssertThrowsWhenStringNullOrEmptyOrWhitespace(Func<string?, Task> action, string name, string? errorMessage = default)
         {
             await Invoking(async () =>
             {
@@ -148,14 +141,7 @@ namespace AllOverIt.Fixture
         /// <returns>The result of the invoked action.</returns>
         protected static Func<TResult> Invoking<TResult>(Func<TResult> action)
         {
-#if NET8_0_OR_GREATER
             ArgumentNullException.ThrowIfNull(action);
-#else
-            if (action == null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
-#endif
 
             return action;
         }
@@ -453,7 +439,7 @@ namespace AllOverIt.Fixture
 
         /// <summary>Asserts that an exception of type <typeparamref name="TException"/> has a default constructor.</summary>
         /// <typeparam name="TException">The exception type.</typeparam>
-        protected static void AssertDefaultConstructor<TException>(string expectedMessage = default) where TException : Exception, new()
+        protected static void AssertDefaultConstructor<TException>(string? expectedMessage = default) where TException : Exception, new()
         {
             var exception = new TException();
 
@@ -482,7 +468,7 @@ namespace AllOverIt.Fixture
 
             constructor.Should().NotBeNull();
 
-            var exception = (Exception) constructor.Invoke([message]);
+            var exception = (Exception) constructor!.Invoke([message]);
 
             exception.Message.Should().Be(message);
         }
@@ -509,7 +495,7 @@ namespace AllOverIt.Fixture
 
             constructor.Should().NotBeNull();
 
-            var exception = (Exception) constructor.Invoke([message, innerException]);
+            var exception = (Exception) constructor!.Invoke([message, innerException]);
 
             exception.Message
                 .Should()
@@ -526,20 +512,8 @@ namespace AllOverIt.Fixture
         /// <param name="exceptionHandler">The handler invoked with each exception contained within an aggregate exception.</param>
         protected static void AssertHandledAggregateException(Action action, Func<Exception, bool> exceptionHandler)
         {
-#if NET8_0_OR_GREATER
             ArgumentNullException.ThrowIfNull(action);
             ArgumentNullException.ThrowIfNull(exceptionHandler);
-#else
-            if (action == null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
-
-            if (exceptionHandler == null)
-            {
-                throw new ArgumentNullException(nameof(exceptionHandler));
-            }
-#endif
 
             try
             {
@@ -586,7 +560,7 @@ namespace AllOverIt.Fixture
             var enumCount = enumValues.Length;
             var index = _random.Next(1000) % enumCount;
 
-            return (TType) enumValues.GetValue(index);
+            return (TType) enumValues.GetValue(index)!;
         }
 
         private List<TType> CreateManyType<TType>(int count)
@@ -605,7 +579,8 @@ namespace AllOverIt.Fixture
               .Select(_ =>
               {
                   var index = _random.Next(1000) % enumCount;
-                  return (TType) enumValues.GetValue(index);
+
+                  return (TType) enumValues.GetValue(index)!;
               })
               .ToList();
         }

@@ -1,7 +1,10 @@
-﻿using AllOverIt.Patterns.Enumeration;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Patterns.Enumeration;
 
 namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 {
+    // This is also tested via ModelBuilderExtensions.UseEnrichedEnum()
+
     /// <summary>Provides model builder options to configure entities containing properties that inherit <see cref="EnrichedEnum{TEnum}"/>.</summary>
     public sealed class EnrichedEnumModelBuilderOptions
     {
@@ -23,6 +26,8 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         /// <returns>An options instance for the specified entity type.</returns>
         public EnrichedEnumEntityOptions Entity(Type entityType)
         {
+            _ = entityType.WhenNotNull();
+
             return Entities(entityType);
         }
 
@@ -31,7 +36,10 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         /// <returns>An options instance for the specified entity types.</returns>
         public EnrichedEnumEntityOptions Entities(params Type[] entityTypes)
         {
+            _ = entityTypes.WhenNotNullOrEmpty();
+
             var entityOption = new EnrichedEnumEntityOptions(entityTypes);
+
             _entityOptions.Add(entityOption);
 
             return entityOption;
@@ -41,7 +49,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
         /// <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.
         /// This should be the complete type name, including its length.</param>
         /// <param name="maxLength">Optional. If provided this value specifies the column's maximum length. This parameter is not required if the [MaxLength] attribute is used.</param>
-        public void AsName(string columnType = default, int? maxLength = default)
+        public void AsName(string? columnType = default, int? maxLength = default)
         {
             foreach (var entityOption in GetEntityOptions())
             {
@@ -51,7 +59,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 
         /// <summary>Configures all <see cref="EnrichedEnum{TEnum}"/> properties on all entities to store their values as an integer.</summary>
         /// <param name="columnType">Optional. If provided, this configures the data type of the column that the property maps to when targeting a relational database.</param>
-        public void AsValue(string columnType = default)
+        public void AsValue(string? columnType = default)
         {
             foreach (var entityOption in GetEntityOptions())
             {
@@ -65,6 +73,7 @@ namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
             if (_entityOptions.Count == 0)
             {
                 var options = new EnrichedEnumEntityOptions();
+
                 _entityOptions.Add(options);
             }
 

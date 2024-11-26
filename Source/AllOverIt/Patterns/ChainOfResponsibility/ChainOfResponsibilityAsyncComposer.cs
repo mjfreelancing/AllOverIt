@@ -24,7 +24,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>The final output state of the input was processed. If the input state is not processed by one of the handlers
         /// then the default value for <typeparamref name="TInput" /> is returned (null if it is a reference type).</returns>
-        public Task<TOutput> HandleAsync(TInput state, CancellationToken cancellationToken)
+        public Task<TOutput?> HandleAsync(TInput state, CancellationToken cancellationToken)
         {
             return _firstHandler.HandleAsync(state, cancellationToken);
         }

@@ -22,7 +22,7 @@ namespace AllOverIt.Pipes.Named.Events
         public NamedPipeConnectionExceptionEventArgs(TPipeConnection connection, Exception exception)
             : base(connection)
         {
-            Exception = exception.WhenNotNull(nameof(exception));
+            Exception = exception.WhenNotNull();
         }
     }
 }

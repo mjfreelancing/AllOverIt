@@ -2,6 +2,7 @@
 using AllOverIt.Extensions;
 using AllOverIt.Mapping.Exceptions;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Mapping
 {
@@ -12,9 +13,9 @@ namespace AllOverIt.Mapping
 
         internal ObjectPropertyMatcher CreateMapper(Type sourceType, Type targetType, PropertyMatcherOptions matcherOptions)
         {
-            _ = sourceType.WhenNotNull(nameof(sourceType));
-            _ = targetType.WhenNotNull(nameof(targetType));
-            _ = matcherOptions.WhenNotNull(nameof(matcherOptions));
+            _ = sourceType.WhenNotNull();
+            _ = targetType.WhenNotNull();
+            _ = matcherOptions.WhenNotNull();
 
             if (TryGetMapper(sourceType, targetType, out _))
             {
@@ -26,16 +27,16 @@ namespace AllOverIt.Mapping
 
         internal ObjectPropertyMatcher GetOrCreateMapper(Type sourceType, Type targetType)
         {
-            _ = sourceType.WhenNotNull(nameof(sourceType));
-            _ = targetType.WhenNotNull(nameof(targetType));
+            _ = sourceType.WhenNotNull();
+            _ = targetType.WhenNotNull();
 
             return GetOrCreate(sourceType, targetType, PropertyMatcherOptions.None);
         }
 
-        internal bool TryGetMapper(Type sourceType, Type targetType, out ObjectPropertyMatcher matcher)
+        internal bool TryGetMapper(Type sourceType, Type targetType, [NotNullWhen(true)] out ObjectPropertyMatcher? matcher)
         {
-            _ = sourceType.WhenNotNull(nameof(sourceType));
-            _ = targetType.WhenNotNull(nameof(targetType));
+            _ = sourceType.WhenNotNull();
+            _ = targetType.WhenNotNull();
 
             var matcherKey = (sourceType, targetType);
 

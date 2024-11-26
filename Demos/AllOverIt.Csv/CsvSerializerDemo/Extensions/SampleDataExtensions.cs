@@ -6,7 +6,7 @@ namespace CsvSerializerDemo.Extensions
 {
     public static class SampleDataExtensions
     {
-        public static void ConfigureCsvExport(this IReadOnlyCollection<SampleData> sampleData, ICsvSerializer<SampleData> serializer)
+        public static void ConfigureCsvExport(this SampleData[] sampleData, ICsvSerializer<SampleData> serializer)
         {
             // Add fixed, known, columns
             serializer.AddField(nameof(SampleData.Name), item => item.Name);
@@ -27,7 +27,7 @@ namespace CsvSerializerDemo.Extensions
                 item =>
                 {
                     return Enumerable
-                        .Range(0, item.Count)
+                        .Range(0, item.Length)
                         .Select(idx =>
                         {
                             // Using an 'int' to uniquely identify each set of headers
@@ -46,7 +46,7 @@ namespace CsvSerializerDemo.Extensions
                 (item, headerId) =>
                 {
                     // The 'Id' indicates the element index being exported
-                    if (headerId.Id < item.Count)
+                    if (headerId.Id < item.Length)
                     {
                         var coordinate = item.ElementAt(headerId.Id);
 
@@ -85,7 +85,7 @@ namespace CsvSerializerDemo.Extensions
 
                     var metadata = item.SingleOrDefault(data => data.Type == dataType && data.Name == typeName);
 
-                    return metadata == null
+                    return metadata is null
                         ? null
                         : new object[]
                         {

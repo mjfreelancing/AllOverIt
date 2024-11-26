@@ -11,13 +11,13 @@ namespace AllOverIt.Csv.Exporter
         private readonly BufferedCsvExporterConfiguration _configuration;
         private readonly List<TModel> _data;
 
-        private StreamWriter _writer;
-        private ICsvSerializer<TModel> _csvSerializer;
+        private StreamWriter? _writer;
+        private ICsvSerializer<TModel>? _csvSerializer;
 
         /// <summary>The underlying stream provided to the CSV writer. This stream is created on demand when the buffer
         /// is first flushed, including during a call to <see cref="FlushAsync(CancellationToken)"/> when there is data
         /// available for writing.</summary>
-        protected Stream Stream { get; private set; }
+        protected Stream? Stream { get; private set; }
 
         /// <summary>Constructor. Initialized with a default <see cref="BufferedCsvExporterConfiguration"/>.</summary>
         protected BufferedCsvExporterBase()
@@ -29,13 +29,13 @@ namespace AllOverIt.Csv.Exporter
         /// <param name="configuration">The configuration to use.</param>
         protected BufferedCsvExporterBase(BufferedCsvExporterConfiguration configuration)
         {
-            _configuration = configuration.WhenNotNull(nameof(configuration));
+            _configuration = configuration.WhenNotNull();
 
             _data = new List<TModel>(_configuration.BufferSize);
         }
 
         /// <inheritdoc />
-        public void Configure(IEnumerable<TModel> configData = default)
+        public void Configure(IEnumerable<TModel>? configData = default)
         {
             Throw<CsvExporterException>.WhenNotNull(_csvSerializer, "The CSV serializer is already configured.");
 
@@ -45,7 +45,7 @@ namespace AllOverIt.Csv.Exporter
         /// <inheritdoc />
         public Task AddDataAsync(TModel data, CancellationToken cancellationToken)
         {
-            _ = data.WhenNotNull(nameof(data));
+            _ = data.WhenNotNull();
 
             _data.Add(data);
 
@@ -60,11 +60,7 @@ namespace AllOverIt.Csv.Exporter
             // _writer will be null if there was no data to process
             if (_writer is not null)
             {
-#if NET8_0_OR_GREATER
-                await _writer.FlushAsync(cancellationToken);
-#else
-                await _writer.FlushAsync();
-#endif
+                await _writer.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -72,11 +68,11 @@ namespace AllOverIt.Csv.Exporter
         public async Task CloseAsync(CancellationToken cancellationToken)
         {
             // Force the _writer to be created and data flushed if the buffer has not been exhausted
-            await FlushAsync(cancellationToken);
+            await FlushAsync(cancellationToken).ConfigureAwait(false);
 
             if (_writer is not null)
             {
-                await _writer.DisposeAsync();
+                await _writer.DisposeAsync().ConfigureAwait(false);
                 _writer = null;
 
                 _csvSerializer = null;
@@ -104,7 +100,7 @@ namespace AllOverIt.Csv.Exporter
         /// data will be used to establish the names of the dyanmic columns, through the use of calls to one of the <see cref="ICsvSerializer{TCsvData}"/>
         /// extension methods <c>AddDynamicFields()</c>.</param>
         /// <returns>The newly instantiated, and configured, CSV serializer.</returns>
-        protected abstract ICsvSerializer<TModel> CreateSerializer(IEnumerable<TModel> configData = default);
+        protected abstract ICsvSerializer<TModel> CreateSerializer(IEnumerable<TModel>? configData = default);
 
         /// <summary>Disposed of internal resources.</summary>
         /// <returns>A <see cref="ValueTask"/> that completes when all resources have been disposed of.</returns>
@@ -130,7 +126,7 @@ namespace AllOverIt.Csv.Exporter
                     _writer = new StreamWriter(Stream, null, -1, false);
                 }
 
-                await _csvSerializer.SerializeAsync(_writer, _data, includeHeaders, true, cancellationToken);
+                await _csvSerializer.SerializeAsync(_writer, _data, includeHeaders, true, cancellationToken).ConfigureAwait(false);
 
                 _data.Clear();
             }

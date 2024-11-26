@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace AllOverIt.Patterns.ChainOfResponsibility
 {
     /// <summary>An interface that describes an implementation of the Chain Of Responsibility pattern.</summary>
@@ -14,6 +16,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
         /// <param name="state">Contains the request and possibly other state information to potentially be processed
         /// by the current handler.</param>
         /// <returns>An output state.</returns>
+        [return: MaybeNull]
         TOutput Handle(TInput state);
     }
 }

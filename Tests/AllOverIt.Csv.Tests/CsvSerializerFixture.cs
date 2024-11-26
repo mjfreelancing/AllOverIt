@@ -141,7 +141,7 @@ namespace AllOverIt.Csv.Tests
             {
                 Invoking(() =>
                     {
-                        _serializer.AddFields(CreateMany<string>(), null);
+                        _serializer.AddFields([.. CreateMany<string>()], null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -179,15 +179,15 @@ namespace AllOverIt.Csv.Tests
 
                 var uniqueIdentifiers = Enumerable
                     .Range(0, maxCount)
-                    .SelectAsReadOnlyCollection(idx => new
+                    .SelectToArray(idx => new
                     {
                         Index = idx,
-                        Names = new List<string>(new[] { $"Latitude {idx + 1}", $"Longitude {idx + 1}" })
+                        Names = new string[] { $"Latitude {idx + 1}", $"Longitude {idx + 1}" }
                     });
 
                 var headerNames = uniqueIdentifiers
                     .SelectMany(item => item.Names)
-                    .AsReadOnlyCollection();
+                    .ToArray();
 
                 foreach (var identifier in uniqueIdentifiers)
                 {
@@ -208,7 +208,7 @@ namespace AllOverIt.Csv.Tests
                         }
 
                         // no values for the provided index (blank CSV cells)
-                        return Enumerable.Repeat((object) null, identifier.Names.Count).ToList();
+                        return Enumerable.Repeat((object) null, identifier.Names.Length).ToArray();
                     });
                 }
 

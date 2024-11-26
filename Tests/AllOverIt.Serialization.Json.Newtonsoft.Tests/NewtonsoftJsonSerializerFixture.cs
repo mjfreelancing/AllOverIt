@@ -327,7 +327,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
                 public static readonly DummyEnrichedEnum Value2 = new(2, "Value 2");
                 public static readonly DummyEnrichedEnum Value3 = new(3);
 
-                private DummyEnrichedEnum(int value, [CallerMemberName] string name = null)
+                private DummyEnrichedEnum(int value, [CallerMemberName] string name = "")
                     : base(value, name)
                 {
                 }

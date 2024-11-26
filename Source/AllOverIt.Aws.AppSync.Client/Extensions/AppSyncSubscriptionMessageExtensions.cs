@@ -8,12 +8,12 @@ namespace AllOverIt.Aws.AppSync.Client.Extensions
     {
         internal static WebSocketGraphqlResponse<GraphqlError> GetGraphqlErrorFromResponseMessage(this AppSyncSubscriptionMessage response, IJsonSerializer serializer)
         {
-            return serializer.DeserializeObject<WebSocketGraphqlResponse<GraphqlError>>(response.Message);
+            return serializer.DeserializeObject<WebSocketGraphqlResponse<GraphqlError>>(response.Message)!;
         }
 
         internal static ConnectionAckResponse GetConnectionResponseData(this AppSyncSubscriptionMessage response, IJsonSerializer serializer)
         {
-            return serializer.DeserializeObject<WebSocketGraphqlResponse<ConnectionAckResponse>>(response.Message).Payload;
+            return serializer.DeserializeObject<WebSocketGraphqlResponse<ConnectionAckResponse>>(response.Message)!.Payload;
         }
     }
 }

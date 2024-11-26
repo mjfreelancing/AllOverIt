@@ -6,6 +6,6 @@ namespace AllOverIt.Helpers.PropertyNavigation
     public sealed class PropertyNode
     {
         /// <summary>Expression information for a property node.</summary>
-        public MemberExpression Expression { get; init; }
+        public required MemberExpression Expression { get; init; }
     }
 }

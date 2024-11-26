@@ -6,7 +6,6 @@ using AllOverIt.Logging.Testing.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 using LoggerExtensions = AllOverIt.Logging.Extensions.LoggerExtensions;
 
@@ -18,6 +17,9 @@ namespace AllOverIt.Logging.Tests.Extensions
 
         public LoggerExtensionsFixture()
         {
+            // Restore state between each test
+            LogCallOptions.Instance.Reset();
+
             _loggerFake = Substitute.For<ILogger>();
         }
 
@@ -198,6 +200,16 @@ namespace AllOverIt.Logging.Tests.Extensions
             [Fact]
             public void Should_Log_With_Default_Template()
             {
+                // Same as: LogCallOptions.Instance.LogExceptionTemplate
+                var logExceptionTemplate = $"{LogCallOptions.Instance._exceptionPrefix}{{{LogCallOptions.Instance._exceptionMessageProperty}}}";
+
+                var expected = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
+                    logExceptionTemplate,
+                    new
+                    {
+                        ErrorMessage = _exception.Message
+                    });
+
                 var actual = _loggerFake.CaptureLogCalls(() =>
                 {
                     LoggerExtensions.LogException(_loggerFake, _exception);
@@ -207,12 +219,7 @@ namespace AllOverIt.Logging.Tests.Extensions
 
                 states.Should().BeEquivalentTo(
                 [
-                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
-                        LogCallOptions.Instance.LogExceptionTemplate,
-                        new
-                        {
-                            ErrorMessage = _exception.Message
-                        })
+                    expected
                 ]);
             }
 
@@ -283,6 +290,30 @@ namespace AllOverIt.Logging.Tests.Extensions
             [Fact]
             public void Should_Log_With_Default_Template()
             {
+                // Same as: LogCallOptions.Instance.LogExceptionTemplate
+                var logExceptionTemplate = $"{LogCallOptions.Instance._exceptionPrefix}{{{LogCallOptions.Instance._exceptionMessageProperty}}}";
+
+                var expected1 = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
+                    logExceptionTemplate,
+                    new
+                    {
+                        ErrorMessage = _exception.Message
+                    });
+
+                var expected2 = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
+                    logExceptionTemplate,
+                    new
+                    {
+                        ErrorMessage = _innerException1.Message
+                    });
+
+                var expected3 = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
+                    logExceptionTemplate,
+                    new
+                    {
+                        ErrorMessage = _innerException2.Message
+                    });
+
                 var actual = _loggerFake.CaptureLogCalls(() =>
                 {
                     LoggerExtensions.LogAllExceptions(_loggerFake, _exception);
@@ -292,27 +323,10 @@ namespace AllOverIt.Logging.Tests.Extensions
 
                 states.Should().BeEquivalentTo(
                 [
-                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
-                        LogCallOptions.Instance.LogExceptionTemplate,
-                        new
-                        {
-                            ErrorMessage = _innerException2.Message
-                        }),
-
-                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
-                        LogCallOptions.Instance.LogExceptionTemplate,
-                        new
-                        {
-                            ErrorMessage = _innerException1.Message
-                        }),
-
-                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
-                        LogCallOptions.Instance.LogExceptionTemplate,
-                        new
-                        {
-                            ErrorMessage = _exception.Message
-                        })
-                ]);
+                    expected1,
+                    expected2,
+                    expected3
+                ], options => options.WithStrictOrdering());
             }
 
             [Fact]
@@ -320,6 +334,31 @@ namespace AllOverIt.Logging.Tests.Extensions
             {
                 var template = $"{Create<string>()} Error = {{CustomErrorMessage}}, Count = {{Count}}";
                 var otherArg = Create<int>();
+
+                var expected1 = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
+                    template,
+                    new
+                    {
+                        CustomErrorMessage = _exception.Message,
+                        Count = otherArg
+                    });
+
+                // Same as: LogCallOptions.Instance.LogExceptionTemplate
+                var logExceptionTemplate = $"{LogCallOptions.Instance._exceptionPrefix}{{{LogCallOptions.Instance._exceptionMessageProperty}}}";
+
+                var expected2 = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
+                    logExceptionTemplate,
+                    new
+                    {
+                        ErrorMessage = _innerException1.Message
+                    });
+
+                var expected3 = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
+                    logExceptionTemplate,
+                    new
+                    {
+                        ErrorMessage = _innerException2.Message
+                    });
 
                 var actual = _loggerFake.CaptureLogCalls(() =>
                 {
@@ -330,28 +369,10 @@ namespace AllOverIt.Logging.Tests.Extensions
 
                 states.Should().BeEquivalentTo(
                 [
-                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
-                        LogCallOptions.Instance.LogExceptionTemplate,
-                        new
-                        {
-                            ErrorMessage = _innerException2.Message
-                        }),
-
-                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
-                        LogCallOptions.Instance.LogExceptionTemplate,
-                        new
-                        {
-                            ErrorMessage = _innerException1.Message
-                        }),
-
-                    LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
-                        template,
-                        new
-                        {
-                            CustomErrorMessage = _exception.Message,
-                            Count = otherArg
-                        })
-                ]);
+                    expected1,
+                    expected2,
+                    expected3
+                ], options => options.WithStrictOrdering());
             }
         }
     }

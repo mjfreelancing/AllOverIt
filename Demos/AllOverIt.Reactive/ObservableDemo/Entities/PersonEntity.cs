@@ -3,9 +3,10 @@
     // A non-observable model
     internal sealed class PersonEntity
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string FullName
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+
+        public string? FullName
         {
             get
             {

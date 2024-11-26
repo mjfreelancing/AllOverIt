@@ -34,7 +34,7 @@ namespace AllOverIt.Pipes.Tests.Anonymous
                     })
                    .Should()
                    .Throw<InvalidOperationException>()
-                   .WithMessage("The anonymous pipe has already been initialized.");
+                   .WithMessage("The anonymous pipe server has already been started.");
                 }
             }
         }

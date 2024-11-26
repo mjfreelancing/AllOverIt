@@ -15,7 +15,8 @@ namespace AllOverIt.Aws.Cdk.AppSync.Attributes
         /// <param name="mutations">One or more mutations that will trigger the subscription notifications.</param>
         public SubscriptionMutationAttribute(params string[] mutations)
         {
-            Mutations = mutations.WhenNotNullOrEmpty(nameof(mutations))
+            Mutations = mutations
+                .WhenNotNullOrEmpty()
                 .Select(item => item.GetGraphqlName())
                 .AsReadOnlyCollection();
         }

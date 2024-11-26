@@ -2,6 +2,6 @@
 {
     public class Level4e
     {
-        public Class5[] Values { get; set; }
+        public Class5[] Values { get; set; } = [];
     }
 }

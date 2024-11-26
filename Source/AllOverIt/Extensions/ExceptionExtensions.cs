@@ -13,7 +13,7 @@ namespace AllOverIt.Extensions
         /// provided exception being handled. Any negative value will result in the full object graph being traversed.</param>
         public static void Walk(this Exception exception, Action<Exception> onException, int maxRecursionDepth = -1)
         {
-            _ = onException.WhenNotNull(nameof(onException));
+            _ = onException.WhenNotNull();
 
             WalkRecursive(exception, onException, 0, maxRecursionDepth);
         }

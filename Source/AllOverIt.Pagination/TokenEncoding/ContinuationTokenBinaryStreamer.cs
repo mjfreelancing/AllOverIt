@@ -13,8 +13,8 @@ namespace AllOverIt.Pagination.TokenEncoding
 
         public void SerializeToStream(IContinuationToken continuationToken, Stream stream)
         {
-            _ = continuationToken.WhenNotNull(nameof(continuationToken));
-            _ = stream.WhenNotNull(nameof(stream));
+            _ = continuationToken.WhenNotNull();
+            _ = stream.WhenNotNull();
 
             using (var writer = new EnrichedBinaryWriter(stream, Encoding.UTF8, true))
             {
@@ -25,13 +25,13 @@ namespace AllOverIt.Pagination.TokenEncoding
 
         public IContinuationToken DeserializeFromStream(Stream stream)
         {
-            _ = stream.WhenNotNull(nameof(stream));
+            _ = stream.WhenNotNull();
 
             using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
             {
                 reader.Readers.Add(Reader);
 
-                return (ContinuationToken) reader.ReadObject();
+                return (ContinuationToken) reader.ReadObject()!;
             }
         }
     }

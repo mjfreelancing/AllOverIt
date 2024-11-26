@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-namespace AllOverIt.Diagnostics.Breadcrumbs
+﻿namespace AllOverIt.Diagnostics.Breadcrumbs
 {
     /// <summary>Contains breadcrumb information at a point in time.</summary>
     public sealed class BreadcrumbData
@@ -11,12 +9,6 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         internal string[]? _tags = [];
 
         internal long Counter { get; }
-
-        /// <summary>Constructor.</summary>
-        public BreadcrumbData()
-        {
-            Counter = Interlocked.Increment(ref _counter);
-        }
 
         /// <summary>The breadcrumb timestamp, as UTC.</summary>
         public DateTime TimestampUtc => Timestamp.ToUniversalTime();
@@ -48,6 +40,12 @@ namespace AllOverIt.Diagnostics.Breadcrumbs
         {
             get => _tags;
             init => _tags = value;
+        }
+
+        /// <summary>Constructor.</summary>
+        public BreadcrumbData()
+        {
+            Counter = Interlocked.Increment(ref _counter);
         }
     }
 }

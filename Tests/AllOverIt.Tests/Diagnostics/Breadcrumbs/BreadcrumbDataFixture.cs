@@ -32,7 +32,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
         {
             var indexes = Enumerable.Range(1, 100).ToList();
 
-            var data = indexes.SelectAsReadOnlyCollection(_ => new BreadcrumbData());
+            var data = indexes.SelectToReadOnlyCollection(_ => new BreadcrumbData());
 
             var values = data.Select(item => item.Counter).Distinct();
 
@@ -44,7 +44,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
         {
             var indexes = Enumerable.Range(1, 100).ToList();
 
-            var tasks = indexes.SelectAsReadOnlyCollection(_ =>
+            var tasks = indexes.SelectToReadOnlyCollection(_ =>
             {
                 return Task.Run(() => new BreadcrumbData());
             });

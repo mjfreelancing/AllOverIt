@@ -4,9 +4,9 @@
     public sealed class GraphqlQuery
     {
         /// <summary> The graphql query.</summary>
-        public string Query { get; set; }
+        public required string Query { get; set; }
 
         /// <summary>An object (can be anonymous) that contains variables referenced by the query.</summary>
-        public object Variables { get; set; }
+        public object? Variables { get; set; }
     }
 }

@@ -62,7 +62,7 @@ namespace CsvSerializerDemo
             Console.ReadKey();
         }
 
-        private static List<SampleData> CreateSampleData()
+        private static SampleData[] CreateSampleData()
         {
             return Enumerable
                 .Range(0, 10)
@@ -193,7 +193,7 @@ namespace CsvSerializerDemo
                         }
                     };
                 })
-                .ToList();
+                .ToArray();
         }
     }
 }

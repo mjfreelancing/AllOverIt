@@ -11,9 +11,9 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
         public GraphqlSchemaTypeDescriptor(SystemType type, GraphqlSchemaType schemaType, string name)
         {
-            Type = type.WhenNotNull(nameof(type));
+            Type = type.WhenNotNull();
             SchemaType = schemaType;
-            Name = name.WhenNotNullOrEmpty(nameof(name));
+            Name = name.WhenNotNullOrEmpty();
         }
     }
 }

@@ -10,9 +10,7 @@ namespace AllOverIt.AspNetCore.ModelBinders
     public abstract class ValueArrayModelBinderBase
     {
         /// <summary>Splits all values by comma, taking into account quoted values.</summary>
-#if NET7_0_OR_GREATER
         [System.Diagnostics.CodeAnalysis.SuppressMessage("GeneratedRegex", "SYSLIB1045:Convert to 'GeneratedRegexAttribute'.")]
-#endif
         protected static readonly Regex SplitRegex = new(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))", RegexOptions.Compiled);
     }
 
@@ -33,9 +31,11 @@ namespace AllOverIt.AspNetCore.ModelBinders
             {
                 try
                 {
+                    var stringValue = value[0]!;
+
                     var array = new TArray
                     {
-                        Values = SplitRegex.Split(value[0]).SelectAsReadOnlyCollection(item => item.As<TType>())
+                        Values = SplitRegex.Split(stringValue).SelectToArray(item => item.As<TType>())!
                     };
 
                     bindingContext.Result = ModelBindingResult.Success(array);

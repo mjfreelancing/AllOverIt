@@ -50,13 +50,13 @@ namespace PipelineParallelDemo
             var pipeline = PipelineBuilder
 
                 // Scale all numbers between 0 and 1 - assuming all values > 0
-                .PipeAsync<IEnumerable<double>, IReadOnlyCollection<double>>((data, cancellationToken) =>
+                .PipeAsync<IEnumerable<double>, double[]>((data, cancellationToken) =>
                 {
                     var numbers = data.AsReadOnlyCollection();
 
                     var max = numbers.Max();
 
-                    var newValues = numbers.SelectAsReadOnlyCollection(number => number / max);
+                    var newValues = numbers.SelectToArray(number => number / max);
 
                     return Task.FromResult(newValues);
                 })

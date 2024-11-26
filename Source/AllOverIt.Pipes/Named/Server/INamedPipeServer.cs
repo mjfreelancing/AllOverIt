@@ -22,12 +22,12 @@ namespace AllOverIt.Pipes.Named.Server
 
         /// <summary>Starts listening for new pipe client connections.</summary>
         /// <param name="pipeSecurity">Access control and audit security that allows or denies new pipe client connections.</param>
-        void Start(PipeSecurity pipeSecurity = default);
+        void Start(PipeSecurity? pipeSecurity = default);
 
         /// <summary>Closes all client connections and stops listening for new connections.</summary>
         Task StopAsync();
 
-        /// <summary>Asynchronously sends a message to the client with a specfied pipe name..</summary>
+        /// <summary>Asynchronously sends a message to the client with a specified pipe name..</summary>
         /// <param name="message">The message to send to all connected clients.</param>
         /// <param name="pipeName">The name of the pipe to send the message to. This name is case-insensitive.</param>
         /// <param name="cancellationToken">An optional cancellation token.</param>

@@ -262,15 +262,15 @@ namespace AllOverIt.Pagination.Extensions
         /// <returns>A page of results along with information about the previous and next page of data available.</returns>
         /// <remarks>This method is only intended for memory based queries. If using EntityFramework Core then it is preferred to use
         /// the GetPageResultsAsync() extension method found in AllOverIt.EntityFrameworkCore.Pagination.</remarks>
-        public static PageResult<TResult> GetPageResults<TResult>(this IQueryPaginator<TResult> queryPaginator, string continuationToken) where TResult : class
+        public static PageResult<TResult> GetPageResults<TResult>(this IQueryPaginator<TResult> queryPaginator, string? continuationToken) where TResult : class
         {
             var totalCount = queryPaginator.BaseQuery.Count();
             var pageQuery = queryPaginator.GetPageQuery(continuationToken);
-            var pageResults = pageQuery.ToList();
-            var hasResults = pageResults.Count != 0;
+            var pageResults = pageQuery.ToArray();
+            var hasResults = pageResults.Length != 0;
 
-            string previousToken = default;
-            string nextToken = default;
+            string? previousToken = null;
+            string? nextToken = null;
 
             if (hasResults)
             {

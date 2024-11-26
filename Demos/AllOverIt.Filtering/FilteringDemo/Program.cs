@@ -18,17 +18,21 @@ namespace FilteringDemo
                 //{
                 //    EqualTo = true
                 //},
-                Category = {
+                Category =
+                {
                     StartsWith = "fu"
                 },
-                Name = {
+                Name =
+                {
                     Contains = "r"
                 },
-                Price = {
+                Price =
+                {
                     GreaterThanOrEqual = 15.0,
                     LessThanOrEqual = 700.0
                 },
-                LastUpdated = {
+                LastUpdated =
+                {
                     GreaterThanOrEqual = (DateTimeValue)DateTime.UtcNow.Date.AddDays(-10),     // Change to 14 to see two records return
                 }
             };
@@ -41,7 +45,7 @@ namespace FilteringDemo
             };
 
             var customVisitor = new LinqSpecificationVisitor();
-            customVisitor.AddTypeValueConverter(typeof(DateTimeValue), value => value.ToString());      // returns DateTimeValue.Value
+            customVisitor.AddTypeValueConverter(typeof(DateTimeValue), value => value.ToString()!);      // returns DateTimeValue.Value
 
             var results = products
                 .AsQueryable()

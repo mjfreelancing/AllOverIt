@@ -12,8 +12,8 @@ namespace CircularBufferSinkDemo
 
         public App(ICircularBufferSinkMessages sinkMessages, ILogger<App> logger)
         {
-            _sinkMessages = sinkMessages.WhenNotNull(nameof(sinkMessages));
-            _logger = logger.WhenNotNull(nameof(logger));
+            _sinkMessages = sinkMessages.WhenNotNull();
+            _logger = logger.WhenNotNull();
 
             Console.WriteLine();
         }
@@ -25,7 +25,7 @@ namespace CircularBufferSinkDemo
             // Demo logging to multiple threads is captured by the circular buffer
             var tasks = Enumerable
                 .Range(100, 50)
-                .Select(value => Task.Run(() => _logger.LogInformation(value.ToString())));
+                .Select(value => Task.Run(() => _logger.LogInformation("{Value}", value)));
 
             await Task.WhenAll(tasks);
 
@@ -43,9 +43,8 @@ namespace CircularBufferSinkDemo
             Console.WriteLine();
             Console.WriteLine("All Over It.");
             Console.WriteLine();
-            Console.ReadKey();
 
-            //return Task.CompletedTask;
+            Console.ReadKey();
         }
 
         public override void OnStopping()

@@ -141,7 +141,7 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 if (EnumerableOptions.AutoCollatedPaths.IsNullOrEmpty())
                 {
-                    EnumerableOptions.CollateValues = Parents.Any() && Parents.Count >= 3;
+                    EnumerableOptions.CollateValues = Parents.Any() && Parents.Length >= 3;
                 }
 
                 return true;
@@ -202,6 +202,18 @@ namespace AllOverIt.Tests.Formatters.Objects
                     .BeEquivalentTo(helper.Options);
             }
 
+            [Fact]
+            public void Should_Throw_When_Options_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = new ObjectPropertySerializer(null, null);
+                })
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithNamedMessageWhenNull("options");
+            }
+
             [Theory]
             [InlineData(BindingOptions.Default)]
             [InlineData(BindingOptions.All)]
@@ -228,7 +240,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {
                         CollateValues = false,
                         Separator = ", ",
-                        AutoCollatedPaths = (IReadOnlyCollection<string>) null
+                        AutoCollatedPaths = (string[]) null
                     },
                     RootValueOptions = new
                     {
@@ -1632,7 +1644,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
             private static ObjectPropertySerializer GetSerializer(ObjectPropertyFilter filter = default)
             {
-                return new(null, filter);
+                return new(filter);
             }
         }
     }

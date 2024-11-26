@@ -8,7 +8,7 @@ namespace AllOverIt.Events
 
         public AsyncSubscription(Delegate handler)
         {
-            _handler = handler.WhenNotNull(nameof(handler));
+            _handler = handler.WhenNotNull();
         }
 
         public Func<TMessage, Task> GetHandler<TMessage>()

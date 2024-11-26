@@ -10,21 +10,22 @@ namespace AllOverIt.Pagination
     public class PageResult<TResult>
     {
         /// <summary>A page of results.</summary>
-        public IReadOnlyCollection<TResult> Results { get; init; }
+        public required TResult[] Results { get; init; }
 
         /// <summary>The total number of records, across all pages, that satisfies the query.</summary>
-        public int TotalCount { get; init; }
+        public required int TotalCount { get; init; }
 
-        /// <summary>The continuation token used to obtain the current page of results.</summary>
-        public string CurrentToken { get; init; }
+        /// <summary>The continuation token used to obtain the current page of results. A value of <see langword="null"/>,
+        /// or an empty string, will return the first page.</summary>
+        public required string? CurrentToken { get; init; }
 
         /// <summary>The continuation token used to obtain the previous page of results relative to the current page of results.
-        /// If null, there are no previous pages.</summary>
-        public string PreviousToken { get; init; }
+        /// If <see langword="null"/>, there are no previous pages.</summary>
+        public required string? PreviousToken { get; init; }
 
         /// <summary>The continuation token used to obtain the next page of results relative to the current page of results.
-        /// If null, there are no next pages.</summary>
-        public string NextToken { get; init; }
+        /// If <see langword="null"/>, there are no next pages.</summary>
+        public required string? NextToken { get; init; }
 
         /// <summary>A factory method to create a <see cref="PageResult{TResult}"/> based on another set of initial (first) results.
         /// This is typically used when one query is used to obtain a page of Id's, for example, and then a secondary query is used
@@ -37,7 +38,7 @@ namespace AllOverIt.Pagination
         {
             return new PageResult<TResult>
             {
-                Results = results.AsReadOnlyCollection(),
+                Results = results.AsArray(),
                 TotalCount = firstResults.TotalCount,
                 CurrentToken = firstResults.CurrentToken,
                 PreviousToken = firstResults.PreviousToken,

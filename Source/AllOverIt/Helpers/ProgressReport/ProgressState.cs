@@ -8,6 +8,6 @@
         public int Progress { get; init; }
 
         /// <summary>The textual representation of the current progress.</summary>
-        public string Text { get; init; }
+        public required string Text { get; init; }
     }
 }

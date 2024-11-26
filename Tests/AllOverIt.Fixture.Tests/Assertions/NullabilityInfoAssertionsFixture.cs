@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using Xunit.Sdk;
 
-namespace AllOverIt.Fixture.Tests
+namespace AllOverIt.Fixture.Tests.Assertions
 {
     public class NullabilityInfoAssertionsFixture : FixtureBase
     {
@@ -424,7 +424,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                .Should()
                .Throw<XunitException>()
-               .WithMessage("Expected generic arg<1> to have type \"System.String\", but found \"System.String[]\".");
+               .WithMessage("Expected <Generic><1> to have type \"System.String\", but found \"System.String[]\".");
             }
 
             [Fact]
@@ -448,7 +448,7 @@ namespace AllOverIt.Fixture.Tests
                 })
                .Should()
                .Throw<XunitException>()
-               .WithMessage("Expected Prop4<1> to have type \"System.String\", but found \"System.String[]\".");
+               .WithMessage("Expected Prop4/<1> to have type \"System.String\", but found \"System.String[]\".");
             }
 
             [Fact]
@@ -596,10 +596,11 @@ namespace AllOverIt.Fixture.Tests
 
                 var expected = new StringBuilder();
 
-                expected.AppendLine($"Expected Prop5<0> to have type \"System.Boolean\" because {reason1}, but found \"System.Int32\".");
-                expected.AppendLine($"Expected Prop5<1> to have type \"System.String\" because {reason2}, but found \"System.Collections.Generic.IDictionary<Int32?, String[]>\".");
-                expected.AppendLine($"Expected Prop5<1><0> to have type \"System.Boolean\" because {reason3}, but found \"System.Int32?\".");
-                expected.AppendLine($"Expected Prop5<1><1> to be \"Not Nullable\" because {reason4}, but it is \"Nullable\".");
+                // The / are added by FluentAssertions
+                expected.AppendLine($"Expected Prop5/<0> to have type \"System.Boolean\" because {reason1}, but found \"System.Int32\".");
+                expected.AppendLine($"Expected Prop5/<1> to have type \"System.String\" because {reason2}, but found \"System.Collections.Generic.IDictionary<Int32?, String[]>\".");
+                expected.AppendLine($"Expected Prop5/<1>/<0> to have type \"System.Boolean\" because {reason3}, but found \"System.Int32?\".");
+                expected.AppendLine($"Expected Prop5/<1>/<1> to be \"Not Nullable\" because {reason4}, but it is \"Nullable\".");
 
                 Invoking(() =>
                 {

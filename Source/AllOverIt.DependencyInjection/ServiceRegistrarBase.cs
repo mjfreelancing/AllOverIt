@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Assertion;
 using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.DependencyInjection
 {
@@ -14,30 +13,30 @@ namespace AllOverIt.DependencyInjection
     /// </summary>
     public abstract class ServiceRegistrarBase : IServiceRegistrar, IServiceRegistrarOptions
     {
-        private readonly Lazy<IReadOnlyCollection<Type>> _implementationCandidates;
-        private Func<Type, Type, bool> _registrationFilter;
+        private readonly Lazy<Type[]> _implementationCandidates;
+        private Func<Type, Type, bool>? _registrationFilter;
 
-        private IReadOnlyCollection<Type> ImplementationCandidates => _implementationCandidates.Value;
+        private Type[] ImplementationCandidates => _implementationCandidates.Value;
 
         /// <summary>Constructor.</summary>
         public ServiceRegistrarBase()
         {
-            _implementationCandidates = new Lazy<IReadOnlyCollection<Type>>(() =>
+            _implementationCandidates = new Lazy<Type[]>(() =>
             {
                 return GetType().Assembly
                     .GetTypes()
                     .Where(type => type.IsClass && !type.IsGenericType && !type.IsNested && !type.IsAbstract)
-                    .AsReadOnlyCollection();
+                    .ToArray();
             });
         }
 
         /// <inheritdoc />
-        public void AutoRegisterServices(IEnumerable<Type> serviceTypes, Action<Type, Type> registrationAction, Action<IServiceRegistrarOptions> configure = default)
+        public void AutoRegisterServices(IEnumerable<Type> serviceTypes, Action<Type, Type> registrationAction, Action<IServiceRegistrarOptions>? configure = default)
         {
             configure?.Invoke(this);
 
             var allServiceTypes = serviceTypes
-                .WhenNotNullOrEmpty(nameof(serviceTypes))
+                .WhenNotNullOrEmpty()
                 .AsReadOnlyCollection();
 
             ValidateServiceTypes(allServiceTypes);
@@ -50,7 +49,7 @@ namespace AllOverIt.DependencyInjection
 
         void IServiceRegistrarOptions.Filter(Func<Type, Type, bool> filter)
         {
-            _registrationFilter = filter.WhenNotNull(nameof(filter));
+            _registrationFilter = filter.WhenNotNull();
         }
 
         private static void ValidateServiceTypes(IEnumerable<Type> allServiceTypes)

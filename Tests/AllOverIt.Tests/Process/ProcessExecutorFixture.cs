@@ -58,13 +58,8 @@ namespace AllOverIt.Tests.Process
                 WindowStyle = ProcessWindowStyle.Normal,
                 LoadUserProfile = false,
                 ErrorDialog = false,
-                ErrorDialogParentHandle = (IntPtr) default
-
-#if NET8_0_OR_GREATER
-                ,
+                ErrorDialogParentHandle = (IntPtr) default,
                 UseCredentialsForNetworkingOnly = false
-#endif
-
             };
 
             expected.Should().BeEquivalentTo(actual, options =>
@@ -117,13 +112,8 @@ namespace AllOverIt.Tests.Process
                 WindowStyle = ProcessWindowStyle.Normal,
                 LoadUserProfile = false,
                 ErrorDialog = false,
-                ErrorDialogParentHandle = (IntPtr) default
-
-#if NET8_0_OR_GREATER
-                ,
+                ErrorDialogParentHandle = (IntPtr) default,
                 UseCredentialsForNetworkingOnly = false
-#endif
-
             };
 
             expected.Should().BeEquivalentTo(actual, options =>

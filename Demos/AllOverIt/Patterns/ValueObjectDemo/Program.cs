@@ -11,7 +11,7 @@ namespace ValueObjectDemo
             // but it provides it's own domain-specific validation. To make the example a little more elaborate, the value object
             // is using an `EnrichedTemperature` type that stores the value and allows for conversion between different units.
             var temp1 = new TemperatureValueObject(TemperatureUnits.Kelvin, 0.0d);
-            var temp2 = new TemperatureValueObject(20);                                 // defaults to Celcius
+            var temp2 = new TemperatureValueObject(20);                                 // defaults to Celsius
             var temp3 = new TemperatureValueObject(TemperatureUnits.Farenheit, -4);
             var temp4 = new TemperatureValueObject(-20);
             var temp5 = new TemperatureValueObject(-273.15d);
@@ -22,8 +22,10 @@ namespace ValueObjectDemo
             }
             catch (ValueObjectValidationException exception)
             {
-                var value = (EnrichedTemperature) (exception.AttemptedValue);
-                throw new ArgumentException($"The temperature {value.Temperature:N2} {value.Units} is invalid ({value.ConvertToKelvin():N2} Kelvin)");
+                var value = (EnrichedTemperature) (exception.AttemptedValue!);
+
+                Console.WriteLine($"The temperature {value.Temperature:N2} {value.Units} is invalid ({value.ConvertToKelvin():N2} Kelvin)");
+                Console.WriteLine();
             }
 
             CompareTemperatures(temp1, temp2);

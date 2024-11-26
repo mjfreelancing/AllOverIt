@@ -1,4 +1,5 @@
 ﻿using AllOverIt.Evaluator.Exceptions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Evaluator.Variables
 {
@@ -66,14 +67,15 @@ namespace AllOverIt.Evaluator.Variables
         /// <summary>Confirms all formula-based referenced variables are resolvable and returns the fully populated variable registry.</summary>
         /// <returns>The current builder to provide a fluent syntax.</returns>
         /// <exception cref="VariableRegistryBuilderException">When one or more formula-based referenced variables has not been registered.</exception>
+        [return: NotNull]
         IVariableRegistry Build();
 
         /// <summary>Confirms all formula-based referenced variables are resolvable and returns the fully populated variable registry.</summary>
         /// <param name="variableRegistry">When successfully built, the fully populated variable registry, otherwise <see langword="null"/>.</param>
         /// <returns><see langword="True"/> when the variable registry can be returned, otherwise <see langword="False"/>.</returns>
-        bool TryBuild(out IVariableRegistry variableRegistry);
+        bool TryBuild([NotNullWhen(true)] out IVariableRegistry? variableRegistry);
 
         /// <summary>Gets a collection of all unregistered variable names referenced by any formula-based variables.</summary>
-        IReadOnlyCollection<string> GetUnregisteredVariableNames();
+        string[] GetUnregisteredVariableNames();
     }
 }

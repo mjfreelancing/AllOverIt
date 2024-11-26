@@ -2,11 +2,11 @@
 {
     public sealed class NullMessageExceptionHandler : QueueMessageHandlerBase
     {
-        public override async Task<QueueMessageHandlerState> HandleAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
+        public override async Task<QueueMessageHandlerState?> HandleAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
         {
             var payload = state.QueueMessage.Payload;
 
-            if (payload == null)
+            if (payload is null)
             {
                 Console.WriteLine(" >> Handling a null message...");
 

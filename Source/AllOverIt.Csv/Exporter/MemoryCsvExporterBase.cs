@@ -19,11 +19,10 @@
         /// <inheritdoc />
         public async Task<byte[]> GetContentAsync(CancellationToken cancellationToken)
         {
+            // This creates the Stream, even if there is no data
             await FlushAsync(cancellationToken);
 
-            return Stream is null
-                ? []
-                : ((MemoryStream) Stream).ToArray();
+            return ((MemoryStream) Stream!).ToArray();
         }
 
         /// <inheritdoc />

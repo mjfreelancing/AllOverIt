@@ -20,7 +20,7 @@ namespace AllOverIt.Pipes.Named.Events
         /// <param name="connection">The connection associated with the event.</param>
         public NamedPipeConnectionEventArgs(TPipeConnection connection)
         {
-            Connection = connection.WhenNotNull(nameof(connection));
+            Connection = connection.WhenNotNull();
         }
     }
 }

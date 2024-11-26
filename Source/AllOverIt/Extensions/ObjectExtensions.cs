@@ -1,8 +1,10 @@
-﻿using AllOverIt.Formatters.Objects;
+﻿using AllOverIt.Assertion;
+using AllOverIt.Formatters.Objects;
 using AllOverIt.Helpers;
 using AllOverIt.Reflection;
 using System.Collections;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace AllOverIt.Extensions
@@ -13,7 +15,7 @@ namespace AllOverIt.Extensions
         private static class ObjectConversionHelper
         {
             // instance, instance type, convertTo type, convertTo value
-            private static readonly IReadOnlyCollection<Func<object, Type, Type, object>> AsConverters =
+            private static readonly Func<object?, Type, Type, object?>[] AsConverters =
             [
                 AsSameTypeOrObject,
                 AsFromIntegralToBool,
@@ -24,9 +26,10 @@ namespace AllOverIt.Extensions
                 AsUsingInstanceTypeConverter
             ];
 
-            public static TType ConvertTo<TType>(object instance, TType defaultValue)
+            [return: MaybeNull]
+            public static TType ConvertTo<TType>(object? instance, TType defaultValue)
             {
-                if (instance == null)
+                if (instance is null)
                 {
                     return defaultValue;
                 }
@@ -36,15 +39,15 @@ namespace AllOverIt.Extensions
 
                 var convertedValue = AsConverters
                     .Select(func => func.Invoke(instance, instanceType, convertToType))
-                    .Where(result => result != null)
+                    .Where(result => result is not null)
                     .FirstOrDefault();
 
-                return convertedValue != null
+                return convertedValue is not null
                     ? (TType) convertedValue
                     : StringExtensions.As(instance.ToString(), defaultValue);
             }
 
-            private static object AsSameTypeOrObject(object instance, Type instanceType, Type convertToType)
+            private static object? AsSameTypeOrObject(object? instance, Type instanceType, Type convertToType)
             {
                 // return the same value if no conversion is required
                 if (convertToType == instanceType || convertToType == CommonTypes.ObjectType)
@@ -52,10 +55,10 @@ namespace AllOverIt.Extensions
                     return instance;
                 }
 
-                return default;
+                return null;
             }
 
-            private static object AsFromIntegralToBool(object instance, Type instanceType, Type convertToType)
+            private static object? AsFromIntegralToBool(object? instance, Type instanceType, Type convertToType)
             {
                 // convert from integral to bool (conversion from a string is handled further below)
                 if (instance.IsIntegral() && convertToType == CommonTypes.BoolType)
@@ -71,10 +74,10 @@ namespace AllOverIt.Extensions
                     return (bool) Convert.ChangeType(intValue, CommonTypes.BoolType);
                 }
 
-                return default;
+                return null;
             }
 
-            private static object AsFromEnumToIntegral(object instance, Type instanceType, Type convertToType)
+            private static object? AsFromEnumToIntegral(object? instance, Type instanceType, Type convertToType)
             {
                 // converting from Enum to byte, sbyte, short, ushort, int, uint, long, or ulong
                 if (instance is Enum && convertToType.IsIntegralType())
@@ -86,13 +89,13 @@ namespace AllOverIt.Extensions
                     return Convert.ChangeType(underlyingValue, convertToType);
                 }
 
-                return default;
+                return null;
             }
 
-            private static object AsFromIntegralToEnum(object instance, Type instanceType, Type convertToType)
+            private static object? AsFromIntegralToEnum(object? instance, Type instanceType, Type convertToType)
             {
                 // Converting from byte, sbyte, short, ushort, int, uint, long, or ulong to Enum
-                if (convertToType.IsEnumType() && instance.IsIntegral())
+                if (convertToType.IsEnum && instance.IsIntegral())
                 {
                     // cater for when Enum has an underlying type other than 'int'
                     var underlyingValue = GetEnumAsUnderlyingValue(instance, convertToType);
@@ -105,10 +108,10 @@ namespace AllOverIt.Extensions
                     return underlyingValue;
                 }
 
-                return default;
+                return null;
             }
 
-            private static object AsFromConvertibleTypeToValueType(object instance, Type instanceType, Type convertToType)
+            private static object? AsFromConvertibleTypeToValueType(object? instance, Type instanceType, Type convertToType)
             {
                 if (instanceType != CommonTypes.StringType &&
                     instanceType.IsDerivedFrom(CommonTypes.IConvertibleType) &&
@@ -117,12 +120,17 @@ namespace AllOverIt.Extensions
                     return Convert.ChangeType(instance, convertToType);
                 }
 
-                return default;
+                return null;
             }
 
-            private static object AsFromDerivedType(object instance, Type instanceType, Type convertToType)
+            private static object? AsFromDerivedType(object? instance, Type instanceType, Type convertToType)
             {
-                if (convertToType.IsClassType() && convertToType != CommonTypes.StringType)
+                if (instance is null)
+                {
+                    return null;
+                }
+
+                if (convertToType.IsClass && convertToType != CommonTypes.StringType)
                 {
                     // return the same value if the instance is a class inheriting `TType`
                     if (instanceType.IsDerivedFrom(convertToType))
@@ -134,18 +142,18 @@ namespace AllOverIt.Extensions
 
                     if (!typeConverter.IsValid(instance))
                     {
-                        throw new InvalidCastException($"Unable to cast object of type '{instanceType.Name}' to type '{convertToType.Name}'.");
+                        throw new InvalidCastException($"Unable to cast object of type '{instanceType.GetFriendlyName()}' to type '{convertToType.GetFriendlyName()}'.");
                     }
 
                     return typeConverter.ConvertFrom(instance);
                 }
 
-                return default;
+                return null;
             }
 
-            private static object AsUsingInstanceTypeConverter(object instance, Type instanceType, Type convertToType)
+            private static object? AsUsingInstanceTypeConverter(object? instance, Type instanceType, Type convertToType)
             {
-                if (instanceType.IsClassType() && instanceType != CommonTypes.StringType)
+                if (instanceType.IsClass && instanceType != CommonTypes.StringType)
                 {
                     var typeConverter = TypeDescriptor.GetConverter(instanceType);
 
@@ -155,7 +163,7 @@ namespace AllOverIt.Extensions
                     }
                 }
 
-                return default;
+                return null;
             }
         }
 
@@ -168,15 +176,17 @@ namespace AllOverIt.Extensions
         /// <param name="includeNulls">If true then null value properties will be included, otherwise they will be omitted.</param>
         /// <param name="bindingOptions">Binding options that determine how properties are resolved.</param>
         /// <returns>Returns a dictionary containing property names and associated values.</returns>
-        public static IDictionary<string, object> ToPropertyDictionary(this object instance, bool includeNulls = false, BindingOptions bindingOptions = BindingOptions.Default)
+        public static IDictionary<string, object?> ToPropertyDictionary(this object instance, bool includeNulls = false, BindingOptions bindingOptions = BindingOptions.Default)
         {
+            _ = instance.WhenNotNull();
+
             var type = instance.GetType();
 
             // Uses cached property info
             // Excludes any properties that don't have a getter
             var propertyInfo = type.GetPropertyInfo(bindingOptions, false);
 
-            var propInfos = new Dictionary<string, object>();
+            var propInfos = new Dictionary<string, object?>();
 
             // More efficient than LINQ
             foreach (var propInfo in propertyInfo)
@@ -188,7 +198,7 @@ namespace AllOverIt.Extensions
 
                 var value = propInfo.GetValue(instance);
 
-                if (includeNulls || value != null)
+                if (includeNulls || value is not null)
                 {
                     propInfos.Add(propInfo.Name, value);
                 }
@@ -199,7 +209,8 @@ namespace AllOverIt.Extensions
 
         /// <summary>Converts an object to an IDictionary{string, string} using a dot notation for nested members.</summary>
         /// <param name="instance">The instance to convert.</param>
-        /// <param name="options">Options that determine how serialization of properties and their values are handled.</param>
+        /// <param name="options">Options that determine how serialization of properties and their values are handled. If <see langword="null"/>,
+        /// a default constructed <see cref="ObjectPropertySerializerOptions"/> will be used.</param>
         /// <param name="filter">An optional filter that can exclude properties by name or value, or format the values if a <see cref="IFormattableObjectPropertyFilter"/>.</param>
         /// <returns>Returns a dictionary containing property names and associated values (as strings). Nested members are named using dot notation.</returns>
         /// <remarks>
@@ -207,9 +218,10 @@ namespace AllOverIt.Extensions
         /// <para>Dictionary type properties are named using the key values where possible. If the key is a class type then the class name is used along with
         /// a backtick and zero-based index suffix (to provide uniqueness).</para>
         /// </remarks>
-        public static IDictionary<string, string> ToSerializedDictionary(this object instance, ObjectPropertySerializerOptions options = default, ObjectPropertyFilter filter = default)
+        public static IDictionary<string, string> ToSerializedDictionary(this object instance, ObjectPropertySerializerOptions? options = default,
+            ObjectPropertyFilter? filter = default)
         {
-            var serializer = new ObjectPropertySerializer(options, filter);
+            var serializer = new ObjectPropertySerializer(options ?? new ObjectPropertySerializerOptions(), filter);
 
             return serializer.SerializeToDictionary(instance);
         }
@@ -221,11 +233,11 @@ namespace AllOverIt.Extensions
         /// <param name="bindingFlags">.NET binding options that determine how property names are resolved.</param>
         /// <returns>The value of a property by name</returns>
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding flags.</exception>
-        public static TValue GetPropertyValue<TValue>(this object instance, string propertyName, BindingFlags bindingFlags)
+        public static TValue? GetPropertyValue<TValue>(this object instance, string propertyName, BindingFlags bindingFlags)
         {
             var instanceType = instance.GetType();
 
-            return (TValue) GetPropertyValue(instance, instanceType, propertyName, bindingFlags);
+            return (TValue?) GetPropertyValue(instance, instanceType, propertyName, bindingFlags);
         }
 
         /// <summary>Uses reflection to get the value of an object's property by name.</summary>
@@ -235,7 +247,7 @@ namespace AllOverIt.Extensions
         /// <param name="bindingFlags">.NET binding options that determine how property names are resolved.</param>
         /// <returns>The value of a property by name</returns>
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding flags.</exception>
-        public static object GetPropertyValue(this object instance, Type instanceType, string propertyName, BindingFlags bindingFlags)
+        public static object? GetPropertyValue(this object instance, Type instanceType, string propertyName, BindingFlags bindingFlags)
         {
             var propertyInfo = GetPropertyInfo(instanceType, propertyName, bindingFlags);
 
@@ -251,11 +263,11 @@ namespace AllOverIt.Extensions
         /// <param name="bindingOptions">Binding options that determine how property names are resolved.</param>
         /// <returns>The value of a property by name</returns>
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding options.</exception>
-        public static TValue GetPropertyValue<TValue>(this object instance, string propertyName, BindingOptions bindingOptions = BindingOptions.Default)
+        public static TValue? GetPropertyValue<TValue>(this object instance, string propertyName, BindingOptions bindingOptions = BindingOptions.Default)
         {
             var instanceType = instance.GetType();
 
-            return (TValue) GetPropertyValue(instance, instanceType, propertyName, bindingOptions);
+            return (TValue?) GetPropertyValue(instance, instanceType, propertyName, bindingOptions);
         }
 
         /// <summary>Uses reflection to get the value of an object's property by name.</summary>
@@ -265,7 +277,7 @@ namespace AllOverIt.Extensions
         /// <param name="bindingOptions">Binding options that determine how property names are resolved.</param>
         /// <returns>The value of a property by name</returns>
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding options.</exception>
-        public static object GetPropertyValue(this object instance, Type instanceType, string propertyName, BindingOptions bindingOptions = BindingOptions.Default)
+        public static object? GetPropertyValue(this object instance, Type instanceType, string propertyName, BindingOptions bindingOptions = BindingOptions.Default)
         {
             var propertyInfo = instanceType
                 .GetPropertyInfo(bindingOptions, false)
@@ -283,7 +295,7 @@ namespace AllOverIt.Extensions
         /// <param name="value">The value to set.</param>
         /// <param name="bindingFlags">.NET binding options that determine how property names are resolved.</param>
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding flags.</exception>
-        public static void SetPropertyValue<TValue>(this object instance, string propertyName, TValue value, BindingFlags bindingFlags)
+        public static void SetPropertyValue<TValue>(this object instance, string propertyName, TValue? value, BindingFlags bindingFlags)
         {
             var instanceType = instance.GetType();
 
@@ -297,7 +309,7 @@ namespace AllOverIt.Extensions
         /// <param name="value">The value to set.</param>
         /// <param name="bindingFlags">.NET binding options that determine how property names are resolved.</param>
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding flags.</exception>
-        public static void SetPropertyValue(this object instance, Type instanceType, string propertyName, object value, BindingFlags bindingFlags)
+        public static void SetPropertyValue(this object instance, Type instanceType, string propertyName, object? value, BindingFlags bindingFlags)
         {
             var propertyInfo = GetPropertyInfo(instanceType, propertyName, bindingFlags);
 
@@ -313,7 +325,7 @@ namespace AllOverIt.Extensions
         /// <param name="value">The value to set on the property.</param>
         /// <param name="bindingOptions">Binding options that determine how property names are resolved.</param>
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding options.</exception>
-        public static void SetPropertyValue<TValue>(this object instance, string propertyName, TValue value, BindingOptions bindingOptions = BindingOptions.Default)
+        public static void SetPropertyValue<TValue>(this object instance, string propertyName, TValue? value, BindingOptions bindingOptions = BindingOptions.Default)
         {
             var instanceType = instance.GetType();
 
@@ -327,7 +339,7 @@ namespace AllOverIt.Extensions
         /// <param name="value">The value to set on the property.</param>
         /// <param name="bindingOptions">Binding options that determine how property names are resolved.</param>
         /// <exception cref="MemberAccessException">When the property name cannot be found using the provided binding options.</exception>
-        public static void SetPropertyValue(this object instance, Type instanceType, string propertyName, object value, BindingOptions bindingOptions = BindingOptions.Default)
+        public static void SetPropertyValue(this object instance, Type instanceType, string propertyName, object? value, BindingOptions bindingOptions = BindingOptions.Default)
         {
             var propertyInfo = instanceType
                 .GetPropertyInfo(bindingOptions, false)
@@ -341,7 +353,7 @@ namespace AllOverIt.Extensions
         /// <summary>Determines if the specified object is an integral type (signed or unsigned).</summary>
         /// <param name="instance">The object instance to be compared to an integral type.</param>
         /// <returns>Returns <c>true</c> if the specified object is an integral type (signed or unsigned).</returns>
-        public static bool IsIntegral(this object instance)
+        public static bool IsIntegral([NotNullWhen(true)] this object? instance)
         {
             return instance is byte or sbyte or short or ushort or int or uint or long or ulong;
         }
@@ -351,9 +363,11 @@ namespace AllOverIt.Extensions
         /// <param name="instance">The object instance to be converted.</param>
         /// <param name="defaultValue">The default value to be returned when <paramref name="instance"/> is null.</param>
         /// <returns>Returns <paramref name="instance"/> converted to the specified <typeparamref name="TType"/>.</returns>
-        public static TType As<TType>(this object instance, TType defaultValue = default)
+        public static TType? As<TType>(this object? instance, TType? defaultValue = default)
         {
-            return ObjectConversionHelper.ConvertTo(instance, defaultValue);
+            return instance is null
+              ? defaultValue
+              : ObjectConversionHelper.ConvertTo(instance, defaultValue);
         }
 
         /// <summary>Converts the provided source <paramref name="instance"/> to a specified nullable type.</summary>
@@ -361,10 +375,10 @@ namespace AllOverIt.Extensions
         /// <param name="instance">The object instance to be converted.</param>
         /// <param name="defaultValue">The default value to be returned when <paramref name="instance"/> is null.</param>
         /// <returns>Returns <paramref name="instance"/> converted to the specified <typeparamref name="TType"/>.</returns>
-        public static TType? AsNullable<TType>(this object instance, TType? defaultValue = null)
+        public static TType? AsNullable<TType>(this object? instance, TType? defaultValue = null)
           where TType : struct
         {
-            return instance == null
+            return instance is null
               ? defaultValue
               : ObjectExtensions.As<TType>(instance);
         }
@@ -378,8 +392,8 @@ namespace AllOverIt.Extensions
         /// <param name="excludeProperties">The property names to exclude. If null, then no properties are excluded.</param>
         /// <returns>The calculated hash code.</returns>
         /// <remarks>To ensure idempotency, the properties are ordered by their name before calculating the hash.</remarks>
-        public static int CalculateHashCode<TType>(this TType instance, IEnumerable<string> includeProperties = null,
-          IEnumerable<string> excludeProperties = null)
+        public static int CalculateHashCode<TType>(this TType instance, IEnumerable<string>? includeProperties = null,
+          IEnumerable<string>? excludeProperties = null)
         {
             // includeProperties = null => include all
             // excludeProperties = null => exclude none
@@ -392,8 +406,8 @@ namespace AllOverIt.Extensions
             // uses declaredOnly = false so base class properties are included
             // ordering by name to make the calculations predictable
             var properties = from property in objType.GetPropertyInfo(DefaultHashCodeBindings)
-                             where (inclusions == null || inclusions.Contains(property.Name)) &&
-                                   (exclusions == null || !exclusions.Contains(property.Name))
+                             where (inclusions is null || inclusions.Contains(property.Name)) &&
+                                   (exclusions is null || !exclusions.Contains(property.Name))
                              orderby property.Name
                              select property.GetValue(instance);
 
@@ -414,7 +428,7 @@ namespace AllOverIt.Extensions
 
         /// <summary>Determines if the provided object inherits from EnrichedEnum&lt;&gt;.</summary>
         /// <param name="object">The instance to be checked.</param>
-        /// <returns><see langword="true" /> if the object inherits from EnrichedEnum&lt;>, otherwise <see langword="false" />.</returns>
+        /// <returns><see langword="True" /> if the object inherits from EnrichedEnum&lt;>, otherwise <see langword="False" />.</returns>
         public static bool IsEnrichedEnum(this object @object)
         {
             return @object.GetType().IsEnrichedEnum();
@@ -433,13 +447,13 @@ namespace AllOverIt.Extensions
             }
         }
 
-        private static PropertyInfo GetPropertyInfo(Type instanceType, string propertyName, BindingFlags bindingFlags)
+        private static PropertyInfo? GetPropertyInfo(Type? instanceType, string propertyName, BindingFlags bindingFlags)
         {
-            while (instanceType != null)
+            while (instanceType is not null)
             {
                 var propertyInfo = instanceType.GetProperty(propertyName, bindingFlags);
 
-                if (propertyInfo != null)
+                if (propertyInfo is not null)
                 {
                     return propertyInfo;
                 }

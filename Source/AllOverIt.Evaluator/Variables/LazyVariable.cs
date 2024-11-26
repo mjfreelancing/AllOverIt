@@ -1,5 +1,6 @@
 using AllOverIt.Assertion;
 using AllOverIt.Evaluator.Variables.Extensions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.Evaluator.Variables
 {
@@ -23,7 +24,7 @@ namespace AllOverIt.Evaluator.Variables
         public LazyVariable(string name, Func<double> valueResolver, bool threadSafe = false)
             : base(name)
         {
-            _valueResolver = valueResolver.WhenNotNull(nameof(valueResolver));
+            _valueResolver = valueResolver.WhenNotNull();
             _threadSafe = threadSafe;
 
             Reset();
@@ -41,6 +42,7 @@ namespace AllOverIt.Evaluator.Variables
         }
 
         /// <inheritdoc />
+        [MemberNotNull(nameof(_lazyFunc))]
         public void Reset()
         {
             _lazyFunc = new Lazy<double>(_valueResolver, _threadSafe);

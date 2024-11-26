@@ -20,8 +20,8 @@ namespace AllOverIt.Evaluator.Operators
         public static TOperator Create<TOperator>(Expression[] expressions, Func<Expression[], TOperator> creator)
           where TOperator : IOperator
         {
-            _ = expressions.WhenNotNullOrEmpty(nameof(expressions));
-            _ = creator.WhenNotNull(nameof(creator));
+            _ = expressions.WhenNotNullOrEmpty();
+            _ = creator.WhenNotNull();
 
             var constructorArgumentCount = typeof(TOperator).GetConstructors().Single().GetParameters().Length;
 

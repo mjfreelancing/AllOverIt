@@ -2,11 +2,11 @@
 {
     public sealed class NullMessageExceptionHandler : QueueMessageHandlerBase
     {
-        public override QueueMessageHandlerState Handle(QueueMessageHandlerState state)
+        public override QueueMessageHandlerState? Handle(QueueMessageHandlerState state)
         {
             var payload = state.QueueMessage.Payload;
 
-            if (payload == null)
+            if (payload is null)
             {
                 Console.WriteLine(" >> Handling a null message...");
                 return Abandon(state);

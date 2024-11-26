@@ -11,7 +11,7 @@ namespace AllOverIt.Events
 
         public AsyncWeakSubscription(Delegate handler)
         {
-            _ = handler.WhenNotNull(nameof(handler));
+            _ = handler.WhenNotNull();
 
             _weakReference = new WeakReference(handler.Target);
             _handlerMethod = handler.GetMethodInfo();
@@ -27,7 +27,7 @@ namespace AllOverIt.Events
 
             var target = _weakReference.Target;
 
-            if (target != null)
+            if (target is not null)
             {
                 return (Func<TMessage, Task>) _handlerMethod.CreateDelegate(_handlerType, target);
             }

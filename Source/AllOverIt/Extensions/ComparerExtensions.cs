@@ -15,9 +15,13 @@ namespace AllOverIt.Extensions
                 _comparer = comparer;
             }
 
-            public int Compare(TType x, TType y)
+            public int Compare(TType? lhs, TType? rhs)
             {
-                var result = _comparer.Compare(x, y);
+                // Not considering null lhs or rhs here since this should be handled by _comparer
+
+#pragma warning disable CS8604      // Possible null refererence argument => Compare() allows null
+                var result = _comparer.Compare(lhs, rhs);
+#pragma warning restore CS8604
 
                 return result == 0 ? result : -result;
             }
@@ -35,13 +39,17 @@ namespace AllOverIt.Extensions
                 _next = next;
             }
 
-            int IComparer<TType>.Compare(TType x, TType y)
+            int IComparer<TType>.Compare(TType? lhs, TType? rhs)
             {
-                var result = _first.Compare(x, y);
+                // Not considering null lhs or rhs here since this should be handled by _first and _next respectively
+
+#pragma warning disable CS8604      // Possible null refererence argument => Compare() allows null
+                var result = _first.Compare(lhs, rhs);
+#pragma warning restore CS8604
 
                 return result != 0
                     ? result
-                    : _next.Compare(x, y);
+                    : _next.Compare(lhs, rhs);
             }
         }
 
@@ -51,7 +59,7 @@ namespace AllOverIt.Extensions
         /// <returns>A new comparer that negates the result returned by <paramref name="comparer"/>.</returns>
         public static IComparer<TType> Reverse<TType>(this IComparer<TType> comparer)
         {
-            _ = comparer.WhenNotNull(nameof(comparer));
+            _ = comparer.WhenNotNull();
 
             return new ReverseComparer<TType>(comparer);
         }
@@ -64,8 +72,8 @@ namespace AllOverIt.Extensions
         /// <returns>A new comparer that composes <paramref name="first"/> and <paramref name="next"/>.</returns>
         public static IComparer<TType> Then<TType>(this IComparer<TType> first, IComparer<TType> next)
         {
-            _ = first.WhenNotNull(nameof(first));
-            _ = next.WhenNotNull(nameof(next));
+            _ = first.WhenNotNull();
+            _ = next.WhenNotNull();
 
             return new ComparerNode<TType>(first, next);
         }

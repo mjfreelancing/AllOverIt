@@ -79,7 +79,7 @@ namespace AllOverIt.ReactiveUI.Wpf
 
         private static Window GetWindow(IViewFor view)
         {
-            return view as Window;
+            return (view as Window)!;
         }
     }
 }
