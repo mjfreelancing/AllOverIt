@@ -2,8 +2,6 @@
 
 namespace AllOverIt.Assertion
 {
-    /// <summary>Static helper class that will throw a specified exception type when a given criteria is satisfied.</summary>
-    /// <typeparam name="TException">The exception type to be thrown.</typeparam>
     public static partial class Throw<TException> where TException : Exception
     {
         /// <summary>Throws a <typeparamref name="TException"/> when the <paramref name="object"/> is <see langword="null"/> or empty.</summary>

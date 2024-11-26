@@ -27,6 +27,12 @@ namespace EFEnumerationDemo
 
             using (var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken))
             {
+                if (DemoStartupOptions.RecreateData)
+                {
+                    // Note: For this demo, comment out to prevent deleting if just applying a migration
+                    await dbContext.Database.EnsureDeletedAsync(cancellationToken);
+                }
+
                 dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
                 //await dbContext.Database.EnsureDeletedAsync(cancellationToken);

@@ -1,20 +1,20 @@
 # Summary
 |||
 |:---|:---|
-| Generated on: | 8/09/2024 - 22:23:40 |
-| Coverage date: | 8/09/2024 - 22:14:35 - 8/09/2024 - 22:23:13 |
+| Generated on: | 26/11/2024 - 21:28:26 |
+| Coverage date: | 26/11/2024 - 21:22:55 - 26/11/2024 - 21:28:11 |
 | Parser: | MultiReport (51x Cobertura) |
 | Assemblies: | 24 |
-| Classes: | 528 |
-| Files: | 533 |
-| **Line coverage:** | 99% (11446 of 11555) |
-| Covered lines: | 11446 |
-| Uncovered lines: | 109 |
-| Coverable lines: | 11555 |
-| Total lines: | 41649 |
-| **Branch coverage:** | 95.2% (3063 of 3215) |
-| Covered branches: | 3063 |
-| Total branches: | 3215 |
+| Classes: | 529 |
+| Files: | 542 |
+| **Line coverage:** | 98.8% (11563 of 11702) |
+| Covered lines: | 11563 |
+| Uncovered lines: | 139 |
+| Coverable lines: | 11702 |
+| Total lines: | 42268 |
+| **Branch coverage:** | 95% (3129 of 3293) |
+| Covered branches: | 3129 |
+| Total branches: | 3293 |
 | **Method coverage:** | [Feature is only available for sponsors](https://reportgenerator.io/pro) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
@@ -186,9 +186,9 @@
 |AllOverIt.Threading.Extensions.AwaitableLockExtensions|3|0|3|20|100%|0|0||
 |AllOverIt.Threading.Extensions.ReadWriteLockExtensions|2|0|2|25|100%|0|0||
 |AllOverIt.Threading.ReadWriteLock|31|0|31|119|100%|10|10|100%|
-|**AllOverIt.Assertion**|**194**|**0**|**194**|**1097**|**100%**|**150**|**150**|**100%**|
+|**AllOverIt.Assertion**|**314**|**0**|**314**|**1657**|**100%**|**214**|**214**|**100%**|
 |AllOverIt.Assertion.Guard|65|0|65|398|100%|68|68|100%|
-|AllOverIt.Assertion.Throw`1|129|0|129|699|100%|82|82|100%|
+|AllOverIt.Assertion.Throw`1|249|0|249|1259|100%|146|146|100%|
 |**AllOverIt.Cryptography**|**459**|**1**|**460**|**1626**|**99.7%**|**25**|**27**|**92.5%**|
 |AllOverIt.Cryptography.AES.AesEncryptor|50|1|51|133|98%|3|5|60%|
 |AllOverIt.Cryptography.AES.AesEncryptorConfiguration|37|0|37|100|100%|2|2|100%|
@@ -228,9 +228,9 @@
 |AllOverIt.DependencyInjection.NamedServiceResolver|6|0|6|75|100%|0|0||
 |AllOverIt.DependencyInjection.NamedServiceResolver`1|18|0|18|75|100%|6|6|100%|
 |AllOverIt.DependencyInjection.ServiceRegistrarBase|43|0|43|104|100%|28|28|100%|
-|**AllOverIt.EntityFrameworkCore**|**149**|**42**|**191**|**571**|**78%**|**34**|**50**|**68%**|
-|AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumEntityOptions|44|1|45|126|97.7%|5|6|83.3%|
-|AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumModelBuilderOptions|19|0|19|83|100%|6|6|100%|
+|**AllOverIt.EntityFrameworkCore**|**140**|**51**|**191**|**571**|**73.2%**|**33**|**50**|**66%**|
+|AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumEntityOptions|37|8|45|126|82.2%|5|6|83.3%|
+|AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumModelBuilderOptions|17|2|19|83|89.4%|5|6|83.3%|
 |AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumModelBuilderTypes|2|0|2|10|100%|0|0||
 |AllOverIt.EntityFrameworkCore.EnrichedEnum.EnrichedEnumPropertyOptions|41|1|42|92|97.6%|11|12|91.6%|
 |AllOverIt.EntityFrameworkCore.Extensions.ModelBuilderExtensions|39|0|39|95|100%|12|12|100%|
@@ -396,13 +396,13 @@
 |AllOverIt.Filtering.Operations.StartsWithOperation`1|3|0|3|21|100%|2|2|100%|
 |AllOverIt.Filtering.Options.DefaultQueryFilterOptions|3|0|3|17|100%|0|0||
 |AllOverIt.Filtering.Options.OperationFilterOptions|3|0|3|17|100%|0|0||
-|**AllOverIt.Fixture**|**620**|**8**|**628**|**2623**|**98.7%**|**239**|**243**|**98.3%**|
+|**AllOverIt.Fixture**|**621**|**8**|**629**|**2625**|**98.7%**|**241**|**245**|**98.3%**|
 |AllOverIt.Fixture.Assertions.ClassProperties|11|0|11|137|100%|0|0||
 |AllOverIt.Fixture.Assertions.ClassProperties`1|17|0|17|137|100%|4|4|100%|
 |AllOverIt.Fixture.Assertions.ClassPropertiesAssertions|30|0|30|101|100%|6|6|100%|
 |AllOverIt.Fixture.Assertions.ClassPropertiesBase|18|0|18|80|100%|8|8|100%|
 |AllOverIt.Fixture.Assertions.ClassPropertiesExtensions|1|0|1|80|100%|0|0||
-|AllOverIt.Fixture.Assertions.NullabilityInfoAssertions|57|0|57|216|100%|24|26|92.3%|
+|AllOverIt.Fixture.Assertions.NullabilityInfoAssertions|58|0|58|218|100%|26|28|92.8%|
 |AllOverIt.Fixture.Assertions.Properties|2|0|2|24|100%|0|0||
 |AllOverIt.Fixture.Assertions.PropertyInfoAssertions|248|2|250|1012|99.2%|115|117|98.2%|
 |AllOverIt.Fixture.Exceptions.AggregateAssertionException|10|0|10|39|100%|0|0||
@@ -454,12 +454,12 @@
 |AllOverIt.Pagination.TokenEncoding.ContinuationTokenSerializerFactory|2|0|2|14|100%|0|0||
 |AllOverIt.Pagination.TokenEncoding.ContinuationTokenValidator|8|0|8|33|100%|2|2|100%|
 |AllOverIt.Pagination.TokenEncoding.ContinuationTokenWriter|6|0|6|25|100%|0|0||
-|**AllOverIt.Pipes**|**502**|**17**|**519**|**1478**|**96.7%**|**107**|**122**|**87.7%**|
+|**AllOverIt.Pipes**|**505**|**38**|**543**|**1528**|**93%**|**108**|**134**|**80.5%**|
 |AllOverIt.Pipes.Anonymous.AnonymousPipeBase|38|0|38|116|100%|14|16|87.5%|
 |AllOverIt.Pipes.Anonymous.AnonymousPipeClient|8|0|8|37|100%|0|0||
 |AllOverIt.Pipes.Anonymous.AnonymousPipeServer|13|0|13|52|100%|2|2|100%|
 |AllOverIt.Pipes.Exceptions.PipeException|6|0|6|26|100%|0|0||
-|AllOverIt.Pipes.Named.Client.NamedPipeClient`1|67|0|67|187|100%|16|18|88.8%|
+|AllOverIt.Pipes.Named.Client.NamedPipeClient`1|67|0|67|187|100%|17|18|94.4%|
 |AllOverIt.Pipes.Named.Client.NamedPipeClientConnection`1|23|0|23|84|100%|6|6|100%|
 |AllOverIt.Pipes.Named.Client.NamedPipeClientFactory`1|8|0|8|36|100%|0|0||
 |AllOverIt.Pipes.Named.Connection.NamedPipeConnection`1|85|5|90|160|94.4%|12|14|85.7%|
@@ -474,6 +474,7 @@
 |AllOverIt.Pipes.Named.Server.NamedPipeServer`1|139|8|147|339|94.5%|31|36|86.1%|
 |AllOverIt.Pipes.Named.Server.NamedPipeServerConnection`1|24|0|24|91|100%|6|6|100%|
 |AllOverIt.Pipes.Named.Server.NamedPipeServerFactory`1|4|0|4|25|100%|0|0||
+|WinRT.AllOverIt_PipesGenericHelpers.GlobalVtableLookup|3|21|24|50|12.5%|0|12|0%|
 |**AllOverIt.Reactive**|**138**|**1**|**139**|**522**|**99.2%**|**40**|**42**|**95.2%**|
 |AllOverIt.Reactive.Extensions.DisposableExtensions|2|0|2|16|100%|0|0||
 |AllOverIt.Reactive.Extensions.ObservableExtensions|36|0|36|109|100%|10|10|100%|
@@ -538,12 +539,12 @@
 |AllOverIt.Serialization.Json.SystemText.Extensions.SystemTextJsonSerializerExtensions|6|0|6|33|100%|2|2|100%|
 |AllOverIt.Serialization.Json.SystemText.JsonHelper|9|0|9|40|100%|4|4|100%|
 |AllOverIt.Serialization.Json.SystemText.SystemTextJsonSerializer|36|0|36|110|100%|16|16|100%|
-|**AllOverIt.Serilog**|**102**|**0**|**102**|**433**|**100%**|**12**|**12**|**100%**|
+|**AllOverIt.Serilog**|**104**|**0**|**104**|**440**|**100%**|**12**|**12**|**100%**|
 |AllOverIt.Serilog.Enrichers.ThreadId.ThreadIdEnricher|3|0|3|20|100%|0|0||
 |AllOverIt.Serilog.Extensions.LoggerSinkConfigurationExtensions|11|0|11|101|100%|0|0||
 |AllOverIt.Serilog.Extensions.ServiceCollectionExtensions|32|0|32|92|100%|0|0||
 |AllOverIt.Serilog.Extensions.ServiceProviderExtensions|4|0|4|31|100%|0|0||
-|AllOverIt.Serilog.Sinks.CircularBuffer.CircularBufferSink|12|0|12|43|100%|0|0||
+|AllOverIt.Serilog.Sinks.CircularBuffer.CircularBufferSink|14|0|14|50|100%|0|0||
 |AllOverIt.Serilog.Sinks.CircularBuffer.CircularBufferSinkMessage|6|0|6|24|100%|0|0||
 |AllOverIt.Serilog.Sinks.CircularBuffer.CircularBufferSinkMessages|2|0|2|15|100%|0|0||
 |AllOverIt.Serilog.Sinks.Observable.ObservableSink|32|0|32|107|100%|12|12|100%|

@@ -6,4 +6,8 @@
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    </ItemGroup>
+
 </Project>

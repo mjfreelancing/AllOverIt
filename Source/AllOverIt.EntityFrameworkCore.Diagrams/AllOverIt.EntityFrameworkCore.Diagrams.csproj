@@ -6,12 +6,8 @@
         <PackageTags>AllOverIt;Utilities;Query;EntityFramework;D2;Diagrams</PackageTags>
     </PropertyGroup>
 
-    <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.10" />
-    </ItemGroup>
-
-    <ItemGroup Condition=" '$(TargetFramework)' == 'net9.0' ">
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0-preview.7.24405.3" />
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>

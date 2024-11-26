@@ -16,6 +16,10 @@ class Program
     // running the app. For more information, see https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dbcontext-creation
     public static IHostBuilder CreateHostBuilder(string[] args)
     {
+        // Using a static object as it simplifies the demo, especially when wanting to create migrations for different database providers.
+        DemoStartupOptions.RecreateData = false;
+        DemoStartupOptions.Use = DatabaseChoice.PostgreSql;
+
         return GenericHost
             .CreateConsoleHostBuilder<App>(args)
             .ConfigureServices((hostContext, services) =>

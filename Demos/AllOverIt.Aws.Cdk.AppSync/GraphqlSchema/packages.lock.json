@@ -1,21 +1,21 @@
 {
   "version": 1,
   "dependencies": {
-    "net8.0": {
+    "net9.0": {
       "Amazon.CDK.Asset.AwsCliV1": {
         "type": "Transitive",
-        "resolved": "2.2.202",
-        "contentHash": "mz6qOkAqpiFP43CcAS6lDcYa4CPCVsQJzCQpRryf7CuMPhcG6IkfwqTpavRLMNTKow7PAYLleDu+mT17iHeqvg==",
+        "resolved": "2.2.208",
+        "contentHash": "MggMYQIo4n+oqv2FqiFp6hxgr92hlns3I03KBXH/9MyVL3PV55KMoiKYTe6kMN52PL3QOUsDzSz7EurajXGKHw==",
         "dependencies": {
-          "Amazon.JSII.Runtime": "[1.93.0, 2.0.0)"
+          "Amazon.JSII.Runtime": "[1.104.0, 2.0.0)"
         }
       },
       "Amazon.CDK.Asset.KubectlV20": {
         "type": "Transitive",
-        "resolved": "2.1.2",
-        "contentHash": "E6OxiunGMXdyFgwS5hNNWIBVMO0yxSHN41VMTSkWgiTty/KKqi8E7wDYY76ZURdsU9OndAjUSdkEy2V4rIA/5g==",
+        "resolved": "2.1.3",
+        "contentHash": "ZEQLzWZDQgP7+nbCHm8mAtAw40iUpdXl6SnIaR0Yrg3wCVhV3KT5Xb9s18rx/fFnDuyiFZcAW4lZT1YUOlQsZw==",
         "dependencies": {
-          "Amazon.JSII.Runtime": "[1.70.0, 2.0.0)"
+          "Amazon.JSII.Runtime": "[1.103.1, 2.0.0)"
         }
       },
       "Amazon.CDK.Asset.NodeProxyAgentV6": {
@@ -28,43 +28,43 @@
       },
       "Amazon.CDK.CloudAssembly.Schema": {
         "type": "Transitive",
-        "resolved": "38.0.0",
-        "contentHash": "iaePg5ZumZzrePuoOgf5R8pSV2/AeDwkzfVGdg8Nds/0xlrtjcRSH1DgZOaN9cCPmGbaNkewpLSLVinQIRK6Ew==",
+        "resolved": "38.0.1",
+        "contentHash": "6grXZOqH7ZGIoHRNeA6v71bjHLY1qOw4ujqYzsKCCyaDWqW6Rb5T1xnWVc39JwiEPkSAQeEzURy+5aXCIYt+/g==",
         "dependencies": {
           "Amazon.JSII.Runtime": "[1.103.1, 2.0.0)"
         }
       },
       "Amazon.CDK.Lib": {
         "type": "Transitive",
-        "resolved": "2.163.1",
-        "contentHash": "4YVHN/fTe4jzYZneuj9UtNRf46FkuwA2QW1cUfQvmU/SaqmNyMxPSsx7LBQuK5p0DHj+2e6iqG4kfrTakCD3rg==",
+        "resolved": "2.171.0",
+        "contentHash": "d7kg1JUvwqvNu2fztT8Z3RUA7y7ACd5FH0x6AklG3s7cfp0L4RAnJWH2EoNGKA+oLWE3bro1OABbQIj055XVdw==",
         "dependencies": {
-          "Amazon.CDK.Asset.AwsCliV1": "[2.2.202, 3.0.0)",
-          "Amazon.CDK.Asset.KubectlV20": "[2.1.2, 3.0.0)",
+          "Amazon.CDK.Asset.AwsCliV1": "[2.2.208, 3.0.0)",
+          "Amazon.CDK.Asset.KubectlV20": "[2.1.3, 3.0.0)",
           "Amazon.CDK.Asset.NodeProxyAgentV6": "[2.1.0, 3.0.0)",
-          "Amazon.CDK.CloudAssembly.Schema": "[38.0.0, 39.0.0)",
-          "Amazon.JSII.Runtime": "[1.103.1, 2.0.0)",
+          "Amazon.CDK.CloudAssembly.Schema": "[38.0.1, 39.0.0)",
+          "Amazon.JSII.Runtime": "[1.104.0, 2.0.0)",
           "Constructs": "[10.0.0, 11.0.0)"
         }
       },
       "Amazon.JSII.Runtime": {
         "type": "Transitive",
-        "resolved": "1.104.0",
-        "contentHash": "Nv+thX3KGpsCB8PjeFrMdUwPP20pAtZRAcP/VLdrL/DdiL1eh9uDkXCU5crBtIwiKBvyAQC12j5z5+3wmx85BA==",
+        "resolved": "1.105.0",
+        "contentHash": "L8RUHFuhHp2ScBPa5dNGm5060wC4lN8za3VTi4GigR2ke1q6hZVJbwwH4fpnAtsCOdDaVgNqVAiojNXUNIVgBQ==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "8.0.0",
-          "Microsoft.Extensions.Logging": "8.0.0",
-          "Microsoft.Extensions.Logging.Console": "8.0.0",
+          "Microsoft.Extensions.DependencyInjection": "8.0.1",
+          "Microsoft.Extensions.Logging": "8.0.1",
+          "Microsoft.Extensions.Logging.Console": "8.0.1",
           "Newtonsoft.Json": "13.0.3"
         }
       },
       "Cdklabs.AwsCdkAppsyncUtils": {
         "type": "Transitive",
-        "resolved": "0.0.559",
-        "contentHash": "kk+7sARpkghH1k2zCPTAALRvg+oMf+Lim8yW8aiSlx6N/r95ILWFZKkWkZ8MPbua+SNKvdAg9anYQ5TZiRhitA==",
+        "resolved": "0.0.585",
+        "contentHash": "Yf1IelMjAshxM2vfWAsbM+E4GJTWX0PhEhA/incfAJE8kqb6GzM1L6BULVjXNLb6320JBCYQCStNLnjm22ZfdQ==",
         "dependencies": {
           "Amazon.CDK.Lib": "[2.110.0, 3.0.0)",
-          "Amazon.JSII.Runtime": "[1.104.0, 2.0.0)",
+          "Amazon.JSII.Runtime": "[1.105.0, 2.0.0)",
           "Constructs": "[10.0.5, 11.0.0)"
         }
       },
@@ -95,75 +95,74 @@
       },
       "Microsoft.Extensions.Configuration.Binder": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "mBMoXLsr5s1y2zOHWmKsE9veDcx8h1x/c3rz4baEdQKTeDcmQAPNbB54Pi/lhFO3K431eEq6PFbMgLaa6PHFfA==",
+        "resolved": "8.0.2",
+        "contentHash": "7IQhGK+wjyGrNsPBjJcZwWAr+Wf6D4+TwOptUt77bWtgNkiV8tDEbhFS+dDamtQFZ2X7kWG9m71iZQRj2x3zgQ==",
         "dependencies": {
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0"
         }
       },
       "Microsoft.Extensions.DependencyInjection": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "V8S3bsm50ig6JSyrbcJJ8bW2b9QLGouz+G1miK3UTaOWmMtFwNNNzUf4AleyDWUmTrWMLNnFSLEQtxmxgNQnNQ==",
+        "resolved": "8.0.1",
+        "contentHash": "BmANAnR5Xd4Oqw7yQ75xOAYODybZQRzdeNucg7kS5wWKd2PNnMdYtJ2Vciy0QLylRmv42DGl5+AFL9izA6F1Rw==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2"
         }
       },
       "Microsoft.Extensions.DependencyInjection.Abstractions": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "cjWrLkJXK0rs4zofsK4bSdg+jhDLTaxrkXu4gS6Y7MAlCvRyNNgwY/lJi5RDlQOnSZweHqoyvgvbdvQsRIW+hg=="
+        "resolved": "8.0.2",
+        "contentHash": "3iE7UF7MQkCv1cxzCahz+Y/guQbTqieyxyaWKhrRO91itI9cOKO76OHeQDahqG4MmW5umr3CcCvGmK92lWNlbg=="
       },
       "Microsoft.Extensions.Logging": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "tvRkov9tAJ3xP51LCv3FJ2zINmv1P8Hi8lhhtcKGqM+ImiTCC84uOPEI4z8Cdq2C3o9e+Aa0Gw0rmrsJD77W+w==",
+        "resolved": "8.0.1",
+        "contentHash": "4x+pzsQEbqxhNf1QYRr5TDkLP9UsLT3A6MdRKDDEgrW7h1ljiEPgTNhKYUhNCCAaVpQECVQ+onA91PTPnIp6Lw==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "8.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Options": "8.0.0"
+          "Microsoft.Extensions.DependencyInjection": "8.0.1",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.2",
+          "Microsoft.Extensions.Options": "8.0.2"
         }
       },
       "Microsoft.Extensions.Logging.Abstractions": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "arDBqTgFCyS0EvRV7O3MZturChstm50OJ0y9bDJvAcmEPJm0FFpFyjU/JLYyStNGGey081DvnQYlncNX5SJJGA==",
+        "resolved": "8.0.2",
+        "contentHash": "nroMDjS7hNBPtkZqVBbSiQaQjWRDxITI8Y7XnDs97rqG3EbzVTNLZQf7bIeUJcaHOV8bca47s1Uxq94+2oGdxA==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2"
         }
       },
       "Microsoft.Extensions.Logging.Configuration": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "ixXXV0G/12g6MXK65TLngYN9V5hQQRuV+fZi882WIoVJT7h5JvoYoxTEwCgdqwLjSneqh1O+66gM8sMr9z/rsQ==",
+        "resolved": "8.0.1",
+        "contentHash": "QWwTrsgOnJMmn+XUslm8D2H1n3PkP/u/v52FODtyBc/k4W9r3i2vcXXeeX/upnzllJYRRbrzVzT0OclfNJtBJA==",
         "dependencies": {
           "Microsoft.Extensions.Configuration": "8.0.0",
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Configuration.Binder": "8.0.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Logging": "8.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Options": "8.0.0",
+          "Microsoft.Extensions.Configuration.Binder": "8.0.2",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2",
+          "Microsoft.Extensions.Logging": "8.0.1",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.2",
+          "Microsoft.Extensions.Options": "8.0.2",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "8.0.0"
         }
       },
       "Microsoft.Extensions.Logging.Console": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "e+48o7DztoYog+PY430lPxrM4mm3PbA6qucvQtUDDwVo4MO+ejMw7YGc/o2rnxbxj4isPxdfKFzTxvXMwAz83A==",
+        "resolved": "8.0.1",
+        "contentHash": "uzcg/5U2eLyn5LIKlERkdSxw6VPC1yydnOSQiRRWGBGN3kphq3iL4emORzrojScDmxRhv49gp5BI8U3Dz7y4iA==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Logging": "8.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Logging.Configuration": "8.0.0",
-          "Microsoft.Extensions.Options": "8.0.0",
-          "System.Text.Json": "8.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2",
+          "Microsoft.Extensions.Logging": "8.0.1",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.2",
+          "Microsoft.Extensions.Logging.Configuration": "8.0.1",
+          "Microsoft.Extensions.Options": "8.0.2"
         }
       },
       "Microsoft.Extensions.Options": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "JOVOfqpnqlVLUzINQ2fox8evY2SKLYJ3BV8QDe/Jyp21u1T7r45x/R/5QdteURMR5r01GxeJSBBUOCOyaNXA3g==",
+        "resolved": "8.0.2",
+        "contentHash": "dWGKvhFybsaZpGmzkGCbNNwBD1rVlWzrZKANLW/CcbFJpCEceMCGzT7zZwHOGBCbwM0SzBuceMj5HN1LKV1QqA==",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
           "Microsoft.Extensions.Primitives": "8.0.0"
@@ -191,23 +190,10 @@
         "resolved": "13.0.3",
         "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
       },
-      "System.Text.Encodings.Web": {
-        "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "yev/k9GHAEGx2Rg3/tU6MQh4HGBXJs70y7j1LaM1i/ER9po+6nnQ6RRqTJn1E7Xu0fbIFK80Nh5EoODxrbxwBQ=="
-      },
-      "System.Text.Json": {
-        "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "OdrZO2WjkiEG6ajEFRABTRCi/wuXQPxeV6g8xvUJqdxMvvuCCEk86zPla8UiIQJz3durtUEbNyY/3lIhS0yZvQ==",
-        "dependencies": {
-          "System.Text.Encodings.Web": "8.0.0"
-        }
-      },
       "alloverit": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt.Assertion": "[8.0.0-preview.14, )"
+          "AllOverIt.Assertion": "[8.0.0-preview.15, )"
         }
       },
       "alloverit.assertion": {
@@ -216,9 +202,9 @@
       "alloverit.aws.cdk.appsync": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt": "[8.0.0-preview.14, )",
-          "Amazon.CDK.Lib": "[2.163.1, )",
-          "Cdklabs.AwsCdkAppsyncUtils": "[0.0.559, )"
+          "AllOverIt": "[8.0.0-preview.15, )",
+          "Amazon.CDK.Lib": "[2.171.0, )",
+          "Cdklabs.AwsCdkAppsyncUtils": "[0.0.585, )"
         }
       }
     }
