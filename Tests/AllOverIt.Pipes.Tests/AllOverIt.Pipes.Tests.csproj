@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <!--Targeting 'windows' because not all pipe features are available on other platforms-->
         <TargetFrameworks>net9.0-windows10.0.19041;net9.0-windows10.0.17763;net8.0-windows10.0.19041;net8.0-windows10.0.17763</TargetFrameworks>
@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+      <PackageReference Update="xunit.runner.visualstudio" Version="3.0.0" />
     </ItemGroup>
 
 </Project>
