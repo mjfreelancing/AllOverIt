@@ -74,7 +74,31 @@ namespace AllOverIt.Reflection
             return CreatePropertySetterExpressionLambda<TType>(propertyInfo).Compile();
         }
 
-        private static Expression<Action<TType, object?>> CreatePropertySetterExpressionLambda<TType>(PropertyInfo propertyInfo)
+        /// <summary>Creates a compiled expression as an <c>Action{TType, TProperty?}</c> to set a property value based
+        /// on a specified property name.</summary>
+        /// <typeparam name="TType">The object type to set the property value on.</typeparam>
+        /// <typeparam name="TProperty">The property type.</typeparam>
+        /// <param name="propertyName">The property name.</param>
+        /// <returns>The compiled property setter.</returns>
+        public static Action<TType, TProperty?> CreatePropertySetter<TType, TProperty>(string propertyName)
+        {
+            _ = propertyName.WhenNotNullOrEmpty();
+
+            var type = typeof(TType);
+            var propertyInfo = ReflectionCache.GetPropertyInfo(type.GetTypeInfo(), propertyName);
+
+            Throw<ReflectionException>.WhenNull(propertyInfo, $"The property {propertyName} on type {type.GetFriendlyName()} does not exist.");
+
+            return CreatePropertySetterExpressionLambda<TType, TProperty>(propertyInfo).Compile();
+
+        }
+
+        /// <summary>Creates an expression as an <c>Action{TType, object}</c> to set a property value based
+        /// on a specified <see cref="PropertyInfo"/> instance.</summary>
+        /// <typeparam name="TType">The object type to set the property value on.</typeparam>
+        /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property setter.</param>
+        /// <returns>The property setter expression.</returns>
+        public static Expression<Action<TType, object?>> CreatePropertySetterExpressionLambda<TType>(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull();
 
@@ -82,18 +106,47 @@ namespace AllOverIt.Reflection
 
             var setterMethodInfo = propertyInfo.GetSetMethod(true)!;
 
-            var instance = Expression.Parameter(typeof(TType), "item");
+            // Create the parameters for the lambda expression
+            var instanceParam = Expression.Parameter(typeof(TType), "item");
+            var valueParam = Expression.Parameter(typeof(object), "arg");
 
-            var instanceType = typeof(TType) != propertyInfo.DeclaringType
-                ? (Expression) Expression.TypeAs(instance, propertyInfo.DeclaringType!)
-                : instance;
+            // Convert the instance to the declaring type if necessary
+            var instanceExpr = typeof(TType) != propertyInfo.DeclaringType
+                ? Expression.TypeAs(instanceParam, propertyInfo.DeclaringType!)
+                : (Expression)instanceParam;
 
-            var argument = Expression.Parameter(typeof(object), "arg");
-            var valueParam = Expression.Convert(argument, propertyInfo.PropertyType);
+            // Convert the argument to the property type
+            var valueExpr = Expression.Convert(valueParam, propertyInfo.PropertyType);
 
-            var setterCall = Expression.Call(instanceType, setterMethodInfo, valueParam);
+            // Create the setter method call
+            var setterCall = Expression.Call(instanceExpr, setterMethodInfo, valueExpr);
 
-            return Expression.Lambda<Action<TType, object?>>(setterCall, instance, argument);
+            // Return the lambda expression
+            return Expression.Lambda<Action<TType, object?>>(setterCall, instanceParam, valueParam);
+        }
+
+        /// <summary>Creates an expression as an <c>Action{TType, TProperty?}</c> to set a property value based
+        /// on a specified <see cref="PropertyInfo"/> instance.</summary>
+        /// <typeparam name="TType">The object type to set the property value on.</typeparam>
+        /// <typeparam name="TProperty">The property type.</typeparam>
+        /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property setter.</param>
+        /// <returns>The property setter expression.</returns>
+        public static Expression<Action<TType, TProperty?>> CreatePropertySetterExpressionLambda<TType, TProperty>(PropertyInfo propertyInfo)
+        {
+            _ = propertyInfo.WhenNotNull();
+
+            AssertPropertyCanWrite(propertyInfo);
+
+            var setterMethodInfo = propertyInfo.GetSetMethod(true)!;
+
+            // Create the parameters for the lambda expression
+            var instanceParam = Expression.Parameter(typeof(TType), "item");
+            var valueParam = Expression.Parameter(typeof(TProperty), "value");
+
+            // Create the call to the setter method
+            var setterCall = Expression.Call(instanceParam, setterMethodInfo, valueParam);
+
+            return Expression.Lambda<Action<TType, TProperty?>>(setterCall, instanceParam, valueParam);
         }
 
         private static void AssertPropertyCanWrite(PropertyInfo propertyInfo)

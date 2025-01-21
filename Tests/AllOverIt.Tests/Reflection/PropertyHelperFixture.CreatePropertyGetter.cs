@@ -138,7 +138,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 Invoking(() =>
                 {
-                    _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass>((PropertyInfo) null);
+                    _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass>((PropertyInfo)null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -213,7 +213,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 Invoking(() =>
                 {
-                    _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass>((string) null);
+                    _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass>((string)null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -262,6 +262,51 @@ namespace AllOverIt.Tests.Reflection
                    .Should()
                    .Throw<ReflectionException>()
                    .WithMessage($"The property {propertyName} on type {typeof(DummyBaseClass).GetFriendlyName()} does not exist.");
+            }
+        }
+
+        public class CreatePropertyGetter_Typed_Property_PropertyName : PropertyHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PropertyName_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass, int>((string)null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyName");
+            }
+
+            [Fact]
+            public void Should_Create_Getter()
+            {
+                var expected = new DummyBaseClass
+                {
+                    Prop1 = Create<int>()
+                };
+
+                var getter = PropertyHelper.CreatePropertyGetter<DummyBaseClass, int>(nameof(DummyBaseClass.Prop1));
+
+                var actual = getter.Invoke(expected);
+
+                actual.Should().Be(expected.Prop1);
+            }
+
+            [Fact]
+            public void Should_Create_Getter_For_Derived()
+            {
+                var expected = new DummySuperClass
+                {
+                    Prop1 = Create<int>()
+                };
+
+                var getter = PropertyHelper.CreatePropertyGetter<DummySuperClass, int>(nameof(DummyBaseClass.Prop1));
+
+                var actual = getter.Invoke(expected);
+
+                actual.Should().Be(expected.Prop1);
             }
         }
     }
