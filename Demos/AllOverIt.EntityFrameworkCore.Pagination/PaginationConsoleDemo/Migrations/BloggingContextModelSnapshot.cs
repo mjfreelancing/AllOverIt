@@ -7,7 +7,7 @@ using PaginationConsoleDemo;
 
 #nullable disable
 
-namespace PaginationConsole.Migrations
+namespace PaginationConsoleDemo.Migrations
 {
     [DbContext(typeof(BloggingContext))]
     partial class BloggingContextModelSnapshot : ModelSnapshot
@@ -16,13 +16,13 @@ namespace PaginationConsole.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "citext");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("PaginationConsole.Entities.Blog", b =>
+            modelBuilder.Entity("PaginationConsoleDemo.Entities.Blog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,12 +37,12 @@ namespace PaginationConsole.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Description", "Id");
+                    b.HasIndex("Description");
 
                     b.ToTable("Blogs");
                 });
 
-            modelBuilder.Entity("PaginationConsole.Entities.Post", b =>
+            modelBuilder.Entity("PaginationConsoleDemo.Entities.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,14 +66,14 @@ namespace PaginationConsole.Migrations
 
                     b.HasIndex("BlogId");
 
-                    b.HasIndex("Title", "Id");
+                    b.HasIndex("Title");
 
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("PaginationConsole.Entities.Post", b =>
+            modelBuilder.Entity("PaginationConsoleDemo.Entities.Post", b =>
                 {
-                    b.HasOne("PaginationConsole.Entities.Blog", "Blog")
+                    b.HasOne("PaginationConsoleDemo.Entities.Blog", "Blog")
                         .WithMany("Posts")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -82,7 +82,7 @@ namespace PaginationConsole.Migrations
                     b.Navigation("Blog");
                 });
 
-            modelBuilder.Entity("PaginationConsole.Entities.Blog", b =>
+            modelBuilder.Entity("PaginationConsoleDemo.Entities.Blog", b =>
                 {
                     b.Navigation("Posts");
                 });
