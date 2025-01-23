@@ -1,5 +1,5 @@
-#  Version 8.1 (RC)
-## 23 Jan 2025 (RC 1)
+#  Version 8.1.0 (RC)
+## 23 Jan 2025 (rc.1, rc.2)
 
 ### General
 * Multiple packages updated to use the latest version of their dependencies
