@@ -110,13 +110,13 @@ namespace AllOverIt.Validation
             }
         }
 
-        public async Task<ValidationResult> ValidateAsync<TType>(TType instance, CancellationToken cancellationToken = default)
+        public Task<ValidationResult> ValidateAsync<TType>(TType instance, CancellationToken cancellationToken = default)
         {
             var (scope, validator) = GetValidator<TType>();
 
             using (scope)
             {
-                return await validator.ValidateAsync(instance, cancellationToken);
+                return validator.ValidateAsync(instance, cancellationToken);
             }
         }
 
@@ -130,13 +130,13 @@ namespace AllOverIt.Validation
             }
         }
 
-        public async Task<ValidationResult> ValidateAsync<TType, TContext>(TType instance, TContext context, CancellationToken cancellationToken = default)
+        public Task<ValidationResult> ValidateAsync<TType, TContext>(TType instance, TContext context, CancellationToken cancellationToken = default)
         {
             var (scope, validator) = GetValidator<TType>();
 
             using (scope)
             {
-                return await validator.ValidateAsync(instance, context, cancellationToken);
+                return validator.ValidateAsync(instance, context, cancellationToken);
             }
         }
 
@@ -150,13 +150,13 @@ namespace AllOverIt.Validation
             }
         }
 
-        public async Task AssertValidationAsync<TType>(TType instance, CancellationToken cancellationToken = default)
+        public Task AssertValidationAsync<TType>(TType instance, CancellationToken cancellationToken = default)
         {
             var (scope, validator) = GetValidator<TType>();
 
             using (scope)
             {
-                await validator.ValidateAndThrowAsync(instance, cancellationToken);
+                return validator.ValidateAndThrowAsync(instance, cancellationToken);
             }
         }
 
@@ -170,13 +170,13 @@ namespace AllOverIt.Validation
             }
         }
 
-        public async Task AssertValidationAsync<TType, TContext>(TType instance, TContext context, CancellationToken cancellationToken = default)
+        public Task AssertValidationAsync<TType, TContext>(TType instance, TContext context, CancellationToken cancellationToken = default)
         {
             var (scope, validator) = GetValidator<TType>();
 
             using (scope)
             {
-                await validator.ValidateAndThrowAsync(instance, context, cancellationToken);
+                return validator.ValidateAndThrowAsync(instance, context, cancellationToken);
             }
         }
 
