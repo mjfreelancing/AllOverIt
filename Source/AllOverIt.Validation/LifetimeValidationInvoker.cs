@@ -110,13 +110,13 @@ namespace AllOverIt.Validation
             }
         }
 
-        public Task<ValidationResult> ValidateAsync<TType>(TType instance, CancellationToken cancellationToken = default)
+        public async Task<ValidationResult> ValidateAsync<TType>(TType instance, CancellationToken cancellationToken = default)
         {
             var (scope, validator) = GetValidator<TType>();
 
             using (scope)
             {
-                return validator.ValidateAsync(instance, cancellationToken);
+                return await validator.ValidateAsync(instance, cancellationToken);
             }
         }
 
