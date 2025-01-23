@@ -1,3 +1,22 @@
+#  Version 8.1 (RC)
+## 23 Jan 2025 (RC 1)
+
+### General
+* Multiple packages updated to use the latest version of their dependencies
+
+### AllOverIt
+* Made CreatePropertyGetterExpressionLambda<TType>(PropertyInfo propertyInfo) public
+* Added CreatePropertyGetterExpressionLambda<TType, TProperty>(string propertyName)
+* Added CreatePropertyGetter<TType, TProperty>(string propertyName)
+* Made CreatePropertySetterExpressionLambda<TType>(PropertyInfo propertyInfo) public
+* Made CreatePropertySetterExpressionLambda<TType, TProperty>(PropertyInfo propertyInfo) public
+* Added CreatePropertySetter<TType, TProperty>(string propertyName()
+
+### AllOverIt.Validation
+* Fixed issue with the lifetime validation invoker disposing of IDisposable dependencies on the validator before the validation was invoked.
+
+---
+
 #  Version 8.0.0
 ## 26 Nov 2024
 
