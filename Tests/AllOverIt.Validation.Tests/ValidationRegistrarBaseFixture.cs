@@ -78,7 +78,7 @@ namespace AllOverIt.Validation.Tests
 
                 _validationRegistrar.AutoRegisterValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(32);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(31);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
