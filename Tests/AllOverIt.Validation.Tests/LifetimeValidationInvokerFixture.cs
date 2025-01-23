@@ -56,6 +56,8 @@ namespace AllOverIt.Validation.Tests
 
         private sealed class DisposableDependency : IDisposable
         {
+            private bool _disposed;
+
             internal Action Action { get; set; }
 
             public bool RuleWasInvoked { get; set; }
@@ -64,9 +66,21 @@ namespace AllOverIt.Validation.Tests
             {
             }
 
+            public async Task DoSomethingAsync()
+            {
+                if (_disposed)
+                {
+                    throw new InvalidOperationException("The async validation has not awaited because this dependency has already been disposed");
+                }
+
+                await Task.Delay(10);
+            }
+
             public void Dispose()
             {
                 Action?.Invoke();
+
+                _disposed = true;
             }
         }
 
@@ -82,6 +96,28 @@ namespace AllOverIt.Validation.Tests
                     model => model.ValueOne,
                     (value, context) =>
                     {
+                        disposed.Should().BeFalse();
+                        dependency.RuleWasInvoked = true;
+                    });
+            }
+        }
+
+        private class DummyModeAsyncValidatorWithDependency : ValidatorBase<DummyModel>
+        {
+            public DummyModeAsyncValidatorWithDependency(DisposableDependency dependency)
+            {
+                // This is a specific test after fixing a bug where IDisposable dependencies would be disposed before the validation is invoked.
+                var disposed = false;
+                dependency.Action = () => { disposed = true; };
+
+                this.CustomRuleForAsync(
+                    model => model.ValueOne,
+                    async (value, context, token) =>
+                    {
+                        disposed.Should().BeFalse();
+
+                        await dependency.DoSomethingAsync();
+
                         disposed.Should().BeFalse();
                         dependency.RuleWasInvoked = true;
                     });
@@ -586,7 +622,7 @@ namespace AllOverIt.Validation.Tests
             {
                 var dependency = new DisposableDependency();
                 _services.AddScoped(provider => dependency);
-                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModelValidatorWithDependency));
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModeAsyncValidatorWithDependency));
                 BuildServiceProvider();
 
                 var model = new DummyModel();
@@ -685,7 +721,7 @@ namespace AllOverIt.Validation.Tests
             {
                 var dependency = new DisposableDependency();
                 _services.AddScoped(provider => dependency);
-                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModelValidatorWithDependency));
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModeAsyncValidatorWithDependency));
                 BuildServiceProvider();
 
                 var model = new DummyModel();
@@ -833,7 +869,7 @@ namespace AllOverIt.Validation.Tests
             {
                 var dependency = new DisposableDependency();
                 _services.AddScoped(provider => dependency);
-                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModelValidatorWithDependency));
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModeAsyncValidatorWithDependency));
                 BuildServiceProvider();
 
                 var model = new DummyModel();
@@ -991,7 +1027,7 @@ namespace AllOverIt.Validation.Tests
             {
                 var dependency = new DisposableDependency();
                 _services.AddScoped(provider => dependency);
-                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModelValidatorWithDependency));
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModeAsyncValidatorWithDependency));
                 BuildServiceProvider();
 
                 var model = new DummyModel();
