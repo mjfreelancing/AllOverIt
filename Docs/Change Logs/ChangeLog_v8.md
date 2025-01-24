@@ -13,6 +13,7 @@
 * Made CreatePropertySetterExpressionLambda<TType, TProperty>(PropertyInfo propertyInfo) public
 * Added CreatePropertySetter<TType, TProperty>(string propertyName()
 * Applied some nullable reference corrections in EnrichedResult
+* Added a IsUnique() validator that caters for up to four properties
 
 ### AllOverIt.Validation
 * Fixed issue with the lifetime validation invoker disposing of IDisposable dependencies on the validator before the validation was invoked.

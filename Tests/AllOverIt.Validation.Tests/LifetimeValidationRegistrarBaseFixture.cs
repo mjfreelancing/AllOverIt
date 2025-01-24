@@ -80,7 +80,7 @@ namespace AllOverIt.Validation.Tests
 
                 _validationRegistrar.AutoRegisterTransientValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(31);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(32);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
@@ -172,7 +172,7 @@ namespace AllOverIt.Validation.Tests
 
                 _validationRegistrar.AutoRegisterScopedValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(31);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(32);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
@@ -264,7 +264,7 @@ namespace AllOverIt.Validation.Tests
 
                 _validationRegistrar.AutoRegisterSingletonValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(31);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(32);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
@@ -356,7 +356,7 @@ namespace AllOverIt.Validation.Tests
 
                 _validationRegistrar.AutoRegisterValidators(registryFake.FakedObject, Create<ServiceLifetime>(), null);
 
-                validators.Should().HaveCount(31);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(32);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
