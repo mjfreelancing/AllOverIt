@@ -1,5 +1,6 @@
 #  Version 8.1.0 (RC)
 ## 23 Jan 2025 (rc.1, rc.2, rc.3)
+## 24 Jan 2025 (rc.4)
 
 ### General
 * Multiple packages updated to use the latest version of their dependencies
@@ -11,6 +12,7 @@
 * Made CreatePropertySetterExpressionLambda<TType>(PropertyInfo propertyInfo) public
 * Made CreatePropertySetterExpressionLambda<TType, TProperty>(PropertyInfo propertyInfo) public
 * Added CreatePropertySetter<TType, TProperty>(string propertyName()
+* Applied some nullable reference corrections in EnrichedResult
 
 ### AllOverIt.Validation
 * Fixed issue with the lifetime validation invoker disposing of IDisposable dependencies on the validator before the validation was invoked.
