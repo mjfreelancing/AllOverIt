@@ -18,10 +18,10 @@ namespace AllOverIt.Validation.Extensions
         /// <param name="comparer">An optional comparer to use for comparing property values.</param>
         /// <returns>The rule builder options.</returns>
         public static IRuleBuilderOptions<TType, IEnumerable<TElement?>> IsUnique<TType, TElement, TProperty1>(
-            this IRuleBuilder<TType, IEnumerable<TElement?>> ruleBuilder, Expression<Func<TElement?, TProperty1?>> propertySelector,
-            IEqualityComparer<TProperty1?>? comparer = default)
+            this IRuleBuilder<TType, IEnumerable<TElement>> ruleBuilder, Expression<Func<TElement, TProperty1>> propertySelector,
+            IEqualityComparer<TProperty1>? comparer = default)
         {
-            return ruleBuilder.SetValidator(new IsUniqueValidator<TElement?, TProperty1?>(propertySelector, comparer));
+            return ruleBuilder.SetValidator(new IsUniqueValidator<TElement, TProperty1>(propertySelector, comparer));
         }
 
         /// <summary>
@@ -37,10 +37,10 @@ namespace AllOverIt.Validation.Extensions
         /// <param name="comparer">An optional comparer to use for comparing property values.</param>
         /// <returns>The rule builder options.</returns>
         public static IRuleBuilderOptions<TType, IEnumerable<TElement?>> IsUnique<TType, TElement, TProperty1, TProperty2>(
-            this IRuleBuilder<TType, IEnumerable<TElement?>> ruleBuilder, Expression<Func<TElement?, TProperty1?>> property1Selector,
-            Expression<Func<TElement?, TProperty2?>> property2Selector, IEqualityComparer<(TProperty1?, TProperty2?)>? comparer = default)
+            this IRuleBuilder<TType, IEnumerable<TElement>> ruleBuilder, Expression<Func<TElement, TProperty1>> property1Selector,
+            Expression<Func<TElement, TProperty2>> property2Selector, IEqualityComparer<(TProperty1, TProperty2)>? comparer = default)
         {
-            return ruleBuilder.SetValidator(new IsUniqueValidator<TElement?, TProperty1?, TProperty2?>(property1Selector, property2Selector, comparer));
+            return ruleBuilder.SetValidator(new IsUniqueValidator<TElement, TProperty1, TProperty2>(property1Selector, property2Selector, comparer));
         }
 
         /// <summary>
@@ -58,11 +58,11 @@ namespace AllOverIt.Validation.Extensions
         /// <param name="comparer">An optional comparer to use for comparing property values.</param>
         /// <returns>The rule builder options.</returns>
         public static IRuleBuilderOptions<TType, IEnumerable<TElement?>> IsUnique<TType, TElement, TProperty1, TProperty2, TProperty3>(
-            this IRuleBuilder<TType, IEnumerable<TElement?>> ruleBuilder, Expression<Func<TElement?, TProperty1?>> property1Selector,
-            Expression<Func<TElement?, TProperty2?>> property2Selector, Expression<Func<TElement?, TProperty3?>> property3Selector,
-            IEqualityComparer<(TProperty1?, TProperty2?, TProperty3?)>? comparer = default)
+            this IRuleBuilder<TType, IEnumerable<TElement>> ruleBuilder, Expression<Func<TElement, TProperty1>> property1Selector,
+            Expression<Func<TElement, TProperty2>> property2Selector, Expression<Func<TElement, TProperty3>> property3Selector,
+            IEqualityComparer<(TProperty1, TProperty2, TProperty3)>? comparer = default)
         {
-            return ruleBuilder.SetValidator(new IsUniqueValidator<TElement?, TProperty1?, TProperty2?, TProperty3?>(property1Selector, property2Selector, property3Selector, comparer));
+            return ruleBuilder.SetValidator(new IsUniqueValidator<TElement, TProperty1, TProperty2, TProperty3>(property1Selector, property2Selector, property3Selector, comparer));
         }
 
         /// <summary>
@@ -82,11 +82,11 @@ namespace AllOverIt.Validation.Extensions
         /// <param name="comparer">An optional comparer to use for comparing property values.</param>
         /// <returns>The rule builder options.</returns>
         public static IRuleBuilderOptions<TType, IEnumerable<TElement?>> IsUnique<TType, TElement, TProperty1, TProperty2, TProperty3, TProperty4>(
-            this IRuleBuilder<TType, IEnumerable<TElement?>> ruleBuilder, Expression<Func<TElement?, TProperty1?>> property1Selector,
-            Expression<Func<TElement?, TProperty2?>> property2Selector, Expression<Func<TElement?, TProperty3?>> property3Selector,
-            Expression<Func<TElement?, TProperty4?>> property4Selector, IEqualityComparer<(TProperty1?, TProperty2?, TProperty3?, TProperty4?)>? comparer = default)
+            this IRuleBuilder<TType, IEnumerable<TElement>> ruleBuilder, Expression<Func<TElement, TProperty1>> property1Selector,
+            Expression<Func<TElement, TProperty2>> property2Selector, Expression<Func<TElement, TProperty3>> property3Selector,
+            Expression<Func<TElement, TProperty4>> property4Selector, IEqualityComparer<(TProperty1, TProperty2, TProperty3, TProperty4)>? comparer = default)
         {
-            return ruleBuilder.SetValidator(new IsUniqueValidator<TElement?, TProperty1?, TProperty2?, TProperty3?, TProperty4?>(property1Selector, property2Selector, property3Selector, property4Selector, comparer));
+            return ruleBuilder.SetValidator(new IsUniqueValidator<TElement, TProperty1, TProperty2, TProperty3, TProperty4>(property1Selector, property2Selector, property3Selector, property4Selector, comparer));
         }
     }
 }
