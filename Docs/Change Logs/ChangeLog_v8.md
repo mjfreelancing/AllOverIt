@@ -1,6 +1,7 @@
 #  Version 8.1.0 (RC)
 ## 23 Jan 2025 (rc.1, rc.2, rc.3)
 ## 24 Jan 2025 (rc.4)
+## 25 Jan 2025 (rc.5)
 
 ### General
 * Multiple packages updated to use the latest version of their dependencies
