@@ -17,7 +17,7 @@ namespace AllOverIt.Validation.Validators
         /// </summary>
         /// <param name="propertySelector">An expression to select the property to check for uniqueness.</param>
         /// <param name="comparer">An optional comparer to use for comparing property values.</param>
-        public IsUniqueValidator(Expression<Func<TType, TProperty?>> propertySelector, IEqualityComparer<TProperty?>? comparer = default)
+        public IsUniqueValidator(Expression<Func<TType, TProperty>> propertySelector, IEqualityComparer<TProperty>? comparer = default)
         {
             RuleFor(collection => collection)
                 .Custom((collection, context) =>
@@ -62,8 +62,8 @@ namespace AllOverIt.Validation.Validators
         /// <param name="property1Selector">An expression to select the first property to check for uniqueness.</param>
         /// <param name="property2Selector">An expression to select the second property to check for uniqueness.</param>
         /// <param name="comparer">An optional comparer to use for comparing property values.</param>
-        public IsUniqueValidator(Expression<Func<TType, TProperty1?>> property1Selector, Expression<Func<TType, TProperty2?>> property2Selector,
-            IEqualityComparer<(TProperty1?, TProperty2?)>? comparer = default)
+        public IsUniqueValidator(Expression<Func<TType, TProperty1>> property1Selector, Expression<Func<TType, TProperty2>> property2Selector,
+            IEqualityComparer<(TProperty1, TProperty2)>? comparer = default)
         {
             RuleFor(collection => collection)
                 .Custom((collection, context) =>
@@ -113,8 +113,8 @@ namespace AllOverIt.Validation.Validators
         /// <param name="property2Selector">An expression to select the second property to check for uniqueness.</param>
         /// <param name="property3Selector">An expression to select the third property to check for uniqueness.</param>
         /// <param name="comparer">An optional comparer to use for comparing property values.</param>
-        public IsUniqueValidator(Expression<Func<TType, TProperty1?>> property1Selector, Expression<Func<TType, TProperty2?>> property2Selector,
-            Expression<Func<TType, TProperty3?>> property3Selector, IEqualityComparer<(TProperty1?, TProperty2?, TProperty3?)>? comparer = default)
+        public IsUniqueValidator(Expression<Func<TType, TProperty1>> property1Selector, Expression<Func<TType, TProperty2>> property2Selector,
+            Expression<Func<TType, TProperty3>> property3Selector, IEqualityComparer<(TProperty1, TProperty2, TProperty3)>? comparer = default)
         {
             RuleFor(collection => collection)
                 .Custom((collection, context) =>
@@ -167,9 +167,9 @@ namespace AllOverIt.Validation.Validators
         /// <param name="property3Selector">An expression to select the third property to check for uniqueness.</param>
         /// <param name="property4Selector">An expression to select the fourth property to check for uniqueness.</param>
         /// <param name="comparer">An optional comparer to use for comparing property values.</param>
-        public IsUniqueValidator(Expression<Func<TType, TProperty1?>> property1Selector, Expression<Func<TType, TProperty2?>> property2Selector,
-            Expression<Func<TType, TProperty3?>> property3Selector, Expression<Func<TType, TProperty4?>> property4Selector,
-            IEqualityComparer<(TProperty1?, TProperty2?, TProperty3?, TProperty4?)>? comparer = default)
+        public IsUniqueValidator(Expression<Func<TType, TProperty1>> property1Selector, Expression<Func<TType, TProperty2>> property2Selector,
+            Expression<Func<TType, TProperty3>> property3Selector, Expression<Func<TType, TProperty4>> property4Selector,
+            IEqualityComparer<(TProperty1, TProperty2, TProperty3, TProperty4)>? comparer = default)
         {
             RuleFor(collection => collection)
                 .Custom((collection, context) =>
@@ -207,12 +207,12 @@ namespace AllOverIt.Validation.Validators
 
     internal static class IsUnique
     {
-        public static (string, Func<TType, TProperty?>) GetPropertyNameAndFunc<TType, TProperty>(Expression<Func<TType, TProperty?>> propertySelector)
+        public static (string, Func<TType, TProperty>) GetPropertyNameAndFunc<TType, TProperty>(Expression<Func<TType, TProperty>> propertySelector)
         {
             return (propertySelector.GetPropertyOrFieldMemberInfo().Name, propertySelector.Compile());
         }
 
-        public static TProperty[] GetDuplicates<TType, TProperty>(IEnumerable<TType> collection, Func<TType, TProperty?> selector, IEqualityComparer<TProperty?>? comparer)
+        public static TProperty[] GetDuplicates<TType, TProperty>(IEnumerable<TType> collection, Func<TType, TProperty> selector, IEqualityComparer<TProperty>? comparer)
         {
             return [.. collection
                 .GroupBy(selector.Invoke, comparer)

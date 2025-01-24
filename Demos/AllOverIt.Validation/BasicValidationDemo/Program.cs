@@ -10,13 +10,17 @@ namespace BasicValidationDemo
         {
             var person = new Person();
 
+            // =========
             // Example 1
+            // =========
             var isValidPerson = new IsValidPersonValidator();
             var isValidPersonResult = isValidPerson.Validate(person);
             PrintResult(nameof(IsValidPersonValidator), isValidPersonResult);
 
 
+            // =========
             // Example 2
+            // =========
             var isValidContextPerson = new IsValidPersonContextValidator();
 
             var personContext = new PersonContext
@@ -32,12 +36,33 @@ namespace BasicValidationDemo
             PrintResult(nameof(IsValidPersonContextValidator), isValidPersonContextResult);
 
 
+            // =========
             // Example 3
+            // =========
             var personWithIdValidator = new PersonWithIdValidator();        // a validator that uses a tuple to allow a Guid to also be validated
             person.Age = 28;
             var personWithIdResult = personWithIdValidator.Validate((person, Guid.Empty));
 
             PrintResult(nameof(PersonWithIdValidator), personWithIdResult);
+
+
+            // =========
+            // Example 4
+            // =========
+            var people = new People
+            {
+                Items =
+                [
+                    new Person { FirstName = "John", LastName = "Doe" },
+                    new Person { FirstName = "Jane", LastName = "Doe" },
+                    new Person { FirstName = "John", LastName = "Doe" }
+                ]
+            };
+
+            var uniqueValidator = new UniquePersonValidator();
+            var uniquePersonResult = uniqueValidator.Validate(people);
+
+            PrintResult(nameof(UniquePersonValidator), uniquePersonResult);
 
 
             Console.WriteLine();
