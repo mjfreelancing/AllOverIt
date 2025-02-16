@@ -36,6 +36,7 @@ namespace AllOverIt.Logging
 
         internal static readonly LogCallOptions Instance = new();
 
+        /// <summary>Constructor.</summary>
         public LogCallOptions()
         {
             Reset();
