@@ -125,7 +125,7 @@ namespace AllOverIt.Tests.Assertion
             {
                 Invoking(() =>
                     {
-                        Guard.CheckIsNull((DummyClass) null, Create<string>());
+                        Guard.CheckIsNull((DummyClass)null, Create<string>());
                     })
                     .Should()
                     .NotThrow();
