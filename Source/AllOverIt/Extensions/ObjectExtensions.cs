@@ -9,14 +9,6 @@ using System.Reflection;
 
 namespace AllOverIt.Extensions
 {
-    /// <summary>Contains <see cref="PropertyInfo"/> for a property on an object.</summary>
-    /// <param name="Instance">The object containing the property.</param>
-    /// <param name="Property">The property on the object instance.</param>
-    /// <param name="PropertyInfo">The <see cref="PropertyInfo"/> for the property.</param>
-    public sealed record ObjectPropertyPathInfo(object Instance, object Property, PropertyInfo PropertyInfo)
-    {
-    }
-
     /// <summary>Provides a variety of extension methods for object types.</summary>
     public static partial class ObjectExtensions
     {
@@ -356,6 +348,15 @@ namespace AllOverIt.Extensions
             _ = propertyInfo ?? throw new MemberAccessException($"The property '{propertyName}' was not found.");
 
             propertyInfo.SetValue(instance, value);
+        }
+
+
+
+
+
+
+        public sealed record ObjectPropertyPathInfo(object Instance, object Property, PropertyInfo PropertyInfo)
+        {
         }
 
         /// <summary>Gets the <see cref="PropertyInfo"/> for a specified <paramref name="propertyPath"/> on an object instance.</summary>
