@@ -136,10 +136,7 @@ namespace AllOverIt.Tests.Extensions
             public Guid? Prop4e { get; set; }
             public bool? Prop4f { get; set; }
             public int? Prop4g { get; set; }
-
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             public string? Prop4h { get; set; }
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         }
 
         private class PropertyPathLeaf2
@@ -1924,9 +1921,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 _parent.Prop1.Prop2.Prop3.Prop4h = default;
 
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
                 string? expected = Create<string>();
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
                 ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4h", expected);
 
@@ -1934,9 +1929,7 @@ namespace AllOverIt.Tests.Extensions
 
                 actual.Should().Be(expected);
 
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
                 ObjectExtensions.SetPropertyPathValue<string?>(_parent, "Prop1.Prop2.Prop3.Prop4h", default);
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
                 actual = _parent.Prop1.Prop2.Prop3.Prop4h;
 
@@ -1948,9 +1941,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 _parent.Prop1.Prop2.Prop3.Prop4h = default;
 
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
                 string? expected = Create<string>();
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
                 ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4h", expected.ToString());
 
@@ -2178,9 +2169,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 _parent.Prop1.Prop2.Prop3.Prop4h = default;
 
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
                 string? expected = Create<string>();
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4h", expected);
 
@@ -2193,9 +2182,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 _parent.Prop1.Prop2.Prop3.Prop4h = default;
 
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
                 string? expected = Create<string>();
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4h", expected.ToString());
 
