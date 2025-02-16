@@ -15,7 +15,7 @@ namespace AllOverIt.Extensions
         private static class ObjectConversionHelper
         {
             // instance, instance type, convertTo type, convertTo value
-            private static readonly Func<object?, Type, Type, object?>[] AsConverters =
+            private static readonly Func<object?, Type, Type, object?>[] _asConverters =
             [
                 AsSameTypeOrObject,
                 AsFromIntegralToBool,
@@ -37,13 +37,13 @@ namespace AllOverIt.Extensions
                 var instanceType = instance.GetType();
                 var convertToType = typeof(TType);
 
-                var convertedValue = AsConverters
+                var convertedValue = _asConverters
                     .Select(func => func.Invoke(instance, instanceType, convertToType))
                     .Where(result => result is not null)
                     .FirstOrDefault();
 
                 return convertedValue is not null
-                    ? (TType) convertedValue
+                    ? (TType)convertedValue
                     : StringExtensions.As(instance.ToString(), defaultValue);
             }
 
@@ -63,7 +63,7 @@ namespace AllOverIt.Extensions
                 // convert from integral to bool (conversion from a string is handled further below)
                 if (instance.IsIntegral() && convertToType == CommonTypes.BoolType)
                 {
-                    var intValue = (int) Convert.ChangeType(instance, CommonTypes.IntType);
+                    var intValue = (int)Convert.ChangeType(instance, CommonTypes.IntType);
 
                     if (intValue is < 0 or > 1)
                     {
@@ -71,7 +71,7 @@ namespace AllOverIt.Extensions
                     }
 
                     // convert the integral to a boolean
-                    return (bool) Convert.ChangeType(intValue, CommonTypes.BoolType);
+                    return (bool)Convert.ChangeType(intValue, CommonTypes.BoolType);
                 }
 
                 return null;
@@ -237,7 +237,7 @@ namespace AllOverIt.Extensions
         {
             var instanceType = instance.GetType();
 
-            return (TValue?) GetPropertyValue(instance, instanceType, propertyName, bindingFlags);
+            return (TValue?)GetPropertyValue(instance, instanceType, propertyName, bindingFlags);
         }
 
         /// <summary>Uses reflection to get the value of an object's property by name.</summary>
@@ -267,7 +267,7 @@ namespace AllOverIt.Extensions
         {
             var instanceType = instance.GetType();
 
-            return (TValue?) GetPropertyValue(instance, instanceType, propertyName, bindingOptions);
+            return (TValue?)GetPropertyValue(instance, instanceType, propertyName, bindingOptions);
         }
 
         /// <summary>Uses reflection to get the value of an object's property by name.</summary>
@@ -348,6 +348,118 @@ namespace AllOverIt.Extensions
             _ = propertyInfo ?? throw new MemberAccessException($"The property '{propertyName}' was not found.");
 
             propertyInfo.SetValue(instance, value);
+        }
+
+
+
+
+
+
+        public sealed record ObjectPropertyPathInfo(object Instance, object Property, PropertyInfo PropertyInfo)
+        {
+        }
+
+        /// <summary>Gets the <see cref="PropertyInfo"/> for a specified <paramref name="propertyPath"/> on an object instance.</summary>
+        /// <param name="instance">The object instance to get <see cref="PropertyInfo"/> for.</param>
+        /// <param name="propertyPath">The dot-notation property path to traverse.</param>
+        /// <returns>The <see cref="PropertyInfo"/> for a property, if the path exists, otherwise <see langword="null"/>.</returns>
+        public static ObjectPropertyPathInfo? GetPropertyInfoByPath(this object instance, string propertyPath)
+        {
+            _ = instance.WhenNotNull();
+
+            if (propertyPath.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            var paths = propertyPath.Split('.');
+            var type = instance.GetType();
+            var currentObject = instance;
+
+            for (int i = 0; i < paths.Length; i++)
+            {
+                var propertySubPath = paths[i];
+                var propertyInfo = type.GetProperty(propertySubPath);
+
+                if (propertyInfo is null)
+                {
+                    return null;
+                }
+
+                if (i == paths.Length - 1)
+                {
+                    return new ObjectPropertyPathInfo(instance, currentObject, propertyInfo);
+                }
+                else
+                {
+                    currentObject = propertyInfo.GetValue(currentObject)!;
+                    type = currentObject.GetType();
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>Sets the value of a property on an object based on its dot-notation path.</summary>
+        /// <typeparam name="TValue">The value type, or a type that can be converted to the required property type, including a string value.</typeparam>
+        /// <param name="instance">The object instance to set the property value.</param>
+        /// <param name="propertyPath">The dot-notation of the property path to set.</param>
+        /// <param name="value">The value to be set on the property.</param>
+        /// <exception cref="ArgumentException">When the property path cannot be found.</exception>
+        public static void SetPropertyPathValue<TValue>(this object instance, string propertyPath, TValue? value)
+        {
+            _ = instance.WhenNotNull();
+
+            if (!TrySetPropertyPathValue(instance, propertyPath, value))
+            {
+                throw new ArgumentException($"The path '{propertyPath}' was not found on type '{instance.GetType().GetFriendlyName()}'", nameof(propertyPath));
+            }
+        }
+
+        /// <summary>Tries to set the value of a property on an object based on its dot-notation path.</summary>
+        /// <typeparam name="TValue">The value type, or a type that can be converted to the required property type, including a string value.</typeparam>
+        /// <param name="instance">The object instance to set the property value.</param>
+        /// <param name="propertyPath">The dot-notation of the property path to set.</param>
+        /// <param name="value">The value to be set on the property.</param>
+        /// <returns><see langword="true"/> when the property value can be set, otherwise <see langword="false"/>.</returns>
+        public static bool TrySetPropertyPathValue<TValue>(this object instance, string propertyPath, TValue? value)
+        {
+            _ = instance.WhenNotNull();
+
+            object? ConvertValue(Type valueType)
+            {
+                if (value is null || value.GetType() == valueType)
+                {
+                    return value;
+                }
+
+                var typeConverter = TypeDescriptor.GetConverter(valueType);
+
+                if (value is string strValue)
+                {
+                    return typeConverter.ConvertFromString(strValue);
+                }
+                else
+                {
+                    return typeConverter.ConvertFrom(value);
+                }
+            }
+
+            var propertyPathInfo = instance.GetPropertyInfoByPath(propertyPath);
+
+            if (propertyPathInfo is null)
+            {
+                return false;
+            }
+
+            var (_, currentObject, propertyInfo) = propertyPathInfo;
+
+            var valueType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+            var convertedValue = ConvertValue(valueType);
+
+            propertyInfo.SetValue(currentObject, convertedValue);
+
+            return true;
         }
 
         /// <summary>Determines if the specified object is an integral type (signed or unsigned).</summary>
@@ -439,7 +551,7 @@ namespace AllOverIt.Extensions
         /// <returns>The object's elements.</returns>
         public static IEnumerable<object> GetObjectElements(this object @object)
         {
-            var objectIterator = ((IEnumerable) @object).GetEnumerator();
+            var objectIterator = ((IEnumerable)@object).GetEnumerator();
 
             while (objectIterator.MoveNext())
             {
