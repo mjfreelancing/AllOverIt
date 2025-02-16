@@ -2,6 +2,7 @@
 ## 23 Jan 2025 (rc.1, rc.2, rc.3)
 ## 24 Jan 2025 (rc.4)
 ## 25 Jan 2025 (rc.5, rc.6)
+## 16 Feb 2025 (rc.7)
 
 ### General
 * Multiple packages updated to use the latest version of their dependencies
