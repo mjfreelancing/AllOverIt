@@ -113,7 +113,7 @@ namespace AllOverIt.Tests.Extensions
 
             public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
             {
-                if ((string) value == ExpectedValue)
+                if ((string)value == ExpectedValue)
                 {
                     return new DummyTypeToBeConverted();
                 }
@@ -125,6 +125,33 @@ namespace AllOverIt.Tests.Extensions
         [TypeConverter(typeof(DummyTypeConverter))]
         private class DummyTypeToBeConverted
         {
+        }
+
+        private class PropertyPathLeaf3
+        {
+            public Guid Prop4a { get; set; }
+            public bool Prop4b { get; set; }
+            public int Prop4c { get; set; }
+            public string Prop4d { get; set; }
+            public Guid? Prop4e { get; set; }
+            public bool? Prop4f { get; set; }
+            public int? Prop4g { get; set; }
+            public string? Prop4h { get; set; }
+        }
+
+        private class PropertyPathLeaf2
+        {
+            public PropertyPathLeaf3 Prop3 { get; } = new();
+        }
+
+        private class PropertyPathLeaf1
+        {
+            public PropertyPathLeaf2 Prop2 { get; } = new();
+        }
+
+        private class PropertyPathParent
+        {
+            public PropertyPathLeaf1 Prop1 { get; } = new();
         }
 
         public ObjectExtensionsFixture()
@@ -1565,17 +1592,616 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+        public class GetPropertyInfoByPath : ObjectExtensionsFixture
+        {
+            private readonly PropertyPathParent _parent;
+
+            public GetPropertyInfoByPath()
+            {
+                _parent = new();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Instance_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = ObjectExtensions.GetPropertyInfoByPath(null, null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("instance");
+            }
+
+            [Fact]
+            public void Should_Return_Null_When_Path_Null()
+            {
+                var actual = ObjectExtensions.GetPropertyInfoByPath(_parent, null);
+
+                actual.Should().BeNull();
+            }
+
+            [Fact]
+            public void Should_Return_Null_When_Path_Empty()
+            {
+                var actual = ObjectExtensions.GetPropertyInfoByPath(_parent, string.Empty);
+
+                actual.Should().BeNull();
+            }
+
+            [Fact]
+            public void Should_Return_Null_When_Path_Whitespace()
+            {
+                var actual = ObjectExtensions.GetPropertyInfoByPath(_parent, "  ");
+
+                actual.Should().BeNull();
+            }
+
+            [Theory]
+            [InlineData("xyz")]
+            [InlineData("Prop1.abc.Prop2")]
+            public void Should_Return_Null_When_Path_NotFound(string propertyPath)
+            {
+                var actual = ObjectExtensions.GetPropertyInfoByPath(_parent, propertyPath);
+
+                actual.Should().BeNull();
+            }
+
+            [Theory]
+            [InlineData("Prop1", typeof(PropertyPathLeaf1))]
+            [InlineData("Prop1.Prop2", typeof(PropertyPathLeaf2))]
+            [InlineData("Prop1.Prop2.Prop3", typeof(PropertyPathLeaf3))]
+            [InlineData("Prop1.Prop2.Prop3.Prop4a", typeof(Guid))]
+            [InlineData("Prop1.Prop2.Prop3.Prop4b", typeof(bool))]
+            [InlineData("Prop1.Prop2.Prop3.Prop4c", typeof(int))]
+            [InlineData("Prop1.Prop2.Prop3.Prop4d", typeof(string))]
+            [InlineData("Prop1.Prop2.Prop3.Prop4e", typeof(Guid?))]
+            [InlineData("Prop1.Prop2.Prop3.Prop4f", typeof(bool?))]
+            [InlineData("Prop1.Prop2.Prop3.Prop4g", typeof(int?))]
+            [InlineData("Prop1.Prop2.Prop3.Prop4h", typeof(string))]
+            public void Should_Find_Property(string propertyPath, Type propertyType)
+            {
+                var actual = ObjectExtensions.GetPropertyInfoByPath(_parent, propertyPath);
+
+                actual.PropertyInfo.PropertyType.Should().Be(propertyType);
+            }
+        }
+
+        public class SetPropertyPathValue : ObjectExtensionsFixture
+        {
+            private readonly PropertyPathParent _parent;
+
+            public SetPropertyPathValue()
+            {
+                _parent = new();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Instance_Null()
+            {
+                Invoking(() =>
+                {
+                    ObjectExtensions.SetPropertyPathValue(null, Create<string>(), Create<int>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("instance");
+            }
+
+            [Fact]
+            public void Should_Throw_When_Path_Not_Found()
+            {
+                var propertyPath = Create<string>();
+
+                Invoking(() =>
+                {
+                    ObjectExtensions.SetPropertyPathValue(_parent, propertyPath, Create<int>());
+                })
+                    .Should()
+                    .Throw<ArgumentException>()
+                    .WithMessage($"The path '{propertyPath}' was not found on type '{nameof(PropertyPathParent)}' (Parameter 'propertyPath')");
+            }
+
+            [Fact]
+            public void Should_Set_Guid_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4a = default;
+
+                var expected = Guid.NewGuid();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4a", expected);
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4a;
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Guid_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4a = default;
+
+                var expected = Guid.NewGuid();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4a", expected.ToString());
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4a;
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Bool_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4a = default;
+
+                var expected = Create<bool>();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4b", expected);
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4b;
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Bool_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4b = false;
+
+                var expected = true;
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4b", expected.ToString());
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4b;
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Int_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4c = default;
+
+                var expected = Create<int>();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4c", expected);
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4c;
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Int_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4c = default;
+
+                var expected = Create<int>();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4c", expected.ToString());
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4c;
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_String_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4d = default;
+
+                var expected = Create<string>();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4d", expected);
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4d;
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_String_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4d = default;
+
+                var expected = Create<string>();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4d", expected.ToString());
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4d;
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_Guid_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4e = default;
+
+                Guid? expected = Guid.NewGuid();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4e", expected);
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4e;
+
+                actual.Should().Be(expected);
+
+                ObjectExtensions.SetPropertyPathValue<Guid?>(_parent, "Prop1.Prop2.Prop3.Prop4e", default);
+
+                actual = _parent.Prop1.Prop2.Prop3.Prop4e;
+
+                actual.Should().Be(null);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_Guid_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4e = default;
+
+                Guid? expected = Guid.NewGuid();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4e", expected.ToString());
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4e;
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_Bool_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4f = default;
+
+                bool? expected = Create<bool>();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4f", expected);
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4f;
+
+                actual.Should().Be(expected);
+
+                ObjectExtensions.SetPropertyPathValue<bool?>(_parent, "Prop1.Prop2.Prop3.Prop4f", default);
+
+                actual = _parent.Prop1.Prop2.Prop3.Prop4f;
+
+                actual.Should().Be(null);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_Bool_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4f = false;
+
+                bool? expected = true;
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4f", expected.ToString());
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4f;
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_Int_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4g = default;
+
+                int? expected = Create<int>();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4g", expected);
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4g;
+
+                actual.Should().Be(expected);
+
+                ObjectExtensions.SetPropertyPathValue<int?>(_parent, "Prop1.Prop2.Prop3.Prop4g", default);
+
+                actual = _parent.Prop1.Prop2.Prop3.Prop4g;
+
+                actual.Should().Be(null);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_Int_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4g = default;
+
+                int? expected = Create<int>();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4g", expected.ToString());
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4g;
+
+                actual.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_String_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4h = default;
+
+                string? expected = Create<string>();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4h", expected);
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4h;
+
+                actual.Should().Be(expected);
+
+                ObjectExtensions.SetPropertyPathValue<string?>(_parent, "Prop1.Prop2.Prop3.Prop4h", default);
+
+                actual = _parent.Prop1.Prop2.Prop3.Prop4h;
+
+                actual.Should().Be(null);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_String_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4h = default;
+
+                string? expected = Create<string>();
+
+                ObjectExtensions.SetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4h", expected.ToString());
+
+                var actual = _parent.Prop1.Prop2.Prop3.Prop4h;
+
+                actual.Should().Be(expected);
+            }
+        }
+
+        public class TrySetPropertyPathValue : ObjectExtensionsFixture
+        {
+            private readonly PropertyPathParent _parent;
+
+            public TrySetPropertyPathValue()
+            {
+                _parent = new();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Instance_Null()
+            {
+                Invoking(() =>
+                {
+                    ObjectExtensions.TrySetPropertyPathValue(null, Create<string>(), Create<int>());
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("instance");
+            }
+
+            [Fact]
+            public void Should_Return_False_When_Path_Not_Found()
+            {
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, Create<string>(), Create<int>());
+
+                actual.Should().BeFalse();
+            }
+
+            [Fact]
+            public void Should_Set_Guid_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4a = default;
+
+                var expected = Guid.NewGuid();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4a", expected);
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4a.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Guid_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4a = default;
+
+                var expected = Guid.NewGuid();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4a", expected.ToString());
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4a.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Bool_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4a = default;
+
+                var expected = Create<bool>();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4b", expected);
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4b.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Bool_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4b = false;
+
+                var expected = true;
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4b", expected.ToString());
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4b.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Int_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4c = default;
+
+                var expected = Create<int>();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4c", expected);
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4c.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Int_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4c = default;
+
+                var expected = Create<int>();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4c", expected.ToString());
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4c.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_String_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4d = default;
+
+                var expected = Create<string>();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4d", expected);
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4d.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_String_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4d = default;
+
+                var expected = Create<string>();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4d", expected.ToString());
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4d.Should().Be(expected);
+            }
+
+            // The tests for SetPropertyPathValue() are a little more exhaustive - they also check for null being set on nullable properties.
+
+            [Fact]
+            public void Should_Set_Nullable_Guid_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4e = default;
+
+                Guid? expected = Guid.NewGuid();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4e", expected);
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4e.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_Guid_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4e = default;
+
+                Guid? expected = Guid.NewGuid();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4e", expected.ToString());
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4e.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_Bool_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4f = default;
+
+                bool? expected = Create<bool>();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4f", expected);
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4f.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_Bool_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4f = false;
+
+                bool? expected = true;
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4f", expected.ToString());
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4f.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_Int_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4g = default;
+
+                int? expected = Create<int>();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4g", expected);
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4g.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_Int_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4g = default;
+
+                int? expected = Create<int>();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4g", expected.ToString());
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4g.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_String_Property_For_Path()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4h = default;
+
+                string? expected = Create<string>();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4h", expected);
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4h.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Set_Nullable_String_Property_For_Path_From_String()
+            {
+                _parent.Prop1.Prop2.Prop3.Prop4h = default;
+
+                string? expected = Create<string>();
+
+                var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4h", expected.ToString());
+
+                actual.Should().BeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4h.Should().Be(expected);
+            }
+        }
+
         public class IsIntegral : ObjectExtensionsFixture
         {
             [Theory]
-            [InlineData((byte) 0, true)]
-            [InlineData((sbyte) 0, true)]
-            [InlineData((short) 0, true)]
-            [InlineData((ushort) 0, true)]
+            [InlineData((byte)0, true)]
+            [InlineData((sbyte)0, true)]
+            [InlineData((short)0, true)]
+            [InlineData((ushort)0, true)]
             [InlineData(0, true)]
-            [InlineData((uint) 0, true)]
-            [InlineData((long) 0, true)]
-            [InlineData((ulong) 0, true)]
+            [InlineData((uint)0, true)]
+            [InlineData((long)0, true)]
+            [InlineData((ulong)0, true)]
             [InlineData(0.0d, false)]
             [InlineData(0.0f, false)]
             [InlineData("some value", false)]
@@ -1601,7 +2227,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Return_String_Default_When_Null()
             {
-                var actual = ObjectExtensions.As<string>((object) null);
+                var actual = ObjectExtensions.As<string>((object)null);
 
                 actual.Should().Be(default);
             }
@@ -1609,7 +2235,7 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Return_Int_Default_When_Null()
             {
-                var actual = ObjectExtensions.As<int>((object) null);
+                var actual = ObjectExtensions.As<int>((object)null);
 
                 actual.Should().Be(default);
             }
@@ -1638,7 +2264,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var expected = Create<DummyClass>();
 
-                var actual = ObjectExtensions.As<DummyClass>((DummyClassBase) expected);
+                var actual = ObjectExtensions.As<DummyClass>((DummyClassBase)expected);
 
                 actual.Should().BeSameAs(expected);
             }
@@ -1677,7 +2303,7 @@ namespace AllOverIt.Tests.Extensions
 
                 if (value < 0)
                 {
-                    value = (short) (-value);
+                    value = (short)(-value);
                 }
 
                 Invoking(() => ObjectExtensions.As<bool>(value))
@@ -1693,7 +2319,7 @@ namespace AllOverIt.Tests.Extensions
 
                 if (value > 0)
                 {
-                    value = (short) (-value);
+                    value = (short)(-value);
                 }
 
                 Invoking(() => ObjectExtensions.As<bool>(value))
@@ -1725,9 +2351,9 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Theory]
-            [InlineData((Int16) 10, (short) 10)]
-            [InlineData((Int32) 20, (short) 20)]
-            [InlineData((Int64) 30, (short) 30)]
+            [InlineData((Int16)10, (short)10)]
+            [InlineData((Int32)20, (short)20)]
+            [InlineData((Int64)30, (short)30)]
             public void Should_Convert_Integral_To_Int16(object value, short expected)
             {
                 var actual = ObjectExtensions.As<short>(value);
@@ -1736,9 +2362,9 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Theory]
-            [InlineData((Int16) 10, (int) 10)]
-            [InlineData((Int32) 20, (int) 20)]
-            [InlineData((Int64) 30, (int) 30)]
+            [InlineData((Int16)10, (int)10)]
+            [InlineData((Int32)20, (int)20)]
+            [InlineData((Int64)30, (int)30)]
             public void Should_Convert_Integral_To_Int32(object value, int expected)
             {
                 var actual = ObjectExtensions.As<int>(value);
@@ -1747,9 +2373,9 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Theory]
-            [InlineData((Int16) 10, (long) 10)]
-            [InlineData((Int32) 20, (long) 20)]
-            [InlineData((Int64) 30, (long) 30)]
+            [InlineData((Int16)10, (long)10)]
+            [InlineData((Int32)20, (long)20)]
+            [InlineData((Int64)30, (long)30)]
             public void Should_Convert_Integral_To_Int64(object value, long expected)
             {
                 var actual = ObjectExtensions.As<long>(value);
@@ -1758,8 +2384,8 @@ namespace AllOverIt.Tests.Extensions
             }
 
             [Theory]
-            [InlineData((short) 0, false)]
-            [InlineData((short) 1, true)]
+            [InlineData((short)0, false)]
+            [InlineData((short)1, true)]
             [InlineData(0, false)]
             [InlineData(1, true)]
             [InlineData(0L, false)]
@@ -1787,7 +2413,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(DummyEnum.Dummy3)]
             public void Should_Convert_Enum_To_Integer(DummyEnum value)
             {
-                var expected = (int) value;
+                var expected = (int)value;
 
                 var actual = ObjectExtensions.As<int>(value);
 
@@ -1800,7 +2426,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(DummyEnum.Dummy3)]
             public void Should_Convert_Enum_To_Short(DummyEnum value)
             {
-                var expected = (short) value;
+                var expected = (short)value;
 
                 var actual = ObjectExtensions.As<short>(value);
 
@@ -1966,7 +2592,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var expected = Create<int?>();
 
-                var actual = ObjectExtensions.AsNullable((int?) null, expected);
+                var actual = ObjectExtensions.AsNullable((int?)null, expected);
 
                 actual.Should().Be(expected);
             }
@@ -2230,7 +2856,7 @@ namespace AllOverIt.Tests.Extensions
                 var expected = CreateMany<int>();
 
                 var actual = ObjectExtensions
-                    .GetObjectElements((object) expected)
+                    .GetObjectElements((object)expected)
                     .Cast<int>();
 
                 actual.Should().ContainInOrder(expected);
