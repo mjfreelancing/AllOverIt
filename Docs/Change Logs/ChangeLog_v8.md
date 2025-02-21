@@ -3,6 +3,7 @@
 ## 24 Jan 2025 (rc.4)
 ## 25 Jan 2025 (rc.5, rc.6)
 ## 16 Feb 2025 (rc.7)
+## 21 Feb 2025 (rc.8)
 
 ### General
 * Multiple packages updated to use the latest version of their dependencies
@@ -17,6 +18,13 @@
 * Applied some nullable reference corrections in EnrichedResult
 * Added a IsUnique() validator that caters for up to four properties
 * Added SetPropertyPathValue() and TrySetPropertyPathValue() object extensions that set a property value based on its path.
+* Add support for binary read/write DateOnly and TimeOnly
+
+### AllOverIt.EntityFrameworkCore.Pagination
+* Add support for DateOnly and TimeOnly
+
+### AllOverIt.Pagination
+* Add support for DateOnly and TimeOnly
 
 ### AllOverIt.Validation
 * Fixed issue with the lifetime validation invoker disposing of IDisposable dependencies on the validator before the validation was invoked.
