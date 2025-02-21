@@ -8,7 +8,7 @@ namespace AllOverIt.Serialization.Binary.Readers
     /// <inheritdoc cref="IEnrichedBinaryReader"/>
     public sealed class EnrichedBinaryReader : BinaryReader, IEnrichedBinaryReader
     {
-        private static readonly Dictionary<TypeIdentifier, Func<EnrichedBinaryReader, object?>> TypeIdReader = new()
+        private static readonly Dictionary<TypeIdentifier, Func<EnrichedBinaryReader, object?>> _typeIdReader = new()
         {
             { TypeIdentifier.Bool, reader => reader.ReadBoolean() },
             { TypeIdentifier.Byte, reader => reader.ReadByte() },
@@ -110,7 +110,7 @@ namespace AllOverIt.Serialization.Binary.Readers
             if (haveValue)
             {
                 // Read the value
-                rawValue = TypeIdReader[rawTypeId].Invoke(this);
+                rawValue = _typeIdReader[rawTypeId].Invoke(this);
             }
 
             return rawValue;

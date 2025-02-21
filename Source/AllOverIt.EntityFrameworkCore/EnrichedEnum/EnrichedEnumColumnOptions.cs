@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using AllOverIt.Patterns.Enumeration;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AllOverIt.EntityFrameworkCore.EnrichedEnum
 {
