@@ -66,7 +66,7 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
 
             var value = reader.ReadString();
 
-            return (TEnum) Enum.Parse(enumType, value);
+            return (TEnum)Enum.Parse(enumType, value);
         }
 
         /// <summary>Reads a <see cref="DateTime"/> from the current stream.</summary>
@@ -78,6 +78,28 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
 
             var date = reader.ReadInt64();
             return DateTime.FromBinary(date);
+        }
+
+        /// <summary>Reads a <see cref="DateOnly"/> from the current stream.</summary>
+        /// <param name="reader">The reader that is reading from the current stream.</param>
+        /// <returns>The read <see cref="DateOnly"/>.</returns>
+        public static DateOnly ReadDateOnly(this IEnrichedBinaryReader reader)
+        {
+            _ = reader.WhenNotNull();
+
+            var day = reader.ReadInt32();
+            return DateOnly.FromDayNumber(day);
+        }
+
+        /// <summary>Reads a <see cref="TimeOnly"/> from the current stream.</summary>
+        /// <param name="reader">The reader that is reading from the current stream.</param>
+        /// <returns>The read <see cref="TimeOnly"/>.</returns>
+        public static TimeOnly ReadTimeOnly(this IEnrichedBinaryReader reader)
+        {
+            _ = reader.WhenNotNull();
+
+            var ticks = reader.ReadInt64();
+            return new TimeOnly(ticks);
         }
 
         /// <summary>Reads a <see cref="TimeSpan"/> from the current stream.</summary>
@@ -99,7 +121,7 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
         /// read will always be a <see cref="List{TValue}"/>.</returns>
         public static TValue? ReadObject<TValue>(this IEnrichedBinaryReader reader)
         {
-            return (TValue?) reader
+            return (TValue?)reader
                 .WhenNotNull()
                 .ReadObject();
         }
@@ -115,7 +137,7 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
             return reader
                 .WhenNotNull()
                 .ReadObject<Dictionary<object, object?>>()!
-                .ToDictionary(kvp => (TKey) kvp.Key, kvp => (TValue?) kvp.Value);
+                .ToDictionary(kvp => (TKey)kvp.Key, kvp => (TValue?)kvp.Value);
         }
 
         /// <summary>Reads a nullable value from the current stream that was originally written using
@@ -126,7 +148,7 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
         /// <returns>The value read from the stream.</returns>
         public static TValue? ReadNullable<TValue>(this IEnrichedBinaryReader reader) where TValue : struct
         {
-            return (TValue?) reader
+            return (TValue?)reader
                 .WhenNotNull()
                 .ReadObject();
         }
@@ -169,7 +191,7 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
         /// <returns>The array read from the stream.</returns>
         public static TValue[] ReadArray<TValue>(this IEnrichedBinaryReader reader)
         {
-            return (TValue[]) reader.ReadArray();
+            return (TValue[])reader.ReadArray();
         }
 
         /// <summary>Reads an enumerable value from the current stream that was originally written using
@@ -213,7 +235,7 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
         /// to the <typeparamref name="TValue"/> type.</returns>
         public static IEnumerable<TValue> ReadEnumerable<TValue>(this IEnrichedBinaryReader reader)
         {
-            return (IEnumerable<TValue>) reader.ReadEnumerable();
+            return (IEnumerable<TValue>)reader.ReadEnumerable();
         }
 
         /// <summary>Reads a dictionary value from the current stream that was originally written using
@@ -255,10 +277,10 @@ namespace AllOverIt.Serialization.Binary.Readers.Extensions
 
             if (typeof(TKey) == CommonTypes.ObjectType && typeof(TValue) == CommonTypes.ObjectType)
             {
-                return (IDictionary<TKey, TValue?>) dictionary;
+                return (IDictionary<TKey, TValue?>)dictionary;
             }
 
-            return dictionary.ToDictionary(kvp => (TKey) kvp.Key, kvp => (TValue?) kvp.Value);
+            return dictionary.ToDictionary(kvp => (TKey)kvp.Key, kvp => (TValue?)kvp.Value);
         }
 
         private static Type GetEnumType(IEnrichedBinaryReader reader)

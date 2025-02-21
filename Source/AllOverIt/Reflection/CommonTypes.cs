@@ -102,6 +102,12 @@ namespace AllOverIt.Reflection
         /// <summary>Type declaration for a <c>typeof(DateTime)</c>.</summary>
         public static readonly Type DateTimeType = typeof(DateTime);
 
+        /// <summary>Type declaration for a <c>typeof(DateOnly)</c>.</summary>
+        public static readonly Type DateOnlyType = typeof(DateOnly);
+
+        /// <summary>Type declaration for a <c>typeof(TimeOnly)</c>.</summary>
+        public static readonly Type TimeOnlyType = typeof(TimeOnly);
+
         /// <summary>Type declaration for a <c>typeof(DateTime)</c>.</summary>
         public static readonly Type NullableDateTimeType = typeof(DateTime?);
 

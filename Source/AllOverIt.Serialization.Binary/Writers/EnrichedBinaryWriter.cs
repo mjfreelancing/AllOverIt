@@ -11,7 +11,7 @@ namespace AllOverIt.Serialization.Binary.Writers
     /// <inheritdoc cref="IEnrichedBinaryWriter"/>
     public sealed class EnrichedBinaryWriter : BinaryWriter, IEnrichedBinaryWriter
     {
-        private static readonly Dictionary<Type, TypeIdentifier> TypeIdRegistry = new()
+        private static readonly Dictionary<Type, TypeIdentifier> _typeIdRegistry = new()
         {
             { CommonTypes.BoolType, TypeIdentifier.Bool },
             { CommonTypes.ByteType, TypeIdentifier.Byte },
@@ -30,10 +30,12 @@ namespace AllOverIt.Serialization.Binary.Writers
             { CommonTypes.EnumType, TypeIdentifier.Enum },
             { CommonTypes.GuidType, TypeIdentifier.Guid },
             { CommonTypes.DateTimeType, TypeIdentifier.DateTime },
+            { CommonTypes.DateOnlyType, TypeIdentifier.DateOnly },
+            { CommonTypes.TimeOnlyType, TypeIdentifier.TimeOnly },
             { CommonTypes.TimeSpanType, TypeIdentifier.TimeSpan }
         };
 
-        private static readonly Dictionary<TypeIdentifier, Action<EnrichedBinaryWriter, object>> TypeIdWriter = new()
+        private static readonly Dictionary<TypeIdentifier, Action<EnrichedBinaryWriter, object>> _typeIdWriter = new()
         {
             { TypeIdentifier.Bool, (writer, value) => writer.WriteBoolean((bool)value) },
             { TypeIdentifier.Byte, (writer, value) => writer.WriteByte((byte)value) },
@@ -52,6 +54,8 @@ namespace AllOverIt.Serialization.Binary.Writers
             { TypeIdentifier.Enum, (writer, value) => writer.WriteEnum(value) },
             { TypeIdentifier.Guid, (writer, value) => writer.WriteGuid((Guid)value) },
             { TypeIdentifier.DateTime, (writer, value) => writer.WriteDateTime((DateTime)value) },
+            { TypeIdentifier.DateOnly, (writer, value) => writer.WriteDateOnly((DateOnly)value) },
+            { TypeIdentifier.TimeOnly, (writer, value) => writer.WriteTimeOnly((TimeOnly)value) },
             { TypeIdentifier.TimeSpan, (writer, value) => writer.WriteTimeSpan((TimeSpan)value) },
             { TypeIdentifier.Enumerable, (writer, value) => writer.WriteEnumerable((IEnumerable)value) },
             { TypeIdentifier.Dictionary, (writer, value) => writer.WriteDictionary((IDictionary)value) },
@@ -140,18 +144,18 @@ namespace AllOverIt.Serialization.Binary.Writers
 
             var rawTypeId = GetRawTypeId(type!);
 
-            var typeId = (byte) rawTypeId;
+            var typeId = (byte)rawTypeId;
 
             if (value == default)
             {
-                typeId |= (byte) TypeIdentifier.DefaultValue;
+                typeId |= (byte)TypeIdentifier.DefaultValue;
             }
 
             this.WriteByte(typeId);
 
-            if ((typeId & (byte) TypeIdentifier.DefaultValue) == 0)
+            if ((typeId & (byte)TypeIdentifier.DefaultValue) == 0)
             {
-                TypeIdWriter[rawTypeId].Invoke(this, value!);
+                _typeIdWriter[rawTypeId].Invoke(this, value!);
             }
         }
 
@@ -181,16 +185,16 @@ namespace AllOverIt.Serialization.Binary.Writers
 
         private TypeIdentifier? IsTypeRegistered(Type type)
         {
-            return TypeIdRegistry.TryGetValue(type, out var rawTypeId)
+            return _typeIdRegistry.TryGetValue(type, out var rawTypeId)
                 ? rawTypeId
-                : (TypeIdentifier?) default;
+                : (TypeIdentifier?)default;
         }
 
         private TypeIdentifier? IsTypeEnum(Type type)
         {
             return type.IsEnum
                 ? TypeIdentifier.Enum
-                : (TypeIdentifier?) default;
+                : (TypeIdentifier?)default;
         }
 
         private TypeIdentifier? IsTypeNullable(Type type)
@@ -199,7 +203,7 @@ namespace AllOverIt.Serialization.Binary.Writers
             {
                 var underlyingType = Nullable.GetUnderlyingType(type)!;
 
-                if (TypeIdRegistry.TryGetValue(underlyingType, out var rawTypeId))
+                if (_typeIdRegistry.TryGetValue(underlyingType, out var rawTypeId))
                 {
                     return rawTypeId;
                 }

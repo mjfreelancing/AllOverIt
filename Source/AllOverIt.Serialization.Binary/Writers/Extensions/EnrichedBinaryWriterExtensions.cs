@@ -157,10 +157,20 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
             writer.Write($"{value}");
         }
 
-        /// <summary>Writes a DateTime value to the current stream.</summary>
+        /// <summary>Writes a <see cref="DateTime"/> value to the current stream.</summary>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
         /// <param name="value">The value to be written.</param>
         public static void WriteDateTime(this IEnrichedBinaryWriter writer, DateTime value) => writer.WhenNotNull().Write(value.ToBinary());
+
+        /// <summary>Writes a <see cref="DateOnly"/> value to the current stream.</summary>
+        /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
+        public static void WriteDateOnly(this IEnrichedBinaryWriter writer, DateOnly value) => writer.WhenNotNull().Write(value.DayNumber);
+
+        /// <summary>Writes a <see cref="TimeOnly"/> value to the current stream.</summary>
+        /// <param name="writer">The binary writer that is writing to the current stream.</param>
+        /// <param name="value">The value to be written.</param>
+        public static void WriteTimeOnly(this IEnrichedBinaryWriter writer, TimeOnly value) => writer.WhenNotNull().Write(value.Ticks);
 
         /// <summary>Writes a TimeSpan value to the current stream.</summary>
         /// <param name="writer">The binary writer that is writing to the current stream.</param>
@@ -370,7 +380,7 @@ namespace AllOverIt.Serialization.Binary.Writers.Extensions
             _ = writer.WhenNotNull();
             _ = dictionary.WhenNotNull();
 
-            writer.WriteDictionary((IDictionary) dictionary, typeof(TKey), typeof(TValue));
+            writer.WriteDictionary((IDictionary)dictionary, typeof(TKey), typeof(TValue));
         }
 
         /// <summary>Writes an IDictionary to the current stream.</summary>

@@ -27,6 +27,8 @@ namespace AllOverIt.Serialization.Binary.Readers
             { TypeIdentifier.Enum, reader => reader.ReadEnum() },
             { TypeIdentifier.Guid, reader => reader.ReadGuid() },
             { TypeIdentifier.DateTime, reader => reader.ReadDateTime() },
+            { TypeIdentifier.DateOnly, reader => reader.ReadDateOnly() },
+            { TypeIdentifier.TimeOnly, reader => reader.ReadTimeOnly() },
             { TypeIdentifier.TimeSpan, reader => reader.ReadTimeSpan() },
             { TypeIdentifier.Enumerable, reader => reader.ReadEnumerable() },       // Returns the value as a List
             { TypeIdentifier.Dictionary, reader => reader.ReadDictionary() },
@@ -98,12 +100,12 @@ namespace AllOverIt.Serialization.Binary.Readers
         {
             var typeId = ReadByte();
 
-            var rawTypeId = (TypeIdentifier) (typeId & ~0x80);       // Exclude the default bit flag
+            var rawTypeId = (TypeIdentifier)(typeId & ~0x80);       // Exclude the default bit flag
 
             object? rawValue = null;
 
             // Applicable to strings and nullable types
-            var haveValue = (typeId & (byte) TypeIdentifier.DefaultValue) == 0;
+            var haveValue = (typeId & (byte)TypeIdentifier.DefaultValue) == 0;
 
             if (haveValue)
             {
