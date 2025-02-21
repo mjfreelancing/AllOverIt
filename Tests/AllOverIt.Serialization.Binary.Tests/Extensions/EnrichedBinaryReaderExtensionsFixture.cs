@@ -1,5 +1,4 @@
 ﻿using AllOverIt.Fixture;
-using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Serialization.Binary.Exceptions;
 using AllOverIt.Serialization.Binary.Readers;
@@ -35,18 +34,6 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
 
         public class ReadSafeString : EnrichedBinaryReaderExtensionsFixture
         {
-            [Fact]
-            public void Should_Throw_When_Reader_Null()
-            {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadSafeString(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
-
             [Fact]
             public void Should_Not_Call_ReadString_When_Has_Value()
             {
@@ -108,18 +95,6 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
         public class ReadGuid : EnrichedBinaryReaderExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Reader_Null()
-            {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadGuid(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
-
-            [Fact]
             public void Should_Read_Guid()
             {
                 var value = Create<Guid>();
@@ -136,18 +111,6 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
 
         public class ReadEnum : EnrichedBinaryReaderExtensionsFixture
         {
-            [Fact]
-            public void Should_Throw_When_Reader_Null()
-            {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadEnum(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
-
             [Fact]
             public void Should_Throw_When_Unknown_Enum()
             {
@@ -185,18 +148,6 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
         public class ReadEnum_Typed : EnrichedBinaryReaderExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Reader_Null()
-            {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadEnum<DummyEnum>(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
-
-            [Fact]
             public void Should_Throw_When_Unknown_Enum()
             {
                 var enumTypeName = Create<string>();
@@ -233,18 +184,6 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
         public class ReadDateTime : EnrichedBinaryReaderExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Reader_Null()
-            {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadDateTime(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
-
-            [Fact]
             public void Should_Read_DateTime()
             {
                 var value = Create<DateTime>();
@@ -259,20 +198,42 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
             }
         }
 
-        public class ReadTimeSpan : EnrichedBinaryReaderExtensionsFixture
+        public class ReadDateOnly : EnrichedBinaryReaderExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Reader_Null()
+            public void Should_Read_DateOnly()
             {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadTimeSpan(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
+                var value = Create<DateOnly>();
 
+                _readerFake
+                    .CallsTo(fake => fake.ReadInt32())
+                    .Returns(value.DayNumber);
+
+                var actual = _readerFake.FakedObject.ReadDateOnly();
+
+                actual.Should().Be(value);
+            }
+        }
+
+        public class ReadTimeOnly : EnrichedBinaryReaderExtensionsFixture
+        {
+            [Fact]
+            public void Should_Read_TimeOnly()
+            {
+                var value = Create<TimeOnly>();
+
+                _readerFake
+                    .CallsTo(fake => fake.ReadInt64())
+                    .Returns(value.Ticks);
+
+                var actual = _readerFake.FakedObject.ReadTimeOnly();
+
+                actual.Should().Be(value);
+            }
+        }
+
+        public class ReadTimeSpan : EnrichedBinaryReaderExtensionsFixture
+        {
             [Fact]
             public void Should_Read_TimeSpan()
             {
@@ -291,18 +252,6 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
         public class ReadObject_Typed : EnrichedBinaryReaderExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Reader_Null()
-            {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadObject<DummyEnum>(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
-
-            [Fact]
             public void Should_Read_Object()
             {
                 var value = Create<DummyType>();
@@ -319,18 +268,6 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
 
         public class ReadObjectAsDictionary : EnrichedBinaryReaderExtensionsFixture
         {
-            [Fact]
-            public void Should_Throw_When_Reader_Null()
-            {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadObjectAsDictionary<int, DummyEnum>(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
-
             [Fact]
             public void Should_Read_Object()
             {
@@ -352,18 +289,6 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
         public class ReadNullable : EnrichedBinaryReaderExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Reader_Null()
-            {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadNullable<int>(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
-
-            [Fact]
             public void Should_Read_Nullablet()
             {
                 int? value = Create<int>();
@@ -381,18 +306,6 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
         public class ReadEnumerable : EnrichedBinaryReaderExtensionsFixture
         {
             [Fact]
-            public void Should_Throw_When_Reader_Null()
-            {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadEnumerable(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
-
-            [Fact]
             public void Should_Read_Enumerable()
             {
                 var values = new[] { 1, 0, 1, -1, 2 };
@@ -409,7 +322,7 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
                     .CallsTo(fake => fake.ReadObject())
                     .ReturnsNextFromSequence(1, 0, 1, -1, 2);
 
-                var actual = (List<int>) _readerFake.FakedObject.ReadEnumerable();
+                var actual = (List<int>)_readerFake.FakedObject.ReadEnumerable();
 
                 actual.SequenceEqual(values).Should().BeTrue();
             }
@@ -417,18 +330,6 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
 
         public class ReadEnumumerable_Typed : EnrichedBinaryReaderExtensionsFixture
         {
-            [Fact]
-            public void Should_Throw_When_Reader_Null()
-            {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadEnumerable<int>(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
-
             [Fact]
             public void Should_Read_Enumerable()
             {
@@ -454,18 +355,6 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
 
         public class ReadDictionary : EnrichedBinaryReaderExtensionsFixture
         {
-            [Fact]
-            public void Should_Throw_When_Reader_Null()
-            {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadDictionary(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
-
             [Fact]
             public void Should_Read_Dictionary()
             {
@@ -495,18 +384,6 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
 
         public class ReadDictionary_Typed : EnrichedBinaryReaderExtensionsFixture
         {
-            [Fact]
-            public void Should_Throw_When_Reader_Null()
-            {
-                Invoking(() =>
-                {
-                    EnrichedBinaryReaderExtensions.ReadDictionary<int, string>(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("reader");
-            }
-
             [Fact]
             public void Should_Read_Dictionary_When_Object_Object()
             {
