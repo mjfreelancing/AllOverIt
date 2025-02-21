@@ -58,7 +58,7 @@
 
         /// <summary>Copies the key and value pairs to a new array.</summary>
         /// <returns>A new array of the cache's current key and value pairs.</returns>
-        KeyValuePair<GenericCacheKeyBase, object>[] ToArray();
+        KeyValuePair<GenericCacheKeyBase, object?>[] ToArray();
 
         /// <summary>Gets the existing value of a key if it exists, otherwise adds a new value based on a provided resolver.</summary>
         /// <typeparam name="TValue">The value type associated with the key.</typeparam>
