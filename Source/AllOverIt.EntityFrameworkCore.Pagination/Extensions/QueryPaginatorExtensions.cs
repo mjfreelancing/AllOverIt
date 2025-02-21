@@ -42,7 +42,7 @@ namespace AllOverIt.EntityFrameworkCore.Pagination.Extensions
         /// <param name="continuationToken">The continuation token that describes how to obtain the next (or previous) page of data.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>A page of results along with information about the previous and next page of data available.</returns>
-        public static async Task<PageResult<TResult>> GetPageResultsAsync<TResult>(this IQueryPaginator<TResult> queryPaginator, string continuationToken,
+        public static async Task<PageResult<TResult>> GetPageResultsAsync<TResult>(this IQueryPaginator<TResult> queryPaginator, string? continuationToken,
             CancellationToken cancellationToken) where TResult : class
         {
             var totalCount = await queryPaginator.BaseQuery.CountAsync(cancellationToken).ConfigureAwait(false);
