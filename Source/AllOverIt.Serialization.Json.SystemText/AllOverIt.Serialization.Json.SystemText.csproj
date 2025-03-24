@@ -1,14 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
         <Description>This package contains a wrapper for System.Text.Json serialization based on AllOverIt.Serialization.Json.Abstractions.</Description>
         <PackageTags>AllOverIt;Utilities;Serialization;Deserialization;JSON;SystemText</PackageTags>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="System.Text.Json" Version="9.0.2" />
-    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\AllOverIt.Serialization.Json.Abstractions\AllOverIt.Serialization.Json.Abstractions.csproj" />

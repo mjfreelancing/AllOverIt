@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
         <Description>This package greatly simplifies the generation of AWS Graphql schemas, including their associated resolver handler configuration, using a code-first approach.</Description>
         <PackageTags>AllOverIt;Utilities;AWS;Amazon;AppSync;CDK;Graphql</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Amazon.CDK.Lib" Version="2.178.2" />
-        <PackageReference Include="Cdklabs.AwsCdkAppsyncUtils" Version="0.0.653" />
+        <PackageReference Include="Amazon.CDK.Lib" Version="2.185.0" />
+        <PackageReference Include="Cdklabs.AwsCdkAppsyncUtils" Version="0.0.688" />
     </ItemGroup>
 
     <ItemGroup>

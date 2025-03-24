@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
         <Description>In conjunction with D2, this package will generate entity relationship diagrams for an EntityFramework Core DbContext.</Description>
         <PackageTags>AllOverIt;Utilities;Query;EntityFramework;D2;Diagrams</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.3" />
     </ItemGroup>
 
     <ItemGroup>

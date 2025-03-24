@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
         <Description>This package provides EntityFramework Core utilities such as a database migration helper and a value converter for AllOverIt based enriched enums.</Description>
         <PackageTags>AllOverIt;Utilities;Query;EntityFramework</PackageTags>
     </PropertyGroup>
@@ -15,7 +15,7 @@
     </ItemGroup>-->
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.3" />
 	</ItemGroup>
     
     <ItemGroup>

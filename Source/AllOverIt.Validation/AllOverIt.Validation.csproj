@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
         <Description>This package contains additional validators and extensions for use with FluentValidation. It includes an invoker that will select, and invoke, a registered validator based on a provided model. Synchronous and Asynchronous validation is supported, along with extensions that make it easier to pass context information into a validator to keep it stateless. Also available is a validation registrar that makes it possible to auto-register all validators within the same assembly. Validators can also be filtered based on a predicate.</Description>
         <PackageTags>AllOverIt;Utilities;Serialization;Deserialization;JSON;Validation</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="FluentValidation" Version="11.11.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.2" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
     </ItemGroup>
 
     <ItemGroup>
