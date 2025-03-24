@@ -49,6 +49,8 @@ namespace AllOverIt.Tests.Reflection
             yield return new object[] { CommonTypes.GuidType, typeof(Guid) };
             yield return new object[] { CommonTypes.NullableGuidType, typeof(Guid?) };
             yield return new object[] { CommonTypes.DateTimeType, typeof(DateTime) };
+            yield return new object[] { CommonTypes.DateOnlyType, typeof(DateOnly) };
+            yield return new object[] { CommonTypes.TimeOnlyType, typeof(TimeOnly) };
             yield return new object[] { CommonTypes.NullableDateTimeType, typeof(DateTime?) };
             yield return new object[] { CommonTypes.TimeSpanType, typeof(TimeSpan) };
             yield return new object[] { CommonTypes.NullableTimeSpanType, typeof(TimeSpan?) };

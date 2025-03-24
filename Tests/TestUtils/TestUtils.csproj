@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
         <PackageReference Include="AutoFixture.AutoNSubstitute" Version="4.18.1" />
@@ -8,9 +8,4 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-    </ItemGroup>
-
 </Project>

@@ -1,23 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
-    </ItemGroup>
-
-    <ItemGroup Condition=" '$(TargetFramework)' == 'net9.0' ">
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.3" />
     </ItemGroup>
     
     <ItemGroup>
         <ProjectReference Include="..\..\Source\AllOverIt.EntityFrameworkCore.Diagrams\AllOverIt.EntityFrameworkCore.Diagrams.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
         <ProjectReference Include="..\TestUtils\TestUtils.csproj" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-    </ItemGroup>
-	
+    </ItemGroup>	
 </Project>

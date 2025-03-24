@@ -16,6 +16,9 @@
         NotEmpty,
 
         /// <summary>The property value is out of range.</summary>
-        OutOfRange
+        OutOfRange,
+
+        /// <summary>The property value is not unique.</summary>
+        Duplicate
     }
 }

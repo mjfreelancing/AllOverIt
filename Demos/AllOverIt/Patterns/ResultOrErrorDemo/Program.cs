@@ -11,7 +11,9 @@ internal class Program
     {
         ShowSuccessWithNoResult();                  // EnrichedResult
         ShowSuccessWithNoTypedResult();             // EnrichedResult<int>
-        ShowSuccessWithResults();                   // EnrichedResult<int?>
+        ShowSuccessWithNullableIntResults();        // EnrichedResult<int?>
+        ShowSuccessWithStringResults();             // EnrichedResult<string>
+        ShowSuccessWithNullableStringResults();     // EnrichedResult<string?>
         ShowFailWithNoError();                      // EnrichedResult with Error = null
         ShowFailUsingFactoryBasedError();           // EnrichedResult with Error = EnrichedError<AppErrorType>
         ShowFailUsingStaticError();                 // EnrichedResult with Error = UnexpectedError (which is a EnrichedError<AppErrorType>)
@@ -50,7 +52,7 @@ internal class Program
         }
     }
 
-    private static void ShowSuccessWithResults()
+    private static void ShowSuccessWithNullableIntResults()
     {
         int? value = 42;
 
@@ -58,7 +60,7 @@ internal class Program
 
         if (result1.IsSuccess)
         {
-            Console.WriteLine($"ShowSuccessWithResults - Passed with {result1.Value}");
+            Console.WriteLine($"ShowSuccessWithNullableIntResults - Passed with {result1.Value}");
         }
         else
         {
@@ -69,12 +71,70 @@ internal class Program
 
         if (result2.IsSuccess)
         {
-            Console.WriteLine($"ShowSuccessWithResults - Passed with {result2.Value}");
+            Console.WriteLine($"ShowSuccessWithNullableIntResults - Passed with {result2.Value}");
         }
         else
         {
             throw new UnreachableException();
         }
+    }
+
+    private static EnrichedResult<string> ShowSuccessWithStringResults()
+    {
+        var value = "42";
+
+        var result1 = EnrichedResult.Success(value);
+
+        if (result1.IsSuccess)
+        {
+            Console.WriteLine($"ShowSuccessWithStringResults - Passed with {result1.Value}");
+        }
+        else
+        {
+            throw new UnreachableException();
+        }
+
+        var result2 = EnrichedResult.Success("Bingo !");
+
+        if (result2.IsSuccess)
+        {
+            Console.WriteLine($"ShowSuccessWithStringResults - Passed with {result2.Value}");
+        }
+        else
+        {
+            throw new UnreachableException();
+        }
+
+        return result2;
+    }
+
+    private static EnrichedResult<string?> ShowSuccessWithNullableStringResults()
+    {
+        string? value = "42";
+
+        var result1 = EnrichedResult.Success<string?>(value);
+
+        if (result1.IsSuccess)
+        {
+            Console.WriteLine($"ShowSuccessWithStringResults - Passed with {result1.Value}");
+        }
+        else
+        {
+            throw new UnreachableException();
+        }
+
+        var result2 = EnrichedResult.Success<string?>("Bingo !");
+
+        if (result2.IsSuccess)
+        {
+            Console.WriteLine($"ShowSuccessWithStringResults - Passed with {result2.Value}");
+        }
+        else
+        {
+            throw new UnreachableException();
+        }
+
+        return result2;
     }
 
     private static void ShowFailWithNoError()
@@ -142,7 +202,7 @@ internal class Program
 
         if (result.IsFail)
         {
-            var errorType = (EnrichedError<AppErrorType>) result.Error!;
+            var errorType = (EnrichedError<AppErrorType>)result.Error!;
 
             var description = errorType.ErrorType switch
             {

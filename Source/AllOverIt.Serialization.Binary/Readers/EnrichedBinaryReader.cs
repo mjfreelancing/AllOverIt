@@ -8,7 +8,7 @@ namespace AllOverIt.Serialization.Binary.Readers
     /// <inheritdoc cref="IEnrichedBinaryReader"/>
     public sealed class EnrichedBinaryReader : BinaryReader, IEnrichedBinaryReader
     {
-        private static readonly Dictionary<TypeIdentifier, Func<EnrichedBinaryReader, object?>> TypeIdReader = new()
+        private static readonly Dictionary<TypeIdentifier, Func<EnrichedBinaryReader, object?>> _typeIdReader = new()
         {
             { TypeIdentifier.Bool, reader => reader.ReadBoolean() },
             { TypeIdentifier.Byte, reader => reader.ReadByte() },
@@ -27,6 +27,8 @@ namespace AllOverIt.Serialization.Binary.Readers
             { TypeIdentifier.Enum, reader => reader.ReadEnum() },
             { TypeIdentifier.Guid, reader => reader.ReadGuid() },
             { TypeIdentifier.DateTime, reader => reader.ReadDateTime() },
+            { TypeIdentifier.DateOnly, reader => reader.ReadDateOnly() },
+            { TypeIdentifier.TimeOnly, reader => reader.ReadTimeOnly() },
             { TypeIdentifier.TimeSpan, reader => reader.ReadTimeSpan() },
             { TypeIdentifier.Enumerable, reader => reader.ReadEnumerable() },       // Returns the value as a List
             { TypeIdentifier.Dictionary, reader => reader.ReadDictionary() },
@@ -98,17 +100,17 @@ namespace AllOverIt.Serialization.Binary.Readers
         {
             var typeId = ReadByte();
 
-            var rawTypeId = (TypeIdentifier) (typeId & ~0x80);       // Exclude the default bit flag
+            var rawTypeId = (TypeIdentifier)(typeId & ~0x80);       // Exclude the default bit flag
 
             object? rawValue = null;
 
             // Applicable to strings and nullable types
-            var haveValue = (typeId & (byte) TypeIdentifier.DefaultValue) == 0;
+            var haveValue = (typeId & (byte)TypeIdentifier.DefaultValue) == 0;
 
             if (haveValue)
             {
                 // Read the value
-                rawValue = TypeIdReader[rawTypeId].Invoke(this);
+                rawValue = _typeIdReader[rawTypeId].Invoke(this);
             }
 
             return rawValue;

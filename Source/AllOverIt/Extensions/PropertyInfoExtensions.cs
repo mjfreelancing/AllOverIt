@@ -10,7 +10,7 @@ namespace AllOverIt.Extensions
     /// <summary>Provides a variety of extension methods for <see cref="PropertyInfo"/> types.</summary>
     public static class PropertyInfoExtensions
     {
-        private static readonly Type IsExternalInitType = typeof(IsExternalInit);
+        private static readonly Type _isExternalInitType = typeof(IsExternalInit);
 
         /// <summary>Determines if the provided <paramref name="propertyInfo"/> is for an abstract property.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for a property.</param>
@@ -115,7 +115,7 @@ namespace AllOverIt.Extensions
 
             return setMethod.ReturnParameter
                 .GetRequiredCustomModifiers()
-                .Contains(IsExternalInitType);
+                .Contains(_isExternalInitType);
         }
 
         /// <summary>Determines if a property is compiler generated, such as a record's <c>EqualityContract</c>.</summary>

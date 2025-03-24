@@ -3,10 +3,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace PaginationConsole.Migrations
+namespace PaginationConsoleDemo.Migrations
 {
+    /// <inheritdoc />
     public partial class Init : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
@@ -47,9 +49,9 @@ namespace PaginationConsole.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Blogs_Description_Id",
+                name: "IX_Blogs_Description",
                 table: "Blogs",
-                columns: ["Description", "Id"]);
+                column: "Description");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_BlogId",
@@ -57,11 +59,12 @@ namespace PaginationConsole.Migrations
                 column: "BlogId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_Title_Id",
+                name: "IX_Posts_Title",
                 table: "Posts",
-                columns: ["Title", "Id"]);
+                column: "Title");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

@@ -7,7 +7,7 @@ namespace AllOverIt.Validation.Tests.Validators
     {
         public class IsNotEmpty : ValidatorsFixture
         {
-            private class DummyIsRequiredValidator : ValidatorBase<DummyComparisonModel>
+            private class DummyIsRequiredValidator : ValidatorBase<DummyDto>
             {
                 public DummyIsRequiredValidator()
                 {
@@ -21,7 +21,7 @@ namespace AllOverIt.Validation.Tests.Validators
             [Fact]
             public void Should_Succeed_Validate()
             {
-                var model = new DummyComparisonModel
+                var model = new DummyDto
                 {
                     Value1 = Create<string>(),
                     Value2 = Guid.NewGuid(),
@@ -39,7 +39,7 @@ namespace AllOverIt.Validation.Tests.Validators
             [Fact]
             public void Should_Fail_Validate()
             {
-                var model = new DummyComparisonModel();
+                var model = new DummyDto();
 
                 var validator = new DummyIsRequiredValidator();
 
@@ -51,31 +51,31 @@ namespace AllOverIt.Validation.Tests.Validators
                 {
                     new
                     {
-                        PropertyName = nameof(DummyComparisonModel.Value1),
+                        PropertyName = nameof(DummyDto.Value1),
                         ErrorCode = nameof(ValidationErrorCode.NotEmpty),
                         AttemptedValue = (object) model.Value1,
-                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value1)}' should not be empty."
+                        ErrorMessage = $"'{nameof(DummyDto.Value1)}' should not be empty."
                     },
                     new
                     {
-                        PropertyName = nameof(DummyComparisonModel.Value2),
+                        PropertyName = nameof(DummyDto.Value2),
                         ErrorCode = nameof(ValidationErrorCode.NotEmpty),
                         AttemptedValue = (object) model.Value2,
-                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value2)}' should not be empty."
+                        ErrorMessage = $"'{nameof(DummyDto.Value2)}' should not be empty."
                     },
                     new
                     {
-                        PropertyName = nameof(DummyComparisonModel.Value3),
+                        PropertyName = nameof(DummyDto.Value3),
                         ErrorCode = nameof(ValidationErrorCode.NotEmpty),
                         AttemptedValue = (object) model.Value3,
-                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value3)}' should not be empty."
+                        ErrorMessage = $"'{nameof(DummyDto.Value3)}' should not be empty."
                     },
                     new
                     {
-                        PropertyName = nameof(DummyComparisonModel.Value7),
+                        PropertyName = nameof(DummyDto.Value7),
                         ErrorCode = nameof(ValidationErrorCode.NotEmpty),
                         AttemptedValue = (object) model.Value7,
-                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value7)}' should not be empty."
+                        ErrorMessage = $"'{nameof(DummyDto.Value7)}' should not be empty."
                     }
                 };
 

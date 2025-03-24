@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Assertion
 {
@@ -10,7 +11,7 @@ namespace AllOverIt.Assertion
         /// <param name="name">The name of the instance.</param>
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null".</param>
         /// <exception cref="InvalidOperationException"/>
-        public static void CheckNotNull<TType>(this TType? @object,
+        public static void CheckNotNull<TType>([NotNull] this TType? @object,
             [CallerArgumentExpression(nameof(@object))] string name = "",
             string? errorMessage = default)
             where TType : class
@@ -47,7 +48,7 @@ namespace AllOverIt.Assertion
         /// <remarks>If <paramref name="object"/> is a lazily-evaluated enumerable, such as the result if a LINQ Select() then multiple
         /// enumeration will occur. Only pass a concrete enumerable, such as an array or list, to this method.</remarks>
         /// <exception cref="InvalidOperationException"/>
-        public static void CheckNotNullOrEmpty<TType>(this IEnumerable<TType>? @object,
+        public static void CheckNotNullOrEmpty<TType>([NotNull] this IEnumerable<TType>? @object,
             [CallerArgumentExpression(nameof(@object))] string name = "",
             string? errorMessage = default)
         {
@@ -79,7 +80,7 @@ namespace AllOverIt.Assertion
         /// <param name="errorMessage">The error message to report. If not provided, the default message is "Value cannot be null" for a null
         /// instance and "Value cannot be empty" for an empty string.</param>
         /// <exception cref="InvalidOperationException"/>
-        public static void CheckNotNullOrEmpty(this string? @object,
+        public static void CheckNotNullOrEmpty([NotNull] this string? @object,
             [CallerArgumentExpression(nameof(@object))] string name = "",
             string? errorMessage = default)
         {

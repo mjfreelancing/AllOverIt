@@ -4,7 +4,7 @@ namespace ChainOfResponsibilityAsyncDemo.Handlers
 {
     public sealed class QueueBrokerExceptionHandler : ChainOfResponsibilityAsyncComposer<QueueMessageHandlerState, QueueMessageHandlerState>
     {
-        private static readonly IEnumerable<QueueMessageHandlerBase> Handlers =
+        private static readonly IEnumerable<QueueMessageHandlerBase> _handlers =
         [
             new NullMessageExceptionHandler(),
             new EmptyMessageExceptionHandler(),
@@ -12,7 +12,7 @@ namespace ChainOfResponsibilityAsyncDemo.Handlers
         ];
 
         public QueueBrokerExceptionHandler()
-            : base(Handlers)
+            : base(_handlers)
         {
         }
 

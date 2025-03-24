@@ -12,7 +12,8 @@ namespace AllOverIt.Validation.Tests
             {
                 nameof(ValidationErrorCode.Required),
                 nameof(ValidationErrorCode.NotEmpty),
-                nameof(ValidationErrorCode.OutOfRange)
+                nameof(ValidationErrorCode.OutOfRange),
+                nameof(ValidationErrorCode.Duplicate)
             };
 
             // If this test fails then other tests may need to be added to check all error codes are returned

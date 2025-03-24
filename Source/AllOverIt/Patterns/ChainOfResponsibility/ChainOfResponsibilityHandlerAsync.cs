@@ -29,7 +29,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility
             // that does not call base.Handle() at the end of its processing.
             if (_nextHandler is null)
             {
-                return Task.FromResult(default(TOutput));
+                return Task.FromResult<TOutput?>(default);
             }
 
             return _nextHandler.HandleAsync(state, cancellationToken);

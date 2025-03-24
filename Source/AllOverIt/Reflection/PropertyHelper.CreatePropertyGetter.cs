@@ -49,6 +49,19 @@ namespace AllOverIt.Reflection
             return CreatePropertyGetterExpressionLambda<TType>(propertyInfo).Compile();
         }
 
+        /// <summary>Creates a compiled expression as a <c>Func{TType, TProperty?}</c> to get a property value based on a specified
+        /// property name.</summary>
+        /// <typeparam name="TType">The object type containing the required property.</typeparam>
+        /// <typeparam name="TProperty">The property type.</typeparam>
+        /// <param name="propertyName">The property name.</param>
+        /// <returns>The compiled property getter.</returns>
+        public static Func<TType, TProperty?> CreatePropertyGetter<TType, TProperty>(string propertyName)
+        {
+            _ = propertyName.WhenNotNullOrEmpty();
+
+            return CreatePropertyGetterExpressionLambda<TType, TProperty>(propertyName).Compile();
+        }
+
         /// <summary>Gets an expression lambda that represents getting a property value from an object.</summary>
         /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property getter.</param>
         /// <returns>The expression lambda representing a property getter.</returns>
@@ -60,24 +73,19 @@ namespace AllOverIt.Reflection
 
             var getterMethodInfo = propertyInfo.GetGetMethod(true)!;
 
-            // propertyInfo.DeclaringType should be ok but if there's problems consider propertyInfo.ReflectedType:
-            //
-            // MemberInfo m1 = typeof(Base).GetMethod("Method");
-            // MemberInfo m2 = typeof(Derived).GetMethod("Method");
-            // m1.DeclaringType => Base
-            // m1.ReflectedType => Base
-            // m2.DeclaringType => Base
-            // m2.ReflectedType => Derived
-
             var itemParam = Expression.Parameter(typeof(object), "item");
-            var instanceParam = Expression.Convert(itemParam, propertyInfo.DeclaringType!)!;
+            var instanceParam = Expression.TypeAs(itemParam, propertyInfo.DeclaringType!);
             var getterCall = Expression.Call(instanceParam, getterMethodInfo);
-            var objectGetterCall = Expression.Convert(getterCall, typeof(object));
+            var objectGetterCall = Expression.TypeAs(getterCall, typeof(object));
 
             return Expression.Lambda<Func<object, object?>>(objectGetterCall, itemParam);
+
         }
 
-        private static Expression<Func<TType, object?>> CreatePropertyGetterExpressionLambda<TType>(PropertyInfo propertyInfo)
+        /// <summary>Gets an expression lambda that represents getting a property value from a specified type.</summary>
+        /// <param name="propertyInfo">The <see cref="PropertyInfo"/> to build a property getter.</param>
+        /// <returns>The expression lambda representing a property getter.</returns>
+        public static Expression<Func<TType, object?>> CreatePropertyGetterExpressionLambda<TType>(PropertyInfo propertyInfo)
         {
             _ = propertyInfo.WhenNotNull();
 
@@ -94,6 +102,26 @@ namespace AllOverIt.Reflection
             var objectProperty = Expression.TypeAs(property, typeof(object));
 
             return Expression.Lambda<Func<TType, object?>>(objectProperty, itemParam);
+        }
+
+        /// <summary>Gets an expression lambda that represents getting a property value from a specified type.</summary>
+        /// <typeparam name="TType">The object type containing the required property.</typeparam>
+        /// <typeparam name="TProperty">The property type.</typeparam>
+        /// <param name="propertyName">The property name.</param>
+        /// <returns>The expression lambda representing a property getter.</returns>
+        public static Expression<Func<TType, TProperty?>> CreatePropertyGetterExpressionLambda<TType, TProperty>(string propertyName)
+        {
+            // Create the parameter expression (entity)
+            var parameter = Expression.Parameter(typeof(TType), "entity");
+
+            // Create the property access (entity.PropertyName)
+            var property = Expression.Property(parameter, propertyName);
+
+            // Cast the property to TProperty (if necessary)
+            var propertyAccess = Expression.Convert(property, typeof(TProperty));
+
+            // Create and return the lambda expression
+            return Expression.Lambda<Func<TType, TProperty?>>(propertyAccess, parameter);
         }
 
         private static void AssertPropertyCanRead(PropertyInfo propertyInfo)

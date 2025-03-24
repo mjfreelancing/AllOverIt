@@ -39,6 +39,8 @@ namespace AllOverIt.Serialization.Binary.Tests
             public DummyEnum Enum { get; set; }
             public Guid Guid { get; set; }
             public DateTime DateTime { get; set; }
+            public DateOnly DateOnly { get; set; }
+            public TimeOnly TimeOnly { get; set; }
             public TimeSpan TimeSpan { get; set; }
             public IEnumerable<string> Strings { get; set; }
             public IEnumerable<double> Doubles { get; set; }
@@ -74,19 +76,21 @@ namespace AllOverIt.Serialization.Binary.Tests
                 writer.WriteEnum(Enum);
                 writer.WriteGuid(Guid);
                 writer.WriteDateTime(DateTime);
+                writer.WriteDateOnly(DateOnly);
+                writer.WriteTimeOnly(TimeOnly);
                 writer.WriteTimeSpan(TimeSpan);
 
                 // Testing IEnumerable
-                writer.WriteEnumerable((IEnumerable) Strings, typeof(string));  // Testing explicit type info, and first item is null
-                writer.WriteEnumerable((IEnumerable) Doubles, null);
-                writer.WriteEnumerable((IEnumerable) NullableInts);
-                writer.WriteEnumerable((IEnumerable) EmptyDoubles);
+                writer.WriteEnumerable((IEnumerable)Strings, typeof(string));  // Testing explicit type info, and first item is null
+                writer.WriteEnumerable((IEnumerable)Doubles, null);
+                writer.WriteEnumerable((IEnumerable)NullableInts);
+                writer.WriteEnumerable((IEnumerable)EmptyDoubles);
 
                 // WriteObject handles null as long as it knows the type
                 writer.WriteObject(NullDoubles, typeof(double[]));
 
-                writer.WriteEnumerable((IEnumerable) IntArray);
-                writer.WriteEnumerable((IEnumerable) EmptyDoubleArray);
+                writer.WriteEnumerable((IEnumerable)IntArray);
+                writer.WriteEnumerable((IEnumerable)EmptyDoubleArray);
 
                 writer.WriteObject(Dictionary);
             }
@@ -114,17 +118,19 @@ namespace AllOverIt.Serialization.Binary.Tests
                 Enum = reader.ReadEnum<DummyEnum>();
                 Guid = reader.ReadGuid();
                 DateTime = reader.ReadDateTime();
+                DateOnly = reader.ReadDateOnly();
+                TimeOnly = reader.ReadTimeOnly();
                 TimeSpan = reader.ReadTimeSpan();
 
-                Strings = (List<string>) reader.ReadEnumerable();
-                Doubles = (List<double>) reader.ReadEnumerable();
-                NullableInts = (List<int?>) reader.ReadEnumerable();
-                EmptyDoubles = (List<double>) reader.ReadEnumerable();
+                Strings = (List<string>)reader.ReadEnumerable();
+                Doubles = (List<double>)reader.ReadEnumerable();
+                NullableInts = (List<int?>)reader.ReadEnumerable();
+                EmptyDoubles = (List<double>)reader.ReadEnumerable();
 
-                NullDoubles = (IEnumerable<double>) reader.ReadObject();
+                NullDoubles = (IEnumerable<double>)reader.ReadObject();
 
-                IntArray = ((IEnumerable<int>) reader.ReadEnumerable()).ToArray();
-                EmptyDoubleArray = ((IEnumerable<double>) reader.ReadEnumerable()).ToArray();
+                IntArray = ((IEnumerable<int>)reader.ReadEnumerable()).ToArray();
+                EmptyDoubleArray = ((IEnumerable<double>)reader.ReadEnumerable()).ToArray();
 
                 // Must use this syntax when written using WriteObject()
                 // Same as reader.ReadObject<Dictionary<object, object>>().ToDictionary(kvp => (int) kvp.Key, kvp => (string) kvp.Value);
@@ -158,6 +164,8 @@ namespace AllOverIt.Serialization.Binary.Tests
                 writer.WriteObject(Enum);
                 writer.WriteObject(Guid);
                 writer.WriteObject(DateTime);
+                writer.WriteObject(DateOnly);
+                writer.WriteObject(TimeOnly);
                 writer.WriteObject(TimeSpan);
 
                 writer.WriteEnumerable(Strings, typeof(string));  // Testing explicit type info, and first item is null
@@ -199,6 +207,8 @@ namespace AllOverIt.Serialization.Binary.Tests
                 Enum = reader.ReadObject<DummyEnum>();
                 Guid = reader.ReadObject<Guid>();
                 DateTime = reader.ReadObject<DateTime>();
+                DateOnly = reader.ReadObject<DateOnly>();
+                TimeOnly = reader.ReadObject<TimeOnly>();
                 TimeSpan = reader.ReadObject<TimeSpan>();
 
                 // Using ReadEnumerable<T>() to compliment WriteEnumerable<T>()
@@ -207,7 +217,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 NullableInts = reader.ReadEnumerable<int?>();
                 EmptyDoubles = reader.ReadEnumerable<double>();
 
-                NullDoubles = (IEnumerable<double>) reader.ReadObject();
+                NullDoubles = (IEnumerable<double>)reader.ReadObject();
 
                 // ReadEnumerable() returns as a list so we need to ToArray()
                 // See method 3 below which uses WriteArray() and ReadArray().
@@ -242,6 +252,8 @@ namespace AllOverIt.Serialization.Binary.Tests
                 writer.WriteObject(Enum);
                 writer.WriteObject(Guid);
                 writer.WriteObject(DateTime);
+                writer.WriteObject(DateOnly);
+                writer.WriteObject(TimeOnly);
                 writer.WriteObject(TimeSpan);
                 writer.WriteObject(Strings);
                 writer.WriteObject(Doubles);
@@ -279,6 +291,8 @@ namespace AllOverIt.Serialization.Binary.Tests
                 Enum = reader.ReadObject<DummyEnum>();
                 Guid = reader.ReadObject<Guid>();
                 DateTime = reader.ReadObject<DateTime>();
+                DateOnly = reader.ReadObject<DateOnly>();
+                TimeOnly = reader.ReadObject<TimeOnly>();
                 TimeSpan = reader.ReadObject<TimeSpan>();
 
                 // Using ReadObject() to compliment WriteObject()
@@ -374,7 +388,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 using (reader)
                 {
                     // Should be read back as null
-                    actual = (string) reader.ReadObject();
+                    actual = (string)reader.ReadObject();
                 }
             }
 
@@ -559,7 +573,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
                 {
                     // Must use ReadObject() to compliment WriteObject()
-                    actual = ((IEnumerable<int>) reader.ReadObject());
+                    actual = ((IEnumerable<int>)reader.ReadObject());
                 }
             }
 
@@ -620,7 +634,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 using (var reader = new EnrichedBinaryReader(stream, Encoding.UTF8, true))
                 {
                     // Must use ReadObject() to compliment WriteObject()
-                    actual = ((IEnumerable<int>) reader.ReadObject());
+                    actual = ((IEnumerable<int>)reader.ReadObject());
                 }
             }
 

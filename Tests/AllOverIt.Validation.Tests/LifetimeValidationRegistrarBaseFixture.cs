@@ -74,13 +74,13 @@ namespace AllOverIt.Validation.Tests
                     .CallsTo(fake => fake.Register(A<Type>.Ignored, A<Type>.Ignored, A<ServiceLifetime>.Ignored))
                     .Invokes(call =>
                     {
-                        var validatorType = (Type) call.Arguments[1];
+                        var validatorType = (Type)call.Arguments[1];
                         validators.Add(validatorType);
                     });
 
                 _validationRegistrar.AutoRegisterTransientValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(30);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(32);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
@@ -98,7 +98,7 @@ namespace AllOverIt.Validation.Tests
                 // registering the validator a second time will throw an error
                 Invoking(() =>
                 {
-                    ((ILifetimeValidationRegistry) invoker).Register<DummyModel, DummyModelValidator>(Create<ServiceLifetime>());
+                    ((ILifetimeValidationRegistry)invoker).Register<DummyModel, DummyModelValidator>(Create<ServiceLifetime>());
                 })
                    .Should()
                    .Throw<ValidationRegistryException>()
@@ -166,13 +166,13 @@ namespace AllOverIt.Validation.Tests
                     .CallsTo(fake => fake.Register(A<Type>.Ignored, A<Type>.Ignored, A<ServiceLifetime>.Ignored))
                     .Invokes(call =>
                     {
-                        var validatorType = (Type) call.Arguments[1];
+                        var validatorType = (Type)call.Arguments[1];
                         validators.Add(validatorType);
                     });
 
                 _validationRegistrar.AutoRegisterScopedValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(30);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(32);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
@@ -190,7 +190,7 @@ namespace AllOverIt.Validation.Tests
                 // registering the validator a second time will throw an error
                 Invoking(() =>
                 {
-                    ((ILifetimeValidationRegistry) invoker).Register<DummyModel, DummyModelValidator>(Create<ServiceLifetime>());
+                    ((ILifetimeValidationRegistry)invoker).Register<DummyModel, DummyModelValidator>(Create<ServiceLifetime>());
                 })
                    .Should()
                    .Throw<ValidationRegistryException>()
@@ -258,13 +258,13 @@ namespace AllOverIt.Validation.Tests
                     .CallsTo(fake => fake.Register(A<Type>.Ignored, A<Type>.Ignored, A<ServiceLifetime>.Ignored))
                     .Invokes(call =>
                     {
-                        var validatorType = (Type) call.Arguments[1];
+                        var validatorType = (Type)call.Arguments[1];
                         validators.Add(validatorType);
                     });
 
                 _validationRegistrar.AutoRegisterSingletonValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(30);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(32);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
@@ -282,7 +282,7 @@ namespace AllOverIt.Validation.Tests
                 // registering the validator a second time will throw an error
                 Invoking(() =>
                 {
-                    ((ILifetimeValidationRegistry) invoker).Register<DummyModel, DummyModelValidator>(Create<ServiceLifetime>());
+                    ((ILifetimeValidationRegistry)invoker).Register<DummyModel, DummyModelValidator>(Create<ServiceLifetime>());
                 })
                    .Should()
                    .Throw<ValidationRegistryException>()
@@ -350,13 +350,13 @@ namespace AllOverIt.Validation.Tests
                     .CallsTo(fake => fake.Register(A<Type>.Ignored, A<Type>.Ignored, A<ServiceLifetime>.Ignored))
                     .Invokes(call =>
                     {
-                        var validatorType = (Type) call.Arguments[1];
+                        var validatorType = (Type)call.Arguments[1];
                         validators.Add(validatorType);
                     });
 
                 _validationRegistrar.AutoRegisterValidators(registryFake.FakedObject, Create<ServiceLifetime>(), null);
 
-                validators.Should().HaveCount(30);      // All non-abstract validators in this assembly
+                validators.Should().HaveCount(32);      // All non-abstract validators in this assembly
 
                 validators.All(validator => !validator.IsAbstract).Should().BeTrue();
             }
@@ -374,7 +374,7 @@ namespace AllOverIt.Validation.Tests
                 // registering the validator a second time will throw an error
                 Invoking(() =>
                 {
-                    ((ILifetimeValidationRegistry) invoker).Register<DummyModel, DummyModelValidator>(Create<ServiceLifetime>());
+                    ((ILifetimeValidationRegistry)invoker).Register<DummyModel, DummyModelValidator>(Create<ServiceLifetime>());
                 })
                    .Should()
                    .Throw<ValidationRegistryException>()

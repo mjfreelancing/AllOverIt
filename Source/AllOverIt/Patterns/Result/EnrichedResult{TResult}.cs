@@ -22,14 +22,14 @@ public class EnrichedResult<TResult> : EnrichedResult
 
     /// <summary>Explicit operator to convert a result value to its <see cref="EnrichedResult{TResult}"/> equivalent.</summary>
     /// <param name="result">The result value to explicitly convert to.</param>
-    public static explicit operator EnrichedResult<TResult>(TResult result) => new(result);
+    public static explicit operator EnrichedResult<TResult>(TResult? result) => new(result);
 
     internal EnrichedResult()
         : base(true, null)
     {
     }
 
-    internal EnrichedResult(TResult value)
+    internal EnrichedResult(TResult? value)
         : base(true, null)
     {
         _value = value;

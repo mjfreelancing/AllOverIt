@@ -14,7 +14,7 @@ namespace AllOverIt.Validation.Tests.Validators
                 public int CompareTo { get; set; }
             }
 
-            private class DummyComparisonExclusiveBetweenExplicitValidator : ValidatorBase<DummyComparisonModel>
+            private class DummyComparisonExclusiveBetweenExplicitValidator : ValidatorBase<DummyDto>
             {
                 public DummyComparisonExclusiveBetweenExplicitValidator()
                 {
@@ -25,21 +25,21 @@ namespace AllOverIt.Validation.Tests.Validators
                 }
             }
 
-            private class DummyComparisonExclusiveBetweenContextValidator : ValidatorBase<DummyComparisonModel>
+            private class DummyComparisonExclusiveBetweenContextValidator : ValidatorBase<DummyDto>
             {
                 public DummyComparisonExclusiveBetweenContextValidator()
                 {
                     // nullable and non-nullable, context provided comparison value
-                    RuleFor(model => model.Value4).IsExclusiveBetween<DummyComparisonModel, int, ComparisonContext>(ctx => ctx.CompareFrom, ctx => ctx.CompareTo);
-                    RuleFor(model => model.Value5).IsExclusiveBetween<DummyComparisonModel, int, ComparisonContext>(ctx => ctx.CompareFrom, ctx => ctx.CompareTo);
-                    RuleFor(model => model.Value6).IsExclusiveBetween<DummyComparisonModel, int, ComparisonContext>(ctx => ctx.CompareFrom, ctx => ctx.CompareTo);
+                    RuleFor(model => model.Value4).IsExclusiveBetween<DummyDto, int, ComparisonContext>(ctx => ctx.CompareFrom, ctx => ctx.CompareTo);
+                    RuleFor(model => model.Value5).IsExclusiveBetween<DummyDto, int, ComparisonContext>(ctx => ctx.CompareFrom, ctx => ctx.CompareTo);
+                    RuleFor(model => model.Value6).IsExclusiveBetween<DummyDto, int, ComparisonContext>(ctx => ctx.CompareFrom, ctx => ctx.CompareTo);
                 }
             }
 
             [Fact]
             public void Should_Succeed_Validate_Explicit()
             {
-                var model = new DummyComparisonModel
+                var model = new DummyDto
                 {
                     Value3 = GetWithinRange(1, 9),
                     Value4 = GetWithinRange(1, 9),
@@ -56,7 +56,7 @@ namespace AllOverIt.Validation.Tests.Validators
             [Fact]
             public void Should_Fail_Validate_Explicit()
             {
-                var model = new DummyComparisonModel
+                var model = new DummyDto
                 {
                     Value3 = Create<bool>() ? 0 : 10,
                     Value4 = Create<bool>() ? 0 : 10,
@@ -73,17 +73,17 @@ namespace AllOverIt.Validation.Tests.Validators
                 {
                     new
                     {
-                        PropertyName = nameof(DummyComparisonModel.Value3),
+                        PropertyName = nameof(DummyDto.Value3),
                         ErrorCode = nameof(ValidationErrorCode.OutOfRange),
                         AttemptedValue = (object) model.Value3,
-                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value3)}' must be between 0 and 10 (exclusive)."
+                        ErrorMessage = $"'{nameof(DummyDto.Value3)}' must be between 0 and 10 (exclusive)."
                     },
                     new
                     {
-                        PropertyName = nameof(DummyComparisonModel.Value4),
+                        PropertyName = nameof(DummyDto.Value4),
                         ErrorCode = nameof(ValidationErrorCode.OutOfRange),
                         AttemptedValue = (object) model.Value4,
-                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value4)}' must be between 0 and 10 (exclusive)."
+                        ErrorMessage = $"'{nameof(DummyDto.Value4)}' must be between 0 and 10 (exclusive)."
                     }
                 };
 
@@ -93,7 +93,7 @@ namespace AllOverIt.Validation.Tests.Validators
             [Fact]
             public void Should_Succeed_Validate_Context()
             {
-                var model = new DummyComparisonModel
+                var model = new DummyDto
                 {
                     Value4 = 1,
                     Value5 = GetWithinRange(1, 1000),
@@ -106,7 +106,7 @@ namespace AllOverIt.Validation.Tests.Validators
                     CompareTo = 1001
                 };
 
-                var validationContext = new ValidationContext<DummyComparisonModel>(model);
+                var validationContext = new ValidationContext<DummyDto>(model);
                 validationContext.SetContextData(comparison);
 
                 var validator = new DummyComparisonExclusiveBetweenContextValidator();
@@ -125,14 +125,14 @@ namespace AllOverIt.Validation.Tests.Validators
                     CompareTo = GetWithinRange(1501, 1999)
                 };
 
-                var model = new DummyComparisonModel
+                var model = new DummyDto
                 {
                     Value4 = comparison.CompareFrom + 1,        // not out of range
                     Value5 = comparison.CompareFrom,
                     Value6 = comparison.CompareTo
                 };
 
-                var validationContext = new ValidationContext<DummyComparisonModel>(model);
+                var validationContext = new ValidationContext<DummyDto>(model);
                 validationContext.SetContextData(comparison);
 
                 var validator = new DummyComparisonExclusiveBetweenContextValidator();
@@ -145,17 +145,17 @@ namespace AllOverIt.Validation.Tests.Validators
                 {
                     new
                     {
-                        PropertyName = nameof(DummyComparisonModel.Value5),
+                        PropertyName = nameof(DummyDto.Value5),
                         ErrorCode = nameof(ValidationErrorCode.OutOfRange),
                         AttemptedValue = (object) model.Value5,
-                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value5)}' must be between {comparison.CompareFrom} and {comparison.CompareTo} (exclusive)."
+                        ErrorMessage = $"'{nameof(DummyDto.Value5)}' must be between {comparison.CompareFrom} and {comparison.CompareTo} (exclusive)."
                     },
                     new
                     {
-                        PropertyName = nameof(DummyComparisonModel.Value6),
+                        PropertyName = nameof(DummyDto.Value6),
                         ErrorCode = nameof(ValidationErrorCode.OutOfRange),
                         AttemptedValue = (object) model.Value6,
-                        ErrorMessage = $"'{nameof(DummyComparisonModel.Value6)}' must be between {comparison.CompareFrom} and {comparison.CompareTo} (exclusive)."
+                        ErrorMessage = $"'{nameof(DummyDto.Value6)}' must be between {comparison.CompareFrom} and {comparison.CompareTo} (exclusive)."
                     }
                 };
 

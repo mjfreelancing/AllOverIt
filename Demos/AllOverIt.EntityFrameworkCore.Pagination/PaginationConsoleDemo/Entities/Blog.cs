@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PaginationConsoleDemo.Entities
 {
-    [Index(nameof(Description), nameof(Id))]
+    [Index(nameof(Description), IsUnique = false)]
     public class Blog
     {
         public int Id { get; set; }

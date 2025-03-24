@@ -8,7 +8,7 @@ namespace AllOverIt.Validation.Tests.Validators
     // These tests implicitly test: RuleBuilderExtensions, ContextComparisonValidator, ValidatorBase
     public partial class ValidatorsFixture : FixtureBase
     {
-        private class DummyComparisonModel
+        private class DummyDto
         {
             public string Value1 { get; set; }
             public Guid Value2 { get; set; }
@@ -17,6 +17,11 @@ namespace AllOverIt.Validation.Tests.Validators
             public int? Value5 { get; set; }
             public int Value6 { get; set; }
             public IReadOnlyList<int> Value7 { get; set; }
+        }
+
+        private class DummyDtos
+        {
+            public List<DummyDto> Dtos { get; set; }
         }
 
         private class DummyModel

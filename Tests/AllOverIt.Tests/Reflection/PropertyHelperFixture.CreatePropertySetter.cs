@@ -81,7 +81,7 @@ namespace AllOverIt.Tests.Reflection
 
                 setter.Invoke(model, expected);
 
-                ((DummyStruct) model).Field1.Should().Be(expected);
+                ((DummyStruct)model).Field1.Should().Be(expected);
             }
 
             [Fact]
@@ -130,7 +130,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 Invoking(() =>
                 {
-                    _ = PropertyHelper.CreatePropertySetter<DummyBaseClass>((PropertyInfo) null);
+                    _ = PropertyHelper.CreatePropertySetter<DummyBaseClass>((PropertyInfo)null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -185,11 +185,11 @@ namespace AllOverIt.Tests.Reflection
         public class CreatePropertySetter_Typed_PropertyName : PropertyHelperFixture
         {
             [Fact]
-            public void Should_Throw_When_PropertyInfo_Null()
+            public void Should_Throw_When_PropertyName_Null()
             {
                 Invoking(() =>
                 {
-                    _ = PropertyHelper.CreatePropertySetter<DummyBaseClass>((string) null);
+                    _ = PropertyHelper.CreatePropertySetter<DummyBaseClass>((string)null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -237,6 +237,47 @@ namespace AllOverIt.Tests.Reflection
                    .Should()
                    .Throw<ReflectionException>()
                    .WithMessage($"The property {propertyName} on type {typeof(DummyBaseClass).GetFriendlyName()} does not exist.");
+            }
+        }
+
+        public class CreatePropertySetter_Typed_Property_PropertyName : PropertyHelperFixture
+        {
+            [Fact]
+            public void Should_Throw_When_PropertyName_Null()
+            {
+                Invoking(() =>
+                {
+                    _ = PropertyHelper.CreatePropertySetter<DummyBaseClass, int>((string)null);
+                })
+                    .Should()
+                    .Throw<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("propertyName");
+            }
+
+            [Fact]
+            public void Should_Create_Setter_Class()
+            {
+                var expected = Create<int>();
+                var model = new DummyBaseClass();
+
+                var setter = PropertyHelper.CreatePropertySetter<DummyBaseClass, int>(nameof(DummyBaseClass.Prop1));
+
+                setter.Invoke(model, expected);
+
+                model.Prop1.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Create_Setter_SuperClass()
+            {
+                var expected = Create<int>();
+                var model = new DummySuperClass();
+
+                var setter = PropertyHelper.CreatePropertySetter<DummySuperClass, int>(nameof(DummyBaseClass.Prop1));
+
+                setter.Invoke(model, expected);
+
+                model.Prop1.Should().Be(expected);
             }
         }
     }

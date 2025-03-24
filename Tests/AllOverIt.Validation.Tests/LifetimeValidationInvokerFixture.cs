@@ -54,10 +54,73 @@ namespace AllOverIt.Validation.Tests
             }
         }
 
-        private class DummyModelValidator2 : ValidatorBase<DummyModel>
+        private sealed class DisposableDependency : IDisposable
         {
-            public DummyModelValidator2(int _)
+            private bool _disposed;
+
+            internal Action Action { get; set; }
+
+            public bool RuleWasInvoked { get; set; }
+
+            public DisposableDependency()
             {
+            }
+
+            public async Task DoSomethingAsync()
+            {
+                if (_disposed)
+                {
+                    throw new InvalidOperationException("The async validation has not awaited because this dependency has already been disposed");
+                }
+
+                await Task.Delay(10);
+            }
+
+            public void Dispose()
+            {
+                Action?.Invoke();
+
+                _disposed = true;
+            }
+        }
+
+        private class DummyModelValidatorWithDependency : ValidatorBase<DummyModel>
+        {
+            public DummyModelValidatorWithDependency(DisposableDependency dependency)
+            {
+                // This is a specific test after fixing a bug where IDisposable dependencies would be disposed before the validation is invoked.
+                var disposed = false;
+                dependency.Action = () => { disposed = true; };
+
+                this.CustomRuleFor(
+                    model => model.ValueOne,
+                    (value, context) =>
+                    {
+                        disposed.Should().BeFalse();
+                        dependency.RuleWasInvoked = true;
+                    });
+            }
+        }
+
+        private class DummyModeAsyncValidatorWithDependency : ValidatorBase<DummyModel>
+        {
+            public DummyModeAsyncValidatorWithDependency(DisposableDependency dependency)
+            {
+                // This is a specific test after fixing a bug where IDisposable dependencies would be disposed before the validation is invoked.
+                var disposed = false;
+                dependency.Action = () => { disposed = true; };
+
+                this.CustomRuleForAsync(
+                    model => model.ValueOne,
+                    async (value, context, token) =>
+                    {
+                        disposed.Should().BeFalse();
+
+                        await dependency.DoSomethingAsync();
+
+                        disposed.Should().BeFalse();
+                        dependency.RuleWasInvoked = true;
+                    });
             }
         }
 
@@ -77,7 +140,7 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Throw_When_ServiceProvider_Not_Set()
             {
-                RegisterValidator(Create<bool>(), Create<ServiceLifetime>(), false);
+                RegisterDummyModelValidator(Create<bool>(), Create<ServiceLifetime>(), false);
 
                 var model = Create<DummyModel>();
 
@@ -96,7 +159,7 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Return_True_For_Registered_Model()
             {
-                RegisterValidator(true, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(true, Create<ServiceLifetime>());
 
                 _validationRegistry.ContainsModelRegistration<DummyModel>()
                     .Should()
@@ -117,7 +180,7 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Return_True_For_Registered_Model()
             {
-                RegisterValidator(false, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(false, Create<ServiceLifetime>());
 
                 _validationRegistry.ContainsModelRegistration(typeof(DummyModel))
                     .Should()
@@ -456,7 +519,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public void Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = new DummyModel();
 
@@ -491,6 +554,24 @@ namespace AllOverIt.Validation.Tests
 
                 expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
             }
+
+            [Fact]
+            public void Should_Dispose_Dependencies_After_Validation()
+            {
+                var dependency = new DisposableDependency();
+                _services.AddScoped(provider => dependency);
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModelValidatorWithDependency));
+                BuildServiceProvider();
+
+                var model = new DummyModel();
+
+                dependency.RuleWasInvoked.Should().BeFalse();
+
+                // The validator contains the actual assertion
+                _validationInvoker.Validate(model);
+
+                dependency.RuleWasInvoked.Should().BeTrue();
+            }
         }
 
         public class ValidateAsync_Type : LifetimeValidationInvokerFixture
@@ -500,7 +581,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public async Task Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = new DummyModel();
 
@@ -535,6 +616,24 @@ namespace AllOverIt.Validation.Tests
 
                 expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
             }
+
+            [Fact]
+            public async Task Should_Dispose_Dependencies_After_Validation()
+            {
+                var dependency = new DisposableDependency();
+                _services.AddScoped(provider => dependency);
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModeAsyncValidatorWithDependency));
+                BuildServiceProvider();
+
+                var model = new DummyModel();
+
+                dependency.RuleWasInvoked.Should().BeFalse();
+
+                // The validator contains the actual assertion
+                await _validationInvoker.ValidateAsync(model);
+
+                dependency.RuleWasInvoked.Should().BeTrue();
+            }
         }
 
         public class Validate_Type_Context : LifetimeValidationInvokerFixture
@@ -544,7 +643,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public void Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = Create<DummyModel>();
                 var comparisonContext = !model.ValueFour;
@@ -566,6 +665,25 @@ namespace AllOverIt.Validation.Tests
 
                 expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
             }
+
+            [Fact]
+            public void Should_Dispose_Dependencies_After_Validation()
+            {
+                var dependency = new DisposableDependency();
+                _services.AddScoped(provider => dependency);
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModelValidatorWithDependency));
+                BuildServiceProvider();
+
+                var model = new DummyModel();
+                var comparisonContext = !model.ValueFour;
+
+                dependency.RuleWasInvoked.Should().BeFalse();
+
+                // The validator contains the actual assertion
+                _validationInvoker.Validate(model, comparisonContext);
+
+                dependency.RuleWasInvoked.Should().BeTrue();
+            }
         }
 
         public class ValidateAsync_Type_Context : LifetimeValidationInvokerFixture
@@ -575,7 +693,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public async Task Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = Create<DummyModel>();
                 var comparisonContext = !model.ValueFour;
@@ -596,6 +714,25 @@ namespace AllOverIt.Validation.Tests
                 };
 
                 expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
+            }
+
+            [Fact]
+            public async Task Should_Dispose_Dependencies_After_Validation()
+            {
+                var dependency = new DisposableDependency();
+                _services.AddScoped(provider => dependency);
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModeAsyncValidatorWithDependency));
+                BuildServiceProvider();
+
+                var model = new DummyModel();
+                var comparisonContext = !model.ValueFour;
+
+                dependency.RuleWasInvoked.Should().BeFalse();
+
+                // The validator contains the actual assertion
+                await _validationInvoker.ValidateAsync(model, comparisonContext);
+
+                dependency.RuleWasInvoked.Should().BeTrue();
             }
         }
 
@@ -620,7 +757,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public void Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = new DummyModel();
 
@@ -641,7 +778,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public void Should_Not_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = Create<DummyModel>();
 
@@ -651,6 +788,25 @@ namespace AllOverIt.Validation.Tests
                 })
                 .Should()
                 .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Dispose_Dependencies_After_Validation()
+            {
+                var dependency = new DisposableDependency();
+                _services.AddScoped(provider => dependency);
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModelValidatorWithDependency));
+                BuildServiceProvider();
+
+                var model = new DummyModel();
+                var comparisonContext = !model.ValueFour;
+
+                dependency.RuleWasInvoked.Should().BeFalse();
+
+                // The validator contains the actual assertion
+                _validationInvoker.AssertValidation(model);
+
+                dependency.RuleWasInvoked.Should().BeTrue();
             }
         }
 
@@ -675,7 +831,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public async Task Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = new DummyModel();
 
@@ -696,7 +852,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public async Task Should_Not_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = Create<DummyModel>();
 
@@ -706,6 +862,25 @@ namespace AllOverIt.Validation.Tests
                 })
                     .Should()
                     .NotThrowAsync();
+            }
+
+            [Fact]
+            public async Task Should_Dispose_Dependencies_After_Validation()
+            {
+                var dependency = new DisposableDependency();
+                _services.AddScoped(provider => dependency);
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModeAsyncValidatorWithDependency));
+                BuildServiceProvider();
+
+                var model = new DummyModel();
+                var comparisonContext = !model.ValueFour;
+
+                dependency.RuleWasInvoked.Should().BeFalse();
+
+                // The validator contains the actual assertion
+                await _validationInvoker.AssertValidationAsync(model);
+
+                dependency.RuleWasInvoked.Should().BeTrue();
             }
         }
 
@@ -730,7 +905,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public void Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = new DummyModel();
                 var context = Create<bool>();
@@ -754,7 +929,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public void Should_Not_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = Create<DummyModel>();
                 var context = Create<bool>();
@@ -766,6 +941,25 @@ namespace AllOverIt.Validation.Tests
                 })
                .Should()
                .NotThrow();
+            }
+
+            [Fact]
+            public void Should_Dispose_Dependencies_After_Validation()
+            {
+                var dependency = new DisposableDependency();
+                _services.AddScoped(provider => dependency);
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModelValidatorWithDependency));
+                BuildServiceProvider();
+
+                var model = new DummyModel();
+                var comparisonContext = !model.ValueFour;
+
+                dependency.RuleWasInvoked.Should().BeFalse();
+
+                // The validator contains the actual assertion
+                _validationInvoker.AssertValidation(model, comparisonContext);
+
+                dependency.RuleWasInvoked.Should().BeTrue();
             }
         }
 
@@ -790,7 +984,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public async Task Should_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = new DummyModel();
                 var context = Create<bool>();
@@ -814,7 +1008,7 @@ namespace AllOverIt.Validation.Tests
             [InlineData(true)]
             public async Task Should_Not_Throw_When_Invoke_Validator(bool useStrongTyping)
             {
-                RegisterValidator(useStrongTyping, Create<ServiceLifetime>());
+                RegisterDummyModelValidator(useStrongTyping, Create<ServiceLifetime>());
 
                 var model = Create<DummyModel>();
                 var context = Create<bool>();
@@ -827,9 +1021,28 @@ namespace AllOverIt.Validation.Tests
                     .Should()
                     .NotThrowAsync();
             }
+
+            [Fact]
+            public async Task Should_Dispose_Dependencies_After_Validation()
+            {
+                var dependency = new DisposableDependency();
+                _services.AddScoped(provider => dependency);
+                _validationRegistry.RegisterScoped(typeof(DummyModel), typeof(DummyModeAsyncValidatorWithDependency));
+                BuildServiceProvider();
+
+                var model = new DummyModel();
+                var comparisonContext = !model.ValueFour;
+
+                dependency.RuleWasInvoked.Should().BeFalse();
+
+                // The validator contains the actual assertion
+                await _validationInvoker.AssertValidationAsync(model, comparisonContext);
+
+                dependency.RuleWasInvoked.Should().BeTrue();
+            }
         }
 
-        private void RegisterValidator(bool useStrongTyping, ServiceLifetime lifetime, bool setProvider = true)
+        private void RegisterDummyModelValidator(bool useStrongTyping, ServiceLifetime lifetime, bool setProvider = true)
         {
             if (useStrongTyping)
             {

@@ -31,9 +31,11 @@ namespace AllOverIt.Fixture
             _random = new Random((int)DateTime.Now.Ticks);
 #endif
 
-            Fixture.Customize<float>(composer => composer.FromFactory<int>(value => value * (0.5f + (float) _random.NextDouble())));
+            Fixture.Customize<float>(composer => composer.FromFactory<int>(value => value * (0.5f + (float)_random.NextDouble())));
             Fixture.Customize<double>(composer => composer.FromFactory<int>(value => value * (0.5d + _random.NextDouble())));
-            Fixture.Customize<decimal>(composer => composer.FromFactory<int>(value => value * (0.5m + (decimal) _random.NextDouble())));
+            Fixture.Customize<decimal>(composer => composer.FromFactory<int>(value => value * (0.5m + (decimal)_random.NextDouble())));
+            Fixture.Customize<DateOnly>(composer => composer.FromFactory<int>(value => DateOnly.FromDayNumber(_random.Next(0, DateOnly.MaxValue.DayNumber))));
+            Fixture.Customize<TimeOnly>(composer => composer.FromFactory<int>(value => new TimeOnly(_random.NextInt64(0, TimeOnly.MaxValue.Ticks))));
         }
 
         /// <summary>Constructor that supports customization of AutoFixture's Fixture.</summary>
@@ -468,7 +470,7 @@ namespace AllOverIt.Fixture
 
             constructor.Should().NotBeNull();
 
-            var exception = (Exception) constructor!.Invoke([message]);
+            var exception = (Exception)constructor!.Invoke([message]);
 
             exception.Message.Should().Be(message);
         }
@@ -495,7 +497,7 @@ namespace AllOverIt.Fixture
 
             constructor.Should().NotBeNull();
 
-            var exception = (Exception) constructor!.Invoke([message, innerException]);
+            var exception = (Exception)constructor!.Invoke([message, innerException]);
 
             exception.Message
                 .Should()
@@ -560,7 +562,7 @@ namespace AllOverIt.Fixture
             var enumCount = enumValues.Length;
             var index = _random.Next(1000) % enumCount;
 
-            return (TType) enumValues.GetValue(index)!;
+            return (TType)enumValues.GetValue(index)!;
         }
 
         private List<TType> CreateManyType<TType>(int count)
@@ -580,7 +582,7 @@ namespace AllOverIt.Fixture
               {
                   var index = _random.Next(1000) % enumCount;
 
-                  return (TType) enumValues.GetValue(index)!;
+                  return (TType)enumValues.GetValue(index)!;
               })
               .ToList();
         }

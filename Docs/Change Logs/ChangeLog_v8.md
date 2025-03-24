@@ -1,3 +1,32 @@
+#  Version 8.1.0
+## 24 Mar 2025
+
+### General
+* Multiple packages updated to use the latest version of their dependencies
+
+### AllOverIt
+* Made CreatePropertyGetterExpressionLambda<TType>(PropertyInfo propertyInfo) public
+* Added CreatePropertyGetterExpressionLambda<TType, TProperty>(string propertyName)
+* Added CreatePropertyGetter<TType, TProperty>(string propertyName)
+* Made CreatePropertySetterExpressionLambda<TType>(PropertyInfo propertyInfo) public
+* Made CreatePropertySetterExpressionLambda<TType, TProperty>(PropertyInfo propertyInfo) public
+* Added CreatePropertySetter<TType, TProperty>(string propertyName()
+* Applied some nullable reference corrections in EnrichedResult
+* Added a IsUnique() validator that caters for up to four properties
+* Added SetPropertyPathValue() and TrySetPropertyPathValue() object extensions that set a property value based on its path.
+* Add support for binary read/write DateOnly and TimeOnly
+
+### AllOverIt.EntityFrameworkCore.Pagination
+* Add support for DateOnly and TimeOnly
+
+### AllOverIt.Pagination
+* Add support for DateOnly and TimeOnly
+
+### AllOverIt.Validation
+* Fixed issue with the lifetime validation invoker disposing of IDisposable dependencies on the validator before the validation was invoked.
+
+---
+
 #  Version 8.0.0
 ## 26 Nov 2024
 
