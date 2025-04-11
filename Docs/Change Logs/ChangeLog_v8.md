@@ -1,3 +1,11 @@
+# NET 10 Updates
+
+### AllOverIt
+* EnumerableExtensions / AsyncEnumerableExtensions updates - Change Task to ValueTask and remove ToListAsync()
+  and ToArrayAsync() methods for NET 10 and above as these are not available in the runtime.
+
+---
+
 #  Version 8.1.0
 ## 24 Mar 2025
 

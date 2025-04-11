@@ -176,7 +176,7 @@ namespace AllOverIt.Extensions
         /// <returns>An array containing a flattened list of projected items.</returns>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>An array containing a flattened list of projected items.</returns>
-        public static Task<TResult[]> SelectManyToArrayAsync<TType, TResult>(this IEnumerable<TType> items,
+        public static ValueTask<TResult[]> SelectManyToArrayAsync<TType, TResult>(this IEnumerable<TType> items,
             Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull();
@@ -194,7 +194,7 @@ namespace AllOverIt.Extensions
         /// <param name="selector">The transform function to be applied to each element.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>A <see cref="List{T}"/> containing a flattened list of projected items.</returns>
-        public static Task<List<TResult>> SelectManyToListAsync<TType, TResult>(this IEnumerable<TType> items,
+        public static ValueTask<List<TResult>> SelectManyToListAsync<TType, TResult>(this IEnumerable<TType> items,
             Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull();
@@ -212,7 +212,7 @@ namespace AllOverIt.Extensions
         /// <param name="selector">The transform function to be applied to each element.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>A <see cref="ReadOnlyCollection{T}"/> containing a flattened list of projected items.</returns>
-        public static Task<ReadOnlyCollection<TResult>> SelectManyToReadOnlyCollectionAsync<TType, TResult>(this IEnumerable<TType> items,
+        public static ValueTask<ReadOnlyCollection<TResult>> SelectManyToReadOnlyCollectionAsync<TType, TResult>(this IEnumerable<TType> items,
             Func<TType, CancellationToken, Task<IEnumerable<TResult>>> selector, CancellationToken cancellationToken = default)
         {
             _ = items.WhenNotNull();

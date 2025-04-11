@@ -24,7 +24,51 @@ namespace AllOverIt.Tests.Extensions
         public AsyncEnumerableExtensionsFixture()
         {
             _parentsArray = CreateMany<DummyParent>().ToArray();
-            _parents = AsAsyncEnumerable(_parentsArray);
+            _parents = ToCancellableAsyncEnumerable(_parentsArray);
+        }
+
+        public class ToReadOnlyCollectionAsync : AsyncEnumerableExtensionsFixture
+        {
+            [Fact]
+            public async Task Should_Throw_When_Null()
+            {
+                await Invoking(
+                    async () =>
+                    {
+                        IAsyncEnumerable<bool> items = null;
+
+                        await items.ToReadOnlyCollectionAsync();
+                    })
+                    .Should()
+                    .ThrowAsync<ArgumentNullException>()
+                    .WithNamedMessageWhenNull("items");
+            }
+
+            [Fact]
+            public async Task Should_Convert_To_ReadOnlyCollection()
+            {
+                var expected = CreateMany<string>();
+
+                var actual = await ToCancellableAsyncEnumerable(expected).ToReadOnlyCollectionAsync();
+
+                actual.Should().BeOfType<ReadOnlyCollection<string>>();
+
+                expected.Should().BeEquivalentTo(actual);
+            }
+
+            [Fact]
+            public async Task Should_Throw_When_Cancelled()
+            {
+                var cancellationTokenSource = new CancellationTokenSource();
+                cancellationTokenSource.Cancel();
+
+                await Invoking(async () =>
+                {
+                    await ToCancellableAsyncEnumerable(CreateMany<string>()).ToReadOnlyCollectionAsync(cancellationTokenSource.Token);
+                })
+                    .Should()
+                    .ThrowAsync<OperationCanceledException>();
+            }
         }
 
         public class SelectAsync : AsyncEnumerableExtensionsFixture
@@ -51,7 +95,7 @@ namespace AllOverIt.Tests.Extensions
                         async () =>
                         {
                             await _parents
-                                .SelectAsync<DummyParent, DummyParent>((Func<DummyParent, CancellationToken, Task<DummyParent>>) null)
+                                .SelectAsync<DummyParent, DummyParent>((Func<DummyParent, CancellationToken, Task<DummyParent>>)null)
                                 .ToListAsync();
                         })
                     .Should()
@@ -103,16 +147,6 @@ namespace AllOverIt.Tests.Extensions
 
                 expected.Should().BeEquivalentTo(actual);
             }
-
-            private static async IAsyncEnumerable<bool> AsAsyncEnumerable(IEnumerable<bool> items)
-            {
-                foreach (var item in items)
-                {
-                    yield return item;
-                }
-
-                await Task.CompletedTask;
-            }
         }
 
         public class SelectManyAsync : AsyncEnumerableExtensionsFixture
@@ -141,7 +175,7 @@ namespace AllOverIt.Tests.Extensions
                     async () =>
                     {
                         await _parents
-                            .SelectManyAsync((Func<DummyParent, IEnumerable<DummyChild>>) null)
+                            .SelectManyAsync((Func<DummyParent, IEnumerable<DummyChild>>)null)
                             .ToListAsync();
                     })
                     .Should()
@@ -218,7 +252,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(
                     async () =>
                     {
-                        await _parents.SelectManyToArrayAsync((Func<DummyParent, IEnumerable<DummyChild>>) null);
+                        await _parents.SelectManyToArrayAsync((Func<DummyParent, IEnumerable<DummyChild>>)null);
                     })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -282,7 +316,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(
                     async () =>
                     {
-                        await _parents.SelectManyToListAsync((Func<DummyParent, IEnumerable<DummyChild>>) null);
+                        await _parents.SelectManyToListAsync((Func<DummyParent, IEnumerable<DummyChild>>)null);
                     })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -346,7 +380,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(
                     async () =>
                     {
-                        await _parents.SelectManyToReadOnlyCollectionAsync((Func<DummyParent, IEnumerable<DummyChild>>) null);
+                        await _parents.SelectManyToReadOnlyCollectionAsync((Func<DummyParent, IEnumerable<DummyChild>>)null);
                     })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -413,7 +447,7 @@ namespace AllOverIt.Tests.Extensions
                     async () =>
                     {
                         await _parents
-                            .SelectManyAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>) null)
+                            .SelectManyAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>)null)
                             .ToListAsync();
                     })
                     .Should()
@@ -490,7 +524,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(
                     async () =>
                     {
-                        await _parents.SelectManyToArrayAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>) null);
+                        await _parents.SelectManyToArrayAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>)null);
                     })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -554,7 +588,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(
                     async () =>
                     {
-                        await _parents.SelectManyToListAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>) null);
+                        await _parents.SelectManyToListAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>)null);
                     })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -618,7 +652,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(
                     async () =>
                     {
-                        await _parents.SelectManyToReadOnlyCollectionAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>) null);
+                        await _parents.SelectManyToReadOnlyCollectionAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>)null);
                     })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -659,6 +693,8 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
+#if !NET10_0_OR_GREATER
+
         public class ToArrayAsync : AsyncEnumerableExtensionsFixture
         {
             [Fact]
@@ -681,7 +717,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var expected = CreateMany<string>();
 
-                var actual = await GetStrings(expected).ToArrayAsync();
+                var actual = await ToCancellableAsyncEnumerable(expected).ToArrayAsync();
 
                 actual.Should().BeOfType<string[]>();
 
@@ -696,7 +732,7 @@ namespace AllOverIt.Tests.Extensions
 
                 await Invoking(async () =>
                     {
-                        await GetStrings(CreateMany<string>()).ToArrayAsync(cancellationTokenSource.Token);
+                        await ToCancellableAsyncEnumerable(CreateMany<string>()).ToArrayAsync(cancellationTokenSource.Token);
                     })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -725,7 +761,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var expected = CreateMany<string>();
 
-                var actual = await GetStrings(expected).ToListAsync();
+                var actual = await ToCancellableAsyncEnumerable(expected).ToListAsync();
 
                 actual.Should().BeOfType<List<string>>();
 
@@ -740,56 +776,14 @@ namespace AllOverIt.Tests.Extensions
 
                 await Invoking(async () =>
                 {
-                    await GetStrings(CreateMany<string>()).ToListAsync(cancellationTokenSource.Token);
+                    await ToCancellableAsyncEnumerable(CreateMany<string>()).ToListAsync(cancellationTokenSource.Token);
                 })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
             }
         }
 
-        public class ToReadOnlyCollectionAsync : AsyncEnumerableExtensionsFixture
-        {
-            [Fact]
-            public async Task Should_Throw_When_Null()
-            {
-                await Invoking(
-                    async () =>
-                    {
-                        IAsyncEnumerable<bool> items = null;
-
-                        await items.ToReadOnlyCollectionAsync();
-                    })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("items");
-            }
-
-            [Fact]
-            public async Task Should_Convert_To_ReadOnlyCollection()
-            {
-                var expected = CreateMany<string>();
-
-                var actual = await GetStrings(expected).ToReadOnlyCollectionAsync();
-
-                actual.Should().BeOfType<ReadOnlyCollection<string>>();
-
-                expected.Should().BeEquivalentTo(actual);
-            }
-
-            [Fact]
-            public async Task Should_Throw_When_Cancelled()
-            {
-                var cancellationTokenSource = new CancellationTokenSource();
-                cancellationTokenSource.Cancel();
-
-                await Invoking(async () =>
-                {
-                    await GetStrings(CreateMany<string>()).ToReadOnlyCollectionAsync(cancellationTokenSource.Token);
-                })
-                    .Should()
-                    .ThrowAsync<OperationCanceledException>();
-            }
-        }
+#endif
 
         public class SelectToArrayAsync : AsyncEnumerableExtensionsFixture
         {
@@ -798,7 +792,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 await Invoking(async () =>
                 {
-                    _ = await AsyncEnumerableExtensions.SelectToArrayAsync<int, int>((IAsyncEnumerable<int>) null, item => Create<int>());
+                    _ = await AsyncEnumerableExtensions.SelectToArrayAsync<int, int>((IAsyncEnumerable<int>)null, item => Create<int>());
                 })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -811,7 +805,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = CreateMany<string>();
                 var expected = items.ToDictionary(item => item, _ => Create<string>());
 
-                var actual = await GetStrings(items).SelectToArrayAsync(item => expected[item]);
+                var actual = await ToCancellableAsyncEnumerable(items).SelectToArrayAsync(item => expected[item]);
 
                 actual.Should().BeOfType<string[]>();
 
@@ -826,7 +820,7 @@ namespace AllOverIt.Tests.Extensions
 
                 await Invoking(async () =>
                 {
-                    await GetStrings(CreateMany<string>()).SelectToArrayAsync(item => item, cancellationTokenSource.Token);
+                    await ToCancellableAsyncEnumerable(CreateMany<string>()).SelectToArrayAsync(item => item, cancellationTokenSource.Token);
                 })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -840,7 +834,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 await Invoking(async () =>
                 {
-                    _ = await AsyncEnumerableExtensions.SelectToListAsync<int, int>((IAsyncEnumerable<int>) null, item => Create<int>());
+                    _ = await AsyncEnumerableExtensions.SelectToListAsync<int, int>((IAsyncEnumerable<int>)null, item => Create<int>());
                 })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -853,7 +847,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = CreateMany<string>();
                 var expected = items.ToDictionary(item => item, _ => Create<string>());
 
-                var actual = await GetStrings(items).SelectToListAsync(item => expected[item]);
+                var actual = await ToCancellableAsyncEnumerable(items).SelectToListAsync(item => expected[item]);
 
                 actual.Should().BeOfType<List<string>>();
 
@@ -868,7 +862,7 @@ namespace AllOverIt.Tests.Extensions
 
                 await Invoking(async () =>
                 {
-                    await GetStrings(CreateMany<string>()).SelectToListAsync(item => item, cancellationTokenSource.Token);
+                    await ToCancellableAsyncEnumerable(CreateMany<string>()).SelectToListAsync(item => item, cancellationTokenSource.Token);
                 })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -882,7 +876,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 await Invoking(async () =>
                 {
-                    _ = await AsyncEnumerableExtensions.SelectToReadOnlyCollectionAsync<int, int>((IAsyncEnumerable<int>) null, item => Create<int>());
+                    _ = await AsyncEnumerableExtensions.SelectToReadOnlyCollectionAsync<int, int>((IAsyncEnumerable<int>)null, item => Create<int>());
                 })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -895,7 +889,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = CreateMany<string>();
                 var expected = items.ToDictionary(item => item, _ => Create<string>());
 
-                var actual = await GetStrings(items).SelectToReadOnlyCollectionAsync(item => expected[item]);
+                var actual = await ToCancellableAsyncEnumerable(items).SelectToReadOnlyCollectionAsync(item => expected[item]);
 
                 actual.Should().BeOfType<ReadOnlyCollection<string>>();
 
@@ -910,7 +904,7 @@ namespace AllOverIt.Tests.Extensions
 
                 await Invoking(async () =>
                 {
-                    await GetStrings(CreateMany<string>()).SelectToReadOnlyCollectionAsync(item => item, cancellationTokenSource.Token);
+                    await ToCancellableAsyncEnumerable(CreateMany<string>()).SelectToReadOnlyCollectionAsync(item => item, cancellationTokenSource.Token);
                 })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -924,7 +918,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 await Invoking(async () =>
                 {
-                    _ = await AsyncEnumerableExtensions.SelectToArrayAsync<int, int>((IAsyncEnumerable<int>) null, (item, token) => Task.FromResult(Create<int>()));
+                    _ = await AsyncEnumerableExtensions.SelectToArrayAsync<int, int>((IAsyncEnumerable<int>)null, (item, token) => Task.FromResult(Create<int>()));
                 })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -937,7 +931,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = CreateMany<string>();
                 var expected = items.ToDictionary(item => item, _ => Create<string>());
 
-                var actual = await GetStrings(items).SelectToArrayAsync((item, token) => Task.FromResult(expected[item]));
+                var actual = await ToCancellableAsyncEnumerable(items).SelectToArrayAsync((item, token) => Task.FromResult(expected[item]));
 
                 actual.Should().BeOfType<string[]>();
 
@@ -952,7 +946,7 @@ namespace AllOverIt.Tests.Extensions
 
                 await Invoking(async () =>
                 {
-                    await GetStrings(CreateMany<string>()).SelectToArrayAsync((item, token) => Task.FromResult(item), cancellationTokenSource.Token);
+                    await ToCancellableAsyncEnumerable(CreateMany<string>()).SelectToArrayAsync((item, token) => Task.FromResult(item), cancellationTokenSource.Token);
                 })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -966,7 +960,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 await Invoking(async () =>
                 {
-                    _ = await AsyncEnumerableExtensions.SelectToListAsync<int, int>((IAsyncEnumerable<int>) null, (item, token) => Task.FromResult(Create<int>()));
+                    _ = await AsyncEnumerableExtensions.SelectToListAsync<int, int>((IAsyncEnumerable<int>)null, (item, token) => Task.FromResult(Create<int>()));
                 })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -979,7 +973,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = CreateMany<string>();
                 var expected = items.ToDictionary(item => item, _ => Create<string>());
 
-                var actual = await GetStrings(items).SelectToListAsync((item, token) => Task.FromResult(expected[item]));
+                var actual = await ToCancellableAsyncEnumerable(items).SelectToListAsync((item, token) => Task.FromResult(expected[item]));
 
                 actual.Should().BeOfType<List<string>>();
 
@@ -994,7 +988,7 @@ namespace AllOverIt.Tests.Extensions
 
                 await Invoking(async () =>
                 {
-                    await GetStrings(CreateMany<string>()).SelectToListAsync((item, token) => Task.FromResult(item), cancellationTokenSource.Token);
+                    await ToCancellableAsyncEnumerable(CreateMany<string>()).SelectToListAsync((item, token) => Task.FromResult(item), cancellationTokenSource.Token);
                 })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -1008,7 +1002,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 await Invoking(async () =>
                 {
-                    _ = await AsyncEnumerableExtensions.SelectToReadOnlyCollectionAsync<int, int>((IAsyncEnumerable<int>) null, (item, token) => Task.FromResult(Create<int>()));
+                    _ = await AsyncEnumerableExtensions.SelectToReadOnlyCollectionAsync<int, int>((IAsyncEnumerable<int>)null, (item, token) => Task.FromResult(Create<int>()));
                 })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -1021,7 +1015,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = CreateMany<string>();
                 var expected = items.ToDictionary(item => item, _ => Create<string>());
 
-                var actual = await GetStrings(items).SelectToReadOnlyCollectionAsync((item, token) => Task.FromResult(expected[item]));
+                var actual = await ToCancellableAsyncEnumerable(items).SelectToReadOnlyCollectionAsync((item, token) => Task.FromResult(expected[item]));
 
                 actual.Should().BeOfType<ReadOnlyCollection<string>>();
 
@@ -1036,7 +1030,7 @@ namespace AllOverIt.Tests.Extensions
 
                 await Invoking(async () =>
                 {
-                    await GetStrings(CreateMany<string>()).SelectToReadOnlyCollectionAsync((item, token) => Task.FromResult(item), cancellationTokenSource.Token);
+                    await ToCancellableAsyncEnumerable(CreateMany<string>()).SelectToReadOnlyCollectionAsync((item, token) => Task.FromResult(item), cancellationTokenSource.Token);
                 })
                     .Should()
                     .ThrowAsync<OperationCanceledException>();
@@ -1070,7 +1064,7 @@ namespace AllOverIt.Tests.Extensions
 
                     var values = Create<string>();
 
-                    await AsAsyncEnumerable(values).ForEachAsync((item, index) =>
+                    await ToCancellableAsyncEnumerable(values).ForEachAsync((item, index) =>
                     {
                         if (index > 1)
                         {
@@ -1091,7 +1085,7 @@ namespace AllOverIt.Tests.Extensions
                 var values = Create<string>();
                 var count = 0;
 
-                await AsAsyncEnumerable(values).ForEachAsync((item, index) =>
+                await ToCancellableAsyncEnumerable(values).ForEachAsync((item, index) =>
                 {
                     item.Should().Be(values.ElementAt(index));
                     count++;
@@ -1128,7 +1122,7 @@ namespace AllOverIt.Tests.Extensions
 
                     var values = Create<string>();
 
-                    await AsAsyncEnumerable(values).ForEachAsync((item, index) =>
+                    await ToCancellableAsyncEnumerable(values).ForEachAsync((item, index) =>
                     {
                         if (index > 1)
                         {
@@ -1151,7 +1145,7 @@ namespace AllOverIt.Tests.Extensions
                 var values = Create<string>();
                 var count = 0;
 
-                await AsAsyncEnumerable(values).ForEachAsync((item, index) =>
+                await ToCancellableAsyncEnumerable(values).ForEachAsync((item, index) =>
                 {
                     item.Should().Be(values.ElementAt(index));
                     count++;
@@ -1193,7 +1187,7 @@ namespace AllOverIt.Tests.Extensions
                     var values = Create<string>();
                     var expectedValues = values.Select((item, index) => (item, index)).AsReadOnlyCollection();
 
-                    await foreach (var (value, idx) in AsAsyncEnumerable(values).WithIndexAsync(cts.Token))
+                    await foreach (var (value, idx) in ToCancellableAsyncEnumerable(values).WithIndexAsync(cts.Token))
                     {
                         index++;
 
@@ -1217,7 +1211,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var index = 0;
 
-                await foreach (var (value, idx) in AsAsyncEnumerable(values).WithIndexAsync())
+                await foreach (var (value, idx) in ToCancellableAsyncEnumerable(values).WithIndexAsync())
                 {
                     var expected = expectedValues.ElementAt(index++);
 
@@ -1228,34 +1222,69 @@ namespace AllOverIt.Tests.Extensions
             }
         }
 
-        private static async IAsyncEnumerable<TType> AsAsyncEnumerable<TType>(IEnumerable<TType> items)
-        {
-            foreach (var item in items)
-            {
-                yield return item;
-            }
 
-            await Task.CompletedTask;
+
+
+        // TODO: Make this a public extension method
+        private static IAsyncEnumerable<TType> ToCancellableAsyncEnumerable<TType>(IEnumerable<TType> items)
+        {
+            return new CancellableAsyncEnumerableSource<TType>(items);
         }
 
-        private static async IAsyncEnumerable<string> GetStrings(IEnumerable<string> strings)
-        {
-            foreach (var item in strings)
-            {
-                await Task.Yield();
 
-                yield return item;
+
+
+        // TODO: Make this a publicly available class
+        private sealed class CancellableAsyncEnumerableSource<TType> : IAsyncEnumerable<TType>
+        {
+            private readonly IEnumerable<TType> _items;
+
+            public CancellableAsyncEnumerableSource(IEnumerable<TType> items)
+            {
+                _items = items;
+            }
+
+            public IAsyncEnumerator<TType> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+            {
+                return new CancellableAsyncEnumerator(_items, cancellationToken);
+            }
+
+            private sealed class CancellableAsyncEnumerator : IAsyncEnumerator<TType>
+            {
+                private readonly IEnumerator<TType> _enumerator;
+                private readonly CancellationToken _cancellationToken;
+
+                public CancellableAsyncEnumerator(IEnumerable<TType> items, CancellationToken cancellationToken)
+                {
+                    _enumerator = items.GetEnumerator();
+                    _cancellationToken = cancellationToken;
+                }
+
+                public TType Current => _enumerator.Current;
+
+                public async ValueTask<bool> MoveNextAsync()
+                {
+                    _cancellationToken.ThrowIfCancellationRequested();
+
+                    // Ensure asynchronous execution
+                    await Task.Yield();
+
+                    _cancellationToken.ThrowIfCancellationRequested();
+
+                    return _enumerator.MoveNext();
+                }
+
+                public ValueTask DisposeAsync()
+                {
+                    _enumerator.Dispose();
+                    return ValueTask.CompletedTask;
+                }
             }
         }
 
-        private static async IAsyncEnumerable<DummyParent> AsAsyncEnumerable(IEnumerable<DummyParent> items)
-        {
-            foreach (var item in items)
-            {
-                yield return item;
-            }
 
-            await Task.CompletedTask;
-        }
+
+
+
     }
 }
