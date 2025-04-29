@@ -304,9 +304,9 @@ namespace AllOverIt.Extensions
         {
             _ = items.WhenNotNull();
 
-            return Impl(items.WithCancellation(cancellationToken).ConfigureAwait(false), selector, cancellationToken);
+            return Impl(items.WithCancellation(cancellationToken).ConfigureAwait(false), selector);
 
-            static async ValueTask<List<TResult>> Impl(ConfiguredCancelableAsyncEnumerable<TSource> source, Func<TSource, TResult> selector, CancellationToken cancellationToken)
+            static async ValueTask<List<TResult>> Impl(ConfiguredCancelableAsyncEnumerable<TSource> source, Func<TSource, TResult> selector)
             {
                 List<TResult> list = [];
 

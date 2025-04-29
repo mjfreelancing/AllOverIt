@@ -15,12 +15,11 @@ namespace AllOverIt.Mapping
             var sourceProps = GetFilteredSourcePropertyInfo(sourceType, options);
             var targetProps = GetFilteredTargetPropertyInfo(targetType, options);
 
-            return sourceProps
+            return [.. sourceProps
                 .FindMatches(
                     targetProps,
                     src => GetTargetAliasName(src.Name, options),
-                    target => target.Name)
-                .ToArray();
+                    target => target.Name)];
         }
 
         internal static string GetTargetAliasName(string sourceName, PropertyMatcherOptions options)

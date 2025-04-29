@@ -40,10 +40,9 @@ namespace AllOverIt.Fixture.Assertions
         {
             ClassType = classType.WhenNotNull();
 
-            _allProperties = classType
+            _allProperties = [.. classType
                 .GetPropertyInfo(BindingOptions.All, declaredOnly)
-                .Where(propInfo => !propInfo.IsCompilerGenerated())     // Exclude record compiler generated 'EqualityContract'
-                .ToArray();
+                .Where(propInfo => !propInfo.IsCompilerGenerated())];
         }
 
         /// <summary>Filters the properties to only those specified in <paramref name="propertyNames"/>. Property names

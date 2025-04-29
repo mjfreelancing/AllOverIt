@@ -13,7 +13,7 @@ namespace AllOverIt.Tests.Extensions
         {
             public WhenBigEndian()
             {
-                EndianExtensions._isLittleEndian = false;
+                EndianExtensions.InternalIsLittleEndian = false;
             }
 
             [Fact]
@@ -202,7 +202,7 @@ namespace AllOverIt.Tests.Extensions
         {
             public WhenLittleEndian()
             {
-                EndianExtensions._isLittleEndian = true;
+                EndianExtensions.InternalIsLittleEndian = true;
             }
 
             [Fact]

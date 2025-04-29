@@ -23,10 +23,9 @@ namespace AllOverIt.DependencyInjection
         {
             _implementationCandidates = new Lazy<Type[]>(() =>
             {
-                return GetType().Assembly
+                return [.. GetType().Assembly
                     .GetTypes()
-                    .Where(type => type.IsClass && !type.IsGenericType && !type.IsNested && !type.IsAbstract)
-                    .ToArray();
+                    .Where(type => type.IsClass && !type.IsGenericType && !type.IsNested && !type.IsAbstract)];
             });
         }
 

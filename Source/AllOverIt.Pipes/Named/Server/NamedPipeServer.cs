@@ -184,7 +184,7 @@ namespace AllOverIt.Pipes.Named.Server
 
             using (_connections.GetReadLock(false))
             {
-                targetConnections = _connections.Where(predicate).ToArray();
+                targetConnections = [.. _connections.Where(predicate)];
             }
 
             List<Exception>? exceptions = [];

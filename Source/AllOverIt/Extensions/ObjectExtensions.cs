@@ -23,7 +23,7 @@ namespace AllOverIt.Extensions
         private static class ObjectConversionHelper
         {
             // instance, instance type, convertTo type, convertTo value
-            private static readonly Func<object?, Type, Type, object?>[] _asConverters =
+            private static readonly Func<object?, Type, Type, object?>[] AsConverters =
             [
                 AsSameTypeOrObject,
                 AsFromIntegralToBool,
@@ -45,7 +45,7 @@ namespace AllOverIt.Extensions
                 var instanceType = instance.GetType();
                 var convertToType = typeof(TType);
 
-                var convertedValue = _asConverters
+                var convertedValue = AsConverters
                     .Select(func => func.Invoke(instance, instanceType, convertToType))
                     .Where(result => result is not null)
                     .FirstOrDefault();

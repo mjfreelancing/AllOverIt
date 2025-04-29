@@ -227,7 +227,7 @@ namespace AllOverIt.Tests.Extensions
                 var sameReference = ReferenceEquals(dictionary, actual);
 
                 sameReference.Should().BeFalse();
-                actual.Should().BeOfType<List<KeyValuePair<int, string>>>();
+                actual.Should().BeAssignableTo<IReadOnlyList<KeyValuePair<int, string>>>();
             }
         }
 
@@ -344,7 +344,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<bool> items = [];
 
-                        await items.SelectAsync((Func<bool, CancellationToken, Task<bool>>) null).ToListAsync();
+                        await items.SelectAsync((Func<bool, CancellationToken, Task<bool>>)null).ToListAsync();
                     })
                   .Should()
                   .ThrowAsync<ArgumentNullException>()
@@ -423,7 +423,7 @@ namespace AllOverIt.Tests.Extensions
                     async () =>
                     {
                         await _parents
-                            .SelectManyAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>) null)
+                            .SelectManyAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>)null)
                             .ToListAsync();
                     })
                   .Should()
@@ -499,7 +499,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                     {
-                        _parents.SelectManyToArray((Func<DummyParent, IEnumerable<DummyChild>>) null);
+                        _parents.SelectManyToArray((Func<DummyParent, IEnumerable<DummyChild>>)null);
                     })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -563,7 +563,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    _parents.SelectManyToList((Func<DummyParent, IEnumerable<DummyChild>>) null);
+                    _parents.SelectManyToList((Func<DummyParent, IEnumerable<DummyChild>>)null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -627,7 +627,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 Invoking(() =>
                 {
-                    _parents.SelectManyToReadOnlyCollection((Func<DummyParent, IEnumerable<DummyChild>>) null);
+                    _parents.SelectManyToReadOnlyCollection((Func<DummyParent, IEnumerable<DummyChild>>)null);
                 })
                     .Should()
                     .Throw<ArgumentNullException>()
@@ -700,7 +700,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(
                     async () =>
                     {
-                        await _parents.SelectManyToArrayAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>) null);
+                        await _parents.SelectManyToArrayAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>)null);
                     })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -781,7 +781,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(
                     async () =>
                     {
-                        await _parents.SelectManyToListAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>) null);
+                        await _parents.SelectManyToListAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>)null);
                     })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -862,7 +862,7 @@ namespace AllOverIt.Tests.Extensions
                 await Invoking(
                     async () =>
                     {
-                        await _parents.SelectManyToReadOnlyCollectionAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>) null);
+                        await _parents.SelectManyToReadOnlyCollectionAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>)null);
                     })
                     .Should()
                     .ThrowAsync<ArgumentNullException>()
@@ -928,7 +928,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<bool> items = [];
 
-                        await items.SelectAsParallelAsync((Func<bool, CancellationToken, Task<bool>>) null, 1).ToListAsync();
+                        await items.SelectAsParallelAsync((Func<bool, CancellationToken, Task<bool>>)null, 1).ToListAsync();
                     })
                   .Should()
                   .ThrowAsync<ArgumentNullException>()
@@ -992,7 +992,7 @@ namespace AllOverIt.Tests.Extensions
 
                     counts.Enqueue(count);
 
-                    await Task.Delay((int) Math.Floor(rnd.NextDouble() * 25), token);
+                    await Task.Delay((int)Math.Floor(rnd.NextDouble() * 25), token);
 
                     Interlocked.Decrement(ref counter);
 
@@ -1030,7 +1030,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<bool> items = [];
 
-                        items.SelectToArray((Func<bool, bool>) null);
+                        items.SelectToArray((Func<bool, bool>)null);
                     })
                   .Should()
                   .Throw<ArgumentNullException>()
@@ -1084,7 +1084,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<bool> items = [];
 
-                        items.SelectToList((Func<bool, bool>) null);
+                        items.SelectToList((Func<bool, bool>)null);
                     })
                   .Should()
                   .Throw<ArgumentNullException>()
@@ -1138,7 +1138,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<bool> items = [];
 
-                        items.SelectToReadOnlyCollection((Func<bool, bool>) null);
+                        items.SelectToReadOnlyCollection((Func<bool, bool>)null);
                     })
                   .Should()
                   .Throw<ArgumentNullException>()
@@ -1202,7 +1202,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<bool> items = [];
 
-                        return items.SelectToArrayAsync((Func<bool, CancellationToken, Task<bool>>) null);
+                        return items.SelectToArrayAsync((Func<bool, CancellationToken, Task<bool>>)null);
                     })
                   .Should()
                   .ThrowAsync<ArgumentNullException>()
@@ -1256,7 +1256,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<bool> items = [];
 
-                        return items.SelectToListAsync((Func<bool, CancellationToken, Task<bool>>) null);
+                        return items.SelectToListAsync((Func<bool, CancellationToken, Task<bool>>)null);
                     })
                   .Should()
                   .ThrowAsync<ArgumentNullException>()
@@ -1310,7 +1310,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         IEnumerable<bool> items = [];
 
-                        return items.SelectToReadOnlyCollectionAsync((Func<bool, CancellationToken, Task<bool>>) null);
+                        return items.SelectToReadOnlyCollectionAsync((Func<bool, CancellationToken, Task<bool>>)null);
                     })
                   .Should()
                   .ThrowAsync<ArgumentNullException>()

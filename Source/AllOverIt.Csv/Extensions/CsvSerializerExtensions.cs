@@ -83,7 +83,7 @@ namespace AllOverIt.Csv.Extensions
 
                     var values = valuesResolver.Invoke(field, identifier);
 
-                    values ??= Enumerable.Repeat((object?) null, identifier.Names.Length).ToArray();
+                    values ??= [.. Enumerable.Repeat((object?)null, identifier.Names.Length)];
 
                     if (values.Length != columnCount)
                     {

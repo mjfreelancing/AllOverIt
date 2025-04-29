@@ -362,7 +362,7 @@ namespace AllOverIt.Extensions
 
                 if (backtickIndex != -1)
                 {
-                    typeName = typeName.Remove(backtickIndex);
+                    typeName = typeName[..backtickIndex];
                 }
 
                 var genericTypeNames = type.GetGenericArguments().Select(type => GetFriendlyName(type, false));
@@ -425,7 +425,7 @@ namespace AllOverIt.Extensions
         {
             var listType = CommonTypes.ListGenericType.MakeGenericType([type]);
 
-            return (IList) Activator.CreateInstance(listType)!;
+            return (IList)Activator.CreateInstance(listType)!;
         }
 
         private static bool IsRawGenericType(this Type type, Type generic)

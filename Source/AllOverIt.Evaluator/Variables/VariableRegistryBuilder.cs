@@ -190,9 +190,7 @@ namespace AllOverIt.Evaluator.Variables
             //
             // Above, b is pending registration since e and f cannot be resolved - only e, f, c, g will be reported as unregistered
             // despite b not yet being present in the variable registry.
-            return pendingState.MissingNames
-                .Except(pendingState.PendingNames)
-                .ToArray();
+            return [.. pendingState.MissingNames.Except(pendingState.PendingNames)];
         }
 
         private VariableRegistryBuilder TryRegisterVariable(string name, Func<IVariableRegistry, FormulaCompilerResult> formulaCompilerResultResolver,

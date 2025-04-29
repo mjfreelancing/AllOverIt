@@ -3,8 +3,8 @@
     /// <summary>Provides a variety of extension methods for types that require byte ordering operations.</summary>
     public static partial class EndianExtensions
     {
-        internal static bool _isLittleEndian = BitConverter.IsLittleEndian;     // provide the ability to switch the flag for tests
-        private static bool IsLittleEndian => _isLittleEndian;
+        internal static bool InternalIsLittleEndian = BitConverter.IsLittleEndian;     // provide the ability to switch the flag for tests
+        private static bool IsLittleEndian => InternalIsLittleEndian;
 
         #region AsBigEndian
 

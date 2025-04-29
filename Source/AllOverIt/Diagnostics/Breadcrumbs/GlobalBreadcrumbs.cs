@@ -2,51 +2,51 @@
 
 namespace AllOverIt.Diagnostics.Breadcrumbs
 {
-    /// <summary>A helper to create a static <see cref="Breadcrumbs"/> for when you need a globally accessible instance
+    /// <summary>A helper to create a static <see cref="Diagnostics.Breadcrumbs.Breadcrumbs"/> for when you need a globally accessible instance
     /// for troubleshooting.</summary>
     public static class GlobalBreadcrumbs
     {
-        private static IBreadcrumbs? _breadcrumbs;
+        private static IBreadcrumbs? Breadcrumbs;
 
         /// <summary>Gets the current global instance, creating a default instance if required.</summary>
         public static IBreadcrumbs Instance
         {
             get
             {
-                _breadcrumbs ??= Create();
-                return _breadcrumbs;
+                Breadcrumbs ??= Create();
+                return Breadcrumbs;
             }
         }
 
-        /// <summary>Creates a new <see cref="Breadcrumbs"/> instance with a default constructed <see cref="BreadcrumbsOptions"/>.
+        /// <summary>Creates a new <see cref="Diagnostics.Breadcrumbs.Breadcrumbs"/> instance with a default constructed <see cref="BreadcrumbsOptions"/>.
         /// If the global instance already exists it will be replaced.</summary>
-        /// <returns>A new <see cref="Breadcrumbs"/> instance.</returns>
+        /// <returns>A new <see cref="Diagnostics.Breadcrumbs.Breadcrumbs"/> instance.</returns>
         public static IBreadcrumbs Create()
         {
-            _breadcrumbs = new Breadcrumbs(new BreadcrumbsOptions());
+            Breadcrumbs = new Breadcrumbs(new BreadcrumbsOptions());
 
-            return _breadcrumbs;
+            return Breadcrumbs;
         }
 
-        /// <summary>Creates a new <see cref="Breadcrumbs"/> instance with the provided options. If the global instance
+        /// <summary>Creates a new <see cref="Diagnostics.Breadcrumbs.Breadcrumbs"/> instance with the provided options. If the global instance
         /// already exists it will be replaced.</summary>
         /// <param name="options">The breadcrumbs options to use.</param>
-        /// <returns>A new <see cref="Breadcrumbs"/> instance.</returns>
+        /// <returns>A new <see cref="Diagnostics.Breadcrumbs.Breadcrumbs"/> instance.</returns>
         public static IBreadcrumbs Create(BreadcrumbsOptions options)
         {
             _ = options.WhenNotNull();
 
             // Re-create the breadcrumbs if called more than once
-            _breadcrumbs = new Breadcrumbs(options);
+            Breadcrumbs = new Breadcrumbs(options);
 
-            return _breadcrumbs;
+            return Breadcrumbs;
         }
 
-        /// <summary>Clears all breadcrumb data and releases the global <see cref="Breadcrumbs"/> instance.</summary>
+        /// <summary>Clears all breadcrumb data and releases the global <see cref="Diagnostics.Breadcrumbs.Breadcrumbs"/> instance.</summary>
         public static void Destroy()
         {
-            _breadcrumbs?.Clear();
-            _breadcrumbs = null;
+            Breadcrumbs?.Clear();
+            Breadcrumbs = null;
         }
     }
 }

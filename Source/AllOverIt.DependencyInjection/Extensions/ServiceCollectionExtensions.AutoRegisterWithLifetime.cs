@@ -129,7 +129,7 @@ namespace AllOverIt.DependencyInjection.Extensions
                     object CreateImplementation(IServiceProvider provider)
                     {
                         var args = constructorArgsResolver.Invoke(provider, implementationType);
-                        return Activator.CreateInstance(implementationType, args.ToArray())!;
+                        return Activator.CreateInstance(implementationType, [.. args])!;
                     }
 
                     // Call AddScoped(), AddTransient(), AddSingleton() with the factory as required

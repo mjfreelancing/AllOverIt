@@ -34,10 +34,10 @@ namespace EvaluatorBenchmark
 
         public EvaluatorBenchmarks()
         {
-            var rnd = new Random((int) DateTime.Now.Ticks);
+            var rnd = new Random((int)DateTime.Now.Ticks);
 
-            _lhs = Enumerable.Range(1, 10000).Select(_ => rnd.NextDouble()).ToList();
-            _rhs = Enumerable.Range(1, 10000).Select(_ => rnd.NextDouble()).ToList();
+            _lhs = [.. Enumerable.Range(1, 10000).Select(_ => rnd.NextDouble())];
+            _rhs = [.. Enumerable.Range(1, 10000).Select(_ => rnd.NextDouble())];
         }
 
         [Benchmark]

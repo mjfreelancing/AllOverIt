@@ -50,7 +50,7 @@ namespace CsvExporterDemo
 
         private static List<SampleData> CreateSampleData()
         {
-            return Enumerable
+            return [.. Enumerable
                 .Range(0, 10)
                 .SelectMany(number =>
                 {
@@ -178,8 +178,7 @@ namespace CsvExporterDemo
                             ]
                         }
                     };
-                })
-                .ToList();
+                })];
         }
     }
 }

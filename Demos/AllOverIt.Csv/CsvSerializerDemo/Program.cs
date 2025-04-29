@@ -64,7 +64,7 @@ namespace CsvSerializerDemo
 
         private static SampleData[] CreateSampleData()
         {
-            return Enumerable
+            return [.. Enumerable
                 .Range(0, 10)
                 .SelectMany(number =>
                 {
@@ -192,8 +192,7 @@ namespace CsvSerializerDemo
                             ]
                         }
                     };
-                })
-                .ToArray();
+                })];
         }
     }
 }
