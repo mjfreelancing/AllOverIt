@@ -1,8 +1,10 @@
-# NET 10 Updates
+# NET 10 Updates - v9.0.0-rc.x
 
 ### AllOverIt
 * EnumerableExtensions / AsyncEnumerableExtensions updates - Change Task to ValueTask and remove ToListAsync()
   and ToArrayAsync() methods for NET 10 and above as these are not available in the runtime.
+* Added support for ReadOnlyMemory<T> as an input type in relevant methods.
+* Included extension methods for IAsyncEnumerable<T>.
 
 ---
 
