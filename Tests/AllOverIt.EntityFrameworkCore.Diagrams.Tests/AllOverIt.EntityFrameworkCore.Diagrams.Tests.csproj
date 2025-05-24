@@ -1,9 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
+	<!--<ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.5" />
-    </ItemGroup>
-    
+    </ItemGroup>-->
+
+	<ItemGroup Condition=" '$(TargetFramework)' != 'net10.0' ">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.5" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net10.0' ">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.0-preview.4.25258.110" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0-preview.4.25258.110" />
+	</ItemGroup>
+	
     <ItemGroup>
         <ProjectReference Include="..\..\Source\AllOverIt.EntityFrameworkCore.Diagrams\AllOverIt.EntityFrameworkCore.Diagrams.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />

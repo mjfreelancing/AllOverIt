@@ -6,9 +6,17 @@
 
     <ItemGroup>
         <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" />
+        <!--<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.5" />-->
+    </ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' != 'net10.0' ">
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.5" />
     </ItemGroup>
 
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net10.0' ">
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.0-preview.4.25258.110" />
+    </ItemGroup>
+	
     <ItemGroup>
         <ProjectReference Include="..\..\..\Source\AllOverIt.AspNetCore\AllOverIt.AspNetCore.csproj" />
         <ProjectReference Include="..\..\..\Source\AllOverIt.Serialization.Json.Newtonsoft\AllOverIt.Serialization.Json.Newtonsoft.csproj" />
