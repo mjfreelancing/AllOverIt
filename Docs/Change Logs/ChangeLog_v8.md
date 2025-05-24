@@ -1,3 +1,14 @@
+#  Version 8.2.0
+## 24 May 2025
+
+### General
+* Multiple packages updated to use the latest version of their dependencies
+
+### AllOverIt
+* Fixed issue with a single chain of responsibility handler causing an endless loop when the handler did not process the input.
+
+---
+
 #  Version 8.1.0
 ## 24 Mar 2025
 
