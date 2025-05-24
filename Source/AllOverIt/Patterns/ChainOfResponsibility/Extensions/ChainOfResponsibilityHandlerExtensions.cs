@@ -16,7 +16,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
             {
                 _first = first.WhenNotNull();
 
-                ((IChainOfResponsibilityHandler<TInput, TOutput>) this).SetNext(next);
+                ((IChainOfResponsibilityHandler<TInput, TOutput>)this).SetNext(next);
             }
 
             [return: MaybeNull]
@@ -48,7 +48,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
             {
                 _first = first.WhenNotNull();
 
-                ((IChainOfResponsibilityHandlerAsync<TInput, TOutput>) this).SetNext(next);
+                ((IChainOfResponsibilityHandlerAsync<TInput, TOutput>)this).SetNext(next);
             }
 
             public Task<TOutput?> HandleAsync(TInput state, CancellationToken cancellationToken)
@@ -85,6 +85,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
 
             // chain all of the handlers together
             _ = allHandlers
+                .Skip(1)
                 .Aggregate(
                     firstHandler,
                     (current, handler) => current.SetNext(handler)
@@ -108,6 +109,7 @@ namespace AllOverIt.Patterns.ChainOfResponsibility.Extensions
 
             // chain all of the handlers together
             _ = allHandlers
+                .Skip(1)
                 .Aggregate(
                     firstHandler,
                     (current, handler) => current.SetNext(handler)

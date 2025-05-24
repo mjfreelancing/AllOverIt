@@ -114,7 +114,27 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
             }
 
             [Fact]
-            public async Task Should_Return_Default_State_When_Unhandled()
+            public async Task Should_Return_Default_State_When_Single_Unhandled()
+            {
+                var handlers = new IChainOfResponsibilityHandlerAsync<DummyState, DummyState>[]
+                {
+                    new DummyChainOfResponsibility1(),
+                };
+
+                var composer = new ChainOfResponsibilityAsyncComposer<DummyState, DummyState>(handlers);
+
+                var state = new DummyState
+                {
+                    Value = 5
+                };
+
+                state = await composer.HandleAsync(state, CancellationToken.None);
+
+                state.Should().Be(default);
+            }
+
+            [Fact]
+            public async Task Should_Return_Default_State_When_Multiple_Unhandled()
             {
                 var handlers = new IChainOfResponsibilityHandlerAsync<DummyState, DummyState>[]
                 {
