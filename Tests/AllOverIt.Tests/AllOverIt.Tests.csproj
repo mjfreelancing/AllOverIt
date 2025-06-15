@@ -2,8 +2,8 @@
 
     <ItemGroup>
         <PackageReference Include="FakeItEasy" Version="8.3.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
-        <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.5.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
+        <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.6.0" />
     </ItemGroup>
 
     <ItemGroup>

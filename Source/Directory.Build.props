@@ -3,7 +3,7 @@
         <LangVersion>Latest</LangVersion>
         <Nullable>Enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Version>9.0.0-rc.2</Version>
+        <Version>9.0.0-rc.3</Version>
         <Authors>Malcolm Smith</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
