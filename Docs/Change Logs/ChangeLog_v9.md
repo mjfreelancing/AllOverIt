@@ -5,6 +5,7 @@
   and ToArrayAsync() methods for NET 10 and above as these are not available in the runtime.
 * Added support for ReadOnlyMemory<T> as an input type in relevant methods.
 * Included extension methods for IAsyncEnumerable<T>.
+* Added a mockable ZipPackage to support the creation of zip files.
 
 ---
 
