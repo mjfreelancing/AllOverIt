@@ -1,3 +1,11 @@
+#  Version 8.2.1
+## 17 Aug 2025
+
+### General
+* Multiple packages updated to use the latest version of their dependencies
+
+---
+
 #  Version 8.2.0
 ## 24 May 2025
 
