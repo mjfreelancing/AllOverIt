@@ -15,7 +15,10 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = EndianExtensions.SwapBytes(value);
 
-                var expected = BitConverter.ToUInt16(BitConverter.GetBytes(value).Reverse().ToArray(), 0);
+                var reversedBytes = BitConverter.GetBytes(value);
+                reversedBytes.Reverse();
+
+                var expected = BitConverter.ToUInt16(reversedBytes, 0);
 
                 actual.Should().Be(expected);
             }
@@ -30,7 +33,10 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = EndianExtensions.SwapBytes(value);
 
-                var expected = BitConverter.ToInt16(BitConverter.GetBytes(value).Reverse().ToArray(), 0);
+                var reversedBytes = BitConverter.GetBytes(value);
+                reversedBytes.Reverse();
+
+                var expected = BitConverter.ToInt16(reversedBytes, 0);
 
                 actual.Should().Be(expected);
             }
@@ -45,7 +51,10 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = EndianExtensions.SwapBytes(value);
 
-                var expected = BitConverter.ToUInt32(BitConverter.GetBytes(value).Reverse().ToArray(), 0);
+                var reversedBytes = BitConverter.GetBytes(value);
+                reversedBytes.Reverse();
+
+                var expected = BitConverter.ToUInt32(reversedBytes, 0);
 
                 actual.Should().Be(expected);
             }
@@ -60,7 +69,10 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = EndianExtensions.SwapBytes(value);
 
-                var expected = BitConverter.ToInt32(BitConverter.GetBytes(value).Reverse().ToArray(), 0);
+                var reversedBytes = BitConverter.GetBytes(value);
+                reversedBytes.Reverse();
+
+                var expected = BitConverter.ToInt32(reversedBytes, 0);
 
                 actual.Should().Be(expected);
             }
@@ -75,7 +87,10 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = EndianExtensions.SwapBytes(value);
 
-                var expected = BitConverter.ToUInt64(BitConverter.GetBytes(value).Reverse().ToArray(), 0);
+                var reversedBytes = BitConverter.GetBytes(value);
+                reversedBytes.Reverse();
+
+                var expected = BitConverter.ToUInt64(reversedBytes, 0);
 
                 actual.Should().Be(expected);
             }
@@ -90,7 +105,10 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = EndianExtensions.SwapBytes(value);
 
-                var expected = BitConverter.ToInt64(BitConverter.GetBytes(value).Reverse().ToArray(), 0);
+                var reversedBytes = BitConverter.GetBytes(value);
+                reversedBytes.Reverse();
+
+                var expected = BitConverter.ToInt64(reversedBytes, 0);
 
                 actual.Should().Be(expected);
             }
@@ -105,7 +123,10 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = EndianExtensions.SwapBytes(value);
 
-                var expected = BitConverter.ToSingle(BitConverter.GetBytes(value).Reverse().ToArray(), 0);
+                var reversedBytes = BitConverter.GetBytes(value);
+                reversedBytes.Reverse();
+
+                var expected = BitConverter.ToSingle(reversedBytes, 0);
 
                 actual.Should().Be(expected);
             }
@@ -120,7 +141,10 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = EndianExtensions.SwapBytes(value);
 
-                var expected = BitConverter.ToDouble(BitConverter.GetBytes(value).Reverse().ToArray(), 0);
+                var reversedBytes = BitConverter.GetBytes(value);
+                reversedBytes.Reverse();
+
+                var expected = BitConverter.ToDouble(reversedBytes, 0);
 
                 actual.Should().Be(expected);
             }
