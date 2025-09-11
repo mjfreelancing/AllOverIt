@@ -309,8 +309,8 @@ namespace AllOverIt.Tests.Collections
                     buffer.PushFront(item);
                 }
 
-                var expected = source.ToArray();
-                expected.Reverse();
+                IEnumerable<int> expected = source.ToArray();
+                expected = expected.Reverse();
 
                 buffer.Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
             }
@@ -326,8 +326,8 @@ namespace AllOverIt.Tests.Collections
                     buffer.PushFront(item);
                 }
 
-                var expected = source[4..];
-                expected.Reverse();
+                IEnumerable<int> expected = source[4..];
+                expected = expected.Reverse();
 
                 buffer.Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
             }
@@ -407,8 +407,8 @@ namespace AllOverIt.Tests.Collections
 
                 var actual = new[] { buffer.PopBack(), buffer.PopBack(), buffer.PopBack() };
 
-                var expected = source.ToArray();
-                expected.Reverse();
+                IEnumerable<int> expected = source.ToArray();
+                expected = expected.Reverse();
 
                 buffer.IsEmpty.Should().BeTrue();
                 actual.Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
