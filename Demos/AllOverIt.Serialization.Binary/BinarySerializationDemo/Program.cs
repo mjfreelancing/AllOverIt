@@ -11,6 +11,12 @@ namespace BinarySerializationDemo
 {
     internal class Program
     {
+        private static readonly JsonSerializerOptions SerializationOptions = new()
+        {
+            WriteIndented = true,
+            Converters = { new JsonStringEnumConverter() }
+        };
+
         private static void Main()
         {
             SerializeUsingCustomReadersAndWriters();
@@ -22,15 +28,7 @@ namespace BinarySerializationDemo
 
         private static void OutputObjectAsJson(string prefix, object @object)
         {
-#pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                Converters = { new JsonStringEnumConverter() }
-            };
-#pragma warning restore CA1869 // Cache and reuse 'JsonSerializerOptions' instances
-
-            var output = JsonSerializer.Serialize(@object, options);
+            var output = JsonSerializer.Serialize(@object, SerializationOptions);
 
             Console.WriteLine(prefix);
             Console.WriteLine("============================================");
