@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Reactive.Testing" Version="6.0.2" />
+        <PackageReference Include="Microsoft.Reactive.Testing" Version="6.1.0" />
     </ItemGroup>
 
     <ItemGroup>

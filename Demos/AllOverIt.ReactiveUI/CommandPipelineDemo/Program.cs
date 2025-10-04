@@ -4,6 +4,7 @@ using AllOverIt.ReactiveUI.Extensions;
 using ReactiveUI;
 using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Disposables.Fluent;
 using System.Reactive.Linq;
 
 namespace CommandPipelineDemo
@@ -126,7 +127,7 @@ namespace CommandPipelineDemo
             static int func(double value)
             {
                 Console.WriteLine($" - Floor the current value of {value}");
-                return (int) Math.Floor(value);
+                return (int)Math.Floor(value);
             }
 
             return func;

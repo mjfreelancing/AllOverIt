@@ -3,7 +3,7 @@ using AllOverIt.ReactiveUI.Factories;
 using CountdownTimerAppDemo.ViewModels;
 using ReactiveUI;
 using System.ComponentModel;
-using System.Reactive.Disposables;
+using System.Reactive.Disposables.Fluent;
 using System.Reactive.Linq;
 using System.Windows;
 
@@ -40,7 +40,7 @@ namespace CountdownTimerAppDemo.Views
                     {
                         if (isDone)
                         {
-                            var view = (Window) _viewFactory.CreateViewFor<DoneWindowViewModel>();
+                            var view = (Window)_viewFactory.CreateViewFor<DoneWindowViewModel>();
                             view.Owner = this;
                             view.ShowDialog();
                         }
