@@ -7,6 +7,9 @@
 * Included extension methods for IAsyncEnumerable<T>.
 * Added a mockable ZipPackage to support the creation of zip files.
 
+### AllOverIt.ReactiveUI
+* Updated CommandFactory to support providing a scheduler when creating cancellable commands.
+
 ---
 
 #  Version 8.1.0
