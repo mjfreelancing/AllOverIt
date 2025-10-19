@@ -2,7 +2,6 @@
 using AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions;
 using AllOverIt.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using System.Text;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
@@ -35,23 +34,17 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             """;
 
         private readonly ErdOptions _options;
-        private readonly IEntityType[] _dbContextEntityTypes;
 
-        public RelationshipNodeGenerator(ErdOptions options, IEntityType[] dbContextEntityTypes)
+        public RelationshipNodeGenerator(ErdOptions options)
         {
             _options = options.WhenNotNull();
-            _dbContextEntityTypes = dbContextEntityTypes.WhenNotNullOrEmpty().AsArray();
         }
 
         public string CreateNode(PrincipalForeignKey foreignKey, string targetEntityName, string targetColumnName)
         {
             var entityName = foreignKey.EntityName;
 
-            // For shadow entities (e.g., join tables), the Type is Dictionary<string, object> which won't match in the Groups
-            // Groups. We need to find the actual IEntityType by table name and then look up its group by the ClrType.
-            var principalEntityType = _dbContextEntityTypes.Single(entity => entity.GetTableName() == foreignKey.EntityName);
-
-            var groupAlias = _options.Groups.GetAlias(principalEntityType.ClrType);
+            var groupAlias = _options.Groups.GetAlias(entityName);
 
             if (groupAlias is not null)
             {

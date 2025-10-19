@@ -34,7 +34,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
             var entityName = entityIdentifier.TableName;
 
-            var groupAlias = _options.Groups.GetAlias(entityIdentifier.Type);
+            var groupAlias = _options.Groups.GetAlias(entityIdentifier.TableName);
 
             if (groupAlias is not null)
             {
@@ -90,7 +90,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
                 if (column.ForeignKeyPrincipals is not null)
                 {
-                    var relationshipNodeGenerator = new RelationshipNodeGenerator(_options, _dbContextEntityTypes);
+                    var relationshipNodeGenerator = new RelationshipNodeGenerator(_options);
 
                     foreach (var foreignKey in column.ForeignKeyPrincipals)
                     {

@@ -10,7 +10,7 @@ namespace D2ErdDiagramDemo.Data
         public DbSet<AuthorBlog> AuthorBlogs { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<WebSite> WebSites { get; set; }
+        public DbSet<WebSiteEntity> WebSites { get; set; }
         public DbSet<Settings> WebSiteSettings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

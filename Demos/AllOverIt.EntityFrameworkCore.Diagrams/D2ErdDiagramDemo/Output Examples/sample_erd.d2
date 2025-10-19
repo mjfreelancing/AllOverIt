@@ -10,7 +10,14 @@ blog: "" {
   }
 }
 
-AuthorRole: {
+role_perm: Roles / Permissions {
+  style: {
+    fill: \#ffffcc
+    stroke: \#cccc99
+  }
+}
+
+role_perm.AuthorRole: {
   shape: sql_table
 
   style: {
@@ -73,7 +80,7 @@ Comment: {
   AuthorId: INTEGER {constraint: foreign_key}
 }
 
-Permission: {
+role_perm.Permission: {
   shape: sql_table
 
   style: {
@@ -97,7 +104,7 @@ blog.Post: {
   BlogId: INTEGER \[NOT NULL\] {constraint: foreign_key}
 }
 
-Role: {
+role_perm.Role: {
   shape: sql_table
 
   style: {
@@ -120,7 +127,7 @@ web.Settings: {
   WebSiteId: INTEGER \[NOT NULL\] {constraint: foreign_key}
 }
 
-web.WebSite: {
+WebSite: {
   shape: sql_table
 
   style: {
@@ -131,7 +138,7 @@ web.WebSite: {
   Description: TEXT(500) \[NOT NULL\]
 }
 
-RolePermission: {
+role_perm.RolePermission: {
   shape: sql_table
 
   style: {
@@ -142,7 +149,7 @@ RolePermission: {
   RolesId: INTEGER \[NOT NULL\] {constraint: foreign_key}
 }
 
-blog.Author.Id <-> AuthorRole.AuthorsId: {
+blog.Author.Id <-> role_perm.AuthorRole.AuthorsId: {
   source-arrowhead: {
     shape: cf-one-required
   }
@@ -156,7 +163,7 @@ blog.Author.Id <-> AuthorRole.AuthorsId: {
   }
 }
 
-Role.Id <-> AuthorRole.RolesId: {
+role_perm.Role.Id <-> role_perm.AuthorRole.RolesId: {
   source-arrowhead: {
     shape: cf-one-required
   }
@@ -198,7 +205,7 @@ blog.Author.Id <-> blog.AuthorBlog.AuthorId: {
   }
 }
 
-web.WebSite.Id <-> blog.Blog.WebSiteId: {
+WebSite.Id <-> blog.Blog.WebSiteId: {
   source-arrowhead: {
     shape: cf-one-required
   }
@@ -254,7 +261,7 @@ blog.Blog.Id <-> blog.Post.BlogId: {
   }
 }
 
-web.WebSite.Id <-> web.Settings.WebSiteId: {
+WebSite.Id <-> web.Settings.WebSiteId: {
   source-arrowhead: {
     shape: cf-one-required
   }
@@ -268,7 +275,7 @@ web.WebSite.Id <-> web.Settings.WebSiteId: {
   }
 }
 
-Permission.Id <-> RolePermission.PermissionsId: {
+role_perm.Permission.Id <-> role_perm.RolePermission.PermissionsId: {
   source-arrowhead: {
     shape: cf-one-required
   }
@@ -282,7 +289,7 @@ Permission.Id <-> RolePermission.PermissionsId: {
   }
 }
 
-Role.Id <-> RolePermission.RolesId: {
+role_perm.Role.Id <-> role_perm.RolePermission.RolesId: {
   source-arrowhead: {
     shape: cf-one-required
   }

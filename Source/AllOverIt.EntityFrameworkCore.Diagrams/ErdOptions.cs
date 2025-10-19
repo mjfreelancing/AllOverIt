@@ -12,7 +12,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         private sealed class EntityGroups : IEntityGroups
         {
             private readonly Dictionary<string, EntityGroup> _aliasGroups = [];     // group to definition with collection of entities
-            private readonly Dictionary<Type, string> _entityGroupAliases = [];     // entity type to group
+            private readonly Dictionary<string, string> _entityGroupAliases = [];   // entity (table) name to group
 
             IEntityGroups IEntityGroups.Add(string alias, EntityGroup groupEntities)
             {
@@ -23,22 +23,22 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
                 _aliasGroups.Add(alias, groupEntities);
 
-                foreach (var groupEntity in groupEntities.EntityTypes)
+                foreach (var groupEntityName in groupEntities.EntityNames)
                 {
-                    if (_entityGroupAliases.TryGetValue(groupEntity, out var entityAlias))
+                    if (_entityGroupAliases.TryGetValue(groupEntityName, out var entityAlias))
                     {
-                        throw new DiagramException($"The entity type '{groupEntity.GetFriendlyName()}' is already associated with group alias '{entityAlias}'.");
+                        throw new DiagramException($"The entity '{groupEntityName}' is already associated with group alias '{entityAlias}'.");
                     }
 
-                    _entityGroupAliases.Add(groupEntity, alias);
+                    _entityGroupAliases.Add(groupEntityName, alias);
                 }
 
                 return this;
             }
 
-            string? IEntityGroups.GetAlias(Type entityType)
+            string? IEntityGroups.GetAlias(string entityName)
             {
-                if (_entityGroupAliases.TryGetValue(entityType, out var alias))
+                if (_entityGroupAliases.TryGetValue(entityName, out var alias))
                 {
                     return alias;
                 }
@@ -53,7 +53,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                return ((IEnumerable<KeyValuePair<string, EntityGroup>>) this).GetEnumerator();
+                return ((IEnumerable<KeyValuePair<string, EntityGroup>>)this).GetEnumerator();
             }
         }
 
@@ -107,9 +107,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             IEntityGroups Add(string alias, EntityGroup entityGroup);
 
             /// <summary>Gets the alias associated with a specified entity type.</summary>
-            /// <param name="entityType">The entity type to get the alias for.</param>
+            /// <param name="entityName">The entity name to get the alias for.</param>
             /// <returns>The alias associated with a specified entity type.</returns>
-            string? GetAlias(Type entityType);
+            string? GetAlias(string entityName);
         }
 
         /// <summary>Provides options that specify how a column's nullability is depicted on the generated diagram.</summary>
@@ -168,7 +168,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         /// <summary>Contains a group of entities and associated styling attributes for the diagram.</summary>
         public sealed class EntityGroup
         {
-            private readonly List<Type> _entityTypes = [];
+            private readonly List<string> _entityNames = [];
 
             /// <summary>The group's title. Set to <see langword="null"/> if not required.</summary>
             public string Title { get; }
@@ -176,8 +176,8 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             /// <summary>Contains styling options to use for the group in the generated diagram.</summary>
             public ShapeStyle ShapeStyle { get; }
 
-            /// <summary>The entity types associated with the group.</summary>
-            public Type[] EntityTypes => [.. _entityTypes];
+            /// <summary>The entity names associated with the group.</summary>
+            public string[] EntityNames => [.. _entityNames];
 
             /// <summary>Constructor.</summary>
             /// <param name="title">The group's title. Set to <see langword="null"/> if not required.</param>
@@ -193,7 +193,14 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             /// <returns>The entity group to allow for chained calls.</returns>
             public EntityGroup Add<TEntity>() where TEntity : class
             {
-                _entityTypes.Add(typeof(TEntity));
+                _entityNames.Add(typeof(TEntity).Name);
+
+                return this;
+            }
+
+            public EntityGroup Add(string tableName)
+            {
+                _entityNames.Add(tableName);
 
                 return this;
             }
