@@ -35,11 +35,11 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                         ShapeStyle = new
                         {
-                            Fill = (string) null,
-                            Stroke = (string) null,
-                            StrokeWidth = (int?) default,
-                            StrokeDash = (int?) default,
-                            Opacity = (double?) default,
+                            Fill = (string)null,
+                            Stroke = (string)null,
+                            StrokeWidth = (int?)default,
+                            StrokeDash = (int?)default,
+                            Opacity = (double?)default,
                         }
                     },
                     Cardinality = new
@@ -48,11 +48,11 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                         LabelStyle = new
                         {
                             IsVisible = true,
-                            FontSize = (int?) default,
-                            FontColor = (string) default,
-                            Bold = (bool?) default,
-                            Underline = (bool?) default,
-                            Italic = (bool?) default
+                            FontSize = (int?)default,
+                            FontColor = (string)default,
+                            Bold = (bool?)default,
+                            Underline = (bool?)default,
+                            Italic = (bool?)default
                         },
                         OneToOneLabel = "ONE-TO-ONE",
                         OneToManyLabel = "ONE-TO-MANY"
@@ -80,7 +80,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                 options.Group(alias, null, grp =>
                 {
                     grp.Add<Author>();
-                    grp.Add<Post>();
+                    grp.Add<PostEntity>();
 
                     grp.ShapeStyle.CopyFrom(groupStyle);
                 });
@@ -106,7 +106,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                 options.Group(alias, title, grp =>
                 {
                     grp.Add<Author>();
-                    grp.Add<Post>();
+                    grp.Add<PostEntity>();
 
                     grp.ShapeStyle.CopyFrom(groupStyle);
                 });
@@ -122,7 +122,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                 entityGroup.ShapeStyle.Should().NotBeSameAs(groupStyle);        // Must be copied
                 entityGroup.ShapeStyle.Should().BeEquivalentTo(groupStyle);
 
-                entityGroup.EntityTypes.Should().BeEquivalentTo(new[] { typeof(Author), typeof(Post) });
+                entityGroup.EntityTypes.Should().BeEquivalentTo(new[] { typeof(Author), typeof(PostEntity) });
             }
 
             [Fact]
@@ -252,7 +252,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                 options.Group(alias, null, groupStyle, grp =>
                 {
                     grp.Add<Author>();
-                    grp.Add<Post>();
+                    grp.Add<PostEntity>();
                 });
 
                 var grp = options.Groups.Single();
@@ -275,8 +275,8 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 options.Group(alias, title, groupStyle, grp =>
                 {
-                    grp.Add<Author>();
-                    grp.Add<Post>();
+                    grp.Add("Author");          // Shadow entity by table name
+                    grp.Add<PostEntity>();      // Regular entity by type
                 });
 
                 var grp = options.Groups.Single();
@@ -290,7 +290,8 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                 entityGroup.ShapeStyle.Should().BeSameAs(groupStyle);           // Must be assigned
                 entityGroup.ShapeStyle.Should().BeEquivalentTo(groupStyle);
 
-                entityGroup.EntityTypes.Should().BeEquivalentTo(new[] { typeof(Author), typeof(Post) });
+                entityGroup.EntityTypes.Should().BeEquivalentTo(new[] { typeof(PostEntity) });
+                entityGroup.TableNames.Should().BeEquivalentTo(new[] { "Author" });
             }
 
             [Fact]
@@ -447,7 +448,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var expected = erdOptions.Entities;
 
-                var actual = erdOptions.Entity(typeof(Post), true);
+                var actual = erdOptions.Entity(typeof(PostEntity), true);
 
                 expected.Should().BeEquivalentTo(actual);
                 expected.Should().NotBeSameAs(actual);
@@ -462,9 +463,124 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var expected = erdOptions.Entities;
 
-                var actual = erdOptions.Entity(typeof(Post), false);
+                var actual = erdOptions.Entity(typeof(PostEntity), false);
 
                 expected.Should().NotBeEquivalentTo(actual);
+            }
+        }
+
+        public class TableNames : ErdOptionsFixture
+        {
+            [Fact]
+            public void Should_Add_Shadow_Entity_By_Table_Name()
+            {
+                var tableName = Create<string>();
+                var options = new ErdOptions();
+
+                options.Group(Create<string>(), Create<string>(), grp =>
+                {
+                    grp.Add(tableName);
+                });
+
+                var entityGroup = options.Groups.Single().Value;
+
+                entityGroup.TableNames.Should().ContainSingle().Which.Should().Be(tableName);
+                entityGroup.EntityTypes.Should().BeEmpty();
+            }
+
+            [Fact]
+            public void Should_Add_Multiple_Shadow_Entities_By_Table_Name()
+            {
+                var tableName1 = Create<string>();
+                var tableName2 = Create<string>();
+                var options = new ErdOptions();
+
+                options.Group(Create<string>(), Create<string>(), grp =>
+                {
+                    grp.Add(tableName1);
+                    grp.Add(tableName2);
+                });
+
+                var entityGroup = options.Groups.Single().Value;
+
+                entityGroup.TableNames.Should().BeEquivalentTo(new[] { tableName1, tableName2 });
+                entityGroup.EntityTypes.Should().BeEmpty();
+            }
+
+            [Fact]
+            public void Should_Get_Alias_By_Table_Name()
+            {
+                var expected = Create<string>();
+                var tableName = Create<string>();
+                var options = new ErdOptions();
+
+                options.Group(expected, Create<string>(), grp =>
+                {
+                    grp.Add(tableName);
+                });
+
+                var alias = options.Groups.GetAlias(tableName);
+
+                alias.Should().Be(expected);
+            }
+
+            [Fact]
+            public void Should_Not_Get_Alias_By_Table_Name()
+            {
+                var options = new ErdOptions();
+
+                options.Group(Create<string>(), Create<string>(), grp =>
+                {
+                    grp.Add("SomeTable");
+                });
+
+                var alias = options.Groups.GetAlias("OtherTable");
+
+                alias.Should().BeNull();
+            }
+
+            [Fact]
+            public void Should_Throw_When_Table_Name_Already_Associated_With_An_Alias()
+            {
+                var alias = Create<string>();
+                var tableName = Create<string>();
+
+                var options = new ErdOptions();
+
+                options.Group(alias, Create<string>(), grp =>
+                {
+                    grp.Add(tableName);
+                });
+
+                Invoking(() =>
+                {
+                    options.Group(Create<string>(), Create<string>(), grp =>
+                    {
+                        grp.Add(tableName);
+                    });
+                })
+                .Should()
+                .Throw<DiagramException>()
+                .WithMessage($"The table '{tableName}' is already associated with group alias '{alias}'.");
+            }
+
+            [Fact]
+            public void Should_Add_Mix_Of_Types_And_Table_Names()
+            {
+                var tableName = Create<string>();
+                var options = new ErdOptions();
+
+                options.Group(Create<string>(), Create<string>(), grp =>
+                {
+                    grp.Add<Author>();
+                    grp.Add(tableName);
+                    grp.Add<PostEntity>();
+                });
+
+                var entityGroup = options.Groups.Single().Value;
+
+                entityGroup.EntityTypes.Should().BeEquivalentTo(new[] { typeof(Author), typeof(PostEntity) });
+                entityGroup.TableNames.Should().ContainSingle().Which.Should().Be(tableName);
             }
         }
     }

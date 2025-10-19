@@ -14,7 +14,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes.Entities
         public string Content { get; set; }
 
         [Required]
-        public Post Post { get; set; }
+        public PostEntity Post { get; set; }
 
         [Required]
         public Author Author { get; set; }

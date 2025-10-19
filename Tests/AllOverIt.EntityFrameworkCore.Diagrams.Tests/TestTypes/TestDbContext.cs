@@ -9,7 +9,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<AuthorBlog> AuthorBlogs { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<PostEntity> Posts { get; set; }
         public DbSet<WebSite> WebSites { get; set; }
         public DbSet<Settings> WebSiteSettings { get; set; }
 

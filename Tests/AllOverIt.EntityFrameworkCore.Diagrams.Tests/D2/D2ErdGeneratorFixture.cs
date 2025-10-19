@@ -231,7 +231,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2
                     .Add<Author>()
                     .Add<Blog>()
                     .Add<AuthorBlog>()
-                    .Add<Post>();
+                    .Add<PostEntity>();
             });
         }
 

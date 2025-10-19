@@ -127,7 +127,7 @@ web.Settings: {
   WebSiteId: INTEGER \[NOT NULL\] {constraint: foreign_key}
 }
 
-WebSite: {
+web.WebSite: {
   shape: sql_table
 
   style: {
@@ -205,7 +205,7 @@ blog.Author.Id <-> blog.AuthorBlog.AuthorId: {
   }
 }
 
-WebSite.Id <-> blog.Blog.WebSiteId: {
+web.WebSite.Id <-> blog.Blog.WebSiteId: {
   source-arrowhead: {
     shape: cf-one-required
   }
@@ -261,7 +261,7 @@ blog.Blog.Id <-> blog.Post.BlogId: {
   }
 }
 
-WebSite.Id <-> web.Settings.WebSiteId: {
+web.WebSite.Id <-> web.Settings.WebSiteId: {
   source-arrowhead: {
     shape: cf-one-required
   }
