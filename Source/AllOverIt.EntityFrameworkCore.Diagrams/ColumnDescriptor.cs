@@ -1,6 +1,4 @@
-﻿using AllOverIt.Assertion;
-using AllOverIt.EntityFrameworkCore.Diagrams.Exceptions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams
@@ -27,14 +25,15 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
                 MaxLength = (int)maxLength.Value;
             }
 
-            if (column.IsPrimaryKey())
-            {
-                Constraint = ConstraintType.PrimaryKey;
-            }
-            else if (column.IsForeignKey())
+            // Check for foreign keys first, as a column can be both PK and FK (e.g., in join tables)
+            if (column.IsForeignKey())
             {
                 Constraint = ConstraintType.ForeignKey;
                 ForeignKeyPrincipals = GetForeignKeys(column);
+            }
+            else if (column.IsPrimaryKey())
+            {
+                Constraint = ConstraintType.PrimaryKey;
             }
         }
 
@@ -54,11 +53,19 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
                 var parentToChildNavigation = foreignKey.DependentToPrincipal?.Inverse;
 
-                Throw<DiagramException>.WhenNull(
-                    parentToChildNavigation,
-                    $"A parent to child navigation property exists between {principalEntity.DisplayName()} and {column.DeclaringType.DisplayName()}, but not the reverse.");
+                // For shadow entities (e.g., many-to-many join tables created with UsingEntity()),
+                // there may not be navigation properties. In that case, we assume it's one-to-many.
+                bool isOneToMany;
 
-                var isOneToMany = parentToChildNavigation.IsCollection;
+                if (parentToChildNavigation is not null)
+                {
+                    isOneToMany = parentToChildNavigation.IsCollection;
+                }
+                else
+                {
+                    // Shadow entity without navigation - assume one-to-many (typical for join tables)
+                    isOneToMany = true;
+                }
 
                 // TODO: Configure / handle composite keys
                 var entityColumn = new PrincipalForeignKey

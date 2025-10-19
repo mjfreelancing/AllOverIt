@@ -19,5 +19,24 @@ namespace D2ErdDiagramDemo.Data
 
             optionsBuilder.UseSqlite("Filename=:memory:");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Sets up the many-to-many UserRole join table without an explicit model
+            modelBuilder
+                .Entity<Author>()
+                .HasMany(user => user.Roles)
+                .WithMany(role => role.Authors)
+                .UsingEntity("AuthorRole");
+
+            // Sets up the many-to-many RolePermission join table without an explicit model
+            modelBuilder
+                .Entity<Role>()
+                .HasMany(role => role.Permissions)
+                .WithMany(permission => permission.Roles)
+                .UsingEntity("RolePermission");
+        }
     }
 }

@@ -10,6 +10,17 @@ blog: "" {
   }
 }
 
+AuthorRole: {
+  shape: sql_table
+
+  style: {
+    stroke: \#ccffcc
+  }
+
+  AuthorsId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+  RolesId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+}
+
 blog.Author: {
   shape: sql_table
 
@@ -62,6 +73,17 @@ Comment: {
   AuthorId: INTEGER {constraint: foreign_key}
 }
 
+Permission: {
+  shape: sql_table
+
+  style: {
+    stroke: \#ccffcc
+  }
+
+  Id: INTEGER \[NOT NULL\] {constraint: primary_key}
+  Name: TEXT
+}
+
 blog.Post: {
   shape: sql_table
 
@@ -73,6 +95,17 @@ blog.Post: {
   Title: TEXT(500) \[NOT NULL\]
   Content: TEXT \[NOT NULL\]
   BlogId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+}
+
+Role: {
+  shape: sql_table
+
+  style: {
+    stroke: \#ccffcc
+  }
+
+  Id: INTEGER \[NOT NULL\] {constraint: primary_key}
+  Name: TEXT
 }
 
 web.Settings: {
@@ -96,6 +129,45 @@ web.WebSite: {
 
   Id: INTEGER \[NOT NULL\] {constraint: primary_key}
   Description: TEXT(500) \[NOT NULL\]
+}
+
+RolePermission: {
+  shape: sql_table
+
+  style: {
+    stroke: \#ccffcc
+  }
+
+  PermissionsId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+  RolesId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+}
+
+blog.Author.Id <-> AuthorRole.AuthorsId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}
+
+Role.Id <-> AuthorRole.RolesId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
 }
 
 blog.Blog.Id <-> blog.AuthorBlog.BloggerId: {
@@ -188,6 +260,34 @@ web.WebSite.Id <-> web.Settings.WebSiteId: {
   }
   target-arrowhead: {
     shape: cf-one
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}
+
+Permission.Id <-> RolePermission.PermissionsId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}
+
+Role.Id <-> RolePermission.RolesId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
   }
   style: {
     font-size: 18
