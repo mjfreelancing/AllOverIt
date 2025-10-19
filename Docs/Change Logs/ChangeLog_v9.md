@@ -10,6 +10,10 @@
 ### AllOverIt.ReactiveUI
 * Updated CommandFactory to support providing a scheduler when creating cancellable commands.
 
+### AllOverIt.EntityFrameworkCore.Diagrams
+* Added support for join tables added via UsingEntity() in many-to-many relationships.
+* Added support for defining groups based on the table name rather than a generic - for when shadow tables are used.
+
 ---
 
 #  Version 8.1.0
