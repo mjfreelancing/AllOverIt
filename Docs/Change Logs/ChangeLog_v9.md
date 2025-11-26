@@ -1,7 +1,7 @@
 #  Version 9.0.0
 ## 26 Nov 2025
 
-# Updated to support NET 8, 9, 10
+# Updated to support NET 10
 
 ### AllOverIt
 * EnumerableExtensions / AsyncEnumerableExtensions updates - Change Task to ValueTask and remove ToListAsync()
