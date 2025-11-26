@@ -24,7 +24,7 @@ namespace CompiledReflectionBenchmark
         private static readonly Action<DummyType, object?> TypedPropertySetterInfo = PropertyHelper.CreatePropertySetter<DummyType>(DummyPropInfo);
         private static readonly Action<DummyType, object?> TypedPropertySetterName = PropertyHelper.CreatePropertySetter<DummyType>(nameof(DummyType.Value));
 
-        [Params(4)]
+        [Params(4, 10)]
         public int IterationCount;
 
         [Benchmark]

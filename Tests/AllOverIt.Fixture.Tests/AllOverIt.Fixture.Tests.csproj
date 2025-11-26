@@ -9,4 +9,8 @@
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Assertion\AllOverIt.Assertion.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    </ItemGroup>
 </Project>

@@ -15,7 +15,7 @@ namespace ThrowWhenBenchmark
     [MemoryDiagnoser]
     public class ThrowWhenBenchmark
     {
-        [Params(4)]
+        [Params(4, 10)]
         public int IterationCount;
 
         [Benchmark]

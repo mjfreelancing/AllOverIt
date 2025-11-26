@@ -485,7 +485,7 @@ namespace AllOverIt.Evaluator
 
             catch (FormatException exception)
             {
-                throw new FormulaException($"Invalid numerical value: {operand.ToString()}.", exception);
+                throw new FormulaException($"Invalid numerical value: {operand}.", exception);
             }
 
             return value;

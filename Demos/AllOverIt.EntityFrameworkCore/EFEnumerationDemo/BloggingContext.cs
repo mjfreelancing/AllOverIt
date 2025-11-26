@@ -2,7 +2,6 @@
 using EFEnumerationDemo.Entities;
 using EFEnumerationDemo.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace EFEnumerationDemo
 {
@@ -15,27 +14,32 @@ namespace EFEnumerationDemo
         {
             base.OnConfiguring(options);
 
-            if (DemoStartupOptions.Use == DatabaseChoice.Mysql)
+            // Disabled only because Pomelo.EntityFrameworkCore.MySql does not support new versions of EF Core
+            //
+            //if (DemoStartupOptions.Use == DatabaseChoice.Mysql)
+            //{
+            //    var connectionString = "server=localhost;user=root;password=password;database=BlogPosts";
+            //    var serverVersion = new MySqlServerVersion(new Version(8, 0, 26));
+
+            //    options
+            //        .UseMySql(connectionString, serverVersion)
+            //        .LogTo(Console.WriteLine, LogLevel.Information)
+            //        .EnableDetailedErrors();
+            //}
+            //else
+            //{
+            //    options.UseNpgsql("Host=localhost;Database=BlogPosts;Username=postgres;Password=password", options =>
+            //    {
+            //        options.SetPostgresVersion(new Version(10, 18));
+            //        //options.SetPostgresVersion(new Version(13, 6));
+            //    });
+            //}
+
+            options.UseNpgsql("Host=localhost;Database=BlogPosts;Username=postgres;Password=password", options =>
             {
-                throw new UnreachableException("Disabled until Pomelo.EntityFrameworkCore.MySql supports NET 9");
-
-                //var connectionString = "server=localhost;user=root;password=password;database=BlogPosts";
-                //var serverVersion = new MySqlServerVersion(new Version(8, 0, 26));
-
-                //options
-                //    .UseMySql(connectionString, serverVersion)
-                //    .LogTo(Console.WriteLine, LogLevel.Information)
-                //    .EnableDetailedErrors();
-            }
-            else
-            {
-                options.UseNpgsql("Host=localhost;Database=BlogPosts;Username=postgres;Password=password", options =>
-                {
-                    options.SetPostgresVersion(new Version(10, 18));
-                    //options.SetPostgresVersion(new Version(13, 6));
-                });
-            }
-
+                options.SetPostgresVersion(new Version(10, 18));
+                //options.SetPostgresVersion(new Version(13, 6));
+            });
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

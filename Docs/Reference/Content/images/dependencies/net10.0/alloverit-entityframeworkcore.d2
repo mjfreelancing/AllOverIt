@@ -1,0 +1,28 @@
+direction: left
+
+aoi: AllOverIt
+aoi.alloverit-entityframeworkcore: AllOverIt.EntityFrameworkCore
+microsoft-entityframeworkcore-relational_10-0-0: Microsoft.EntityFrameworkCore.Relational\nv10.0.0
+microsoft-entityframeworkcore-relational_10-0-0.style.fill: "#ADD8E6"
+microsoft-entityframeworkcore-relational_10-0-0.style.opacity: 0.8
+microsoft-entityframeworkcore_10-0-0: Microsoft.EntityFrameworkCore\nv10.0.0
+microsoft-entityframeworkcore_10-0-0.style.fill: "#FFEC96"
+microsoft-entityframeworkcore_10-0-0.style.opacity: 0.8
+microsoft-entityframeworkcore_10-0-0 <- microsoft-entityframeworkcore-relational_10-0-0
+microsoft-extensions-configuration-abstractions_10-0-0: Microsoft.Extensions.Configuration.Abstractions\nv10.0.0
+microsoft-extensions-configuration-abstractions_10-0-0.style.fill: "#FFEC96"
+microsoft-extensions-configuration-abstractions_10-0-0.style.opacity: 0.8
+microsoft-extensions-configuration-abstractions_10-0-0 <- microsoft-entityframeworkcore-relational_10-0-0
+microsoft-extensions-caching-memory_10-0-0: Microsoft.Extensions.Caching.Memory\nv10.0.0
+microsoft-extensions-caching-memory_10-0-0.style.fill: "#FFEC96"
+microsoft-extensions-caching-memory_10-0-0.style.opacity: 0.8
+microsoft-extensions-caching-memory_10-0-0 <- microsoft-entityframeworkcore-relational_10-0-0
+microsoft-extensions-logging_10-0-0: Microsoft.Extensions.Logging\nv10.0.0
+microsoft-extensions-logging_10-0-0.style.fill: "#FFEC96"
+microsoft-extensions-logging_10-0-0.style.opacity: 0.8
+microsoft-extensions-logging_10-0-0 <- microsoft-entityframeworkcore-relational_10-0-0
+microsoft-entityframeworkcore-relational_10-0-0 <- aoi.alloverit-entityframeworkcore
+aoi.alloverit: AllOverIt
+aoi.alloverit-assertion: AllOverIt.Assertion
+aoi.alloverit-assertion <- aoi.alloverit
+aoi.alloverit <- aoi.alloverit-entityframeworkcore
