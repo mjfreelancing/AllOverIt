@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes.Entities
 {
-    [Table(nameof(Post))]       // Enforce the name rather than take on the DbSet<> property name
-    public class Post
+    [Table("Post")]       // Enforce the name rather than take on the DbSet<> property name
+    public class PostEntity
     {
         public int Id { get; set; }
 

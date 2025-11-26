@@ -143,7 +143,7 @@ namespace D2ErdDiagramDemo
             options.Group("web", "Web", new ShapeStyle(), entities =>
             {
                 entities
-                    .Add<WebSite>()
+                    .Add<WebSiteEntity>()
                     .Add<Settings>();
             });
 
@@ -162,6 +162,22 @@ namespace D2ErdDiagramDemo
                     .Add<Blog>()
                     .Add<AuthorBlog>()
                     .Add<Post>();
+            });
+
+            // The third
+            var rolePermGroupStyle = new ShapeStyle
+            {
+                Fill = "#ffffcc", // pale yellow
+                Stroke = "#cccc99" // darker yellow
+            };
+
+            options.Group("role_perm", "Roles / Permissions", rolePermGroupStyle, entities =>
+            {
+                entities
+                    .Add<Role>()
+                    .Add<Permission>()
+                    .Add("AuthorRole")          // There's no entity for the join tables
+                    .Add("RolePermission");
             });
         }
 

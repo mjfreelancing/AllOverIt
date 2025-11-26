@@ -62,7 +62,7 @@ namespace AllOverIt.Fixture.FakeItEasy
         public static IReadOnlyList<Fake<TType>> CreateManyFakes<TType>(this FixtureBase fixtureBase, int count)
             where TType : class
         {
-            return fixtureBase.Fixture.CreateMany<Fake<TType>>(count).ToList();
+            return [.. fixtureBase.Fixture.CreateMany<Fake<TType>>(count)];
         }
 
 

@@ -10,7 +10,7 @@ namespace D2ErdDiagramDemo.Data
         public DbSet<AuthorBlog> AuthorBlogs { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<WebSite> WebSites { get; set; }
+        public DbSet<WebSiteEntity> WebSites { get; set; }
         public DbSet<Settings> WebSiteSettings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -18,6 +18,25 @@ namespace D2ErdDiagramDemo.Data
             base.OnConfiguring(optionsBuilder);
 
             optionsBuilder.UseSqlite("Filename=:memory:");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Sets up the many-to-many UserRole join table without an explicit model
+            modelBuilder
+                .Entity<Author>()
+                .HasMany(user => user.Roles)
+                .WithMany(role => role.Authors)
+                .UsingEntity("AuthorRole");
+
+            // Sets up the many-to-many RolePermission join table without an explicit model
+            modelBuilder
+                .Entity<Role>()
+                .HasMany(role => role.Permissions)
+                .WithMany(permission => permission.Roles)
+                .UsingEntity("RolePermission");
         }
     }
 }

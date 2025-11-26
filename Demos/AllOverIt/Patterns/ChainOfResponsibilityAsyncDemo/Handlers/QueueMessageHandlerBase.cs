@@ -5,6 +5,7 @@ namespace ChainOfResponsibilityAsyncDemo.Handlers
     public abstract class QueueMessageHandlerBase : ChainOfResponsibilityHandlerAsync<QueueMessageHandlerState, QueueMessageHandlerState>
     {
         // This is demo code - the members would normally be accessing member data
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CA1822 // Mark members as static
         protected async Task<QueueMessageHandlerState?> AbandonAsync(QueueMessageHandlerState state, CancellationToken cancellationToken)
         {
@@ -26,5 +27,6 @@ namespace ChainOfResponsibilityAsyncDemo.Handlers
             return state;
         }
 #pragma warning restore CA1822 // Mark members as static
+#pragma warning restore IDE0079 // Remove unnecessary suppression
     }
 }

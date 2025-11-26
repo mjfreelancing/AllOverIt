@@ -29,7 +29,7 @@ namespace AllOverIt.Extensions
         {
             _ = disposables.WhenNotNull();
 
-            var disposableConnections = new CompositeAsyncDisposable(disposables.ToArray());
+            var disposableConnections = new CompositeAsyncDisposable([.. disposables]);
 
             return disposableConnections.DisposeAsync();
         }

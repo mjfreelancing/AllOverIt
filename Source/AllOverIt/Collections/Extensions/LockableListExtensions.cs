@@ -13,7 +13,7 @@ namespace AllOverIt.Collections.Extensions
 
             using (lockableList.GetReadLock(false))
             {
-                return new List<TType>(lockableList);
+                return [.. lockableList];
             }
         }
 

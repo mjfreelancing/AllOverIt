@@ -92,7 +92,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
         {
             var enumType = new EnumType(typeDescriptor.Name, new EnumTypeOptions
             {
-                Definition = type.GetEnumNames().Select(item => item.ToUpperSnakeCase()).ToArray()
+                Definition = [.. type.GetEnumNames().Select(item => item.ToUpperSnakeCase())]
             });
 
             return CreateEnumType(enumType, typeDescriptor);
@@ -106,7 +106,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
 
             var enumType = new EnumType(typeDescriptor.Name, new EnumTypeOptions
             {
-                Definition = propNames.ToArray()
+                Definition = [.. propNames]
             });
 
             return CreateEnumType(enumType, typeDescriptor);

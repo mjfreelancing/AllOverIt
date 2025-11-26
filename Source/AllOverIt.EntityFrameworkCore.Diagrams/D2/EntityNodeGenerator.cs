@@ -2,6 +2,7 @@
 using AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions;
 using AllOverIt.EntityFrameworkCore.Diagrams.Exceptions;
 using AllOverIt.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Text;
 
@@ -33,7 +34,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
             var entityName = entityIdentifier.TableName;
 
-            var groupAlias = _options.Groups.GetAlias(entityIdentifier.Type);
+            // Try to get group alias by type first, then by table name (for shadow entities)
+            var groupAlias = _options.Groups.GetAlias(entityIdentifier.Type)
+                             ?? _options.Groups.GetAlias(entityIdentifier.TableName);
 
             if (groupAlias is not null)
             {
@@ -44,8 +47,11 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
             sb.AppendLine("  shape: sql_table");
             sb.AppendLine();
 
+            // For shadow entities (e.g., many-to-many join tables created with UsingEntity()),
+            // the ClrType is Dictionary<string, object> which is not unique.
+            // We need to match by table name in those cases, so we may as always use this approach.
             var entityType = _dbContextEntityTypes
-                .Single(entity => entity.ClrType == entityIdentifier.Type)
+                .Single(entity => entity.GetTableName() == entityIdentifier.TableName)
                 .ClrType;
 
             bool preserveColumnOrder;
@@ -86,7 +92,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.D2
 
                 if (column.ForeignKeyPrincipals is not null)
                 {
-                    var relationshipNodeGenerator = new RelationshipNodeGenerator(_options);
+                    var relationshipNodeGenerator = new RelationshipNodeGenerator(_options, _dbContextEntityTypes);
 
                     foreach (var foreignKey in column.ForeignKeyPrincipals)
                     {

@@ -22,9 +22,11 @@ namespace AllOverIt.Logging.Extensions
 
             var fullName = LogCallOptions.GetCallerFullName(caller, callerName);
 
+#pragma warning disable CA1873 // Avoid potentially expensive logging
 #pragma warning disable CA2254 // Template should be a static expression - will be statically initialized
             logger.Log(logLevel, LogCallOptions.Instance.LogTemplateWithNoArguments, fullName);
 #pragma warning restore CA2254 // Template should be a static expression
+#pragma warning restore CA1873 // Avoid potentially expensive logging
         }
 
         /// <summary>Logs a method call and its arguments.</summary>
@@ -44,9 +46,11 @@ namespace AllOverIt.Logging.Extensions
 
             var fullName = LogCallOptions.GetCallerFullName(caller, callerName);
 
+#pragma warning disable CA1873 // Avoid potentially expensive logging
 #pragma warning disable CA2254 // Template should be a static expression - will be statically initialized
             logger.Log(logLevel, LogCallOptions.Instance.LogTemplateWithArguments, fullName, arguments);
 #pragma warning restore CA2254 // Template should be a static expression
+#pragma warning restore CA1873 // Avoid potentially expensive logging
         }
 
         /// <summary>Logs an exception with a logging level of <see cref="LogLevel.Error"/>.</summary>
@@ -64,9 +68,11 @@ namespace AllOverIt.Logging.Extensions
 
             if (messageTemplate is null)
             {
+#pragma warning disable CA1873 // Avoid potentially expensive logging
 #pragma warning disable CA2254 // Template should be a static expression - will be statically initialized
                 logger.LogError(exception, LogCallOptions.Instance.LogExceptionTemplate, exception.Message);
 #pragma warning restore CA2254 // Template should be a static expression
+#pragma warning restore CA1873 // Avoid potentially expensive logging
             }
             else
             {

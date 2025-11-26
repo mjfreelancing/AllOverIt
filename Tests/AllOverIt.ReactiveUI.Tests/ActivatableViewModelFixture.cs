@@ -242,7 +242,7 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 Invoking(() =>
                 {
-                    _ = viewModel.DoCreateAutoCancellingCommand((Func<CancellationToken, Task>) null);
+                    _ = viewModel.DoCreateAutoCancellingCommand((Func<CancellationToken, Task>)null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -250,7 +250,7 @@ namespace AllOverIt.ReactiveUI.Tests
             }
 
             [Fact]
-            public void Should_Auto_Cancel_Command()
+            public async Task Should_Auto_Cancel_Command()
             {
                 var viewModel = new ViewModelDummy(null, null);
 
@@ -262,10 +262,14 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 using var subscription2 = command.Execute().Subscribe();
 
+                await Task.Delay(50); // Give command time to start executing
+
                 using (viewModel.Activator.Activate())
                 {
                     isExecutingList.Should().BeEquivalentTo([false, true], options => options.WithStrictOrdering());
                 }
+
+                await Task.Delay(50); // Give command time to complete after deactivation
 
                 isExecutingList.Should().BeEquivalentTo([false, true, false], options => options.WithStrictOrdering());
             }
@@ -280,7 +284,7 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 Invoking(() =>
                 {
-                    _ = viewModel.DoCreateAutoCancellingCommand((Func<CancellationToken, Task<string>>) null);
+                    _ = viewModel.DoCreateAutoCancellingCommand((Func<CancellationToken, Task<string>>)null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -323,7 +327,7 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 Invoking(() =>
                 {
-                    _ = viewModel.DoCreateAutoCancellingCommand<string>((Func<string, CancellationToken, Task>) null);
+                    _ = viewModel.DoCreateAutoCancellingCommand<string>((Func<string, CancellationToken, Task>)null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -331,7 +335,7 @@ namespace AllOverIt.ReactiveUI.Tests
             }
 
             [Fact]
-            public void Should_Auto_Cancel_Command()
+            public async Task Should_Auto_Cancel_Command()
             {
                 var viewModel = new ViewModelDummy(null, null);
 
@@ -341,12 +345,16 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 var subscription1 = command.IsExecuting.Subscribe(isExecuting => isExecutingList.Add(isExecuting));
 
-                using var subscription2 = command.Execute().Subscribe();
+                using var subscription2 = command.Execute(Create<string>()).Subscribe();
+
+                await Task.Delay(50); // Give command time to start executing
 
                 using (viewModel.Activator.Activate())
                 {
                     isExecutingList.Should().BeEquivalentTo([false, true], options => options.WithStrictOrdering());
                 }
+
+                await Task.Delay(50); // Give command time to complete after deactivation
 
                 isExecutingList.Should().BeEquivalentTo([false, true, false], options => options.WithStrictOrdering());
             }
@@ -361,7 +369,7 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 Invoking(() =>
                 {
-                    _ = viewModel.DoCreateAutoCancellingCommand<string, int>((Func<string, CancellationToken, Task<int>>) null);
+                    _ = viewModel.DoCreateAutoCancellingCommand<string, int>((Func<string, CancellationToken, Task<int>>)null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -369,7 +377,7 @@ namespace AllOverIt.ReactiveUI.Tests
             }
 
             [Fact]
-            public void Should_Auto_Cancel_Command()
+            public async Task Should_Auto_Cancel_Command()
             {
                 var viewModel = new ViewModelDummy(null, null);
 
@@ -384,12 +392,16 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 var subscription1 = command.IsExecuting.Subscribe(isExecuting => isExecutingList.Add(isExecuting));
 
-                using var subscription2 = command.Execute().Subscribe();
+                using var subscription2 = command.Execute(Create<string>()).Subscribe();
+
+                await Task.Delay(50); // Give command time to start executing
 
                 using (viewModel.Activator.Activate())
                 {
                     isExecutingList.Should().BeEquivalentTo([false, true], options => options.WithStrictOrdering());
                 }
+
+                await Task.Delay(50); // Give command time to complete after deactivation
 
                 isExecutingList.Should().BeEquivalentTo([false, true, false], options => options.WithStrictOrdering());
             }

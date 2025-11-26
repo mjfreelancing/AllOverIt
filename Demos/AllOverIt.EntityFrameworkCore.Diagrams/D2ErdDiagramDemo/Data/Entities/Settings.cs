@@ -14,6 +14,6 @@ namespace D2ErdDiagramDemo.Data.Entities
         // Applies a 1 to 0..1 relationship
         [Required]
         [ForeignKey("WebSiteId")]
-        public WebSite WebSite { get; set; }
+        public WebSiteEntity WebSite { get; set; }
     }
 }

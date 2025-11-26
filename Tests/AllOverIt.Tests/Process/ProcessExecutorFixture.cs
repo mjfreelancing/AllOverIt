@@ -37,14 +37,17 @@ namespace AllOverIt.Tests.Process
 
             var expected = new
             {
+#if NET10_0_OR_GREATER
+                CreateNewProcessGroup = false,
+#endif
                 UseShellExecute = false,
                 CreateNoWindow = false,
                 RedirectStandardInput = false,
                 RedirectStandardError = false,
                 RedirectStandardOutput = false,
-                StandardInputEncoding = (Encoding) default,
-                StandardErrorEncoding = (Encoding) default,
-                StandardOutputEncoding = (Encoding) default,
+                StandardInputEncoding = (Encoding)default,
+                StandardErrorEncoding = (Encoding)default,
+                StandardOutputEncoding = (Encoding)default,
                 WorkingDirectory = string.Empty,
                 FileName = fileName,
                 Arguments = string.Empty,
@@ -52,13 +55,13 @@ namespace AllOverIt.Tests.Process
                 EnvironmentVariables = Environment.GetEnvironmentVariables(),
                 Domain = string.Empty,
                 UserName = string.Empty,
-                Password = (SecureString) default,
-                PasswordInClearText = (string) default,
+                Password = (SecureString)default,
+                PasswordInClearText = (string)default,
                 Verb = string.Empty,
                 WindowStyle = ProcessWindowStyle.Normal,
                 LoadUserProfile = false,
                 ErrorDialog = false,
-                ErrorDialogParentHandle = (IntPtr) default,
+                ErrorDialogParentHandle = (IntPtr)default,
                 UseCredentialsForNetworkingOnly = false
             };
 
@@ -91,14 +94,17 @@ namespace AllOverIt.Tests.Process
 
             var expected = new
             {
+#if NET10_0_OR_GREATER
+                CreateNewProcessGroup = false,
+#endif
                 UseShellExecute = false,
                 CreateNoWindow = false,
                 RedirectStandardInput = false,
                 RedirectStandardError = false,
                 RedirectStandardOutput = false,
-                StandardInputEncoding = (Encoding) default,
-                StandardErrorEncoding = (Encoding) default,
-                StandardOutputEncoding = (Encoding) default,
+                StandardInputEncoding = (Encoding)default,
+                StandardErrorEncoding = (Encoding)default,
+                StandardOutputEncoding = (Encoding)default,
                 WorkingDirectory = options.WorkingDirectory,
                 FileName = fileName,
                 Arguments = options.Arguments,
@@ -106,13 +112,13 @@ namespace AllOverIt.Tests.Process
                 //EnvironmentVariables = expectedEnvironmentVariables,
                 Domain = string.Empty,
                 UserName = string.Empty,
-                Password = (SecureString) default,
-                PasswordInClearText = (string) default,
+                Password = (SecureString)default,
+                PasswordInClearText = (string)default,
                 Verb = string.Empty,
                 WindowStyle = ProcessWindowStyle.Normal,
                 LoadUserProfile = false,
                 ErrorDialog = false,
-                ErrorDialogParentHandle = (IntPtr) default,
+                ErrorDialogParentHandle = (IntPtr)default,
                 UseCredentialsForNetworkingOnly = false
             };
 
@@ -132,7 +138,7 @@ namespace AllOverIt.Tests.Process
 
             while (actualKeysEnumerator.MoveNext())
             {
-                actualKeys.Add((string) actualKeysEnumerator.Current);
+                actualKeys.Add((string)actualKeysEnumerator.Current);
             }
 
             var actualEnvironmentVariables = actualKeys

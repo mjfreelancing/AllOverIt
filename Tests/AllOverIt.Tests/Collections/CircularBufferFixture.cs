@@ -301,33 +301,35 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Push_Front()
             {
-                var expected = CreateMany<int>(3).ToArray();
+                var source = CreateMany<int>(3);
                 var buffer = new CircularBuffer<int>(3);
 
-                foreach (var item in expected)
+                foreach (var item in source)
                 {
                     buffer.PushFront(item);
                 }
 
-                var actual = buffer.ToArray();
+                IEnumerable<int> expected = source.ToArray();
+                expected = expected.Reverse();
 
-                actual.Should().BeEquivalentTo(expected.Reverse(), cfg => cfg.WithStrictOrdering());
+                buffer.Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
             }
 
             [Fact]
             public void Should_Push_Front_Exceed_Capacity()
             {
-                var expected = CreateMany<int>(7).ToArray();
+                var source = CreateMany<int>(7).ToArray();
                 var buffer = new CircularBuffer<int>(3);
 
-                foreach (var item in expected)
+                foreach (var item in source)
                 {
                     buffer.PushFront(item);
                 }
 
-                var actual = buffer.ToArray();
+                IEnumerable<int> expected = source[4..];
+                expected = expected.Reverse();
 
-                actual.Should().BeEquivalentTo(expected[4..].Reverse(), cfg => cfg.WithStrictOrdering());
+                buffer.Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
             }
         }
 
@@ -400,13 +402,16 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Pop_Back()
             {
-                var expected = CreateMany<int>(3).ToArray();
-                var buffer = new CircularBuffer<int>(3, expected);
+                var source = CreateMany<int>(3).ToArray();
+                var buffer = new CircularBuffer<int>(3, source);
 
                 var actual = new[] { buffer.PopBack(), buffer.PopBack(), buffer.PopBack() };
 
+                IEnumerable<int> expected = source.ToArray();
+                expected = expected.Reverse();
+
                 buffer.IsEmpty.Should().BeTrue();
-                actual.Should().BeEquivalentTo(expected.Reverse(), cfg => cfg.WithStrictOrdering());
+                actual.Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
             }
 
             [Fact]
@@ -480,13 +485,13 @@ namespace AllOverIt.Tests.Collections
                 var expected = CreateMany<int?>(3).ToArray();
                 var buffer = new CircularBuffer<int?>(3, expected);
 
-                var enumerator = ((IEnumerable) buffer).GetEnumerator();
+                var enumerator = ((IEnumerable)buffer).GetEnumerator();
 
                 var index = 0;
 
                 while (enumerator.MoveNext())
                 {
-                    var value = (int) enumerator.Current;
+                    var value = (int)enumerator.Current;
 
                     value.Should().Be(expected[index++]);
                 }

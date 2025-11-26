@@ -3,7 +3,7 @@
     /// <summary>Contains breadcrumb information at a point in time.</summary>
     public sealed class BreadcrumbData
     {
-        private static long _counter;
+        private static long RefCounter;
 
         internal object? _metadata;
         internal string[]? _tags = [];
@@ -45,7 +45,7 @@
         /// <summary>Constructor.</summary>
         public BreadcrumbData()
         {
-            Counter = Interlocked.Increment(ref _counter);
+            Counter = Interlocked.Increment(ref RefCounter);
         }
     }
 }

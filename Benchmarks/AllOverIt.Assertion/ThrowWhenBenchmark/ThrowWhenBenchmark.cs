@@ -10,12 +10,12 @@ using BenchmarkDotNet.Attributes;
     |  ThrowWhen_True |              4 | 24,839.367 ns | 146.3178 ns | 122.182 ns | 0.8240 |   3,456 B |
  */
 
-namespace ThrowWhenBenchmarking
+namespace ThrowWhenBenchmark
 {
     [MemoryDiagnoser]
     public class ThrowWhenBenchmark
     {
-        [Params(4)]
+        [Params(4, 10)]
         public int IterationCount;
 
         [Benchmark]

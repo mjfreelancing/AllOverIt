@@ -10,6 +10,24 @@ blog: "" {
   }
 }
 
+role_perm: Roles / Permissions {
+  style: {
+    fill: \#ffffcc
+    stroke: \#cccc99
+  }
+}
+
+role_perm.AuthorRole: {
+  shape: sql_table
+
+  style: {
+    stroke: \#ccffcc
+  }
+
+  AuthorsId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+  RolesId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+}
+
 blog.Author: {
   shape: sql_table
 
@@ -62,6 +80,17 @@ Comment: {
   AuthorId: INTEGER {constraint: foreign_key}
 }
 
+role_perm.Permission: {
+  shape: sql_table
+
+  style: {
+    stroke: \#ccffcc
+  }
+
+  Id: INTEGER \[NOT NULL\] {constraint: primary_key}
+  Name: TEXT
+}
+
 blog.Post: {
   shape: sql_table
 
@@ -73,6 +102,17 @@ blog.Post: {
   Title: TEXT(500) \[NOT NULL\]
   Content: TEXT \[NOT NULL\]
   BlogId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+}
+
+role_perm.Role: {
+  shape: sql_table
+
+  style: {
+    stroke: \#ccffcc
+  }
+
+  Id: INTEGER \[NOT NULL\] {constraint: primary_key}
+  Name: TEXT
 }
 
 web.Settings: {
@@ -96,6 +136,45 @@ web.WebSite: {
 
   Id: INTEGER \[NOT NULL\] {constraint: primary_key}
   Description: TEXT(500) \[NOT NULL\]
+}
+
+role_perm.RolePermission: {
+  shape: sql_table
+
+  style: {
+    stroke: \#ccffcc
+  }
+
+  PermissionsId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+  RolesId: INTEGER \[NOT NULL\] {constraint: foreign_key}
+}
+
+blog.Author.Id <-> role_perm.AuthorRole.AuthorsId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}
+
+role_perm.Role.Id <-> role_perm.AuthorRole.RolesId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
 }
 
 blog.Blog.Id <-> blog.AuthorBlog.BloggerId: {
@@ -188,6 +267,34 @@ web.WebSite.Id <-> web.Settings.WebSiteId: {
   }
   target-arrowhead: {
     shape: cf-one
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}
+
+role_perm.Permission.Id <-> role_perm.RolePermission.PermissionsId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+  style: {
+    font-size: 18
+    font-color: blue
+    bold: true
+  }
+}
+
+role_perm.Role.Id <-> role_perm.RolePermission.RolesId: {
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
   }
   style: {
     font-size: 18

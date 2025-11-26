@@ -91,7 +91,7 @@ namespace AllOverIt.Aws.Cdk.AppSync
                         new FieldOptions
                         {
                             Directives = [
-                                Directive.Subscribe(GetSubscriptionMutations(methodInfo).ToArray())
+                                Directive.Subscribe([.. GetSubscriptionMutations(methodInfo)])
                             ],
                             Args = methodInfo.GetMethodArgs(_schema, _typeStore),
                             ReturnType = returnObjectType

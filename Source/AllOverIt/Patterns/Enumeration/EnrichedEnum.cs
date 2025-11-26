@@ -249,10 +249,9 @@ namespace AllOverIt.Patterns.Enumeration
         {
             var fields = typeof(TEnum).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
 
-            return fields
+            return [.. fields
                 .Select(field => field.GetValue(null))
-                .Cast<TEnum>()
-                .ToArray();
+                .Cast<TEnum>()];
         }
     }
 }

@@ -11,7 +11,7 @@ namespace AllOverIt.Serialization.Binary.Writers
     /// <inheritdoc cref="IEnrichedBinaryWriter"/>
     public sealed class EnrichedBinaryWriter : BinaryWriter, IEnrichedBinaryWriter
     {
-        private static readonly Dictionary<Type, TypeIdentifier> _typeIdRegistry = new()
+        private static readonly Dictionary<Type, TypeIdentifier> TypeIdRegistry = new()
         {
             { CommonTypes.BoolType, TypeIdentifier.Bool },
             { CommonTypes.ByteType, TypeIdentifier.Byte },
@@ -35,7 +35,7 @@ namespace AllOverIt.Serialization.Binary.Writers
             { CommonTypes.TimeSpanType, TypeIdentifier.TimeSpan }
         };
 
-        private static readonly Dictionary<TypeIdentifier, Action<EnrichedBinaryWriter, object>> _typeIdWriter = new()
+        private static readonly Dictionary<TypeIdentifier, Action<EnrichedBinaryWriter, object>> TypeIdWriter = new()
         {
             { TypeIdentifier.Bool, (writer, value) => writer.WriteBoolean((bool)value) },
             { TypeIdentifier.Byte, (writer, value) => writer.WriteByte((byte)value) },
@@ -155,7 +155,7 @@ namespace AllOverIt.Serialization.Binary.Writers
 
             if ((typeId & (byte)TypeIdentifier.DefaultValue) == 0)
             {
-                _typeIdWriter[rawTypeId].Invoke(this, value!);
+                TypeIdWriter[rawTypeId].Invoke(this, value!);
             }
         }
 
@@ -185,7 +185,7 @@ namespace AllOverIt.Serialization.Binary.Writers
 
         private TypeIdentifier? IsTypeRegistered(Type type)
         {
-            return _typeIdRegistry.TryGetValue(type, out var rawTypeId)
+            return TypeIdRegistry.TryGetValue(type, out var rawTypeId)
                 ? rawTypeId
                 : (TypeIdentifier?)default;
         }
@@ -203,7 +203,7 @@ namespace AllOverIt.Serialization.Binary.Writers
             {
                 var underlyingType = Nullable.GetUnderlyingType(type)!;
 
-                if (_typeIdRegistry.TryGetValue(underlyingType, out var rawTypeId))
+                if (TypeIdRegistry.TryGetValue(underlyingType, out var rawTypeId))
                 {
                     return rawTypeId;
                 }

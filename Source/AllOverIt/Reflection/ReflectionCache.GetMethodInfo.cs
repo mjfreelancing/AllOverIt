@@ -95,11 +95,9 @@ namespace AllOverIt.Reflection
         {
             return key =>
             {
-                var (type, bindingOptions, declaredOnly) = (GenericCacheKey<Type, BindingOptions, bool>) key;
+                var (type, bindingOptions, declaredOnly) = (GenericCacheKey<Type, BindingOptions, bool>)key;
 
-                return type!
-                    .GetMethodInfo(bindingOptions, declaredOnly)
-                    .ToArray();
+                return [.. type!.GetMethodInfo(bindingOptions, declaredOnly)];
             };
         }
 
@@ -107,7 +105,7 @@ namespace AllOverIt.Reflection
         {
             return key =>
             {
-                var (type, name, types) = (GenericCacheKey<Type, string, Type[]>) key;
+                var (type, name, types) = (GenericCacheKey<Type, string, Type[]>)key;
 
                 return type?.GetMethodInfo(name!, types!);
             };

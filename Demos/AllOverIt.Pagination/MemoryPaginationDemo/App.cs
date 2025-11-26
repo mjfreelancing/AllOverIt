@@ -15,7 +15,7 @@ namespace MemoryPaginationDemo
         // Cannot use 'Bogus.Person' as it contains fields - can only use properties in queries 
         private class PersonModel
         {
-            private static int _id;
+            private static int RefId;
 
             public int Id { get; }
             public string FirstName { get; }
@@ -24,7 +24,7 @@ namespace MemoryPaginationDemo
 
             public PersonModel(Person person)
             {
-                Id = Interlocked.Increment(ref _id);
+                Id = Interlocked.Increment(ref RefId);
                 FirstName = person.FirstName;
                 LastName = person.LastName;
                 Gender = person.Gender;
@@ -88,7 +88,8 @@ namespace MemoryPaginationDemo
                 foreach (var person in pageResults.Results)
                 {
                     Console.WriteLine($"{person.LastName}, {person.FirstName} ({person.Gender}, {person.Id})");
-                };
+                }
+                ;
 
                 Console.WriteLine();
                 Console.WriteLine($"Execution time: {elapsed - lastCheckpoint}ms");

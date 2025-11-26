@@ -25,7 +25,7 @@ namespace AllOverIt.Collections
         /// <param name="data">The data to add to the readonly list.</param>
         public ReadOnlyList(IEnumerable<TType> data)
         {
-            _list = new(data);
+            _list = [.. data];
         }
 
         /// <inheritdoc />

@@ -11,8 +11,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
     {
         private sealed class EntityGroups : IEntityGroups
         {
-            private readonly Dictionary<string, EntityGroup> _aliasGroups = [];     // group to definition with collection of entities
-            private readonly Dictionary<Type, string> _entityGroupAliases = [];     // entity type to group
+            private readonly Dictionary<string, EntityGroup> _aliasGroups = [];         // group to definition with collection of entities
+            private readonly Dictionary<Type, string> _entityGroupAliases = [];         // entity type to group
+            private readonly Dictionary<string, string> _entityTableNameAliases = [];   // table name to group (for shadow entities)
 
             IEntityGroups IEntityGroups.Add(string alias, EntityGroup groupEntities)
             {
@@ -33,12 +34,35 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
                     _entityGroupAliases.Add(groupEntity, alias);
                 }
 
+                // Also handle shadow entities (identified by table name)
+                foreach (var tableName in groupEntities.TableNames)
+                {
+                    if (_entityTableNameAliases.TryGetValue(tableName, out var entityAlias))
+                    {
+                        throw new DiagramException($"The table '{tableName}' is already associated with group alias '{entityAlias}'.");
+                    }
+
+                    _entityTableNameAliases.Add(tableName, alias);
+                }
+
                 return this;
             }
 
+            // Get the alias for the specified entity type, added via Add(Type)
             string? IEntityGroups.GetAlias(Type entityType)
             {
                 if (_entityGroupAliases.TryGetValue(entityType, out var alias))
+                {
+                    return alias;
+                }
+
+                return null;
+            }
+
+            // Get the alias for the specified table name, added via Add(string)
+            string? IEntityGroups.GetAlias(string tableName)
+            {
+                if (_entityTableNameAliases.TryGetValue(tableName, out var alias))
                 {
                     return alias;
                 }
@@ -53,7 +77,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                return ((IEnumerable<KeyValuePair<string, EntityGroup>>) this).GetEnumerator();
+                return ((IEnumerable<KeyValuePair<string, EntityGroup>>)this).GetEnumerator();
             }
         }
 
@@ -110,6 +134,11 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             /// <param name="entityType">The entity type to get the alias for.</param>
             /// <returns>The alias associated with a specified entity type.</returns>
             string? GetAlias(Type entityType);
+
+            /// <summary>Gets the alias associated with a specified table name.</summary>
+            /// <param name="tableName">The table name to get the alias for.</param>
+            /// <returns>The alias associated with a specified table name.</returns>
+            string? GetAlias(string tableName);
         }
 
         /// <summary>Provides options that specify how a column's nullability is depicted on the generated diagram.</summary>
@@ -169,6 +198,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
         public sealed class EntityGroup
         {
             private readonly List<Type> _entityTypes = [];
+            private readonly List<string> _tableNames = [];
 
             /// <summary>The group's title. Set to <see langword="null"/> if not required.</summary>
             public string Title { get; }
@@ -178,6 +208,9 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
 
             /// <summary>The entity types associated with the group.</summary>
             public Type[] EntityTypes => [.. _entityTypes];
+
+            /// <summary>The table names associated with the group (for shadow entities without explicit types).</summary>
+            public string[] TableNames => [.. _tableNames];
 
             /// <summary>Constructor.</summary>
             /// <param name="title">The group's title. Set to <see langword="null"/> if not required.</param>
@@ -194,6 +227,18 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams
             public EntityGroup Add<TEntity>() where TEntity : class
             {
                 _entityTypes.Add(typeof(TEntity));
+
+                return this;
+            }
+
+            /// <summary>Adds a shadow entity to the group by table name.</summary>
+            /// <param name="tableName">The table name of the shadow entity (e.g., many-to-many join tables created with UsingEntity).</param>
+            /// <returns>The entity group to allow for chained calls.</returns>
+            public EntityGroup Add(string tableName)
+            {
+                _ = tableName.WhenNotNullOrEmpty();
+
+                _tableNames.Add(tableName);
 
                 return this;
             }

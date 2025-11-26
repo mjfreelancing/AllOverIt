@@ -279,7 +279,7 @@ namespace AllOverIt.Fixture
 
                 if (!allowDuplicates)
                 {
-                    items = items.Except(values).Except(excludes).ToList();
+                    items = [.. items.Except(values).Except(excludes)];
                 }
 
                 values.AddRange(items);
@@ -570,21 +570,20 @@ namespace AllOverIt.Fixture
             // Fixture.CreateMany() doesn't randomize enum values - it uses a round-robin approach.
             if (!typeof(TType).IsEnum)
             {
-                return Fixture.CreateMany<TType>(count).ToList();
+                return [.. Fixture.CreateMany<TType>(count)];
             }
 
             var enumValues = Enum.GetValues(typeof(TType));
             var enumCount = enumValues.Length;
 
-            return Enumerable
+            return [.. Enumerable
               .Range(1, count)
               .Select(_ =>
               {
                   var index = _random.Next(1000) % enumCount;
 
                   return (TType)enumValues.GetValue(index)!;
-              })
-              .ToList();
+              })];
         }
     }
 }

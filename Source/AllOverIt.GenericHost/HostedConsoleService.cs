@@ -21,7 +21,9 @@ namespace AllOverIt.GenericHost
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
+#pragma warning disable CA1873 // Avoid potentially expensive logging
             _logger.LogInformation("Starting with arguments: {CommandLineArgs}", string.Join(" ", Environment.GetCommandLineArgs()));
+#pragma warning restore CA1873 // Avoid potentially expensive logging
 
             _applicationLifetime.ApplicationStarted.Register(() => OnStarted(cancellationToken));
             _applicationLifetime.ApplicationStopping.Register(OnStopping);
@@ -32,7 +34,9 @@ namespace AllOverIt.GenericHost
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
+#pragma warning disable CA1873 // Avoid potentially expensive logging
             _logger.LogInformation("Exiting with return code: {ExitCode}", _exitCode);
+#pragma warning restore CA1873 // Avoid potentially expensive logging
 
             // Exit code may be null if the user cancelled via Ctrl+C/SIGTERM
             Environment.ExitCode = _exitCode.GetValueOrDefault(_consoleApp.DefaultExitCode);

@@ -9,7 +9,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
     public class InterfaceConverter<TInterface, TConcrete> : CustomCreationConverter<TInterface>
         where TConcrete : class, TInterface
     {
-        private static readonly Func<object> _factory = typeof(TConcrete).GetFactory();
+        private static readonly Func<object> Factory = typeof(TConcrete).GetFactory();
 
         /// <summary>Constructor.</summary>
         public InterfaceConverter()
@@ -20,7 +20,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Converters
         /// <inheritdoc />
         public override TInterface Create(Type objectType)
         {
-            return (TInterface) _factory.Invoke();
+            return (TInterface) Factory.Invoke();
         }
     }
 }

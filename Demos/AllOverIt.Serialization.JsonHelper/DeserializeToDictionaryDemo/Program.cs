@@ -190,9 +190,11 @@ namespace DeserializeToDictionaryDemo
             };
         }
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CA1859 // Use concrete types when possible for improved performance
         private static object GetObject2ToProcess()
 #pragma warning restore CA1859 // Use concrete types when possible for improved performance
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         {
             // Note: This is an array - not an array property
             return new[]

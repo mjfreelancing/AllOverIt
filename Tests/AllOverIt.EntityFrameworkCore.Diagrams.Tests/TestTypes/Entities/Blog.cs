@@ -15,7 +15,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes.Entities
         [Required]
         public WebSite WebSite { get; set; }
 
-        public ICollection<Post> Posts { get; set; }
+        public ICollection<PostEntity> Posts { get; set; }
         public ICollection<AuthorBlog> AuthorBlogs { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             {
                 Invoking(() =>
                 {
-                    _ = CommandFactory.CreateCancellableCommand((Func<CancellationToken, Task>) null, () => null);
+                    _ = CommandFactory.CreateCancellableCommand((Func<CancellationToken, Task>)null, () => null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -84,6 +84,8 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
 
                 await cancelCommand.Execute();
 
+                await Task.Delay(50); // Give command time to process cancellation
+
                 resetEvent.Wait(TimeSpan.FromMilliseconds(100));
 
                 actual.Should().BeTrue();
@@ -98,7 +100,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             {
                 Invoking(() =>
                 {
-                    _ = CommandFactory.CreateCancellableCommand<bool>((Func<CancellationToken, Task>) null, () => null);
+                    _ = CommandFactory.CreateCancellableCommand<bool>((Func<CancellationToken, Task>)null, () => null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -126,7 +128,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             }
 
             [Fact]
-            public void Should_Cancel_Cancellable_Command()
+            public async Task Should_Cancel_Cancellable_Command()
             {
                 var resetEvent = new ManualResetEventSlim(false);
                 var actual = false;
@@ -164,6 +166,8 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
 
                 cancelObservable.OnNext(true);
 
+                await Task.Delay(50); // Give command time to process cancellation
+
                 resetEvent.Wait(TimeSpan.FromMilliseconds(100));
 
                 actual.Should().BeTrue();
@@ -178,7 +182,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             {
                 Invoking(() =>
                 {
-                    _ = CommandFactory.CreateCancellableCommand<int>((Func<CancellationToken, Task<int>>) null, () => null);
+                    _ = CommandFactory.CreateCancellableCommand<int>((Func<CancellationToken, Task<int>>)null, () => null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -257,6 +261,8 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
 
                 await cancelCommand.Execute();
 
+                await Task.Delay(50); // Give command time to process cancellation
+
                 resetEvent.Wait(TimeSpan.FromMilliseconds(100));
 
                 actual.Should().BeTrue();
@@ -271,7 +277,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             {
                 Invoking(() =>
                 {
-                    _ = CommandFactory.CreateCancellableCommand<int, bool>((Func<CancellationToken, Task<int>>) null, () => null);
+                    _ = CommandFactory.CreateCancellableCommand<int, bool>((Func<CancellationToken, Task<int>>)null, () => null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -311,7 +317,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             }
 
             [Fact]
-            public void Should_Cancel_Cancellable_Command()
+            public async Task Should_Cancel_Cancellable_Command()
             {
                 var resetEvent = new ManualResetEventSlim(false);
                 var actual = false;
@@ -351,6 +357,8 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
 
                 cancelObservable.OnNext(true);
 
+                await Task.Delay(50); // Give command time to process cancellation
+
                 resetEvent.Wait(TimeSpan.FromMilliseconds(100));
 
                 actual.Should().BeTrue();
@@ -365,7 +373,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             {
                 Invoking(() =>
                 {
-                    _ = CommandFactory.CreateCancellableCommand<string>((Func<string, CancellationToken, Task>) null, () => null);
+                    _ = CommandFactory.CreateCancellableCommand<string>((Func<string, CancellationToken, Task>)null, () => null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -430,6 +438,8 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
 
                 await cancelCommand.Execute();
 
+                await Task.Delay(50); // Give command time to process cancellation
+
                 resetEvent.Wait(TimeSpan.FromMilliseconds(100));
 
                 actual.Should().BeTrue();
@@ -444,7 +454,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             {
                 Invoking(() =>
                 {
-                    _ = CommandFactory.CreateCancellableCommand<string, bool>((Func<string, CancellationToken, Task>) null, () => null);
+                    _ = CommandFactory.CreateCancellableCommand<string, bool>((Func<string, CancellationToken, Task>)null, () => null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -472,7 +482,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             }
 
             [Fact]
-            public void Should_Cancel_Cancellable_Command()
+            public async Task Should_Cancel_Cancellable_Command()
             {
                 var resetEvent = new ManualResetEventSlim(false);
                 var actual = false;
@@ -510,6 +520,8 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
 
                 cancelObservable.OnNext(true);
 
+                await Task.Delay(50); // Give command time to process cancellation
+
                 resetEvent.Wait(TimeSpan.FromMilliseconds(100));
 
                 actual.Should().BeTrue();
@@ -524,7 +536,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             {
                 Invoking(() =>
                 {
-                    _ = CommandFactory.CreateCancellableCommand<bool, int>((Func<bool, CancellationToken, Task<int>>) null, () => null);
+                    _ = CommandFactory.CreateCancellableCommand<bool, int>((Func<bool, CancellationToken, Task<int>>)null, () => null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -604,6 +616,8 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
 
                 await cancelCommand.Execute();
 
+                await Task.Delay(50); // Give command time to process cancellation
+
                 resetEvent.Wait(TimeSpan.FromMilliseconds(100));
 
                 actual.Should().BeTrue();
@@ -618,7 +632,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             {
                 Invoking(() =>
                 {
-                    _ = CommandFactory.CreateCancellableCommand<bool, int, string>((Func<bool, CancellationToken, Task<int>>) null, () => null);
+                    _ = CommandFactory.CreateCancellableCommand<bool, int, string>((Func<bool, CancellationToken, Task<int>>)null, () => null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -659,7 +673,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             }
 
             [Fact]
-            public void Should_Cancel_Cancellable_Command_Via_Observable()
+            public async Task Should_Cancel_Cancellable_Command_Via_Observable()
             {
                 var resetEvent = new ManualResetEventSlim(false);
                 var actual = false;
@@ -697,6 +711,8 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
 
                 cancelCommand.OnNext(string.Empty);
 
+                await Task.Delay(50); // Give command time to process cancellation
+
                 resetEvent.Wait(TimeSpan.FromMilliseconds(100));
 
                 actual.Should().BeTrue();
@@ -711,7 +727,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             {
                 Invoking(() =>
                 {
-                    _ = CommandFactory.CreateCancelCommand((IObservable<bool>[]) null);
+                    _ = CommandFactory.CreateCancelCommand((IObservable<bool>[])null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -842,7 +858,7 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             {
                 Invoking(() =>
                 {
-                    _ = CommandFactory.CreateCancelCommand((IReactiveCommand[]) null);
+                    _ = CommandFactory.CreateCancelCommand((IReactiveCommand[])null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()

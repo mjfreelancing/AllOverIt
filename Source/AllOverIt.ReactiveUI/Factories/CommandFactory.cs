@@ -180,7 +180,13 @@ namespace AllOverIt.ReactiveUI.Factories
         /// <summary>Creates a <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</summary>
         /// <param name="observables">One or more observables that, individually, determine if the returned command can be executed.</param>
         /// <returns>A <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</returns>
-        public static ReactiveCommand<Unit, Unit> CreateCancelCommand(params IObservable<bool>[] observables)
+        public static ReactiveCommand<Unit, Unit> CreateCancelCommand(params IObservable<bool>[] observables) => CreateCancelCommand(null, observables);
+
+        /// <summary>Creates a <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</summary>
+        /// <param name="outputScheduler">The scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c> if <see langword="null"/>.</param>
+        /// <param name="observables">One or more observables that, individually, determine if the returned command can be executed.</param>
+        /// <returns>A <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</returns>
+        public static ReactiveCommand<Unit, Unit> CreateCancelCommand(IScheduler? outputScheduler, params IObservable<bool>[] observables)
         {
             _ = observables.WhenNotNullOrEmpty(errorMessage: "At least one observable is required.");
 
@@ -253,19 +259,30 @@ namespace AllOverIt.ReactiveUI.Factories
                 _ => throw new ArgumentOutOfRangeException(nameof(observables), "A maximum of 16 observables is supported.")
             };
 
-            return ReactiveCommand.Create(() => { }, canExecute);
+            var scheduler = outputScheduler ?? RxApp.MainThreadScheduler;
+
+            return ReactiveCommand.Create(() => { }, canExecute, scheduler);
         }
 
         /// <summary>Creates a <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</summary>
         /// <param name="cancellableCommands">One or more commands created by one of the <c>CreateCancellableCommand()</c> overloads.</param>
         /// <returns>A <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</returns>
         public static ReactiveCommand<Unit, Unit> CreateCancelCommand(params IReactiveCommand[] cancellableCommands)
+            => CreateCancelCommand((IScheduler?)null, cancellableCommands);
+
+        /// <summary>Creates a <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</summary>
+        /// <param name="outputScheduler">The scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c> if <see langword="null"/>.</param>
+        /// <param name="cancellableCommands">One or more commands created by one of the <c>CreateCancellableCommand()</c> overloads.</param>
+        /// <returns>A <c>ReactiveCommand&lt;Unit, Unit&gt;</c> that can be used to cancel one or more other commands.</returns>
+        public static ReactiveCommand<Unit, Unit> CreateCancelCommand(IScheduler? outputScheduler, params IReactiveCommand[] cancellableCommands)
         {
             _ = cancellableCommands.WhenNotNullOrEmpty(errorMessage: "At least one cancellable command is required.");
 
+            var scheduler = outputScheduler ?? RxApp.MainThreadScheduler;
+
             return cancellableCommands.Length == 1
-                ? ReactiveCommand.Create(() => { }, cancellableCommands[0].IsExecuting)
-                : CreateCancelCommand([.. cancellableCommands.Select(command => command.IsExecuting)]);
+                ? ReactiveCommand.Create(() => { }, cancellableCommands[0].IsExecuting, scheduler)
+                : CreateCancelCommand(outputScheduler, [.. cancellableCommands.Select(command => command.IsExecuting)]);
         }
     }
 }

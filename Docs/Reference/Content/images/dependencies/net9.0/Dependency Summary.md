@@ -54,15 +54,15 @@
 * AllOverIt.Assertion
 * AllOverIt.Reactive
 * AllOverIt.Serialization.Json.Abstractions
-* Microsoft.Extensions.Configuration.Abstractions v9.0.8
-* Microsoft.Extensions.DependencyInjection v9.0.8
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.8
-* Microsoft.Extensions.Diagnostics v9.0.8
-* Microsoft.Extensions.Http v9.0.8
-* Microsoft.Extensions.Logging v9.0.8
-* Microsoft.Extensions.Logging.Abstractions v9.0.8
-* Microsoft.Extensions.Options v9.0.8
-* System.Reactive v6.0.1
+* Microsoft.Extensions.Configuration.Abstractions v9.0.10
+* Microsoft.Extensions.DependencyInjection v9.0.10
+* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.10
+* Microsoft.Extensions.Diagnostics v9.0.10
+* Microsoft.Extensions.Http v9.0.10
+* Microsoft.Extensions.Logging v9.0.10
+* Microsoft.Extensions.Logging.Abstractions v9.0.10
+* Microsoft.Extensions.Options v9.0.10
+* System.Reactive v6.1.0
 
 <br>
 
@@ -80,11 +80,12 @@
 * AllOverIt.Assertion
 * Amazon.CDK.Asset.AwsCliV1 v2.2.242
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.1.0
-* Amazon.CDK.CloudAssembly.Schema v48.2.0
+* Amazon.CDK.CloudAssembly.Schema v48.6.0
 * Amazon.CDK.Lib v2.110.0
-* Amazon.CDK.Lib v2.211.0
-* Amazon.JSII.Runtime v1.113.0
-* Cdklabs.AwsCdkAppsyncUtils v0.0.805
+* Amazon.CDK.Lib v2.223.0
+* Amazon.JSII.Runtime v1.117.0
+* Amazon.JSII.Runtime v1.118.0
+* Cdklabs.AwsCdkAppsyncUtils v0.0.858
 * Constructs v10.0.0
 * Constructs v10.0.5
 
@@ -133,7 +134,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.8
+* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.10
 
 <br>
 
@@ -149,11 +150,11 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.EntityFrameworkCore v9.0.8
-* Microsoft.EntityFrameworkCore.Relational v9.0.8
-* Microsoft.Extensions.Caching.Memory v9.0.8
-* Microsoft.Extensions.Configuration.Abstractions v9.0.8
-* Microsoft.Extensions.Logging v9.0.8
+* Microsoft.EntityFrameworkCore v9.0.11
+* Microsoft.EntityFrameworkCore.Relational v9.0.11
+* Microsoft.Extensions.Caching.Memory v9.0.11
+* Microsoft.Extensions.Configuration.Abstractions v9.0.11
+* Microsoft.Extensions.Logging v9.0.11
 
 <br>
 
@@ -169,11 +170,11 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.EntityFrameworkCore v9.0.8
-* Microsoft.EntityFrameworkCore.Relational v9.0.8
-* Microsoft.Extensions.Caching.Memory v9.0.8
-* Microsoft.Extensions.Configuration.Abstractions v9.0.8
-* Microsoft.Extensions.Logging v9.0.8
+* Microsoft.EntityFrameworkCore v9.0.11
+* Microsoft.EntityFrameworkCore.Relational v9.0.11
+* Microsoft.Extensions.Caching.Memory v9.0.11
+* Microsoft.Extensions.Configuration.Abstractions v9.0.11
+* Microsoft.Extensions.Logging v9.0.11
 
 <br>
 
@@ -192,12 +193,12 @@
 * AllOverIt.EntityFrameworkCore
 * AllOverIt.Pagination
 * AllOverIt.Serialization.Binary
-* Microsoft.EntityFrameworkCore v9.0.8
-* Microsoft.EntityFrameworkCore.Relational v9.0.8
-* Microsoft.Extensions.Caching.Memory v9.0.8
-* Microsoft.Extensions.Configuration.Abstractions v9.0.8
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.8
-* Microsoft.Extensions.Logging v9.0.8
+* Microsoft.EntityFrameworkCore v9.0.11
+* Microsoft.EntityFrameworkCore.Relational v9.0.11
+* Microsoft.Extensions.Caching.Memory v9.0.11
+* Microsoft.Extensions.Configuration.Abstractions v9.0.11
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.0
+* Microsoft.Extensions.Logging v9.0.11
 
 <br>
 
@@ -291,29 +292,29 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.Extensions.Configuration v9.0.8
-* Microsoft.Extensions.Configuration.Abstractions v9.0.8
-* Microsoft.Extensions.Configuration.Binder v9.0.8
-* Microsoft.Extensions.Configuration.CommandLine v9.0.8
-* Microsoft.Extensions.Configuration.EnvironmentVariables v9.0.8
-* Microsoft.Extensions.Configuration.FileExtensions v9.0.8
-* Microsoft.Extensions.Configuration.Json v9.0.8
-* Microsoft.Extensions.Configuration.UserSecrets v9.0.8
-* Microsoft.Extensions.DependencyInjection v9.0.8
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.8
-* Microsoft.Extensions.Diagnostics v9.0.8
-* Microsoft.Extensions.FileProviders.Abstractions v9.0.8
-* Microsoft.Extensions.FileProviders.Physical v9.0.8
-* Microsoft.Extensions.Hosting v9.0.8
-* Microsoft.Extensions.Hosting.Abstractions v9.0.8
-* Microsoft.Extensions.Logging v9.0.8
-* Microsoft.Extensions.Logging.Abstractions v9.0.8
-* Microsoft.Extensions.Logging.Configuration v9.0.8
-* Microsoft.Extensions.Logging.Console v9.0.8
-* Microsoft.Extensions.Logging.Debug v9.0.8
-* Microsoft.Extensions.Logging.EventLog v9.0.8
-* Microsoft.Extensions.Logging.EventSource v9.0.8
-* Microsoft.Extensions.Options v9.0.8
+* Microsoft.Extensions.Configuration v9.0.10
+* Microsoft.Extensions.Configuration.Abstractions v9.0.10
+* Microsoft.Extensions.Configuration.Binder v9.0.10
+* Microsoft.Extensions.Configuration.CommandLine v9.0.10
+* Microsoft.Extensions.Configuration.EnvironmentVariables v9.0.10
+* Microsoft.Extensions.Configuration.FileExtensions v9.0.10
+* Microsoft.Extensions.Configuration.Json v9.0.10
+* Microsoft.Extensions.Configuration.UserSecrets v9.0.10
+* Microsoft.Extensions.DependencyInjection v9.0.10
+* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.10
+* Microsoft.Extensions.Diagnostics v9.0.10
+* Microsoft.Extensions.FileProviders.Abstractions v9.0.10
+* Microsoft.Extensions.FileProviders.Physical v9.0.10
+* Microsoft.Extensions.Hosting v9.0.10
+* Microsoft.Extensions.Hosting.Abstractions v9.0.10
+* Microsoft.Extensions.Logging v9.0.10
+* Microsoft.Extensions.Logging.Abstractions v9.0.10
+* Microsoft.Extensions.Logging.Configuration v9.0.10
+* Microsoft.Extensions.Logging.Console v9.0.10
+* Microsoft.Extensions.Logging.Debug v9.0.10
+* Microsoft.Extensions.Logging.EventLog v9.0.10
+* Microsoft.Extensions.Logging.EventSource v9.0.10
+* Microsoft.Extensions.Options v9.0.10
 
 <br>
 
@@ -329,9 +330,9 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.8
-* Microsoft.Extensions.Logging.Abstractions v9.0.8
-* System.Diagnostics.DiagnosticSource v9.0.8
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.0
+* Microsoft.Extensions.Logging.Abstractions v10.0.0
+* System.Diagnostics.DiagnosticSource v10.0.0
 
 <br>
 
@@ -350,11 +351,11 @@
 * AllOverIt.Logging
 * Castle.Core v5.1.1
 * FluentAssertions v7.1.0
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.8
-* Microsoft.Extensions.Logging.Abstractions v9.0.8
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.0
+* Microsoft.Extensions.Logging.Abstractions v10.0.0
 * NSubstitute v5.3.0
 * System.Configuration.ConfigurationManager v6.0.0
-* System.Diagnostics.DiagnosticSource v9.0.8
+* System.Diagnostics.DiagnosticSource v10.0.0
 
 <br>
 
@@ -386,7 +387,7 @@
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.Serialization.Binary
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.8
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.0
 
 <br>
 
@@ -404,7 +405,7 @@
 * AllOverIt.Assertion
 * AllOverIt.Reactive
 * AllOverIt.Serialization.Binary
-* System.Reactive v6.0.1
+* System.Reactive v6.1.0
 
 <br>
 
@@ -420,7 +421,7 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* System.Reactive v6.0.1
+* System.Reactive v6.1.0
 
 <br>
 
@@ -437,10 +438,10 @@
 * AllOverIt
 * AllOverIt.Assertion
 * DynamicData v9.4.1
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.8
-* ReactiveUI v20.4.1
-* Splat v15.3.1
-* System.ComponentModel.Annotations v5.0.0
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.0
+* ReactiveUI v22.2.1
+* Splat v17.1.1
+* System.Reactive v6.1.0
 
 <br>
 
@@ -458,11 +459,11 @@
 * AllOverIt.Assertion
 * AllOverIt.ReactiveUI
 * DynamicData v9.4.1
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.8
-* ReactiveUI v20.4.1
-* ReactiveUI.WPF v20.4.1
-* Splat v15.3.1
-* System.ComponentModel.Annotations v5.0.0
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.0
+* ReactiveUI v22.2.1
+* ReactiveUI.WPF v22.2.1
+* Splat v17.1.1
+* System.Reactive v6.1.0
 
 <br>
 
@@ -509,7 +510,7 @@
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.Serialization.Json.Abstractions
-* Newtonsoft.Json v13.0.3
+* Newtonsoft.Json v13.0.4
 
 <br>
 
@@ -541,15 +542,15 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.Extensions.Configuration.Abstractions v9.0.8
+* Microsoft.Extensions.Configuration.Abstractions v10.0.0
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.0
 * Microsoft.Extensions.DependencyInjection.Abstractions v9.0.0
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.8
-* Microsoft.Extensions.Diagnostics.Abstractions v9.0.8
-* Microsoft.Extensions.FileProviders.Abstractions v9.0.8
+* Microsoft.Extensions.Diagnostics.Abstractions v10.0.0
+* Microsoft.Extensions.FileProviders.Abstractions v10.0.0
+* Microsoft.Extensions.Hosting.Abstractions v10.0.0
 * Microsoft.Extensions.Hosting.Abstractions v9.0.0
-* Microsoft.Extensions.Hosting.Abstractions v9.0.8
+* Microsoft.Extensions.Logging.Abstractions v10.0.0
 * Microsoft.Extensions.Logging.Abstractions v9.0.0
-* Microsoft.Extensions.Logging.Abstractions v9.0.8
 * Serilog v4.2.0
 * Serilog.Extensions.Hosting v9.0.0
 * Serilog.Extensions.Logging v9.0.0
@@ -568,8 +569,8 @@
 
 * AllOverIt
 * AllOverIt.Assertion
-* FluentValidation v12.0.0
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.8
+* FluentValidation v12.1.0
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.0
 
 <br>
 
@@ -586,10 +587,11 @@
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.Validation
-* FluentValidation v12.0.0
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.8
-* Microsoft.Extensions.Options v9.0.8
-* Microsoft.Extensions.Primitives v9.0.8
+* FluentValidation v12.1.0
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.0
+* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.10
+* Microsoft.Extensions.Options v9.0.10
+* Microsoft.Extensions.Primitives v9.0.10
 
 <br>
 

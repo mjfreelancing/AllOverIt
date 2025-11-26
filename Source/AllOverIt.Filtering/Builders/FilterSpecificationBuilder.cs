@@ -371,7 +371,7 @@ namespace AllOverIt.Filtering.Builders
             var propertyGetter = OperationTypePropertyGetters.GetOrAdd(key, cacheKey =>
             {
                 var opType = ((GenericCacheKey<Type>) cacheKey).Key1!;
-                var propInfo = opType.GetProperty(nameof(IFilterOperationType<TProperty>.Value))!;
+                var propInfo = opType.GetProperty(nameof(IFilterOperationType<>.Value))!;
 
                 return PropertyHelper.CreatePropertyGetter(propInfo);
             });

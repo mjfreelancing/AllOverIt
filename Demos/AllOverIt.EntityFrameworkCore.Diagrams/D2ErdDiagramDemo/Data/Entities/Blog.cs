@@ -13,7 +13,7 @@ namespace D2ErdDiagramDemo.Data.Entities
         public string Description { get; set; }
 
         [Required]
-        public WebSite WebSite { get; set; }
+        public WebSiteEntity WebSite { get; set; }
 
         public ICollection<Post> Posts { get; set; }
         public ICollection<AuthorBlog> AuthorBlogs { get; set; }

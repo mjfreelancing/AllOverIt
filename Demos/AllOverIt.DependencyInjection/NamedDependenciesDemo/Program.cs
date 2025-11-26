@@ -18,11 +18,13 @@ namespace NamedDependenciesDemo
                 .AsScoped<GuidRepository>("guid")
                 .AsScoped<DateTimeRepository>("datetime");
 
+#pragma warning disable CA2263 // Prefer generic overload when type is known
             // And 2 implementations of IClock - using typeof()
             services
                 .AddNamedServices<IClock>()
                 .AsScoped("clock", typeof(Clock))
                 .AsScoped("utcclock", typeof(UtcClock));
+#pragma warning restore CA2263 // Prefer generic overload when type is known
 
             var provider = services.BuildServiceProvider();
 

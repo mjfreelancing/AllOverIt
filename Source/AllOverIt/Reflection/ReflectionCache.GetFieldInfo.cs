@@ -115,11 +115,9 @@ namespace AllOverIt.Reflection
         {
             return key =>
             {
-                var (type, bindingOptions, declaredOnly) = (GenericCacheKey<Type, BindingOptions, bool>) key;
+                var (type, bindingOptions, declaredOnly) = (GenericCacheKey<Type, BindingOptions, bool>)key;
 
-                return type!
-                    .GetFieldInfo(bindingOptions, declaredOnly)
-                    .ToArray();
+                return [.. type!.GetFieldInfo(bindingOptions, declaredOnly)];
             };
         }
 
@@ -127,11 +125,9 @@ namespace AllOverIt.Reflection
         {
             return key =>
             {
-                var (typeInfo, declaredOnly) = (GenericCacheKey<TypeInfo, bool>) key;
+                var (typeInfo, declaredOnly) = (GenericCacheKey<TypeInfo, bool>)key;
 
-                return typeInfo!
-                    .GetFieldInfo(declaredOnly)
-                    .ToArray();
+                return [.. typeInfo!.GetFieldInfo(declaredOnly)];
             };
         }
 
@@ -139,7 +135,7 @@ namespace AllOverIt.Reflection
         {
             return key =>
             {
-                var (typeInfo, propertyName) = (GenericCacheKey<TypeInfo, string>) key;
+                var (typeInfo, propertyName) = (GenericCacheKey<TypeInfo, string>)key;
 
                 return typeInfo!.GetFieldInfo(propertyName!)!;
             };

@@ -5,6 +5,7 @@ namespace ChainOfResponsibilityAsyncDemo
     public sealed class QueueBroker
     {
         // This is demo code - the members would normally be accessing member data
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CA1822 // Mark members as static
         public void Send(QueueMessage message)
         {
@@ -28,5 +29,6 @@ namespace ChainOfResponsibilityAsyncDemo
             Console.WriteLine("Deadletter message");
         }
 #pragma warning restore CA1822 // Mark members as static
+#pragma warning restore IDE0079 // Remove unnecessary suppression
     }
 }

@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace D2ErdDiagramDemo.Data.Entities
 {
-    [Table(nameof(WebSite))]       // Enforce the name rather than take on the DbSet<> property name
-    public class WebSite : EntityBase
+    [Table("WebSite")]       // Enforce the name rather than take on the DbSet<> property name
+    public class WebSiteEntity : EntityBase
     {
         [Required]
         [MaxLength(500)]

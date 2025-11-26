@@ -23,5 +23,7 @@ namespace D2ErdDiagramDemo.Data.Entities
 
         public ICollection<Comment> Comments { get; set; }
         public ICollection<AuthorBlog> AuthorBlogs { get; set; }
+
+        public ICollection<Role> Roles { get; set; } = [];   // Skip navigation property (skips join table)
     }
 }

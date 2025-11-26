@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Running;
 
-namespace ThrowWhenBenchmarking
+namespace ThrowWhenBenchmark
 {
     internal class Program
     {

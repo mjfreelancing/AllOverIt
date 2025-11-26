@@ -153,6 +153,7 @@ namespace AllOverIt.Logging.Testing.Extensions
         {
             var methodCallContext = new MethodCallContext();
 
+#pragma warning disable CA1873 // Avoid potentially expensive logging
             logger
                 .When(call => call.Log(Arg.Any<LogLevel>(),
                                        Arg.Any<EventId>(),
@@ -176,6 +177,7 @@ namespace AllOverIt.Logging.Testing.Extensions
                         methodCallContext.Add(callContext);
                     }
                 });
+#pragma warning restore CA1873 // Avoid potentially expensive logging
 
             return methodCallContext;
         }
