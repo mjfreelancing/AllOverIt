@@ -1,4 +1,4 @@
-using AllOverIt.Patterns.Specification;
+﻿using AllOverIt.Patterns.Specification;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
 using FluentAssertions;
 
@@ -7,8 +7,8 @@ namespace AllOverIt.Tests.Patterns.Specification
     public class SpecificationFixture : SpecificationFixtureBase
     {
         // Used for testing operator true and operator false via operator & / && and | / ||
-        private static readonly Specification<int> multipleOfTwo = Specification<int>.Create(candidate => candidate % 2 == 0) as Specification<int>;
-        private static readonly Specification<int> multipleOfThree = Specification<int>.Create(candidate => candidate % 3 == 0) as Specification<int>;
+        private static readonly Specification<int> multipleOfTwo = (Specification<int>) Specification<int>.Create(candidate => candidate % 2 == 0);
+        private static readonly Specification<int> multipleOfThree = (Specification<int>) Specification<int>.Create(candidate => candidate % 3 == 0);
         private static readonly Specification<int> twoOrThreeSpecification = multipleOfTwo || multipleOfThree;      // Same as: multipleOfTwo.Or(multipleOfThree);
         private static readonly Specification<int> twoAndThreeSpecification = multipleOfTwo && multipleOfThree;     // Same as: multipleOfTwo.And(multipleOfThree);
         private static readonly Specification<int> notMultipleOfTwo = !multipleOfTwo;
