@@ -1,3 +1,12 @@
+﻿#  Version 9.X.0
+## XX XXX 2026
+
+### AllOverIt
+* Added stream extension that reads a full block of data into a byte array, handling partial reads
+
+---
+
+
 #  Version 9.0.0
 ## 26 Nov 2025
 
