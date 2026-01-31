@@ -6,8 +6,8 @@ namespace AllOverIt.Tests.Patterns.Specification
 {
     public class SpecificationFixtureBase : FixtureBase
     {
-        protected readonly ISpecification<int> IsEven;
-        protected readonly ISpecification<int> IsPositive;
+        protected readonly Specification<int> IsEven;
+        protected readonly Specification<int> IsPositive;
 
         protected SpecificationFixtureBase()
         {

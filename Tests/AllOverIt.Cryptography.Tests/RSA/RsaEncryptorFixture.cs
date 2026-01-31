@@ -34,7 +34,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 Invoking(() =>
                 {
-                    _ = new RsaEncryptor((IRsaEncryptorConfiguration) null);
+                    _ = new RsaEncryptor((IRsaEncryptorConfiguration)null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -166,7 +166,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 Invoking(() =>
                 {
-                    _ = new RsaEncryptor((RsaKeyPair) null);
+                    _ = new RsaEncryptor((RsaKeyPair)null);
                 })
                 .Should()
                 .Throw<ArgumentNullException>()
@@ -445,11 +445,44 @@ namespace AllOverIt.Cryptography.Tests.RSA
         public class Encrypt_Decrypt_Bytes : RsaEncryptorFixture
         {
             [Fact]
-            public void Should_Encrypt_Decrypt()
+            public void Should_Encrypt_Decrypt_Less_Than_Max_Input_Length()
             {
                 var encryptor = new RsaEncryptor();
+                var maxInputLength = encryptor.GetMaxInputLength();
+                var inputLength = maxInputLength - GetWithinRange(1, maxInputLength / 2);
 
-                var plainText = CreateMany<byte>().ToArray();
+                var plainText = CreateMany<byte>(inputLength).ToArray();
+
+                var cipherText = encryptor.Encrypt(plainText);
+
+                var actual = encryptor.Decrypt(cipherText);
+
+                actual.Should().BeEquivalentTo(plainText);
+            }
+
+            [Fact]
+            public void Should_Encrypt_Decrypt_With_Max_Input_Length()
+            {
+                var encryptor = new RsaEncryptor();
+                var maxInputLength = encryptor.GetMaxInputLength();
+
+                var plainText = CreateMany<byte>(maxInputLength).ToArray();
+
+                var cipherText = encryptor.Encrypt(plainText);
+
+                var actual = encryptor.Decrypt(cipherText);
+
+                actual.Should().BeEquivalentTo(plainText);
+            }
+
+            [Fact]
+            public void Should_Encrypt_Decrypt_More_Than_Max_Input_Length()
+            {
+                var encryptor = new RsaEncryptor();
+                var maxInputLength = encryptor.GetMaxInputLength();
+                var inputLength = maxInputLength + GetWithinRange(1, maxInputLength * 4);
+
+                var plainText = CreateMany<byte>(inputLength).ToArray();
 
                 var cipherText = encryptor.Encrypt(plainText);
 
@@ -462,11 +495,60 @@ namespace AllOverIt.Cryptography.Tests.RSA
         public class Encrypt_Decrypt_Stream : RsaEncryptorFixture
         {
             [Fact]
-            public void Should_Encrypt_Decrypt()
+            public void Should_Encrypt_Decrypt_Less_Than_Max_Input_Length()
             {
                 var encryptor = new RsaEncryptor();
+                var maxInputLength = encryptor.GetMaxInputLength();
+                var inputLength = maxInputLength - GetWithinRange(1, maxInputLength / 2);
 
-                var plainText = CreateMany<byte>().ToArray();
+                var plainText = CreateMany<byte>(inputLength).ToArray();
+                var plainTextStream = new MemoryStream(plainText);
+                var cipherTextStream = new MemoryStream();
+
+                encryptor.Encrypt(plainTextStream, cipherTextStream);
+
+                plainTextStream = new MemoryStream();
+
+                cipherTextStream.Position = 0;
+
+                encryptor.Decrypt(cipherTextStream, plainTextStream);
+
+                var actual = plainTextStream.ToArray();
+
+                actual.Should().BeEquivalentTo(plainText);
+            }
+
+            [Fact]
+            public void Should_Encrypt_Decrypt_With_Max_Input_Length()
+            {
+                var encryptor = new RsaEncryptor();
+                var maxInputLength = encryptor.GetMaxInputLength();
+
+                var plainText = CreateMany<byte>(maxInputLength).ToArray();
+                var plainTextStream = new MemoryStream(plainText);
+                var cipherTextStream = new MemoryStream();
+
+                encryptor.Encrypt(plainTextStream, cipherTextStream);
+
+                plainTextStream = new MemoryStream();
+
+                cipherTextStream.Position = 0;
+
+                encryptor.Decrypt(cipherTextStream, plainTextStream);
+
+                var actual = plainTextStream.ToArray();
+
+                actual.Should().BeEquivalentTo(plainText);
+            }
+
+            [Fact]
+            public void Should_Encrypt_Decrypt_More_Than_Max_Input_Length()
+            {
+                var encryptor = new RsaEncryptor();
+                var maxInputLength = encryptor.GetMaxInputLength();
+                var inputLength = maxInputLength + GetWithinRange(1, maxInputLength * 4);
+
+                var plainText = CreateMany<byte>(inputLength).ToArray();
                 var plainTextStream = new MemoryStream(plainText);
                 var cipherTextStream = new MemoryStream();
 

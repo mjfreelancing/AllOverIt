@@ -16,7 +16,7 @@ namespace AllOverIt.Extensions
             using var reader = new BinaryReader(stream);
 
             // Will read as much as the stream's length unless the end of the stream is reached
-            return reader.ReadBytes((int) stream.Length);
+            return reader.ReadBytes((int)stream.Length);
         }
 
         /// <summary>Reads the content of a byte array and writes it to a stream at its' current position.</summary>
@@ -30,6 +30,34 @@ namespace AllOverIt.Extensions
             using var writer = new BinaryWriter(stream, Encoding.UTF8, true);
 
             writer.Write(bytes);
+        }
+
+        /// <summary>Reads a full block of data from a stream into a byte array, handling partial reads.</summary>
+        /// <param name="stream">The stream to read from.</param>
+        /// <param name="bytes">The byte array to write the data into.</param>
+        /// <param name="blockSize">The number of bytes to read from the stream.</param>
+        /// <returns>The total number of bytes read. This may be less than the requested block size if the end
+        /// of the stream is reached.</returns>
+        public static int ReadFullBlock(this Stream stream, byte[] bytes, int blockSize)
+        {
+            _ = stream.WhenNotNull();
+            _ = bytes.WhenNotNull();
+
+            int totalRead = 0;
+
+            while (totalRead < blockSize)
+            {
+                int bytesRead = stream.Read(bytes, totalRead, blockSize - totalRead);
+
+                if (bytesRead == 0)
+                {
+                    break;
+                }
+
+                totalRead += bytesRead;
+            }
+
+            return totalRead;
         }
     }
 }

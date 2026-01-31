@@ -21,6 +21,7 @@ namespace SpecificationDemo
             var twoOrThreeSpecification = multipleOfTwo || multipleOfThree;                     // Same as: multipleOfTwo.Or(multipleOfThree);
             var twoAndThreeSpecification = multipleOfTwo && multipleOfThree;                    // Same as: multipleOfTwo.And(multipleOfThree);
             var complexSpecification = (multipleOfTwo && multipleOfThree) || multipleOfSeven;   // Same as: twoAndThreeSpecification.Or(multipleOfSeven);
+                                                                                                // Same as: (multipleOfTwo.And(multipleOfThree)).Or(multipleOfSeven);
 
             #endregion
 
