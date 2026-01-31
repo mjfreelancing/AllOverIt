@@ -2,7 +2,11 @@
 ## XX XXX 2026
 
 ### AllOverIt
-* Added stream extension that reads a full block of data into a byte array, handling partial reads
+* Added stream extension that reads a full block of data into a byte array, handling partial reads.
+
+### AllOverIt.Cryptography
+* RsaEncrypter previously only supported encryption/decryption of data up to the maximum block size allowed by the key.
+  Added support for encrypting/decrypting larger data by splitting into multiple blocks.
 
 ---
 

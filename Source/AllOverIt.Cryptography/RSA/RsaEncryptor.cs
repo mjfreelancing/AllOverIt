@@ -100,7 +100,28 @@ namespace AllOverIt.Cryptography.RSA
 
             rsa.ImportRSAPublicKey(Configuration.Keys.PublicKey, out _);
 
-            return rsa.Encrypt(plainText, Configuration.Padding);
+            var maxInputLength = GetMaxInputLength();
+
+            if (plainText.Length <= maxInputLength)
+            {
+                return rsa.Encrypt(plainText, Configuration.Padding);
+            }
+            else
+            {
+                using var output = new MemoryStream();
+
+                for (int offset = 0; offset < plainText.Length; offset += maxInputLength)
+                {
+                    int chunkSize = Math.Min(maxInputLength, plainText.Length - offset);
+                    var chunk = new byte[chunkSize];
+                    Array.Copy(plainText, offset, chunk, 0, chunkSize);
+
+                    var encryptedChunk = rsa.Encrypt(chunk, Configuration.Padding);
+                    output.Write(encryptedChunk, 0, encryptedChunk.Length);
+                }
+
+                return output.ToArray();
+            }
         }
 
         /// <inheritdoc />
@@ -114,7 +135,34 @@ namespace AllOverIt.Cryptography.RSA
 
             rsa.ImportRSAPrivateKey(Configuration.Keys.PrivateKey, out _);
 
-            return rsa.Decrypt(cipherText, Configuration.Padding);
+            var blockSize = rsa.KeySize / 8;
+
+            if (cipherText.Length <= blockSize)
+            {
+                return rsa.Decrypt(cipherText, Configuration.Padding);
+            }
+            else
+            {
+                using var output = new MemoryStream();
+
+                for (int offset = 0; offset < cipherText.Length; offset += blockSize)
+                {
+                    int chunkSize = Math.Min(blockSize, cipherText.Length - offset);
+
+                    if (chunkSize != blockSize)
+                    {
+                        throw new RsaException("Failed to decrypt. Data may be corrupted.");
+                    }
+
+                    var chunk = new byte[chunkSize];
+                    Array.Copy(cipherText, offset, chunk, 0, chunkSize);
+
+                    var decryptedChunk = rsa.Decrypt(chunk, Configuration.Padding);
+                    output.Write(decryptedChunk, 0, decryptedChunk.Length);
+                }
+
+                return output.ToArray();
+            }
         }
 
         /// <inheritdoc />
@@ -123,11 +171,28 @@ namespace AllOverIt.Cryptography.RSA
             _ = plainTextStream.WhenNotNull();
             _ = cipherTextStream.WhenNotNull();
 
-            var plainTextBytes = plainTextStream.ToByteArray();
+            Throw<RsaException>.WhenNull(Configuration.Keys.PublicKey, "An RSA public key has not been configured.");
 
-            var cipherTextBytes = Encrypt(plainTextBytes);              // May throw RsaException
+            using var rsa = _rsaFactory.Create();
 
-            cipherTextStream.FromByteArray(cipherTextBytes);
+            rsa.ImportRSAPublicKey(Configuration.Keys.PublicKey, out _);
+
+            var maxInputLength = GetMaxInputLength();
+            var buffer = new byte[maxInputLength];
+            int bytesRead;
+
+            // Not using stream.Read(buffer, 0, maxInputLength) because some streams (network, compressed, ZipArchiveEntry, etc.) may
+            // not return the full requested amount in a single read. This could result in encrypting smaller chunks than necessary,
+            // which is inefficient. We want to maximize chunk sizes up to MaxInputLength for optimal performance.
+            while ((bytesRead = plainTextStream.ReadFullBlock(buffer, maxInputLength)) > 0)
+            {
+                var chunk = bytesRead == maxInputLength
+                    ? buffer
+                    : buffer[..bytesRead];
+
+                var encryptedChunk = rsa.Encrypt(chunk, Configuration.Padding);
+                cipherTextStream.Write(encryptedChunk, 0, encryptedChunk.Length);
+            }
         }
 
         /// <inheritdoc />
@@ -136,96 +201,30 @@ namespace AllOverIt.Cryptography.RSA
             _ = cipherTextStream.WhenNotNull();
             _ = plainTextStream.WhenNotNull();
 
-            var cipherTextBytes = cipherTextStream.ToByteArray();
+            Throw<RsaException>.WhenNull(Configuration.Keys.PrivateKey, "An RSA private key has not been configured.");
 
-            var plainTextBytes = Decrypt(cipherTextBytes);              // May throw RsaException
+            using var rsa = _rsaFactory.Create();
 
-            plainTextStream.FromByteArray(plainTextBytes);
+            rsa.ImportRSAPrivateKey(Configuration.Keys.PrivateKey, out _);
+
+            var blockSize = rsa.KeySize / 8;
+            var buffer = new byte[blockSize];
+            int bytesRead;
+
+            // Using ReadFullBlock() is essential because:
+            // - Encrypted data MUST be in exact blocks of BlockSize
+            // - If we don't read a complete block, the data is corrupted/incomplete
+            // - Some streams may not return the full requested amount in a single Read() call
+            while ((bytesRead = cipherTextStream.ReadFullBlock(buffer, blockSize)) > 0)
+            {
+                if (bytesRead != blockSize)
+                {
+                    throw new RsaException("Failed to decrypt stream. Data may be corrupted.");
+                }
+
+                var decryptedChunk = rsa.Decrypt(buffer, Configuration.Padding);
+                plainTextStream.Write(decryptedChunk, 0, decryptedChunk.Length);
+            }
         }
     }
 }
-
-/*
- 
-Needs to be updated to cater for input larger than the max input length.
-
-internal sealed class ExportEncryptor : IExportEncryptor
-{
-    private readonly string _privateKey;
-
-    public ExportEncryptor(IConfiguration configuration)
-    {
-        // Effectively the same as configuration["RSA__PRIVATE_KEY"] when an environment variable is set
-        _privateKey = configuration["Rsa:PrivateKey"] ?? throw new InvalidOperationException("The RSA private key is not defined.");
-    }
-
-    public byte[] Encrypt(string publicKey, byte[] data)
-    {
-        var rsaKeyPair = new RsaKeyPair(publicKey, _privateKey);    // TODO: Create a factory that has the private key, is given the public key, returns the encryptor and block size
-        var rsaEncryptor = new RsaEncryptor(rsaKeyPair);
-
-        var maxLength = rsaEncryptor.GetMaxInputLength();
-        using var output = new MemoryStream();
-
-        for (int offset = 0; offset < data.Length; offset += maxLength)
-        {
-            int chunkSize = Math.Min(maxLength, data.Length - offset);
-            var chunk = new byte[chunkSize];
-            Array.Copy(data, offset, chunk, 0, chunkSize);
-
-            var encryptedChunk = rsaEncryptor.Encrypt(chunk);
-            output.Write(encryptedChunk, 0, encryptedChunk.Length);
-        }
-
-        return output.ToArray();
-    }
-
-    public Stream Decrypt(string publicKey, Stream cipherText)
-    {
-        var rsaKeyPair = new RsaKeyPair(publicKey, _privateKey);
-        var rsaEncryptor = new RsaEncryptor(rsaKeyPair);
-        var blockSize = rsaKeyPair.KeySize / 8;
-
-        var memoryStream = new MemoryStream();
-        var buffer = new byte[blockSize];
-        int bytesRead;
-
-        // ZipArchiveEntry streams may not return the requested block size, so we need to explicitly read full blocks.
-        while ((bytesRead = ReadFullBlock(cipherText, buffer, blockSize)) > 0)
-        {
-            if (bytesRead != blockSize)
-            {
-                throw new InvalidOperationException($"Failed to decrypt stream. Data may be corrupted.");
-            }
-
-            var decryptedChunk = rsaEncryptor.Decrypt(buffer);
-            memoryStream.Write(decryptedChunk, 0, decryptedChunk.Length);
-        }
-
-        memoryStream.Flush();
-        memoryStream.Position = 0;
-
-        return memoryStream;
-    }
-
-    private static int ReadFullBlock(Stream stream, byte[] buffer, int blockSize)
-    {
-        int totalRead = 0;
-
-        while (totalRead < blockSize)
-        {
-            int bytesRead = stream.Read(buffer, totalRead, blockSize - totalRead);
-
-            if (bytesRead == 0)
-            {
-                break;
-            }
-
-            totalRead += bytesRead;
-        }
-
-        return totalRead;
-    }
-}
-
-*/
