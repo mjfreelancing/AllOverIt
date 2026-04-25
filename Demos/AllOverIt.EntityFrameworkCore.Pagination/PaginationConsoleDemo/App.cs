@@ -45,12 +45,12 @@ namespace PaginationConsoleDemo
 
                     switch (DemoStartupOptions.Use)
                     {
-                        case DatabaseChoice.Mysql:
+                        //case DatabaseChoice.Mysql:
                         case DatabaseChoice.PostgreSql:
                             await dbContext.Database.MigrateAsync(cancellationToken);
 
                             // required for access to "citext"
-                            using (var connection = (NpgsqlConnection) dbContext.Database.GetDbConnection())
+                            using (var connection = (NpgsqlConnection)dbContext.Database.GetDbConnection())
                             {
                                 if (connection.State != System.Data.ConnectionState.Open)
                                 {
@@ -297,7 +297,7 @@ namespace PaginationConsoleDemo
 
             var totalCount = 1_000_001;
             var batchSize = 100;
-            var batchCount = (int) Math.Ceiling(totalCount / (double) batchSize);
+            var batchCount = (int)Math.Ceiling(totalCount / (double)batchSize);
 
             await Enumerable
                 .Range(1, batchCount)

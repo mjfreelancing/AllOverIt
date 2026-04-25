@@ -259,7 +259,7 @@ namespace AllOverIt.ReactiveUI.Factories
                 _ => throw new ArgumentOutOfRangeException(nameof(observables), "A maximum of 16 observables is supported.")
             };
 
-            var scheduler = outputScheduler ?? RxApp.MainThreadScheduler;
+            var scheduler = outputScheduler ?? RxSchedulers.MainThreadScheduler;
 
             return ReactiveCommand.Create(() => { }, canExecute, scheduler);
         }
@@ -278,7 +278,7 @@ namespace AllOverIt.ReactiveUI.Factories
         {
             _ = cancellableCommands.WhenNotNullOrEmpty(errorMessage: "At least one cancellable command is required.");
 
-            var scheduler = outputScheduler ?? RxApp.MainThreadScheduler;
+            var scheduler = outputScheduler ?? RxSchedulers.MainThreadScheduler;
 
             return cancellableCommands.Length == 1
                 ? ReactiveCommand.Create(() => { }, cancellableCommands[0].IsExecuting, scheduler)
