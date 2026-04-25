@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaginationConsoleDemo.Entities;
-using System.Diagnostics;
 
 namespace PaginationConsoleDemo
 {
@@ -13,13 +12,12 @@ namespace PaginationConsoleDemo
         {
             base.OnConfiguring(options);
 
-            if (DemoStartupOptions.Use == DatabaseChoice.Mysql)
-            {
-                throw new UnreachableException("Disabled until Pomelo.EntityFrameworkCore.MySql supports NET 9");
-
-                // options.UseMySql("server=localhost;user=root;password=password;database=PaginatedBlogPosts", new MySqlServerVersion(new Version(8, 0, 26)));
-            }
-            else if (DemoStartupOptions.Use == DatabaseChoice.Sqlite)
+            //if (DemoStartupOptions.Use == DatabaseChoice.Mysql)
+            //{
+            //    options.UseMySql("server=localhost;user=root;password=password;database=PaginatedBlogPosts", new MySqlServerVersion(new Version(8, 0, 26)));
+            //}
+            //else
+            if (DemoStartupOptions.Use == DatabaseChoice.Sqlite)
             {
                 options.UseSqlite("Data Source=PaginatedBlogPosts.db");
             }

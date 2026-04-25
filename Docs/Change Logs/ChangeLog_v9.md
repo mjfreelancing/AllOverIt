@@ -1,4 +1,14 @@
-﻿#  Version 9.1.0
+﻿#  Version 9.2.0
+## 25 Apr 2026
+
+# Maintenance update
+* Package updates and switch all demos / benchmarks to NET 10.0.0 instead of a mixture
+
+
+---
+
+
+#  Version 9.1.0
 ## 31 Jan 2026
 
 ### AllOverIt

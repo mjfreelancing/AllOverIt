@@ -4,6 +4,7 @@ using CountdownTimerAppDemo.ViewModels;
 using CountdownTimerAppDemo.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ReactiveUI.Builder;
 using System.Windows;
 
 namespace CountdownTimerAppDemo
@@ -14,6 +15,14 @@ namespace CountdownTimerAppDemo
 
         public App()
         {
+            // ReactiveUI v23 requires explicit builder initialization before reactive mixins are used.
+            var reactiveUiBuilder = RxAppBuilder.CreateReactiveUIBuilder();
+
+            // Core services initialize ReactiveUI; platform services add WPF activation/view services.
+            reactiveUiBuilder.WithCoreServices();
+            reactiveUiBuilder.WithWpf();
+            reactiveUiBuilder.BuildApp();
+
             _host = new HostBuilder()
                         .ConfigureServices((context, services) =>
                         {

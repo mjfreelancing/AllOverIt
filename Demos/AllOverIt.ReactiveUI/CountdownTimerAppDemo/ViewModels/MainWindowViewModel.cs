@@ -69,7 +69,7 @@ namespace CountdownTimerAppDemo.ViewModels
             ResumeTimerCommand = ReactiveCommand
                 .Create(() =>
                 {
-                    _countdownTimer.Configure(TimeSpan.FromSeconds(RemainingSeconds), TimeSpan.FromSeconds(1), RxApp.MainThreadScheduler);
+                    _countdownTimer.Configure(TimeSpan.FromSeconds(RemainingSeconds), TimeSpan.FromSeconds(1), RxSchedulers.MainThreadScheduler);
                     _countdownTimer.Start();
 
                     IsDone = false;
