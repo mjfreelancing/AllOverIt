@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using Shouldly;
 
 namespace AllOverIt.Logging.Testing.Extensions
 {
@@ -16,9 +16,9 @@ namespace AllOverIt.Logging.Testing.Extensions
         {
             var expected = LogCallExpectation.GetExpectedStaticLogCallMetadata(callerMethodName);
 
-            methodCallContext.LogLevels[index].Should().Be(logLevel);
-            methodCallContext.Metadata[index].Should().BeEquivalentTo(expected);
-            methodCallContext.Exceptions[index].Should().BeNull();
+            methodCallContext.LogLevels[index].ShouldBe(logLevel);
+            methodCallContext.Metadata[index].ShouldBeEquivalentTo(expected);
+            methodCallContext.Exceptions[index].ShouldBeNull();
         }
 
         /// <summary>Asserts that a call to <see cref="Logging.Extensions.LoggerExtensions.LogCall(ILogger, object?, object, LogLevel, string)"/>
@@ -33,9 +33,9 @@ namespace AllOverIt.Logging.Testing.Extensions
         {
             var expected = LogCallExpectation.GetExpectedStaticLogCallWithArgumentsMetadata(callerMethodName, arguments);
 
-            methodCallContext.LogLevels[index].Should().Be(logLevel);
-            methodCallContext.Metadata[index].Should().BeEquivalentTo(expected);
-            methodCallContext.Exceptions[index].Should().BeNull();
+            methodCallContext.LogLevels[index].ShouldBe(logLevel);
+            methodCallContext.Metadata[index].ShouldBeEquivalentTo(expected);
+            methodCallContext.Exceptions[index].ShouldBeNull();
         }
 
         /// <summary>Asserts that a call to <see cref="Logging.Extensions.LoggerExtensions.LogCall(ILogger, object?, LogLevel, string)"/> was made
@@ -49,9 +49,9 @@ namespace AllOverIt.Logging.Testing.Extensions
         {
             var expected = LogCallExpectation.GetExpectedLogCallMetadata<TCaller>(callerMethodName);
 
-            methodCallContext.LogLevels[index].Should().Be(logLevel);
-            methodCallContext.Metadata[index].Should().BeEquivalentTo(expected);
-            methodCallContext.Exceptions[index].Should().BeNull();
+            methodCallContext.LogLevels[index].ShouldBe(logLevel);
+            methodCallContext.Metadata[index].ShouldBeEquivalentTo(expected);
+            methodCallContext.Exceptions[index].ShouldBeNull();
         }
 
         /// <summary>Asserts that a call to <see cref="Logging.Extensions.LoggerExtensions.LogCall(ILogger, object?, object, LogLevel, string)"/> was made
@@ -67,9 +67,9 @@ namespace AllOverIt.Logging.Testing.Extensions
         {
             var expected = LogCallExpectation.GetExpectedLogCallWithArgumentsMetadata<TCaller>(callerMethodName, arguments);
 
-            methodCallContext.LogLevels[index].Should().Be(logLevel);
-            methodCallContext.Metadata[index].Should().BeEquivalentTo(expected);
-            methodCallContext.Exceptions[index].Should().BeNull();
+            methodCallContext.LogLevels[index].ShouldBe(logLevel);
+            methodCallContext.Metadata[index].ShouldBeEquivalentTo(expected);
+            methodCallContext.Exceptions[index].ShouldBeNull();
         }
 
         /// <summary>Asserts that a call to <see cref="Logging.Extensions.LoggerExtensions.LogException(ILogger, Exception, string?, object?[])"/> was made,
@@ -82,9 +82,9 @@ namespace AllOverIt.Logging.Testing.Extensions
         {
             var expected = LogCallExpectation.GetExpectedExceptionMetadata(exception);
 
-            methodCallContext.LogLevels[index].Should().Be(LogLevel.Error);
-            methodCallContext.Metadata[index].Should().BeEquivalentTo(expected);
-            methodCallContext.Exceptions[index].Should().BeEquivalentTo(exception);
+            methodCallContext.LogLevels[index].ShouldBe(LogLevel.Error);
+            methodCallContext.Metadata[index].ShouldBeEquivalentTo(expected);
+            methodCallContext.Exceptions[index].ShouldBeEquivalentTo(exception);
         }
 
         /// <summary>Asserts that a call to <see cref="Logging.Extensions.LoggerExtensions.LogException(ILogger, Exception, string?, object?[])"/> was made.
@@ -99,9 +99,9 @@ namespace AllOverIt.Logging.Testing.Extensions
         {
             var expected = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(logTemplate, arguments);
 
-            methodCallContext.LogLevels[index].Should().Be(LogLevel.Error);
-            methodCallContext.Metadata[index].Should().BeEquivalentTo(expected);
-            methodCallContext.Exceptions[index].Should().BeEquivalentTo(exception);
+            methodCallContext.LogLevels[index].ShouldBe(LogLevel.Error);
+            methodCallContext.Metadata[index].ShouldBeEquivalentTo(expected);
+            methodCallContext.Exceptions[index].ShouldBeEquivalentTo(exception);
         }
 
         /// <summary>Asserts that a log message at a specified logging level was captured.</summary>
@@ -113,9 +113,9 @@ namespace AllOverIt.Logging.Testing.Extensions
         {
             var expected = LogCallExpectation.GetExpectedLogMessageMetadata(message);
 
-            methodCallContext.LogLevels[index].Should().Be(logLevel);
-            methodCallContext.Metadata[index].Should().BeEquivalentTo(expected);
-            methodCallContext.Exceptions[index].Should().BeNull();
+            methodCallContext.LogLevels[index].ShouldBe(logLevel);
+            methodCallContext.Metadata[index].ShouldBeEquivalentTo(expected);
+            methodCallContext.Exceptions[index].ShouldBeNull();
         }
 
         /// <summary>Asserts that a logging template and arguments at a specified logging level was captured.</summary>
@@ -129,9 +129,9 @@ namespace AllOverIt.Logging.Testing.Extensions
         {
             var expected = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(logTemplate, arguments);
 
-            methodCallContext.LogLevels[index].Should().Be(logLevel);
-            methodCallContext.Metadata[index].Should().BeEquivalentTo(expected);
-            methodCallContext.Exceptions[index].Should().BeNull();
+            methodCallContext.LogLevels[index].ShouldBe(logLevel);
+            methodCallContext.Metadata[index].ShouldBeEquivalentTo(expected);
+            methodCallContext.Exceptions[index].ShouldBeNull();
         }
 
         /// <summary>Asserts that a logging template and arguments at a specified logging level was captured.</summary>
@@ -145,9 +145,9 @@ namespace AllOverIt.Logging.Testing.Extensions
         {
             var expected = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(logTemplate, arguments);
 
-            methodCallContext.LogLevels[index].Should().Be(logLevel);
-            methodCallContext.Metadata[index].Should().BeEquivalentTo(expected);
-            methodCallContext.Exceptions[index].Should().BeNull();
+            methodCallContext.LogLevels[index].ShouldBe(logLevel);
+            methodCallContext.Metadata[index].ShouldBeEquivalentTo(expected);
+            methodCallContext.Exceptions[index].ShouldBeNull();
         }
     }
 }
