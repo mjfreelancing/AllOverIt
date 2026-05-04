@@ -1,11 +1,277 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Specialized;
+using Shouldly;
 
 namespace AllOverIt.Fixture.Extensions
 {
     /// <summary>Provides a variety of extension methods for <see cref="ExceptionAssertions{TException}"/>.</summary>
     public static class ExceptionAssertionsExtensions
     {
+        /// <summary>Asserts the message of the thrown exception matches <paramref name="errorMessage"/>.</summary>
+        /// <param name="exception">The thrown exception.</param>
+        /// <param name="errorMessage">The expected exception message.</param>
+        /// <returns>The original exception.</returns>
+        public static TException WithMessage<TException>(this TException exception, string errorMessage)
+            where TException : Exception
+        {
+            exception.Message.ToUpperInvariant().ShouldBe(errorMessage.ToUpperInvariant());
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown exception matches <paramref name="errorMessage"/>.</summary>
+        /// <param name="exceptionTask">A task returning the thrown exception.</param>
+        /// <param name="errorMessage">The expected exception message.</param>
+        /// <returns>A task returning the original exception.</returns>
+        public static async Task<TException> WithMessage<TException>(this Task<TException> exceptionTask, string errorMessage)
+            where TException : Exception
+        {
+            var exception = await exceptionTask;
+
+            exception.Message.ToUpperInvariant().ShouldBe(errorMessage.ToUpperInvariant());
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/>.</summary>
+        /// <param name="exception">The thrown exception.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value cannot be null' is assumed.</param>
+        /// <returns>The original exception.</returns>
+        public static TException WithMessageWhenNull<TException>(this TException exception, string? errorMessage = default)
+            where TException : InvalidOperationException
+        {
+            exception.Message.ShouldBe(errorMessage ?? "Value cannot be null");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/>.</summary>
+        /// <param name="exceptionTask">A task returning the thrown exception.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value cannot be null' is assumed.</param>
+        /// <returns>A task returning the original exception.</returns>
+        public static async Task<TException> WithMessageWhenNull<TException>(this Task<TException> exceptionTask, string? errorMessage = default)
+            where TException : InvalidOperationException
+        {
+            var exception = await exceptionTask;
+
+            exception.Message.ShouldBe(errorMessage ?? "Value cannot be null");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/>.</summary>
+        /// <param name="exception">The thrown exception.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value must be null' is assumed.</param>
+        /// <returns>The original exception.</returns>
+        public static TException WithMessageWhenNotNull<TException>(this TException exception, string? errorMessage = default)
+            where TException : InvalidOperationException
+        {
+            exception.Message.ShouldBe(errorMessage ?? "Value must be null");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/>.</summary>
+        /// <param name="exceptionTask">A task returning the thrown exception.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value must be null' is assumed.</param>
+        /// <returns>A task returning the original exception.</returns>
+        public static async Task<TException> WithMessageWhenNotNull<TException>(this Task<TException> exceptionTask, string? errorMessage = default)
+            where TException : InvalidOperationException
+        {
+            var exception = await exceptionTask;
+
+            exception.Message.ShouldBe(errorMessage ?? "Value must be null");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/>.</summary>
+        /// <param name="exception">The thrown exception.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value cannot be empty' is assumed.</param>
+        /// <returns>The original exception.</returns>
+        public static TException WithMessageWhenEmpty<TException>(this TException exception, string? errorMessage = default)
+            where TException : InvalidOperationException
+        {
+            exception.Message.ShouldBe(errorMessage ?? "Value cannot be empty");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/>.</summary>
+        /// <param name="exceptionTask">A task returning the thrown exception.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value cannot be empty' is assumed.</param>
+        /// <returns>A task returning the original exception.</returns>
+        public static async Task<TException> WithMessageWhenEmpty<TException>(this Task<TException> exceptionTask, string? errorMessage = default)
+            where TException : InvalidOperationException
+        {
+            var exception = await exceptionTask;
+
+            exception.Message.ShouldBe(errorMessage ?? "Value cannot be empty");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
+        /// contains the named parameter.</summary>
+        /// <param name="exception">The thrown exception.</param>
+        /// <param name="name">The name of the parameter that caused the exception to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value cannot be null (<paramref name="name"/>)' is assumed.</param>
+        /// <returns>The original exception.</returns>
+        public static TException WithNamedMessageWhenNull<TException>(this TException exception, string name, string? errorMessage = default)
+            where TException : InvalidOperationException
+        {
+            var message = errorMessage ?? "Value cannot be null";
+
+            exception.Message.ShouldBe($"{message} ({name})");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
+        /// contains the named parameter.</summary>
+        /// <param name="exceptionTask">A task returning the thrown exception.</param>
+        /// <param name="name">The name of the parameter that caused the exception to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value cannot be null (<paramref name="name"/>)' is assumed.</param>
+        /// <returns>A task returning the original exception.</returns>
+        public static async Task<TException> WithNamedMessageWhenNull<TException>(this Task<TException> exceptionTask, string name, string? errorMessage = default)
+            where TException : InvalidOperationException
+        {
+            var exception = await exceptionTask;
+            var message = errorMessage ?? "Value cannot be null";
+
+            exception.Message.ShouldBe($"{message} ({name})");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
+        /// contains the named parameter.</summary>
+        /// <param name="exception">The thrown exception.</param>
+        /// <param name="name">The name of the parameter that caused the exception to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value must be null (<paramref name="name"/>)' is assumed.</param>
+        /// <returns>The original exception.</returns>
+        public static TException WithNamedMessageWhenNotNull<TException>(this TException exception, string name, string? errorMessage = default)
+            where TException : InvalidOperationException
+        {
+            var message = errorMessage ?? "Value must be null";
+
+            exception.Message.ShouldBe($"{message} ({name})");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
+        /// contains the named parameter.</summary>
+        /// <param name="exceptionTask">A task returning the thrown exception.</param>
+        /// <param name="name">The name of the parameter that caused the exception to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value must be null (<paramref name="name"/>)' is assumed.</param>
+        /// <returns>A task returning the original exception.</returns>
+        public static async Task<TException> WithNamedMessageWhenNotNull<TException>(this Task<TException> exceptionTask, string name, string? errorMessage = default)
+            where TException : InvalidOperationException
+        {
+            var exception = await exceptionTask;
+            var message = errorMessage ?? "Value must be null";
+
+            exception.Message.ShouldBe($"{message} ({name})");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
+        /// contains the named parameter.</summary>
+        /// <param name="exception">The thrown exception.</param>
+        /// <param name="name">The name of the parameter that caused the exception to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value cannot be empty (<paramref name="name"/>)' is assumed.</param>
+        /// <returns>The original exception.</returns>
+        public static TException WithNamedMessageWhenEmpty<TException>(this TException exception, string name, string? errorMessage = default)
+            where TException : InvalidOperationException
+        {
+            var message = errorMessage ?? "Value cannot be empty";
+
+            exception.Message.ShouldBe($"{message} ({name})");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/> and
+        /// contains the named parameter.</summary>
+        /// <param name="exceptionTask">A task returning the thrown exception.</param>
+        /// <param name="name">The name of the parameter that caused the exception to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value cannot be empty (<paramref name="name"/>)' is assumed.</param>
+        /// <returns>A task returning the original exception.</returns>
+        public static async Task<TException> WithNamedMessageWhenEmpty<TException>(this Task<TException> exceptionTask, string name, string? errorMessage = default)
+            where TException : InvalidOperationException
+        {
+            var exception = await exceptionTask;
+            var message = errorMessage ?? "Value cannot be empty";
+
+            exception.Message.ShouldBe($"{message} ({name})");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="ArgumentNullException"/> matches <paramref name="errorMessage"/> and
+        /// contains the named parameter.</summary>
+        /// <param name="exception">The thrown exception.</param>
+        /// <param name="name">The name of the parameter that caused the exception to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value cannot be null (Parameter '<paramref name="name"/>')' is assumed.</param>
+        /// <returns>The original exception.</returns>
+        public static ArgumentNullException WithNamedMessageWhenNull(this ArgumentNullException exception, string name, string? errorMessage = default)
+        {
+            var message = errorMessage ?? "Value cannot be null.";
+
+            exception.Message.ShouldBe($"{message} (Parameter '{name}')");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="ArgumentNullException"/> matches <paramref name="errorMessage"/> and
+        /// contains the named parameter.</summary>
+        /// <param name="exceptionTask">A task returning the thrown exception.</param>
+        /// <param name="name">The name of the parameter that caused the exception to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value cannot be null (Parameter '<paramref name="name"/>')' is assumed.</param>
+        /// <returns>A task returning the original exception.</returns>
+        public static async Task<ArgumentNullException> WithNamedMessageWhenNull(this Task<ArgumentNullException> exceptionTask, string name, string? errorMessage = default)
+        {
+            var exception = await exceptionTask;
+            var message = errorMessage ?? "Value cannot be null.";
+
+            exception.Message.ShouldBe($"{message} (Parameter '{name}')");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="ArgumentException"/> matches <paramref name="errorMessage"/> and
+        /// contains the named parameter.</summary>
+        /// <param name="exception">The thrown exception.</param>
+        /// <param name="name">The name of the parameter that caused the exception to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'The argument cannot be empty (Parameter '<paramref name="name"/>')' is assumed.</param>
+        /// <returns>The original exception.</returns>
+        public static ArgumentException WithNamedMessageWhenEmpty(this ArgumentException exception, string name, string? errorMessage = default)
+        {
+            var message = errorMessage ?? "The argument cannot be empty.";
+
+            exception.Message.ShouldBe($"{message} (Parameter '{name}')");
+
+            return exception;
+        }
+
+        /// <summary>Asserts the message of the thrown <see cref="ArgumentException"/> matches <paramref name="errorMessage"/> and
+        /// contains the named parameter.</summary>
+        /// <param name="exceptionTask">A task returning the thrown exception.</param>
+        /// <param name="name">The name of the parameter that caused the exception to be thrown.</param>
+        /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'The argument cannot be empty (Parameter '<paramref name="name"/>')' is assumed.</param>
+        /// <returns>A task returning the original exception.</returns>
+        public static async Task<ArgumentException> WithNamedMessageWhenEmpty(this Task<ArgumentException> exceptionTask, string name, string? errorMessage = default)
+        {
+            var exception = await exceptionTask;
+            var message = errorMessage ?? "The argument cannot be empty.";
+
+            exception.Message.ShouldBe($"{message} (Parameter '{name}')");
+
+            return exception;
+        }
+
         /// <summary>Asserts the message of the thrown <see cref="InvalidOperationException"/> matches <paramref name="errorMessage"/>.</summary>
         /// <param name="assertion">The exception assertion.</param>
         /// <param name="errorMessage">The expected exception message. If <see langword="null"/> then 'Value cannot be null' is assumed.</param>

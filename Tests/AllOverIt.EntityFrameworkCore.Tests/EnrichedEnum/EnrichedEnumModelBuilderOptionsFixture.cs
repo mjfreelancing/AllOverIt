@@ -1,8 +1,8 @@
-﻿using AllOverIt.EntityFrameworkCore.EnrichedEnum;
+using AllOverIt.EntityFrameworkCore.EnrichedEnum;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
-using FluentAssertions;
+using Shouldly;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -67,7 +67,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
             {
                 var actual = _modelBuilderOptions.Entity<DummyEntity1>();
 
-                actual.Should().BeOfType<EnrichedEnumEntityOptions>();
+                actual.ShouldBeOfType<EnrichedEnumEntityOptions>();
             }
         }
 
@@ -76,12 +76,10 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
             [Fact]
             public void Should_Throw_When_Type_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = _modelBuilderOptions.Entity(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("entityType");
             }
 
@@ -90,7 +88,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
             {
                 var actual = _modelBuilderOptions.Entity(typeof(DummyEntity1));
 
-                actual.Should().BeOfType<EnrichedEnumEntityOptions>();
+                actual.ShouldBeOfType<EnrichedEnumEntityOptions>();
             }
         }
 
@@ -99,24 +97,20 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
             [Fact]
             public void Should_Throw_When_Types_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = _modelBuilderOptions.Entities(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("entityTypes");
             }
 
             [Fact]
             public void Should_Throw_When_Types_Empty()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                 {
                     _ = _modelBuilderOptions.Entities([]);
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty("entityTypes");
             }
 
@@ -125,7 +119,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
             {
                 var actual = _modelBuilderOptions.Entities(typeof(DummyEntity1), typeof(DummyEntity2));
 
-                actual.Should().BeOfType<EnrichedEnumEntityOptions>();
+                actual.ShouldBeOfType<EnrichedEnumEntityOptions>();
             }
         }
 
@@ -153,17 +147,17 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
             {
                 _modelBuilderOptions.AsName();
 
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Id)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column1)]).Should().BeTrue();     // Is EnrichedEnum
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column2)]).Should().BeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Id)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column1)]).ShouldBeTrue();     // Is EnrichedEnum
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column2)]).ShouldBeFalse();
 
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Id)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column1)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column2)]).Should().BeTrue();     // Is EnrichedEnum
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Id)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column1)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column2)]).ShouldBeTrue();     // Is EnrichedEnum
 
-                _entityOptions.PropertyOptions.TypeConverter.Should().Be(EnrichedEnumModelBuilderTypes.AsNameConverter);
+                _entityOptions.PropertyOptions.TypeConverter.ShouldBe(EnrichedEnumModelBuilderTypes.AsNameConverter);
 
-                _entityOptions.PropertyOptions.PropertyBuilder.Should().BeNull();
+                _entityOptions.PropertyOptions.PropertyBuilder.ShouldBeNull();
             }
 
             [Fact]
@@ -171,18 +165,18 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
             {
                 _modelBuilderOptions.AsName(Create<string>());
 
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Id)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column1)]).Should().BeTrue();     // Is EnrichedEnum
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column2)]).Should().BeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Id)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column1)]).ShouldBeTrue();     // Is EnrichedEnum
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column2)]).ShouldBeFalse();
 
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Id)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column1)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column2)]).Should().BeTrue();     // Is EnrichedEnum
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Id)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column1)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column2)]).ShouldBeTrue();     // Is EnrichedEnum
 
-                _entityOptions.PropertyOptions.TypeConverter.Should().Be(EnrichedEnumModelBuilderTypes.AsNameConverter);
+                _entityOptions.PropertyOptions.TypeConverter.ShouldBe(EnrichedEnumModelBuilderTypes.AsNameConverter);
 
                 // Not testing PropertyBuilder action - depends on EF internals
-                _entityOptions.PropertyOptions.PropertyBuilder.Should().NotBeNull();
+                _entityOptions.PropertyOptions.PropertyBuilder.ShouldNotBeNull();
             }
 
             [Fact]
@@ -190,18 +184,18 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
             {
                 _modelBuilderOptions.AsName(null, Create<int>());
 
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Id)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column1)]).Should().BeTrue();     // Is EnrichedEnum
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column2)]).Should().BeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Id)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column1)]).ShouldBeTrue();     // Is EnrichedEnum
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column2)]).ShouldBeFalse();
 
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Id)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column1)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column2)]).Should().BeTrue();     // Is EnrichedEnum
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Id)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column1)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column2)]).ShouldBeTrue();     // Is EnrichedEnum
 
-                _entityOptions.PropertyOptions.TypeConverter.Should().Be(EnrichedEnumModelBuilderTypes.AsNameConverter);
+                _entityOptions.PropertyOptions.TypeConverter.ShouldBe(EnrichedEnumModelBuilderTypes.AsNameConverter);
 
                 // Not testing PropertyBuilder action - depends on EF internals
-                _entityOptions.PropertyOptions.PropertyBuilder.Should().NotBeNull();
+                _entityOptions.PropertyOptions.PropertyBuilder.ShouldNotBeNull();
             }
         }
 
@@ -229,17 +223,17 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
             {
                 _modelBuilderOptions.AsValue();
 
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Id)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column1)]).Should().BeTrue();     // Is EnrichedEnum
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column2)]).Should().BeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Id)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column1)]).ShouldBeTrue();     // Is EnrichedEnum
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column2)]).ShouldBeFalse();
 
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Id)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column1)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column2)]).Should().BeTrue();     // Is EnrichedEnum
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Id)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column1)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column2)]).ShouldBeTrue();     // Is EnrichedEnum
 
-                _entityOptions.PropertyOptions.TypeConverter.Should().Be(EnrichedEnumModelBuilderTypes.AsValueConverter);
+                _entityOptions.PropertyOptions.TypeConverter.ShouldBe(EnrichedEnumModelBuilderTypes.AsValueConverter);
 
-                _entityOptions.PropertyOptions.PropertyBuilder.Should().BeNull();
+                _entityOptions.PropertyOptions.PropertyBuilder.ShouldBeNull();
             }
 
             [Fact]
@@ -247,18 +241,18 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
             {
                 _modelBuilderOptions.AsValue(Create<string>());
 
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Id)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column1)]).Should().BeTrue();     // Is EnrichedEnum
-                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column2)]).Should().BeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Id)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column1)]).ShouldBeTrue();     // Is EnrichedEnum
+                _entityOptions.PropertyPredicate.Invoke(_dummy1Properties[nameof(DummyEntity1.Column2)]).ShouldBeFalse();
 
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Id)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column1)]).Should().BeFalse();
-                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column2)]).Should().BeTrue();     // Is EnrichedEnum
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Id)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column1)]).ShouldBeFalse();
+                _entityOptions.PropertyPredicate.Invoke(_dummy2Properties[nameof(DummyEntity2.Column2)]).ShouldBeTrue();     // Is EnrichedEnum
 
-                _entityOptions.PropertyOptions.TypeConverter.Should().Be(EnrichedEnumModelBuilderTypes.AsValueConverter);
+                _entityOptions.PropertyOptions.TypeConverter.ShouldBe(EnrichedEnumModelBuilderTypes.AsValueConverter);
 
                 // Not testing PropertyBuilder action - depends on EF internals
-                _entityOptions.PropertyOptions.PropertyBuilder.Should().NotBeNull();
+                _entityOptions.PropertyOptions.PropertyBuilder.ShouldNotBeNull();
             }
         }
     }

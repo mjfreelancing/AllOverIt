@@ -187,6 +187,7 @@
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
+    <File Path="Docs/Change Logs/ChangeLog_v10.md" />
     <File Path="Docs/Change Logs/ChangeLog_v9.md" />
     <File Path="LICENSE.md" />
     <File Path="README.md" />

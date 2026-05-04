@@ -1,11 +1,11 @@
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Logging.Extensions;
 using AllOverIt.Logging.Testing;
 using AllOverIt.Logging.Testing.Extensions;
-using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using Shouldly;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 using LoggerExtensions = AllOverIt.Logging.Extensions.LoggerExtensions;
 
@@ -80,12 +80,10 @@ namespace AllOverIt.Logging.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Logger_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
-                    AllOverIt.Logging.Extensions.LoggerExtensions.LogCall(null!, this);
+                    LoggerExtensions.LogCall(null!, this);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("logger");
             }
 
@@ -176,24 +174,20 @@ namespace AllOverIt.Logging.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Logger_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     LoggerExtensions.LogException(null!, _exception);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("logger");
             }
 
             [Fact]
             public void Should_Throw_When_Exception_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     LoggerExtensions.LogException(_loggerFake, null!);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("exception");
             }
 
@@ -217,10 +211,8 @@ namespace AllOverIt.Logging.Tests.Extensions
 
                 var states = actual.Metadata;
 
-                states.Should().BeEquivalentTo(
-                [
-                    expected
-                ]);
+                states.Length.ShouldBe(1);
+                states[0].ShouldBe(expected);
             }
 
             [Fact]
@@ -236,16 +228,15 @@ namespace AllOverIt.Logging.Tests.Extensions
 
                 var states = actual.Metadata;
 
-                states.Should().BeEquivalentTo(
-                [
+                states.Length.ShouldBe(1);
+                states[0].ShouldBe(
                     LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(
                         template,
                         new
                         {
                             CustomErrorMessage = _exception.Message,
                             Count = otherArg
-                        })
-                ]);
+                        }));
             }
         }
 
@@ -266,24 +257,20 @@ namespace AllOverIt.Logging.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Logger_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     LoggerExtensions.LogAllExceptions(null!, _exception);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("logger");
             }
 
             [Fact]
             public void Should_Throw_When_Exception_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     LoggerExtensions.LogAllExceptions(_loggerFake, null!);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("exception");
             }
 
@@ -321,12 +308,10 @@ namespace AllOverIt.Logging.Tests.Extensions
 
                 var states = actual.Metadata;
 
-                states.Should().BeEquivalentTo(
-                [
-                    expected1,
-                    expected2,
-                    expected3
-                ], options => options.WithStrictOrdering());
+                states.Length.ShouldBe(3);
+                states[0].ShouldBe(expected1);
+                states[1].ShouldBe(expected2);
+                states[2].ShouldBe(expected3);
             }
 
             [Fact]
@@ -367,12 +352,10 @@ namespace AllOverIt.Logging.Tests.Extensions
 
                 var states = actual.Metadata;
 
-                states.Should().BeEquivalentTo(
-                [
-                    expected1,
-                    expected2,
-                    expected3
-                ], options => options.WithStrictOrdering());
+                states.Length.ShouldBe(3);
+                states[0].ShouldBe(expected1);
+                states[1].ShouldBe(expected2);
+                states[2].ShouldBe(expected3);
             }
         }
     }

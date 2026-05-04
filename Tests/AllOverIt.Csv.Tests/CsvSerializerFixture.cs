@@ -1,8 +1,8 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 using System.Text;
 
 namespace AllOverIt.Csv.Tests
@@ -45,12 +45,10 @@ namespace AllOverIt.Csv.Tests
             [Fact]
             public void Should_Throw_When_Resolver_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         _serializer.AddField(Create<string>(), null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("valueResolver");
             }
 
@@ -79,7 +77,7 @@ namespace AllOverIt.Csv.Tests
 
                 var expected = sb.ToString();
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Fact]
@@ -118,7 +116,7 @@ namespace AllOverIt.Csv.Tests
 
                 var expected = sb.ToString();
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -127,24 +125,20 @@ namespace AllOverIt.Csv.Tests
             [Fact]
             public void Should_Throw_When_HeaderName_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         _serializer.AddFields(null, _ => null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("headerNames");
             }
 
             [Fact]
             public void Should_Throw_When_Resolver_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         _serializer.AddFields([.. CreateMany<string>()], null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("valuesResolver");
             }
 
@@ -248,7 +242,7 @@ namespace AllOverIt.Csv.Tests
 
                 var expected = sb.ToString();
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -257,24 +251,20 @@ namespace AllOverIt.Csv.Tests
             [Fact]
             public async Task Should_Throw_When_Writer_Null()
             {
-                await Invoking(async () =>
+                await Should.ThrowAsync<ArgumentNullException>(async () =>
                     {
                         await _serializer.SerializeAsync(null, CreateMany<DummySampleData>());
                     })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("writer");
             }
 
             [Fact]
             public async Task Should_Throw_When_Data_Null()
             {
-                await Invoking(async () =>
+                await Should.ThrowAsync<ArgumentNullException>(async () =>
                     {
                         await _serializer.SerializeAsync(this.CreateStub<TextWriter>(), (IEnumerable<DummySampleData>) null);
                     })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("data");
             }
 
@@ -297,7 +287,7 @@ namespace AllOverIt.Csv.Tests
 
                 var expected = GetExpectedOutputForDataWithNames(sampleData, withHeader);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Theory]
@@ -326,13 +316,13 @@ namespace AllOverIt.Csv.Tests
 
                 var expected = GetExpectedOutputForDataWithNames(sampleData, withHeader);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Fact]
             public async Task Should_Cancel()
             {
-                await Invoking(async () =>
+                await Should.ThrowAsync<OperationCanceledException>(async () =>
                 {
                     var cts = new CancellationTokenSource();
                     cts.Cancel();
@@ -341,9 +331,7 @@ namespace AllOverIt.Csv.Tests
                     {
                         await _serializer.SerializeAsync(writer, CreateMany<DummySampleData>(), cancellationToken: cts.Token);
                     }
-                })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                });
             }
         }
 
@@ -352,24 +340,20 @@ namespace AllOverIt.Csv.Tests
             [Fact]
             public async Task Should_Throw_When_Writer_Null()
             {
-                await Invoking(async () =>
+                await Should.ThrowAsync<ArgumentNullException>(async () =>
                 {
                     await _serializer.SerializeAsync(null, AsAsyncEnumerable(CreateMany<DummySampleData>()));
                 })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("writer");
             }
 
             [Fact]
             public async Task Should_Throw_When_Data_Null()
             {
-                await Invoking(async () =>
+                await Should.ThrowAsync<ArgumentNullException>(async () =>
                 {
                     await _serializer.SerializeAsync(this.CreateStub<TextWriter>(), (IAsyncEnumerable<DummySampleData>) null);
                 })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("data");
             }
 
@@ -392,7 +376,7 @@ namespace AllOverIt.Csv.Tests
 
                 var expected = GetExpectedOutputForDataWithNames(sampleData, withHeader);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Theory]
@@ -421,13 +405,13 @@ namespace AllOverIt.Csv.Tests
 
                 var expected = GetExpectedOutputForDataWithNames(sampleData, withHeader);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Fact]
             public async Task Should_Cancel()
             {
-                await Invoking(async () =>
+                await Should.ThrowAsync<OperationCanceledException>(async () =>
                 {
                     var cts = new CancellationTokenSource();
                     cts.Cancel();
@@ -436,9 +420,7 @@ namespace AllOverIt.Csv.Tests
                     {
                         await _serializer.SerializeAsync(writer, AsAsyncEnumerable(CreateMany<DummySampleData>()), cancellationToken: cts.Token);
                     }
-                })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                });
             }
         }
 

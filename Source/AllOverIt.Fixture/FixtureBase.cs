@@ -1,9 +1,8 @@
 ﻿using AllOverIt.Fixture.Customizations;
 using AllOverIt.Fixture.Exceptions;
-using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using AutoFixture;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Fixture
 {
@@ -62,7 +61,7 @@ namespace AllOverIt.Fixture
             Customize(customization);
         }
 
-        /// <summary>Provides the ability to invoke an action so it can be chained with assertions provided by FluentAssertions.</summary>
+        /// <summary>Provides the ability to invoke an action so it can be chained with test assertions.</summary>
         /// <param name="action">The action to be invoked.</param>
         /// <returns>The same action passed to the method.</returns>
         protected static Action Invoking(Action action)
@@ -79,29 +78,14 @@ namespace AllOverIt.Fixture
         /// <param name="errorMessage">The expected exception message.</param>
         protected static void AssertThrowsWhenStringNullOrEmptyOrWhitespace(Action<string?> action, string name, string? errorMessage = default)
         {
-            Invoking(() =>
-            {
-                action.Invoke(null);
-            })
-                .Should()
-                .Throw<ArgumentNullException>("the argument should not be null")
-                .WithNamedMessageWhenNull(name, errorMessage);
+            var nullException = Should.Throw<ArgumentNullException>(() => action.Invoke(null));
+            nullException.Message.ShouldBe($"{errorMessage ?? "Value cannot be null."} (Parameter '{name}')");
 
-            Invoking(() =>
-            {
-                action.Invoke(string.Empty);
-            })
-                .Should()
-                .Throw<ArgumentException>("the argument should not be empty")
-                .WithNamedMessageWhenEmpty(name, errorMessage);
+            var emptyException = Should.Throw<ArgumentException>(() => action.Invoke(string.Empty));
+            emptyException.Message.ShouldBe($"{errorMessage ?? "The argument cannot be empty."} (Parameter '{name}')");
 
-            Invoking(() =>
-            {
-                action.Invoke("  ");
-            })
-               .Should()
-               .Throw<ArgumentException>("the argument should not be whitespace")
-               .WithNamedMessageWhenEmpty(name, errorMessage);
+            var whiteSpaceException = Should.Throw<ArgumentException>(() => action.Invoke("  "));
+            whiteSpaceException.Message.ShouldBe($"{errorMessage ?? "The argument cannot be empty."} (Parameter '{name}')");
         }
 
         /// <summary>Provides a <c>Func&lt;string, Task&gt;</c> a <see cref="string"/> value that is <see langword="null"/>, <c>String.Empty</c>, and some whitespace
@@ -112,29 +96,14 @@ namespace AllOverIt.Fixture
         /// <returns>A <see cref="Task"/> that completes when awaited.</returns>
         protected static async Task AssertThrowsWhenStringNullOrEmptyOrWhitespace(Func<string?, Task> action, string name, string? errorMessage = default)
         {
-            await Invoking(async () =>
-            {
-                await action.Invoke(null);
-            })
-                .Should()
-                .ThrowAsync<ArgumentNullException>("the argument should not be null")
-                .WithNamedMessageWhenNull(name, errorMessage);
+            var nullException = await Should.ThrowAsync<ArgumentNullException>(() => action.Invoke(null));
+            nullException.Message.ShouldBe($"{errorMessage ?? "Value cannot be null."} (Parameter '{name}')");
 
-            await Invoking(async () =>
-            {
-                await action.Invoke(string.Empty);
-            })
-                .Should()
-                .ThrowAsync<ArgumentException>("the argument should not be empty")
-                .WithNamedMessageWhenEmpty(name, errorMessage);
+            var emptyException = await Should.ThrowAsync<ArgumentException>(() => action.Invoke(string.Empty));
+            emptyException.Message.ShouldBe($"{errorMessage ?? "The argument cannot be empty."} (Parameter '{name}')");
 
-            await Invoking(async () =>
-            {
-                await action.Invoke("  ");
-            })
-               .Should()
-               .ThrowAsync<ArgumentException>("the argument should not be whitespace")
-               .WithNamedMessageWhenEmpty(name, errorMessage);
+            var whiteSpaceException = await Should.ThrowAsync<ArgumentException>(() => action.Invoke("  "));
+            whiteSpaceException.Message.ShouldBe($"{errorMessage ?? "The argument cannot be empty."} (Parameter '{name}')");
         }
 
         /// <summary>Provides the ability to invoke an action that returns a result.</summary>
@@ -447,7 +416,7 @@ namespace AllOverIt.Fixture
 
             var expected = expectedMessage ?? $"Exception of type '{typeof(TException).FullName}' was thrown.";
 
-            exception.Message.Should().Be(expected);
+            exception.Message.ShouldBe(expected);
         }
 
         /// <summary>Asserts that an exception of type <typeparamref name="TException"/> does not have a default constructor.</summary>
@@ -456,7 +425,7 @@ namespace AllOverIt.Fixture
         {
             var constructor = typeof(TException).GetConstructor(Type.EmptyTypes);
 
-            constructor.Should().BeNull();
+            constructor.ShouldBeNull();
         }
 
         /// <summary>Asserts that an exception of type <typeparamref name="TException"/> has a constructor accepting
@@ -468,11 +437,11 @@ namespace AllOverIt.Fixture
 
             var constructor = typeof(TException).GetConstructor([typeof(string)]);
 
-            constructor.Should().NotBeNull();
+            constructor.ShouldNotBeNull();
 
             var exception = (Exception)constructor!.Invoke([message]);
 
-            exception.Message.Should().Be(message);
+            exception.Message.ShouldBe(message);
         }
 
         /// <summary>Asserts that an exception of type <typeparamref name="TException"/> does not have a constructor
@@ -482,7 +451,7 @@ namespace AllOverIt.Fixture
         {
             var constructor = typeof(TException).GetConstructor([typeof(string)]);
 
-            constructor.Should().BeNull();
+            constructor.ShouldBeNull();
         }
 
         /// <summary>Asserts that an exception of type <typeparamref name="TException"/> has a constructor accepting
@@ -495,17 +464,12 @@ namespace AllOverIt.Fixture
 
             var constructor = typeof(TException).GetConstructor([typeof(string), typeof(Exception)]);
 
-            constructor.Should().NotBeNull();
+            constructor.ShouldNotBeNull();
 
             var exception = (Exception)constructor!.Invoke([message, innerException]);
 
-            exception.Message
-                .Should()
-                .Be(message);
-
-            exception.InnerException
-                .Should()
-                .BeSameAs(innerException);
+            exception.Message.ShouldBe(message);
+            exception.InnerException.ShouldBeSameAs(innerException);
         }
 
         /// <summary>Asserts when a specified action is invoked that an AggregateException will be thrown and all expected exception

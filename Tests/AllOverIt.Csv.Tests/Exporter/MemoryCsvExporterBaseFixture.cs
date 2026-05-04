@@ -1,7 +1,7 @@
-﻿using AllOverIt.Csv.Exporter;
+using AllOverIt.Csv.Exporter;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 using System.Text;
 
 namespace AllOverIt.Csv.Tests.Exporter
@@ -47,12 +47,10 @@ namespace AllOverIt.Csv.Tests.Exporter
             [Fact]
             public void Should_Throw_When_Configuration_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new DummyMemoryCsvExporter(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("configuration");
             }
         }
@@ -67,12 +65,10 @@ namespace AllOverIt.Csv.Tests.Exporter
                 var cts = new CancellationTokenSource();
                 cts.Cancel();
 
-                await Invoking(async () =>
+                await Should.ThrowAsync<OperationCanceledException>(async () =>
                 {
                     await _exporter.GetContentAsync(cts.Token);
-                })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                });
             }
 
             [Fact]
@@ -87,12 +83,10 @@ namespace AllOverIt.Csv.Tests.Exporter
                 var cts = new CancellationTokenSource();
                 cts.Cancel();
 
-                await Invoking(async () =>
+                await Should.ThrowAsync<OperationCanceledException>(async () =>
                 {
                     await _exporter.GetContentAsync(cts.Token);
-                })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                });
             }
 
             [Fact]
@@ -109,7 +103,7 @@ namespace AllOverIt.Csv.Tests.Exporter
 
                 var actual = await exporter.GetContentAsync(CancellationToken.None);
 
-                actual.Should().BeEmpty();
+                actual.ShouldBeEmpty();
             }
 
             [Fact]
@@ -124,7 +118,7 @@ namespace AllOverIt.Csv.Tests.Exporter
 
                 var actual = Encoding.UTF8.GetString(bytes);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }

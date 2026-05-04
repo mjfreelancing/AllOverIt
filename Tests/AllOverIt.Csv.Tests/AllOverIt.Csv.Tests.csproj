@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
+        <PackageReference Include="Shouldly" Version="4.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\..\Source\AllOverIt.Csv\AllOverIt.Csv.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture.FakeItEasy\AllOverIt.Fixture.FakeItEasy.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />

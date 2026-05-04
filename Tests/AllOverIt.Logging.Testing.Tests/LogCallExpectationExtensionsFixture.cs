@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Logging.Testing.Tests
 {
@@ -33,7 +33,7 @@ namespace AllOverIt.Logging.Testing.Tests
 
                 var actual = LogCallExpectation.GetExpectedStaticLogCallMetadata(callerName);
 
-                actual.Should().BeEquivalentTo(new Dictionary<string, object>
+                actual.ShouldBe(new Dictionary<string, object>
                 {
                     { MethodNameProperty, callerName },
                     { OriginalFormat, LogCallOptions.Instance.LogTemplateWithNoArguments }
@@ -62,7 +62,7 @@ namespace AllOverIt.Logging.Testing.Tests
 
                 var callerType = typeof(DummyClass);
 
-                actual.Should().BeEquivalentTo(new Dictionary<string, object>
+                actual.ShouldBe(new Dictionary<string, object>
                 {
                     { MethodNameProperty, $"{callerType.Namespace}.{callerType.GetFriendlyName()}.{callerName}" },
                     { OriginalFormat, LogCallOptions.Instance.LogTemplateWithNoArguments }
@@ -85,12 +85,10 @@ namespace AllOverIt.Logging.Testing.Tests
             [Fact]
             public void Should_Throw_When_Arguments_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = LogCallExpectation.GetExpectedStaticLogCallWithArgumentsMetadata(Create<string>(), null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("arguments");
             }
 
@@ -102,7 +100,7 @@ namespace AllOverIt.Logging.Testing.Tests
 
                 var actual = LogCallExpectation.GetExpectedStaticLogCallWithArgumentsMetadata(callerName, arguments);
 
-                actual.Should().BeEquivalentTo(new Dictionary<string, object>
+                actual.ShouldBe(new Dictionary<string, object>
                 {
                     { MethodNameProperty, callerName},
                     { $"@{ArgumentsProperty}", arguments },
@@ -126,12 +124,10 @@ namespace AllOverIt.Logging.Testing.Tests
             [Fact]
             public void Should_Throw_When_Arguments_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = LogCallExpectation.GetExpectedLogCallWithArgumentsMetadata<DummyClass>(Create<string>(), null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("arguments");
             }
 
@@ -145,7 +141,7 @@ namespace AllOverIt.Logging.Testing.Tests
 
                 var callerType = typeof(DummyClass);
 
-                actual.Should().BeEquivalentTo(new Dictionary<string, object>
+                actual.ShouldBe(new Dictionary<string, object>
                 {
                     { MethodNameProperty, $"{callerType.Namespace}.{callerType.GetFriendlyName()}.{callerName}" },
                     { $"@{ArgumentsProperty}", arguments },
@@ -159,12 +155,10 @@ namespace AllOverIt.Logging.Testing.Tests
             [Fact]
             public void Should_Throw_When_Exception_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = LogCallExpectation.GetExpectedExceptionMetadata(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("exception");
             }
 
@@ -175,7 +169,7 @@ namespace AllOverIt.Logging.Testing.Tests
 
                 var actual = LogCallExpectation.GetExpectedExceptionMetadata(exception);
 
-                actual.Should().BeEquivalentTo(new Dictionary<string, object>
+                actual.ShouldBe(new Dictionary<string, object>
                 {
                     { LogCallOptions.Instance._exceptionMessageProperty, exception.Message },
                     { OriginalFormat, LogCallOptions.Instance.LogExceptionTemplate }
@@ -202,7 +196,7 @@ namespace AllOverIt.Logging.Testing.Tests
 
                 var actual = LogCallExpectation.GetExpectedLogMessageMetadata(message);
 
-                actual.Should().BeEquivalentTo(new Dictionary<string, object>
+                actual.ShouldBe(new Dictionary<string, object>
                 {
                     { OriginalFormat, message }
                 });
@@ -224,12 +218,10 @@ namespace AllOverIt.Logging.Testing.Tests
             [Fact]
             public void Should_Throw_When_Arguments_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(Create<string>(), null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("arguments");
             }
 
@@ -245,7 +237,7 @@ namespace AllOverIt.Logging.Testing.Tests
 
                 expected.Add(OriginalFormat, logTemplate);
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -264,12 +256,10 @@ namespace AllOverIt.Logging.Testing.Tests
             [Fact]
             public void Should_Throw_When_Arguments_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = LogCallExpectation.GetExpectedLogTemplateWithArgumentsMetadata(Create<string>(), null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("arguments");
             }
 
@@ -291,7 +281,7 @@ namespace AllOverIt.Logging.Testing.Tests
                     { OriginalFormat, logTemplate}
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBe(expected);
             }
         }
     }

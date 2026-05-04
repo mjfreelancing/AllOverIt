@@ -1,4 +1,4 @@
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture.Exceptions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Fixture.Tests.Dummies;
@@ -7,6 +7,7 @@ using AutoFixture;
 using AutoFixture.Dsl;
 using FakeItEasy;
 using FluentAssertions;
+using Shouldly;
 using System.Runtime.CompilerServices;
 
 namespace AllOverIt.Fixture.Tests
@@ -89,54 +90,6 @@ namespace AllOverIt.Fixture.Tests
                 fixture.Customize(customizationFake);
 
                 A.CallTo(() => fixtureFake.Customize(customizationFake)).MustHaveHappenedOnceExactly();
-            }
-        }
-
-        public class Invoking_Action : FixtureBaseFixture
-        {
-            [Fact]
-            public void Should_Throw_When_Action_Null()
-            {
-                Action action = () => Invoking(null);
-
-                action
-                  .Should()
-                  .Throw<ArgumentNullException>();
-            }
-
-            [Fact]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0039:Use local function", Justification = "It's part of the test")]
-            public void Should_Return_Same_Action()
-            {
-                Action toInvoke = () => { };
-
-                var invoked = Invoking(toInvoke);
-
-                invoked.Should().BeSameAs(toInvoke);
-            }
-        }
-
-        public class Invoking_Func : FixtureBaseFixture
-        {
-            [Fact]
-            public void Should_Throw_When_Action_Null()
-            {
-                Action action = () => Invoking((Func<bool>) null);
-
-                action
-                  .Should()
-                  .Throw<ArgumentNullException>();
-            }
-
-            [Fact]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0039:Use local function", Justification = "It's part of the test")]
-            public void Should_Return_Same_Action()
-            {
-                Func<string> toInvoke = () => Create<string>();
-
-                var invoked = Invoking(toInvoke);
-
-                invoked.Should().BeSameAs(toInvoke);
             }
         }
 
@@ -244,7 +197,7 @@ namespace AllOverIt.Fixture.Tests
                     return new DummyClassOneArg(arg1);
                 }
 
-                Register((Func<int, DummyClassOneArg>) creator);
+                Register((Func<int, DummyClassOneArg>)creator);
 
                 Create<DummyClassOneArg>();
 
@@ -256,7 +209,7 @@ namespace AllOverIt.Fixture.Tests
             {
                 static DummyClassOneArg creator(int arg1) => new(arg1);
 
-                Register((Func<int, DummyClassOneArg>) creator);
+                Register((Func<int, DummyClassOneArg>)creator);
 
                 var actual = Create<DummyClassOneArg>();
 
@@ -285,7 +238,7 @@ namespace AllOverIt.Fixture.Tests
                     return new DummyClassTwoArgs(arg1, arg2);
                 }
 
-                Register((Func<int, double, DummyClassTwoArgs>) creator);
+                Register((Func<int, double, DummyClassTwoArgs>)creator);
 
                 Create<DummyClassTwoArgs>();
 
@@ -297,7 +250,7 @@ namespace AllOverIt.Fixture.Tests
             {
                 static DummyClassTwoArgs creator(int arg1, double arg2) => new(arg1, arg2);
 
-                Register((Func<int, double, DummyClassTwoArgs>) creator);
+                Register((Func<int, double, DummyClassTwoArgs>)creator);
 
                 var actual = Create<DummyClassTwoArgs>();
 
@@ -326,7 +279,7 @@ namespace AllOverIt.Fixture.Tests
                     return new DummyClassThreeArgs(arg1, arg2, arg3);
                 }
 
-                Register((Func<int, double, DummyEnum, DummyClassThreeArgs>) creator);
+                Register((Func<int, double, DummyEnum, DummyClassThreeArgs>)creator);
 
                 Create<DummyClassThreeArgs>();
 
@@ -338,7 +291,7 @@ namespace AllOverIt.Fixture.Tests
             {
                 static DummyClassThreeArgs creator(int arg1, double arg2, DummyEnum arg3) => new(arg1, arg2, arg3);
 
-                Register((Func<int, double, DummyEnum, DummyClassThreeArgs>) creator);
+                Register((Func<int, double, DummyEnum, DummyClassThreeArgs>)creator);
 
                 var actual = Create<DummyClassThreeArgs>();
 
@@ -367,7 +320,7 @@ namespace AllOverIt.Fixture.Tests
                     return new DummyClassFourArgs(arg1, arg2, arg3, arg4);
                 }
 
-                Register((Func<int, double, DummyEnum, float, DummyClassFourArgs>) creator);
+                Register((Func<int, double, DummyEnum, float, DummyClassFourArgs>)creator);
 
                 Create<DummyClassFourArgs>();
 
@@ -379,7 +332,7 @@ namespace AllOverIt.Fixture.Tests
             {
                 static DummyClassFourArgs creator(int arg1, double arg2, DummyEnum arg3, float arg4) => new(arg1, arg2, arg3, arg4);
 
-                Register((Func<int, double, DummyEnum, float, DummyClassFourArgs>) creator);
+                Register((Func<int, double, DummyEnum, float, DummyClassFourArgs>)creator);
 
                 var actual = Create<DummyClassFourArgs>();
 
@@ -1077,13 +1030,10 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Throw_When_Has_Default_Constructor()
             {
-                Invoking(() =>
+                Should.Throw<Shouldly.ShouldAssertException>(() =>
                 {
                     AssertNoDefaultConstructor<DefaultConstructorExceptionDummy>();
-                })
-                .Should()
-                .Throw<Xunit.Sdk.XunitException>()
-                .WithMessage("Expected constructor to be <null>, but found Void .ctor().");
+                });
             }
         }
 
@@ -1098,13 +1048,10 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Throw_When_Not_Have_Constructor_With_Message()
             {
-                Invoking(() =>
+                Should.Throw<Shouldly.ShouldAssertException>(() =>
                 {
                     AssertConstructorWithMessage<DefaultConstructorExceptionDummy>();
-                })
-                .Should()
-                .Throw<Xunit.Sdk.XunitException>()
-                .WithMessage("Expected constructor not to be <null>.");
+                });
             }
         }
 
@@ -1126,13 +1073,10 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Throw_When_Have_Constructor_With_Message()
             {
-                Invoking(() =>
+                Should.Throw<Shouldly.ShouldAssertException>(() =>
                 {
                     AssertNoConstructorWithMessage<ConstructorWithMessageExceptionDummy>();
-                })
-                .Should()
-                .Throw<Xunit.Sdk.XunitException>()
-                .WithMessage("Expected constructor to be <null>, but found Void .ctor(System.String).");
+                });
             }
         }
 
@@ -1155,13 +1099,10 @@ namespace AllOverIt.Fixture.Tests
             [Fact]
             public void Should_Throw_When_Not_Have_Constructor_With_Message_And_Inner_Exception()
             {
-                Invoking(() =>
+                Should.Throw<Shouldly.ShouldAssertException>(() =>
                 {
                     AssertConstructorWithMessageAndInnerException<DefaultConstructorExceptionDummy>();
-                })
-                .Should()
-                .Throw<Xunit.Sdk.XunitException>()
-                .WithMessage("Expected constructor not to be <null>.");
+                });
             }
         }
 

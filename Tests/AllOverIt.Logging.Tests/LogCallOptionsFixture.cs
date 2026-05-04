@@ -1,5 +1,5 @@
 ﻿using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
 
 internal sealed class DummyClassNoNamespace
 {
@@ -23,7 +23,7 @@ namespace AllOverIt.Logging.Tests
             {
                 var actual = LogCallOptions.Instance.LogTemplateWithNoArguments;
 
-                actual.Should().Be("Call: {MethodName}");
+                actual.ShouldBe("Call: {MethodName}");
             }
         }
 
@@ -35,7 +35,7 @@ namespace AllOverIt.Logging.Tests
             {
                 var actual = LogCallOptions.Instance.LogTemplateWithArguments;
 
-                actual.Should().Be("Call: {MethodName}, Arguments = {@Arguments}");
+                actual.ShouldBe("Call: {MethodName}, Arguments = {@Arguments}");
             }
         }
 
@@ -47,7 +47,7 @@ namespace AllOverIt.Logging.Tests
             {
                 var actual = LogCallOptions.Instance.LogExceptionTemplate;
 
-                actual.Should().Be("Error: {ErrorMessage}");
+                actual.ShouldBe("Error: {ErrorMessage}");
             }
         }
 
@@ -71,7 +71,7 @@ namespace AllOverIt.Logging.Tests
 
                 LogCallOptions.UseCallPrefix(callPrefix);
 
-                LogCallOptions.Instance.LogTemplateWithNoArguments.Should().Be($"{callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}");
+                LogCallOptions.Instance.LogTemplateWithNoArguments.ShouldBe($"{callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}");
             }
 
             [Fact]
@@ -82,8 +82,7 @@ namespace AllOverIt.Logging.Tests
                 LogCallOptions.UseCallPrefix(callPrefix);
 
                 LogCallOptions.Instance.LogTemplateWithArguments
-                    .Should()
-                    .Be($"{callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}, {LogCallOptions.Instance._argumentsPrefix}{{@{LogCallOptions.Instance._argumentsDestructureProperty}}}");
+                    .ShouldBe($"{callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}, {LogCallOptions.Instance._argumentsPrefix}{{@{LogCallOptions.Instance._argumentsDestructureProperty}}}");
             }
         }
 
@@ -107,7 +106,7 @@ namespace AllOverIt.Logging.Tests
 
                 LogCallOptions.UseExceptionPrefix(exceptionPrefix);
 
-                LogCallOptions.Instance.LogExceptionTemplate.Should().Be($"{exceptionPrefix}{{{LogCallOptions.Instance._exceptionMessageProperty}}}");
+                LogCallOptions.Instance.LogExceptionTemplate.ShouldBe($"{exceptionPrefix}{{{LogCallOptions.Instance._exceptionMessageProperty}}}");
             }
         }
 
@@ -131,7 +130,7 @@ namespace AllOverIt.Logging.Tests
 
                 LogCallOptions.UseMethodNameProperty(methodNameProperty);
 
-                LogCallOptions.Instance.LogTemplateWithNoArguments.Should().Be($"{LogCallOptions.Instance._callPrefix}{{{methodNameProperty}}}");
+                LogCallOptions.Instance.LogTemplateWithNoArguments.ShouldBe($"{LogCallOptions.Instance._callPrefix}{{{methodNameProperty}}}");
             }
 
             [Fact]
@@ -142,8 +141,7 @@ namespace AllOverIt.Logging.Tests
                 LogCallOptions.UseMethodNameProperty(methodNameProperty);
 
                 LogCallOptions.Instance.LogTemplateWithArguments
-                    .Should()
-                    .Be($"{LogCallOptions.Instance._callPrefix}{{{methodNameProperty}}}, {LogCallOptions.Instance._argumentsPrefix}{{@{LogCallOptions.Instance._argumentsDestructureProperty}}}");
+                    .ShouldBe($"{LogCallOptions.Instance._callPrefix}{{{methodNameProperty}}}, {LogCallOptions.Instance._argumentsPrefix}{{@{LogCallOptions.Instance._argumentsDestructureProperty}}}");
             }
         }
 
@@ -167,7 +165,7 @@ namespace AllOverIt.Logging.Tests
 
                 LogCallOptions.UseExceptionMessageProperty(exceptionMessageProperty);
 
-                LogCallOptions.Instance.LogExceptionTemplate.Should().Be($"{LogCallOptions.Instance._exceptionPrefix}{{{exceptionMessageProperty}}}");
+                LogCallOptions.Instance.LogExceptionTemplate.ShouldBe($"{LogCallOptions.Instance._exceptionPrefix}{{{exceptionMessageProperty}}}");
             }
         }
 
@@ -192,8 +190,7 @@ namespace AllOverIt.Logging.Tests
                 LogCallOptions.UseArgumentsPrefix(argumentsPrefix);
 
                 LogCallOptions.Instance.LogTemplateWithArguments
-                    .Should()
-                    .Be($"{LogCallOptions.Instance._callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}, {argumentsPrefix}{{@{LogCallOptions.Instance._argumentsDestructureProperty}}}");
+                    .ShouldBe($"{LogCallOptions.Instance._callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}, {argumentsPrefix}{{@{LogCallOptions.Instance._argumentsDestructureProperty}}}");
             }
         }
 
@@ -218,8 +215,7 @@ namespace AllOverIt.Logging.Tests
                 LogCallOptions.UseArgumentsDestructureProperty(argumentsProperty);
 
                 LogCallOptions.Instance.LogTemplateWithArguments
-                    .Should()
-                    .Be($"{LogCallOptions.Instance._callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}, {LogCallOptions.Instance._argumentsPrefix}{{@{argumentsProperty}}}");
+                    .ShouldBe($"{LogCallOptions.Instance._callPrefix}{{{LogCallOptions.Instance._methodNameProperty}}}, {LogCallOptions.Instance._argumentsPrefix}{{@{argumentsProperty}}}");
             }
         }
 
@@ -236,7 +232,7 @@ namespace AllOverIt.Logging.Tests
                 var actual = LogCallOptions.GetCallerFullName(LogCallOptions.Instance, callerName);
 
                 // We can use 'FullName' since the type is not a generic
-                actual.Should().Be($"{typeof(LogCallOptions).FullName}.{callerName}");
+                actual.ShouldBe($"{typeof(LogCallOptions).FullName}.{callerName}");
             }
 
             [Fact]
@@ -249,7 +245,7 @@ namespace AllOverIt.Logging.Tests
                 var actual = LogCallOptions.GetCallerFullName(LogCallOptions.Instance, callerName);
 
                 // We can use 'Name' since the type is not a generic
-                actual.Should().Be($"{typeof(LogCallOptions).Name}.{callerName}");
+                actual.ShouldBe($"{typeof(LogCallOptions).Name}.{callerName}");
             }
         }
 
@@ -263,7 +259,7 @@ namespace AllOverIt.Logging.Tests
 
                 var actual = LogCallOptions.GetCallerFullName(null, callerName);
 
-                actual.Should().Be(callerName);
+                actual.ShouldBe(callerName);
             }
             [Fact]
             public void Should_Get_CallerName_With_Namespace()
@@ -275,7 +271,7 @@ namespace AllOverIt.Logging.Tests
                 var actual = LogCallOptions.GetCallerFullName(LogCallOptions.Instance, callerName);
 
                 // We can use 'FullName' since the type is not a generic
-                actual.Should().Be($"{typeof(LogCallOptions).FullName}.{callerName}");
+                actual.ShouldBe($"{typeof(LogCallOptions).FullName}.{callerName}");
             }
 
             [Fact]
@@ -288,13 +284,13 @@ namespace AllOverIt.Logging.Tests
                 var actual = LogCallOptions.GetCallerFullName(LogCallOptions.Instance, callerName);
 
                 // We can use 'Name' since the type is not a generic
-                actual.Should().Be($"{typeof(LogCallOptions).Name}.{callerName}");
+                actual.ShouldBe($"{typeof(LogCallOptions).Name}.{callerName}");
             }
 
             [Fact]
             public void Should_Get_CallerName_When_No_Namespace()
             {
-                typeof(DummyClassNoNamespace).Namespace.Should().BeNull();
+                typeof(DummyClassNoNamespace).Namespace.ShouldBeNull();
 
                 LogCallOptions.IncludeCallerNamespace(true);
 
@@ -303,7 +299,7 @@ namespace AllOverIt.Logging.Tests
                 var actual = LogCallOptions.GetCallerFullName(new DummyClassNoNamespace(), callerName);
 
                 // We can use 'Name' since the type is not a generic
-                actual.Should().Be($"{typeof(DummyClassNoNamespace).Name}.{callerName}");
+                actual.ShouldBe($"{typeof(DummyClassNoNamespace).Name}.{callerName}");
             }
         }
     }

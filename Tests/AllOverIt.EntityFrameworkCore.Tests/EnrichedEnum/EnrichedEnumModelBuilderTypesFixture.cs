@@ -1,7 +1,7 @@
 ﻿using AllOverIt.EntityFrameworkCore.EnrichedEnum;
 using AllOverIt.EntityFrameworkCore.ValueConverters;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
 using System.Reflection;
 
 namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
@@ -13,10 +13,10 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
         {
             var fields = typeof(EnrichedEnumModelBuilderTypes).GetFields(BindingFlags.Static | BindingFlags.NonPublic);
 
-            fields.Length.Should().Be(2);
+            fields.Length.ShouldBe(2);
 
-            EnrichedEnumModelBuilderTypes.AsNameConverter.Should().Be(typeof(EnrichedEnumNameConverter<>));
-            EnrichedEnumModelBuilderTypes.AsValueConverter.Should().Be(typeof(EnrichedEnumValueConverter<>));
+            EnrichedEnumModelBuilderTypes.AsNameConverter.ShouldBe(typeof(EnrichedEnumNameConverter<>));
+            EnrichedEnumModelBuilderTypes.AsValueConverter.ShouldBe(typeof(EnrichedEnumValueConverter<>));
         }
     }
 }

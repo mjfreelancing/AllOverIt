@@ -3,7 +3,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Assertions;
 using AllOverIt.Types;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
 {
@@ -12,7 +12,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
         [Fact]
         public void Should_Be_Record_Type()
         {
-            typeof(EnrichedEnumColumnOptions).IsRecordType().Should().BeTrue();
+            typeof(EnrichedEnumColumnOptions).IsRecordType().ShouldBeTrue();
         }
 
         [Fact]

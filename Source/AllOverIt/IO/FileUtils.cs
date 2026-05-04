@@ -67,53 +67,53 @@ namespace AllOverIt.IO
         }
 
         /// <summary>Gets an absolute filename after applying a relative path to the original source filename.</summary>
-        /// <param name="sourceFileName">The original source filename (with path).</param>
+        /// <param name="sourceFilename">The original source filename (with path).</param>
         /// <param name="relativePath">The relative path to apply to the path portion of the source filename.</param>
-        /// <param name="newFileName">If not null then the source filename is replaced.</param>
+        /// <param name="newFilename">If not null then the source filename is replaced.</param>
         /// <returns>The absolute filename derived from applying a relative path to the original source filename.</returns>
-        public static string GetAbsoluteFileName(string sourceFileName, string relativePath, string? newFileName = null)
+        public static string GetAbsoluteFileName(string sourceFilename, string relativePath, string? newFilename = null)
         {
-            _ = sourceFileName.WhenNotNullOrEmpty();
+            _ = sourceFilename.WhenNotNullOrEmpty();
             _ = relativePath.WhenNotNullOrEmpty();
 
-            var sourceDirectory = Path.GetDirectoryName(sourceFileName);
+            var sourceDirectory = Path.GetDirectoryName(sourceFilename);
 
             Throw<InvalidOperationException>.WhenNull(sourceDirectory, $"'{sourceDirectory}' does not contain a path.");
 
             var outputPath = GetAbsolutePath(sourceDirectory, relativePath);
 
-            return Path.Combine(outputPath, newFileName ?? Path.GetFileName(sourceFileName));
+            return Path.Combine(outputPath, newFilename ?? Path.GetFileName(sourceFilename));
         }
 
         /// <summary>Creates a new file and writes the string content to it.</summary>
         /// <param name="content">The content to be written to the file.</param>
-        /// <param name="fileName">The name of the file to create.</param>
+        /// <param name="filename">The name of the file to create.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>A task that completes when the file has been completely written.</returns>
         [ExcludeFromCodeCoverage]
-        public static Task CreateFileWithContentAsync(string content, string fileName, CancellationToken cancellationToken = default)
+        public static Task CreateFileWithContentAsync(string content, string filename, CancellationToken cancellationToken = default)
         {
             _ = content.WhenNotNullOrEmpty();
-            _ = fileName.WhenNotNullOrEmpty();
+            _ = filename.WhenNotNullOrEmpty();
 
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(content));
 
-            return CreateFileWithContentAsync(memoryStream, fileName, false, cancellationToken);
+            return CreateFileWithContentAsync(memoryStream, filename, false, cancellationToken);
         }
 
         /// <summary>Creates a new file and writes the stream content to it.</summary>
         /// <param name="stream">The stream containing the content to be written to the file.</param>
-        /// <param name="fileName">The name of the file to create.</param>
+        /// <param name="filename">The name of the file to create.</param>
         /// <param name="leaveOpen"><see langword="True" /> to leave the <paramref name="stream"/> open when the file has been written, otherwise <see langword="False" />.</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns>A task that completes when the file has been completely written.</returns>
         [ExcludeFromCodeCoverage]
-        public static async Task CreateFileWithContentAsync(Stream stream, string fileName, bool leaveOpen = false, CancellationToken cancellationToken = default)
+        public static async Task CreateFileWithContentAsync(Stream stream, string filename, bool leaveOpen = false, CancellationToken cancellationToken = default)
         {
             _ = stream.WhenNotNull();
-            _ = fileName.WhenNotNullOrEmpty();
+            _ = filename.WhenNotNullOrEmpty();
 
-            using var fileStream = File.Create(fileName);
+            using var fileStream = File.Create(filename);
 
             await stream.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
 

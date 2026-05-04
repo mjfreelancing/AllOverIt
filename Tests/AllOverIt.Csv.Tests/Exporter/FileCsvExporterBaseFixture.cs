@@ -1,7 +1,7 @@
-﻿using AllOverIt.Csv.Exporter;
+using AllOverIt.Csv.Exporter;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Csv.Tests.Exporter
 {
@@ -47,12 +47,10 @@ namespace AllOverIt.Csv.Tests.Exporter
             [Fact]
             public void Should_Not_Throw()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _ = new DummyFileCsvExporter(Create<string>(), Create<FileMode>());
-                })
-                .Should()
-                .NotThrow();
+                });
             }
         }
 
@@ -70,12 +68,10 @@ namespace AllOverIt.Csv.Tests.Exporter
             [Fact]
             public void Should_Throw_When_Configuration_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new DummyFileCsvExporter(Create<string>(), FileMode.Create, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("configuration");
             }
 
@@ -83,12 +79,10 @@ namespace AllOverIt.Csv.Tests.Exporter
             [Fact]
             public void Should_Not_Throw()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _ = new DummyFileCsvExporter(Create<string>(), FileMode.Create, new BufferedCsvExporterConfiguration());
-                })
-                .Should()
-                .NotThrow();
+                });
             }
         }
     }

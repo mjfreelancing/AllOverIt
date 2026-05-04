@@ -1,5 +1,5 @@
-﻿using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Fixture;
+using Shouldly;
 using Microsoft.Extensions.Logging;
 
 namespace AllOverIt.Logging.Testing.Tests
@@ -30,7 +30,7 @@ namespace AllOverIt.Logging.Testing.Tests
             [Fact]
             public void Should_Return_LogLevels()
             {
-                _context.LogLevels.Should().BeEquivalentTo(_context.Select(item => item.LogLevel));
+                _context.LogLevels.ShouldBeEquivalentTo(_context.Select(item => item.LogLevel).ToArray());
             }
         }
 
@@ -39,7 +39,7 @@ namespace AllOverIt.Logging.Testing.Tests
             [Fact]
             public void Should_Return_Metadata()
             {
-                _context.Metadata.Should().BeEquivalentTo(_context.Select(item => item.Metadata));
+                _context.Metadata.ShouldBeEquivalentTo(_context.Select(item => item.Metadata).ToArray());
             }
         }
 
@@ -48,7 +48,7 @@ namespace AllOverIt.Logging.Testing.Tests
             [Fact]
             public void Should_Return_Exceptions()
             {
-                _context.Exceptions.Should().BeEquivalentTo(_context.Select(item => item.Exception));
+                _context.Exceptions.ShouldBeEquivalentTo(_context.Select(item => item.Exception).ToArray());
             }
         }
     }

@@ -5,7 +5,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Assertions;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Patterns.ResourceInitialization;
-using FluentAssertions;
+using Shouldly;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Runtime.CompilerServices;
@@ -535,7 +535,7 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
                     ValueConverter = valueConverter is null ? null : valueConverter.GetType()
                 };
 
-                expectations[property.Name].Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expectations[property.Name]);
             }
         }
     }

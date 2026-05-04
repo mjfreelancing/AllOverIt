@@ -1,8 +1,8 @@
-﻿using AllOverIt.Csv.Exceptions;
+using AllOverIt.Csv.Exceptions;
 using AllOverIt.Csv.Exporter;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Csv.Tests.Exporter
 {
@@ -60,12 +60,10 @@ namespace AllOverIt.Csv.Tests.Exporter
             [Fact]
             public void Should_Throw_When_Configuration_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new DummyBufferedCsvExporter(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("configuration");
             }
         }
@@ -75,12 +73,10 @@ namespace AllOverIt.Csv.Tests.Exporter
             [Fact]
             public void Should_Not_Throw_When_ConfigData_Null()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _exporter.Configure(null);
-                })
-                .Should()
-                .NotThrow();
+                });
             }
 
             [Fact]
@@ -90,7 +86,7 @@ namespace AllOverIt.Csv.Tests.Exporter
 
                 _exporter.Configure(expected);
 
-                _exporter.ConfigData.Should().BeSameAs(expected);
+                _exporter.ConfigData.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -98,12 +94,10 @@ namespace AllOverIt.Csv.Tests.Exporter
             {
                 _exporter.Configure();
 
-                Invoking(() =>
+                Should.Throw<CsvExporterException>(() =>
                 {
                     _exporter.Configure();
                 })
-                .Should()
-                .Throw<CsvExporterException>()
                 .WithMessage("The CSV serializer is already configured.");
             }
         }
@@ -113,12 +107,10 @@ namespace AllOverIt.Csv.Tests.Exporter
             [Fact]
             public async Task Should_Throw_When_Data_Null()
             {
-                await Invoking(async () =>
+                await Should.ThrowAsync<ArgumentNullException>(async () =>
                 {
                     await _exporter.AddDataAsync(null, CancellationToken.None);
                 })
-                .Should()
-                .ThrowAsync<ArgumentNullException>()
                 .WithNamedMessageWhenNull("data");
             }
 
@@ -130,12 +122,10 @@ namespace AllOverIt.Csv.Tests.Exporter
                 var cts = new CancellationTokenSource();
                 cts.Cancel();
 
-                await Invoking(async () =>
+                await Should.ThrowAsync<OperationCanceledException>(async () =>
                 {
                     await _exporter.AddDataAsync(Create<DummyData>(), cts.Token);
-                })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                });
             }
 
             [Fact]
@@ -145,13 +135,13 @@ namespace AllOverIt.Csv.Tests.Exporter
 
                 var data = Create<DummyData>();
 
-                _exporter.Length.Should().Be(0);
+                _exporter.Length.ShouldBe(0);
 
                 await _exporter.AddDataAsync(data, CancellationToken.None);
 
                 await _exporter.FlushAsync(CancellationToken.None);
 
-                _exporter.Length.Should().NotBe(0);
+                _exporter.Length.ShouldNotBe(0);
             }
 
             [Fact]
@@ -169,13 +159,13 @@ namespace AllOverIt.Csv.Tests.Exporter
                     await _exporter.AddDataAsync(data, CancellationToken.None);
                 }
 
-                _exporter.Length.Should().Be(0);
+                _exporter.Length.ShouldBe(0);
 
                 data = Create<DummyData>();
 
                 await _exporter.AddDataAsync(data, CancellationToken.None);
 
-                _exporter.Length.Should().NotBe(0);
+                _exporter.Length.ShouldNotBe(0);
             }
         }
 
@@ -189,12 +179,10 @@ namespace AllOverIt.Csv.Tests.Exporter
                 var cts = new CancellationTokenSource();
                 cts.Cancel();
 
-                await Invoking(async () =>
+                await Should.ThrowAsync<OperationCanceledException>(async () =>
                 {
                     await _exporter.FlushAsync(cts.Token);
-                })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                });
             }
 
             [Fact]
@@ -202,12 +190,10 @@ namespace AllOverIt.Csv.Tests.Exporter
             {
                 _exporter.Configure();
 
-                await Invoking(async () =>
+                await Should.NotThrowAsync(async () =>
                 {
                     await _exporter.FlushAsync(CancellationToken.None);
-                })
-                .Should()
-                .NotThrowAsync();
+                });
             }
 
             [Fact]
@@ -217,15 +203,15 @@ namespace AllOverIt.Csv.Tests.Exporter
 
                 var data = Create<DummyData>();
 
-                _exporter.Length.Should().Be(0);
+                _exporter.Length.ShouldBe(0);
 
                 await _exporter.AddDataAsync(data, CancellationToken.None);
 
-                _exporter.Length.Should().Be(0);
+                _exporter.Length.ShouldBe(0);
 
                 await _exporter.FlushAsync(CancellationToken.None);
 
-                _exporter.Length.Should().NotBe(0);
+                _exporter.Length.ShouldNotBe(0);
             }
         }
 
@@ -239,12 +225,10 @@ namespace AllOverIt.Csv.Tests.Exporter
                 var cts = new CancellationTokenSource();
                 cts.Cancel();
 
-                await Invoking(async () =>
+                await Should.ThrowAsync<OperationCanceledException>(async () =>
                 {
                     await _exporter.CloseAsync(cts.Token);
-                })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                });
             }
 
             [Fact]
@@ -259,12 +243,10 @@ namespace AllOverIt.Csv.Tests.Exporter
                 var cts = new CancellationTokenSource();
                 cts.Cancel();
 
-                await Invoking(async () =>
+                await Should.ThrowAsync<OperationCanceledException>(async () =>
                 {
                     await _exporter.CloseAsync(cts.Token);
-                })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                });
             }
 
             [Fact]
@@ -272,12 +254,10 @@ namespace AllOverIt.Csv.Tests.Exporter
             {
                 _exporter.Configure();
 
-                await Invoking(async () =>
+                await Should.NotThrowAsync(async () =>
                 {
                     await _exporter.CloseAsync(CancellationToken.None);
-                })
-                .Should()
-                .NotThrowAsync();
+                });
             }
 
             [Fact]
@@ -290,13 +270,11 @@ namespace AllOverIt.Csv.Tests.Exporter
                 await _exporter.AddDataAsync(data, CancellationToken.None);
                 await _exporter.CloseAsync(CancellationToken.None);
 
-                Invoking(() =>
+                Should.Throw<ObjectDisposedException>(() =>
                 {
                     // Will fail in the dummy exporter because the stream has been closed
                     _ = _exporter.Length;
                 })
-                .Should()
-                .Throw<ObjectDisposedException>()
                 .WithMessage("Cannot access a closed Stream.");
             }
         }
@@ -306,21 +284,19 @@ namespace AllOverIt.Csv.Tests.Exporter
             [Fact]
             public async Task Should_Not_Throw_When_Disposed_No_Data()
             {
-                await Invoking(async () =>
+                await Should.NotThrowAsync(async () =>
                 {
                     await using (_exporter)
                     {
                         _exporter.Configure();
                     }
-                })
-                .Should()
-                .NotThrowAsync();
+                });
             }
 
             [Fact]
             public async Task Should_Not_Throw_When_Disposed_With_Data()
             {
-                await Invoking(async () =>
+                await Should.NotThrowAsync(async () =>
                 {
                     await using (_exporter)
                     {
@@ -330,9 +306,7 @@ namespace AllOverIt.Csv.Tests.Exporter
 
                         await _exporter.AddDataAsync(data, CancellationToken.None);
                     }
-                })
-                .Should()
-                .NotThrowAsync();
+                });
             }
         }
     }

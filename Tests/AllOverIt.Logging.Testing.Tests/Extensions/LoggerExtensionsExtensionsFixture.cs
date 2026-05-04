@@ -1,7 +1,7 @@
 using AllOverIt.Fixture;
 using AllOverIt.Logging.Extensions;
 using AllOverIt.Logging.Testing.Extensions;
-using FluentAssertions;
+using Shouldly;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
@@ -87,7 +87,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             [Fact]
             public void Should_Log_Call()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _loggerFake.AssertStaticLogCall(
                         () =>
@@ -96,9 +96,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         },
                         nameof(DummyClass.CallStaticMethod),
                         LogLevel.Information);
-                })
-                    .Should()
-                    .NotThrow();
+                });
             }
         }
 
@@ -107,7 +105,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             [Fact]
             public void Should_Log_Call()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     var value1 = Create<int>();
                     var value2 = Create<string>();
@@ -120,7 +118,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         nameof(DummyClass.CallStaticMethodWithArguments),
                         new { value1, value2 },
                         LogLevel.Information);
-                }).Should().NotThrow();
+                });
             }
         }
 
@@ -129,7 +127,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             [Fact]
             public void Should_Log_Call()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _loggerFake.AssertLogCall<DummyClass>(
                         () =>
@@ -138,7 +136,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         },
                         nameof(DummyClass.CallMethod),
                         LogLevel.Information);
-                }).Should().NotThrow();
+                });
             }
         }
 
@@ -147,7 +145,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             [Fact]
             public void Should_Log_Call()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     var value1 = Create<int>();
                     var value2 = Create<string>();
@@ -160,7 +158,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         nameof(DummyClass.CallMethodWithArguments),
                         new { value1, value2 },
                         LogLevel.Information);
-                }).Should().NotThrow();
+                });
             }
         }
 
@@ -169,7 +167,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             [Fact]
             public async Task Should_Log_Call()
             {
-                await Invoking(async () =>
+                await Should.NotThrowAsync(async () =>
                 {
                     await _loggerFake.AssertLogCallAsync<DummyClass>(
                         async () =>
@@ -178,9 +176,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         },
                         nameof(DummyClass.CallMethodAsync),
                         LogLevel.Information);
-                })
-                    .Should()
-                    .NotThrowAsync();
+                });
             }
         }
 
@@ -189,7 +185,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             [Fact]
             public async Task Should_Log_Call()
             {
-                await Invoking(async () =>
+                await Should.NotThrowAsync(async () =>
                 {
                     var value1 = Create<int>();
                     var value2 = Create<string>();
@@ -203,9 +199,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         new { value1, value2 },
                         LogLevel.Information);
 
-                })
-                    .Should()
-                    .NotThrowAsync();
+                });
             }
         }
 
@@ -216,7 +210,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             {
                 var message = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     var methodCallContext = _loggerFake.CaptureLogCalls(() =>
                     {
@@ -224,9 +218,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                     });
 
                     methodCallContext.AssertMessageEntry(0, message, LogLevel.Debug);
-                })
-                    .Should()
-                    .NotThrow();
+                });
             }
 
             [Fact]
@@ -237,7 +229,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                 var value1 = Create<int>();
                 var value2 = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     var methodCallContext = _loggerFake.CaptureLogCalls(() =>
                     {
@@ -249,9 +241,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         logTemplate,
                         new { Value1 = value1, Value2 = value2 },
                         LogLevel.Information);
-                })
-                    .Should()
-                    .NotThrow();
+                });
             }
 
             [Fact]
@@ -262,7 +252,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                 var value1 = Create<int>();
                 var value2 = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     var methodCallContext = _loggerFake.CaptureLogCalls(() =>
                     {
@@ -280,15 +270,13 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         logTemplate,
                         expectedArguments,
                         LogLevel.Information);
-                })
-                    .Should()
-                    .NotThrow();
+                });
             }
 
             [Fact]
             public void Should_Capture_Call_Logs()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     var value1 = Create<int>();
                     var value2 = Create<string>();
@@ -313,9 +301,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         LogLevel.Information);
 
                     methodCallContext.AssertExceptionLogEntry(2, exception);
-                })
-                    .Should()
-                    .NotThrow();
+                });
             }
         }
 
@@ -324,7 +310,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             [Fact]
             public async Task Should_Capture_Call_Logs()
             {
-                await Invoking(async () =>
+                await Should.NotThrowAsync(async () =>
                 {
                     var logTemplate = "{Value1} and {Value2}";
                     var value1 = Create<int>();
@@ -339,7 +325,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         _dummyClass.CallMethodWithExceptionAndArguments(exception, logTemplate, value1, value2);
                     });
 
-                    methodCallContext.Should().HaveCount(4);
+                    methodCallContext.Count.ShouldBe(4);
 
                     methodCallContext.AssertLogCallEntry<DummyClass>(
                         0,
@@ -355,9 +341,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                     methodCallContext.AssertExceptionLogEntry(2, exception);
 
                     methodCallContext.AssertExceptionWithArgumentsLogEntry(3, exception, logTemplate, new { Value1 = value1, Value2 = value2 });
-                })
-                    .Should()
-                    .NotThrowAsync();
+                });
             }
         }
     }

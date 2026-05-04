@@ -1,9 +1,9 @@
-﻿using AllOverIt.Csv.Exceptions;
+using AllOverIt.Csv.Exceptions;
 using AllOverIt.Csv.Extensions;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 using System.Text;
 
 namespace AllOverIt.Csv.Tests.Extensions
@@ -83,60 +83,50 @@ namespace AllOverIt.Csv.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Serializer_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         CsvSerializerExtensions.AddDynamicFields<DummySampleData, IDictionary<string, double>>(null, _sampleData, _ => null, _ => null, (_, _) => null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serializer");
             }
 
             [Fact]
             public void Should_Throw_When_Data_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         CsvSerializerExtensions.AddDynamicFields<DummySampleData, IDictionary<string, double>>(_serializer, null, _ => null, _ => null, (_, _) => null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("data");
             }
 
             [Fact]
             public void Should_Throw_When_Field_Selector_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         CsvSerializerExtensions.AddDynamicFields<DummySampleData, IDictionary<string, double>>(_serializer, _sampleData, null, _ => null, (_, _) => null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("fieldSelector");
             }
 
             [Fact]
             public void Should_Throw_When_Header_Name_Resolver_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         CsvSerializerExtensions.AddDynamicFields<DummySampleData, IDictionary<string, double>>(_serializer, _sampleData, _ => null, null, (_, _) => null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("headerNameResolver");
             }
 
             [Fact]
             public void Should_Throw_When_Value_Resolver_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         CsvSerializerExtensions.AddDynamicFields<DummySampleData, IDictionary<string, double>>(_serializer, _sampleData, _ => null, _ => null, null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("valueResolver");
             }
 
@@ -197,7 +187,7 @@ namespace AllOverIt.Csv.Tests.Extensions
 
                 var expected = sb.ToString();
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Fact]
@@ -236,7 +226,7 @@ namespace AllOverIt.Csv.Tests.Extensions
 
                 var expected = sb.ToString();
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -245,7 +235,7 @@ namespace AllOverIt.Csv.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Serializer_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         CsvSerializerExtensions.AddDynamicFields<DummySampleData, IReadOnlyCollection<DummySampleData.DummyChild>, int>(
                             null,
@@ -255,15 +245,13 @@ namespace AllOverIt.Csv.Tests.Extensions
                             (field, identifier) => Array.Empty<object>()
                         );
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serializer");
             }
 
             [Fact]
             public void Should_Throw_When_Data_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         CsvSerializerExtensions.AddDynamicFields<DummySampleData, IReadOnlyCollection<DummySampleData.DummyChild>, int>(
                             _serializer,
@@ -273,15 +261,13 @@ namespace AllOverIt.Csv.Tests.Extensions
                             (field, identifier) => Array.Empty<object>()
                         );
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("data");
             }
 
             [Fact]
             public void Should_Throw_When_Field_Selector_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         CsvSerializerExtensions.AddDynamicFields<DummySampleData, IReadOnlyCollection<DummySampleData.DummyChild>, int>(
                             _serializer,
@@ -291,15 +277,13 @@ namespace AllOverIt.Csv.Tests.Extensions
                             (field, identifier) => Array.Empty<object>()
                         );
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("fieldSelector");
             }
 
             [Fact]
             public void Should_Throw_When_Field_Identifiers_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         CsvSerializerExtensions.AddDynamicFields<DummySampleData, IReadOnlyCollection<DummySampleData.DummyChild>, int>(
                             _serializer,
@@ -309,15 +293,13 @@ namespace AllOverIt.Csv.Tests.Extensions
                             (field, identifier) => Array.Empty<object>()
                         );
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("fieldIdentifiers");
             }
 
             [Fact]
             public void Should_Throw_When_Values_Resolver_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         CsvSerializerExtensions.AddDynamicFields<DummySampleData, IReadOnlyCollection<DummySampleData.DummyChild>, int>(
                             _serializer,
@@ -327,8 +309,6 @@ namespace AllOverIt.Csv.Tests.Extensions
                             null
                         );
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("valuesResolver");
             }
 
@@ -410,7 +390,7 @@ namespace AllOverIt.Csv.Tests.Extensions
 
                 var expected = sb.ToString();
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Fact]
@@ -456,15 +436,13 @@ namespace AllOverIt.Csv.Tests.Extensions
                     }
                 );
 
-                await Invoking(async () =>
+                await Should.ThrowAsync<CsvSerializerException>(async () =>
                     {
                         using (var writer = new StringWriter())
                         {
                             await _serializer.SerializeAsync(writer, _sampleData);
                         }
                     })
-                    .Should()
-                    .ThrowAsync<CsvSerializerException>()
                     .WithMessage("Column count mismatch. Expected 2, found 1.");
             }
         }

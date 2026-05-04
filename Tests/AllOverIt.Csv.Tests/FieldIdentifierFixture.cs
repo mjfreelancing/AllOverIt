@@ -1,5 +1,6 @@
-﻿using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
+using Shouldly;
 
 namespace AllOverIt.Csv.Tests
 {
@@ -20,12 +21,10 @@ namespace AllOverIt.Csv.Tests
             {
                 var fieldIdentifier = CreateFieldIdentifier();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                 {
                     FieldIdentifier<string>.Comparer.Equals(null, fieldIdentifier);
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
                 .WithMessage("Field identifiers must not be null.");
             }
 
@@ -34,12 +33,10 @@ namespace AllOverIt.Csv.Tests
             {
                 var fieldIdentifier = CreateFieldIdentifier();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                 {
                     FieldIdentifier<string>.Comparer.Equals(fieldIdentifier, null);
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
                 .WithMessage("Field identifiers must not be null.");
             }
 
@@ -50,7 +47,7 @@ namespace AllOverIt.Csv.Tests
 
                 var actual = FieldIdentifier<string>.Comparer.Equals(fieldIdentifier, fieldIdentifier);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -61,7 +58,7 @@ namespace AllOverIt.Csv.Tests
 
                 var actual = FieldIdentifier<string>.Comparer.Equals(fieldIdentifier1, fieldIdentifier2);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -72,7 +69,7 @@ namespace AllOverIt.Csv.Tests
 
                 var actual = FieldIdentifier<string>.Comparer.Equals(fieldIdentifier1, fieldIdentifier2);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
     }

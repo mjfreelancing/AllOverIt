@@ -1,7 +1,7 @@
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.Json.Abstractions.Exceptions;
-using FluentAssertions;
+using Shouldly;
 using System.Collections;
 
 namespace AllOverIt.Serialization.Json.Abstractions.Tests
@@ -13,7 +13,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
 
         public ElementDictionaryFixture()
         {
-            _dictionary = CreateMany<KeyValuePair<string, int>>().ToDictionary(kvp => kvp.Key, kvp => (object) kvp.Value);
+            _dictionary = CreateMany<KeyValuePair<string, int>>().ToDictionary(kvp => kvp.Key, kvp => (object)kvp.Value);
             _elementDictionary = new ElementDictionary(_dictionary);
         }
 
@@ -22,12 +22,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             [Fact]
             public void Should_Throw_When_Element_null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new ElementDictionary(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("element");
             }
         }
@@ -37,7 +35,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             [Fact]
             public void Should_Get_Names()
             {
-                _elementDictionary.Names.Should().BeEquivalentTo(_dictionary.Keys);
+                _elementDictionary.Names.ShouldBe(_dictionary.Keys);
             }
         }
 
@@ -46,7 +44,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             [Fact]
             public void Should_Get_Values()
             {
-                _elementDictionary.Values.Should().BeEquivalentTo(_dictionary.Values);
+                _elementDictionary.Values.ShouldBe(_dictionary.Values);
             }
         }
 
@@ -67,7 +65,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             {
                 var actual = _elementDictionary.TryGetValue(Create<string>(), out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -75,7 +73,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             {
                 var actual = _elementDictionary.TryGetValue(_dictionary.Keys.First(), out _);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -83,7 +81,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             {
                 _ = _elementDictionary.TryGetValue(_dictionary.Keys.First(), out var value);
 
-                value.Should().Be(_dictionary.Values.First());
+                value.ShouldBe(_dictionary.Values.First());
             }
         }
 
@@ -104,12 +102,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             {
                 var propertyName = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<JsonHelperException>(() =>
                 {
                     _ = _elementDictionary.GetValue(propertyName);
                 })
-                   .Should()
-                   .Throw<JsonHelperException>()
                    .WithMessage($"The property {propertyName} was not found.");
             }
 
@@ -118,7 +114,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             {
                 var value = _elementDictionary.GetValue(_dictionary.Keys.First());
 
-                value.Should().Be(_dictionary.Values.First());
+                value.ShouldBe(_dictionary.Values.First());
             }
         }
 
@@ -139,7 +135,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             {
                 var actual = _elementDictionary.TrySetValue(Create<string>(), new { });
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -147,7 +143,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             {
                 var actual = _elementDictionary.TrySetValue(_dictionary.Keys.First(), new { });
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -157,13 +153,13 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
 
                 var key = _dictionary.Keys.First();
 
-                _elementDictionary.GetValue(key).Should().NotBe(expected);
+                _elementDictionary.GetValue(key).ShouldNotBe(expected);
 
                 var result = _elementDictionary.TrySetValue(key, expected);
 
-                result.Should().BeTrue();
+                result.ShouldBeTrue();
 
-                _elementDictionary.GetValue(key).Should().Be(expected);
+                _elementDictionary.GetValue(key).ShouldBe(expected);
             }
         }
 
@@ -184,12 +180,10 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             {
                 var propertyName = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<JsonHelperException>(() =>
                 {
                     _elementDictionary.SetValue(propertyName, new { });
                 })
-                   .Should()
-                   .Throw<JsonHelperException>()
                    .WithMessage($"The property {propertyName} was not found.");
             }
 
@@ -200,11 +194,11 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
 
                 var key = _dictionary.Keys.First();
 
-                _elementDictionary.GetValue(key).Should().NotBe(expected);
+                _elementDictionary.GetValue(key).ShouldNotBe(expected);
 
                 _elementDictionary.SetValue(key, expected);
 
-                _elementDictionary.GetValue(key).Should().Be(expected);
+                _elementDictionary.GetValue(key).ShouldBe(expected);
             }
         }
 
@@ -215,7 +209,7 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             {
                 var actual = _elementDictionary.Select(kvp => kvp.Value);
 
-                actual.Should().BeEquivalentTo(_elementDictionary.Values);
+                actual.ShouldBe(_elementDictionary.Values);
             }
         }
 
@@ -226,14 +220,14 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
             {
                 var actual = new List<object>();
 
-                var enumerator = ((IEnumerable) _elementDictionary).GetEnumerator();
+                var enumerator = ((IEnumerable)_elementDictionary).GetEnumerator();
 
                 while (enumerator.MoveNext())
                 {
                     actual.Add(enumerator.Current);
                 }
 
-                actual.Should().BeEquivalentTo(_dictionary);
+                actual.ShouldBe(_dictionary.Cast<object>());
             }
         }
     }

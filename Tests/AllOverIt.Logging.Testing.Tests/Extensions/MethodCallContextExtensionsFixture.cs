@@ -1,7 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Logging.Extensions;
 using AllOverIt.Logging.Testing.Extensions;
-using FluentAssertions;
+using Shouldly;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
@@ -60,7 +60,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             {
                 var exception = new Exception(Create<String>());
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     var methodCallContext = _loggerFake
                         .CaptureLogCalls(() =>
@@ -69,13 +69,13 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                             _dummyClass.CallMethodWithException(exception);
                         });
 
-                    methodCallContext.Should().HaveCount(2);
+                    methodCallContext.Count.ShouldBe(2);
 
-                    methodCallContext.Metadata[0].Should().NotBeNull();
-                    methodCallContext.Metadata[1].Should().NotBeNull();
+                    methodCallContext.Metadata[0].ShouldNotBeNull();
+                    methodCallContext.Metadata[1].ShouldNotBeNull();
 
-                    methodCallContext.Exceptions[0].Should().BeNull();
-                    methodCallContext.Exceptions[1].Should().NotBeNull();
+                    methodCallContext.Exceptions[0].ShouldBeNull();
+                    methodCallContext.Exceptions[1].ShouldNotBeNull();
 
                     methodCallContext.AssertStaticLogCallEntry(
                         0,
@@ -84,9 +84,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
 
                     // Creating another exception instance so it is compared using equivalence and not reference
                     methodCallContext.AssertExceptionLogEntry(1, new Exception(exception.Message));
-                })
-                .Should()
-                .NotThrow();
+                });
             }
         }
 
@@ -98,7 +96,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                 var value1 = Create<int>();
                 var value2 = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     var methodCallContext = _loggerFake
                         .CaptureLogCalls(() =>
@@ -106,19 +104,17 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                             DummyClass.CallStaticMethodWithArguments(_loggerFake, value1, value2);
                         });
 
-                    methodCallContext.Should().HaveCount(1);
+                    methodCallContext.Count.ShouldBe(1);
 
-                    methodCallContext.Metadata[0].Should().NotBeNull();
-                    methodCallContext.Exceptions[0].Should().BeNull();
+                    methodCallContext.Metadata[0].ShouldNotBeNull();
+                    methodCallContext.Exceptions[0].ShouldBeNull();
 
                     methodCallContext.AssertStaticLogCallWithArgumentsEntry(
                         0,
                         nameof(DummyClass.CallStaticMethodWithArguments),
                         new { value1, value2 },
                         LogLevel.Information);
-                })
-                .Should()
-                .NotThrow();
+                });
             }
         }
 
@@ -129,7 +125,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
             {
                 var exception = new Exception(Create<String>());
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     var methodCallContext = _loggerFake
                         .CaptureLogCalls(() =>
@@ -138,13 +134,13 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                             _dummyClass.CallMethod();
                         });
 
-                    methodCallContext.Should().HaveCount(2);
+                    methodCallContext.Count.ShouldBe(2);
 
-                    methodCallContext.Metadata[0].Should().NotBeNull();
-                    methodCallContext.Metadata[1].Should().NotBeNull();
+                    methodCallContext.Metadata[0].ShouldNotBeNull();
+                    methodCallContext.Metadata[1].ShouldNotBeNull();
 
-                    methodCallContext.Exceptions[0].Should().NotBeNull();
-                    methodCallContext.Exceptions[1].Should().BeNull();
+                    methodCallContext.Exceptions[0].ShouldNotBeNull();
+                    methodCallContext.Exceptions[1].ShouldBeNull();
 
                     // Creating another exception instance so it is compared using equivalence and not reference
                     methodCallContext.AssertExceptionLogEntry(0, new Exception(exception.Message));
@@ -153,9 +149,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                         1,
                         nameof(DummyClass.CallMethod),
                         LogLevel.Information);
-                })
-                .Should()
-                .NotThrow();
+                });
             }
         }
 
@@ -167,7 +161,7 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                 var value1 = Create<int>();
                 var value2 = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     var methodCallContext = _loggerFake
                         .CaptureLogCalls(() =>
@@ -175,19 +169,17 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
                             _dummyClass.CallMethodWithArguments(value1, value2);
                         });
 
-                    methodCallContext.Should().HaveCount(1);
+                    methodCallContext.Count.ShouldBe(1);
 
-                    methodCallContext.Metadata[0].Should().NotBeNull();
-                    methodCallContext.Exceptions[0].Should().BeNull();
+                    methodCallContext.Metadata[0].ShouldNotBeNull();
+                    methodCallContext.Exceptions[0].ShouldBeNull();
 
                     methodCallContext.AssertLogCallWithArgumentsEntry<DummyClass>(
                         0,
                         nameof(DummyClass.CallMethodWithArguments),
                         new { value1, value2 },
                         LogLevel.Information);
-                })
-                .Should()
-                .NotThrow();
+                });
             }
         }
     }
