@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Serilog.Sinks.CircularBuffer;
 using FluentAssertions;
 
@@ -36,7 +36,7 @@ namespace AllOverIt.Serilog.Tests.Sinks.CircularBuffer
 
             var messages = new CircularBufferSinkMessages(capacity);
 
-            messages.Capacity.Should().Be(capacity);
+            messages.Capacity.ShouldBe(capacity);
         }
     }
 }

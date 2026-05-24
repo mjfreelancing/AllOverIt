@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Cryptography.AES;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 
 namespace AllOverIt.Cryptography.Tests.AES
 {
@@ -18,10 +19,10 @@ namespace AllOverIt.Cryptography.Tests.AES
                 var actual = _factory.Create();
 
                 // Actual type is a private implementation
-                actual.GetType().Name.Should().Be("AesImplementation");
+                actual.GetType().Name.ShouldBe("AesImplementation");
 
                 // The Key and IV will be different as they are random
-                actual.Should().BeEquivalentTo(new
+                actual.ShouldBeEquivalentTo(new
                 {
                     Mode = configuration.Mode,
                     Padding = configuration.Padding,
@@ -41,9 +42,9 @@ namespace AllOverIt.Cryptography.Tests.AES
                 var actual = _factory.Create(configuration);
 
                 // Actual type is a private implementation
-                actual.GetType().Name.Should().Be("AesImplementation");
+                actual.GetType().Name.ShouldBe("AesImplementation");
 
-                actual.Should().BeEquivalentTo(new
+                actual.ShouldBeEquivalentTo(new
                 {
                     Mode = configuration.Mode,
                     Padding = configuration.Padding,

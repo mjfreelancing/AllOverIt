@@ -1,7 +1,7 @@
-using AllOverIt.Evaluator.Extensions;
+﻿using AllOverIt.Evaluator.Extensions;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests
 {
@@ -29,7 +29,10 @@ namespace AllOverIt.Evaluator.Tests
             var expected = func.Invoke();
             var actual = FormulaCompiler.GetResult(formula, VariableRegistry);
 
-            actual.Should().BeApproximately(expected, 1E-7);
+            if (double.IsInfinity(expected))
+                actual.ShouldBe(expected);
+            else
+                actual.ShouldBe(expected, 1E-7);
         }
     }
 }

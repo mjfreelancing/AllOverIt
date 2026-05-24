@@ -5,7 +5,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Tests
@@ -43,20 +43,18 @@ namespace AllOverIt.Evaluator.Tests
             [Fact]
             public void Should_Throw_When_Operation_Null()
             {
-                Invoking(() => FormulaExpressionFactory.CreateExpression(null, _stack))
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("operation");
+                var exception = Should.Throw<ArgumentNullException>(() => FormulaExpressionFactory.CreateExpression(null, _stack));
+
+                exception.WithNamedMessageWhenNull("operation");
             }
 
             [Fact]
             public void Should_Throw_When_Expression_Null()
             {
-                Invoking(() =>
-                        FormulaExpressionFactory.CreateExpression(this.CreateStub<ArithmeticOperationBase>(), null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("expressionStack");
+                var exception = Should.Throw<ArgumentNullException>(() =>
+                    FormulaExpressionFactory.CreateExpression(this.CreateStub<ArithmeticOperationBase>(), null));
+
+                exception.WithNamedMessageWhenNull("expressionStack");
             }
 
             [Fact]
@@ -66,11 +64,10 @@ namespace AllOverIt.Evaluator.Tests
                     .CallsTo(fake => fake.ArgumentCount)
                     .Returns(_argumentCount + 1);
 
-                Invoking(() => FormulaExpressionFactory.CreateExpression(_operationFake.FakedObject, _stack))
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage(
-                        $"Insufficient expressions in the stack. {_argumentCount} available, {_argumentCount + 1} required.");
+                var exception = Should.Throw<FormulaException>(() => FormulaExpressionFactory.CreateExpression(_operationFake.FakedObject, _stack));
+
+                exception.Message.ShouldBe(
+                    $"Insufficient expressions in the stack. {_argumentCount} available, {_argumentCount + 1} required.");
             }
 
             [Fact]
@@ -84,7 +81,7 @@ namespace AllOverIt.Evaluator.Tests
 
                 FormulaExpressionFactory.CreateExpression(_operationFake.FakedObject, _stack);
 
-                _expectedExpressions.Should().BeEquivalentTo(actualExpressions);
+                actualExpressions.ShouldBe(_expectedExpressions);
             }
 
             [Fact]
@@ -98,7 +95,7 @@ namespace AllOverIt.Evaluator.Tests
 
                 var actual = FormulaExpressionFactory.CreateExpression(_operationFake.FakedObject, _stack);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
 
@@ -115,10 +112,9 @@ namespace AllOverIt.Evaluator.Tests
             [Fact]
             public void Should_Throw_When_Expression_Null()
             {
-                Invoking(() => FormulaExpressionFactory.CreateExpression(Create<string>(), null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("variableRegistry");
+                var exception = Should.Throw<ArgumentNullException>(() => FormulaExpressionFactory.CreateExpression(Create<string>(), null));
+
+                exception.WithNamedMessageWhenNull("variableRegistry");
             }
 
             [Fact]
@@ -130,7 +126,7 @@ namespace AllOverIt.Evaluator.Tests
                 var expected = CreateVariableExpression(variableName, variableRegistry).ToString();
                 var actual = FormulaExpressionFactory.CreateExpression(variableName, variableRegistry).ToString();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             private static Expression CreateVariableExpression(string variableName, IVariableRegistry variableRegistry)

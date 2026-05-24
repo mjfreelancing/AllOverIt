@@ -1,9 +1,8 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.ReactiveUI.Factories;
 using FakeItEasy;
-using FluentAssertions;
 using ReactiveUI;
 
 namespace AllOverIt.ReactiveUI.Tests.Factories
@@ -15,12 +14,10 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
             [Fact]
             public void Should_Throw_When_Provider_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new ViewFactory(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("provider");
             }
         }
@@ -52,8 +49,15 @@ namespace AllOverIt.ReactiveUI.Tests.Factories
 
                 var actual = factory.CreateViewFor<DummyViewModel>();
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
     }
 }
+
+
+
+
+
+
+

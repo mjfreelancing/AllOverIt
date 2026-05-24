@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Pagination.Tests
 {
     public class PageResultFixture : FixtureBase
@@ -25,8 +24,12 @@ namespace AllOverIt.Pagination.Tests
                     NextToken = firstResults.NextToken
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
         }
     }
 }
+
+
+
+

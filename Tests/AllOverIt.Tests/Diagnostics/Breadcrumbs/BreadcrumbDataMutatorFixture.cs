@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Diagnostics.Breadcrumbs;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {
@@ -25,8 +25,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 {
                     _ = new BreadcrumbDataMutator(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("breadcrumbData");
             }
         }
@@ -41,18 +40,17 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 _mutator.WithMetadata(Create<string>());
 
                 current
-                    .Should()
-                    .NotBeSameAs(_breadcrumbData.Metadata);
+                    .ShouldNotBeSameAs(_breadcrumbData.Metadata);
             }
 
             [Fact]
             public void Should_Null_Metadata()
             {
-                _breadcrumbData.Metadata.Should().NotBeNull();
+                _breadcrumbData.Metadata.ShouldNotBeNull();
 
                 _mutator.WithMetadata(null);
 
-                _breadcrumbData.Metadata.Should().BeNull();
+                _breadcrumbData.Metadata.ShouldBeNull();
             }
         }
 
@@ -67,22 +65,20 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 _mutator.WithTag(tag);
 
                 current
-                    .Should()
-                    .NotBeSameAs(_breadcrumbData.Tags);
+                    .ShouldNotBeSameAs(_breadcrumbData.Tags);
 
                 _breadcrumbData.Tags
-                    .Should()
-                    .BeEquivalentTo([tag]);
+                    .ShouldBeEquivalentTo([tag]);
             }
 
             [Fact]
             public void Should_Null_Tags()
             {
-                _breadcrumbData.Tags.Should().NotBeNull();
+                _breadcrumbData.Tags.ShouldNotBeNull();
 
                 _mutator.WithTag(null);
 
-                _breadcrumbData.Tags.Should().BeNull();
+                _breadcrumbData.Tags.ShouldBeNull();
             }
         }
 
@@ -97,23 +93,29 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 _mutator.WithTags([.. tags]);
 
                 current
-                    .Should()
-                    .NotBeSameAs(_breadcrumbData.Tags);
+                    .ShouldNotBeSameAs(_breadcrumbData.Tags);
 
                 _breadcrumbData.Tags
-                    .Should()
-                    .BeEquivalentTo(tags);
+                    .ShouldBeEquivalentTo(tags);
             }
 
             [Fact]
             public void Should_Null_Tags()
             {
-                _breadcrumbData.Tags.Should().NotBeNull();
+                _breadcrumbData.Tags.ShouldNotBeNull();
 
                 _mutator.WithTags(null);
 
-                _breadcrumbData.Tags.Should().BeNull();
+                _breadcrumbData.Tags.ShouldBeNull();
             }
         }
     }
 }
+
+
+
+
+
+
+
+

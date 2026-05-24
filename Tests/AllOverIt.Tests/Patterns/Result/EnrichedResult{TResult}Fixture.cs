@@ -1,8 +1,7 @@
-﻿#nullable enable
+#nullable enable
 
 using AllOverIt.Fixture;
 using AllOverIt.Patterns.Result;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Result;
 
@@ -19,8 +18,7 @@ public partial class EnrichedResultFixture : FixtureBase
             {
                 _ = actual.Value;
             })
-            .Should()
-            .NotThrow();
+            .ShouldNotThrow();
         }
 
         [Fact]
@@ -32,8 +30,7 @@ public partial class EnrichedResultFixture : FixtureBase
             {
                 _ = actual.Value;
             })
-            .Should()
-            .Throw<InvalidOperationException>()
+            .ShouldThrow<InvalidOperationException>()
             .WithMessage($"The result has no value. More detail can be found on the {nameof(EnrichedResult.Fail)} property.");
         }
     }
@@ -45,8 +42,8 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var actual = new EnrichedResult<int>();
 
-            actual.IsSuccess.Should().BeTrue();
-            actual.Value.Should().Be(default(int));
+            actual.IsSuccess.ShouldBeTrue();
+            actual.Value.ShouldBe(default(int));
         }
 
         [Fact]
@@ -54,8 +51,8 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var actual = new EnrichedResult<int?>();
 
-            actual.IsSuccess.Should().BeTrue();
-            actual.Value.Should().Be(default(int?));
+            actual.IsSuccess.ShouldBeTrue();
+            actual.Value.ShouldBe(default(int?));
         }
 
         [Fact]
@@ -63,8 +60,8 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var actual = new EnrichedResult<string>();
 
-            actual.IsSuccess.Should().BeTrue();
-            actual.Value.Should().Be(default(string));
+            actual.IsSuccess.ShouldBeTrue();
+            actual.Value.ShouldBe(default(string));
         }
     }
 
@@ -77,8 +74,8 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = new EnrichedResult<int>(value);
 
-            actual.IsSuccess.Should().BeTrue();
-            actual.Value.Should().Be(value);
+            actual.IsSuccess.ShouldBeTrue();
+            actual.Value.ShouldBe(value);
         }
 
         [Fact]
@@ -88,8 +85,8 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = new EnrichedResult<int?>(value);
 
-            actual.IsSuccess.Should().BeTrue();
-            actual.Value.Should().Be(value);
+            actual.IsSuccess.ShouldBeTrue();
+            actual.Value.ShouldBe(value);
         }
 
         [Fact]
@@ -99,8 +96,8 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = new EnrichedResult<string>(value);
 
-            actual.IsSuccess.Should().BeTrue();
-            actual.Value.Should().Be(value);
+            actual.IsSuccess.ShouldBeTrue();
+            actual.Value.ShouldBe(value);
         }
     }
 
@@ -113,14 +110,14 @@ public partial class EnrichedResultFixture : FixtureBase
             var actual2 = new EnrichedResult<int?>((EnrichedError?) null);
             var actual3 = new EnrichedResult<string>((EnrichedError?) null);
 
-            actual1.IsFail.Should().BeTrue();
-            actual1.Error.Should().Be(default);
+            actual1.IsFail.ShouldBeTrue();
+            actual1.Error.ShouldBe(default);
 
-            actual2.IsFail.Should().BeTrue();
-            actual2.Error.Should().Be(default);
+            actual2.IsFail.ShouldBeTrue();
+            actual2.Error.ShouldBe(default);
 
-            actual2.IsFail.Should().BeTrue();
-            actual2.Error.Should().Be(default);
+            actual2.IsFail.ShouldBeTrue();
+            actual2.Error.ShouldBe(default);
         }
 
         [Fact]
@@ -132,14 +129,14 @@ public partial class EnrichedResultFixture : FixtureBase
             var actual2 = new EnrichedResult<int?>(error);
             var actual3 = new EnrichedResult<string>(error);
 
-            actual1.IsFail.Should().BeTrue();
-            actual1.Error.Should().Be(error);
+            actual1.IsFail.ShouldBeTrue();
+            actual1.Error.ShouldBe(error);
 
-            actual2.IsFail.Should().BeTrue();
-            actual2.Error.Should().Be(error);
+            actual2.IsFail.ShouldBeTrue();
+            actual2.Error.ShouldBe(error);
 
-            actual3.IsFail.Should().BeTrue();
-            actual3.Error.Should().Be(error);
+            actual3.IsFail.ShouldBeTrue();
+            actual3.Error.ShouldBe(error);
         }
     }
 
@@ -154,7 +151,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             int actual = result;
 
-            actual.Should().Be(value);
+            actual.ShouldBe(value);
         }
 
         [Fact]
@@ -166,7 +163,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             int? actual = result;
 
-            actual.Should().Be(value);
+            actual.ShouldBe(value);
         }
 
         [Fact]
@@ -178,7 +175,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             string actual = result!;
 
-            actual.Should().Be(value);
+            actual.ShouldBe(value);
         }
     }
 
@@ -191,7 +188,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = (EnrichedResult<int>) value;
 
-            actual.Value.Should().Be(value);
+            actual.Value.ShouldBe(value);
         }
 
         [Fact]
@@ -201,7 +198,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = (EnrichedResult<int?>) value;
 
-            actual.Value.Should().Be(value);
+            actual.Value.ShouldBe(value);
         }
 
         [Fact]
@@ -211,7 +208,10 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = (EnrichedResult<string>) value;
 
-            actual.Value.Should().Be(value);
+            actual.Value.ShouldBe(value);
         }
     }
 }
+
+
+

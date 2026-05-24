@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serilog.Sinks.Observable;
 using FluentAssertions;
@@ -46,7 +46,7 @@ namespace AllOverIt.Serilog.Tests.Extensions
                 var actual = AllOverIt.Serilog.Extensions.LoggerSinkConfigurationExtensions
                     .Observable(loggerSinkConfiguration, new ObservableSink());
 
-                actual.Should().BeOfType<LoggerConfiguration>();
+                actual.ShouldBeOfType<LoggerConfiguration>();
             }
         }
     }

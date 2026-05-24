@@ -4,8 +4,7 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.TokenEncoding;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
     public class ContinuationTokenSerializerFixture : FixtureBase
@@ -19,8 +18,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = new ContinuationTokenSerializer(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("tokenOptions");
             }
         }
@@ -35,8 +33,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     var serializer = new ContinuationTokenSerializer(this.CreateStub<IContinuationTokenOptions>());
                     _ = serializer.Serialize(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("continuationToken");
             }
 
@@ -80,7 +77,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 var serialized1 = serializer.Serialize(continuationToken1);
                 var serialized2 = serializer.Serialize(continuationToken2);
 
-                serialized1.Should().NotBe(serialized2);
+                serialized1.ShouldNotBe(serialized2);
             }
 
             [Fact]
@@ -109,8 +106,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 var compressed = serializer.Serialize(continuationToken);
 
                 notCompressed.Length
-                    .Should()
-                    .BeGreaterThan(compressed.Length);
+                    .ShouldBeGreaterThan(compressed.Length);
             }
 
             [Fact]
@@ -132,7 +128,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 serializer = new ContinuationTokenSerializer(new ContinuationTokenOptions { IncludeHash = true });
                 var serialized2 = serializer.Serialize(continuationToken);
 
-                serialized1.Should().NotBe(serialized2);
+                serialized1.ShouldNotBe(serialized2);
             }
         }
 
@@ -147,10 +143,9 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     var actual = _serializer.Deserialize(null);
 
-                    actual.Should().BeSameAs(ContinuationToken.None);
+                    actual.ShouldBeSameAs(ContinuationToken.None);
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -160,10 +155,9 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     var actual = _serializer.Deserialize(string.Empty);
 
-                    actual.Should().BeSameAs(ContinuationToken.None);
+                    actual.ShouldBeSameAs(ContinuationToken.None);
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -173,10 +167,9 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     var actual = _serializer.Deserialize(" ");
 
-                    actual.Should().BeSameAs(ContinuationToken.None);
+                    actual.ShouldBeSameAs(ContinuationToken.None);
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -186,8 +179,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = _serializer.Deserialize(Create<string>());
                 })
-                    .Should()
-                    .Throw<PaginationException>()
+                    .ShouldThrow<PaginationException>()
                     .WithMessage("Malformed continuation token.");
             }
 
@@ -205,8 +197,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                     _ = serializer.Deserialize(Create<string>().ToBase64());
                 })
-                    .Should()
-                    .Throw<PaginationException>()
+                    .ShouldThrow<PaginationException>()
                     .WithMessage("Unable to deserialize the continuation token.");
             }
 
@@ -224,8 +215,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                     _ = serializer.Deserialize(Create<string>().ToBase64());
                 })
-                    .Should()
-                    .Throw<PaginationException>()
+                    .ShouldThrow<PaginationException>()
                     .WithMessage("Continuation token has an invalid hash code.");
             }
 
@@ -243,8 +233,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                     _ = serializer.Deserialize("A".ToBase64());
                 })
-                    .Should()
-                    .Throw<PaginationException>()
+                    .ShouldThrow<PaginationException>()
                     .WithMessage("Continuation token has an insufficient length.");
             }
         }
@@ -285,7 +274,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 var encoded = serializer.Serialize(continuationToken);
                 var decoded = serializer.Deserialize(encoded);
 
-                decoded.Should().BeEquivalentTo(continuationToken);
+                decoded.ShouldBeEquivalentTo(continuationToken);
             }
         }
 
@@ -299,8 +288,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     var serializer = new ContinuationTokenSerializer(this.CreateStub<IContinuationTokenOptions>());
                     _ = serializer.TryDeserialize(null, out var _);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("continuationToken");
             }
 
@@ -310,7 +298,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 var serializer = new ContinuationTokenSerializer(this.CreateStub<IContinuationTokenOptions>());
                 var actual = serializer.TryDeserialize(Create<string>(), out var _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -332,7 +320,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = serializer.TryDeserialize(tokenString, out var _);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -356,8 +344,8 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = serializer.TryDeserialize($"{prefix}{tokenString}{suffix}", out var token);
 
-                actual.Should().BeFalse();
-                token.Should().BeNull();
+                actual.ShouldBeFalse();
+                token.ShouldBeNull();
             }
 
             [Fact]
@@ -379,7 +367,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 _ = serializer.TryDeserialize(tokenString, out var token);
 
-                token.Should().BeEquivalentTo(continuationToken);
+                token.ShouldBeEquivalentTo(continuationToken);
             }
 
             [Theory]
@@ -413,8 +401,8 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 _ = serializer1.TryDeserialize(token1String, out var token1);
                 _ = serializer2.TryDeserialize(token2String, out var token2);
 
-                token1.Should().BeEquivalentTo(continuationToken);
-                token2.Should().BeEquivalentTo(continuationToken);
+                token1.ShouldBeEquivalentTo(continuationToken);
+                token2.ShouldBeEquivalentTo(continuationToken);
             }
 
             [Fact]
@@ -424,7 +412,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = serializer.TryDeserialize(Create<string>(), out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -439,7 +427,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = serializer.TryDeserialize(Create<string>().ToBase64(), out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -454,7 +442,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = serializer.TryDeserialize(Create<string>().ToBase64(), out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -469,8 +457,12 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = serializer.TryDeserialize("A".ToBase64(), out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
     }
 }
+
+
+
+

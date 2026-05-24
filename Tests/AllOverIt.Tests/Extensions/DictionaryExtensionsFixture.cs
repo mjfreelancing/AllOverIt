@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -25,7 +25,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = _dictionary.GetValueOrDefault(_key);
 
-                actual.Should().Be(_value);
+                actual.ShouldBe(_value);
             }
 
             [Fact]
@@ -33,7 +33,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = _dictionary.GetValueOrDefault(_value);
 
-                actual.Should().Be(default);
+                actual.ShouldBe(default);
             }
 
             [Fact]
@@ -42,7 +42,7 @@ namespace AllOverIt.Tests.Extensions
                 var defaultValue = Create<string>();
                 var actual = _dictionary.GetValueOrDefault(_key, defaultValue);
 
-                actual.Should().Be(_value);
+                actual.ShouldBe(_value);
             }
 
             [Fact]
@@ -51,7 +51,7 @@ namespace AllOverIt.Tests.Extensions
                 var defaultValue = Create<string>();
                 var actual = _dictionary.GetValueOrDefault(_value, defaultValue);
 
-                actual.Should().Be(defaultValue);
+                actual.ShouldBe(defaultValue);
             }
         }
 
@@ -62,7 +62,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = _dictionary.GetOrSet(_key, Create<string>);
 
-                actual.Should().Be(_value);
+                actual.ShouldBe(_value);
             }
 
             [Fact]
@@ -72,7 +72,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _dictionary.GetOrSet(_key, () => _value);
 
-                actual.Should().Be(_value);
+                actual.ShouldBe(_value);
             }
         }
 
@@ -98,7 +98,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = first.Combine(second);
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -110,8 +110,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         values.Combine(values);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithMessage($"An item with the same key has already been added. Key: {values.First().Key}");
             }
 
@@ -123,11 +122,19 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = first.Combine(second);
 
-                actual.Should().BeOfType<Dictionary<string, string>>();
+                actual.ShouldBeOfType<Dictionary<string, string>>();
 
-                actual.Should().NotBeSameAs(first);
-                actual.Should().NotBeSameAs(second);
+                actual.ShouldNotBeSameAs(first);
+                actual.ShouldNotBeSameAs(second);
             }
         }
     }
 }
+
+
+
+
+
+
+
+

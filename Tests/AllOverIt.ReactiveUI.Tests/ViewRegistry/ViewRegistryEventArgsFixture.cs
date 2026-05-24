@@ -1,8 +1,8 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.ReactiveUI.ViewRegistry.Events;
+using AllOverIt.Shouldly.Extensions;
 using FakeItEasy;
-using FluentAssertions;
 using ReactiveUI;
 
 namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
@@ -14,24 +14,20 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             [Fact]
             public void Should_Throw_When_ViewModelType_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new ViewRegistryEventArgs(null, A.Fake<IViewFor>(), Create<ViewItemUpdateType>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("viewModelType");
             }
 
             [Fact]
             public void Should_Throw_When_View_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new ViewRegistryEventArgs(typeof(object), null, Create<ViewItemUpdateType>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("view");
             }
 
@@ -51,8 +47,15 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
                     UpdateType = updateType
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
     }
 }
+
+
+
+
+
+
+

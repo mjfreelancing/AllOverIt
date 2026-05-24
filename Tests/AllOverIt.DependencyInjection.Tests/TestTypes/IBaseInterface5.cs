@@ -1,4 +1,4 @@
-﻿using AllOverIt.DependencyInjection.Tests.Types;
+using AllOverIt.DependencyInjection.Tests.Types;
 
 namespace AllOverIt.DependencyInjection.Tests.TestTypes
 {
@@ -6,3 +6,6 @@ namespace AllOverIt.DependencyInjection.Tests.TestTypes
     {
     }
 }
+
+
+

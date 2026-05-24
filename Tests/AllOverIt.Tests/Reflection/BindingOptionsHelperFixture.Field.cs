@@ -1,8 +1,9 @@
-using AllOverIt.Expressions;
+﻿using AllOverIt.Expressions;
 using AllOverIt.Extensions;
 using AllOverIt.Reflection;
-using FluentAssertions;
 using System.Reflection;
+using AllOverIt.Shouldly;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -95,7 +96,7 @@ namespace AllOverIt.Tests.Reflection
                 var actual = GetBindingDummyFieldNames(actualOptions);
                 var expected = GetExpectedNames(expectedOptions ?? actualOptions);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             private static IReadOnlyList<string> GetBindingDummyFieldNames(BindingOptions options)
@@ -175,3 +176,12 @@ namespace AllOverIt.Tests.Reflection
         }
     }
 }
+
+
+
+
+
+
+
+
+

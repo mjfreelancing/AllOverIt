@@ -1,4 +1,4 @@
-﻿using AllOverIt.Evaluator.Exceptions;
+using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Fixture;
 
 namespace AllOverIt.Evaluator.Tests.Exceptions
@@ -24,3 +24,5 @@ namespace AllOverIt.Evaluator.Tests.Exceptions
         }
     }
 }
+
+

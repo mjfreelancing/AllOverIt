@@ -1,7 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Formatters.Objects;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Tests.Formatters.Objects
 {
     public class ObjectPropertyFilterRegistryFixture : FixtureBase
@@ -24,8 +23,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 {
                     _ = new ObjectPropertyFilterRegistry(null);
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
 
@@ -45,7 +43,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 var actual = _registry.GetObjectPropertySerializer(Create<DummyObject>(), out _);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -57,8 +55,8 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 var expected = new ObjectPropertySerializerOptions();
 
-                serializer.Options.Should().BeEquivalentTo(expected);
-                serializer.Filter.Should().BeOfType<DummyObjectFilter>();
+                serializer.Options.ShouldBeEquivalentTo(expected);
+                serializer.Filter.ShouldBeOfType<DummyObjectFilter>();
             }
 
             [Fact]
@@ -69,16 +67,16 @@ namespace AllOverIt.Tests.Formatters.Objects
                 var actual1 = _registry.GetObjectPropertySerializer(Create<DummyObject>(), out var serializer1);
                 var actual2 = _registry.GetObjectPropertySerializer(Create<DummyObject>(), out var serializer2);
 
-                actual1.Should().BeTrue();
-                actual2.Should().BeTrue();
+                actual1.ShouldBeTrue();
+                actual2.ShouldBeTrue();
 
                 var expected = new ObjectPropertySerializerOptions();
 
-                serializer1.Options.Should().BeEquivalentTo(expected);
-                serializer2.Options.Should().BeEquivalentTo(expected);
+                serializer1.Options.ShouldBeEquivalentTo(expected);
+                serializer2.Options.ShouldBeEquivalentTo(expected);
 
-                serializer1.Options.Should().BeSameAs(serializer2.Options);
-                serializer1.Filter.Should().NotBeSameAs(serializer2.Filter);
+                serializer1.Options.ShouldBeSameAs(serializer2.Options);
+                serializer1.Filter.ShouldNotBeSameAs(serializer2.Filter);
             }
 
             [Fact]
@@ -89,8 +87,8 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 _ = _registry.GetObjectPropertySerializer(Create<DummyObject>(), out var serializer);
 
-                serializer.Options.Should().BeSameAs(options);
-                serializer.Filter.Should().BeOfType<DummyObjectFilter>();
+                serializer.Options.ShouldBeSameAs(options);
+                serializer.Filter.ShouldBeOfType<DummyObjectFilter>();
             }
         }
 
@@ -110,7 +108,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 var actual = _registry.GetObjectPropertySerializer(Create<DummyObject>(), out _);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -121,11 +119,11 @@ namespace AllOverIt.Tests.Formatters.Objects
                 var actual1 = _registry.GetObjectPropertySerializer(Create<DummyObject>(), out var serializer1);
                 var actual2 = _registry.GetObjectPropertySerializer(Create<DummyObject>(), out var serializer2);
 
-                actual1.Should().BeTrue();
-                actual2.Should().BeTrue();
+                actual1.ShouldBeTrue();
+                actual2.ShouldBeTrue();
 
-                serializer1.Options.Should().NotBeSameAs(serializer2.Options);
-                serializer1.Filter.Should().NotBeSameAs(serializer2.Filter);
+                serializer1.Options.ShouldNotBeSameAs(serializer2.Options);
+                serializer1.Filter.ShouldNotBeSameAs(serializer2.Filter);
             }
 
             [Fact]
@@ -149,7 +147,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 _ = _registry.GetObjectPropertySerializer(Create<DummyObject>(), out var serializer);
 
-                serializer.Filter.Should().BeOfType<DummyObjectFilter>();
+                serializer.Filter.ShouldBeOfType<DummyObjectFilter>();
             }
         }
 
@@ -168,7 +166,7 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var actual = _registry.GetObjectPropertySerializer(Create<DummyObject>(), out _);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -176,7 +174,7 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var actual = _registry.GetObjectPropertySerializer(Create<string>(), out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -188,7 +186,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 _ = registry.GetObjectPropertySerializer(Create<DummyObject>(), out var serializer);
 
-                serializer.Filter.Should().BeOfType<DummyObjectFilter>();
+                serializer.Filter.ShouldBeOfType<DummyObjectFilter>();
             }
         }
 
@@ -207,7 +205,7 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var actual = _registry.GetObjectPropertySerializer<DummyObject>(out _);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -215,7 +213,7 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var actual = _registry.GetObjectPropertySerializer<string>(out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -227,7 +225,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 _ = registry.GetObjectPropertySerializer<DummyObject>(out var serializer);
 
-                serializer.Filter.Should().BeOfType<DummyObjectFilter>();
+                serializer.Filter.ShouldBeOfType<DummyObjectFilter>();
             }
         }
 
@@ -246,7 +244,7 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var actual = _registry.GetObjectPropertySerializer(typeof(DummyObject), out _);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -254,7 +252,7 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var actual = _registry.GetObjectPropertySerializer(typeof(string), out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -266,8 +264,11 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 _ = registry.GetObjectPropertySerializer(typeof(DummyObject), out var serializer);
 
-                serializer.Filter.Should().BeOfType<DummyObjectFilter>();
+                serializer.Filter.ShouldBeOfType<DummyObjectFilter>();
             }
         }
     }
 }
+
+
+

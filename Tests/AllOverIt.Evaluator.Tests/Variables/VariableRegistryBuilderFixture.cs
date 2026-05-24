@@ -2,7 +2,7 @@
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {
@@ -17,7 +17,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var actual = VariableRegistryBuilder.Create();
 
-                actual.Should().BeOfType<VariableRegistryBuilder>();
+                actual.ShouldBeOfType<VariableRegistryBuilder>();
             }
         }
 
@@ -43,12 +43,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var registry = _variableRegistryBuilder.Build();
 
-                registry.GetVariable(name).Should().BeOfType<ConstantVariable>();
+                registry.GetVariable(name).ShouldBeOfType<ConstantVariable>();
 
                 registry
                     .GetValue(name)
-                    .Should()
-                    .Be(value);
+                    .ShouldBe(value);
             }
         }
 
@@ -67,12 +66,10 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Resolver_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(Create<string>(), (Func<double>) null);
+                    _ = _variableRegistryBuilder.AddDelegateVariable(Create<string>(), (Func<double>)null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("valueResolver");
             }
 
@@ -86,12 +83,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var registry = _variableRegistryBuilder.Build();
 
-                registry.GetVariable(name).Should().BeOfType<DelegateVariable>();
+                registry.GetVariable(name).ShouldBeOfType<DelegateVariable>();
 
                 registry
                     .GetValue(name)
-                    .Should()
-                    .Be(value);
+                    .ShouldBe(value);
             }
         }
 
@@ -110,12 +106,10 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Resolver_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(Create<string>(), (Func<IVariableRegistry, double>) null);
+                    _ = _variableRegistryBuilder.AddDelegateVariable(Create<string>(), (Func<IVariableRegistry, double>)null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("valueResolver");
             }
 
@@ -129,12 +123,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var registry = _variableRegistryBuilder.Build();
 
-                registry.GetVariable(name).Should().BeOfType<DelegateVariable>();
+                registry.GetVariable(name).ShouldBeOfType<DelegateVariable>();
 
                 registry
                     .GetValue(name)
-                    .Should()
-                    .Be(value);
+                    .ShouldBe(value);
             }
 
             [Fact]
@@ -154,7 +147,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _ = expected.GetValue(name);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
 
@@ -182,12 +175,10 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Resolver_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(Create<string>(), (FormulaCompilerResult) null);
+                    _ = _variableRegistryBuilder.AddDelegateVariable(Create<string>(), (FormulaCompilerResult)null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("formulaCompilerResultResolver");
             }
 
@@ -200,12 +191,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var registry = _variableRegistryBuilder.Build();
 
-                registry.GetVariable(name).Should().BeOfType<DelegateVariable>();
+                registry.GetVariable(name).ShouldBeOfType<DelegateVariable>();
 
                 registry
                     .GetValue(name)
-                    .Should()
-                    .Be(_value);
+                    .ShouldBe(_value);
             }
         }
 
@@ -233,12 +223,10 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Resolver_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
-                    _ = _variableRegistryBuilder.AddDelegateVariable(Create<string>(), (Func<IVariableRegistry, FormulaCompilerResult>) null);
+                    _ = _variableRegistryBuilder.AddDelegateVariable(Create<string>(), (Func<IVariableRegistry, FormulaCompilerResult>)null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("formulaCompilerResultResolver");
             }
 
@@ -251,12 +239,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var registry = _variableRegistryBuilder.Build();
 
-                registry.GetVariable(name).Should().BeOfType<DelegateVariable>();
+                registry.GetVariable(name).ShouldBeOfType<DelegateVariable>();
 
                 registry
                     .GetValue(name)
-                    .Should()
-                    .Be(_value);
+                    .ShouldBe(_value);
             }
 
             [Fact]
@@ -276,7 +263,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _ = expected.GetValue(name);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
 
@@ -295,12 +282,10 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Resolver_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
-                    _ = _variableRegistryBuilder.AddLazyVariable(Create<string>(), (Func<double>) null, Create<bool>());
+                    _ = _variableRegistryBuilder.AddLazyVariable(Create<string>(), (Func<double>)null, Create<bool>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("valueResolver");
             }
 
@@ -314,12 +299,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var registry = _variableRegistryBuilder.Build();
 
-                registry.GetVariable(name).Should().BeOfType<LazyVariable>();
+                registry.GetVariable(name).ShouldBeOfType<LazyVariable>();
 
                 registry
                     .GetValue(name)
-                    .Should()
-                    .Be(value);
+                    .ShouldBe(value);
             }
         }
 
@@ -347,12 +331,10 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Resolver_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
-                    _ = _variableRegistryBuilder.AddLazyVariable(Create<string>(), (FormulaCompilerResult) null);
+                    _ = _variableRegistryBuilder.AddLazyVariable(Create<string>(), (FormulaCompilerResult)null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("formulaCompilerResultResolver");
             }
 
@@ -365,12 +347,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var registry = _variableRegistryBuilder.Build();
 
-                registry.GetVariable(name).Should().BeOfType<LazyVariable>();
+                registry.GetVariable(name).ShouldBeOfType<LazyVariable>();
 
                 registry
                     .GetValue(name)
-                    .Should()
-                    .Be(_value);
+                    .ShouldBe(_value);
             }
         }
 
@@ -398,12 +379,10 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Resolver_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
-                    _ = _variableRegistryBuilder.AddLazyVariable(Create<string>(), (Func<IVariableRegistry, FormulaCompilerResult>) null);
+                    _ = _variableRegistryBuilder.AddLazyVariable(Create<string>(), (Func<IVariableRegistry, FormulaCompilerResult>)null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("formulaCompilerResultResolver");
             }
 
@@ -416,12 +395,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var registry = _variableRegistryBuilder.Build();
 
-                registry.GetVariable(name).Should().BeOfType<LazyVariable>();
+                registry.GetVariable(name).ShouldBeOfType<LazyVariable>();
 
                 registry
                     .GetValue(name)
-                    .Should()
-                    .Be(_value);
+                    .ShouldBe(_value);
             }
 
             [Fact]
@@ -441,7 +419,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _ = expected.GetValue(name);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
 
@@ -467,12 +445,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var registry = _variableRegistryBuilder.Build();
 
-                registry.GetVariable(name).Should().BeOfType<MutableVariable>();
+                registry.GetVariable(name).ShouldBeOfType<MutableVariable>();
 
                 registry
                     .GetValue(name)
-                    .Should()
-                    .Be(value);
+                    .ShouldBe(value);
             }
         }
 
@@ -481,7 +458,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Build_Functional_1()
             {
-                _variableRegistryBuilder.Build().Should().BeOfType<VariableRegistry>();
+                _variableRegistryBuilder.Build().ShouldBeOfType<VariableRegistry>();
             }
 
             [Fact]
@@ -491,7 +468,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var registry = _variableRegistryBuilder.Build();
 
-                registry.Should().HaveCount(1);
+                registry.Count().ShouldBe(1);
             }
 
             [Fact]
@@ -504,7 +481,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var registry = _variableRegistryBuilder.Build();
 
-                registry.Should().HaveCount(2);
+                registry.Count().ShouldBe(2);
             }
 
             [Fact]
@@ -519,7 +496,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var registry = _variableRegistryBuilder.Build();
 
-                registry.Should().HaveCount(4);
+                registry.Count().ShouldBe(4);
             }
 
             [Fact]
@@ -531,17 +508,14 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + 1", registry));
                 _variableRegistryBuilder.AddDelegateVariable("d", registry => formulaCompiler.Compile("c - b", registry));
 
-                Invoking(() =>
+                Should.Throw<VariableRegistryBuilderException>(() =>
                 {
                     _ = _variableRegistryBuilder.Build();
                 })
-                    .Should()
-                    .Throw<VariableRegistryBuilderException>()
                     .WithMessage("Cannot build the variable registry due to missing variable references.");
 
                 _variableRegistryBuilder.GetUnregisteredVariableNames()
-                    .Should()
-                    .BeEquivalentTo(new[] { "c" });
+                    .ShouldBeEquivalentTo(new[] { "c" });
             }
 
             [Fact]
@@ -553,17 +527,14 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + e * f", registry));
                 _variableRegistryBuilder.AddDelegateVariable("d", registry => formulaCompiler.Compile("c - b + g", registry));       // b is registered but cannot be resolved - won't be in the list of unregistered variables
 
-                Invoking(() =>
+                Should.Throw<VariableRegistryBuilderException>(() =>
                     {
                         _ = _variableRegistryBuilder.Build();
                     })
-                    .Should()
-                    .Throw<VariableRegistryBuilderException>()
                     .WithMessage("Cannot build the variable registry due to missing variable references.");
 
                 _variableRegistryBuilder.GetUnregisteredVariableNames()
-                    .Should()
-                    .BeEquivalentTo(new[] { "e", "f", "c", "g" });
+                    .ShouldBeEquivalentTo(new[] { "e", "f", "c", "g" });
             }
         }
 
@@ -574,8 +545,8 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var suucess = _variableRegistryBuilder.TryBuild(out var variableRegistry);
 
-                suucess.Should().BeTrue();
-                variableRegistry.Should().BeOfType<VariableRegistry>();
+                suucess.ShouldBeTrue();
+                variableRegistry.ShouldBeOfType<VariableRegistry>();
             }
 
             [Fact]
@@ -585,7 +556,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _ = _variableRegistryBuilder.TryBuild(out var variableRegistry);
 
-                variableRegistry.Should().HaveCount(1);
+                variableRegistry.Count().ShouldBe(1);
             }
 
             [Fact]
@@ -598,7 +569,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _ = _variableRegistryBuilder.TryBuild(out var variableRegistry);
 
-                variableRegistry.Should().HaveCount(2);
+                variableRegistry.Count().ShouldBe(2);
             }
 
             [Fact]
@@ -613,7 +584,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _ = _variableRegistryBuilder.TryBuild(out var variableRegistry);
 
-                variableRegistry.Should().HaveCount(4);
+                variableRegistry.Count().ShouldBe(4);
             }
 
             [Fact]
@@ -625,11 +596,10 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + 1", registry));
                 _variableRegistryBuilder.AddDelegateVariable("d", registry => formulaCompiler.Compile("c - b", registry));
 
-                _variableRegistryBuilder.TryBuild(out _).Should().BeFalse();
+                _variableRegistryBuilder.TryBuild(out _).ShouldBeFalse();
 
                 _variableRegistryBuilder.GetUnregisteredVariableNames()
-                    .Should()
-                    .BeEquivalentTo(new[] { "c" });
+                    .ShouldBeEquivalentTo(new[] { "c" });
             }
 
             [Fact]
@@ -641,11 +611,10 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 _variableRegistryBuilder.AddDelegateVariable("b", registry => formulaCompiler.Compile("a + e * f", registry));
                 _variableRegistryBuilder.AddDelegateVariable("d", registry => formulaCompiler.Compile("c - b + g", registry));       // b is registered but cannot be resolved - won't be in the list of unregistered variables
 
-                _variableRegistryBuilder.TryBuild(out _).Should().BeFalse();
+                _variableRegistryBuilder.TryBuild(out _).ShouldBeFalse();
 
                 _variableRegistryBuilder.GetUnregisteredVariableNames()
-                    .Should()
-                    .BeEquivalentTo(new[] { "e", "f", "c", "g" });
+                    .ShouldBeEquivalentTo(new[] { "e", "f", "c", "g" });
             }
         }
 
@@ -654,7 +623,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Return_Empty_Names()
             {
-                _variableRegistryBuilder.GetUnregisteredVariableNames().Should().BeEmpty();
+                _variableRegistryBuilder.GetUnregisteredVariableNames().ShouldBeEmpty();
             }
 
             [Fact]
@@ -670,22 +639,19 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 // despite b not yet being present in the variable registry.
 
                 _variableRegistryBuilder.GetUnregisteredVariableNames()
-                    .Should()
-                    .BeEquivalentTo(new[] { "e", "f", "c", "g" });
+                    .ShouldBeEquivalentTo(new[] { "e", "f", "c", "g" });
 
                 _variableRegistryBuilder.AddConstantVariable("f", Create<double>());
                 _variableRegistryBuilder.AddConstantVariable("e", Create<double>());
 
                 _variableRegistryBuilder.GetUnregisteredVariableNames()
-                    .Should()
-                    .BeEquivalentTo(new[] { "c", "g" });
+                    .ShouldBeEquivalentTo(new[] { "c", "g" });
 
                 _variableRegistryBuilder.AddConstantVariable("c", Create<double>());
                 _variableRegistryBuilder.AddConstantVariable("g", Create<double>());
 
                 _variableRegistryBuilder.GetUnregisteredVariableNames()
-                    .Should()
-                    .BeEmpty();
+                    .ShouldBeEmpty();
             }
 
             [Fact]
@@ -701,21 +667,18 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 // despite b not yet being present in the variable registry.
 
                 _variableRegistryBuilder.GetUnregisteredVariableNames()
-                    .Should()
-                    .BeEquivalentTo(new[] { "j", "k", "f", "g", "h" });
+                    .ShouldBeEquivalentTo(new[] { "j", "k", "f", "g", "h" });
 
                 _variableRegistryBuilder.AddConstantVariable("g", Create<double>());
                 _variableRegistryBuilder.AddConstantVariable("h", Create<double>());
 
                 _variableRegistryBuilder.GetUnregisteredVariableNames()
-                    .Should()
-                    .BeEquivalentTo(new[] { "j", "k", "f" });
+                    .ShouldBeEquivalentTo(new[] { "j", "k", "f" });
 
                 _variableRegistryBuilder.AddDelegateVariable("m", registry => formulaCompiler.Compile("n + p", registry));
 
                 _variableRegistryBuilder.GetUnregisteredVariableNames()
-                    .Should()
-                    .BeEquivalentTo(new[] { "j", "k", "f", "n", "p" });
+                    .ShouldBeEquivalentTo(new[] { "j", "k", "f", "n", "p" });
 
                 _variableRegistryBuilder.AddConstantVariable("j", Create<double>());
                 _variableRegistryBuilder.AddConstantVariable("k", Create<double>());
@@ -724,8 +687,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 _variableRegistryBuilder.AddConstantVariable("n", Create<double>());
 
                 _variableRegistryBuilder.GetUnregisteredVariableNames()
-                    .Should()
-                    .BeEmpty();
+                    .ShouldBeEmpty();
             }
         }
     }

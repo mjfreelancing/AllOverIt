@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Helpers;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Helpers
 {
@@ -23,7 +23,7 @@ namespace AllOverIt.Tests.Helpers
 
                 var expected = new[] { DummyEnum.Value1, DummyEnum.Value2, DummyEnum.Value3 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -35,7 +35,7 @@ namespace AllOverIt.Tests.Helpers
                 var isReadOnlyCollection = actual is IReadOnlyCollection<DummyEnum>;
 
                 // IsOfType<> treats it as DummyEnum[]
-                isReadOnlyCollection.Should().BeTrue();
+                isReadOnlyCollection.ShouldBeTrue();
             }
         }
 
@@ -54,7 +54,7 @@ namespace AllOverIt.Tests.Helpers
             {
                 var actual = EnumHelper.GetValuesFromBitMask<DummyEnum, int>(mask);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -66,8 +66,7 @@ namespace AllOverIt.Tests.Helpers
                 {
                     _ = EnumHelper.GetValuesFromBitMask<DummyEnum, int>(mask);
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage($"The value has a flag that does not correspond with the '{typeof(DummyEnum).Name}' type. (Parameter 'mask')\r\nActual value was {mask}.");
             }
         }
@@ -86,8 +85,16 @@ namespace AllOverIt.Tests.Helpers
             {
                 var actual = EnumHelper.GetValuesFromEnumWithFlags(mask);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
     }
 }
+
+
+
+
+
+
+
+

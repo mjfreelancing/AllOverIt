@@ -1,6 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
+using AllOverIt.Shouldly;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -15,8 +15,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     AllOverIt.Extensions.TaskExtensions.FireAndForget(Task.CompletedTask, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("exceptionHandler");
             }
 
@@ -28,7 +27,7 @@ namespace AllOverIt.Tests.Extensions
 
                 AllOverIt.Extensions.TaskExtensions.FireAndForget(Task.CompletedTask, _ => handlerCalled = true);
 
-                handlerCalled.Should().BeFalse();
+                handlerCalled.ShouldBeFalse();
             }
 
             [Fact]
@@ -43,7 +42,7 @@ namespace AllOverIt.Tests.Extensions
 
                 AllOverIt.Extensions.TaskExtensions.FireAndForget(completionSource.Task, exception => actual = exception);
 
-                actual.Should().BeSameAs(exception);
+                actual.ShouldBeSameAs(exception);
             }
         }
 
@@ -56,7 +55,7 @@ namespace AllOverIt.Tests.Extensions
 
                 await AllOverIt.Extensions.TaskExtensions.DoFireAndForget(Task.CompletedTask, _ => handlerCalled = true);
 
-                handlerCalled.Should().BeFalse();
+                handlerCalled.ShouldBeFalse();
             }
 
             [Fact]
@@ -66,7 +65,7 @@ namespace AllOverIt.Tests.Extensions
 
                 await AllOverIt.Extensions.TaskExtensions.DoFireAndForget(Task.Delay(1), exception => actual = exception);
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -81,8 +80,17 @@ namespace AllOverIt.Tests.Extensions
 
                 await AllOverIt.Extensions.TaskExtensions.DoFireAndForget(completionSource.Task, exception => actual = exception);
 
-                actual.Should().BeSameAs(exception);
+                actual.ShouldBeSameAs(exception);
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+

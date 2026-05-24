@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Cryptography.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
 using System.Collections;
 using System.Security.Cryptography;
 
@@ -16,7 +16,7 @@ namespace AllOverIt.Cryptography.Tests.Extensions
             {
                 var actual = HashAlgorithmNameExtensions.CreateHashAlgorithm(algorithmName);
 
-                actual.Should().BeOfType(expected.GetType());
+                actual.ShouldBeOfType(expected.GetType());
             }
         }
 
@@ -28,7 +28,7 @@ namespace AllOverIt.Cryptography.Tests.Extensions
             {
                 var actual = HashAlgorithmNameExtensions.GetHashSize(algorithmName);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 

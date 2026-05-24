@@ -1,7 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reactive.Messaging;
-using FluentAssertions;
+using Shouldly;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
@@ -59,12 +59,10 @@ namespace AllOverIt.Reactive.Tests.Messaging
             [Fact]
             public void Should_Throw_When_EventBus_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new HandlerDummy(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("eventBus");
             }
 
@@ -72,7 +70,7 @@ namespace AllOverIt.Reactive.Tests.Messaging
             public void Should_Default_Not_Active()
             {
                 var handler = new HandlerDummy(_eventBus);
-                handler.IsActive.Should().BeFalse();
+                handler.IsActive.ShouldBeFalse();
             }
         }
 
@@ -89,7 +87,7 @@ namespace AllOverIt.Reactive.Tests.Messaging
 
                 _eventBus.Publish<EventDummy>();
 
-                handler.Handled.Should().Be(isActive);
+                handler.Handled.ShouldBe(isActive);
             }
 
             [Fact]
@@ -104,20 +102,20 @@ namespace AllOverIt.Reactive.Tests.Messaging
 
                 _eventBus.Publish<EventDummy>();
 
-                handler.Handled.Should().BeTrue();
-                count.Should().Be(1);
+                handler.Handled.ShouldBeTrue();
+                count.ShouldBe(1);
 
                 // the handler should not be called again
                 handler.IsActive = false;
                 _eventBus.Publish<EventDummy>();
 
-                count.Should().Be(1);
+                count.ShouldBe(1);
 
                 // the handler should be called again
                 handler.IsActive = true;
 
                 _eventBus.Publish<EventDummy>();
-                count.Should().Be(2);
+                count.ShouldBe(2);
             }
         }
 
@@ -138,13 +136,13 @@ namespace AllOverIt.Reactive.Tests.Messaging
 
                 _eventBus.Publish(@event);
 
-                handler.Handled.Should().BeFalse();
+                handler.Handled.ShouldBeFalse();
 
                 @event.Value = value;
 
                 _eventBus.Publish(@event);
 
-                handler.Handled.Should().BeTrue();
+                handler.Handled.ShouldBeTrue();
             }
         }
 
@@ -166,15 +164,15 @@ namespace AllOverIt.Reactive.Tests.Messaging
 
                 _eventBus.Publish<EventDummy>();
 
-                handler.Handled.Should().BeTrue();
-                count.Should().Be(1);
+                handler.Handled.ShouldBeTrue();
+                count.ShouldBe(1);
 
                 disposables.Dispose();
 
                 _eventBus.Publish<EventDummy>();
 
                 // the handler should not be called again
-                count.Should().Be(1);
+                count.ShouldBe(1);
             }
         }
 
@@ -193,15 +191,17 @@ namespace AllOverIt.Reactive.Tests.Messaging
 
                     _eventBus.Publish<EventDummy>();
 
-                    handler.Handled.Should().BeTrue();
-                    count.Should().Be(1);
+                    handler.Handled.ShouldBeTrue();
+                    count.ShouldBe(1);
                 }
 
                 _eventBus.Publish<EventDummy>();
 
                 // the handler should not be called again
-                count.Should().Be(1);
+                count.ShouldBe(1);
             }
         }
     }
 }
+
+

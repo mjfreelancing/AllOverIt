@@ -6,8 +6,8 @@ using AllOverIt.ReactiveUI.Factories;
 using AllOverIt.ReactiveUI.ViewRegistry;
 using AllOverIt.ReactiveUI.ViewRegistry.Events;
 using FakeItEasy;
-using FluentAssertions;
 using ReactiveUI;
+using Shouldly;
 using System.Collections;
 
 namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
@@ -134,8 +134,8 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
                     _viewRegistry.OnUpdate -= ViewRegistryOnUpdate;
                 }
 
-                _actual.Should().Be(_expected);
-                _updateType.Value.Should().Be(ViewItemUpdateType.Add);
+                _actual.ShouldBe(_expected);
+                _updateType.Value.ShouldBe(ViewItemUpdateType.Add);
             }
 
             [Fact]
@@ -154,8 +154,8 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
                     _viewRegistry.OnUpdate -= ViewRegistryOnUpdate;
                 }
 
-                _actual.Should().Be(_expected);
-                _updateType.Value.Should().Be(ViewItemUpdateType.Remove);
+                _actual.ShouldBe(_expected);
+                _updateType.Value.ShouldBe(ViewItemUpdateType.Remove);
             }
 
             private void ViewRegistryOnUpdate(object sender, ViewRegistryEventArgs eventArgs)
@@ -170,24 +170,20 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             [Fact]
             public void Should_Throw_When_ViewFactory_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new ViewRegistry<int>(null, _viewHandler);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("viewFactory");
             }
 
             [Fact]
             public void Should_Throw_When_ViewHandler_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new ViewRegistry<int>(_viewFactoryFake.FakedObject, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("viewHandler");
             }
         }
@@ -199,7 +195,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             {
                 var actual = _viewRegistry.GetViewCountFor<DummyViewModel1>();
 
-                actual.Should().Be(0);
+                actual.ShouldBe(0);
             }
 
             [Fact]
@@ -215,10 +211,10 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
                 }
 
                 var actual1 = _viewRegistry.GetViewCountFor<DummyViewModel1>();
-                actual1.Should().Be(count);
+                actual1.ShouldBe(count);
 
                 var actual2 = _viewRegistry.GetViewCountFor<DummyViewModel2>();
-                actual2.Should().Be(0);
+                actual2.ShouldBe(0);
             }
         }
 
@@ -229,7 +225,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             {
                 var actual = _viewRegistry.GetViewCountFor(typeof(DummyViewModel1));
 
-                actual.Should().Be(0);
+                actual.ShouldBe(0);
             }
 
             [Fact]
@@ -245,10 +241,10 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
                 }
 
                 var actual1 = _viewRegistry.GetViewCountFor(typeof(DummyViewModel1));
-                actual1.Should().Be(count);
+                actual1.ShouldBe(count);
 
                 var actual2 = _viewRegistry.GetViewCountFor(typeof(DummyViewModel2));
-                actual2.Should().Be(0);
+                actual2.ShouldBe(0);
             }
         }
 
@@ -259,7 +255,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             {
                 var actual = _viewRegistry.GetViewModelTypes();
 
-                actual.Should().BeEmpty();
+                actual.ShouldBeEmpty();
             }
 
             [Fact]
@@ -269,7 +265,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
 
                 var actual = _viewRegistry.GetViewModelTypes().Single();
 
-                actual.Should().Be(typeof(DummyViewModel1));
+                actual.ShouldBe(typeof(DummyViewModel1));
             }
         }
 
@@ -280,7 +276,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             {
                 var actual = _viewRegistry.GetViewsFor<DummyViewModel1>();
 
-                actual.Should().BeEmpty();
+                actual.ShouldBeEmpty();
             }
 
             [Fact]
@@ -298,8 +294,8 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
 
                 for (var i = 0; i < 3; i++)
                 {
-                    actual[i].Id.Should().Be(ids[i]);
-                    actual[i].View.Should().Be(_dummyViews[i]);
+                    actual[i].Id.ShouldBe(ids[i]);
+                    actual[i].View.ShouldBe(_dummyViews[i]);
                 }
             }
         }
@@ -311,7 +307,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             {
                 var actual = _viewRegistry.GetViewsFor(typeof(DummyViewModel1));
 
-                actual.Should().BeEmpty();
+                actual.ShouldBeEmpty();
             }
 
             [Fact]
@@ -328,8 +324,8 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
 
                 for (var i = 0; i < 3; i++)
                 {
-                    actual[i].Id.Should().Be(ids[i]);
-                    actual[i].View.Should().Be(_dummyViews[i]);
+                    actual[i].Id.ShouldBe(ids[i]);
+                    actual[i].View.ShouldBe(_dummyViews[i]);
                 }
             }
         }
@@ -343,7 +339,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
 
                 _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => expected);
 
-                _viewRegistry.GetViewsFor<DummyViewModel1>().Single().Id.Should().Be(expected);
+                _viewRegistry.GetViewsFor<DummyViewModel1>().Single().Id.ShouldBe(expected);
             }
 
             [Fact]
@@ -357,7 +353,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
                     viewItems => expected,
                     (vm, view, id) => { actual = id; });
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -372,12 +368,12 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
 
                 foreach (var dummyView in _dummyViews.Take(2))
                 {
-                    activatedViews.Should().Contain(dummyView);
+                    activatedViews.ShouldContain(dummyView);
                 }
 
                 foreach (var dummyView in _dummyViews.Skip(2))
                 {
-                    activatedViews.Should().NotContain(dummyView);
+                    activatedViews.ShouldNotContain(dummyView);
                 }
             }
 
@@ -386,11 +382,11 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             {
                 _viewRegistry.CreateOrActivateFor<DummyViewModel1>(Create<int>(), viewItems => { return Create<int>(); });
 
-                _viewRegistry.IsEmpty.Should().BeFalse();
+                _viewRegistry.IsEmpty.ShouldBeFalse();
 
                 (_dummyViews[0] as DummyView).Close();
 
-                _viewRegistry.IsEmpty.Should().BeTrue();
+                _viewRegistry.IsEmpty.ShouldBeTrue();
             }
 
             [Fact]
@@ -404,7 +400,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
 
                 foreach (var dummyView in _dummyViews.Take(3))
                 {
-                    shownViews.Should().Contain(dummyView);
+                    shownViews.ShouldContain(dummyView);
                 }
             }
         }
@@ -416,7 +412,7 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
             {
                 (_viewHandler as DummyViewHandler).CloseView = true;    // emulate a window closing itself
 
-                _viewRegistry.IsEmpty.Should().BeTrue();
+                _viewRegistry.IsEmpty.ShouldBeTrue();
 
                 var maxCount = 3 + Create<int>();
 
@@ -424,21 +420,21 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
                 _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
                 _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
 
-                _viewRegistry.IsEmpty.Should().BeFalse();
+                _viewRegistry.IsEmpty.ShouldBeFalse();
 
-                _viewRegistry.GetViewCountFor<DummyViewModel1>().Should().Be(3);
+                _viewRegistry.GetViewCountFor<DummyViewModel1>().ShouldBe(3);
 
                 // Returns true to indicate there are no more windows
-                _viewRegistry.TryCloseAllViews().Should().BeTrue();
+                _viewRegistry.TryCloseAllViews().ShouldBeTrue();
 
                 var closedViews = (_viewHandler as DummyViewHandler).ClosedViews;
 
                 foreach (var dummyView in _dummyViews.Take(3))
                 {
-                    closedViews.Should().Contain(dummyView);
+                    closedViews.ShouldContain(dummyView);
                 }
 
-                _viewRegistry.IsEmpty.Should().BeTrue();
+                _viewRegistry.IsEmpty.ShouldBeTrue();
             }
         }
 
@@ -453,13 +449,13 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
                 _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
                 _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
 
-                _viewRegistry.Count().Should().Be(3);           // also using the enumerator for this
+                _viewRegistry.Count().ShouldBe(3);           // also using the enumerator for this
 
                 var index = 0;
 
                 foreach (var viewItem in _viewRegistry)
                 {
-                    viewItem.View.Should().BeSameAs(_dummyViews[index++]);
+                    viewItem.View.ShouldBeSameAs(_dummyViews[index++]);
                 }
             }
 
@@ -472,15 +468,21 @@ namespace AllOverIt.ReactiveUI.Tests.ViewRegistry
                 _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
                 _viewRegistry.CreateOrActivateFor<DummyViewModel1>(maxCount, viewItems => { return Create<int>(); });
 
-                _viewRegistry.Count().Should().Be(3);           // also using the enumerator for this
+                _viewRegistry.Count().ShouldBe(3);           // also using the enumerator for this
 
                 var index = 0;
 
-                foreach (var viewItem in (IEnumerable) _viewRegistry)
+                foreach (var viewItem in (IEnumerable)_viewRegistry)
                 {
-                    ((ViewModelViewItem<int>) viewItem).View.Should().BeSameAs(_dummyViews[index++]);
+                    ((ViewModelViewItem<int>)viewItem).View.ShouldBeSameAs(_dummyViews[index++]);
                 }
             }
         }
     }
 }
+
+
+
+
+
+

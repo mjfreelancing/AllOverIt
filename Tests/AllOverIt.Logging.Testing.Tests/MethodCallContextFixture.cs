@@ -30,7 +30,7 @@ namespace AllOverIt.Logging.Testing.Tests
             [Fact]
             public void Should_Return_LogLevels()
             {
-                _context.LogLevels.ShouldBeEquivalentTo(_context.Select(item => item.LogLevel).ToArray());
+                _context.LogLevels.ShouldBe(_context.Select(item => item.LogLevel).ToArray());
             }
         }
 
@@ -39,7 +39,7 @@ namespace AllOverIt.Logging.Testing.Tests
             [Fact]
             public void Should_Return_Metadata()
             {
-                _context.Metadata.ShouldBeEquivalentTo(_context.Select(item => item.Metadata).ToArray());
+                _context.Metadata.ShouldBe(_context.Select(item => item.Metadata).ToArray());
             }
         }
 
@@ -48,8 +48,10 @@ namespace AllOverIt.Logging.Testing.Tests
             [Fact]
             public void Should_Return_Exceptions()
             {
-                _context.Exceptions.ShouldBeEquivalentTo(_context.Select(item => item.Exception).ToArray());
+                _context.Exceptions.ShouldBe(_context.Select(item => item.Exception).ToArray());
             }
         }
     }
 }
+
+

@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Patterns.Pipeline;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Pipeline
 {
@@ -19,8 +18,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                     _ = new PipelineNoInputBuilderAsync<double>(step);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
         }
@@ -36,7 +34,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var actual = builder.Build();
 
-                actual.Should().BeSameAs(step);
+                actual.ShouldBeSameAs(step);
             }
         }
     }
@@ -54,8 +52,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                     _ = new PipelineNoInputBuilderAsync<double, string>(null, step);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -68,8 +65,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                     _ = new PipelineNoInputBuilderAsync<double, string>(prevStep, null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
         }
@@ -92,7 +88,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var actual = await func.Invoke(CancellationToken.None);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Fact]
@@ -112,9 +108,11 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                     _ = await func.Invoke(cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
         }
     }
 }
+
+
+

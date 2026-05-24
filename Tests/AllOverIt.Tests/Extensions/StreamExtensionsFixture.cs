@@ -1,8 +1,8 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 using System.Text;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -19,8 +19,7 @@ namespace AllOverIt.Tests.Extensions
 
                     _ = StreamExtensions.ToByteArray(stream);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("stream");
             }
 
@@ -33,7 +32,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     var actual = StreamExtensions.ToByteArray(stream);
 
-                    actual.Should().BeEquivalentTo(expected);
+                    actual.ShouldBeEquivalentTo(expected);
                 }
             }
         }
@@ -49,8 +48,7 @@ namespace AllOverIt.Tests.Extensions
 
                     StreamExtensions.FromByteArray(stream, Array.Empty<byte>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("stream");
             }
 
@@ -64,8 +62,7 @@ namespace AllOverIt.Tests.Extensions
                         StreamExtensions.FromByteArray(stream, null);
                     }
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("bytes");
             }
 
@@ -80,7 +77,7 @@ namespace AllOverIt.Tests.Extensions
 
                     var actual = stream.ToArray();
 
-                    actual.Should().BeEquivalentTo(expected);
+                    actual.ShouldBeEquivalentTo(expected);
                 }
             }
 
@@ -97,7 +94,7 @@ namespace AllOverIt.Tests.Extensions
 
                     var actual = stream.ToArray();
 
-                    actual.Should().BeEquivalentTo(expected);
+                    actual.ShouldBeEquivalentTo(expected);
                 }
             }
         }
@@ -131,8 +128,7 @@ namespace AllOverIt.Tests.Extensions
 
                     _ = StreamExtensions.ReadFullBlock(stream, buffer, 10);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("stream");
             }
 
@@ -148,8 +144,7 @@ namespace AllOverIt.Tests.Extensions
 
                     _ = StreamExtensions.ReadFullBlock(stream, buffer, 10);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("bytes");
             }
 
@@ -162,8 +157,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var bytesRead = stream.ReadFullBlock(buffer, 10);
 
-                bytesRead.Should().Be(10);
-                buffer.Should().BeEquivalentTo(data);
+                bytesRead.ShouldBe(10);
+                buffer.ShouldBeEquivalentTo(data);
             }
 
             [Fact]
@@ -175,8 +170,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var bytesRead = stream.ReadFullBlock(buffer, 10);
 
-                bytesRead.Should().Be(5);
-                buffer.Take(5).Should().BeEquivalentTo(data);
+                bytesRead.ShouldBe(5);
+                buffer.Take(5).ShouldBeEquivalentTo(data);
             }
 
             [Fact]
@@ -187,7 +182,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var bytesRead = stream.ReadFullBlock(buffer, 10);
 
-                bytesRead.Should().Be(0);
+                bytesRead.ShouldBe(0);
             }
 
             [Fact]
@@ -199,8 +194,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var bytesRead = stream.ReadFullBlock(buffer, 10);
 
-                bytesRead.Should().Be(10);
-                buffer.Should().BeEquivalentTo(data);
+                bytesRead.ShouldBe(10);
+                buffer.ShouldBeEquivalentTo(data);
             }
 
             [Fact]
@@ -213,8 +208,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var bytesRead = stream.ReadFullBlock(buffer, 5);
 
-                bytesRead.Should().Be(5);
-                buffer.Should().BeEquivalentTo(new byte[] { 6, 7, 8, 9, 10 });
+                bytesRead.ShouldBe(5);
+                buffer.ShouldBeEquivalentTo(new byte[] { 6, 7, 8, 9, 10 });
             }
 
             [Fact]
@@ -226,9 +221,18 @@ namespace AllOverIt.Tests.Extensions
 
                 var bytesRead = stream.ReadFullBlock(buffer, 5);
 
-                bytesRead.Should().Be(5);
-                buffer.Take(5).Should().BeEquivalentTo(new byte[] { 1, 2, 3, 4, 5 });
+                bytesRead.ShouldBe(5);
+                buffer.Take(5).ShouldBeEquivalentTo(new byte[] { 1, 2, 3, 4, 5 });
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+

@@ -1,9 +1,9 @@
-﻿using AllOverIt.Evaluator.Tests.Operators.Dummies;
+using AllOverIt.Evaluator.Tests.Operators.Dummies;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
 using System.Linq.Expressions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
@@ -29,25 +29,21 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_OperatorType_Is_Null()
             {
-                Invoking(() => _operator = new DummyUnaryOperator(null, _operand))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _operator = new DummyUnaryOperator(null, _operand))
                     .WithNamedMessageWhenNull("operatorType");
             }
 
             [Fact]
             public void Should_Throw_When_Operand_Is_Null()
             {
-                Invoking(() => _operator = new DummyUnaryOperator(_operatorType, null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _operator = new DummyUnaryOperator(_operatorType, null))
                     .WithNamedMessageWhenNull("operand");
             }
 
             [Fact]
             public void Should_Set_Members()
             {
-                _operator._operand.Should().BeSameAs(_operand);
+                _operator._operand.ShouldBeSameAs(_operand);
             }
         }
 
@@ -58,7 +54,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             {
                 var actual = _operator.GetExpression();
 
-                actual.Should().BeSameAs(_resultExpression);
+                actual.ShouldBeSameAs(_resultExpression);
             }
         }
     }

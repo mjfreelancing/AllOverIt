@@ -2,8 +2,7 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
     public class ContinuationTokenBinaryStreamerFixture : FixtureBase
@@ -19,8 +18,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _continuationTokenBinaryStreamer.SerializeToStream(null, Stream.Null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("continuationToken");
             }
 
@@ -31,8 +29,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _continuationTokenBinaryStreamer.SerializeToStream(this.CreateStub<IContinuationToken>(), null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("stream");
             }
 
@@ -49,7 +46,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _continuationTokenBinaryStreamer.SerializeToStream(continuationToken, stream);
 
-                    stream.ToArray().Should().NotBeEmpty();
+                    stream.ToArray().ShouldNotBeEmpty();
                 }
             }
         }
@@ -63,8 +60,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = _continuationTokenBinaryStreamer.DeserializeFromStream(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("stream");
             }
 
@@ -85,9 +81,13 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                     var actual = _continuationTokenBinaryStreamer.DeserializeFromStream(stream);
 
-                    continuationToken.Should().BeEquivalentTo(actual);
+                    continuationToken.ShouldBeEquivalentTo(actual);
                 }
             }
         }
     }
 }
+
+
+
+

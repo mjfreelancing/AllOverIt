@@ -3,7 +3,7 @@ using AllOverIt.Cryptography.RSA;
 using AllOverIt.Cryptography.RSA.Exceptions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 using RSAAlgorithm = System.Security.Cryptography.RSA;
 
@@ -28,9 +28,9 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 var actual = new RsaKeyPair();
 
-                actual.PublicKey.Should().NotBeNullOrEmpty();
-                actual.PrivateKey.Should().NotBeNullOrEmpty();
-                actual.KeySize.Should().Be(3072);
+                actual.PublicKey.ShouldNotBeNullOrEmpty();
+                actual.PrivateKey.ShouldNotBeNullOrEmpty();
+                actual.KeySize.ShouldBe(3072);
             }
 
             [Fact]
@@ -40,9 +40,9 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 var actual = new RsaKeyPair(keySize);
 
-                actual.PublicKey.Should().NotBeNullOrEmpty();
-                actual.PrivateKey.Should().NotBeNullOrEmpty();
-                actual.KeySize.Should().Be(keySize);
+                actual.PublicKey.ShouldNotBeNullOrEmpty();
+                actual.PrivateKey.ShouldNotBeNullOrEmpty();
+                actual.KeySize.ShouldBe(keySize);
             }
         }
 
@@ -51,12 +51,10 @@ namespace AllOverIt.Cryptography.Tests.RSA
             [Fact]
             public void Should_Throw_When_Both_Keys_Null()      // Empty is invalid as a key - the RSA will throw as 'ASN1 corrupted data'. Not adding tests for it.
             {
-                Invoking(() =>
+                Should.Throw<RsaException>(() =>
                 {
                     _ = new RsaKeyPair((byte[]) null, null);
                 })
-                .Should()
-                .Throw<RsaException>()
                 .WithMessage("At least one RSA key is required.");
             }
 
@@ -65,7 +63,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 var actual = new RsaKeyPair(null, _rsaKeyPair.PrivateKey);
 
-                actual.PrivateKey.Should().BeSameAs(_rsaKeyPair.PrivateKey);
+                actual.PrivateKey.ShouldBeSameAs(_rsaKeyPair.PrivateKey);
             }
 
             [Fact]
@@ -73,7 +71,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 var actual = new RsaKeyPair(_rsaKeyPair.PublicKey, null);
 
-                actual.PublicKey.Should().BeSameAs(_rsaKeyPair.PublicKey);
+                actual.PublicKey.ShouldBeSameAs(_rsaKeyPair.PublicKey);
             }
 
             [Fact]
@@ -81,7 +79,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 var actual = new RsaKeyPair(_rsaKeyPair.PublicKey, null);
 
-                actual.KeySize.Should().Be(_rsaKeyPair.KeySize);
+                actual.KeySize.ShouldBe(_rsaKeyPair.KeySize);
             }
 
             [Fact]
@@ -89,7 +87,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 var actual = new RsaKeyPair(null, _rsaKeyPair.PrivateKey);
 
-                actual.KeySize.Should().Be(_rsaKeyPair.KeySize);
+                actual.KeySize.ShouldBe(_rsaKeyPair.KeySize);
             }
         }
 
@@ -98,12 +96,10 @@ namespace AllOverIt.Cryptography.Tests.RSA
             [Fact]
             public void Should_Throw_When_Both_Keys_Null()      // Empty is invalid as a key - the RSA will throw as 'ASN1 corrupted data'. Not adding tests for it.
             {
-                Invoking(() =>
+                Should.Throw<RsaException>(() =>
                 {
                     _ = new RsaKeyPair((string) null, null);
                 })
-                .Should()
-                .Throw<RsaException>()
                 .WithMessage("At least one RSA key is required.");
             }
 
@@ -112,7 +108,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 var actual = new RsaKeyPair(null, _privateKeyBase64);
 
-                actual.PrivateKey.Should().BeEquivalentTo(_rsaKeyPair.PrivateKey);
+                actual.PrivateKey.ShouldBe(_rsaKeyPair.PrivateKey);
             }
 
             [Fact]
@@ -120,7 +116,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 var actual = new RsaKeyPair(_publicKeyBase64, null);
 
-                actual.PublicKey.Should().BeEquivalentTo(_rsaKeyPair.PublicKey);
+                actual.PublicKey.ShouldBe(_rsaKeyPair.PublicKey);
             }
 
             [Fact]
@@ -128,7 +124,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 var actual = new RsaKeyPair(_publicKeyBase64, null);
 
-                actual.KeySize.Should().Be(_rsaKeyPair.KeySize);
+                actual.KeySize.ShouldBe(_rsaKeyPair.KeySize);
             }
 
             [Fact]
@@ -136,7 +132,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 var actual = new RsaKeyPair(null, _privateKeyBase64);
 
-                actual.KeySize.Should().Be(_rsaKeyPair.KeySize);
+                actual.KeySize.ShouldBe(_rsaKeyPair.KeySize);
             }
         }
 
@@ -145,12 +141,10 @@ namespace AllOverIt.Cryptography.Tests.RSA
             [Fact]
             public void Should_Throw_When_Both_Keys_Null()      // Empty is invalid as a key - the RSA will throw as 'ASN1 corrupted data'. Not adding tests for it.
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new RsaKeyPair((RSAAlgorithm) null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("rsa");
             }
 
@@ -163,9 +157,9 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 var actual = new RsaKeyPair(rsa);
 
-                actual.PublicKey.Should().BeEquivalentTo(publicKey);
-                actual.PrivateKey.Should().BeEquivalentTo(privateKey);
-                actual.KeySize.Should().Be(rsa.KeySize);
+                actual.PublicKey.ShouldBe(publicKey);
+                actual.PrivateKey.ShouldBe(privateKey);
+                actual.KeySize.ShouldBe(rsa.KeySize);
             }
         }
 
@@ -182,9 +176,9 @@ namespace AllOverIt.Cryptography.Tests.RSA
                 var parameters = rsa.ExportParameters(true);
                 var actual = new RsaKeyPair(parameters);
 
-                actual.PublicKey.Should().BeEquivalentTo(publicKey);
-                actual.PrivateKey.Should().BeEquivalentTo(privateKey);
-                actual.KeySize.Should().Be(rsa.KeySize);
+                actual.PublicKey.ShouldBe(publicKey);
+                actual.PrivateKey.ShouldBe(privateKey);
+                actual.KeySize.ShouldBe(rsa.KeySize);
             }
         }
 
@@ -201,9 +195,9 @@ namespace AllOverIt.Cryptography.Tests.RSA
                 var xml = rsa.ToXmlString(true);
                 var actual = new RsaKeyPair(xml);
 
-                actual.PublicKey.Should().BeEquivalentTo(publicKey);
-                actual.PrivateKey.Should().BeEquivalentTo(privateKey);
-                actual.KeySize.Should().Be(rsa.KeySize);
+                actual.PublicKey.ShouldBe(publicKey);
+                actual.PrivateKey.ShouldBe(privateKey);
+                actual.KeySize.ShouldBe(rsa.KeySize);
             }
         }
 
@@ -212,14 +206,12 @@ namespace AllOverIt.Cryptography.Tests.RSA
             [Fact]
             public void Should_Throw_When_Both_Keys_Null()      // Empty is invalid as a key - the RSA will throw as 'ASN1 corrupted data'. Not adding tests for it.
             {
-                Invoking(() =>
+                Should.Throw<RsaException>(() =>
                 {
                     var actual = new RsaKeyPair();
 
                     actual.SetKeys((byte[]) null, null);
                 })
-                .Should()
-                .Throw<RsaException>()
                 .WithMessage("At least one RSA key is required.");
             }
 
@@ -230,7 +222,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 actual.SetKeys(null, _rsaKeyPair.PrivateKey);
 
-                actual.PrivateKey.Should().BeSameAs(_rsaKeyPair.PrivateKey);
+                actual.PrivateKey.ShouldBeSameAs(_rsaKeyPair.PrivateKey);
             }
 
             [Fact]
@@ -240,7 +232,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 actual.SetKeys(_rsaKeyPair.PublicKey, null);
 
-                actual.PublicKey.Should().BeSameAs(_rsaKeyPair.PublicKey);
+                actual.PublicKey.ShouldBeSameAs(_rsaKeyPair.PublicKey);
             }
 
             [Fact]
@@ -250,7 +242,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 actual.SetKeys(_rsaKeyPair.PublicKey, null);
 
-                actual.KeySize.Should().Be(_rsaKeyPair.KeySize);
+                actual.KeySize.ShouldBe(_rsaKeyPair.KeySize);
             }
 
             [Fact]
@@ -260,7 +252,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 actual.SetKeys(null, _rsaKeyPair.PrivateKey);
 
-                actual.KeySize.Should().Be(_rsaKeyPair.KeySize);
+                actual.KeySize.ShouldBe(_rsaKeyPair.KeySize);
             }
         }
 
@@ -269,14 +261,12 @@ namespace AllOverIt.Cryptography.Tests.RSA
             [Fact]
             public void Should_Throw_When_Both_Keys_Null()      // Empty is invalid as a key - the RSA will throw as 'ASN1 corrupted data'. Not adding tests for it.
             {
-                Invoking(() =>
+                Should.Throw<RsaException>(() =>
                 {
                     var actual = new RsaKeyPair();
 
                     actual.SetKeys((string) null, null);
                 })
-                .Should()
-                .Throw<RsaException>()
                 .WithMessage("At least one RSA key is required.");
             }
 
@@ -287,7 +277,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 actual.SetKeys(null, _privateKeyBase64);
 
-                actual.PrivateKey.Should().BeEquivalentTo(_rsaKeyPair.PrivateKey);
+                actual.PrivateKey.ShouldBe(_rsaKeyPair.PrivateKey);
             }
 
             [Fact]
@@ -297,7 +287,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 actual.SetKeys(_publicKeyBase64, null);
 
-                actual.PublicKey.Should().BeEquivalentTo(_rsaKeyPair.PublicKey);
+                actual.PublicKey.ShouldBe(_rsaKeyPair.PublicKey);
             }
 
             [Fact]
@@ -307,7 +297,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 actual.SetKeys(_publicKeyBase64, null);
 
-                actual.KeySize.Should().Be(_rsaKeyPair.KeySize);
+                actual.KeySize.ShouldBe(_rsaKeyPair.KeySize);
             }
 
             [Fact]
@@ -317,7 +307,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 actual.SetKeys(null, _privateKeyBase64);
 
-                actual.KeySize.Should().Be(_rsaKeyPair.KeySize);
+                actual.KeySize.ShouldBe(_rsaKeyPair.KeySize);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Plugin.Exceptions;
 
 namespace AllOverIt.Tests.Plugin.Exceptions
@@ -24,3 +24,5 @@ namespace AllOverIt.Tests.Plugin.Exceptions
         }
     }
 }
+
+

@@ -1,10 +1,9 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
 using AllOverIt.Serialization.Binary.Writers;
 using FakeItEasy;
-using FluentAssertions;
 
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
@@ -29,8 +28,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _tokenWriter.WriteValue(null, Create<object>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("writer");
             }
 
@@ -52,3 +50,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
         }
     }
 }
+
+
+
+

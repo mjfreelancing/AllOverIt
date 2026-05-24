@@ -1,11 +1,11 @@
-﻿using AllOverIt.DependencyInjection.Exceptions;
+using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.DependencyInjection.Tests.Helpers;
 using AllOverIt.DependencyInjection.Tests.TestTypes;
 using AllOverIt.DependencyInjection.Tests.Types;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
@@ -27,13 +27,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
-                    {
+                Should.Throw<ArgumentNullException>(() =>
+                {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, AbstractClassA>(lifetime, null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("serviceCollection");
+                    }).WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Theory]
@@ -42,13 +39,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
-                    {
+                Should.NotThrow(() =>
+                {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar, AbstractClassA>(lifetime, _serviceCollection,
                             (Action<IServiceRegistrarOptions>) null);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Theory]
@@ -57,14 +52,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<DependencyRegistrationException>(() =>
                 {
                     _ = DependencyHelper.AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar, ConcreteClassA>(lifetime, _serviceCollection,
                         (Action<IServiceRegistrarOptions>) null);
-                })
-                .Should()
-                .Throw<DependencyRegistrationException>()
-                .WithMessage($"Cannot register ConcreteClassA. All service types must be an interface or abstract type.");
+                }).WithMessage($"Cannot register ConcreteClassA. All service types must be an interface or abstract type.");
             }
 
             [Theory]
@@ -243,12 +235,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceCollection");
             }
 
@@ -258,13 +248,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
-                    {
+                Should.Throw<ArgumentNullException>(() =>
+                {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection, (IEnumerable<Type>) null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("serviceTypes");
+                    }).WithNamedMessageWhenNull("serviceTypes");
             }
 
             [Theory]
@@ -273,13 +260,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime lifetime)
             {
-                Invoking(() =>
-                    {
+                Should.Throw<ArgumentException>(() =>
+                {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection, new List<Type>());
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("serviceTypes");
+                    }).WithNamedMessageWhenEmpty("serviceTypes");
             }
 
             [Theory]
@@ -288,13 +272,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
                             new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, (Action<IServiceRegistrarOptions>) null);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Theory]
@@ -303,13 +285,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<DependencyRegistrationException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
                             new[] { typeof(ConcreteClassA), typeof(ConcreteClassB) }, (Action<IServiceRegistrarOptions>) null);
                     })
-                    .Should()
-                    .Throw<DependencyRegistrationException>()
                     .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
             }
 
@@ -507,13 +487,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
-                    {
+                Should.Throw<ArgumentNullException>(() =>
+                {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, null, _localRegistrar);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("serviceCollection");
+                    }).WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Theory]
@@ -522,13 +499,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceRegistrar_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
-                    {
+                Should.Throw<ArgumentNullException>(() =>
+                {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _serviceCollection, null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("serviceRegistrar");
+                    }).WithNamedMessageWhenNull("serviceRegistrar");
             }
 
             [Theory]
@@ -537,13 +511,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
-                    {
+                Should.NotThrow(() =>
+                {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<AbstractClassA>(lifetime, _serviceCollection, _localRegistrar,
                             (Action<IServiceRegistrarOptions>) null);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Theory]
@@ -552,14 +524,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
             {
-                Invoking(() =>
-                    {
+                Should.Throw<DependencyRegistrationException>(() =>
+                {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ConcreteClassA>(lifetime, _serviceCollection, _localRegistrar,
                             (Action<IServiceRegistrarOptions>) null);
-                    })
-                    .Should()
-                    .Throw<DependencyRegistrationException>()
-                    .WithMessage($"Cannot register ConcreteClassA. All service types must be an interface or abstract type.");
+                    }).WithMessage($"Cannot register ConcreteClassA. All service types must be an interface or abstract type.");
             }
 
             [Theory]
@@ -741,12 +710,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, null, _externalRegistrar, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceCollection");
             }
 
@@ -756,12 +723,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceRegistrar_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, (IServiceRegistrar) null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceRegistrar");
             }
 
@@ -771,13 +736,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
-                    {
+                Should.Throw<ArgumentNullException>(() =>
+                {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _externalRegistrar, (IEnumerable<Type>) null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("serviceTypes");
+                    }).WithNamedMessageWhenNull("serviceTypes");
             }
 
             [Theory]
@@ -786,13 +748,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime lifetime)
             {
-                Invoking(() =>
-                    {
+                Should.Throw<ArgumentException>(() =>
+                {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _externalRegistrar, new List<Type>());
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("serviceTypes");
+                    }).WithNamedMessageWhenEmpty("serviceTypes");
             }
 
             [Theory]
@@ -801,13 +760,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _externalRegistrar,
                             new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, (Action<IServiceRegistrarOptions>) null);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Theory]
@@ -816,13 +773,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<DependencyRegistrationException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _externalRegistrar,
                             new[] { typeof(AbstractClassA), typeof(ConcreteClassA), typeof(ConcreteClassB) }, (Action<IServiceRegistrarOptions>) null);
                     })
-                    .Should()
-                    .Throw<DependencyRegistrationException>()
                     .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
             }
 
@@ -1019,12 +974,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, null, _registrars, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceCollection");
             }
 
@@ -1034,12 +987,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceRegistrars_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, (IServiceRegistrar[]) null, new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceRegistrars");
             }
 
@@ -1049,12 +1000,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceRegistrars_Empty(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, new List<IServiceRegistrar>(), new[] { typeof(AbstractClassA), typeof(IBaseInterface2) });
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty("serviceRegistrars");
             }
 
@@ -1064,13 +1013,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
-                    {
+                Should.Throw<ArgumentNullException>(() =>
+                {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, (IEnumerable<Type>) null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("serviceTypes");
+                    }).WithNamedMessageWhenNull("serviceTypes");
             }
 
             [Theory]
@@ -1079,13 +1025,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime lifetime)
             {
-                Invoking(() =>
-                    {
+                Should.Throw<ArgumentException>(() =>
+                {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new List<Type>());
-                    })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("serviceTypes");
+                    }).WithNamedMessageWhenEmpty("serviceTypes");
             }
 
             [Theory]
@@ -1094,13 +1037,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars,
                             new[] { typeof(AbstractClassA), typeof(IBaseInterface2) }, (Action<IServiceRegistrarOptions>) null);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Theory]
@@ -1109,13 +1050,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<DependencyRegistrationException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars,
                             new[] { typeof(AbstractClassA), typeof(ConcreteClassA), typeof(ConcreteClassB) }, (Action<IServiceRegistrarOptions>) null);
                     })
-                    .Should()
-                    .Throw<DependencyRegistrationException>()
                     .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
             }
 
@@ -1295,13 +1234,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, null, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceCollection");
             }
 
@@ -1311,13 +1248,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
                             (IEnumerable<Type>) null, (provider, serviceType) => new object[] { Create<int>() });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceTypes");
             }
 
@@ -1327,13 +1262,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
                             new List<Type>(), (provider, serviceType) => new object[] { Create<int>() });
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty("serviceTypes");
             }
 
@@ -1343,12 +1276,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ConstructorArgs_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection, new[] { typeof(IBaseInterface3) }, null, null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("constructorArgsResolver");
             }
 
@@ -1358,13 +1289,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
                             new[] { typeof(IBaseInterface3) }, (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Theory]
@@ -1373,14 +1302,12 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<DependencyRegistrationException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime<ExternalDependenciesRegistrar>(lifetime, _serviceCollection,
                             new[] { typeof(AbstractClassA), typeof(ConcreteClassA), typeof(ConcreteClassB) },
                             (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);
                     })
-                    .Should()
-                    .Throw<DependencyRegistrationException>()
                     .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
             }
 
@@ -1406,12 +1333,12 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 instances
                     .Single(instance => instance is ConcreteClassH)
                     .Value
-                    .Should().Be(value);
+                    .ShouldBe(value);
 
                 instances
                     .Single(instance => instance is ConcreteClassI)
                     .Value
-                    .Should().Be(value * 100);
+                    .ShouldBe(value * 100);
             }
 
             [Theory]
@@ -1488,13 +1415,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, null, _registrar, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceCollection");
             }
 
@@ -1504,13 +1429,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceRegistrar_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, (IServiceRegistrar) null, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceRegistrar");
             }
 
@@ -1520,13 +1443,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, (IEnumerable<Type>) null,
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceTypes");
             }
 
@@ -1536,13 +1457,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, new List<Type>(),
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty("serviceTypes");
             }
 
@@ -1552,12 +1471,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ConstructorArgs_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) }, null, null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("constructorArgsResolver");
             }
 
@@ -1567,13 +1484,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Theory]
@@ -1582,14 +1497,12 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<DependencyRegistrationException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrar,
                             new[] { typeof(AbstractClassA), typeof(ConcreteClassA), typeof(ConcreteClassB) },
                             (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);
                     })
-                    .Should()
-                    .Throw<DependencyRegistrationException>()
                     .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
             }
 
@@ -1615,12 +1528,12 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 instances
                     .Single(instance => instance is ConcreteClassH)
                     .Value
-                    .Should().Be(value);
+                    .ShouldBe(value);
 
                 instances
                     .Single(instance => instance is ConcreteClassI)
                     .Value
-                    .Should().Be(value * 100);
+                    .ShouldBe(value * 100);
             }
 
             [Theory]
@@ -1697,13 +1610,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Services_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, null, _registrars, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceCollection");
             }
 
@@ -1713,13 +1624,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceRegistrars_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, (IServiceRegistrar[]) null, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceRegistrars");
             }
 
@@ -1729,13 +1638,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceRegistrars_Empty(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, new List<IServiceRegistrar>(), new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty("serviceRegistrars");
             }
 
@@ -1745,13 +1652,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceTypes_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, (IEnumerable<Type>) null,
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serviceTypes");
             }
 
@@ -1761,13 +1666,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ServiceTypes_Empty(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new List<Type>(),
                             (provider, serviceType) => new object[] { Create<int>() });
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty("serviceTypes");
             }
 
@@ -1777,12 +1680,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_ConstructorArgs_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) }, null, null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("constructorArgsResolver");
             }
 
@@ -1792,13 +1693,11 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Not_Throw_When_Configure_Null(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars, new[] { typeof(IBaseInterface3) },
                             (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Theory]
@@ -1807,14 +1706,12 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [InlineData(ServiceLifetime.Transient)]
             public void Should_Throw_When_Register_Concrete(ServiceLifetime lifetime)
             {
-                Invoking(() =>
+                Should.Throw<DependencyRegistrationException>(() =>
                     {
                         DependencyHelper.AutoRegisterUsingServiceLifetime(lifetime, _serviceCollection, _registrars,
                             new[] { typeof(AbstractClassA), typeof(ConcreteClassA), typeof(ConcreteClassB) },
                             (provider, serviceType) => new object[] { Create<int>() }, (Action<IServiceRegistrarOptions>) null);
                     })
-                    .Should()
-                    .Throw<DependencyRegistrationException>()
                     .WithMessage($"Cannot register ConcreteClassA, ConcreteClassB. All service types must be an interface or abstract type.");
             }
 
@@ -1840,17 +1737,17 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 instances
                     .Single(instance => instance is ConcreteClassH)
                     .Value
-                    .Should().Be(value);
+                    .ShouldBe(value);
 
                 instances
                     .Single(instance => instance is ConcreteClassI)
                     .Value
-                    .Should().Be(value * 100);
+                    .ShouldBe(value * 100);
 
                 instances
                     .Single(instance => instance is ConcreteClassJ)
                     .Value
-                    .Should().Be(value - 100);
+                    .ShouldBe(value - 100);
             }
 
             [Theory]
@@ -1918,3 +1815,5 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
         }
     }
 }
+
+

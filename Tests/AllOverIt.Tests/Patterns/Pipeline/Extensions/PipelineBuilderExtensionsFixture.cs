@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Pipeline;
 using AllOverIt.Patterns.Pipeline.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 {
@@ -77,8 +76,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilder<int, double>) null).Pipe(_funcStep);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -89,8 +87,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = _builderDummy.Pipe((Func<double, string>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -99,7 +96,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderDummy.Pipe(_funcStep);
 
-                actual.Should().BeOfType<PipelineBuilder<int, double, string>>();
+                actual.ShouldBeOfType<PipelineBuilder<int, double, string>>();
             }
         }
 
@@ -112,8 +109,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilder<int, double>) null).Pipe(_stepDummy);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -124,8 +120,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = _builderDummy.Pipe((IPipelineStep<double, string>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -134,7 +129,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderDummy.Pipe(_stepDummy);
 
-                actual.Should().BeOfType<PipelineBuilder<int, double, string>>();
+                actual.ShouldBeOfType<PipelineBuilder<int, double, string>>();
             }
         }
 
@@ -147,8 +142,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilder<int, double>) null).Pipe<StepDummy, int, double, string>();
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -157,7 +151,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderDummy.Pipe<StepDummy, int, double, string>();
 
-                actual.Should().BeOfType<PipelineBuilder<int, double, string>>();
+                actual.ShouldBeOfType<PipelineBuilder<int, double, string>>();
             }
         }
 
@@ -174,8 +168,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilderAsync<int, double>) null).PipeAsync(_funcStepAsync);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -186,8 +179,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = _builderAsyncDummy.PipeAsync((Func<double, CancellationToken, Task<string>>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -196,7 +188,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderAsyncDummy.PipeAsync(_funcStepAsync);
 
-                actual.Should().BeOfType<PipelineBuilderAsync<int, double, string>>();
+                actual.ShouldBeOfType<PipelineBuilderAsync<int, double, string>>();
             }
         }
 
@@ -209,8 +201,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilderAsync<int, double>) null).PipeAsync(_stepAsyncDummy);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -221,8 +212,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = _builderAsyncDummy.PipeAsync((IPipelineStepAsync<double, string>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -231,7 +221,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderAsyncDummy.PipeAsync(_stepAsyncDummy);
 
-                actual.Should().BeOfType<PipelineBuilderAsync<int, double, string>>();
+                actual.ShouldBeOfType<PipelineBuilderAsync<int, double, string>>();
             }
         }
 
@@ -244,8 +234,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = PipelineBuilderExtensions.PipeAsync<StepAsyncDummy, int, double, string>(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -254,7 +243,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderAsyncDummy.PipeAsync<StepAsyncDummy, int, double, string>();
 
-                actual.Should().BeOfType<PipelineBuilderAsync<int, double, string>>();
+                actual.ShouldBeOfType<PipelineBuilderAsync<int, double, string>>();
             }
         }
 
@@ -271,8 +260,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilderAsync<int, double>) null).Pipe(_funcStep);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -283,8 +271,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = _builderAsyncDummy.Pipe((Func<double, string>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -293,7 +280,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderAsyncDummy.Pipe(_funcStep);
 
-                actual.Should().BeOfType<PipelineBuilderAsync<int, double, string>>();
+                actual.ShouldBeOfType<PipelineBuilderAsync<int, double, string>>();
             }
 
             [Fact]
@@ -310,7 +297,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 
                 var actual = await pipe.Invoke(value, CancellationToken.None);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Fact]
@@ -328,8 +315,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 
                     _ = await pipe.Invoke(Create<int>(), cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
         }
 
@@ -342,8 +328,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilderAsync<int, double>) null).Pipe(_stepDummy);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -354,8 +339,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = _builderAsyncDummy.Pipe((IPipelineStep<double, string>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -364,7 +348,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderAsyncDummy.Pipe(_stepDummy);
 
-                actual.Should().BeOfType<PipelineBuilderAsync<int, double, string>>();
+                actual.ShouldBeOfType<PipelineBuilderAsync<int, double, string>>();
             }
         }
 
@@ -377,8 +361,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilderAsync<int, double>) null).Pipe<StepDummy, int, double, string>();
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -387,7 +370,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderAsyncDummy.Pipe<StepDummy, int, double, string>();
 
-                actual.Should().BeOfType<PipelineBuilderAsync<int, double, string>>();
+                actual.ShouldBeOfType<PipelineBuilderAsync<int, double, string>>();
             }
         }
 
@@ -404,8 +387,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilder<double>) null).Pipe(_funcStep);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -416,8 +398,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = _builderNoInputDummy.Pipe((Func<double, string>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -426,7 +407,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderNoInputDummy.Pipe(_funcStep);
 
-                actual.Should().BeOfType<PipelineNoInputBuilder<double, string>>();
+                actual.ShouldBeOfType<PipelineNoInputBuilder<double, string>>();
             }
         }
 
@@ -439,8 +420,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilder<double>) null).Pipe(_stepDummy);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -451,8 +431,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = _builderNoInputDummy.Pipe((IPipelineStep<double, string>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -461,7 +440,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderNoInputDummy.Pipe(_stepDummy);
 
-                actual.Should().BeOfType<PipelineNoInputBuilder<double, string>>();
+                actual.ShouldBeOfType<PipelineNoInputBuilder<double, string>>();
             }
         }
 
@@ -474,8 +453,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilder<double>) null).Pipe<StepDummy, double, string>();
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -484,7 +462,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderNoInputDummy.Pipe<StepDummy, double, string>();
 
-                actual.Should().BeOfType<PipelineNoInputBuilder<double, string>>();
+                actual.ShouldBeOfType<PipelineNoInputBuilder<double, string>>();
             }
         }
 
@@ -501,8 +479,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = PipelineBuilderExtensions.PipeAsync(null, _funcStepAsync);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -513,8 +490,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = _builderNoInputAsyncDummy.PipeAsync((Func<double, CancellationToken, Task<string>>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -523,7 +499,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderNoInputAsyncDummy.PipeAsync(_funcStepAsync);
 
-                actual.Should().BeOfType<PipelineNoInputBuilderAsync<double, string>>();
+                actual.ShouldBeOfType<PipelineNoInputBuilderAsync<double, string>>();
             }
         }
 
@@ -536,8 +512,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = PipelineBuilderExtensions.PipeAsync(null, _stepAsyncDummy);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -548,8 +523,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = _builderNoInputAsyncDummy.PipeAsync((IPipelineStepAsync<double, string>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -558,7 +532,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderNoInputAsyncDummy.PipeAsync(_stepAsyncDummy);
 
-                actual.Should().BeOfType<PipelineNoInputBuilderAsync<double, string>>();
+                actual.ShouldBeOfType<PipelineNoInputBuilderAsync<double, string>>();
             }
         }
 
@@ -571,8 +545,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = PipelineBuilderExtensions.PipeAsync<StepAsyncDummy, double, string>(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -581,7 +554,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderNoInputAsyncDummy.PipeAsync<StepAsyncDummy, double, string>();
 
-                actual.Should().BeOfType<PipelineNoInputBuilderAsync<double, string>>();
+                actual.ShouldBeOfType<PipelineNoInputBuilderAsync<double, string>>();
             }
         }
 
@@ -598,8 +571,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilderAsync<double>) null).Pipe(_funcStep);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -610,8 +582,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = _builderNoInputAsyncDummy.Pipe((Func<double, string>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -620,7 +591,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderNoInputAsyncDummy.Pipe(_funcStep);
 
-                actual.Should().BeOfType<PipelineNoInputBuilderAsync<double, string>>();
+                actual.ShouldBeOfType<PipelineNoInputBuilderAsync<double, string>>();
             }
 
             [Fact]
@@ -637,7 +608,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 
                 var actual = await pipe.Invoke(CancellationToken.None);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Fact]
@@ -655,8 +626,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 
                     var actual = await pipe.Invoke(cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
         }
 
@@ -669,8 +639,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilderAsync<double>) null).Pipe(_stepDummy);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -681,8 +650,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = _builderNoInputAsyncDummy.Pipe((IPipelineStep<double, string>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -691,7 +659,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderNoInputAsyncDummy.Pipe(_stepDummy);
 
-                actual.Should().BeOfType<PipelineNoInputBuilderAsync<double, string>>();
+                actual.ShouldBeOfType<PipelineNoInputBuilderAsync<double, string>>();
             }
         }
 
@@ -704,8 +672,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 {
                     _ = ((IPipelineBuilderAsync<double>) null).Pipe<StepDummy, double, string>();
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
@@ -714,10 +681,13 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
             {
                 var actual = _builderNoInputAsyncDummy.Pipe<StepDummy, double, string>();
 
-                actual.Should().BeOfType<PipelineNoInputBuilderAsync<double, string>>();
+                actual.ShouldBeOfType<PipelineNoInputBuilderAsync<double, string>>();
             }
         }
 
         #endregion
     }
 }
+
+
+

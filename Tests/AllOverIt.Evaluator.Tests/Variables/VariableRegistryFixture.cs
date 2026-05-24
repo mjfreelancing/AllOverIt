@@ -1,4 +1,4 @@
-using AllOverIt.Evaluator.Exceptions;
+﻿using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Tests.Variables.Dummies;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Extensions;
@@ -6,7 +6,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 using System.Collections;
 
 namespace AllOverIt.Evaluator.Tests.Variables
@@ -25,9 +25,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Variable_Null()
             {
-                Invoking(() => _registry.AddVariable(null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _registry.AddVariable(null))
                     .WithNamedMessageWhenNull("variable");
             }
 
@@ -41,9 +39,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _registry.AddVariable(variable.FakedObject);
 
-                Invoking(() => _registry.AddVariable(variable.FakedObject))
-                    .Should()
-                    .Throw<VariableException>()
+                Should.Throw<VariableException>(() => _registry.AddVariable(variable.FakedObject))
                     .WithMessage("The variable 'xyz' is already registered.");
             }
 
@@ -57,9 +53,9 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _registry.AddVariable(variable.FakedObject);
 
-                _registry.TryGetVariable(name, out var actual).Should().BeTrue();
+                _registry.TryGetVariable(name, out var actual).ShouldBeTrue();
 
-                actual.Should().BeSameAs(variable.FakedObject);
+                actual.ShouldBeSameAs(variable.FakedObject);
             }
 
             [Fact]
@@ -69,7 +65,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _registry.AddVariable(variable);
 
-                variable.VariableRegistry.Should().BeSameAs(_registry);
+                variable.VariableRegistry.ShouldBeSameAs(_registry);
             }
         }
 
@@ -78,12 +74,10 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Variables_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _registry.AddVariables(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("variables");
             }
 
@@ -106,9 +100,9 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 foreach (var (name, index) in names.WithIndex())
                 {
-                    _registry.TryGetVariable(name, out var actual).Should().BeTrue();
+                    _registry.TryGetVariable(name, out var actual).ShouldBeTrue();
 
-                    actual.Should().BeSameAs(variables[index]);
+                    actual.ShouldBeSameAs(variables[index]);
                 }
             }
         }
@@ -128,9 +122,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var name = Create<string>();
 
-                Invoking(() => _registry.GetValue(name))
-                    .Should()
-                    .Throw<VariableException>()
+                Should.Throw<VariableException>(() => { _registry.GetValue(name); })
                     .WithMessage($"The variable '{name}' is not registered");
             }
 
@@ -148,7 +140,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var actual = _registry.GetValue(name);
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
         }
 
@@ -167,9 +159,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var name = Create<string>();
 
-                Invoking(() => _registry.SetValue(name, Create<double>()))
-                    .Should()
-                    .Throw<VariableException>()
+                Should.Throw<VariableException>(() => _registry.SetValue(name, Create<double>()))
                     .WithMessage($"The variable '{name}' is not registered");
             }
 
@@ -181,9 +171,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _registry.AddVariable(variable);
 
-                Invoking(() => _registry.SetValue(name, Create<double>()))
-                    .Should()
-                    .Throw<VariableImmutableException>()
+                Should.Throw<VariableImmutableException>(() => _registry.SetValue(name, Create<double>()))
                     .WithMessage($"The variable '{name}' is not mutable");
             }
 
@@ -198,7 +186,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _registry.SetValue(name, value);
 
-                variable.Value.Should().Be(value);
+                variable.Value.ShouldBe(value);
             }
         }
 
@@ -211,11 +199,11 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _registry.AddVariable(variable);
 
-                _registry.Should().HaveCount(1);
+                _registry.Count().ShouldBe(1);
 
                 _registry.Clear();
 
-                _registry.Should().HaveCount(0);
+                _registry.Count().ShouldBe(0);
             }
         }
 
@@ -224,9 +212,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Name_Null()
             {
-                Invoking(() => _registry.TryGetVariable(null, out var variable))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => { _registry.TryGetVariable(null, out _); })
                     .WithNamedMessageWhenNull("name");
             }
 
@@ -240,15 +226,15 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _registry.AddVariable(variable.FakedObject);
 
-                _registry.TryGetVariable(name, out var actual).Should().BeTrue();
+                _registry.TryGetVariable(name, out var actual).ShouldBeTrue();
 
-                actual.Should().BeSameAs(variable.FakedObject);
+                actual.ShouldBeSameAs(variable.FakedObject);
             }
 
             [Fact]
             public void Should_Not_Try_Get_Variable()
             {
-                _registry.TryGetVariable(Create<string>(), out var actual).Should().BeFalse();
+                _registry.TryGetVariable(Create<string>(), out var actual).ShouldBeFalse();
             }
         }
 
@@ -257,9 +243,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Name_Null()
             {
-                Invoking(() => _registry.GetVariable(null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => { _ = _registry.GetVariable(null); })
                     .WithNamedMessageWhenNull("name");
             }
 
@@ -275,7 +259,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var actual = _registry.GetVariable(name);
 
-                actual.Should().BeSameAs(variable.FakedObject);
+                actual.ShouldBeSameAs(variable.FakedObject);
             }
 
             [Fact]
@@ -283,12 +267,10 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<VariableException>(() =>
                 {
                     _ = _registry.GetVariable(name);
                 })
-                .Should()
-                .Throw<VariableException>()
                 .WithMessage($"The variable '{name}' is not registered");
             }
         }
@@ -298,9 +280,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Name_Null()
             {
-                Invoking(() => _registry.ContainsVariable(null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => { _registry.ContainsVariable(null); })
                     .WithNamedMessageWhenNull("name");
             }
 
@@ -316,7 +296,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var actual = _registry.ContainsVariable(name);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -324,7 +304,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var actual = _registry.ContainsVariable(Create<string>());
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -351,7 +331,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 {
                     var actual = kvp.Value;
 
-                    actual.Should().BeSameAs(variables[index]);
+                    actual.ShouldBeSameAs(variables[index]);
                 }
             }
         }
@@ -377,13 +357,13 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var index = 0;
 
-                foreach (var kvp in ((IEnumerable) _registry))
+                foreach (var kvp in ((IEnumerable)_registry))
                 {
-                    var item = (KeyValuePair<string, IVariable>) kvp;
+                    var item = (KeyValuePair<string, IVariable>)kvp;
 
                     var actual = item.Value;
 
-                    actual.Should().BeSameAs(variables[index++]);
+                    actual.ShouldBeSameAs(variables[index++]);
                 }
             }
         }

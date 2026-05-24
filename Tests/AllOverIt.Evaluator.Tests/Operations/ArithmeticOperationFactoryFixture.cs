@@ -2,8 +2,10 @@
 using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Tests.Operations
@@ -23,7 +25,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
             public void Should_Register_Default_Operations()
             {
                 var expected = new[] { "+", "-", "*", "/", "%", "^" };
-                expected.Should().BeEquivalentTo(_operationFactory.RegisteredOperations);
+                expected.ShouldBeEquivalentTo(_operationFactory.RegisteredOperations);
             }
         }
 
@@ -75,8 +77,8 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 var creator = operation._creator.Invoke(expressions.Cast<Expression>().ToArray());
 
-                operation.Precedence.Should().Be(precedence);
-                creator.Should().BeOfType<TOperation>();
+                operation.Precedence.ShouldBe(precedence);
+                creator.ShouldBeOfType<TOperation>();
             }
         }
 
@@ -91,7 +93,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 var actual = _operationFactory.TryRegisterOperation("xyz", Create<int>(), Create<int>(), Creator);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -104,10 +106,10 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 _operationFactory.RegisterOperation("xyz", Create<int>(), Create<int>(), Creator);
 
-                Invoking(
-                        () => _operationFactory.RegisterOperation("xyz", Create<int>(), Create<int>(), Creator))
-                    .Should()
-                    .Throw<OperationFactoryException>()
+                Should.Throw<OperationFactoryException>(() =>
+                        {
+                            _operationFactory.RegisterOperation("xyz", Create<int>(), Create<int>(), Creator);
+                        })
                     .WithMessage("Operation already registered for the 'xyz' operator.");
             }
 
@@ -128,10 +130,10 @@ namespace AllOverIt.Evaluator.Tests.Operations
                 {
                     ArgumentCount = arguments,
                     Precedence = precedence,
-                    Creator = (Func<Expression[], IOperator>) Creator
+                    Creator = (Func<Expression[], IOperator>)Creator
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
         }
 
@@ -147,7 +149,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 var creator = operation._creator.Invoke(expressions.Cast<Expression>().ToArray());
 
-                creator.Should().BeOfType<AddOperator>();
+                creator.ShouldBeOfType<AddOperator>();
             }
 
             [Fact]
@@ -156,15 +158,13 @@ namespace AllOverIt.Evaluator.Tests.Operations
                 var operation1 = _operationFactory.GetOperation("+");
                 var operation2 = _operationFactory.GetOperation("+");
 
-                operation1.Should().BeSameAs(operation2);
+                operation1.ShouldBeSameAs(operation2);
             }
 
             [Fact]
             public void Should_Throw_When_Operation_Not_Registered()
             {
-                Invoking(() => _operationFactory.GetOperation("xyz"))
-                    .Should()
-                    .Throw<OperationFactoryException>()
+                Should.Throw<OperationFactoryException>(() => _operationFactory.GetOperation("xyz"))
                     .WithMessage("Operation not found for the 'xyz' operator");
             }
         }

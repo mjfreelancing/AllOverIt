@@ -2,8 +2,8 @@
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 using System.Linq.Expressions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Expressions
 {
@@ -19,8 +19,7 @@ namespace AllOverIt.Tests.Expressions
                 var actual = ExpressionUtils.CreateParameterizedValue<int>(expected);
 
                 actual.GetValue()
-                    .Should()
-                    .Be(expected);
+                    .ShouldBe(expected);
             }
 
             [Fact]
@@ -29,8 +28,7 @@ namespace AllOverIt.Tests.Expressions
                 var actual = ExpressionUtils.CreateParameterizedValue<int?>(default);
 
                 actual.GetValue()
-                    .Should()
-                    .BeNull();
+                    .ShouldBeNull();
             }
 
             [Fact]
@@ -41,8 +39,7 @@ namespace AllOverIt.Tests.Expressions
                 var actual = ExpressionUtils.CreateParameterizedValue<string>(expected);
 
                 actual.GetValue()
-                    .Should()
-                    .Be(expected);
+                    .ShouldBe(expected);
             }
 
             [Fact]
@@ -51,8 +48,7 @@ namespace AllOverIt.Tests.Expressions
                 var actual = ExpressionUtils.CreateParameterizedValue<string>(default);
 
                 actual.GetValue()
-                    .Should()
-                    .BeNull();
+                    .ShouldBeNull();
             }
         }
 
@@ -65,8 +61,7 @@ namespace AllOverIt.Tests.Expressions
                 {
                     _ = ExpressionUtils.CreateParameterizedValue((string) default, null);
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithMessage("The value type must be provided when creating a parameterized value expression.");
             }
 
@@ -78,8 +73,7 @@ namespace AllOverIt.Tests.Expressions
                 var actual = ExpressionUtils.CreateParameterizedValue(expected, null);
 
                 actual.GetValue()
-                    .Should()
-                    .Be(expected);
+                    .ShouldBe(expected);
             }
 
             [Fact]
@@ -90,8 +84,7 @@ namespace AllOverIt.Tests.Expressions
                 var actual = ExpressionUtils.CreateParameterizedValue(expected, null);
 
                 actual.GetValue()
-                    .Should()
-                    .Be(expected);
+                    .ShouldBe(expected);
             }
 
             [Fact]
@@ -102,8 +95,7 @@ namespace AllOverIt.Tests.Expressions
                 var actual = ExpressionUtils.CreateParameterizedValue(expected, typeof(int));
 
                 actual.GetValue()
-                    .Should()
-                    .Be(expected);
+                    .ShouldBe(expected);
             }
 
             [Fact]
@@ -112,8 +104,7 @@ namespace AllOverIt.Tests.Expressions
                 var actual = ExpressionUtils.CreateParameterizedValue(null, typeof(int?));
 
                 actual.GetValue()
-                    .Should()
-                    .BeNull();
+                    .ShouldBeNull();
             }
 
             [Fact]
@@ -124,8 +115,7 @@ namespace AllOverIt.Tests.Expressions
                 var actual = ExpressionUtils.CreateParameterizedValue(expected, typeof(string));
 
                 actual.GetValue()
-                    .Should()
-                    .Be(expected);
+                    .ShouldBe(expected);
             }
 
             [Fact]
@@ -134,8 +124,7 @@ namespace AllOverIt.Tests.Expressions
                 var actual = ExpressionUtils.CreateParameterizedValue(null, typeof(string));
 
                 actual.GetValue()
-                    .Should()
-                    .BeNull();
+                    .ShouldBeNull();
             }
         }
 
@@ -148,8 +137,7 @@ namespace AllOverIt.Tests.Expressions
                 {
                     ExpressionUtils.CreateParameterExpressions(null).ToList();
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("parameterTypes");
             }
 
@@ -160,8 +148,7 @@ namespace AllOverIt.Tests.Expressions
                 {
                     ExpressionUtils.CreateParameterExpressions(Type.EmptyTypes).ToList();
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("parameterTypes");
             }
 
@@ -172,7 +159,7 @@ namespace AllOverIt.Tests.Expressions
                     .CreateParameterExpressions(new[] { typeof(int), typeof(double), typeof(string) })
                     .ToList();
 
-                actual.Should().BeEquivalentTo(new[]
+                actual.ShouldBeEquivalentTo(new[]
                 {
                     Expression.Parameter(typeof(int), "t1"),
                     Expression.Parameter(typeof(double), "t2"),
@@ -197,8 +184,7 @@ namespace AllOverIt.Tests.Expressions
                 {
                     ExpressionUtils.GetConstructorWithParameters(null, [typeof(double)]);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("type");
             }
 
@@ -209,8 +195,7 @@ namespace AllOverIt.Tests.Expressions
                 {
                     ExpressionUtils.GetConstructorWithParameters(typeof(DummyType), null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("paramTypes");
             }
 
@@ -221,8 +206,7 @@ namespace AllOverIt.Tests.Expressions
                 {
                     ExpressionUtils.GetConstructorWithParameters(typeof(DummyType), Type.EmptyTypes);
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("paramTypes");
             }
 
@@ -237,11 +221,11 @@ namespace AllOverIt.Tests.Expressions
                     Expression.Parameter(typeof(string), "t2")
                 };
 
-                actual.NewExpression.Should().BeOfType<NewExpression>();
-                actual.NewExpression.Type.Should().Be(typeof(DummyType));
-                actual.NewExpression.Arguments.Should().BeEquivalentTo(expectedParameters);
+                actual.NewExpression.ShouldBeOfType<NewExpression>();
+                actual.NewExpression.Type.ShouldBe(typeof(DummyType));
+                actual.NewExpression.Arguments.ShouldBeEquivalentTo(expectedParameters);
 
-                actual.ParameterExpressions.Should().BeEquivalentTo(expectedParameters);
+                actual.ParameterExpressions.ShouldBeEquivalentTo(expectedParameters);
             }
         }
 
@@ -261,8 +245,7 @@ namespace AllOverIt.Tests.Expressions
                 {
                     ExpressionUtils.GetConstructorWithParametersAsObjects(null, [typeof(double)]);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("type");
             }
 
@@ -273,8 +256,7 @@ namespace AllOverIt.Tests.Expressions
                 {
                     ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(DummyType), null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("paramTypes");
             }
 
@@ -285,8 +267,7 @@ namespace AllOverIt.Tests.Expressions
                 {
                     ExpressionUtils.GetConstructorWithParametersAsObjects(typeof(DummyType), Type.EmptyTypes);
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("paramTypes");
             }
 
@@ -307,12 +288,19 @@ namespace AllOverIt.Tests.Expressions
                     Expression.TypeAs(expectedParameters[1], typeof(string))    // Cast
                 };
 
-                actual.NewExpression.Should().BeOfType<NewExpression>();
-                actual.NewExpression.Type.Should().Be(typeof(DummyType));
-                actual.NewExpression.Arguments.Should().BeEquivalentTo(expectedConstructorParameters);
+                actual.NewExpression.ShouldBeOfType<NewExpression>();
+                actual.NewExpression.Type.ShouldBe(typeof(DummyType));
+                actual.NewExpression.Arguments.ShouldBeEquivalentTo(expectedConstructorParameters);
 
-                actual.ParameterExpressions.Should().BeEquivalentTo(expectedParameters);
+                actual.ParameterExpressions.ShouldBeEquivalentTo(expectedParameters);
             }
         }
     }
 }
+
+
+
+
+
+
+

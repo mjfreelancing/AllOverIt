@@ -2,7 +2,6 @@ using AllOverIt.Expressions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Expressions
@@ -16,8 +15,7 @@ namespace AllOverIt.Tests.Expressions
             {
                 Invoking(
                     () => ParameterRebinder.ReplaceParameters(null, this.CreateStub<Expression>()))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("parameterMap");
             }
 
@@ -26,8 +24,7 @@ namespace AllOverIt.Tests.Expressions
             {
                 Invoking(
                     () => ParameterRebinder.ReplaceParameters(new Dictionary<ParameterExpression, ParameterExpression>(), null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("expression");
             }
 
@@ -52,13 +49,16 @@ namespace AllOverIt.Tests.Expressions
                 var originalBody1 = expression1.Body.ToString();
                 var originalBody2 = expression2.Body.ToString();
 
-                originalBody1.Should().Be("(val1 < 50)");
-                originalBody2.Should().Be("(val2 > 100)");
+                originalBody1.ShouldBe("(val1 < 50)");
+                originalBody2.ShouldBe("(val2 > 100)");
 
                 var actualBody = secondBody.ToString();
 
-                actualBody.Should().Be("(val1 > 100)");
+                actualBody.ShouldBe("(val1 > 100)");
             }
         }
     }
 }
+
+
+

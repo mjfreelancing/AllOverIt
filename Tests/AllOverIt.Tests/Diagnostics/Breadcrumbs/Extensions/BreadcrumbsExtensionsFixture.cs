@@ -1,8 +1,9 @@
-﻿using AllOverIt.Diagnostics.Breadcrumbs.Extensions;
+﻿using AllOverIt.Diagnostics.Breadcrumbs;
+using AllOverIt.Diagnostics.Breadcrumbs.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 using System.Runtime.CompilerServices;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
 {
@@ -16,8 +17,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_Breadcrumbs_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.AddCallSite(null, this))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("breadcrumbs");
             }
 
@@ -25,8 +25,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_Caller_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("caller");
             }
 
@@ -42,8 +41,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Not_Throw_When_Metadata_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.AddCallSite(_breadcrumbs, this, null))
-                  .Should()
-                  .NotThrow();
+                  .ShouldNotThrow();
             }
 
             [Fact]
@@ -68,13 +66,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(
-                        actual,
-                        options => options
-                            .Excluding(model => model.Timestamp)
-                            .Excluding(model => model.TimestampUtc));
+                actual.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMember(nameof(BreadcrumbData.Timestamp)).ExcludeMember(nameof(BreadcrumbData.TimestampUtc)));
             }
 
             [Fact]
@@ -105,13 +97,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(
-                        actual,
-                        options => options
-                            .Excluding(model => model.Timestamp)
-                            .Excluding(model => model.TimestampUtc));
+                actual.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMember(nameof(BreadcrumbData.Timestamp)).ExcludeMember(nameof(BreadcrumbData.TimestampUtc)));
             }
 
             [Fact]
@@ -144,13 +130,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(
-                        actual,
-                        options => options
-                            .Excluding(model => model.Timestamp)
-                            .Excluding(model => model.TimestampUtc));
+                actual.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMember(nameof(BreadcrumbData.Timestamp)).ExcludeMember(nameof(BreadcrumbData.TimestampUtc)));
             }
         }
 
@@ -160,8 +140,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_Breadcrumbs_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.AddExtendedCallSite(null, this))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("breadcrumbs");
             }
 
@@ -169,8 +148,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_Caller_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("caller");
             }
 
@@ -186,8 +164,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Not_Throw_When_Metadata_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.AddExtendedCallSite(_breadcrumbs, this, null))
-                  .Should()
-                  .NotThrow();
+                  .ShouldNotThrow();
             }
 
             [Fact]
@@ -212,13 +189,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(
-                        actual,
-                        options => options
-                            .Excluding(model => model.Timestamp)
-                            .Excluding(model => model.TimestampUtc));
+                actual.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMember(nameof(BreadcrumbData.Timestamp)).ExcludeMember(nameof(BreadcrumbData.TimestampUtc)));
             }
         }
 
@@ -228,8 +199,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_Breadcrumbs_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.Add(null, Create<string>()))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("breadcrumbs");
             }
 
@@ -263,13 +233,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(
-                        actual,
-                        options => options
-                            .Excluding(model => model.Timestamp)
-                            .Excluding(model => model.TimestampUtc));
+                actual.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMember(nameof(BreadcrumbData.Timestamp)).ExcludeMember(nameof(BreadcrumbData.TimestampUtc)));
             }
         }
 
@@ -279,8 +243,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_Breadcrumbs_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.Add(null, Create<string>(), Create<int>()))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("breadcrumbs");
             }
 
@@ -296,8 +259,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_Metadata_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, Create<string>(), (object) null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("metadata");
             }
 
@@ -324,13 +286,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(
-                        actual,
-                        options => options
-                            .Excluding(model => model.Timestamp)
-                            .Excluding(model => model.TimestampUtc));
+                actual.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMember(nameof(BreadcrumbData.Timestamp)).ExcludeMember(nameof(BreadcrumbData.TimestampUtc)));
             }
         }
 
@@ -340,8 +296,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_Breadcrumbs_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.Add(null, this, Create<string>()))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("breadcrumbs");
             }
 
@@ -349,8 +304,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_Caller_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, (object) null, Create<string>()))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("caller");
             }
 
@@ -384,16 +338,10 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
-                actual.First().FilePath.Should().NotBeNullOrEmpty();
-                actual.First().LineNumber.Should().BeGreaterThan(0);
+                actual.First().FilePath.ShouldNotBeNullOrEmpty();
+                actual.First().LineNumber.ShouldBeGreaterThan(0);
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(
-                        actual,
-                        options => options
-                            .Excluding(model => model.Timestamp)
-                            .Excluding(model => model.TimestampUtc));
+                actual.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMember(nameof(BreadcrumbData.Timestamp)).ExcludeMember(nameof(BreadcrumbData.TimestampUtc)));
             }
 
             [Fact]
@@ -418,16 +366,10 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
-                actual.First().FilePath.Should().NotBeNullOrEmpty();
-                actual.First().LineNumber.Should().BeGreaterThan(0);
+                actual.First().FilePath.ShouldNotBeNullOrEmpty();
+                actual.First().LineNumber.ShouldBeGreaterThan(0);
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(
-                        actual,
-                        options => options
-                            .Excluding(model => model.Timestamp)
-                            .Excluding(model => model.TimestampUtc));
+                actual.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMember(nameof(BreadcrumbData.Timestamp)).ExcludeMember(nameof(BreadcrumbData.TimestampUtc)));
             }
 
             [Fact]
@@ -453,16 +395,10 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
-                actual.First().FilePath.Should().NotBeNullOrEmpty();
-                actual.First().LineNumber.Should().BeGreaterThan(0);
+                actual.First().FilePath.ShouldNotBeNullOrEmpty();
+                actual.First().LineNumber.ShouldBeGreaterThan(0);
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(
-                        actual,
-                        options => options
-                            .Excluding(model => model.Timestamp)
-                            .Excluding(model => model.TimestampUtc));
+                actual.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMember(nameof(BreadcrumbData.Timestamp)).ExcludeMember(nameof(BreadcrumbData.TimestampUtc)));
             }
         }
 
@@ -483,8 +419,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_Breadcrumbs_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.Add(null, this, Create<string>(), _metadata))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("breadcrumbs");
             }
 
@@ -492,8 +427,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             public void Should_Throw_When_Caller_Null()
             {
                 Invoking(() => BreadcrumbsExtensions.Add(_breadcrumbs, (object) null, Create<string>(), _metadata))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("caller");
             }
 
@@ -530,16 +464,10 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
-                actual.First().FilePath.Should().NotBeNullOrEmpty();
-                actual.First().LineNumber.Should().BeGreaterThan(0);
+                actual.First().FilePath.ShouldNotBeNullOrEmpty();
+                actual.First().LineNumber.ShouldBeGreaterThan(0);
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(
-                        actual,
-                        options => options
-                            .Excluding(model => model.Timestamp)
-                            .Excluding(model => model.TimestampUtc));
+                actual.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMember(nameof(BreadcrumbData.Timestamp)).ExcludeMember(nameof(BreadcrumbData.TimestampUtc)));
             }
 
             [Fact]
@@ -564,16 +492,10 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
-                actual.First().FilePath.Should().NotBeNullOrEmpty();
-                actual.First().LineNumber.Should().BeGreaterThan(0);
+                actual.First().FilePath.ShouldNotBeNullOrEmpty();
+                actual.First().LineNumber.ShouldBeGreaterThan(0);
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(
-                        actual,
-                        options => options
-                            .Excluding(model => model.Timestamp)
-                            .Excluding(model => model.TimestampUtc));
+                actual.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMember(nameof(BreadcrumbData.Timestamp)).ExcludeMember(nameof(BreadcrumbData.TimestampUtc)));
             }
 
             [Fact]
@@ -599,16 +521,10 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                     }
                 };
 
-                actual.First().FilePath.Should().NotBeNullOrEmpty();
-                actual.First().LineNumber.Should().BeGreaterThan(0);
+                actual.First().FilePath.ShouldNotBeNullOrEmpty();
+                actual.First().LineNumber.ShouldBeGreaterThan(0);
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(
-                        actual,
-                        options => options
-                            .Excluding(model => model.Timestamp)
-                            .Excluding(model => model.TimestampUtc));
+                actual.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMember(nameof(BreadcrumbData.Timestamp)).ExcludeMember(nameof(BreadcrumbData.TimestampUtc)));
             }
         }
 
@@ -622,8 +538,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                 {
                     BreadcrumbsExtensions.AddBreadcrumb(_breadcrumbs, null, Create<string>(), Create<string>(), Create<string>());
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
+                .ShouldThrow<InvalidOperationException>()
                 .WithMessage("Cannot have a null caller instance.");
             }
 
@@ -634,8 +549,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                 {
                     BreadcrumbsExtensions.AddBreadcrumb(_breadcrumbs, this, Create<string>(), Create<string>(), null);
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
+                .ShouldThrow<InvalidOperationException>()
                 .WithMessage("Cannot have a null caller name.");
             }
         }
@@ -651,3 +565,10 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
         }
     }
 }
+
+
+
+
+
+
+

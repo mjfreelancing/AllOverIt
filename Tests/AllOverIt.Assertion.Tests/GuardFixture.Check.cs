@@ -1,6 +1,6 @@
-﻿using AllOverIt.Assertion;
+using AllOverIt.Assertion;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Tests.Assertion
 {
@@ -13,12 +13,10 @@ namespace AllOverIt.Tests.Assertion
             {
                 DummyClass dummy = null;
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotNull(dummy);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenNull(nameof(dummy));
             }
 
@@ -27,14 +25,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         DummyClass dummy = null;
 
                         Guard.CheckNotNull(dummy, name);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenNull(name);
             }
 
@@ -45,28 +41,24 @@ namespace AllOverIt.Tests.Assertion
 
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         DummyClass dummy = null;
 
                         Guard.CheckNotNull(dummy, name, errorMessage);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenNull(name, errorMessage);
             }
 
             [Fact]
             public void Should_Not_Throw()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = new DummyClass();
 
                         Guard.CheckNotNull(dummy, Create<string>());
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
         }
 
@@ -77,12 +69,10 @@ namespace AllOverIt.Tests.Assertion
             {
                 var dummy = Create<DummyClass>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckIsNull(dummy);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenNotNull(nameof(dummy));
             }
 
@@ -91,14 +81,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         var dummy = Create<DummyClass>();
 
                         Guard.CheckIsNull(dummy, name);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenNotNull(name);
             }
 
@@ -109,26 +97,22 @@ namespace AllOverIt.Tests.Assertion
 
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         var dummy = Create<DummyClass>();
 
                         Guard.CheckIsNull(dummy, name, errorMessage);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenNotNull(name, errorMessage);
             }
 
             [Fact]
             public void Should_Not_Throw()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         Guard.CheckIsNull((DummyClass)null, Create<string>());
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
         }
 
@@ -139,12 +123,10 @@ namespace AllOverIt.Tests.Assertion
             {
                 IEnumerable<DummyClass> dummy = null;
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotNullOrEmpty(dummy);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenNull(nameof(dummy));
             }
 
@@ -153,14 +135,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         IEnumerable<DummyClass> dummy = null;
 
                         Guard.CheckNotNullOrEmpty(dummy, name);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenNull(name);
             }
 
@@ -171,14 +151,12 @@ namespace AllOverIt.Tests.Assertion
 
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         IEnumerable<DummyClass> dummy = null;
 
                         Guard.CheckNotNullOrEmpty(dummy, name, errorMessage);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenNull(name, errorMessage);
             }
 
@@ -188,12 +166,10 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = new List<DummyClass>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotNullOrEmpty(expected, name);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenEmpty(name);
             }
 
@@ -205,26 +181,22 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = new List<DummyClass>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotNullOrEmpty(expected, name, errorMessage);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenEmpty(name, errorMessage);
             }
 
             [Fact]
             public void Should_Not_Throw()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = new List<DummyClass> { new DummyClass() };
 
                         Guard.CheckNotNullOrEmpty(dummy, Create<string>());
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -232,14 +204,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = new List<DummyClass> { new DummyClass() };
 
                         Guard.CheckNotNullOrEmpty(dummy, Create<string>(), errorMessage);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
         }
 
@@ -250,14 +220,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         IEnumerable<DummyClass> dummy = null;
 
                         Guard.CheckNotEmpty(dummy, name);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -265,12 +233,10 @@ namespace AllOverIt.Tests.Assertion
             {
                 var expected = new List<DummyClass>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotEmpty(expected);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenEmpty(nameof(expected));
             }
 
@@ -280,12 +246,10 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = new List<DummyClass>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotEmpty(expected, name);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenEmpty(name);
             }
 
@@ -297,26 +261,22 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = new List<DummyClass>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotEmpty(expected, name, errorMessage);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenEmpty(name, errorMessage);
             }
 
             [Fact]
             public void Should_Not_Throw()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = new List<DummyClass> { new DummyClass() };
 
                         Guard.CheckNotEmpty(dummy, Create<string>());
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -324,14 +284,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = new List<DummyClass> { new DummyClass() };
 
                         Guard.CheckNotEmpty(dummy, Create<string>(), errorMessage);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
         }
 
@@ -342,12 +300,10 @@ namespace AllOverIt.Tests.Assertion
             {
                 string dummy = null;
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotNullOrEmpty(dummy);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenNull(nameof(dummy));
             }
 
@@ -356,14 +312,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         string dummy = null;
 
                         Guard.CheckNotNullOrEmpty(dummy, name);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenNull(name);
             }
 
@@ -374,14 +328,12 @@ namespace AllOverIt.Tests.Assertion
 
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         string dummy = null;
 
                         Guard.CheckNotNullOrEmpty(dummy, name, errorMessage);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenNull(name, errorMessage);
             }
 
@@ -391,12 +343,10 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotNullOrEmpty(expected, name);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenEmpty(name);
             }
 
@@ -408,26 +358,22 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotNullOrEmpty(expected, name, errorMessage);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenEmpty(name, errorMessage);
             }
 
             [Fact]
             public void Should_Not_Throw()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = Create<string>();
 
                         Guard.CheckNotNullOrEmpty(dummy, Create<string>());
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -435,14 +381,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = Create<string>();
 
                         Guard.CheckNotNullOrEmpty(dummy, Create<string>(), errorMessage);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
         }
 
@@ -453,14 +397,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         string dummy = null;
 
                         Guard.CheckNotEmpty(dummy, name);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -468,12 +410,10 @@ namespace AllOverIt.Tests.Assertion
             {
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotEmpty(expected);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenEmpty(nameof(expected));
             }
 
@@ -483,12 +423,10 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotEmpty(expected, name);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenEmpty(name);
             }
 
@@ -500,26 +438,22 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                     {
                         Guard.CheckNotEmpty(expected, name, errorMessage);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
                     .WithNamedMessageWhenEmpty(name, errorMessage);
             }
 
             [Fact]
             public void Should_Not_Throw()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = Create<string>();
 
                         Guard.CheckNotEmpty(dummy, Create<string>());
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -527,14 +461,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = Create<string>();
 
                         Guard.CheckNotEmpty(dummy, Create<string>(), errorMessage);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
         }
     }

@@ -2,7 +2,7 @@
 using AllOverIt.Cryptography.RSA;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Cryptography.Tests.Extensions
 {
@@ -15,26 +15,22 @@ namespace AllOverIt.Cryptography.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = RsaKeyPairExtensions.GetPublicKeyAsBase64(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("rsaKeyPair");
             }
 
             [Fact]
             public void Should_Throw_When_PublicKey_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                 {
                     var rsaKeyPair = new RsaKeyPair(null, _rsaKeyPair.PrivateKey);
 
                     _ = rsaKeyPair.GetPublicKeyAsBase64();
                 })
-                .Should()
-                .Throw<ArgumentException>()
                 .WithMessage("The public key cannot be null.");
             }
 
@@ -45,7 +41,7 @@ namespace AllOverIt.Cryptography.Tests.Extensions
 
                 var actual = RsaKeyPairExtensions.GetPublicKeyAsBase64(_rsaKeyPair);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -54,26 +50,22 @@ namespace AllOverIt.Cryptography.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = RsaKeyPairExtensions.GetPrivateKeyAsBase64(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("rsaKeyPair");
             }
 
             [Fact]
             public void Should_Throw_When_PrivateKey_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                 {
                     var rsaKeyPair = new RsaKeyPair(_rsaKeyPair.PublicKey, null);
 
                     _ = rsaKeyPair.GetPrivateKeyAsBase64();
                 })
-                .Should()
-                .Throw<ArgumentException>()
                 .WithMessage("The private key cannot be null.");
             }
 
@@ -84,7 +76,7 @@ namespace AllOverIt.Cryptography.Tests.Extensions
 
                 var actual = RsaKeyPairExtensions.GetPrivateKeyAsBase64(_rsaKeyPair);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }

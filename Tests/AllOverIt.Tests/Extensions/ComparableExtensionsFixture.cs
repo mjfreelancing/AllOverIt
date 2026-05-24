@@ -1,6 +1,6 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -42,7 +42,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Val1.LessThan(Sum);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -50,7 +50,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Sum.LessThan(Val1);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -58,7 +58,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Val1.LessThan(Val1);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -69,7 +69,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Val1.LessThanOrEqual(Sum);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -77,7 +77,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Sum.LessThanOrEqual(Val1);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -85,7 +85,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Val1.LessThanOrEqual(Val1);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -96,7 +96,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Sum.GreaterThan(Val1);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -104,7 +104,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Val1.GreaterThan(Sum);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -112,7 +112,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Val1.GreaterThan(Val1);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -123,7 +123,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Sum.GreaterThanOrEqual(Val1);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -131,7 +131,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Val1.GreaterThanOrEqual(Sum);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -139,7 +139,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Val1.GreaterThanOrEqual(Val1);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -150,7 +150,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Val1.EqualTo(Val1);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -158,7 +158,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Val2.EqualTo(Val1);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -169,7 +169,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Val1.NotEqualTo(Sum);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -177,8 +177,15 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Val1.NotEqualTo(Val1);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
     }
 }
+
+
+
+
+
+
+

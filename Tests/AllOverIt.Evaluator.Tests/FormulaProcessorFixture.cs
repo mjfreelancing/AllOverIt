@@ -1,4 +1,4 @@
-using AllOverIt.Evaluator.Exceptions;
+﻿using AllOverIt.Evaluator.Exceptions;
 using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Evaluator.Variables;
@@ -6,7 +6,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Tests
@@ -32,19 +32,19 @@ namespace AllOverIt.Evaluator.Tests
             [Fact]
             public void Should_Define_Custom_Token_UserMethod()
             {
-                FormulaProcessor.CustomTokens.UserMethod.Should().Be("$1");
+                FormulaProcessor.CustomTokens.UserMethod.ShouldBe("$1");
             }
 
             [Fact]
             public void Should_Define_Custom_Token_UnaryMinus()
             {
-                FormulaProcessor.CustomTokens.UnaryMinus.Should().Be("$2");
+                FormulaProcessor.CustomTokens.UnaryMinus.ShouldBe("$2");
             }
 
             [Fact]
             public void Should_Define_Custom_Token_OpenScope()
             {
-                FormulaProcessor.CustomTokens.OpenScope.Should().Be("(");
+                FormulaProcessor.CustomTokens.OpenScope.ShouldBe("(");
             }
         }
 
@@ -53,19 +53,17 @@ namespace AllOverIt.Evaluator.Tests
             [Fact]
             public void Should_Throw_When_Operation_Factory_Null()
             {
-                Invoking(() => _formulaProcessor = new FormulaProcessor(null, this.CreateStub<IUserDefinedMethodFactory>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("operationFactory");
+                var exception = Should.Throw<ArgumentNullException>(() => _formulaProcessor = new FormulaProcessor(null, this.CreateStub<IUserDefinedMethodFactory>()));
+
+                exception.WithNamedMessageWhenNull("operationFactory");
             }
 
             [Fact]
             public void Should_Throw_When_User_Method_Factory_Null()
             {
-                Invoking(() => _formulaProcessor = new FormulaProcessor(this.CreateStub<IArithmeticOperationFactory>(), null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("userDefinedMethodFactory");
+                var exception = Should.Throw<ArgumentNullException>(() => _formulaProcessor = new FormulaProcessor(this.CreateStub<IArithmeticOperationFactory>(), null));
+
+                exception.WithNamedMessageWhenNull("userDefinedMethodFactory");
             }
 
             [Fact]
@@ -90,15 +88,8 @@ namespace AllOverIt.Evaluator.Tests
 
                 var negateOperator = operation.Invoke(new[] { expression }) as NegateOperator;
 
-                negateOperator.Should().NotBeNull();
-
-                var expected = new
-                {
-                    _operand = expression,
-                    OperatorType = default(Func<Expression, Expression>)
-                };
-
-                expected.Should().BeEquivalentTo(negateOperator, options => options.IncludingInternalFields());
+                negateOperator.ShouldNotBeNull();
+                negateOperator._operand.ShouldBeSameAs(expression);
             }
         }
 
@@ -122,9 +113,7 @@ namespace AllOverIt.Evaluator.Tests
             [Fact]
             public void Should_Not_Throw_When_VariableRegistry_Null()
             {
-                Invoking(() => _formulaProcessor.Process("1+1", null))
-                    .Should()
-                    .NotThrow();
+                Should.NotThrow(() => _formulaProcessor.Process("1+1", null));
             }
 
             [Fact]
@@ -132,9 +121,7 @@ namespace AllOverIt.Evaluator.Tests
             {
                 var result = _formulaProcessor.Process("1+1", null);
 
-                result.ReferencedVariableNames
-                    .Should()
-                    .BeEmpty();
+                result.ReferencedVariableNames.ShouldBeEmpty();
             }
 
             [Fact]
@@ -142,9 +129,7 @@ namespace AllOverIt.Evaluator.Tests
             {
                 var result = _formulaProcessor.Process("1+x", null);
 
-                result.ReferencedVariableNames
-                    .Should()
-                    .BeEquivalentTo("x");
+                ObjectGraphTestExtensions.ShouldBeEquivalentTo(result.ReferencedVariableNames, new[] { "x" });
             }
 
             [Fact]
@@ -152,9 +137,7 @@ namespace AllOverIt.Evaluator.Tests
             {
                 var result = _formulaProcessor.Process("x+x", null);
 
-                result.ReferencedVariableNames
-                    .Should()
-                    .BeEquivalentTo("x");
+                ObjectGraphTestExtensions.ShouldBeEquivalentTo(result.ReferencedVariableNames, new[] { "x" });
             }
 
             [Fact]
@@ -162,9 +145,7 @@ namespace AllOverIt.Evaluator.Tests
             {
                 var result = _formulaProcessor.Process("a+b", null);
 
-                result.ReferencedVariableNames
-                    .Should()
-                    .BeEquivalentTo("a", "b");
+                ObjectGraphTestExtensions.ShouldBeEquivalentTo(result.ReferencedVariableNames, new[] { "a", "b" });
             }
 
             [Fact]
@@ -172,51 +153,52 @@ namespace AllOverIt.Evaluator.Tests
             {
                 var result = _formulaProcessor.Process("a+round(b,c)/d", null);
 
-                result.ReferencedVariableNames
-                    .Should()
-                    .BeEquivalentTo("a", "b", "c", "d");
+                ObjectGraphTestExtensions.ShouldBeEquivalentTo(result.ReferencedVariableNames, new[] { "a", "b", "c", "d" });
             }
 
             [Fact]
             public void Should_Throw_When_Method_Is_Missing_Argument()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         _formulaProcessor.Process("round(b)", null);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 8, near 'round(b)'.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("The ROUND method expects 2 parameter(s).");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 8, near 'round(b)'.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("The ROUND method expects 2 parameter(s).");
             }
 
             [Fact]
             public void Should_Throw_When_Unary_Plus_Method_Is_Missing_Argument()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         _formulaProcessor.Process("+round(b)", null);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 9, near '+round(b)'.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("The ROUND method expects 2 parameter(s).");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 9, near '+round(b)'.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("The ROUND method expects 2 parameter(s).");
             }
 
             [Fact]
             public void Should_Throw_When_Unary_Minus_Method_Is_Missing_Argument()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         _formulaProcessor.Process("-round(b)", null);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 9, near '-round(b)'.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("The ROUND method expects 2 parameter(s).");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 9, near '-round(b)'.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("The ROUND method expects 2 parameter(s).");
             }
 
 
@@ -275,7 +257,7 @@ namespace AllOverIt.Evaluator.Tests
 
                 var expected = Math.Min(val1, val2);
 
-                value.Should().Be(expected);
+                value.ShouldBe(expected);
             }
 
             [Fact]
@@ -287,8 +269,7 @@ namespace AllOverIt.Evaluator.Tests
                 result.FormulaExpression
                     .Compile()
                     .Invoke()
-                    .Should()
-                    .Be(value);
+                    .ShouldBe(value);
             }
 
             [Fact]
@@ -300,8 +281,7 @@ namespace AllOverIt.Evaluator.Tests
                 result.FormulaExpression
                     .Compile()
                     .Invoke()
-                    .Should()
-                    .Be(value);
+                    .ShouldBe(value);
             }
 
             [Fact]
@@ -313,8 +293,7 @@ namespace AllOverIt.Evaluator.Tests
                 result.FormulaExpression
                     .Compile()
                     .Invoke()
-                    .Should()
-                    .Be(-value);
+                    .ShouldBe(-value);
             }
 
             [Fact]
@@ -326,132 +305,137 @@ namespace AllOverIt.Evaluator.Tests
                 result.FormulaExpression
                     .Compile()
                     .Invoke()
-                    .Should()
-                    .Be(-value);
+                    .ShouldBe(-value);
             }
 
             [Fact]
             public void Should_Throw_Invalid_Expression_When_Adjacent_Tokens()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         var value = Create<int>();
                         _ = _formulaProcessor.Process($"+/{value}", null);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 2, near '+/'.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("Invalid expression stack.");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 2, near '+/'.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("Invalid expression stack.");
             }
 
             [Fact]
             public void Should_Throw_Invalid_Expression_When_Adjacent_Methods()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         _ = _formulaProcessor.Process("round(1,1)round(1,1)", null);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 15, near 'round(1,1)round'.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("'round' is a variable or method that does not follow an operator, or is an unregistered operator.");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 15, near 'round(1,1)round'.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("'round' is a variable or method that does not follow an operator, or is an unregistered operator.");
             }
 
             [Fact]
             public void Should_Throw_Invalid_Expression_When_Variable_Does_Not_Follow_Operator()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         _ = _formulaProcessor.Process("1+2b", null);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 4, near '1+2b'.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("'b' is a variable or method that does not follow an operator, or is an unregistered operator.");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 4, near '1+2b'.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("'b' is a variable or method that does not follow an operator, or is an unregistered operator.");
             }
 
             [Fact]
             public void Should_Throw_Invalid_Expression_When_Invalid_Expression_Near_Method()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         _ = _formulaProcessor.Process("sqrt((", null);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 6, near 'sqrt(('.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("Invalid expression near method: sqrt.");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 6, near 'sqrt(('.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("Invalid expression near method: sqrt.");
             }
 
             [Fact]
             public void Should_Throw_Invalid_Expression_When_Method_Not_Closed()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         _ = _formulaProcessor.Process("sqrt(9", null);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 6, near 'sqrt(9'.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("Invalid expression near method: sqrt.");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 6, near 'sqrt(9'.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("Invalid expression near method: sqrt.");
             }
 
             [Fact]
             public void Should_Process_Expression_When_Method_Argument()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         _ = _formulaProcessor.Process("sqrt(7+2)", null);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
             public void Should_Throw_When_Unknown_Method()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         _ = _formulaProcessor.Process("XYZ()", null);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 3, near 'XYZ'.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("Unknown method: XYZ.");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 3, near 'XYZ'.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("Unknown method: XYZ.");
             }
 
             [Fact]
             public void Should_Throw_When_Missing_Operand()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         _ = _formulaProcessor.Process("2+", null);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 2, near '2+'.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("Insufficient expressions in the stack. 1 available, 2 required.");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 2, near '2+'.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("Insufficient expressions in the stack. 1 available, 2 required.");
             }
 
             [Fact]
             public void Should_Throw_When_Unregistered_Symbol()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         _ = _formulaProcessor.Process("2_3", null);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 3, near '2_3'.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("'_3' is a variable or method that does not follow an operator, or is an unregistered operator.");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 3, near '2_3'.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("'_3' is a variable or method that does not follow an operator, or is an unregistered operator.");
             }
         }
     }

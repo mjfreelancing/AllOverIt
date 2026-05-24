@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Command;
 using AllOverIt.Patterns.Command.Exceptions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Command
 {
@@ -25,8 +24,7 @@ namespace AllOverIt.Tests.Patterns.Command
                 {
                     _ = new CommandPipeline<int, int>();
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
 
             [Fact]
@@ -36,8 +34,7 @@ namespace AllOverIt.Tests.Patterns.Command
                 {
                     _ = new CommandPipeline<int, int>(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("commands");
             }
 
@@ -48,8 +45,7 @@ namespace AllOverIt.Tests.Patterns.Command
                 {
                     _ = new CommandPipeline<int, int>(Array.Empty<ICommand<int, int>>());
                 })
-                .Should()
-                .Throw<ArgumentException>()
+                .ShouldThrow<ArgumentException>()
                 .WithNamedMessageWhenEmpty("commands");
             }
 
@@ -69,7 +65,7 @@ namespace AllOverIt.Tests.Patterns.Command
 
                 var actual = pipeline.Execute(expected - 3);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -83,8 +79,7 @@ namespace AllOverIt.Tests.Patterns.Command
                     var pipeline = new CommandPipeline<int, int>();
                     pipeline.Append(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("commands");
             }
 
@@ -96,8 +91,7 @@ namespace AllOverIt.Tests.Patterns.Command
                     var pipeline = new CommandPipeline<int, int>();
                     pipeline.Append(Array.Empty<ICommand<int, int>>());
                 })
-                .Should()
-                .Throw<ArgumentException>()
+                .ShouldThrow<ArgumentException>()
                 .WithNamedMessageWhenEmpty("commands");
             }
 
@@ -119,7 +113,7 @@ namespace AllOverIt.Tests.Patterns.Command
                     .Append(commands)
                     .Execute(expected - 3);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -139,7 +133,7 @@ namespace AllOverIt.Tests.Patterns.Command
                     .Append(command3)
                     .Execute(expected - 3);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -149,7 +143,7 @@ namespace AllOverIt.Tests.Patterns.Command
 
                 var actual = pipeline.Append(new DummyCommand());
 
-                actual.Should().BeSameAs(pipeline);
+                actual.ShouldBeSameAs(pipeline);
             }
         }
 
@@ -175,8 +169,7 @@ namespace AllOverIt.Tests.Patterns.Command
                     var pipeline = new CommandPipeline<int, int>();
                     pipeline.Execute(Create<int>());
                 })
-               .Should()
-               .Throw<CommandException>()
+               .ShouldThrow<CommandException>()
                .WithMessage("There are no commands to execute.");
             }
 
@@ -194,9 +187,9 @@ namespace AllOverIt.Tests.Patterns.Command
 
                 pipeline.Execute(1);
 
-                commands[0].Sequence.Should().Be(1);
-                commands[1].Sequence.Should().Be(2);
-                commands[2].Sequence.Should().Be(3);
+                commands[0].Sequence.ShouldBe(1);
+                commands[1].Sequence.ShouldBe(2);
+                commands[2].Sequence.ShouldBe(3);
             }
 
             [Fact]
@@ -215,8 +208,11 @@ namespace AllOverIt.Tests.Patterns.Command
 
                 var actual = pipeline.Execute(expected - 3);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }
 }
+
+
+

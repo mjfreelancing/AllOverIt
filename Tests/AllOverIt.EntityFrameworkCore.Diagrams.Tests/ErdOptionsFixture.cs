@@ -2,7 +2,9 @@
 using AllOverIt.EntityFrameworkCore.Diagrams.Exceptions;
 using AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes.Entities;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Fixture.Extensions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 using System.Collections;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
@@ -60,7 +62,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                     Groups = new object[0]      // IEnumerable<KeyValuePair<string, EntityGroup>>
                 };
 
-                expected.Should().BeEquivalentTo(options);
+                options.ShouldBeEquivalentTo(expected);
             });
         }
 
@@ -87,11 +89,11 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var grp = options.Groups.Single();
 
-                grp.Key.Should().Be(alias);
+                grp.Key.ShouldBe(alias);
 
                 var entityGroup = grp.Value;
 
-                entityGroup.Title.Should().Be("\"\"");
+                entityGroup.Title.ShouldBe("\"\"");
             }
 
             [Fact]
@@ -113,16 +115,16 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var grp = options.Groups.Single();
 
-                grp.Key.Should().Be(alias);
+                grp.Key.ShouldBe(alias);
 
                 var entityGroup = grp.Value;
 
-                entityGroup.Title.Should().Be(title);
+                entityGroup.Title.ShouldBe(title);
 
-                entityGroup.ShapeStyle.Should().NotBeSameAs(groupStyle);        // Must be copied
-                entityGroup.ShapeStyle.Should().BeEquivalentTo(groupStyle);
+                entityGroup.ShapeStyle.ShouldNotBeSameAs(groupStyle);        // Must be copied
+                entityGroup.ShapeStyle.ShouldBeEquivalentTo(groupStyle);
 
-                entityGroup.EntityTypes.Should().BeEquivalentTo(new[] { typeof(Author), typeof(PostEntity) });
+                entityGroup.EntityTypes.ShouldBeEquivalentTo(new[] { typeof(Author), typeof(PostEntity) });
             }
 
             [Fact]
@@ -136,14 +138,12 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                 {
                 });
 
-                Invoking(() =>
+                Should.Throw<DiagramException>(() =>
                 {
                     options.Group(alias, Create<string>(), grp =>
                     {
                     });
                 })
-                .Should()
-                .Throw<DiagramException>()
                 .WithMessage($"The group alias '{alias}' already exists.");
             }
 
@@ -159,15 +159,13 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                     grp.Add<Author>();
                 });
 
-                Invoking(() =>
+                Should.Throw<DiagramException>(() =>
                 {
                     options.Group(Create<string>(), Create<string>(), grp =>
                     {
                         grp.Add<Author>();
                     });
                 })
-                .Should()
-                .Throw<DiagramException>()
                 .WithMessage($"The entity type 'Author' is already associated with group alias '{alias}'.");
             }
 
@@ -185,7 +183,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var alias = options.Groups.GetAlias(typeof(Author));
 
-                alias.Should().Be(expected);
+                alias.ShouldBe(expected);
             }
 
             [Fact]
@@ -202,7 +200,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var alias = options.Groups.GetAlias(typeof(Blog));
 
-                alias.Should().BeNull();
+                alias.ShouldBeNull();
             }
 
             [Fact]
@@ -229,10 +227,10 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 while (enumerator.MoveNext())
                 {
-                    enumerator.Current.Should().BeEquivalentTo(expected[index++]);
+                    enumerator.Current.ShouldBe(expected[index++]);
                 }
 
-                index.Should().Be(2);
+                index.ShouldBe(2);
             }
         }
 
@@ -257,11 +255,11 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var grp = options.Groups.Single();
 
-                grp.Key.Should().Be(alias);
+                grp.Key.ShouldBe(alias);
 
                 var entityGroup = grp.Value;
 
-                entityGroup.Title.Should().Be("\"\"");
+                entityGroup.Title.ShouldBe("\"\"");
             }
 
             [Fact]
@@ -281,17 +279,17 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var grp = options.Groups.Single();
 
-                grp.Key.Should().Be(alias);
+                grp.Key.ShouldBe(alias);
 
                 var entityGroup = grp.Value;
 
-                entityGroup.Title.Should().Be(title);
+                entityGroup.Title.ShouldBe(title);
 
-                entityGroup.ShapeStyle.Should().BeSameAs(groupStyle);           // Must be assigned
-                entityGroup.ShapeStyle.Should().BeEquivalentTo(groupStyle);
+                entityGroup.ShapeStyle.ShouldBeSameAs(groupStyle);           // Must be assigned
+                entityGroup.ShapeStyle.ShouldBeEquivalentTo(groupStyle);
 
-                entityGroup.EntityTypes.Should().BeEquivalentTo(new[] { typeof(PostEntity) });
-                entityGroup.TableNames.Should().BeEquivalentTo(new[] { "Author" });
+                entityGroup.EntityTypes.ShouldBeEquivalentTo(new[] { typeof(PostEntity) });
+                entityGroup.TableNames.ShouldBeEquivalentTo(new[] { "Author" });
             }
 
             [Fact]
@@ -305,14 +303,12 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                 {
                 });
 
-                Invoking(() =>
+                Should.Throw<DiagramException>(() =>
                 {
                     options.Group(alias, Create<string>(), grp =>
                     {
                     });
                 })
-                .Should()
-                .Throw<DiagramException>()
                 .WithMessage($"The group alias '{alias}' already exists.");
             }
 
@@ -328,15 +324,13 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                     grp.Add<Author>();
                 });
 
-                Invoking(() =>
+                Should.Throw<DiagramException>(() =>
                 {
                     options.Group(Create<string>(), Create<string>(), grp =>
                     {
                         grp.Add<Author>();
                     });
                 })
-                .Should()
-                .Throw<DiagramException>()
                 .WithMessage($"The entity type 'Author' is already associated with group alias '{alias}'.");
             }
 
@@ -354,7 +348,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var alias = options.Groups.GetAlias(typeof(Author));
 
-                alias.Should().Be(expected);
+                alias.ShouldBe(expected);
             }
 
             [Fact]
@@ -371,7 +365,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var alias = options.Groups.GetAlias(typeof(Blog));
 
-                alias.Should().BeNull();
+                alias.ShouldBeNull();
             }
 
             [Fact]
@@ -398,10 +392,10 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 while (enumerator.MoveNext())
                 {
-                    enumerator.Current.Should().BeEquivalentTo(expected[index++]);
+                    enumerator.Current.ShouldBe(expected[index++]);
                 }
 
-                index.Should().Be(2);
+                index.ShouldBe(2);
             }
         }
 
@@ -418,8 +412,8 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var actual = erdOptions.Entity<Author>(true);
 
-                expected.Should().BeEquivalentTo(actual);
-                expected.Should().NotBeSameAs(actual);
+                actual.ShouldBeEquivalentTo(expected);
+                actual.ShouldNotBeSameAs(expected);
             }
 
             [Fact]
@@ -433,7 +427,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var actual = erdOptions.Entity<Author>(false);
 
-                expected.Should().NotBeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(new ErdOptions.EntityOptions());
             }
         }
 
@@ -450,8 +444,8 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var actual = erdOptions.Entity(typeof(PostEntity), true);
 
-                expected.Should().BeEquivalentTo(actual);
-                expected.Should().NotBeSameAs(actual);
+                actual.ShouldBeEquivalentTo(expected);
+                actual.ShouldNotBeSameAs(expected);
             }
 
             [Fact]
@@ -465,7 +459,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var actual = erdOptions.Entity(typeof(PostEntity), false);
 
-                expected.Should().NotBeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(new ErdOptions.EntityOptions());
             }
         }
 
@@ -484,8 +478,8 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var entityGroup = options.Groups.Single().Value;
 
-                entityGroup.TableNames.Should().ContainSingle().Which.Should().Be(tableName);
-                entityGroup.EntityTypes.Should().BeEmpty();
+                entityGroup.TableNames.ShouldHaveSingleItem().ShouldBe(tableName);
+                entityGroup.EntityTypes.ShouldBeEmpty();
             }
 
             [Fact]
@@ -503,8 +497,8 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var entityGroup = options.Groups.Single().Value;
 
-                entityGroup.TableNames.Should().BeEquivalentTo(new[] { tableName1, tableName2 });
-                entityGroup.EntityTypes.Should().BeEmpty();
+                entityGroup.TableNames.ShouldBeEquivalentTo(new[] { tableName1, tableName2 });
+                entityGroup.EntityTypes.ShouldBeEmpty();
             }
 
             [Fact]
@@ -521,7 +515,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var alias = options.Groups.GetAlias(tableName);
 
-                alias.Should().Be(expected);
+                alias.ShouldBe(expected);
             }
 
             [Fact]
@@ -536,7 +530,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var alias = options.Groups.GetAlias("OtherTable");
 
-                alias.Should().BeNull();
+                alias.ShouldBeNull();
             }
 
             [Fact]
@@ -552,15 +546,13 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                     grp.Add(tableName);
                 });
 
-                Invoking(() =>
+                Should.Throw<DiagramException>(() =>
                 {
                     options.Group(Create<string>(), Create<string>(), grp =>
                     {
                         grp.Add(tableName);
                     });
                 })
-                .Should()
-                .Throw<DiagramException>()
                 .WithMessage($"The table '{tableName}' is already associated with group alias '{alias}'.");
             }
 
@@ -579,8 +571,8 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var entityGroup = options.Groups.Single().Value;
 
-                entityGroup.EntityTypes.Should().BeEquivalentTo(new[] { typeof(Author), typeof(PostEntity) });
-                entityGroup.TableNames.Should().ContainSingle().Which.Should().Be(tableName);
+                entityGroup.EntityTypes.ShouldBeEquivalentTo(new[] { typeof(Author), typeof(PostEntity) });
+                entityGroup.TableNames.ShouldHaveSingleItem().ShouldBe(tableName);
             }
         }
     }

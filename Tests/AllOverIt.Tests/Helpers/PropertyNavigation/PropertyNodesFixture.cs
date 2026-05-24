@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Helpers.PropertyNavigation;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Helpers.PropertyNavigation
 {
@@ -23,7 +23,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation
             {
                 var actual = new PropertyNodes<DummyObject1>();
 
-                actual.ObjectType.Should().Be(typeof(DummyObject1));
+                actual.ObjectType.ShouldBe(typeof(DummyObject1));
             }
 
             [Fact]
@@ -31,7 +31,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation
             {
                 var actual = new PropertyNodes<DummyObject1>();
 
-                actual.Nodes.Should().BeEmpty();
+                actual.Nodes.ShouldBeEmpty();
             }
         }
 
@@ -51,8 +51,14 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation
 
                 var actual = new PropertyNodes<DummyObject1>(expected);
 
-                expected.Should().BeEquivalentTo(actual.Nodes);
+                expected.ShouldBeEquivalentTo(actual.Nodes);
             }
         }
     }
 }
+
+
+
+
+
+

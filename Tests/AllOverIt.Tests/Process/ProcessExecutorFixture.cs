@@ -2,7 +2,8 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Process;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Security;
@@ -19,8 +20,7 @@ namespace AllOverIt.Tests.Process
             {
                 _ = new ProcessExecutor(null);
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("options");
         }
 
@@ -65,14 +65,9 @@ namespace AllOverIt.Tests.Process
                 UseCredentialsForNetworkingOnly = false
             };
 
-            expected.Should().BeEquivalentTo(actual, options =>
-            {
-                options
-                    .Excluding(info => info.Environment)
-                    .Excluding(info => info.Verbs);
-
-                return options;
-            });
+            actual.ShouldBeEquivalentTo(expected, opts => opts
+                .ExcludeMember(nameof(ProcessStartInfo.Environment))
+                .ExcludeMember(nameof(ProcessStartInfo.Verbs)));
         }
 
         [Fact]
@@ -122,15 +117,10 @@ namespace AllOverIt.Tests.Process
                 UseCredentialsForNetworkingOnly = false
             };
 
-            expected.Should().BeEquivalentTo(actual, options =>
-            {
-                options
-                    .Excluding(info => info.Environment)
-                    .Excluding(info => info.EnvironmentVariables)
-                    .Excluding(info => info.Verbs);
-
-                return options;
-            });
+            actual.ShouldBeEquivalentTo(expected, opts => opts
+                .ExcludeMember(nameof(ProcessStartInfo.Environment))
+                .ExcludeMember(nameof(ProcessStartInfo.EnvironmentVariables))
+                .ExcludeMember(nameof(ProcessStartInfo.Verbs)));
 
             // the environment variables are a StringCollection, so we need to convert to IDictionary<string, string> for the comparison to work
             var actualKeys = new List<string>();
@@ -146,10 +136,15 @@ namespace AllOverIt.Tests.Process
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             var expectedEnvironmentVariables = Environment.GetEnvironmentVariables()
-                .ToSerializedDictionary()
+                .Cast<DictionaryEntry>()
+                .ToDictionary(entry => (string) entry.Key, entry => (string) entry.Value)
                 .Concat(options.EnvironmentVariables);
 
-            expectedEnvironmentVariables.Should().BeEquivalentTo(actualEnvironmentVariables);
+            actualEnvironmentVariables.ShouldBeEquivalentTo(expectedEnvironmentVariables);
         }
     }
 }
+
+
+
+

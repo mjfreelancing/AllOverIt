@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -83,10 +83,10 @@ namespace AllOverIt.Tests.Extensions
                 var actual1 = factory.Invoke();
                 var actual2 = factory.Invoke();
 
-                actual1.Should().NotBeSameAs(actual2);
+                actual1.ShouldNotBeSameAs(actual2);
 
-                expected.Should().BeEquivalentTo(actual1);
-                expected.Should().BeEquivalentTo(actual2);
+                actual1.ShouldBeEquivalentTo(expected);
+                actual2.ShouldBeEquivalentTo(expected);
             }
 
             public class Typed : GetFactory
@@ -101,10 +101,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1);
                     var actual2 = factory.Invoke(expected.Prop1);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -117,10 +117,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -133,10 +133,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -149,10 +149,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -165,10 +165,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -181,10 +181,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -197,10 +197,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -213,10 +213,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7, expected.Prop8);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7, expected.Prop8);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
             }
 
@@ -232,10 +232,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1);
                     var actual2 = factory.Invoke(expected.Prop1);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -248,10 +248,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -264,10 +264,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -280,10 +280,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -296,10 +296,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -312,10 +312,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -328,10 +328,10 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
 
                 [Fact]
@@ -344,12 +344,18 @@ namespace AllOverIt.Tests.Extensions
                     var actual1 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7, expected.Prop8);
                     var actual2 = factory.Invoke(expected.Prop1, expected.Prop2, expected.Prop3, expected.Prop4, expected.Prop5, expected.Prop6, expected.Prop7, expected.Prop8);
 
-                    actual1.Should().NotBeSameAs(actual2);
+                    actual1.ShouldNotBeSameAs(actual2);
 
-                    expected.Should().BeEquivalentTo(actual1);
-                    expected.Should().BeEquivalentTo(actual2);
+                    actual1.ShouldBeEquivalentTo(expected);
+                    actual2.ShouldBeEquivalentTo(expected);
                 }
             }
         }
     }
 }
+
+
+
+
+
+

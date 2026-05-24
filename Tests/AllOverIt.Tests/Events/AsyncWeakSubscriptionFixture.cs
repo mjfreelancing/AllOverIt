@@ -1,7 +1,6 @@
-﻿using AllOverIt.Events;
+using AllOverIt.Events;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Events
 {
@@ -37,8 +36,7 @@ namespace AllOverIt.Tests.Events
             public void Should_Throw_When_Delegate_Null()
             {
                 Invoking(() => new AsyncWeakSubscription(null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("handler");
             }
         }
@@ -64,7 +62,7 @@ namespace AllOverIt.Tests.Events
 
                 await registeredHandler.Invoke(expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -85,7 +83,7 @@ namespace AllOverIt.Tests.Events
                 // Would throw a faulted task if the handler was invoked
                 var actual = registeredHandler.Invoke(0);
 
-                actual.Should().Be(Task.CompletedTask);
+                actual.ShouldBe(Task.CompletedTask);
             }
 
             [Fact]
@@ -103,7 +101,7 @@ namespace AllOverIt.Tests.Events
                 HandlerDummy.ActualValue = -expected;
                 await registeredHandler.Invoke(expected);
 
-                HandlerDummy.ActualValue.Should().Be(expected);
+                HandlerDummy.ActualValue.ShouldBe(expected);
             }
         }
 
@@ -125,7 +123,7 @@ namespace AllOverIt.Tests.Events
 
                 await subscription.HandleAsync(expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -142,8 +140,7 @@ namespace AllOverIt.Tests.Events
 
                     await subscription.HandleAsync(string.Empty);
                 })
-                .Should()
-                .ThrowAsync<InvalidCastException>();
+                .ShouldThrowAsync<InvalidCastException>();
             }
 
             [Fact]
@@ -167,9 +164,12 @@ namespace AllOverIt.Tests.Events
                     // Other tests for GetHandler() prove the handler is returned as null.
                     await subscription.HandleAsync<int>(value);
                 })
-                .Should()
-                .NotThrowAsync();
+                .ShouldNotThrowAsync();
             }
         }
     }
 }
+
+
+
+

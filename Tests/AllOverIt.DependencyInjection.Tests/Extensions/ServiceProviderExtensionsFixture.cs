@@ -1,8 +1,8 @@
-﻿using AllOverIt.DependencyInjection.Extensions;
+using AllOverIt.DependencyInjection.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
@@ -26,13 +26,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Provider_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = ServiceProviderExtensions.GetRequiredNamedService<IDummyInterface>(null, Create<string>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("provider");
+                }).WithNamedMessageWhenNull("provider");
             }
 
             [Fact]
@@ -57,11 +54,13 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 var provider = services.BuildServiceProvider();
 
                 var type1 = ServiceProviderExtensions.GetRequiredNamedService<IDummyInterface>(provider, nameof(DummyType1));
-                type1.Should().BeOfType<DummyType1>();
+                type1.ShouldBeOfType<DummyType1>();
 
                 var type2 = ServiceProviderExtensions.GetRequiredNamedService<IDummyInterface>(provider, nameof(DummyType2));
-                type2.Should().BeOfType<DummyType2>();
+                type2.ShouldBeOfType<DummyType2>();
             }
         }
     }
 }
+
+

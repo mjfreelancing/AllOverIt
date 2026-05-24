@@ -1,6 +1,6 @@
-using AllOverIt.Evaluator.Extensions;
+﻿using AllOverIt.Evaluator.Extensions;
 using AllOverIt.Evaluator.Variables;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests
 {
@@ -12,7 +12,7 @@ namespace AllOverIt.Evaluator.Tests
             const string formula = "sqRT(9)+sqrt(4)+SQRT(16)";
 
             var actual = FormulaCompiler.GetResult(formula, VariableRegistry);
-            actual.Should().Be(9);
+            actual.ShouldBe(9);
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace AllOverIt.Evaluator.Tests
 
             var actual = compiled.Resolver.Invoke();
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace AllOverIt.Evaluator.Tests
             // setting new variable values and recalculating the result can be performed as often as required
             var actual = compiled.Resolver.Invoke();
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace AllOverIt.Evaluator.Tests
 
             var actual = compiled.Resolver.Invoke();
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -108,7 +108,7 @@ namespace AllOverIt.Evaluator.Tests
 
             var actual = compiledB.Invoke();
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
     }
 }

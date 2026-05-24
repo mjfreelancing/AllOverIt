@@ -1,9 +1,10 @@
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Serilog.Enrichers.ThreadId;
 using AllOverIt.Serilog.Extensions;
 using AllOverIt.Serilog.Sinks.CircularBuffer;
 using FluentAssertions;
 using Serilog;
+using Shouldly;
 
 namespace AllOverIt.Serilog.Tests.Enrichers.ThreadId
 {
@@ -23,7 +24,7 @@ namespace AllOverIt.Serilog.Tests.Enrichers.ThreadId
             logger.Information(Create<string>());
             logger.Information(Create<string>());
 
-            sink.Should().HaveCount(2);
+            sink.Count().ShouldBe(2);
 
             foreach (var item in sink)
             {

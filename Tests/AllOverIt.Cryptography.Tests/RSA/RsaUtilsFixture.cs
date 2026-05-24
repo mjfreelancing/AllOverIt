@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Cryptography.RSA;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.Tests.RSA
@@ -24,7 +25,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 var actual = expected.Keys.Select(key => RsaUtils.GetMaxInputLength(2048, key));
 
-                actual.Should().BeEquivalentTo(expected.Values);
+                actual.ShouldBe(expected.Values);
             }
 
         }
@@ -41,7 +42,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 var actual = RsaUtils.GetLegalKeySizes();
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -55,7 +56,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
             [InlineData(16384 + 64, false)]
             public void Should_Get_Is_Legal_Key_Size(int keySize, bool expected)
             {
-                RsaUtils.IsKeySizeValid(keySize).Should().Be(expected);
+                RsaUtils.IsKeySizeValid(keySize).ShouldBe(expected);
             }
         }
     }

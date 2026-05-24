@@ -1,5 +1,6 @@
 ﻿using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 {
@@ -12,7 +13,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
             {
                 var actual = new ShapeStyle();
 
-                actual.IsDefault().Should().BeTrue();
+                actual.IsDefault().ShouldBeTrue();
             }
 
             [Fact]
@@ -20,7 +21,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
             {
                 var actual = Create<ShapeStyle>();
 
-                actual.IsDefault().Should().BeFalse();
+                actual.IsDefault().ShouldBeFalse();
             }
 
             [Fact]
@@ -30,11 +31,11 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 
                 var actual = new ShapeStyle();
 
-                actual.Should().NotBeEquivalentTo(shapeStyle);
+                actual.Fill.ShouldNotBe(shapeStyle.Fill);
 
                 actual.CopyFrom(shapeStyle);
 
-                actual.Should().BeEquivalentTo(shapeStyle);
+                actual.ShouldBeEquivalentTo(shapeStyle);
             }
         }
     }

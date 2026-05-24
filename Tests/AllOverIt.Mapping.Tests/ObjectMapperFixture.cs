@@ -4,12 +4,11 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Mapping.Exceptions;
 using AllOverIt.Mapping.Extensions;
 using AllOverIt.Reflection;
-using FluentAssertions;
 using System.Collections;
 using System.Collections.ObjectModel;
 
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Mapping.Tests
 {
     public class ObjectMapperFixture : FixtureBase
@@ -44,7 +43,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 var mapper = new ObjectMapper();
 
-                mapper._configuration.Should().NotBeNull();
+                mapper._configuration.ShouldNotBeNull();
             }
         }
 
@@ -68,7 +67,7 @@ namespace AllOverIt.Mapping.Tests
                 var configuration = Create<ObjectMapperConfiguration>();
                 var mapper = new ObjectMapper(configuration);
 
-                mapper._configuration.Should().BeSameAs(configuration);
+                mapper._configuration.ShouldBeSameAs(configuration);
             }
         }
 
@@ -101,9 +100,9 @@ namespace AllOverIt.Mapping.Tests
                     actual = config._propertyMatcherCache;
                 });
 
-                actual.Should().NotBeNull();
+                actual.ShouldNotBeNull();
 
-                actual.TryGetMapper(typeof(DummySource1), typeof(DummyTarget), out var mapper).Should().BeTrue();
+                actual.TryGetMapper(typeof(DummySource1), typeof(DummyTarget), out var mapper).ShouldBeTrue();
 
                 var actualMatches = GetMatchesNameAndType(mapper.Matches);
 
@@ -119,9 +118,7 @@ namespace AllOverIt.Mapping.Tests
                     (nameof(DummySource2.Prop13), typeof(int), nameof(DummyTarget.Prop13), typeof(DummyEnum))
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actualMatches);
+                actualMatches.ShouldBe(expected);
             }
         }
 
@@ -177,11 +174,11 @@ namespace AllOverIt.Mapping.Tests
                         actual = config._propertyMatcherCache;
                     });
 
-                objectMapper._configuration.Options.AllowNullCollections.Should().Be(allowNullCollections);
+                objectMapper._configuration.Options.AllowNullCollections.ShouldBe(allowNullCollections);
 
-                actual.Should().NotBeNull();
+                actual.ShouldNotBeNull();
 
-                actual.TryGetMapper(typeof(DummySource1), typeof(DummyTarget), out var mapper).Should().BeTrue();
+                actual.TryGetMapper(typeof(DummySource1), typeof(DummyTarget), out var mapper).ShouldBeTrue();
 
                 var actualMatches = GetMatchesNameAndType(mapper.Matches);
 
@@ -197,9 +194,7 @@ namespace AllOverIt.Mapping.Tests
                     (nameof(DummySource2.Prop13), typeof(int), nameof(DummyTarget.Prop13), typeof(DummyEnum))
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actualMatches);
+                actualMatches.ShouldBe(expected);
             }
 
             [Fact]
@@ -216,9 +211,9 @@ namespace AllOverIt.Mapping.Tests
                         actual = config._propertyMatcherCache;
                     });
 
-                actual.Should().NotBeNull();
+                actual.ShouldNotBeNull();
 
-                actual.TryGetMapper(typeof(DummySource1), typeof(DummyTarget), out var mapper).Should().BeTrue();
+                actual.TryGetMapper(typeof(DummySource1), typeof(DummyTarget), out var mapper).ShouldBeTrue();
 
                 var actualMatches = GetMatchesNameAndType(mapper.Matches);
 
@@ -234,9 +229,7 @@ namespace AllOverIt.Mapping.Tests
                     (nameof(DummySource2.Prop13), typeof(int), nameof(DummyTarget.Prop13), typeof(DummyEnum))
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actualMatches);
+                actualMatches.ShouldBe(expected);
             }
         }
 
@@ -256,7 +249,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<DummyTarget>(null);
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -268,7 +261,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<DummyTarget>(_source1);
 
-                actual.Should().BeOfType<DummyTarget>();
+                actual.ShouldBeOfType<DummyTarget>();
             }
 
             [Fact]
@@ -310,9 +303,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source1.Prop13
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -327,7 +318,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<ArrayListModel>(source);
 
-                actual.Values.Should().BeSameAs(source.Values);
+                actual.Values.ShouldBeSameAs(source.Values);
             }
 
             [Fact]
@@ -349,9 +340,9 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<ArrayListModel>(source);
 
-                actual.Values.Should().NotBeSameAs(source.Values);
+                actual.Values.ShouldNotBeSameAs(source.Values);
 
-                actual.Values.Should().BeEquivalentTo(source.Values);
+                actual.Values.ShouldBeEquivalentTo(source.Values);
             }
 
             [Fact]
@@ -363,8 +354,8 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<ArrayListModel>(source);
 
-                actual.Values.Should().BeOfType<ArrayList>();
-                actual.Values.Count.Should().Be(0);
+                actual.Values.ShouldBeOfType<ArrayList>();
+                actual.Values.Count.ShouldBe(0);
             }
 
             [Fact]
@@ -405,9 +396,7 @@ namespace AllOverIt.Mapping.Tests
 
                 foreach (var actual in results)
                 {
-                    expected
-                        .Should()
-                        .BeEquivalentTo(actual);
+                    actual.ShouldBeEquivalentTo(expected);
                 }
             }
 
@@ -445,7 +434,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -489,7 +478,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -533,7 +522,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -574,7 +563,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -613,7 +602,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -650,7 +639,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = default(DummyEnum)
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -686,7 +675,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -705,7 +694,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<DummyRootParentTarget>(source);
 
-                actual.RootA.Should().BeSameAs(source.RootA);
+                actual.RootA.ShouldBeSameAs(source.RootA);
             }
 
             [Fact]
@@ -724,7 +713,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<DummyRootParentTarget>(source);
 
-                actual.RootB.Prop1.Should().Be(source.RootB.Prop1);
+                actual.RootB.Prop1.ShouldBe(source.RootB.Prop1);
             }
 
             [Fact]
@@ -743,11 +732,11 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<DummyRootParentTarget>(source);
 
-                actual.RootA.Should().NotBeSameAs(source.RootA);                // deep cloned
-                actual.RootA.Prop1.Should().Be(source.RootA.Prop1);             // deep cloned
-                actual.RootA.Prop2a.Should().NotBeSameAs(source.RootA.Prop2a);  // deep cloned
-                actual.RootB.Should().NotBeSameAs(source.RootB);                // source and target types are different
-                actual.RootC.Should().BeSameAs(source.RootC);                   // not deep cloned
+                actual.RootA.ShouldNotBeSameAs(source.RootA);                // deep cloned
+                actual.RootA.Prop1.ShouldBe(source.RootA.Prop1);             // deep cloned
+                actual.RootA.Prop2a.ShouldNotBeSameAs(source.RootA.Prop2a);  // deep cloned
+                actual.RootB.ShouldNotBeSameAs(source.RootB);                // source and target types are different
+                actual.RootC.ShouldBeSameAs(source.RootC);                   // not deep cloned
 
                 var expected = new
                 {
@@ -795,7 +784,7 @@ namespace AllOverIt.Mapping.Tests
                     }
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -873,12 +862,12 @@ namespace AllOverIt.Mapping.Tests
 
                 foreach (var actual in results)
                 {
-                    actual.RootA.Should().NotBeSameAs(source.RootA);                // deep cloned
-                    actual.RootA.Prop2a.Should().NotBeSameAs(source.RootA.Prop2a);  // deep cloned
-                    actual.RootB.Should().NotBeSameAs(source.RootB);                // source and target types are different
-                    actual.RootC.Should().BeSameAs(source.RootC);                   // not deep cloned
+                    actual.RootA.ShouldNotBeSameAs(source.RootA);                // deep cloned
+                    actual.RootA.Prop2a.ShouldNotBeSameAs(source.RootA.Prop2a);  // deep cloned
+                    actual.RootB.ShouldNotBeSameAs(source.RootB);                // source and target types are different
+                    actual.RootC.ShouldBeSameAs(source.RootC);                   // not deep cloned
 
-                    expected.Should().BeEquivalentTo(actual);
+                    expected.ShouldBeEquivalentTo(actual);
                 }
             }
 
@@ -895,7 +884,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<DummyEnumerableRootTarget>(source);
 
-                actual.Prop1.Should().NotBeEmpty();
+                actual.Prop1.ShouldNotBeEmpty();
 
                 actual.Prop1.ForEach((prop, index) =>
                 {
@@ -947,7 +936,7 @@ namespace AllOverIt.Mapping.Tests
                         }
                     };
 
-                    expected.Should().BeEquivalentTo(prop);
+                    expected.ShouldBeEquivalentTo(prop);
                 });
             }
 
@@ -972,7 +961,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<DummyAbstractTarget>(source);
 
-                actual.Prop1.Prop1.Should().Be(source.Prop1.Prop1);
+                actual.Prop1.Prop1.ShouldBe(source.Prop1.Prop1);
             }
 
             [Fact]
@@ -1042,7 +1031,7 @@ namespace AllOverIt.Mapping.Tests
                         }
                     };
 
-                    expected.Should().BeEquivalentTo(prop);
+                    expected.ShouldBeEquivalentTo(prop);
                 });
             }
 
@@ -1069,7 +1058,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<DummyObservableCollectionHost>(source);
 
-                actual.Prop1.Should().BeEquivalentTo(source.Prop9);
+                actual.Prop1.ShouldBe(source.Prop9);
             }
 
             [Fact]
@@ -1089,7 +1078,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<DummyDictionaryTarget>(source);
 
-                actual.Prop1.Should().BeSameAs(source.Prop1);
+                actual.Prop1.ShouldBeSameAs(source.Prop1);
             }
 
             [Fact]
@@ -1101,7 +1090,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<DummyArrayTarget>(source);
 
-                actual.Prop1.Should().BeEquivalentTo(source.Prop1);
+                actual.Prop1.ShouldBe(source.Prop1);
             }
 
             [Fact]
@@ -1141,14 +1130,14 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = objectMapper.Map<DummyDictionaryTarget>(source);
 
-                actual.Prop1.Should().NotBeSameAs(source.Prop1);
-                source.Prop1.Should().BeEquivalentTo(actual.Prop1);
+                actual.Prop1.ShouldNotBeSameAs(source.Prop1);
+                actual.Prop1.ShouldBe(source.Prop1);
 
                 var expected = source.Prop2
                     .Select(kvp => new KeyValuePair<string, double>(kvp.Key, kvp.Value))
                     .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-                expected.Should().BeEquivalentTo(actual.Prop2);
+                actual.Prop2.ShouldBe(expected);
             }
         }
 
@@ -1191,7 +1180,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map(_source1, _target);
 
-                actual.Should().BeSameAs(_target);
+                actual.ShouldBeSameAs(_target);
             }
 
             [Fact]
@@ -1233,9 +1222,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source1.Prop13
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1272,7 +1259,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -1311,7 +1298,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -1350,7 +1337,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -1391,7 +1378,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -1430,7 +1417,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -1466,7 +1453,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -1486,7 +1473,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, actual);
 
-                actual.RootA.Should().BeSameAs(source.RootA);
+                actual.RootA.ShouldBeSameAs(source.RootA);
             }
 
             [Fact]
@@ -1506,7 +1493,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, actual);
 
-                actual.RootB.Prop1.Should().Be(source.RootB.Prop1);
+                actual.RootB.Prop1.ShouldBe(source.RootB.Prop1);
             }
 
             [Fact]
@@ -1526,10 +1513,10 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, actual);
 
-                actual.RootA.Should().NotBeSameAs(source.RootA);                // deep cloned
-                actual.RootA.Prop2a.Should().NotBeSameAs(source.RootA.Prop2a);  // deep cloned
-                actual.RootB.Should().NotBeSameAs(source.RootB);                // source and target types are different
-                actual.RootC.Should().BeSameAs(source.RootC);                   // not deep cloned
+                actual.RootA.ShouldNotBeSameAs(source.RootA);                // deep cloned
+                actual.RootA.Prop2a.ShouldNotBeSameAs(source.RootA.Prop2a);  // deep cloned
+                actual.RootB.ShouldNotBeSameAs(source.RootB);                // source and target types are different
+                actual.RootC.ShouldBeSameAs(source.RootC);                   // not deep cloned
 
                 var expected = new
                 {
@@ -1577,7 +1564,7 @@ namespace AllOverIt.Mapping.Tests
                     }
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -1594,7 +1581,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, actual);
 
-                actual.Prop1.Should().NotBeEmpty();
+                actual.Prop1.ShouldNotBeEmpty();
 
                 actual.Prop1.ForEach((prop, index) =>
                 {
@@ -1646,7 +1633,7 @@ namespace AllOverIt.Mapping.Tests
                         }
                     };
 
-                    expected.Should().BeEquivalentTo(prop);
+                    expected.ShouldBeEquivalentTo(prop);
                 });
             }
 
@@ -1672,7 +1659,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, actual);
 
-                actual.Prop1.Prop1.Should().Be(source.Prop1.Prop1);
+                actual.Prop1.Prop1.ShouldBe(source.Prop1.Prop1);
             }
 
             [Fact]
@@ -1743,7 +1730,7 @@ namespace AllOverIt.Mapping.Tests
                         }
                     };
 
-                    expected.Should().BeEquivalentTo(prop);
+                    expected.ShouldBeEquivalentTo(prop);
                 });
             }
 
@@ -1771,7 +1758,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, actual);
 
-                actual.Prop1.Should().BeEquivalentTo(source.Prop9);
+                actual.Prop1.ShouldBe(source.Prop9);
             }
 
             [Fact]
@@ -1792,7 +1779,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, actual);
 
-                actual.Prop1.Should().BeSameAs(source.Prop1);
+                actual.Prop1.ShouldBeSameAs(source.Prop1);
             }
 
             [Fact]
@@ -1805,7 +1792,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, actual);
 
-                actual.Prop1.Should().BeEquivalentTo(source.Prop1);
+                actual.Prop1.ShouldBe(source.Prop1);
             }
 
             [Fact]
@@ -1824,7 +1811,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, actual);
 
-                actual.Prop1.Should().BeNull();
+                actual.Prop1.ShouldBeNull();
             }
 
             [Fact]
@@ -1838,7 +1825,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, actual);
 
-                actual.Prop1.Should().BeEmpty();
+                actual.Prop1.ShouldBeEmpty();
             }
 
             [Fact]
@@ -1851,8 +1838,8 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = objectMapper.Map(source, actual);
 
-                actual.Prop1.Should().BeEmpty();
-                actual.Prop2.Should().BeEmpty();
+                actual.Prop1.ShouldBeEmpty();
+                actual.Prop2.ShouldBeEmpty();
             }
 
             [Fact]
@@ -1894,14 +1881,14 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = objectMapper.Map(source, actual);
 
-                actual.Prop1.Should().NotBeSameAs(source.Prop1);
-                source.Prop1.Should().BeEquivalentTo(actual.Prop1);
+                actual.Prop1.ShouldNotBeSameAs(source.Prop1);
+                actual.Prop1.ShouldBe(source.Prop1);
 
                 var expected = source.Prop2
                     .Select(kvp => new KeyValuePair<string, double>(kvp.Key, kvp.Value))
                     .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-                expected.Should().BeEquivalentTo(actual.Prop2);
+                actual.Prop2.ShouldBe(expected);
             }
         }
 
@@ -1972,7 +1959,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map(_source1, _source1Type, _target, _targetType);
 
-                actual.Should().BeSameAs(_target);
+                actual.ShouldBeSameAs(_target);
             }
 
             [Fact]
@@ -2014,9 +2001,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source1.Prop13
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -2053,7 +2038,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -2092,7 +2077,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -2131,7 +2116,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -2172,7 +2157,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -2211,7 +2196,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -2247,7 +2232,7 @@ namespace AllOverIt.Mapping.Tests
                     Prop13 = (DummyEnum) _source2.Prop13
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -2267,7 +2252,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, typeof(DummyRootParentSource), actual, typeof(DummyRootParentTarget));
 
-                actual.RootA.Should().BeSameAs(source.RootA);
+                actual.RootA.ShouldBeSameAs(source.RootA);
             }
 
             [Fact]
@@ -2287,7 +2272,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, typeof(DummyRootParentSource), actual, typeof(DummyRootParentTarget));
 
-                actual.RootB.Prop1.Should().Be(source.RootB.Prop1);
+                actual.RootB.Prop1.ShouldBe(source.RootB.Prop1);
             }
 
             [Fact]
@@ -2307,10 +2292,10 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, typeof(DummyRootParentSource), actual, typeof(DummyRootParentTarget));
 
-                actual.RootA.Should().NotBeSameAs(source.RootA);                // deep cloned
-                actual.RootA.Prop2a.Should().NotBeSameAs(source.RootA.Prop2a);  // deep cloned
-                actual.RootB.Should().NotBeSameAs(source.RootB);                // source and target types are different
-                actual.RootC.Should().BeSameAs(source.RootC);                   // not deep cloned
+                actual.RootA.ShouldNotBeSameAs(source.RootA);                // deep cloned
+                actual.RootA.Prop2a.ShouldNotBeSameAs(source.RootA.Prop2a);  // deep cloned
+                actual.RootB.ShouldNotBeSameAs(source.RootB);                // source and target types are different
+                actual.RootC.ShouldBeSameAs(source.RootC);                   // not deep cloned
 
                 var expected = new
                 {
@@ -2358,7 +2343,7 @@ namespace AllOverIt.Mapping.Tests
                     }
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
 
             [Fact]
@@ -2375,7 +2360,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, typeof(DummyEnumerableRootSource), actual, typeof(DummyEnumerableRootTarget));
 
-                actual.Prop1.Should().NotBeEmpty();
+                actual.Prop1.ShouldNotBeEmpty();
 
                 actual.Prop1.ForEach((prop, index) =>
                 {
@@ -2427,7 +2412,7 @@ namespace AllOverIt.Mapping.Tests
                         }
                     };
 
-                    expected.Should().BeEquivalentTo(prop);
+                    expected.ShouldBeEquivalentTo(prop);
                 });
             }
 
@@ -2453,7 +2438,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, typeof(DummySourceHost), actual, typeof(DummyAbstractTarget));
 
-                actual.Prop1.Prop1.Should().Be(source.Prop1.Prop1);
+                actual.Prop1.Prop1.ShouldBe(source.Prop1.Prop1);
             }
 
             [Fact]
@@ -2524,7 +2509,7 @@ namespace AllOverIt.Mapping.Tests
                         }
                     };
 
-                    expected.Should().BeEquivalentTo(prop);
+                    expected.ShouldBeEquivalentTo(prop);
                 });
             }
 
@@ -2552,7 +2537,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, _source1Type, actual, typeof(DummyObservableCollectionHost));
 
-                actual.Prop1.Should().BeEquivalentTo(source.Prop9);
+                actual.Prop1.ShouldBe(source.Prop9);
             }
 
             [Fact]
@@ -2573,7 +2558,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, typeof(DummyDictionarySource), actual, typeof(DummyDictionaryTarget));
 
-                actual.Prop1.Should().BeSameAs(source.Prop1);
+                actual.Prop1.ShouldBeSameAs(source.Prop1);
             }
 
             [Fact]
@@ -2586,7 +2571,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, typeof(DummyEnumerableSource), actual, typeof(DummyArrayTarget));
 
-                actual.Prop1.Should().BeEquivalentTo(source.Prop1);
+                actual.Prop1.ShouldBe(source.Prop1);
             }
 
             [Fact]
@@ -2605,7 +2590,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, typeof(DummyEnumerableSource), actual, typeof(DummyArrayTarget));
 
-                actual.Prop1.Should().BeNull();
+                actual.Prop1.ShouldBeNull();
             }
 
             [Fact]
@@ -2619,7 +2604,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map(source, typeof(DummyEnumerableSource), actual, typeof(DummyArrayTarget));
 
-                actual.Prop1.Should().BeEmpty();
+                actual.Prop1.ShouldBeEmpty();
             }
 
             [Fact]
@@ -2632,8 +2617,8 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = objectMapper.Map(source, typeof(DummyDictionarySource), actual, typeof(DummyDictionaryTarget));
 
-                actual.Prop1.Should().BeEmpty();
-                actual.Prop2.Should().BeEmpty();
+                actual.Prop1.ShouldBeEmpty();
+                actual.Prop2.ShouldBeEmpty();
             }
 
             [Fact]
@@ -2675,14 +2660,14 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = objectMapper.Map(source, typeof(DummyDictionarySource), actual, typeof(DummyDictionaryTarget));
 
-                actual.Prop1.Should().NotBeSameAs(source.Prop1);
-                source.Prop1.Should().BeEquivalentTo(actual.Prop1);
+                actual.Prop1.ShouldNotBeSameAs(source.Prop1);
+                actual.Prop1.ShouldBe(source.Prop1);
 
                 var expected = source.Prop2
                     .Select(kvp => new KeyValuePair<string, double>(kvp.Key, kvp.Value))
                     .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-                expected.Should().BeEquivalentTo(actual.Prop2);
+                actual.Prop2.ShouldBe(expected);
             }
         }
 
@@ -2699,7 +2684,7 @@ namespace AllOverIt.Mapping.Tests
 
                     var target = objectMapper.Map<DummySource1>(source);
 
-                    target.Should().BeEquivalentTo(source);
+                    target.ShouldBeEquivalentTo(source);
                 });
 
                 var task2 = Task.Run(() =>
@@ -2708,7 +2693,7 @@ namespace AllOverIt.Mapping.Tests
 
                     var target = objectMapper.Map<DummySource2>(source);
 
-                    target.Should().BeEquivalentTo(source);
+                    target.ShouldBeEquivalentTo(source);
                 });
 
                 var task3 = Task.Run(() =>
@@ -2717,7 +2702,7 @@ namespace AllOverIt.Mapping.Tests
 
                     var target = objectMapper.Map<DummySource2>(source);
 
-                    target.Should().BeEquivalentTo(source);
+                    target.ShouldBeEquivalentTo(source);
                 });
 
                 var task4 = Task.Run(() =>
@@ -2726,10 +2711,19 @@ namespace AllOverIt.Mapping.Tests
 
                     var target = objectMapper.Map<DummySource1>(source);
 
-                    target
-                        .Should()
-                        .BeEquivalentTo(source, opt => opt.Excluding(subject => subject.Prop10)
-                                                           .Excluding(subject => subject.Prop11));
+                    target.ShouldBeEquivalentTo(new
+                    {
+                        source.Prop1,
+                        source.Prop3,
+                        source.Prop4,
+                        source.Prop5,
+                        source.Prop6,
+                        source.Prop7a,
+                        source.Prop8,
+                        source.Prop9,
+                        source.Prop12,
+                        source.Prop13
+                    });
                 });
 
                 var task5 = Task.Run(() =>
@@ -2738,7 +2732,7 @@ namespace AllOverIt.Mapping.Tests
 
                     var target = objectMapper.Map<DummyRootGrandChildSource>(source);
 
-                    target.Should().BeEquivalentTo(source);
+                    target.ShouldBeEquivalentTo(source);
                 });
 
                 var task6 = Task.Run(() =>
@@ -2747,7 +2741,7 @@ namespace AllOverIt.Mapping.Tests
 
                     var target = objectMapper.Map<DummyRootGrandChildTarget>(source);
 
-                    target.Should().BeEquivalentTo(source);
+                    target.ShouldBeEquivalentTo(source);
                 });
 
                 var task7 = Task.Run(() =>
@@ -2756,7 +2750,7 @@ namespace AllOverIt.Mapping.Tests
 
                     var target = objectMapper.Map<DummyRootChildSource>(source);
 
-                    target.Should().BeEquivalentTo(source);
+                    target.ShouldBeEquivalentTo(source);
                 });
 
                 var task8 = Task.Run(() =>
@@ -2765,7 +2759,7 @@ namespace AllOverIt.Mapping.Tests
 
                     var target = objectMapper.Map<DummyRootParentSource>(source);
 
-                    target.Should().BeEquivalentTo(source);
+                    target.ShouldBeEquivalentTo(source);
                 });
 
                 var task9 = Task.Run(() =>
@@ -2774,7 +2768,7 @@ namespace AllOverIt.Mapping.Tests
 
                     var target = objectMapper.Map<DummyConcrete1>(source);
 
-                    target.Should().BeEquivalentTo(source);
+                    target.ShouldBeEquivalentTo(source);
                 });
 
                 var task10 = Task.Run(() =>
@@ -2783,7 +2777,7 @@ namespace AllOverIt.Mapping.Tests
 
                     var target = objectMapper.Map<DummyConcrete2>(source);
 
-                    target.Should().BeEquivalentTo(source);
+                    target.ShouldBeEquivalentTo(source);
                 });
 
                 var task11 = Task.Run(() =>
@@ -2792,7 +2786,7 @@ namespace AllOverIt.Mapping.Tests
 
                     var target = objectMapper.Map<DummyConcrete2>(source);
 
-                    target.Should().BeEquivalentTo(source);
+                    target.ShouldBeEquivalentTo(source);
                 });
 
                 var task12 = Task.Run(() =>
@@ -2801,7 +2795,7 @@ namespace AllOverIt.Mapping.Tests
 
                     var target = objectMapper.Map<DummyConcrete1>(source);
 
-                    target.Should().BeEquivalentTo(source);
+                    target.ShouldBeEquivalentTo(source);
                 });
 
                 await Task
@@ -2836,3 +2830,7 @@ namespace AllOverIt.Mapping.Tests
         }
     }
 }
+
+
+
+

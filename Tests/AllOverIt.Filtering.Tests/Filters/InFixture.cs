@@ -1,4 +1,4 @@
-﻿using AllOverIt.Filtering.Filters;
+using AllOverIt.Filtering.Filters;
 using AllOverIt.Fixture;
 using FluentAssertions;
 
@@ -13,7 +13,7 @@ namespace AllOverIt.Filtering.Tests.Filters
             {
                 var actual = new In<int>();
 
-                actual.Value.Should().BeNull();
+                actual.Value.ShouldBeNull();
             }
         }
 
@@ -57,3 +57,4 @@ namespace AllOverIt.Filtering.Tests.Filters
         }
     }
 }
+

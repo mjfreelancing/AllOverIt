@@ -1,6 +1,6 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -23,7 +23,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -33,7 +33,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -43,7 +43,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -53,7 +53,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -63,7 +63,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -73,7 +73,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -83,7 +83,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -93,7 +93,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -103,7 +103,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -113,7 +113,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -123,7 +123,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -133,7 +133,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -143,7 +143,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -153,7 +153,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -163,7 +163,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -173,7 +173,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -183,7 +183,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -193,7 +193,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
         }
 
@@ -212,7 +212,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -222,7 +222,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -232,7 +232,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -242,7 +242,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -252,7 +252,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -262,7 +262,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -272,7 +272,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -282,7 +282,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -292,7 +292,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -302,7 +302,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -312,7 +312,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -322,7 +322,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -332,7 +332,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -342,7 +342,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -352,7 +352,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -362,7 +362,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -372,7 +372,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsBigEndian();
 
-                actual.Should().Be(value.SwapBytes());
+                actual.ShouldBe(value.SwapBytes());
             }
 
             [Fact]
@@ -382,8 +382,15 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = value.AsLittleEndian();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
         }
     }
 }
+
+
+
+
+
+
+

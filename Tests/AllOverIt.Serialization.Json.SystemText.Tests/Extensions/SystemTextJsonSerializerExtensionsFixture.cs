@@ -2,7 +2,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.Json.SystemText.Converters;
 using AllOverIt.Serialization.Json.SystemText.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests.Extensions
 {
@@ -32,9 +32,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Extensions
 
                 var expected = new[] { converter1, converter2 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(serializer.Options.Converters);
+                expected.ShouldBe(serializer.Options.Converters);
             }
         }
 
@@ -43,12 +41,10 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Serializer_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     SystemTextJsonSerializerExtensions.AddInterfaceConverter<IDummyType, DummyType>(null!);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("serializer");
             }
 
@@ -60,9 +56,12 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Extensions
                 serializer.AddInterfaceConverter<IDummyType, DummyType>();
 
                 serializer.Options.Converters.Single()
-                    .Should()
-                    .BeOfType<InterfaceConverter<IDummyType, DummyType>>();
+                    .ShouldBeOfType<InterfaceConverter<IDummyType, DummyType>>();
             }
         }
     }
 }
+
+
+
+

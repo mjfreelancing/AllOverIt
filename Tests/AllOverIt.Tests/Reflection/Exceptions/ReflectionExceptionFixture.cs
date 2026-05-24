@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Reflection.Exceptions;
 
 namespace AllOverIt.Tests.Reflection.Exceptions
@@ -24,3 +24,5 @@ namespace AllOverIt.Tests.Reflection.Exceptions
         }
     }
 }
+
+

@@ -1,5 +1,5 @@
 ﻿using AllOverIt.Validation.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Validation.Tests.Validators
 {
@@ -36,7 +36,7 @@ namespace AllOverIt.Validation.Tests.Validators
 
                 var result = validator.Validate(model);
 
-                result.IsValid.Should().BeTrue();
+                result.IsValid.ShouldBeTrue();
             }
 
             [Fact]
@@ -57,7 +57,7 @@ namespace AllOverIt.Validation.Tests.Validators
 
                 var result = validator.Validate(model);
 
-                result.IsValid.Should().BeFalse();
+                result.IsValid.ShouldBeFalse();
 
                 var expected = new[]
                 {
@@ -70,7 +70,7 @@ namespace AllOverIt.Validation.Tests.Validators
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
+                result.Errors.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMissingMembers());
             }
 
             [Fact]
@@ -94,7 +94,7 @@ namespace AllOverIt.Validation.Tests.Validators
 
                 var result = validator.Validate(model);
 
-                result.IsValid.Should().BeFalse();
+                result.IsValid.ShouldBeFalse();
 
                 var expected = new[]
                 {
@@ -114,7 +114,7 @@ namespace AllOverIt.Validation.Tests.Validators
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
+                result.Errors.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMissingMembers());
             }
 
             [Fact]
@@ -138,7 +138,7 @@ namespace AllOverIt.Validation.Tests.Validators
 
                 var result = validator.Validate(model);
 
-                result.IsValid.Should().BeFalse();
+                result.IsValid.ShouldBeFalse();
 
                 var expected = new[]
                 {
@@ -165,7 +165,7 @@ namespace AllOverIt.Validation.Tests.Validators
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
+                result.Errors.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMissingMembers());
             }
 
             [Fact]
@@ -189,7 +189,7 @@ namespace AllOverIt.Validation.Tests.Validators
 
                 var result = validator.Validate(model);
 
-                result.IsValid.Should().BeFalse();
+                result.IsValid.ShouldBeFalse();
 
                 var expected = new[]
                 {
@@ -223,8 +223,15 @@ namespace AllOverIt.Validation.Tests.Validators
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
+                result.Errors.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMissingMembers());
             }
         }
     }
 }
+
+
+
+
+
+
+

@@ -1,8 +1,7 @@
 ﻿using AllOverIt.Patterns.Specification;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
-using FluentAssertions;
 using System.Linq.Expressions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Tests.Patterns.Specification
 {
     public class LinqSpecificationFixture : LinqSpecificationFixtureBase
@@ -28,8 +27,8 @@ namespace AllOverIt.Tests.Patterns.Specification
                 var specification = new DummySpecification(() => expression);
                 var compiled = specification.Expression.Compile();
 
-                compiled.Invoke(value).Should().Be(expected1);
-                compiled.Invoke(value + 1).Should().Be(expected2);
+                compiled.Invoke(value).ShouldBe(expected1);
+                compiled.Invoke(value + 1).ShouldBe(expected2);
             }
         }
 
@@ -45,8 +44,8 @@ namespace AllOverIt.Tests.Patterns.Specification
                 var specification = LinqSpecification<int>.Create(value => value % 2 == 0);
                 var compiled = specification.Expression.Compile();
 
-                compiled.Invoke(value).Should().Be(expected1);
-                compiled.Invoke(value + 1).Should().Be(expected2);
+                compiled.Invoke(value).ShouldBe(expected1);
+                compiled.Invoke(value + 1).ShouldBe(expected2);
             }
         }
 
@@ -65,7 +64,7 @@ namespace AllOverIt.Tests.Patterns.Specification
                     .Where(isEvenSpecification)
                     .ToList();
 
-                actual.Should().BeEquivalentTo(new[] { 2, 4 });
+                actual.ShouldBeEquivalentTo(new[] { 2, 4 });
             }
         }
 
@@ -83,7 +82,7 @@ namespace AllOverIt.Tests.Patterns.Specification
                     .Where(isEvenSpecification)
                     .ToList();
 
-                actual.Should().BeEquivalentTo(new[] { 2, 4 });
+                actual.ShouldBeEquivalentTo(new[] { 2, 4 });
             }
         }
 
@@ -101,7 +100,7 @@ namespace AllOverIt.Tests.Patterns.Specification
                 var combined = isEven && isPositive;
 
                 var actual = combined.IsSatisfiedBy(value);
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -119,7 +118,7 @@ namespace AllOverIt.Tests.Patterns.Specification
                 var combined = isEven || isPositive;
 
                 var actual = combined.IsSatisfiedBy(value);
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -134,7 +133,7 @@ namespace AllOverIt.Tests.Patterns.Specification
                 var isNotEven = !isEven;
 
                 var actual = isNotEven.IsSatisfiedBy(value);
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -152,7 +151,7 @@ namespace AllOverIt.Tests.Patterns.Specification
                 var combined = !isEven || !isPositive;
 
                 var actual = combined.IsSatisfiedBy(value);
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -170,7 +169,7 @@ namespace AllOverIt.Tests.Patterns.Specification
                 var combined = !isEven && !isPositive;
 
                 var actual = combined.IsSatisfiedBy(value);
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -185,7 +184,7 @@ namespace AllOverIt.Tests.Patterns.Specification
                 var specification = new DummySpecification(() => expression);
 
                 var actual = specification.IsSatisfiedBy(value);
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -195,3 +194,5 @@ namespace AllOverIt.Tests.Patterns.Specification
         }
     }
 }
+
+

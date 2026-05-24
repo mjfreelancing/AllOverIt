@@ -1,7 +1,6 @@
-﻿using AllOverIt.Async;
+using AllOverIt.Async;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Async
 {
@@ -20,8 +19,7 @@ namespace AllOverIt.Tests.Async
 
                         await lazy;
                     })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
+                    .ShouldThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("function");
             }
 
@@ -34,7 +32,7 @@ namespace AllOverIt.Tests.Async
 
                 var actual = await lazy.Value;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -46,7 +44,7 @@ namespace AllOverIt.Tests.Async
 
                 var actual = await lazy;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -63,8 +61,7 @@ namespace AllOverIt.Tests.Async
 
                         await lazy;
                     })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
+                    .ShouldThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("function");
             }
 
@@ -78,7 +75,7 @@ namespace AllOverIt.Tests.Async
 
                 var actual = await lazy.Value;
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -91,8 +88,11 @@ namespace AllOverIt.Tests.Async
 
                 var actual = await lazy;
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
     }
 }
+
+
+

@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AllOverIt.Fixture.Extensions;
+using Shouldly;
 
 namespace AllOverIt.Assertion.Tests
 {
@@ -11,25 +12,19 @@ namespace AllOverIt.Assertion.Tests
                 [Fact]
                 public void Should_Throw_When_Not_Null()
                 {
-                    Invoking(() => Throw<Exception>.WhenNotNullOrEmpty(CreateMany<string>()))
-                        .Should()
-                        .Throw<Exception>();
+                    Should.Throw<Exception>(() => Throw<Exception>.WhenNotNullOrEmpty(CreateMany<string>()));
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Null()
                 {
-                    Invoking(() => Throw<Exception>.WhenNotNullOrEmpty((IEnumerable<string>)null))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception>.WhenNotNullOrEmpty((IEnumerable<string>)null));
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Empty()
                 {
-                    Invoking(() => Throw<Exception>.WhenNotNullOrEmpty(Array.Empty<string>()))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception>.WhenNotNullOrEmpty(Array.Empty<string>()));
                 }
             }
 
@@ -40,26 +35,20 @@ namespace AllOverIt.Assertion.Tests
                 {
                     var arg1 = Create<string>();
 
-                    Invoking(() => Throw<Exception1>.WhenNotNullOrEmpty(CreateMany<string>(), arg1))
-                        .Should()
-                        .Throw<Exception1>()
+                    Should.Throw<Exception1>(() => Throw<Exception1>.WhenNotNullOrEmpty(CreateMany<string>(), arg1))
                         .WithMessage(arg1);
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Null()
                 {
-                    Invoking(() => Throw<Exception1>.WhenNotNullOrEmpty((IEnumerable<string>)null, Create<string>()))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception1>.WhenNotNullOrEmpty((IEnumerable<string>)null, Create<string>()));
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Empty()
                 {
-                    Invoking(() => Throw<Exception1>.WhenNotNullOrEmpty(Array.Empty<string>(), Create<string>()))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception1>.WhenNotNullOrEmpty(Array.Empty<string>(), Create<string>()));
                 }
             }
 
@@ -71,26 +60,20 @@ namespace AllOverIt.Assertion.Tests
                     var arg1 = Create<string>();
                     var arg2 = Create<bool>();
 
-                    Invoking(() => Throw<Exception2>.WhenNotNullOrEmpty(CreateMany<string>(), arg1, arg2))
-                        .Should()
-                        .Throw<Exception2>()
+                    Should.Throw<Exception2>(() => Throw<Exception2>.WhenNotNullOrEmpty(CreateMany<string>(), arg1, arg2))
                         .WithMessage($"{arg1}{arg2}");
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Null()
                 {
-                    Invoking(() => Throw<Exception2>.WhenNotNullOrEmpty((IEnumerable<string>)null, Create<string>(), Create<bool>()))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception2>.WhenNotNullOrEmpty((IEnumerable<string>)null, Create<string>(), Create<bool>()));
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Empty()
                 {
-                    Invoking(() => Throw<Exception2>.WhenNotNullOrEmpty(Array.Empty<string>(), Create<string>(), Create<bool>()))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception2>.WhenNotNullOrEmpty(Array.Empty<string>(), Create<string>(), Create<bool>()));
                 }
             }
 
@@ -103,26 +86,20 @@ namespace AllOverIt.Assertion.Tests
                     var arg2 = Create<bool>();
                     var arg3 = Create<int>();
 
-                    Invoking(() => Throw<Exception3>.WhenNotNullOrEmpty(CreateMany<string>(), arg1, arg2, arg3))
-                        .Should()
-                        .Throw<Exception3>()
+                    Should.Throw<Exception3>(() => Throw<Exception3>.WhenNotNullOrEmpty(CreateMany<string>(), arg1, arg2, arg3))
                         .WithMessage($"{arg1}{arg2}{arg3}");
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Null()
                 {
-                    Invoking(() => Throw<Exception3>.WhenNotNullOrEmpty((IEnumerable<string>)null, Create<string>(), Create<bool>(), Create<int>()))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception3>.WhenNotNullOrEmpty((IEnumerable<string>)null, Create<string>(), Create<bool>(), Create<int>()));
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Empty()
                 {
-                    Invoking(() => Throw<Exception3>.WhenNotNullOrEmpty(Array.Empty<string>(), Create<string>(), Create<bool>(), Create<int>()))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception3>.WhenNotNullOrEmpty(Array.Empty<string>(), Create<string>(), Create<bool>(), Create<int>()));
                 }
             }
 
@@ -136,26 +113,20 @@ namespace AllOverIt.Assertion.Tests
                     var arg3 = Create<int>();
                     var arg4 = Create<string>();
 
-                    Invoking(() => Throw<Exception4>.WhenNotNullOrEmpty(CreateMany<string>(), arg1, arg2, arg3, arg4))
-                        .Should()
-                        .Throw<Exception4>()
+                    Should.Throw<Exception4>(() => Throw<Exception4>.WhenNotNullOrEmpty(CreateMany<string>(), arg1, arg2, arg3, arg4))
                         .WithMessage($"{arg1}{arg2}{arg3}{arg4}");
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Null()
                 {
-                    Invoking(() => Throw<Exception4>.WhenNotNullOrEmpty((IEnumerable<string>)null, Create<string>(), Create<bool>(), Create<int>(), Create<string>()))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception4>.WhenNotNullOrEmpty((IEnumerable<string>)null, Create<string>(), Create<bool>(), Create<int>(), Create<string>()));
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Empty()
                 {
-                    Invoking(() => Throw<Exception4>.WhenNotNullOrEmpty(Array.Empty<string>(), Create<string>(), Create<bool>(), Create<int>(), Create<string>()))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception4>.WhenNotNullOrEmpty(Array.Empty<string>(), Create<string>(), Create<bool>(), Create<int>(), Create<string>()));
                 }
             }
         }
@@ -170,26 +141,20 @@ namespace AllOverIt.Assertion.Tests
                 {
                     var arg1 = Create<string>();
 
-                    Invoking(() => Throw<Exception1>.WhenNotNullOrEmpty(CreateMany<string>(), () => arg1))
-                        .Should()
-                        .Throw<Exception1>()
+                    Should.Throw<Exception1>(() => Throw<Exception1>.WhenNotNullOrEmpty(CreateMany<string>(), () => arg1))
                         .WithMessage(arg1);
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Null()
                 {
-                    Invoking(() => Throw<Exception1>.WhenNotNullOrEmpty((IEnumerable<string>)null, () => Create<string>()))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception1>.WhenNotNullOrEmpty((IEnumerable<string>)null, () => Create<string>()));
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Empty()
                 {
-                    Invoking(() => Throw<Exception1>.WhenNotNullOrEmpty(Array.Empty<string>(), () => Create<string>()))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception1>.WhenNotNullOrEmpty(Array.Empty<string>(), () => Create<string>()));
                 }
             }
 
@@ -201,26 +166,20 @@ namespace AllOverIt.Assertion.Tests
                     var arg1 = Create<string>();
                     var arg2 = Create<bool>();
 
-                    Invoking(() => Throw<Exception2>.WhenNotNullOrEmpty(CreateMany<string>(), () => (arg1, arg2)))
-                        .Should()
-                        .Throw<Exception2>()
+                    Should.Throw<Exception2>(() => Throw<Exception2>.WhenNotNullOrEmpty(CreateMany<string>(), () => (arg1, arg2)))
                         .WithMessage($"{arg1}{arg2}");
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Null()
                 {
-                    Invoking(() => Throw<Exception2>.WhenNotNullOrEmpty((IEnumerable<string>)null, () => (Create<string>(), Create<bool>())))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception2>.WhenNotNullOrEmpty((IEnumerable<string>)null, () => (Create<string>(), Create<bool>())));
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Empty()
                 {
-                    Invoking(() => Throw<Exception2>.WhenNotNullOrEmpty(Array.Empty<string>(), () => (Create<string>(), Create<bool>())))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception2>.WhenNotNullOrEmpty(Array.Empty<string>(), () => (Create<string>(), Create<bool>())));
                 }
             }
 
@@ -233,26 +192,20 @@ namespace AllOverIt.Assertion.Tests
                     var arg2 = Create<bool>();
                     var arg3 = Create<int>();
 
-                    Invoking(() => Throw<Exception3>.WhenNotNullOrEmpty(CreateMany<string>(), () => (arg1, arg2, arg3)))
-                        .Should()
-                        .Throw<Exception3>()
+                    Should.Throw<Exception3>(() => Throw<Exception3>.WhenNotNullOrEmpty(CreateMany<string>(), () => (arg1, arg2, arg3)))
                         .WithMessage($"{arg1}{arg2}{arg3}");
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Null()
                 {
-                    Invoking(() => Throw<Exception3>.WhenNotNullOrEmpty((IEnumerable<string>)null, () => (Create<string>(), Create<bool>(), Create<int>())))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception3>.WhenNotNullOrEmpty((IEnumerable<string>)null, () => (Create<string>(), Create<bool>(), Create<int>())));
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Empty()
                 {
-                    Invoking(() => Throw<Exception3>.WhenNotNullOrEmpty(Array.Empty<string>(), () => (Create<string>(), Create<bool>(), Create<int>())))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception3>.WhenNotNullOrEmpty(Array.Empty<string>(), () => (Create<string>(), Create<bool>(), Create<int>())));
                 }
             }
 
@@ -266,26 +219,20 @@ namespace AllOverIt.Assertion.Tests
                     var arg3 = Create<int>();
                     var arg4 = Create<string>();
 
-                    Invoking(() => Throw<Exception4>.WhenNotNullOrEmpty(CreateMany<string>(), () => (arg1, arg2, arg3, arg4)))
-                        .Should()
-                        .Throw<Exception4>()
+                    Should.Throw<Exception4>(() => Throw<Exception4>.WhenNotNullOrEmpty(CreateMany<string>(), () => (arg1, arg2, arg3, arg4)))
                         .WithMessage($"{arg1}{arg2}{arg3}{arg4}");
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Null()
                 {
-                    Invoking(() => Throw<Exception4>.WhenNotNullOrEmpty((IEnumerable<string>)null, () => (Create<string>(), Create<bool>(), Create<int>(), Create<string>())))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception4>.WhenNotNullOrEmpty((IEnumerable<string>)null, () => (Create<string>(), Create<bool>(), Create<int>(), Create<string>())));
                 }
 
                 [Fact]
                 public void Should_Not_Throw_When_Empty()
                 {
-                    Invoking(() => Throw<Exception4>.WhenNotNullOrEmpty(Array.Empty<string>(), () => (Create<string>(), Create<bool>(), Create<int>(), Create<string>())))
-                        .Should()
-                        .NotThrow();
+                    Should.NotThrow(() => Throw<Exception4>.WhenNotNullOrEmpty(Array.Empty<string>(), () => (Create<string>(), Create<bool>(), Create<int>(), Create<string>())));
                 }
             }
         }

@@ -3,7 +3,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -25,7 +25,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     var actual = Enumerable.Range(1, 10).AsQueryable().Where(_isEven);
 
-                    actual.Should().BeAssignableTo<IQueryable<int>>();
+                    actual.ShouldBeAssignableTo<IQueryable<int>>();
                 }
 
                 [Fact]
@@ -35,7 +35,7 @@ namespace AllOverIt.Tests.Extensions
 
                     var actual = Enumerable.Range(1, 10).AsQueryable().Where(_isEven);
 
-                    expected.Should().BeEquivalentTo(actual);
+                    actual.ShouldBeEquivalentTo(expected);
                 }
             }
 
@@ -48,7 +48,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     var actual = values.AsQueryable().Any(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -61,7 +61,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     var actual = values.AsQueryable().All(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -74,7 +74,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     var actual = values.AsQueryable().Count(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -87,7 +87,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     var actual = values.AsQueryable().First(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -100,7 +100,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     var actual = values.AsQueryable().FirstOrDefault(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -113,7 +113,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     var actual = values.AsQueryable().Last(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -126,7 +126,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     var actual = values.AsQueryable().LastOrDefault(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -140,7 +140,7 @@ namespace AllOverIt.Tests.Extensions
                     var specification = LinqSpecification<int>.Create(value => value < 5);
                     var actual = values.SkipWhile(specification);
 
-                    actual.Should().BeAssignableTo<IQueryable<int>>();
+                    actual.ShouldBeAssignableTo<IQueryable<int>>();
                 }
 
                 [Fact]
@@ -153,7 +153,7 @@ namespace AllOverIt.Tests.Extensions
 
                     var expected = new[] { 5, 6, 7, 8, 9, 10 };
 
-                    expected.Should().BeEquivalentTo(actual);
+                    actual.ShouldBeEquivalentTo(expected);
                 }
             }
 
@@ -167,7 +167,7 @@ namespace AllOverIt.Tests.Extensions
                     var specification = LinqSpecification<int>.Create(value => value < 5);
                     var actual = values.TakeWhile(specification);
 
-                    actual.Should().BeAssignableTo<IQueryable<int>>();
+                    actual.ShouldBeAssignableTo<IQueryable<int>>();
                 }
 
                 [Fact]
@@ -180,9 +180,16 @@ namespace AllOverIt.Tests.Extensions
 
                     var expected = new[] { 1, 2, 3, 4 };
 
-                    expected.Should().BeEquivalentTo(actual);
+                    actual.ShouldBeEquivalentTo(expected);
                 }
             }
         }
     }
 }
+
+
+
+
+
+
+

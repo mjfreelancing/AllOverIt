@@ -1,12 +1,12 @@
 ﻿using AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes;
 using AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes.Entities;
 using AllOverIt.Extensions;
-using FluentAssertions;
-using TestUtils;
+using AllOverIt.Fixture;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 {
-    public class ColumnDescriptorFixture : NSubstituteFixtureBase
+    public class ColumnDescriptorFixture : FixtureBase
     {
         private readonly Author _author = new();
         private readonly Blog _blog = new();
@@ -77,7 +77,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                         };
                     }
 
-                    expected.Should().BeEquivalentTo(descriptor);
+                    descriptor.ShouldBeEquivalentTo(expected);
                 }
             }
 
@@ -159,7 +159,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                         };
                     }
 
-                    expected.Should().BeEquivalentTo(descriptor);
+                    descriptor.ShouldBeEquivalentTo(expected);
                 }
             }
         }

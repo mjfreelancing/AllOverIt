@@ -1,8 +1,8 @@
-using AllOverIt.Evaluator.Tests.Variables.Helpers;
+﻿using AllOverIt.Evaluator.Tests.Variables.Helpers;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {
@@ -22,9 +22,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Variable_Registry_Null()
             {
-                Invoking(() => _variableLookup = new VariableLookup(null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => { _variableLookup = new VariableLookup(null); })
                     .WithNamedMessageWhenNull("variableRegistry");
             }
         }

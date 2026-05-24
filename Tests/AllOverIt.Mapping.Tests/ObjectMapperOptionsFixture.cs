@@ -1,6 +1,5 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
 
@@ -30,7 +29,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = factory.Invoke();
 
-                actual.Should().BeOfType<DummySource1>();
+                actual.ShouldBeOfType<DummySource1>();
             }
         }
 
@@ -62,8 +61,11 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = factory.Invoke();
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
     }
 }
+
+
+

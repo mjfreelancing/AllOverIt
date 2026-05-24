@@ -1,6 +1,5 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Threading;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Threading
 {
@@ -17,7 +16,7 @@ namespace AllOverIt.Tests.Threading
 
                 var success = await _lock.TryEnterLockAsync(10, CancellationToken.None);
 
-                success.Should().BeFalse();
+                success.ShouldBeFalse();
 
                 _lock.ExitLock();
             }
@@ -32,8 +31,7 @@ namespace AllOverIt.Tests.Threading
                 {
                     await _lock.EnterLockAsync(cts.Token);
                 })
-                    .Should()
-                    .ThrowAsync<TaskCanceledException>();
+                    .ShouldThrowAsync<TaskCanceledException>();
             }
         }
 
@@ -46,7 +44,7 @@ namespace AllOverIt.Tests.Threading
             {
                 var success = await _lock.TryEnterLockAsync(_timeout, CancellationToken.None);
 
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 _lock.ExitLock();
             }
@@ -58,7 +56,7 @@ namespace AllOverIt.Tests.Threading
 
                 var success = await _lock.TryEnterLockAsync(_timeout, CancellationToken.None);
 
-                success.Should().BeFalse();
+                success.ShouldBeFalse();
 
                 _lock.ExitLock();
             }
@@ -73,8 +71,7 @@ namespace AllOverIt.Tests.Threading
                 {
                     await _lock.TryEnterLockAsync(_timeout, cts.Token);
                 })
-                    .Should()
-                    .ThrowAsync<TaskCanceledException>();
+                    .ShouldThrowAsync<TaskCanceledException>();
             }
         }
 
@@ -87,7 +84,7 @@ namespace AllOverIt.Tests.Threading
             {
                 var success = await _lock.TryEnterLockAsync(_timeout, CancellationToken.None);
 
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 _lock.ExitLock();
             }
@@ -99,7 +96,7 @@ namespace AllOverIt.Tests.Threading
 
                 var success = await _lock.TryEnterLockAsync(_timeout, CancellationToken.None);
 
-                success.Should().BeFalse();
+                success.ShouldBeFalse();
 
                 _lock.ExitLock();
             }
@@ -114,8 +111,7 @@ namespace AllOverIt.Tests.Threading
                 {
                     await _lock.TryEnterLockAsync(_timeout, cts.Token);
                 })
-                    .Should()
-                    .ThrowAsync<TaskCanceledException>();
+                    .ShouldThrowAsync<TaskCanceledException>();
             }
         }
 
@@ -130,8 +126,7 @@ namespace AllOverIt.Tests.Threading
 
                     _lock.ExitLock();
                 })
-                  .Should()
-                  .NotThrowAsync();
+                  .ShouldNotThrowAsync();
             }
 
             [Fact]
@@ -141,8 +136,7 @@ namespace AllOverIt.Tests.Threading
                 {
                     _lock.ExitLock();
                 })
-                  .Should()
-                  .Throw<SynchronizationLockException>()
+                  .ShouldThrow<SynchronizationLockException>()
                   .WithMessage("The lock is not currently held.");
             }
         }
@@ -157,9 +151,11 @@ namespace AllOverIt.Tests.Threading
                     _lock.Dispose();
                     _lock.Dispose();
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
     }
 }
+
+
+

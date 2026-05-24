@@ -1,7 +1,8 @@
 ﻿using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {
@@ -34,9 +35,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Func_Null()
             {
-                Invoking(() => _variable = new LazyVariable(Create<string>(), (Func<double>) null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _variable = new LazyVariable(Create<string>(), (Func<double>)null))
                     .WithNamedMessageWhenNull("valueResolver");
             }
 
@@ -52,7 +51,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = Enumerable.Empty<string>()
                 };
 
-                expected.Should().BeEquivalentTo(_variable);
+                expected.ShouldBeEquivalentTo(_variable);
             }
 
             [Fact]
@@ -68,8 +67,8 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var actual = _variable.Value;
 
-                invoked.Should().BeTrue();
-                actual.Should().Be(_value + 1);
+                invoked.ShouldBeTrue();
+                actual.ShouldBe(_value + 1);
             }
 
             [Fact]
@@ -86,8 +85,8 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 var actual1 = _variable.Value;
                 var actual2 = _variable.Value;
 
-                actual1.Should().Be(actual2);
-                count.Should().Be(1);
+                actual1.ShouldBe(actual2);
+                count.ShouldBe(1);
             }
         }
 
@@ -101,13 +100,13 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _variable = new LazyVariable(_name, GetValue);
 
-                _variable.Value.Should().Be(_value);
+                _variable.Value.ShouldBe(_value);
 
                 _variable.Reset();
 
                 _value = expected;
 
-                _variable.Value.Should().Be(expected);
+                _variable.Value.ShouldBe(expected);
             }
         }
     }

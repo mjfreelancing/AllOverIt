@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Collections;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 using System.Collections;
 
 namespace AllOverIt.Tests.Collections
@@ -25,7 +25,7 @@ namespace AllOverIt.Tests.Collections
             public void Should_Be_Empty()
             {
                 var actual = new ReadOnlyDictionary<int, string>();
-                actual.Should().BeEmpty();
+                actual.ShouldBeEmpty();
             }
         }
 
@@ -42,7 +42,7 @@ namespace AllOverIt.Tests.Collections
 
                 var actual = new ReadOnlyDictionary<int, string>(expected);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -59,7 +59,7 @@ namespace AllOverIt.Tests.Collections
 
                 var actual = new ReadOnlyDictionary<int, string>(expected);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -76,7 +76,7 @@ namespace AllOverIt.Tests.Collections
 
                 var actual = new ReadOnlyDictionary<int, string>(expected);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -91,7 +91,7 @@ namespace AllOverIt.Tests.Collections
                 var expected = _data.Values.ElementAt(index);
                 var actual = _dictionary[key];
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -100,7 +100,7 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Return_Keys()
             {
-                _dictionary.Keys.Should().BeEquivalentTo(_data.Keys);
+                _dictionary.Keys.ShouldBeEquivalentTo(_data.Keys);
             }
         }
 
@@ -109,7 +109,7 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Return_Values()
             {
-                _dictionary.Values.Should().BeEquivalentTo(_data.Values);
+                _dictionary.Values.ShouldBeEquivalentTo(_data.Values);
             }
         }
 
@@ -118,7 +118,7 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Return_Count()
             {
-                _dictionary.Count.Should().Be(_data.Count);
+                _dictionary.Count.ShouldBe(_data.Count);
             }
         }
 
@@ -131,7 +131,7 @@ namespace AllOverIt.Tests.Collections
             {
                 var key = expected ? _data.Keys.ElementAt(3) : _data.Keys.Sum();
 
-                _dictionary.ContainsKey(key).Should().Be(expected);
+                _dictionary.ContainsKey(key).ShouldBe(expected);
             }
         }
 
@@ -147,8 +147,8 @@ namespace AllOverIt.Tests.Collections
 
                 var actual = _dictionary.TryGetValue(key, out var result);
 
-                actual.Should().Be(success);
-                result.Should().Be(expected);
+                actual.ShouldBe(success);
+                result.ShouldBe(expected);
             }
         }
 
@@ -165,7 +165,7 @@ namespace AllOverIt.Tests.Collections
                     results.Add(enumerator.Current.Value);
                 }
 
-                results.Should().BeEquivalentTo(_data.Values);
+                results.ShouldBeEquivalentTo(_data.Values);
             }
 
             [Fact]
@@ -180,14 +180,21 @@ namespace AllOverIt.Tests.Collections
                     results.Add(kvp.Value);
                 }
 
-                results.Should().BeEquivalentTo(_data.Values);
+                results.ShouldBeEquivalentTo(_data.Values);
             }
         }
 
         [Fact]
         public void Should_Be_Immutable()
         {
-            _dictionary.Should().NotBeAssignableTo<ICollection<int>>();
+            _dictionary.ShouldNotBeAssignableTo<ICollection<int>>();
         }
     }
 }
+
+
+
+
+
+
+

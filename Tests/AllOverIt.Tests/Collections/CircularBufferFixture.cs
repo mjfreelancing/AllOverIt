@@ -2,8 +2,8 @@
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 using System.Collections;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Collections
 {
@@ -20,8 +20,7 @@ namespace AllOverIt.Tests.Collections
                 {
                     _ = new CircularBuffer<int>(capacity);
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage("The circular buffer requires a capacity of at least 1. (Parameter 'capacity')");
             }
 
@@ -32,10 +31,10 @@ namespace AllOverIt.Tests.Collections
 
                 var buffer = new CircularBuffer<int>(capacity);
 
-                buffer.Length.Should().Be(0);
-                buffer.Capacity.Should().Be(capacity);
-                buffer.IsEmpty.Should().BeTrue();
-                buffer.IsFull.Should().BeFalse();
+                buffer.Length.ShouldBe(0);
+                buffer.Capacity.ShouldBe(capacity);
+                buffer.IsEmpty.ShouldBeTrue();
+                buffer.IsFull.ShouldBeFalse();
             }
         }
 
@@ -50,8 +49,7 @@ namespace AllOverIt.Tests.Collections
                 {
                     _ = new CircularBuffer<int>(capacity, CreateMany<int>().ToArray());
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage("The circular buffer requires a capacity of at least 1. (Parameter 'capacity')");
             }
 
@@ -62,8 +60,7 @@ namespace AllOverIt.Tests.Collections
                 {
                     _ = new CircularBuffer<int>(Create<int>(), null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -76,8 +73,7 @@ namespace AllOverIt.Tests.Collections
 
                     _ = new CircularBuffer<int>(capacity, CreateMany<int>(capacity + 1).ToArray());
                 })
-                .Should()
-                .Throw<ArgumentException>()
+                .ShouldThrow<ArgumentException>()
                 .WithMessage("The item count exceeds the circular buffer capacity.");
             }
 
@@ -88,10 +84,10 @@ namespace AllOverIt.Tests.Collections
 
                 var buffer = new CircularBuffer<int>(capacity);
 
-                buffer.Length.Should().Be(0);
-                buffer.Capacity.Should().Be(capacity);
-                buffer.IsEmpty.Should().BeTrue();
-                buffer.IsFull.Should().BeFalse();
+                buffer.Length.ShouldBe(0);
+                buffer.Capacity.ShouldBe(capacity);
+                buffer.IsEmpty.ShouldBeTrue();
+                buffer.IsFull.ShouldBeFalse();
             }
 
             [Fact]
@@ -103,10 +99,10 @@ namespace AllOverIt.Tests.Collections
 
                 var buffer = new CircularBuffer<int>(capacity, items);
 
-                buffer.Length.Should().Be(size);
-                buffer.Capacity.Should().Be(capacity);
-                buffer.IsEmpty.Should().BeFalse();
-                buffer.IsFull.Should().BeFalse();
+                buffer.Length.ShouldBe(size);
+                buffer.Capacity.ShouldBe(capacity);
+                buffer.IsEmpty.ShouldBeFalse();
+                buffer.IsFull.ShouldBeFalse();
             }
 
             [Fact]
@@ -117,10 +113,10 @@ namespace AllOverIt.Tests.Collections
 
                 var buffer = new CircularBuffer<int>(capacity, items);
 
-                buffer.Length.Should().Be(capacity);
-                buffer.Capacity.Should().Be(capacity);
-                buffer.IsEmpty.Should().BeFalse();
-                buffer.IsFull.Should().BeTrue();
+                buffer.Length.ShouldBe(capacity);
+                buffer.Capacity.ShouldBe(capacity);
+                buffer.IsEmpty.ShouldBeFalse();
+                buffer.IsFull.ShouldBeTrue();
             }
         }
 
@@ -134,8 +130,7 @@ namespace AllOverIt.Tests.Collections
                     var buffer = new CircularBuffer<int>(Create<int>());
                     buffer.Front();
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
+                .ShouldThrow<InvalidOperationException>()
                 .WithMessage("The circular buffer contains no elements.");
             }
 
@@ -152,7 +147,7 @@ namespace AllOverIt.Tests.Collections
 
                     var actual = buffer.Front();
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -168,14 +163,14 @@ namespace AllOverIt.Tests.Collections
 
                     var actual = buffer.Front();
 
-                    actual.Should().Be(expected[0]);
+                    actual.ShouldBe(expected[0]);
                 }
 
                 buffer.PushBack(Create<int>());
-                buffer.Front().Should().Be(expected[1]);
+                buffer.Front().ShouldBe(expected[1]);
 
                 buffer.PushBack(Create<int>());
-                buffer.Front().Should().Be(expected[2]);
+                buffer.Front().ShouldBe(expected[2]);
             }
         }
 
@@ -189,8 +184,7 @@ namespace AllOverIt.Tests.Collections
                     var buffer = new CircularBuffer<int>(Create<int>());
                     buffer.Back();
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
+                .ShouldThrow<InvalidOperationException>()
                 .WithMessage("The circular buffer contains no elements.");
             }
 
@@ -206,14 +200,14 @@ namespace AllOverIt.Tests.Collections
 
                     var actual = buffer.Back();
 
-                    actual.Should().Be(expected[0]);
+                    actual.ShouldBe(expected[0]);
                 }
 
                 buffer.PushFront(Create<int>());
-                buffer.Back().Should().Be(expected[1]);
+                buffer.Back().ShouldBe(expected[1]);
 
                 buffer.PushFront(Create<int>());
-                buffer.Back().Should().Be(expected[2]);
+                buffer.Back().ShouldBe(expected[2]);
             }
 
             [Fact]
@@ -229,7 +223,7 @@ namespace AllOverIt.Tests.Collections
 
                     var actual = buffer.Back();
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
         }
@@ -245,8 +239,7 @@ namespace AllOverIt.Tests.Collections
 
                     _ = buffer[1];
                 })
-                .Should()
-                .Throw<IndexOutOfRangeException>()
+                .ShouldThrow<IndexOutOfRangeException>()
                 .WithMessage("The provided index exceeds the current buffer size.");
             }
 
@@ -260,7 +253,7 @@ namespace AllOverIt.Tests.Collections
                 {
                     var actual = buffer[i];
 
-                    actual.Should().Be(expected[i]);
+                    actual.ShouldBe(expected[i]);
                 }
             }
 
@@ -276,7 +269,7 @@ namespace AllOverIt.Tests.Collections
 
                     var actual = buffer[i];
 
-                    actual.Should().Be(expected[i] + 1);
+                    actual.ShouldBe(expected[i] + 1);
                 }
             }
 
@@ -290,8 +283,7 @@ namespace AllOverIt.Tests.Collections
 
                     _ = buffer[3];
                 })
-                .Should()
-                .Throw<IndexOutOfRangeException>()
+                .ShouldThrow<IndexOutOfRangeException>()
                 .WithMessage("The provided index exceeds the current buffer size.");
             }
         }
@@ -312,7 +304,7 @@ namespace AllOverIt.Tests.Collections
                 IEnumerable<int> expected = source.ToArray();
                 expected = expected.Reverse();
 
-                buffer.Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
+                buffer.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -329,7 +321,7 @@ namespace AllOverIt.Tests.Collections
                 IEnumerable<int> expected = source[4..];
                 expected = expected.Reverse();
 
-                buffer.Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
+                buffer.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -348,7 +340,7 @@ namespace AllOverIt.Tests.Collections
 
                 var actual = buffer.ToArray();
 
-                actual.Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -364,7 +356,7 @@ namespace AllOverIt.Tests.Collections
 
                 var actual = buffer.ToArray();
 
-                actual.Should().BeEquivalentTo(expected[4..], cfg => cfg.WithStrictOrdering());
+                actual.ShouldBeEquivalentTo(expected[4..]);
             }
         }
 
@@ -378,8 +370,8 @@ namespace AllOverIt.Tests.Collections
 
                 var actual = new[] { buffer.PopFront(), buffer.PopFront(), buffer.PopFront() };
 
-                buffer.IsEmpty.Should().BeTrue();
-                actual.Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
+                buffer.IsEmpty.ShouldBeTrue();
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -391,8 +383,7 @@ namespace AllOverIt.Tests.Collections
                 {
                     _ = buffer.PopFront();
                 })
-                    .Should().
-                    Throw<InvalidOperationException>()
+                    .ShouldThrow<InvalidOperationException>()
                     .WithMessage("The circular buffer contains no elements.");
             }
         }
@@ -410,8 +401,8 @@ namespace AllOverIt.Tests.Collections
                 IEnumerable<int> expected = source.ToArray();
                 expected = expected.Reverse();
 
-                buffer.IsEmpty.Should().BeTrue();
-                actual.Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
+                buffer.IsEmpty.ShouldBeTrue();
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -423,8 +414,7 @@ namespace AllOverIt.Tests.Collections
                 {
                     _ = buffer.PopBack();
                 })
-                    .Should().
-                    Throw<InvalidOperationException>()
+                    .ShouldThrow<InvalidOperationException>()
                     .WithMessage("The circular buffer contains no elements.");
             }
         }
@@ -437,11 +427,11 @@ namespace AllOverIt.Tests.Collections
                 var values = CreateMany<int>(3).ToArray();
                 var buffer = new CircularBuffer<int>(3, values);
 
-                buffer.IsEmpty.Should().BeFalse();
+                buffer.IsEmpty.ShouldBeFalse();
 
                 buffer.Clear();
 
-                buffer.IsEmpty.Should().BeTrue();
+                buffer.IsEmpty.ShouldBeTrue();
             }
         }
 
@@ -452,7 +442,7 @@ namespace AllOverIt.Tests.Collections
             {
                 var buffer = new CircularBuffer<string>(3);
 
-                buffer.ToArray().Should().BeEmpty();
+                buffer.ToArray().ShouldBeEmpty();
             }
 
             [Fact]
@@ -461,7 +451,7 @@ namespace AllOverIt.Tests.Collections
                 var expected = CreateMany<int?>(3).ToArray();
                 var buffer = new CircularBuffer<int?>(3, expected);
 
-                buffer.ToArray().Should().BeEquivalentTo(expected, cfg => cfg.WithStrictOrdering());
+                buffer.ToArray().ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -475,7 +465,7 @@ namespace AllOverIt.Tests.Collections
 
                 foreach (var value in buffer.WithIndex())
                 {
-                    value.Item.Should().Be(expected[value.Index]);
+                    value.Item.ShouldBe(expected[value.Index]);
                 }
             }
 
@@ -493,9 +483,17 @@ namespace AllOverIt.Tests.Collections
                 {
                     var value = (int)enumerator.Current;
 
-                    value.Should().Be(expected[index++]);
+                    expected[index++].ShouldBe(value);
                 }
             }
         }
     }
 }
+
+
+
+
+
+
+
+

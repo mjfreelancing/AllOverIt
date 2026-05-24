@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Pipeline;
 using AllOverIt.Patterns.Pipeline.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 {
@@ -34,8 +33,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 
                     _ = step.AsFunc();
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -52,7 +50,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 var expected = input + factor;
 
                 var actual = func.Invoke(input);
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -82,8 +80,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
 
                     _ = step.AsFunc();
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -99,10 +96,13 @@ namespace AllOverIt.Tests.Patterns.Pipeline.Extensions
                 var expected = input + factor;
 
                 var actual = await func.Invoke(input, CancellationToken.None);
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             // Cannot test 'Throw_When_Cancelled' since it is up to the 'step' implementation to throw
         }
     }
 }
+
+
+

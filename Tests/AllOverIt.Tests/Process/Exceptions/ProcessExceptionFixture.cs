@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Process.Exceptions;
 
 namespace AllOverIt.Tests.Process.Exceptions
@@ -24,3 +24,5 @@ namespace AllOverIt.Tests.Process.Exceptions
         }
     }
 }
+
+

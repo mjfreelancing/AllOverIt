@@ -1,6 +1,5 @@
 using AllOverIt.Fixture;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
-using FluentAssertions;
 using Newtonsoft.Json;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
@@ -37,7 +36,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
             {
                 var actual = _converter.CanConvert(type);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -53,23 +52,23 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 
                 var actual = _serializer.DeserializeObject<DummyDateTime>(value);
 
-                actual.Prop1.Kind.Should().Be(DateTimeKind.Utc);
-                actual.Prop1.Day.Should().Be(dateTime1.Day);
-                actual.Prop1.Month.Should().Be(dateTime1.Month);
-                actual.Prop1.Year.Should().Be(dateTime1.Year);
-                actual.Prop1.Hour.Should().Be(dateTime1.Hour);
-                actual.Prop1.Minute.Should().Be(dateTime1.Minute);
-                actual.Prop1.Second.Should().Be(dateTime1.Second);
-                actual.Prop1.Millisecond.Should().Be(dateTime1.Millisecond);
+                actual.Prop1.Kind.ShouldBe(DateTimeKind.Utc);
+                actual.Prop1.Day.ShouldBe(dateTime1.Day);
+                actual.Prop1.Month.ShouldBe(dateTime1.Month);
+                actual.Prop1.Year.ShouldBe(dateTime1.Year);
+                actual.Prop1.Hour.ShouldBe(dateTime1.Hour);
+                actual.Prop1.Minute.ShouldBe(dateTime1.Minute);
+                actual.Prop1.Second.ShouldBe(dateTime1.Second);
+                actual.Prop1.Millisecond.ShouldBe(dateTime1.Millisecond);
 
-                actual.Prop2.Value.Kind.Should().Be(DateTimeKind.Utc);
-                actual.Prop2.Value.Day.Should().Be(dateTime2.Day);
-                actual.Prop2.Value.Month.Should().Be(dateTime2.Month);
-                actual.Prop2.Value.Year.Should().Be(dateTime2.Year);
-                actual.Prop2.Value.Hour.Should().Be(dateTime2.Hour);
-                actual.Prop2.Value.Minute.Should().Be(dateTime2.Minute);
-                actual.Prop2.Value.Second.Should().Be(dateTime2.Second);
-                actual.Prop2.Value.Millisecond.Should().Be(dateTime2.Millisecond);
+                actual.Prop2.Value.Kind.ShouldBe(DateTimeKind.Utc);
+                actual.Prop2.Value.Day.ShouldBe(dateTime2.Day);
+                actual.Prop2.Value.Month.ShouldBe(dateTime2.Month);
+                actual.Prop2.Value.Year.ShouldBe(dateTime2.Year);
+                actual.Prop2.Value.Hour.ShouldBe(dateTime2.Hour);
+                actual.Prop2.Value.Minute.ShouldBe(dateTime2.Minute);
+                actual.Prop2.Value.Second.ShouldBe(dateTime2.Second);
+                actual.Prop2.Value.Millisecond.ShouldBe(dateTime2.Millisecond);
             }
 
             [Fact]
@@ -82,16 +81,16 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 
                 var actual = _serializer.DeserializeObject<DummyDateTime>(value);
 
-                actual.Prop1.Kind.Should().Be(DateTimeKind.Utc);
-                actual.Prop1.Day.Should().Be(dateTime1.Day);
-                actual.Prop1.Month.Should().Be(dateTime1.Month);
-                actual.Prop1.Year.Should().Be(dateTime1.Year);
-                actual.Prop1.Hour.Should().Be(dateTime1.Hour);
-                actual.Prop1.Minute.Should().Be(dateTime1.Minute);
-                actual.Prop1.Second.Should().Be(dateTime1.Second);
-                actual.Prop1.Millisecond.Should().Be(dateTime1.Millisecond);
+                actual.Prop1.Kind.ShouldBe(DateTimeKind.Utc);
+                actual.Prop1.Day.ShouldBe(dateTime1.Day);
+                actual.Prop1.Month.ShouldBe(dateTime1.Month);
+                actual.Prop1.Year.ShouldBe(dateTime1.Year);
+                actual.Prop1.Hour.ShouldBe(dateTime1.Hour);
+                actual.Prop1.Minute.ShouldBe(dateTime1.Minute);
+                actual.Prop1.Second.ShouldBe(dateTime1.Second);
+                actual.Prop1.Millisecond.ShouldBe(dateTime1.Millisecond);
 
-                actual.Prop2.Should().BeNull();
+                actual.Prop2.ShouldBeNull();
             }
         }
 
@@ -108,7 +107,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
                 // Adding the 'Z' on the end because the original value was 'unspecified' but the serialized version is now UTC
                 var expected = $@"{{""Prop1"":""{dummyValue.Prop1:yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK}Z"",""Prop2"":""{dummyValue.Prop2:yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK}Z""}}";
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -123,8 +122,10 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
                 // Adding the 'Z' on the end because the original value was 'unspecified' but the serialized version is now UTC
                 var expected = $@"{{""Prop1"":""{dummyValue.Prop1:yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK}Z"",""Prop2"":null}}";
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }
 }
+
+

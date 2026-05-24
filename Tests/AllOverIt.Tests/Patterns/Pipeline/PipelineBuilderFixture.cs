@@ -1,9 +1,8 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Patterns.Pipeline;
 using AllOverIt.Patterns.Pipeline.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Pipeline
 {
@@ -108,8 +107,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 {
                     _ = PipelineBuilder.Pipe(step);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -120,7 +118,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var actual = PipelineBuilder.Pipe(step);
 
-                actual.Should().BeOfType<PipelineNoInputBuilder<double>>();
+                actual.ShouldBeOfType<PipelineNoInputBuilder<double>>();
             }
 
             [Fact]
@@ -138,7 +136,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 actual.Build().Invoke();
 
-                invoked.Should().BeTrue();
+                invoked.ShouldBeTrue();
             }
 
             [Fact]
@@ -167,8 +165,8 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 actual.Build().Invoke();
 
-                invoked1.Should().Be(1);
-                invoked2.Should().Be(2);
+                invoked1.ShouldBe(1);
+                invoked2.ShouldBe(2);
             }
         }
 
@@ -183,8 +181,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 {
                     _ = PipelineBuilder.Pipe(step);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -195,7 +192,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var actual = PipelineBuilder.Pipe(step);
 
-                actual.Should().BeOfType<PipelineBuilder<int, double>>();
+                actual.ShouldBeOfType<PipelineBuilder<int, double>>();
             }
 
             [Fact]
@@ -213,7 +210,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 actual.Build().Invoke(Create<int>());
 
-                invoked.Should().BeTrue();
+                invoked.ShouldBeTrue();
             }
 
             [Fact]
@@ -242,8 +239,8 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 actual.Build().Invoke(Create<int>());
 
-                invoked1.Should().Be(1);
-                invoked2.Should().Be(2);
+                invoked1.ShouldBe(1);
+                invoked2.ShouldBe(2);
             }
         }
 
@@ -258,8 +255,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 {
                     _ = PipelineBuilder.Pipe(step);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -270,7 +266,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var actual = PipelineBuilder.Pipe(step);
 
-                actual.Should().BeOfType<PipelineBuilder<int, double>>();
+                actual.ShouldBeOfType<PipelineBuilder<int, double>>();
             }
 
             [Fact]
@@ -286,7 +282,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var expected = input + factor;
 
-                expected.Should().Be(result);
+                expected.ShouldBe(result);
             }
 
             [Fact]
@@ -305,7 +301,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var expected = $"{(input + factor1) * factor2}";
 
-                expected.Should().Be(result);
+                expected.ShouldBe(result);
             }
         }
 
@@ -316,7 +312,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             {
                 var actual = PipelineBuilder.Pipe<PipelineStep1Dummy, int, double>();
 
-                actual.Should().BeOfType<PipelineBuilder<int, double>>();
+                actual.ShouldBeOfType<PipelineBuilder<int, double>>();
             }
 
             [Fact]
@@ -331,7 +327,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var expected = input + factor;
 
-                expected.Should().Be(result);
+                expected.ShouldBe(result);
             }
 
             [Fact]
@@ -349,7 +345,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var expected = $"{(input + factor1) * factor2}";
 
-                expected.Should().Be(result);
+                expected.ShouldBe(result);
             }
         }
 
@@ -364,8 +360,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 {
                     _ = PipelineBuilder.PipeAsync(step);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -376,7 +371,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var actual = PipelineBuilder.PipeAsync(step);
 
-                actual.Should().BeOfType<PipelineNoInputBuilderAsync<double>>();
+                actual.ShouldBeOfType<PipelineNoInputBuilderAsync<double>>();
             }
 
             [Fact]
@@ -394,7 +389,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 await actual.Build().Invoke(CancellationToken.None);
 
-                invoked.Should().BeTrue();
+                invoked.ShouldBeTrue();
             }
 
             // Cannot test 'Throw_When_Cancelled' since the 'step' is responsible for throwing
@@ -424,8 +419,8 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 actual.Build().Invoke(CancellationToken.None);
 
-                invoked1.Should().Be(1);
-                invoked2.Should().Be(2);
+                invoked1.ShouldBe(1);
+                invoked2.ShouldBe(2);
             }
         }
 
@@ -440,8 +435,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 {
                     _ = PipelineBuilder.PipeAsync(step);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -452,7 +446,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var actual = PipelineBuilder.PipeAsync(step);
 
-                actual.Should().BeOfType<PipelineBuilderAsync<int, double>>();
+                actual.ShouldBeOfType<PipelineBuilderAsync<int, double>>();
             }
 
             // Cannot test 'Throw_When_Cancelled' since the 'step' is responsible for throwing
@@ -472,7 +466,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 await actual.Build().Invoke(Create<int>(), CancellationToken.None);
 
-                invoked.Should().BeTrue();
+                invoked.ShouldBeTrue();
             }
 
             [Fact]
@@ -500,8 +494,8 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 actual.Build().Invoke(Create<int>(), CancellationToken.None);
 
-                invoked1.Should().Be(1);
-                invoked2.Should().Be(2);
+                invoked1.ShouldBe(1);
+                invoked2.ShouldBe(2);
             }
         }
 
@@ -516,8 +510,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
                 {
                     _ = PipelineBuilder.PipeAsync(step);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -528,7 +521,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var actual = PipelineBuilder.PipeAsync(step);
 
-                actual.Should().BeOfType<PipelineBuilderAsync<int, double>>();
+                actual.ShouldBeOfType<PipelineBuilderAsync<int, double>>();
             }
 
             [Fact]
@@ -544,7 +537,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var expected = input + factor;
 
-                expected.Should().Be(result);
+                expected.ShouldBe(result);
             }
 
             [Fact]
@@ -563,7 +556,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var expected = $"{(input + factor1) * factor2}";
 
-                expected.Should().Be(result);
+                expected.ShouldBe(result);
             }
         }
 
@@ -574,7 +567,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
             {
                 var actual = PipelineBuilder.PipeAsync<PipelineStep1AsyncDummy, int, double>();
 
-                actual.Should().BeOfType<PipelineBuilderAsync<int, double>>();
+                actual.ShouldBeOfType<PipelineBuilderAsync<int, double>>();
             }
 
             // Cannot test 'Throw_When_Cancelled' since the 'step' is responsible for throwing
@@ -591,7 +584,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var expected = input + factor;
 
-                expected.Should().Be(result);
+                expected.ShouldBe(result);
             }
 
             [Fact]
@@ -609,7 +602,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                 var expected = $"{(input + factor1) * factor2}";
 
-                expected.Should().Be(result);
+                expected.ShouldBe(result);
             }
         }
 
@@ -626,8 +619,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                         _ = new PipelineBuilder<int, double>(step);
                     })
-                        .Should()
-                        .Throw<ArgumentNullException>()
+                        .ShouldThrow<ArgumentNullException>()
                         .WithNamedMessageWhenNull("step");
                 }
             }
@@ -643,7 +635,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                     var actual = builder.Build();
 
-                    actual.Should().BeSameAs(step);
+                    actual.ShouldBeSameAs(step);
                 }
             }
         }
@@ -661,8 +653,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                         _ = new PipelineBuilder<int, double, string>(null, step);
                     })
-                        .Should()
-                        .Throw<ArgumentNullException>()
+                        .ShouldThrow<ArgumentNullException>()
                         .WithNamedMessageWhenNull("prevStep");
                 }
 
@@ -675,8 +666,7 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                         _ = new PipelineBuilder<int, double, string>(prevStep, null);
                     })
-                        .Should()
-                        .Throw<ArgumentNullException>()
+                        .ShouldThrow<ArgumentNullException>()
                         .WithNamedMessageWhenNull("step");
                 }
             }
@@ -700,9 +690,12 @@ namespace AllOverIt.Tests.Patterns.Pipeline
 
                     var actual = func.Invoke(input);
 
-                    expected.Should().Be(actual);
+                    expected.ShouldBe(actual);
                 }
             }
         }
     }
 }
+
+
+

@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {
@@ -38,7 +39,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = Enumerable.Empty<string>()
                 };
 
-                expected.Should().BeEquivalentTo(_variable);
+                expected.ShouldBeEquivalentTo(_variable);
             }
 
             [Fact]
@@ -56,7 +57,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = Enumerable.Empty<string>()
                 };
 
-                expected.Should().BeEquivalentTo(_variable);
+                expected.ShouldBeEquivalentTo(_variable);
             }
         }
 
@@ -69,7 +70,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 _variable.SetValue(value);
 
-                _variable.Value.Should().Be(value);
+                _variable.Value.ShouldBe(value);
             }
         }
     }

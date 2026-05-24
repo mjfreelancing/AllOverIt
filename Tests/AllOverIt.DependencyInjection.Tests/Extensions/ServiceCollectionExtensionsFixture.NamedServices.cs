@@ -1,6 +1,6 @@
-﻿using AllOverIt.DependencyInjection.Extensions;
+using AllOverIt.DependencyInjection.Extensions;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
@@ -20,13 +20,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [Fact]
             public void Should_Throw_When_ServiceCollection_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = ServiceCollectionExtensions.AddNamedServices<IDummyInterface>(null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("serviceCollection");
+                }).WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Fact]
@@ -36,7 +33,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 var actual = ServiceCollectionExtensions.AddNamedServices<IDummyInterface>(services);
 
-                actual.Should().BeAssignableTo<INamedServiceBuilder<IDummyInterface>>();
+                actual.ShouldBeAssignableTo<INamedServiceBuilder<IDummyInterface>>();
             }
 
             [Theory]
@@ -80,8 +77,8 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 var actual1 = provider.GetRequiredNamedService<IDummyInterface>(name1);
                 var actual2 = provider.GetRequiredNamedService<IDummyInterface>(name2);
 
-                actual1.Should().BeOfType<DummyType>();
-                actual2.Should().BeOfType<DummyType>();
+                actual1.ShouldBeOfType<DummyType>();
+                actual2.ShouldBeOfType<DummyType>();
             }
 
             [Fact]
@@ -93,7 +90,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 var descriptor = services.Single(descriptor => descriptor.ServiceType == typeof(INamedServiceResolver<IDummyInterface>));
 
-                descriptor.Lifetime.Should().Be(ServiceLifetime.Singleton);
+                descriptor.Lifetime.ShouldBe(ServiceLifetime.Singleton);
             }
 
             [Theory]
@@ -127,7 +124,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 var resolver = provider.GetRequiredService<INamedServiceResolver<IDummyInterface>>() as NamedServiceResolver<IDummyInterface>;
 
-                resolver._provider.Should().BeAssignableTo<IServiceProvider>();
+                resolver._provider.ShouldBeAssignableTo<IServiceProvider>();
             }
 
             [Theory]
@@ -161,7 +158,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 var resolver = provider.GetRequiredService<INamedServiceResolver<IDummyInterface>>() as NamedServiceResolver<IDummyInterface>;
 
-                resolver._provider.Should().BeAssignableTo<IServiceProvider>();
+                resolver._provider.ShouldBeAssignableTo<IServiceProvider>();
             }
 
             [Fact]
@@ -173,8 +170,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 var descriptor = services.Single(descriptor => descriptor.ServiceType == typeof(INamedServiceResolver));
 
-                descriptor.Lifetime.Should().Be(ServiceLifetime.Singleton);
+                descriptor.Lifetime.ShouldBe(ServiceLifetime.Singleton);
             }
         }
     }
 }
+
+

@@ -1,8 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
+        <PackageReference Include="Shouldly" Version="4.3.0" />
+    </ItemGroup>
+    <ItemGroup>
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture.FakeItEasy\AllOverIt.Fixture.FakeItEasy.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Reactive\AllOverIt.Reactive.csproj" />
+        <ProjectReference Include="..\..\Source\AllOverIt.Shouldly\AllOverIt.Shouldly.csproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.0.1" />

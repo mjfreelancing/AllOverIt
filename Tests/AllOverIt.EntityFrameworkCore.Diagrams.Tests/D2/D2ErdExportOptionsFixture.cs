@@ -1,11 +1,11 @@
 ﻿using AllOverIt.EntityFrameworkCore.Diagrams.D2;
-using FluentAssertions;
+using AllOverIt.Fixture;
+using AllOverIt.Shouldly.Extensions;
 using System.Diagnostics;
-using TestUtils;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2
 {
-    public class D2ErdExportOptionsFixture : NSubstituteFixtureBase
+    public class D2ErdExportOptionsFixture : FixtureBase
     {
         public class Constructor : D2ErdExportOptionsFixture
         {
@@ -28,7 +28,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2
                     ErrorOutputHandler = (DataReceivedEventHandler)null
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
     }

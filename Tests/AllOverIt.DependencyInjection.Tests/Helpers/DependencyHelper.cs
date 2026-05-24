@@ -1,6 +1,6 @@
-﻿using AllOverIt.DependencyInjection.Extensions;
+using AllOverIt.DependencyInjection.Extensions;
 using AllOverIt.Extensions;
-using FluentAssertions;
+using Shouldly;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.DependencyInjection.Tests.Helpers
@@ -191,10 +191,9 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
                 .ForEach((instance, _) =>
                 {
                     instance.First
-                        .Should()
-                        .BeOfType(instance.Second.GetType());
+                        .GetType().ShouldBe(instance.Second.GetType());
 
-                    ReferenceEquals(instance.First, instance.Second).Should().Be(expected);
+                    ReferenceEquals(instance.First, instance.Second).ShouldBe(expected);
                 });
         }
 
@@ -202,7 +201,9 @@ namespace AllOverIt.DependencyInjection.Tests.Helpers
         {
             var actual = provider.GetService<IEnumerable<TServiceType>>()!.SelectToArray(item => item.GetType());
 
-            expectedTypes.Should().BeEquivalentTo(actual);
+            actual.ShouldBe(expectedTypes, ignoreOrder: true);
         }
     }
 }
+
+

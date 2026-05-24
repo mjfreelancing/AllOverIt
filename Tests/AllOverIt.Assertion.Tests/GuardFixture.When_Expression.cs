@@ -1,6 +1,6 @@
-﻿using AllOverIt.Assertion;
+using AllOverIt.Assertion;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Assertion
@@ -12,12 +12,10 @@ namespace AllOverIt.Tests.Assertion
             [Fact]
             public void Should_Throw_When_Expression_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         Guard.WhenNotNull((Expression<Func<DummyClass>>) null, null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression");
             }
 
@@ -26,26 +24,22 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         Guard.WhenNotNull((Expression<Func<DummyClass>>) null, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression", errorMessage);
             }
 
             [Fact]
             public void Should_Throw_When_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DummyClass subject = null;
 
                         Guard.WhenNotNull(() => subject);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("subject");
             }
 
@@ -54,42 +48,36 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         DummyClass subject = null;
 
                         Guard.WhenNotNull(() => subject, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("subject", errorMessage);
             }
 
             [Fact]
             public void Should_Throw_When_Not_MemberExpression()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         Guard.WhenNotNull(() => (DummyClass) null);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithMessage("expression must be a LambdaExpression containing a MemberExpression");
             }
 
             [Fact]
             public void Should_Return_Expression_Value()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var expected = new DummyClass();
 
                         var actual = Guard.WhenNotNull(() => expected);
 
-                        actual.Should().BeSameAs(expected);
-                    })
-                    .Should()
-                    .NotThrow();
+                        actual.ShouldBeSameAs(expected);
+                    });
             }
         }
 
@@ -98,12 +86,10 @@ namespace AllOverIt.Tests.Assertion
             [Fact]
             public void Should_Throw_When_Expression_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         Guard.WhenNotNullOrEmpty((Expression<Func<IEnumerable<DummyClass>>>) null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression");
             }
 
@@ -112,26 +98,22 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         Guard.WhenNotNullOrEmpty((Expression<Func<IEnumerable<DummyClass>>>) null, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression", errorMessage);
             }
 
             [Fact]
             public void Should_Throw_When_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         IEnumerable<DummyClass> subject = null;
 
                         Guard.WhenNotNullOrEmpty(() => subject);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("subject");
             }
 
@@ -140,14 +122,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         IEnumerable<DummyClass> subject = null;
 
                         Guard.WhenNotNullOrEmpty(() => subject, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("subject", errorMessage);
             }
 
@@ -156,12 +136,10 @@ namespace AllOverIt.Tests.Assertion
             {
                 var expected = new List<DummyClass>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         _ = Guard.WhenNotNullOrEmpty(() => expected);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(nameof(expected));
             }
 
@@ -170,14 +148,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var expected = new List<DummyClass> { new() };
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var actual = Guard.WhenNotNullOrEmpty(() => expected);
 
-                        actual.Should().BeSameAs(expected);
-                    })
-                    .Should()
-                    .NotThrow();
+                        actual.ShouldBeSameAs(expected);
+                    });
             }
 
             [Fact]
@@ -187,40 +163,34 @@ namespace AllOverIt.Tests.Assertion
 
                 var expected = new List<DummyClass>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         _ = Guard.WhenNotNullOrEmpty(() => expected, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(nameof(expected), errorMessage);
             }
 
             [Fact]
             public void Should_Throw_When_Not_MemberExpression()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         Guard.WhenNotNullOrEmpty(() => (IEnumerable<DummyClass>) null);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithMessage("expression must be a LambdaExpression containing a MemberExpression");
             }
 
             [Fact]
             public void Should_Return_Expression_Value()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var expected = new List<DummyClass> { new DummyClass() };
 
                         var actual = Guard.WhenNotNullOrEmpty(() => expected);
 
-                        actual.Should().BeSameAs(expected);
-                    })
-                    .Should()
-                    .NotThrow();
+                        actual.ShouldBeSameAs(expected);
+                    });
             }
         }
 
@@ -229,12 +199,10 @@ namespace AllOverIt.Tests.Assertion
             [Fact]
             public void Should_Throw_When_Expression_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         Guard.WhenNotEmpty((Expression<Func<IEnumerable<DummyClass>>>) null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression");
             }
 
@@ -243,26 +211,22 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         Guard.WhenNotEmpty((Expression<Func<IEnumerable<DummyClass>>>) null, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression", errorMessage);
             }
 
             [Fact]
             public void Should_Not_Throw_When_Null()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         IEnumerable<DummyClass> subject = null;
 
                         Guard.WhenNotEmpty(() => subject);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -270,12 +234,10 @@ namespace AllOverIt.Tests.Assertion
             {
                 var expected = new List<DummyClass>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         _ = Guard.WhenNotEmpty(() => expected);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(nameof(expected));
             }
 
@@ -284,14 +246,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var expected = new List<DummyClass> { new() };
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var actual = Guard.WhenNotEmpty(() => expected);
 
-                        actual.Should().BeSameAs(expected);
-                    })
-                    .Should()
-                    .NotThrow();
+                        actual.ShouldBeSameAs(expected);
+                    });
             }
 
             [Fact]
@@ -301,12 +261,10 @@ namespace AllOverIt.Tests.Assertion
 
                 var expected = new List<DummyClass>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         _ = Guard.WhenNotEmpty(() => expected, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(nameof(expected), errorMessage);
 
             }
@@ -314,28 +272,24 @@ namespace AllOverIt.Tests.Assertion
             [Fact]
             public void Should_Throw_When_Not_MemberExpression()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         Guard.WhenNotEmpty(() => (IEnumerable<DummyClass>) null);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithMessage("expression must be a LambdaExpression containing a MemberExpression");
             }
 
             [Fact]
             public void Should_Return_Expression_Value()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var expected = new List<DummyClass> { new DummyClass() };
 
                         var actual = Guard.WhenNotEmpty(() => expected);
 
-                        actual.Should().BeSameAs(expected);
-                    })
-                    .Should()
-                    .NotThrow();
+                        actual.ShouldBeSameAs(expected);
+                    });
             }
         }
 
@@ -344,12 +298,10 @@ namespace AllOverIt.Tests.Assertion
             [Fact]
             public void Should_Throw_When_Expression_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         Guard.WhenNotNullOrEmpty((Expression<Func<string>>) null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression");
             }
 
@@ -358,26 +310,22 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         Guard.WhenNotNullOrEmpty((Expression<Func<string>>) null, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression", errorMessage);
             }
 
             [Fact]
             public void Should_Throw_When_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         string subject = null;
 
                         Guard.WhenNotNullOrEmpty(() => subject);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("subject");
             }
 
@@ -386,14 +334,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         string subject = null;
 
                         Guard.WhenNotNullOrEmpty(() => subject, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("subject", errorMessage);
             }
 
@@ -402,12 +348,10 @@ namespace AllOverIt.Tests.Assertion
             {
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         _ = Guard.WhenNotNullOrEmpty(() => expected);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(nameof(expected));
             }
 
@@ -416,14 +360,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var expected = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var actual = Guard.WhenNotNullOrEmpty(() => expected);
 
-                        actual.Should().BeSameAs(expected);
-                    })
-                    .Should()
-                    .NotThrow();
+                        actual.ShouldBeSameAs(expected);
+                    });
             }
 
             [Fact]
@@ -433,40 +375,34 @@ namespace AllOverIt.Tests.Assertion
 
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         _ = Guard.WhenNotNullOrEmpty(() => expected, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(nameof(expected), errorMessage);
             }
 
             [Fact]
             public void Should_Throw_When_Not_MemberExpression()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         Guard.WhenNotNullOrEmpty(() => (string) null);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithMessage("expression must be a LambdaExpression containing a MemberExpression");
             }
 
             [Fact]
             public void Should_Return_Expression_Value()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var expected = Create<string>();
 
                         var actual = Guard.WhenNotNullOrEmpty(() => expected);
 
-                        actual.Should().Be(expected);
-                    })
-                    .Should()
-                    .NotThrow();
+                        actual.ShouldBe(expected);
+                    });
             }
         }
 
@@ -475,12 +411,10 @@ namespace AllOverIt.Tests.Assertion
             [Fact]
             public void Should_Throw_When_Expression_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         Guard.WhenNotEmpty((Expression<Func<string>>) null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression");
             }
 
@@ -489,26 +423,22 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         Guard.WhenNotEmpty((Expression<Func<string>>) null, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression", errorMessage);
             }
 
             [Fact]
             public void Should_Not_Throw_When_Null()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         string subject = null;
 
                         Guard.WhenNotEmpty(() => subject);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -516,12 +446,10 @@ namespace AllOverIt.Tests.Assertion
             {
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         _ = Guard.WhenNotEmpty(() => expected);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(nameof(expected));
             }
 
@@ -532,40 +460,34 @@ namespace AllOverIt.Tests.Assertion
 
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         _ = Guard.WhenNotEmpty(() => expected, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(nameof(expected), errorMessage);
             }
 
             [Fact]
             public void Should_Throw_When_Not_MemberExpression()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         Guard.WhenNotEmpty(() => (string) null);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithMessage("expression must be a LambdaExpression containing a MemberExpression");
             }
 
             [Fact]
             public void Should_Return_Expression_Value()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var expected = Create<string>();
 
                         var actual = Guard.WhenNotEmpty(() => expected);
 
-                        actual.Should().Be(expected);
-                    })
-                    .Should()
-                    .NotThrow();
+                        actual.ShouldBe(expected);
+                    });
             }
         }
     }

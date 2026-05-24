@@ -1,8 +1,9 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Shouldly;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 using System.Collections.Concurrent;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -19,8 +20,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int>(null, (_, _) => Task.CompletedTask, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -31,8 +31,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int>(new[] { Create<int>() }, null, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("func");
             }
 
@@ -45,8 +44,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int>(new[] { Create<int>() }, (_, _) => Task.CompletedTask, degreeOfParallelism);
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage("At least one task must be specified. (Parameter 'degreeOfParallelism')");
             }
 
@@ -64,7 +62,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, GetWithinRange(2, 10));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -77,8 +75,7 @@ namespace AllOverIt.Tests.Extensions
 
                     await EnumerableExtensions.ForEachAsTaskAsync<int>(new[] { Create<int>() }, (_, _) => Task.CompletedTask, 1, cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -95,7 +92,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, 1, cts.Token);
 
-                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
+                actual.ShouldBe(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -115,8 +112,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int, double>(null, (value, input1, token) => Task.CompletedTask, _input1, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -127,8 +123,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int, double>(new[] { Create<int>() }, null, _input1, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("func");
             }
 
@@ -141,8 +136,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int, double>(new[] { Create<int>() }, (value, input1, token) => Task.CompletedTask, _input1, degreeOfParallelism);
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage("At least one task must be specified. (Parameter 'degreeOfParallelism')");
             }
 
@@ -155,14 +149,14 @@ namespace AllOverIt.Tests.Extensions
 
                 await EnumerableExtensions.ForEachAsTaskAsync<int, double>(expected, (value, input1, token) =>
                 {
-                    input1.Should().Be(_input1);
+                    input1.ShouldBe(_input1);
 
                     actual.Enqueue(value);
 
                     return Task.CompletedTask;
                 }, _input1, GetWithinRange(2, 10));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -175,8 +169,7 @@ namespace AllOverIt.Tests.Extensions
 
                     await EnumerableExtensions.ForEachAsTaskAsync<int, double>(new[] { Create<int>() }, (value, input1, token) => Task.CompletedTask, _input1, 1, cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -193,7 +186,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, _input1, 1, cts.Token);
 
-                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
+                actual.ShouldBe(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -215,8 +208,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(null, (value, input1, input2, token) => Task.CompletedTask, _input1, _input2, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -227,8 +219,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(new[] { Create<int>() }, null, _input1, _input2, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("func");
             }
 
@@ -241,8 +232,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(new[] { Create<int>() }, (value, input1, input2, token) => Task.CompletedTask, _input1, _input2, degreeOfParallelism);
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage("At least one task must be specified. (Parameter 'degreeOfParallelism')");
             }
 
@@ -255,15 +245,15 @@ namespace AllOverIt.Tests.Extensions
 
                 await EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(expected, (value, input1, input2, token) =>
                 {
-                    input1.Should().Be(_input1);
-                    input2.Should().Be(_input2);
+                    input1.ShouldBe(_input1);
+                    input2.ShouldBe(_input2);
 
                     actual.Enqueue(value);
 
                     return Task.CompletedTask;
                 }, _input1, _input2, GetWithinRange(2, 10));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -276,8 +266,7 @@ namespace AllOverIt.Tests.Extensions
 
                     await EnumerableExtensions.ForEachAsTaskAsync<int, double, double>(new[] { Create<int>() }, (value, input1, input2, token) => Task.CompletedTask, _input1, _input2, 1, cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -294,7 +283,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, _input1, _input2, 1, cts.Token);
 
-                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
+                actual.ShouldBe(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -319,8 +308,7 @@ namespace AllOverIt.Tests.Extensions
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double>(null,
                         (value, input1, input2, input3, token) => Task.CompletedTask, _input1, _input2, _input3, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -331,8 +319,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double>(new[] { Create<int>() }, null, _input1, _input2, _input3, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("func");
             }
 
@@ -346,8 +333,7 @@ namespace AllOverIt.Tests.Extensions
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double>(new[] { Create<int>() },
                         (value, input1, input2, input3, token) => Task.CompletedTask, _input1, _input2, _input3, degreeOfParallelism);
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage("At least one task must be specified. (Parameter 'degreeOfParallelism')");
             }
 
@@ -360,16 +346,16 @@ namespace AllOverIt.Tests.Extensions
 
                 await EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double>(expected, (value, input1, input2, input3, token) =>
                 {
-                    input1.Should().Be(_input1);
-                    input2.Should().Be(_input2);
-                    input3.Should().Be(_input3);
+                    input1.ShouldBe(_input1);
+                    input2.ShouldBe(_input2);
+                    input3.ShouldBe(_input3);
 
                     actual.Enqueue(value);
 
                     return Task.CompletedTask;
                 }, _input1, _input2, _input3, GetWithinRange(2, 10));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -383,8 +369,7 @@ namespace AllOverIt.Tests.Extensions
                     await EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double>(new[] { Create<int>() },
                         (value, input1, input2, input3, token) => Task.CompletedTask, _input1, _input2, _input3, 1, cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -401,7 +386,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, _input1, _input2, _input3, 1, cts.Token);
 
-                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
+                actual.ShouldBe(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -428,8 +413,7 @@ namespace AllOverIt.Tests.Extensions
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double, double>(null,
                         (value, input1, input2, input3, input4, token) => Task.CompletedTask, _input1, _input2, _input3, _input4, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -440,8 +424,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double, double>(new[] { Create<int>() }, null, _input1, _input2, _input3, _input4, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("func");
             }
 
@@ -455,8 +438,7 @@ namespace AllOverIt.Tests.Extensions
                     EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double, double>(new[] { Create<int>() },
                         (value, input1, input2, input3, input4, token) => Task.CompletedTask, _input1, _input2, _input3, _input4, degreeOfParallelism);
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage("At least one task must be specified. (Parameter 'degreeOfParallelism')");
             }
 
@@ -469,17 +451,17 @@ namespace AllOverIt.Tests.Extensions
 
                 await EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double, double>(expected, (value, input1, input2, input3, input4, token) =>
                 {
-                    input1.Should().Be(_input1);
-                    input2.Should().Be(_input2);
-                    input3.Should().Be(_input3);
-                    input4.Should().Be(_input4);
+                    input1.ShouldBe(_input1);
+                    input2.ShouldBe(_input2);
+                    input3.ShouldBe(_input3);
+                    input4.ShouldBe(_input4);
 
                     actual.Enqueue(value);
 
                     return Task.CompletedTask;
                 }, _input1, _input2, _input3, _input4, GetWithinRange(2, 10));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -493,8 +475,7 @@ namespace AllOverIt.Tests.Extensions
                     await EnumerableExtensions.ForEachAsTaskAsync<int, double, double, double, double>(new[] { Create<int>() },
                         (value, input1, input2, input3, input4, token) => Task.CompletedTask, _input1, _input2, _input3, _input4, 1, cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -511,7 +492,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, _input1, _input2, _input3, _input4, 1, cts.Token);
 
-                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
+                actual.ShouldBe(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -528,8 +509,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int>(null, (_, _) => Task.CompletedTask, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -540,8 +520,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int>(new[] { Create<int>() }, null, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("func");
             }
 
@@ -554,8 +533,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int>(new[] { Create<int>() }, (_, _) => Task.CompletedTask, degreeOfParallelism);
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage("At least one task must be specified. (Parameter 'degreeOfParallelism')");
             }
 
@@ -573,7 +551,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, GetWithinRange(2, 10));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -586,8 +564,7 @@ namespace AllOverIt.Tests.Extensions
 
                     await EnumerableExtensions.ForEachAsParallelAsync<int>(new[] { Create<int>() }, (_, _) => Task.CompletedTask, 1, cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -604,7 +581,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, 1, cts.Token);
 
-                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
+                actual.ShouldBe(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
         public class ForEachAsParallelAsync_Input_1 : EnumerableExtensionsFixture
@@ -623,8 +600,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int, double>(null, (value, input1, token) => Task.CompletedTask, _input1, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -635,8 +611,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int, double>(new[] { Create<int>() }, null, _input1, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("func");
             }
 
@@ -649,8 +624,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int, double>(new[] { Create<int>() }, (value, input1, token) => Task.CompletedTask, _input1, degreeOfParallelism);
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage("At least one task must be specified. (Parameter 'degreeOfParallelism')");
             }
 
@@ -663,14 +637,14 @@ namespace AllOverIt.Tests.Extensions
 
                 await EnumerableExtensions.ForEachAsParallelAsync<int, double>(expected, (value, input1, token) =>
                 {
-                    input1.Should().Be(_input1);
+                    input1.ShouldBe(_input1);
 
                     actual.Enqueue(value);
 
                     return Task.CompletedTask;
                 }, _input1, GetWithinRange(2, 10));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -683,8 +657,7 @@ namespace AllOverIt.Tests.Extensions
 
                     await EnumerableExtensions.ForEachAsParallelAsync<int, double>(new[] { Create<int>() }, (value, input1, token) => Task.CompletedTask, _input1, 1, cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -701,7 +674,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, _input1, 1, cts.Token);
 
-                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
+                actual.ShouldBe(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -723,8 +696,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(null, (value, input1, input2, token) => Task.CompletedTask, _input1, _input2, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -735,8 +707,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(new[] { Create<int>() }, null, _input1, _input2, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("func");
             }
 
@@ -750,8 +721,7 @@ namespace AllOverIt.Tests.Extensions
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(new[] { Create<int>() },
                         (value, input1, input2, token) => Task.CompletedTask, _input1, _input2, degreeOfParallelism);
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage("At least one task must be specified. (Parameter 'degreeOfParallelism')");
             }
 
@@ -764,15 +734,15 @@ namespace AllOverIt.Tests.Extensions
 
                 await EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(expected, (value, input1, input2, token) =>
                 {
-                    input1.Should().Be(_input1);
-                    input2.Should().Be(_input2);
+                    input1.ShouldBe(_input1);
+                    input2.ShouldBe(_input2);
 
                     actual.Enqueue(value);
 
                     return Task.CompletedTask;
                 }, _input1, _input2, GetWithinRange(2, 10));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -786,8 +756,7 @@ namespace AllOverIt.Tests.Extensions
                     await EnumerableExtensions.ForEachAsParallelAsync<int, double, double>(new[] { Create<int>() },
                         (value, input1, input2, token) => Task.CompletedTask, _input1, _input2, 1, cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -804,7 +773,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, _input1, _input2, 1, cts.Token);
 
-                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
+                actual.ShouldBe(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -829,8 +798,7 @@ namespace AllOverIt.Tests.Extensions
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double>(null,
                         (value, input1, input2, input3, token) => Task.CompletedTask, _input1, _input2, _input3, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -841,8 +809,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double>(new[] { Create<int>() }, null, _input1, _input2, _input3, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("func");
             }
 
@@ -856,8 +823,7 @@ namespace AllOverIt.Tests.Extensions
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double>(new[] { Create<int>() },
                         (value, input1, input2, input3, token) => Task.CompletedTask, _input1, _input2, _input3, degreeOfParallelism);
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage("At least one task must be specified. (Parameter 'degreeOfParallelism')");
             }
 
@@ -870,16 +836,16 @@ namespace AllOverIt.Tests.Extensions
 
                 await EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double>(expected, (value, input1, input2, input3, token) =>
                 {
-                    input1.Should().Be(_input1);
-                    input2.Should().Be(_input2);
-                    input3.Should().Be(_input3);
+                    input1.ShouldBe(_input1);
+                    input2.ShouldBe(_input2);
+                    input3.ShouldBe(_input3);
 
                     actual.Enqueue(value);
 
                     return Task.CompletedTask;
                 }, _input1, _input2, _input3, GetWithinRange(2, 10));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -893,8 +859,7 @@ namespace AllOverIt.Tests.Extensions
                     await EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double>(new[] { Create<int>() },
                         (value, input1, input2, input3, token) => Task.CompletedTask, _input1, _input2, _input3, 1, cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -911,7 +876,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, _input1, _input2, _input3, 1, cts.Token);
 
-                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
+                actual.ShouldBe(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
@@ -938,8 +903,7 @@ namespace AllOverIt.Tests.Extensions
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double, double>(null,
                         (value, input1, input2, input3, input4, token) => Task.CompletedTask, _input1, _input2, _input3, _input4, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -950,8 +914,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double, double>(new[] { Create<int>() }, null, _input1, _input2, _input3, _input4, Create<int>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("func");
             }
 
@@ -965,8 +928,7 @@ namespace AllOverIt.Tests.Extensions
                     EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double, double>(new[] { Create<int>() },
                         (value, input1, input2, input3, input4, token) => Task.CompletedTask, _input1, _input2, _input3, _input4, degreeOfParallelism);
                 })
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
+                .ShouldThrow<ArgumentOutOfRangeException>()
                 .WithMessage("At least one task must be specified. (Parameter 'degreeOfParallelism')");
             }
 
@@ -979,17 +941,17 @@ namespace AllOverIt.Tests.Extensions
 
                 await EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double, double>(expected, (value, input1, input2, input3, input4, token) =>
                 {
-                    input1.Should().Be(_input1);
-                    input2.Should().Be(_input2);
-                    input3.Should().Be(_input3);
-                    input4.Should().Be(_input4);
+                    input1.ShouldBe(_input1);
+                    input2.ShouldBe(_input2);
+                    input3.ShouldBe(_input3);
+                    input4.ShouldBe(_input4);
 
                     actual.Enqueue(value);
 
                     return Task.CompletedTask;
                 }, _input1, _input2, _input3, _input4, GetWithinRange(2, 10));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -1003,8 +965,7 @@ namespace AllOverIt.Tests.Extensions
                     await EnumerableExtensions.ForEachAsParallelAsync<int, double, double, double, double>(new[] { Create<int>() },
                         (value, input1, input2, input3, input4, token) => Task.CompletedTask, _input1, _input2, _input3, _input4, 1, cts.Token);
                 })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -1021,10 +982,18 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, _input1, _input2, _input3, _input4, 1, cts.Token);
 
-                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
+                actual.ShouldBe(cts.Token);  // Be() and not BeSameAs() as stucts are copied by value
             }
         }
 
         #endregion
     }
 }
+
+
+
+
+
+
+
+

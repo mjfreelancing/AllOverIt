@@ -7,8 +7,7 @@ using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.Extensions;
 using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
     public class ContinuationTokenEncoderFixture : FixtureBase
@@ -39,8 +38,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = new ContinuationTokenEncoder(null, Create<PaginationDirection>(), this.CreateStub<IContinuationTokenSerializer>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("columns");
             }
 
@@ -51,8 +49,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = new ContinuationTokenEncoder(new List<IColumnDefinition>(), Create<PaginationDirection>(), this.CreateStub<IContinuationTokenSerializer>());
                 })
-                .Should()
-                .Throw<ArgumentException>()
+                .ShouldThrow<ArgumentException>()
                 .WithNamedMessageWhenEmpty("columns");
             }
         }
@@ -68,8 +65,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = encoder.EncodePreviousPage((IReadOnlyCollection<DummyEntity>) null);
                 })
-                .Should()
-                .Throw<PaginationException>()
+                .ShouldThrow<PaginationException>()
                 .WithMessage("At least one reference entity is required to create a continuation token.");
             }
 
@@ -82,8 +78,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = encoder.EncodePreviousPage(Collection.EmptyReadOnly<DummyEntity>());
                 })
-                .Should()
-                .Throw<PaginationException>()
+                .ShouldThrow<PaginationException>()
                 .WithMessage("At least one reference entity is required to create a continuation token.");
             }
 
@@ -119,7 +114,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 _ = encoder.EncodePreviousPage(entities);
 
-                expected.Should().BeEquivalentTo(actualToken);
+                expected.ShouldBeEquivalentTo(actualToken);
             }
 
             [Theory]
@@ -147,11 +142,11 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = encoder.EncodePreviousPage(entities);
 
-                actual.Should().NotBeNullOrEmpty();
+                actual.ShouldNotBeNullOrEmpty();
 
                 var decoded = encoder.Decode(actual);
 
-                expected.Should().BeEquivalentTo(decoded);
+                expected.ShouldBeEquivalentTo(decoded);
             }
 
             [Fact]
@@ -168,7 +163,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 var nonCompressionEncoder = new ContinuationTokenEncoder(_columns, paginationDirection, serializer);
                 var nonCompressed = nonCompressionEncoder.EncodeNextPage(entities[0]);
 
-                compressed.Should().NotBeSameAs(nonCompressed);
+                compressed.ShouldNotBeSameAs(nonCompressed);
             }
         }
 
@@ -183,8 +178,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = encoder.EncodeNextPage((IReadOnlyCollection<DummyEntity>) null);
                 })
-                .Should()
-                .Throw<PaginationException>()
+                .ShouldThrow<PaginationException>()
                 .WithMessage("At least one reference entity is required to create a continuation token.");
             }
 
@@ -197,8 +191,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = encoder.EncodeNextPage(Collection.EmptyReadOnly<DummyEntity>());
                 })
-                .Should()
-                .Throw<PaginationException>()
+                .ShouldThrow<PaginationException>()
                 .WithMessage("At least one reference entity is required to create a continuation token.");
             }
 
@@ -233,7 +226,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 _ = encoder.EncodeNextPage(entities);
 
-                expected.Should().BeEquivalentTo(actualToken);
+                expected.ShouldBeEquivalentTo(actualToken);
             }
 
             [Theory]
@@ -261,11 +254,11 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = encoder.EncodeNextPage(entities);
 
-                actual.Should().NotBeNullOrEmpty();
+                actual.ShouldNotBeNullOrEmpty();
 
                 var decoded = encoder.Decode(actual);
 
-                expected.Should().BeEquivalentTo(decoded);
+                expected.ShouldBeEquivalentTo(decoded);
             }
         }
 
@@ -280,8 +273,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = encoder.EncodePreviousPage(null);
                 })
-                .Should()
-                .Throw<PaginationException>()
+                .ShouldThrow<PaginationException>()
                 .WithMessage("A reference entity is required to create a continuation token.");
             }
 
@@ -309,7 +301,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 _ = encoder.EncodePreviousPage(entity);
 
-                expected.Should().BeEquivalentTo(actualToken);
+                expected.ShouldBeEquivalentTo(actualToken);
             }
 
             [Theory]
@@ -330,11 +322,11 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = encoder.EncodePreviousPage(entity);
 
-                actual.Should().NotBeNullOrEmpty();
+                actual.ShouldNotBeNullOrEmpty();
 
                 var decoded = encoder.Decode(actual);
 
-                expected.Should().BeEquivalentTo(decoded);
+                expected.ShouldBeEquivalentTo(decoded);
             }
         }
 
@@ -349,8 +341,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = encoder.EncodeNextPage(null);
                 })
-                .Should()
-                .Throw<PaginationException>()
+                .ShouldThrow<PaginationException>()
                 .WithMessage("A reference entity is required to create a continuation token.");
             }
 
@@ -378,7 +369,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 _ = encoder.EncodeNextPage(entity);
 
-                expected.Should().BeEquivalentTo(actualToken);
+                expected.ShouldBeEquivalentTo(actualToken);
             }
 
             [Theory]
@@ -399,11 +390,11 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = encoder.EncodeNextPage(entity);
 
-                actual.Should().NotBeNullOrEmpty();
+                actual.ShouldNotBeNullOrEmpty();
 
                 var decoded = encoder.Decode(actual);
 
-                expected.Should().BeEquivalentTo(decoded);
+                expected.ShouldBeEquivalentTo(decoded);
             }
         }
 
@@ -419,7 +410,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = encoder.EncodeFirstPage();
 
-                actual.Should().BeEmpty();
+                actual.ShouldBeEmpty();
             }
         }
 
@@ -447,7 +438,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 _ = encoder.EncodeLastPage();
 
-                expected.Should().BeEquivalentTo(actualToken);
+                expected.ShouldBeEquivalentTo(actualToken);
             }
 
             [Theory]
@@ -466,12 +457,16 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = encoder.EncodeLastPage();
 
-                actual.Should().NotBeNullOrEmpty();
+                actual.ShouldNotBeNullOrEmpty();
 
                 var decoded = encoder.Decode(actual);
 
-                expected.Should().BeEquivalentTo(decoded);
+                expected.ShouldBeEquivalentTo(decoded);
             }
         }
     }
 }
+
+
+
+

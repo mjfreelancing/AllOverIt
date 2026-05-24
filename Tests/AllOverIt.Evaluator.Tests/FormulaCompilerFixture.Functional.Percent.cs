@@ -1,7 +1,7 @@
-using AllOverIt.Evaluator.Extensions;
+﻿using AllOverIt.Evaluator.Extensions;
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests
 {
@@ -52,7 +52,7 @@ namespace AllOverIt.Evaluator.Tests
             // when sum1 and sum2 are resolved their delegates pull variable values from 'registry'
             var actual = compiler.GetResult("PERC(sum1, sum2)", sumRegistry);
 
-            actual.Should().BeApproximately(expected, 1E-3);
+            actual.ShouldBe(expected, 1E-3);
         }
     }
 }

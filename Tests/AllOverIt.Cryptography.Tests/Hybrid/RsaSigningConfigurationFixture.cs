@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Cryptography.Hybrid;
 using AllOverIt.Cryptography.RSA;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.Tests.Hybrid
@@ -15,9 +15,9 @@ namespace AllOverIt.Cryptography.Tests.Hybrid
             {
                 var actual = new RsaSigningConfiguration();
 
-                actual.Keys.Should().NotBeNull();
-                actual.HashAlgorithmName.Should().Be(HashAlgorithmName.SHA256);
-                actual.Padding.Should().Be(RSASignaturePadding.Pkcs1);
+                actual.Keys.ShouldNotBeNull();
+                actual.HashAlgorithmName.ShouldBe(HashAlgorithmName.SHA256);
+                actual.Padding.ShouldBe(RSASignaturePadding.Pkcs1);
             }
         }
 
@@ -29,9 +29,9 @@ namespace AllOverIt.Cryptography.Tests.Hybrid
                 var keys = new RsaKeyPair();
                 var actual = new RsaSigningConfiguration(keys);
 
-                actual.Keys.Should().BeSameAs(keys);
-                actual.HashAlgorithmName.Should().Be(HashAlgorithmName.SHA256);
-                actual.Padding.Should().Be(RSASignaturePadding.Pkcs1);
+                actual.Keys.ShouldBeSameAs(keys);
+                actual.HashAlgorithmName.ShouldBe(HashAlgorithmName.SHA256);
+                actual.Padding.ShouldBe(RSASignaturePadding.Pkcs1);
             }
         }
     }

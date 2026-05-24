@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Strings;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Formatters.Strings
 {
@@ -17,8 +16,7 @@ namespace AllOverIt.Tests.Formatters.Strings
                 {
                     _ = JsonString.Format(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("jsonValue");
         }
 
@@ -30,8 +28,7 @@ namespace AllOverIt.Tests.Formatters.Strings
                {
                    _ = JsonString.Format(BasicSourceString, -1);
                })
-               .Should()
-               .Throw<ArgumentOutOfRangeException>()
+               .ShouldThrow<ArgumentOutOfRangeException>()
                .WithMessage("The indent size cannot be negative. (Parameter 'indentSize')");
         }
 
@@ -43,8 +40,7 @@ namespace AllOverIt.Tests.Formatters.Strings
                {
                    _ = JsonString.Format(BasicSourceString, 0);
                })
-               .Should()
-               .NotThrow();
+               .ShouldNotThrow();
         }
 
         [Fact]
@@ -55,8 +51,7 @@ namespace AllOverIt.Tests.Formatters.Strings
                {
                    _ = JsonString.Format(BasicSourceString, Create<int>());
                })
-               .Should()
-               .NotThrow();
+               .ShouldNotThrow();
         }
 
         [Fact]
@@ -70,7 +65,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(BasicSourceString);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -86,7 +81,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format($"{stringValue}{{ab:cd}}");
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -102,7 +97,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -118,7 +113,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -134,7 +129,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -150,7 +145,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -167,7 +162,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -185,7 +180,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -205,7 +200,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -223,7 +218,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -238,7 +233,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -256,7 +251,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -274,7 +269,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -291,7 +286,7 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -315,7 +310,11 @@ namespace AllOverIt.Tests.Formatters.Strings
 
             var actual = JsonString.Format(source);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
     }
 }
+
+
+
+

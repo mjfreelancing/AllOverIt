@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pagination.TokenEncoding;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.Pagination.Tests.Extensions
@@ -17,8 +16,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 {
                     _ = AllOverIt.Pagination.Extensions.ServiceCollectionExtensions.AddQueryPagination(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("serviceCollection");
             }
 
@@ -42,8 +40,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                     services
                         .SingleOrDefault(descriptor => descriptor.ServiceType == item.ServiceType &&
                                          descriptor.ImplementationType == item.ImplemenationType)
-                        .Should()
-                        .NotBeNull();
+                        .ShouldNotBeNull();
                 }
             }
 
@@ -54,8 +51,12 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var actual = AllOverIt.Pagination.Extensions.ServiceCollectionExtensions.AddQueryPagination(services);
 
-                actual.Should().BeSameAs(services);
+                actual.ShouldBeSameAs(services);
             }
         }
     }
 }
+
+
+
+

@@ -1,7 +1,6 @@
 using AllOverIt.Fixture;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
-using FluentAssertions;
 using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
 
@@ -65,7 +64,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
                     ? DummyEnrichedEnum.Value1
                     : DummyEnrichedEnum.Value2;
 
-                actual.Prop1.Should().Be(expected);
+                actual.Prop1.ShouldBe(expected);
             }
 
             [Fact]
@@ -75,7 +74,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 
                 var actual = _serializer.DeserializeObject<DummyValue>(value);
 
-                actual.Prop1.Should().BeNull();
+                actual.Prop1.ShouldBeNull();
             }
         }
 
@@ -88,7 +87,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 
                 var actual = _serializer.SerializeObject(_dummyValue);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -100,7 +99,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 
                 var actual = _serializer.SerializeObject(_dummyValue);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -111,8 +110,10 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
             {
                 var actual = EnrichedEnumJsonConverter<DummyEnrichedEnum>.Create();
 
-                actual.Should().BeOfType<EnrichedEnumJsonConverter<DummyEnrichedEnum>>();
+                actual.ShouldBeOfType<EnrichedEnumJsonConverter<DummyEnrichedEnum>>();
             }
         }
     }
 }
+
+

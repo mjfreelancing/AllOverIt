@@ -1,8 +1,7 @@
-﻿using AllOverIt.Converters;
+using AllOverIt.Converters;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Patterns.Enumeration;
-using FluentAssertions;
 using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
@@ -41,7 +40,7 @@ namespace AllOverIt.Tests.Converters
             {
                 var actual = _enrichedEnumConverter.CanConvertFrom(_typeDescriptorContextFake, typeof(string));
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -50,7 +49,7 @@ namespace AllOverIt.Tests.Converters
             {
                 var actual = _enrichedEnumConverter.CanConvertFrom(_typeDescriptorContextFake, type);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -58,7 +57,7 @@ namespace AllOverIt.Tests.Converters
             {
                 var actual = _enrichedEnumConverter.CanConvertFrom(_typeDescriptorContextFake, typeof(bool));
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -69,7 +68,7 @@ namespace AllOverIt.Tests.Converters
             {
                 var actual = _enrichedEnumConverter.ConvertFrom(_typeDescriptorContextFake, CultureInfo.CurrentCulture, null);
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Theory]
@@ -78,7 +77,7 @@ namespace AllOverIt.Tests.Converters
             {
                 var actual = (DummyEnrichedEnum) _enrichedEnumConverter.ConvertFrom(_typeDescriptorContextFake, CultureInfo.CurrentCulture, value);
 
-                actual.Should().Be(DummyEnrichedEnum.Value2);
+                actual.ShouldBe(DummyEnrichedEnum.Value2);
             }
 
             [Theory]
@@ -88,7 +87,7 @@ namespace AllOverIt.Tests.Converters
             {
                 var actual = (DummyEnrichedEnum) _enrichedEnumConverter.ConvertFrom(_typeDescriptorContextFake, CultureInfo.CurrentCulture, value);
 
-                actual!.Name.Should().Be(expectedName);
+                actual!.Name.ShouldBe(expectedName);
             }
         }
 
@@ -99,7 +98,7 @@ namespace AllOverIt.Tests.Converters
             {
                 var actual = _enrichedEnumConverter.CanConvertTo(_typeDescriptorContextFake, typeof(string));
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -108,7 +107,7 @@ namespace AllOverIt.Tests.Converters
             {
                 var actual = _enrichedEnumConverter.CanConvertTo(_typeDescriptorContextFake, type);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -116,7 +115,7 @@ namespace AllOverIt.Tests.Converters
             {
                 var actual = _enrichedEnumConverter.CanConvertTo(_typeDescriptorContextFake, typeof(bool));
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -129,7 +128,7 @@ namespace AllOverIt.Tests.Converters
 
                 var actual = _enrichedEnumConverter.ConvertTo(value!, typeof(string));
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Theory]
@@ -138,8 +137,8 @@ namespace AllOverIt.Tests.Converters
             {
                 var actual = _enrichedEnumConverter.ConvertTo(DummyEnrichedEnum.Value2, type);
 
-                actual.Should().BeOfType(type);
-                actual.Should().Be(2);
+                actual.ShouldBeOfType(type);
+                actual.ShouldBe(2);
             }
 
             [Fact]
@@ -147,8 +146,8 @@ namespace AllOverIt.Tests.Converters
             {
                 var actual = _enrichedEnumConverter.ConvertTo(DummyEnrichedEnum.Value2, typeof(string));
 
-                actual.Should().BeOfType(typeof(string));
-                actual.Should().Be("Value 2");
+                actual.ShouldBeOfType(typeof(string));
+                actual.ShouldBe("Value 2");
             }
         }
 
@@ -159,7 +158,7 @@ namespace AllOverIt.Tests.Converters
             {
                 var actual = EnrichedEnumTypeConverter<DummyEnrichedEnum>.Create();
 
-                actual.Should().BeOfType<EnrichedEnumTypeConverter<DummyEnrichedEnum>>();
+                actual.ShouldBeOfType<EnrichedEnumTypeConverter<DummyEnrichedEnum>>();
             }
         }
 
@@ -197,3 +196,6 @@ namespace AllOverIt.Tests.Converters
         }
     }
 }
+
+
+

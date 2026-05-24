@@ -1,6 +1,5 @@
-﻿using AllOverIt.Events;
+using AllOverIt.Events;
 using AllOverIt.Fixture;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Events
 {
@@ -54,8 +53,7 @@ namespace AllOverIt.Tests.Events
                   {
                       aggregator.Publish(message);
                   })
-                  .Should()
-                  .Throw<InvalidOperationException>()
+                  .ShouldThrow<InvalidOperationException>()
                   .WithMessage("Cannot publish message when async subscriptions exist");
             }
 
@@ -71,8 +69,7 @@ namespace AllOverIt.Tests.Events
                   {
                       aggregator.Publish(message);
                   })
-                  .Should()
-                  .Throw<InvalidOperationException>()
+                  .ShouldThrow<InvalidOperationException>()
                   .WithMessage("Cannot publish message when async subscriptions exist");
             }
 
@@ -86,7 +83,7 @@ namespace AllOverIt.Tests.Events
 
                 aggregator.Publish(message);
 
-                message.Output.Should().Be(message.Input);
+                message.Output.ShouldBe(message.Input);
             }
 
             [Fact]
@@ -99,7 +96,7 @@ namespace AllOverIt.Tests.Events
 
                 aggregator.Publish(message);
 
-                message.Output.Should().Be(message.Input);
+                message.Output.ShouldBe(message.Input);
             }
 
             [Fact]
@@ -113,8 +110,8 @@ namespace AllOverIt.Tests.Events
 
                 aggregator.Publish(message);
 
-                message.Output.Should().Be(message.Input * 2);
-                message.Counter.Should().Be(2);
+                message.Output.ShouldBe(message.Input * 2);
+                message.Counter.ShouldBe(2);
             }
         }
 
@@ -130,7 +127,7 @@ namespace AllOverIt.Tests.Events
 
                 await aggregator.PublishAsync(message);
 
-                message.Output.Should().Be(message.Input);
+                message.Output.ShouldBe(message.Input);
             }
 
             [Fact]
@@ -143,7 +140,7 @@ namespace AllOverIt.Tests.Events
 
                 await aggregator.PublishAsync(message);
 
-                message.Output.Should().Be(message.Input);
+                message.Output.ShouldBe(message.Input);
             }
 
             [Fact]
@@ -159,8 +156,8 @@ namespace AllOverIt.Tests.Events
 
                 await aggregator.PublishAsync(message);
 
-                message.Output.Should().Be(message.Input * 4);
-                message.Counter.Should().Be(4);
+                message.Output.ShouldBe(message.Input * 4);
+                message.Counter.ShouldBe(4);
             }
         }
 
@@ -184,7 +181,7 @@ namespace AllOverIt.Tests.Events
 
                 aggregator.Publish(message);
 
-                message.Output.Should().Be(0);
+                message.Output.ShouldBe(0);
             }
 
             [Theory]
@@ -201,7 +198,7 @@ namespace AllOverIt.Tests.Events
 
                 aggregator.Publish(message);
 
-                message.Output.Should().Be(message.Input);
+                message.Output.ShouldBe(message.Input);
             }
         }
 
@@ -225,7 +222,7 @@ namespace AllOverIt.Tests.Events
 
                 await aggregator.PublishAsync(message);
 
-                message.Output.Should().Be(0);
+                message.Output.ShouldBe(0);
             }
 
             [Theory]
@@ -242,7 +239,7 @@ namespace AllOverIt.Tests.Events
 
                 await aggregator.PublishAsync(message);
 
-                message.Output.Should().Be(message.Input);
+                message.Output.ShouldBe(message.Input);
             }
         }
 
@@ -260,14 +257,14 @@ namespace AllOverIt.Tests.Events
 
                 aggregator.Publish(message);
 
-                message.Output.Should().Be(message.Input);
+                message.Output.ShouldBe(message.Input);
 
                 aggregator.Unsubscribe<DummyEvent>(handler.HandleEvent);
                 message.Output = -message.Input;
 
                 aggregator.Publish(message);
 
-                message.Output.Should().Be(-message.Input);
+                message.Output.ShouldBe(-message.Input);
             }
 
             [Fact]
@@ -281,8 +278,7 @@ namespace AllOverIt.Tests.Events
 
                     aggregator.Unsubscribe<DummyEvent>(handler.HandleEvent);
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
 
@@ -300,7 +296,7 @@ namespace AllOverIt.Tests.Events
 
                 await aggregator.PublishAsync(message);
 
-                message.Output.Should().Be(message.Input);
+                message.Output.ShouldBe(message.Input);
 
                 aggregator.Unsubscribe<DummyEvent>(handler.HandleEventAsync);
                 message.Output = -message.Input;
@@ -308,7 +304,7 @@ namespace AllOverIt.Tests.Events
                 // There's no handler so the value should remain unchanged
                 await aggregator.PublishAsync(message);
 
-                message.Output.Should().Be(-message.Input);
+                message.Output.ShouldBe(-message.Input);
             }
 
             [Fact]
@@ -326,7 +322,7 @@ namespace AllOverIt.Tests.Events
 
                 await aggregator.PublishAsync(message);
 
-                message.Output.Should().Be(message.Input * 2);
+                message.Output.ShouldBe(message.Input * 2);
 
                 // Unsubscribing the second handler so the internal loop iterates at least once
                 aggregator.Unsubscribe<DummyEvent>(handler2.HandleEventAsync);
@@ -335,7 +331,7 @@ namespace AllOverIt.Tests.Events
                 // There's still one handler so make sure the value is updated again
                 await aggregator.PublishAsync(message);
 
-                message.Output.Should().Be(message.Input);
+                message.Output.ShouldBe(message.Input);
             }
 
             [Fact]
@@ -349,8 +345,7 @@ namespace AllOverIt.Tests.Events
 
                     aggregator.Unsubscribe<DummyEvent>(handler.HandleEventAsync);
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
 
@@ -382,3 +377,7 @@ namespace AllOverIt.Tests.Events
         }
     }
 }
+
+
+
+

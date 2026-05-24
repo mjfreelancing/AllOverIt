@@ -2,7 +2,7 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Process;
 using AllOverIt.Process.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 using FluentAssertions.Extensions;
 using System.Diagnostics;
 
@@ -32,14 +32,14 @@ namespace AllOverIt.Tests.Process.Extensions
             [Fact]
             public void Should_Have_Populated_Properties()
             {
-                _sut.ProcessFileName.Should().NotBeNull();
-                _sut.WorkingDirectory.Should().NotBeNull();
-                _sut.Arguments.Should().NotBeNull();
-                _sut.NoWindow.Should().BeFalse();
-                _sut.Timeout.Should().NotBe(default);
-                _sut.EnvironmentVariables.Should().NotBeNull();
-                _sut.StandardOutputHandler.Should().NotBeNull();
-                _sut.ErrorOutputHandler.Should().NotBeNull();
+                _sut.ProcessFileName.ShouldNotBeNull();
+                _sut.WorkingDirectory.ShouldNotBeNull();
+                _sut.Arguments.ShouldNotBeNull();
+                _sut.NoWindow.ShouldBeFalse();
+                _sut.Timeout.ShouldNotBe(default);
+                _sut.EnvironmentVariables.ShouldNotBeNull();
+                _sut.StandardOutputHandler.ShouldNotBeNull();
+                _sut.ErrorOutputHandler.ShouldNotBeNull();
             }
         }
 
@@ -52,8 +52,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithWorkingDirectory(_sut, null);
                 })
-               .Should()
-               .NotThrow();
+               .ShouldNotThrow();
             }
 
             [Fact]
@@ -63,8 +62,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithWorkingDirectory(_sut, string.Empty);
                 })
-               .Should()
-               .NotThrow();
+               .ShouldNotThrow();
             }
 
             [Fact]
@@ -74,8 +72,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithWorkingDirectory(_sut, " ");
                 })
-               .Should()
-               .NotThrow();
+               .ShouldNotThrow();
             }
 
             [Fact]
@@ -97,7 +94,7 @@ namespace AllOverIt.Tests.Process.Extensions
 
                 var actual = ProcessExecutorOptionsExtensions.WithWorkingDirectory(_sut, value);
 
-                expected.Should().BeEquivalentTo(actual, options => options.IncludingInternalProperties());
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -110,8 +107,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithArguments(_sut, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("arguments");
             }
 
@@ -122,8 +118,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithArguments(_sut, Array.Empty<string>());
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
 
             [Fact]
@@ -145,7 +140,7 @@ namespace AllOverIt.Tests.Process.Extensions
 
                 var actual = ProcessExecutorOptionsExtensions.WithArguments(_sut, values[0], values[1], values[2]);
 
-                expected.Should().BeEquivalentTo(actual, options => options.IncludingInternalProperties());
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -158,8 +153,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithArguments(_sut, null, Create<bool>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("arguments");
             }
 
@@ -170,8 +164,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithArguments(_sut, Array.Empty<string>(), Create<bool>());
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
 
             [Theory]
@@ -195,7 +188,7 @@ namespace AllOverIt.Tests.Process.Extensions
 
                 var actual = ProcessExecutorOptionsExtensions.WithArguments(_sut, values, escape);
 
-                expected.Should().BeEquivalentTo(actual, options => options.IncludingInternalProperties());
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -217,7 +210,7 @@ namespace AllOverIt.Tests.Process.Extensions
 
                 var actual = ProcessExecutorOptionsExtensions.WithArguments(_sut, values, true);
 
-                expected.Should().BeEquivalentTo(actual, options => options.IncludingInternalProperties());
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -240,7 +233,7 @@ namespace AllOverIt.Tests.Process.Extensions
 
                 var actual = ProcessExecutorOptionsExtensions.WithNoWindow(_sut);
 
-                expected.Should().BeEquivalentTo(actual, options => options.IncludingInternalProperties());
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -265,13 +258,8 @@ namespace AllOverIt.Tests.Process.Extensions
 
                 var actual = ProcessExecutorOptionsExtensions.WithTimeout(_sut, value.TotalMilliseconds);
 
-                expected.Should().BeEquivalentTo(actual, option =>
-                {
-                    option.IncludingInternalProperties();
-                    option.Using<TimeSpan>(ctx => ctx.Subject.Should().BeCloseTo(ctx.Expectation, 1.Milliseconds()));
-
-                    return option;
-                });
+                actual.ShouldBeEquivalentTo(expected, opts => opts
+                    .UseComparer<TimeSpan>((a, e) => Math.Abs(a.TotalMilliseconds - e.TotalMilliseconds) <= 1));
             }
         }
 
@@ -296,7 +284,7 @@ namespace AllOverIt.Tests.Process.Extensions
 
                 var actual = ProcessExecutorOptionsExtensions.WithTimeout(_sut, value);
 
-                expected.Should().BeEquivalentTo(actual, options => options.IncludingInternalProperties());
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -309,8 +297,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithEnvironmentVariables(_sut, (IDictionary<string, string>) null);
                 })
-               .Should()
-                .Throw<ArgumentNullException>()
+               .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("environmentVariables");
             }
 
@@ -321,8 +308,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithEnvironmentVariables(_sut, new Dictionary<string, string>());
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
 
             [Fact]
@@ -344,7 +330,7 @@ namespace AllOverIt.Tests.Process.Extensions
 
                 var actual = ProcessExecutorOptionsExtensions.WithEnvironmentVariables(_sut, value);
 
-                expected.Should().BeEquivalentTo(actual, options => options.IncludingInternalProperties());
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -357,8 +343,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithEnvironmentVariables(_sut, (Action<IDictionary<string, string>>) null);
                 })
-               .Should()
-                .Throw<ArgumentNullException>()
+               .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("configure");
             }
 
@@ -369,8 +354,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithEnvironmentVariables(_sut, variables => { });
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
 
             [Fact]
@@ -401,7 +385,7 @@ namespace AllOverIt.Tests.Process.Extensions
                     }
                 });
 
-                expected.Should().BeEquivalentTo(actual, options => options.IncludingInternalProperties());
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -429,7 +413,7 @@ namespace AllOverIt.Tests.Process.Extensions
                     }
                 });
 
-                expected.Should().BeEquivalentTo(actual, options => options.IncludingInternalProperties());
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -442,8 +426,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithStandardOutputHandler(_sut, null);
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
 
             [Fact]
@@ -463,7 +446,7 @@ namespace AllOverIt.Tests.Process.Extensions
 
                 var actual = ProcessExecutorOptionsExtensions.WithStandardOutputHandler(_sut, LogStandardOutput2);
 
-                expected.Should().BeEquivalentTo(actual, options => options.IncludingInternalProperties());
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -476,8 +459,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.WithErrorOutputHandler(_sut, null);
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
 
             [Fact]
@@ -497,7 +479,7 @@ namespace AllOverIt.Tests.Process.Extensions
 
                 var actual = ProcessExecutorOptionsExtensions.WithErrorOutputHandler(_sut, LogErrorOutput2);
 
-                expected.Should().BeEquivalentTo(actual, options => options.IncludingInternalProperties());
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -510,8 +492,7 @@ namespace AllOverIt.Tests.Process.Extensions
                 {
                     _ = ProcessExecutorOptionsExtensions.BuildProcessExecutor(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("options");
             }
 
@@ -520,7 +501,7 @@ namespace AllOverIt.Tests.Process.Extensions
             {
                 var actual = ProcessExecutorOptionsExtensions.BuildProcessExecutor(_sut);
 
-                actual.Should().BeOfType<ProcessExecutor>();
+                actual.ShouldBeOfType<ProcessExecutor>();
             }
 
             [Fact]
@@ -528,7 +509,7 @@ namespace AllOverIt.Tests.Process.Extensions
             {
                 var actual = ProcessExecutorOptionsExtensions.BuildProcessExecutor(_sut) as ProcessExecutor;
 
-                actual._options.Should().BeSameAs(_sut);
+                actual._options.ShouldBeSameAs(_sut);
             }
         }
 
@@ -549,3 +530,14 @@ namespace AllOverIt.Tests.Process.Extensions
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+

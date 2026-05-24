@@ -1,6 +1,5 @@
-﻿using AllOverIt.Patterns.Specification;
+using AllOverIt.Patterns.Specification;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Specification
 {
@@ -31,7 +30,7 @@ namespace AllOverIt.Tests.Patterns.Specification
 
                 _boolSpecification.IsSatisfiedBy(expected);
 
-                _boolSpecification.Candidate.Should().Be(expected);
+                _boolSpecification.Candidate.ShouldBe(expected);
             }
 
             [Fact]
@@ -39,7 +38,7 @@ namespace AllOverIt.Tests.Patterns.Specification
             {
                 var actual = _boolSpecification.IsSatisfiedBy(Create<int>());
 
-                actual.Should().Be(_expectedResult);
+                actual.ShouldBe(_expectedResult);
             }
         }
 
@@ -52,13 +51,13 @@ namespace AllOverIt.Tests.Patterns.Specification
 
                 var specification = Specification<int>.Create(candidate => candidate % factor == 0) as Specification<int>;
 
-                specification.Should().NotBeNull();
+                specification.ShouldNotBeNull();
 
                 for (var i = 3; i <= 5; i++)
                 {
                     var actual = specification.IsSatisfiedBy(i);
 
-                    actual.Should().Be(i == factor);
+                    actual.ShouldBe(i == factor);
                 }
             }
         }
@@ -79,7 +78,7 @@ namespace AllOverIt.Tests.Patterns.Specification
             {
                 var actual = twoOrThreeSpecification.IsSatisfiedBy(candidate);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -99,7 +98,7 @@ namespace AllOverIt.Tests.Patterns.Specification
             {
                 var actual = twoAndThreeSpecification.IsSatisfiedBy(candidate);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -119,8 +118,10 @@ namespace AllOverIt.Tests.Patterns.Specification
             {
                 var actual = notMultipleOfTwo.IsSatisfiedBy(candidate);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }
 }
+
+

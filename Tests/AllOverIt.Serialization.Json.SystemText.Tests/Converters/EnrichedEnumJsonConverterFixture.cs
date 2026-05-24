@@ -1,7 +1,7 @@
 using AllOverIt.Fixture;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Serialization.Json.SystemText.Converters;
-using FluentAssertions;
+using Shouldly;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 
@@ -42,7 +42,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 
             _serializer = new SystemTextJsonSerializer(options);
 
-            var rnd = new Random((int) DateTime.Now.Ticks);
+            var rnd = new Random((int)DateTime.Now.Ticks);
 
             _dummyValue = new DummyValue
             {
@@ -65,7 +65,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
                     ? DummyEnrichedEnum.Value1
                     : DummyEnrichedEnum.Value2;
 
-                actual.Prop1.Should().Be(expected);
+                actual.Prop1.ShouldBe(expected);
             }
 
             [Fact]
@@ -75,7 +75,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 
                 var actual = _serializer.DeserializeObject<DummyValue>(value);
 
-                actual.Prop1.Should().BeNull();
+                actual.Prop1.ShouldBeNull();
             }
         }
 
@@ -88,7 +88,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 
                 var expected = $@"{{""Prop1"":""{_dummyValue.Prop1.Name}""}}";
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -100,7 +100,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 
                 var actual = _serializer.SerializeObject(_dummyValue);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -111,8 +111,12 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
             {
                 var actual = EnrichedEnumJsonConverter<DummyEnrichedEnum>.Create();
 
-                actual.Should().BeOfType<EnrichedEnumJsonConverter<DummyEnrichedEnum>>();
+                actual.ShouldBeOfType<EnrichedEnumJsonConverter<DummyEnrichedEnum>>();
             }
         }
     }
 }
+
+
+
+

@@ -1,6 +1,5 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Validation.Extensions;
-using FluentAssertions;
 using FluentValidation;
 
 namespace AllOverIt.Validation.Tests.Extensions
@@ -31,23 +30,19 @@ namespace AllOverIt.Validation.Tests.Extensions
             public void Should_Throw_When_Invoke_Validator()
             {
 
-                Invoking(() =>
-                    {
+                var exception = Should.Throw<ValidationException>(() => {
                         var model = new DummyModel();
                         var validator = new DummyModelValidator();
 
-                        validator.ValidateAndThrow(model);
-                    })
-                    .Should()
-                    .Throw<ValidationException>()
-                    .WithMessage("Validation failed: " +
+                        validator.ValidateAndThrow(model);});
+                exception.Message.ShouldBe("Validation failed: " +
                                  " -- ValueOne: 'ValueOne' requires a valid value. Severity: Error");
             }
 
             [Fact]
             public void Should_Not_Throw_When_Invoke_Validator()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     var context = Create<int>();
 
@@ -59,9 +54,7 @@ namespace AllOverIt.Validation.Tests.Extensions
                     var validator = new DummyModelValidator();
 
                     validator.ValidateAndThrow(model);
-                })
-               .Should()
-               .NotThrow();
+                });
             }
         }
 
@@ -70,38 +63,37 @@ namespace AllOverIt.Validation.Tests.Extensions
             [Fact]
             public async Task Should_Throw_When_Invoke_Validator()
             {
-                await Invoking(async () =>
-                    {
+                var exception = await Should.ThrowAsync<ValidationException>(async () => {
                         var model = new DummyModel();
                         var validator = new DummyModelValidator();
 
-                        await validator.ValidateAndThrowAsync(model);
-                    })
-                    .Should()
-                    .ThrowAsync<ValidationException>()
-                    .WithMessage("Validation failed: " +
+                        await validator.ValidateAndThrowAsync(model);});
+                exception.Message.ShouldBe("Validation failed: " +
                                  " -- ValueOne: 'ValueOne' requires a valid value. Severity: Error");
             }
 
             [Fact]
             public async Task Should_Not_Throw_When_Invoke_Validator()
             {
-                await Invoking(async () =>
+                await Should.NotThrowAsync(async () =>
+                {
+                    var context = Create<int>();
+
+                    var model = new DummyModel
                     {
-                        var context = Create<int>();
+                        ValueOne = context
+                    };
 
-                        var model = new DummyModel
-                        {
-                            ValueOne = context
-                        };
+                    var validator = new DummyModelValidator();
 
-                        var validator = new DummyModelValidator();
-
-                        await validator.ValidateAndThrowAsync(model);
-                    })
-                    .Should()
-                    .NotThrowAsync();
+                    await validator.ValidateAndThrowAsync(model);
+                });
             }
         }
     }
 }
+
+
+
+
+

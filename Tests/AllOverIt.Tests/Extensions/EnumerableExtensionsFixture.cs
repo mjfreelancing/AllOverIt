@@ -1,7 +1,8 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
@@ -18,8 +19,7 @@ namespace AllOverIt.Tests.Extensions
                 IEnumerable<object> items = null;
 
                 Invoking(() => items.NotAny())
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -30,7 +30,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = items.NotAny();
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -40,7 +40,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = items.NotAny();
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -52,8 +52,7 @@ namespace AllOverIt.Tests.Extensions
                 IEnumerable<object> items = null;
 
                 Invoking(() => items.AsArray())
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -63,8 +62,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = new List<int>();
 
                 Invoking(() => items.AsArray())
-                  .Should()
-                  .NotThrow();
+                  .ShouldNotThrow();
             }
 
             [Fact]
@@ -73,7 +71,7 @@ namespace AllOverIt.Tests.Extensions
                 var expected = CreateMany<int>();
                 var actual = expected.AsArray();
 
-                actual.Should().NotBeSameAs(expected);
+                actual.ShouldNotBeSameAs(expected);
             }
 
             [Fact]
@@ -83,7 +81,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = expected.AsArray();
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -100,8 +98,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var sameReference = ReferenceEquals(dictionary, actual);
 
-                sameReference.Should().BeFalse();
-                actual.Should().BeOfType<KeyValuePair<int, string>[]>();
+                sameReference.ShouldBeFalse();
+                actual.ShouldBeOfType<KeyValuePair<int, string>[]>();
             }
         }
 
@@ -113,8 +111,7 @@ namespace AllOverIt.Tests.Extensions
                 IEnumerable<object> items = null;
 
                 Invoking(() => items.AsList())
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -124,8 +121,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = new List<int>();
 
                 Invoking(() => items.AsList())
-                  .Should()
-                  .NotThrow();
+                  .ShouldNotThrow();
             }
 
             [Fact]
@@ -135,7 +131,7 @@ namespace AllOverIt.Tests.Extensions
                 var expected = CreateMany<int>();
                 var actual = expected.ToList();
 
-                actual.Should().NotBeSameAs(expected);
+                actual.ShouldNotBeSameAs(expected);
             }
 
             [Fact]
@@ -146,7 +142,7 @@ namespace AllOverIt.Tests.Extensions
                 // This test would fail if this call used ToList()
                 var actual = expected.AsList();
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -157,7 +153,7 @@ namespace AllOverIt.Tests.Extensions
                 // This test would fail if this call used ToList()
                 var actual = expected.AsList();
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -172,8 +168,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var sameReference = ReferenceEquals(dictionary, actual);
 
-                sameReference.Should().BeFalse();
-                actual.Should().BeOfType<List<KeyValuePair<int, string>>>();
+                sameReference.ShouldBeFalse();
+                actual.ShouldBeOfType<List<KeyValuePair<int, string>>>();
             }
         }
 
@@ -189,8 +185,7 @@ namespace AllOverIt.Tests.Extensions
 
                         items.AsReadOnlyList();
                     })
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -200,8 +195,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = new List<int>();
 
                 Invoking(() => items.AsReadOnlyList())
-                  .Should()
-                  .NotThrow();
+                  .ShouldNotThrow();
             }
 
             [Fact]
@@ -211,7 +205,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = expected.AsReadOnlyList();
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -226,8 +220,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var sameReference = ReferenceEquals(dictionary, actual);
 
-                sameReference.Should().BeFalse();
-                actual.Should().BeAssignableTo<IReadOnlyList<KeyValuePair<int, string>>>();
+                sameReference.ShouldBeFalse();
+                actual.ShouldBeAssignableTo<IReadOnlyList<KeyValuePair<int, string>>>();
             }
         }
 
@@ -263,8 +257,7 @@ namespace AllOverIt.Tests.Extensions
 
                         items.AsReadOnlyCollection();
                     })
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -274,8 +267,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = new List<int>();
 
                 Invoking(() => items.AsReadOnlyCollection())
-                  .Should()
-                  .NotThrow();
+                  .ShouldNotThrow();
             }
 
             [Fact]
@@ -285,7 +277,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = expected.AsReadOnlyCollection();
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -300,7 +292,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var sameReference = ReferenceEquals(dictionary, actual);
 
-                sameReference.Should().BeTrue();
+                sameReference.ShouldBeTrue();
             }
 
             [Fact]
@@ -313,9 +305,9 @@ namespace AllOverIt.Tests.Extensions
 
                 var sameReference = ReferenceEquals(expected, actual);
 
-                sameReference.Should().BeFalse();
-                actual.Should().BeOfType<ReadOnlyCollection<int>>();
-                actual.Should().HaveCount(values.Count);
+                sameReference.ShouldBeFalse();
+                actual.ShouldBeOfType<ReadOnlyCollection<int>>();
+                actual.Count.ShouldBe(values.Count);
             }
         }
 
@@ -331,8 +323,7 @@ namespace AllOverIt.Tests.Extensions
 
                         await items.SelectAsync((item, token) => Task.FromResult(item)).ToListAsync();
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
+                  .ShouldThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -346,8 +337,7 @@ namespace AllOverIt.Tests.Extensions
 
                         await items.SelectAsync((Func<bool, CancellationToken, Task<bool>>)null).ToListAsync();
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
+                  .ShouldThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("selector");
             }
 
@@ -364,8 +354,7 @@ namespace AllOverIt.Tests.Extensions
 
                         await items.SelectAsync((item, token) => Task.FromResult(item), cts.Token).ToListAsync();
                     })
-                  .Should()
-                  .ThrowAsync<OperationCanceledException>();
+                  .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -376,7 +365,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = await values.SelectAsync((item, token) => Task.FromResult(!item)).ToListAsync();
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -411,8 +400,7 @@ namespace AllOverIt.Tests.Extensions
                             .SelectManyAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()))
                             .ToListAsync();
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
+                  .ShouldThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -426,8 +414,7 @@ namespace AllOverIt.Tests.Extensions
                             .SelectManyAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>)null)
                             .ToListAsync();
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
+                  .ShouldThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("selector");
             }
 
@@ -444,8 +431,7 @@ namespace AllOverIt.Tests.Extensions
                             .SelectManyAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()), cts.Token)
                             .ToListAsync();
                     })
-                  .Should()
-                  .ThrowAsync<OperationCanceledException>();
+                  .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -457,7 +443,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = _parents.SelectMany(parent => parent.Children);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -489,8 +475,7 @@ namespace AllOverIt.Tests.Extensions
 
                     parents.SelectManyToArray(parent => parent.Children.AsEnumerable());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -501,8 +486,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         _parents.SelectManyToArray((Func<DummyParent, IEnumerable<DummyChild>>)null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("selector");
             }
 
@@ -511,7 +495,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = _parents.SelectManyToArray(parent => parent.Children);
 
-                actual.Should().BeOfType<DummyChild[]>();
+                actual.ShouldBeOfType<DummyChild[]>();
             }
 
             [Fact]
@@ -521,7 +505,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = _parents.SelectMany(parent => parent.Children);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -553,8 +537,7 @@ namespace AllOverIt.Tests.Extensions
 
                     parents.SelectManyToList(parent => parent.Children.AsEnumerable());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -565,8 +548,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _parents.SelectManyToList((Func<DummyParent, IEnumerable<DummyChild>>)null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("selector");
             }
 
@@ -575,7 +557,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = _parents.SelectManyToList(parent => parent.Children);
 
-                actual.Should().BeOfType<List<DummyChild>>();
+                actual.ShouldBeOfType<List<DummyChild>>();
             }
 
             [Fact]
@@ -585,7 +567,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = _parents.SelectMany(parent => parent.Children);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -617,8 +599,7 @@ namespace AllOverIt.Tests.Extensions
 
                     parents.SelectManyToReadOnlyCollection(parent => parent.Children.AsEnumerable());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -629,8 +610,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _parents.SelectManyToReadOnlyCollection((Func<DummyParent, IEnumerable<DummyChild>>)null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("selector");
             }
 
@@ -639,7 +619,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = _parents.SelectManyToReadOnlyCollection(parent => parent.Children);
 
-                actual.Should().BeOfType<ReadOnlyCollection<DummyChild>>();
+                actual.ShouldBeOfType<ReadOnlyCollection<DummyChild>>();
             }
 
             [Fact]
@@ -649,7 +629,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = _parents.SelectMany(parent => parent.Children);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -689,8 +669,7 @@ namespace AllOverIt.Tests.Extensions
 
                         await parents.SelectManyToArrayAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
                     })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
+                    .ShouldThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("items");
             }
 
@@ -702,8 +681,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         await _parents.SelectManyToArrayAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>)null);
                     })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
+                    .ShouldThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("selector");
             }
 
@@ -718,8 +696,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         await _parents.SelectManyToArrayAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()), cts.Token);
                     })
-                    .Should()
-                    .ThrowAsync<OperationCanceledException>();
+                    .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -727,7 +704,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = await _parents.SelectManyToArrayAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
 
-                actual.Should().BeOfType<DummyChild[]>();
+                actual.ShouldBeOfType<DummyChild[]>();
             }
 
             [Fact]
@@ -737,7 +714,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = _parents.SelectMany(parent => parent.Children);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -770,8 +747,7 @@ namespace AllOverIt.Tests.Extensions
 
                         await parents.SelectManyToListAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
                     })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
+                    .ShouldThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("items");
             }
 
@@ -783,8 +759,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         await _parents.SelectManyToListAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>)null);
                     })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
+                    .ShouldThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("selector");
             }
 
@@ -799,8 +774,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         await _parents.SelectManyToListAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()), cts.Token);
                     })
-                    .Should()
-                    .ThrowAsync<OperationCanceledException>();
+                    .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -808,7 +782,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = await _parents.SelectManyToListAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
 
-                actual.Should().BeOfType<List<DummyChild>>();
+                actual.ShouldBeOfType<List<DummyChild>>();
             }
 
             [Fact]
@@ -818,7 +792,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = _parents.SelectMany(parent => parent.Children);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -851,8 +825,7 @@ namespace AllOverIt.Tests.Extensions
 
                         await parents.SelectManyToReadOnlyCollectionAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
                     })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
+                    .ShouldThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("items");
             }
 
@@ -864,8 +837,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         await _parents.SelectManyToReadOnlyCollectionAsync((Func<DummyParent, CancellationToken, Task<IEnumerable<DummyChild>>>)null);
                     })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
+                    .ShouldThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("selector");
             }
 
@@ -880,8 +852,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         await _parents.SelectManyToReadOnlyCollectionAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()), cts.Token);
                     })
-                    .Should()
-                    .ThrowAsync<OperationCanceledException>();
+                    .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -889,7 +860,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = await _parents.SelectManyToReadOnlyCollectionAsync((parent, token) => Task.FromResult(parent.Children.AsEnumerable()));
 
-                actual.Should().BeOfType<ReadOnlyCollection<DummyChild>>();
+                actual.ShouldBeOfType<ReadOnlyCollection<DummyChild>>();
             }
 
             [Fact]
@@ -899,7 +870,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = _parents.SelectMany(parent => parent.Children);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -915,8 +886,7 @@ namespace AllOverIt.Tests.Extensions
 
                         await items.SelectAsParallelAsync((item, token) => Task.FromResult(item), 1).ToListAsync();
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
+                  .ShouldThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -930,8 +900,7 @@ namespace AllOverIt.Tests.Extensions
 
                         await items.SelectAsParallelAsync((Func<bool, CancellationToken, Task<bool>>)null, 1).ToListAsync();
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
+                  .ShouldThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("selector");
             }
 
@@ -945,8 +914,7 @@ namespace AllOverIt.Tests.Extensions
 
                         await items.SelectAsParallelAsync((item, token) => Task.FromResult(item), 0).ToListAsync();
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentOutOfRangeException>()
+                  .ShouldThrowAsync<ArgumentOutOfRangeException>()
                   .WithMessage("The degree of parallelism must be greater than zero. (Parameter 'degreeOfParallelism')");
             }
 
@@ -963,8 +931,7 @@ namespace AllOverIt.Tests.Extensions
 
                         await items.SelectAsParallelAsync((item, token) => Task.FromResult(item), 1, cts.Token).ToListAsync();
                     })
-                  .Should()
-                  .ThrowAsync<OperationCanceledException>();
+                  .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -975,7 +942,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = await values.SelectAsParallelAsync((item, token) => Task.FromResult(!item), GetWithinRange(1, 4)).ToListAsync();
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -999,9 +966,9 @@ namespace AllOverIt.Tests.Extensions
                     return item;
                 }, degreeOfParallelism).ToListAsync();
 
-                counts.Min().Should().BeGreaterThan(0);
-                counts.Max().Should().BeGreaterThan(1);
-                counts.Max().Should().BeLessThanOrEqualTo(degreeOfParallelism);
+                counts.Min().ShouldBeGreaterThan(0);
+                counts.Max().ShouldBeGreaterThan(1);
+                counts.Max().ShouldBeLessThanOrEqualTo(degreeOfParallelism);
             }
         }
 
@@ -1017,8 +984,7 @@ namespace AllOverIt.Tests.Extensions
 
                         items.SelectToArray(item => item);
                     })
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -1032,8 +998,7 @@ namespace AllOverIt.Tests.Extensions
 
                         items.SelectToArray((Func<bool, bool>)null);
                     })
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("selector");
             }
 
@@ -1043,8 +1008,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = new List<int>();
 
                 Invoking(() => items.SelectToArray(item => item))
-                  .Should()
-                  .NotThrow();
+                  .ShouldNotThrow();
             }
 
             [Fact]
@@ -1055,7 +1019,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = source.SelectToArray(item => item * 2);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -1071,8 +1035,7 @@ namespace AllOverIt.Tests.Extensions
 
                         items.SelectToList(item => item);
                     })
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -1086,8 +1049,7 @@ namespace AllOverIt.Tests.Extensions
 
                         items.SelectToList((Func<bool, bool>)null);
                     })
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("selector");
             }
 
@@ -1097,8 +1059,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = new List<int>();
 
                 Invoking(() => items.SelectToList(item => item))
-                  .Should()
-                  .NotThrow();
+                  .ShouldNotThrow();
             }
 
             [Fact]
@@ -1109,7 +1070,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = source.SelectToList(item => item * 2);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -1125,8 +1086,7 @@ namespace AllOverIt.Tests.Extensions
 
                         items.SelectToReadOnlyCollection(item => item);
                     })
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -1140,8 +1100,7 @@ namespace AllOverIt.Tests.Extensions
 
                         items.SelectToReadOnlyCollection((Func<bool, bool>)null);
                     })
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("selector");
             }
 
@@ -1151,8 +1110,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = new List<int>();
 
                 Invoking(() => items.SelectToReadOnlyCollection(item => item))
-                  .Should()
-                  .NotThrow();
+                  .ShouldNotThrow();
             }
 
             [Fact]
@@ -1163,7 +1121,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = source.SelectToReadOnlyCollection(item => item * 2);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -1179,8 +1137,7 @@ namespace AllOverIt.Tests.Extensions
 
                         return items.SelectToArrayAsync((item, token) => Task.FromResult(item));
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
+                  .ShouldThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -1190,8 +1147,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = new List<int>();
 
                 await Invoking(() => items.SelectToArrayAsync((item, token) => Task.FromResult(item)))
-                  .Should()
-                  .NotThrowAsync();
+                  .ShouldNotThrowAsync();
             }
 
             [Fact]
@@ -1204,8 +1160,7 @@ namespace AllOverIt.Tests.Extensions
 
                         return items.SelectToArrayAsync((Func<bool, CancellationToken, Task<bool>>)null);
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
+                  .ShouldThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("selector");
             }
 
@@ -1217,7 +1172,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = await source.SelectToArrayAsync((item, token) => Task.FromResult(item * 2));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -1233,8 +1188,7 @@ namespace AllOverIt.Tests.Extensions
 
                         return items.SelectToListAsync((item, token) => Task.FromResult(item));
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
+                  .ShouldThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -1244,8 +1198,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = new List<int>();
 
                 await Invoking(() => items.SelectToListAsync((item, token) => Task.FromResult(item)))
-                  .Should()
-                  .NotThrowAsync();
+                  .ShouldNotThrowAsync();
             }
 
             [Fact]
@@ -1258,8 +1211,7 @@ namespace AllOverIt.Tests.Extensions
 
                         return items.SelectToListAsync((Func<bool, CancellationToken, Task<bool>>)null);
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
+                  .ShouldThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("selector");
             }
 
@@ -1271,7 +1223,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = await source.SelectToListAsync((item, token) => Task.FromResult(item * 2));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -1287,8 +1239,7 @@ namespace AllOverIt.Tests.Extensions
 
                         return items.SelectToReadOnlyCollectionAsync((item, token) => Task.FromResult(item));
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
+                  .ShouldThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("items");
             }
 
@@ -1298,8 +1249,7 @@ namespace AllOverIt.Tests.Extensions
                 var items = new List<int>();
 
                 await Invoking(() => items.SelectToReadOnlyCollectionAsync((item, token) => Task.FromResult(item)))
-                  .Should()
-                  .NotThrowAsync();
+                  .ShouldNotThrowAsync();
             }
 
             [Fact]
@@ -1312,8 +1262,7 @@ namespace AllOverIt.Tests.Extensions
 
                         return items.SelectToReadOnlyCollectionAsync((Func<bool, CancellationToken, Task<bool>>)null);
                     })
-                  .Should()
-                  .ThrowAsync<ArgumentNullException>()
+                  .ShouldThrowAsync<ArgumentNullException>()
                   .WithNamedMessageWhenNull("selector");
             }
 
@@ -1325,7 +1274,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = await source.SelectToReadOnlyCollectionAsync((item, token) => Task.FromResult(item * 2));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -1336,7 +1285,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = EnumerableExtensions.IsNullOrEmpty(null);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -1344,7 +1293,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = EnumerableExtensions.IsNullOrEmpty(Array.Empty<object>());
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -1352,7 +1301,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = EnumerableExtensions.IsNullOrEmpty(new[] { true, false });
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -1361,7 +1310,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = string.Empty;
                 var actual = EnumerableExtensions.IsNullOrEmpty(value);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -1370,7 +1319,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = Create<string>();
                 var actual = EnumerableExtensions.IsNullOrEmpty(value);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -1381,7 +1330,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = EnumerableExtensions.IsNotNullOrEmpty(null);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -1389,7 +1338,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = EnumerableExtensions.IsNotNullOrEmpty(Array.Empty<object>());
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -1397,7 +1346,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = EnumerableExtensions.IsNotNullOrEmpty(new[] { true, false });
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -1406,7 +1355,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = string.Empty;
                 var actual = EnumerableExtensions.IsNotNullOrEmpty(value);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -1415,7 +1364,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = Create<string>();
                 var actual = EnumerableExtensions.IsNotNullOrEmpty(value);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -1432,8 +1381,7 @@ namespace AllOverIt.Tests.Extensions
                             // ToList() is required to invoke the method
                             _ = items.Batch(Create<int>()).ToList();
                         })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("items");
             }
 
@@ -1444,7 +1392,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = items.Batch(Create<int>());
 
-                actual.Should().BeEmpty();
+                actual.ShouldBeEmpty();
             }
 
             [Fact]
@@ -1454,9 +1402,9 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = items.Batch(5).ToList();
 
-                actual.Should().HaveCount(2);
-                actual.First().Should().HaveCount(5);
-                actual.Skip(1).First().Should().HaveCount(5);
+                actual.Count.ShouldBe(2);
+                actual.First().Count().ShouldBe(5);
+                actual.Skip(1).First().Count().ShouldBe(5);
             }
 
             [Fact]
@@ -1466,9 +1414,9 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = items.Batch(5).ToList();
 
-                actual.Should().HaveCount(2);
-                actual.First().Should().HaveCount(5);
-                actual.Skip(1).First().Should().HaveCount(4);
+                actual.Count.ShouldBe(2);
+                actual.First().Count().ShouldBe(5);
+                actual.Skip(1).First().Count().ShouldBe(4);
             }
         }
 
@@ -1485,8 +1433,7 @@ namespace AllOverIt.Tests.Extensions
                             // ToList() is required to invoke the method
                             _ = items.WithIndex().ToList();
                         })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("items");
             }
 
@@ -1503,8 +1450,7 @@ namespace AllOverIt.Tests.Extensions
                     var expected = expectedValues.ElementAt(index++);
 
                     expected
-                        .Should()
-                        .BeEquivalentTo((value, idx));
+                        .ShouldBeEquivalentTo((value, idx));
                 }
             }
         }
@@ -1521,8 +1467,7 @@ namespace AllOverIt.Tests.Extensions
 
                             items.ForEach((_, _) => { });
                         })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("items");
             }
 
@@ -1534,11 +1479,11 @@ namespace AllOverIt.Tests.Extensions
 
                 values.ForEach((item, index) =>
                 {
-                    item.Should().Be(values.ElementAt(index));
+                    item.ShouldBe(values.ElementAt(index));
                     count++;
                 });
 
-                count.Should().Be(values.Length);
+                count.ShouldBe(values.Length);
             }
         }
 
@@ -1554,8 +1499,7 @@ namespace AllOverIt.Tests.Extensions
 
                             await items.ForEachAsync((_, _, _) => Task.CompletedTask);
                         })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
+                    .ShouldThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("items");
             }
 
@@ -1569,11 +1513,11 @@ namespace AllOverIt.Tests.Extensions
                 {
                     await Task.CompletedTask;
 
-                    item.Should().Be(values.ElementAt(index));
+                    item.ShouldBe(values.ElementAt(index));
                     count++;
                 });
 
-                count.Should().Be(values.Length);
+                count.ShouldBe(values.Length);
             }
 
             [Fact]
@@ -1589,8 +1533,7 @@ namespace AllOverIt.Tests.Extensions
 
                             await items.ForEachAsync((_, _, _) => Task.CompletedTask, cts.Token);
                         })
-                    .Should()
-                    .ThrowAsync<OperationCanceledException>();
+                    .ShouldThrowAsync<OperationCanceledException>();
             }
 
             [Fact]
@@ -1609,7 +1552,7 @@ namespace AllOverIt.Tests.Extensions
                     return Task.CompletedTask;
                 }, cts.Token);
 
-                actual.Should().Be(cts.Token);  // Be() and not BeSameAs() as structs are copied by value
+                actual.ShouldBe(cts.Token);  // Be() and not BeSameAs() as structs are copied by value
             }
         }
 
@@ -1622,8 +1565,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         EnumerableExtensions.FindMatches<int, int, int>(null, Enumerable.Empty<int>(), item => item, item => item);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("first");
             }
 
@@ -1634,8 +1576,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         EnumerableExtensions.FindMatches(Enumerable.Empty<int>(), CreateMany<int>(), item => item, item => item);
                     })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -1645,8 +1586,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         EnumerableExtensions.FindMatches<int, int, int>(Enumerable.Empty<int>(), null, item => item, item => item);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("second");
             }
 
@@ -1657,8 +1597,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         EnumerableExtensions.FindMatches(CreateMany<int>(), Enumerable.Empty<int>(), item => item, item => item);
                     })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -1671,7 +1610,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var matches = EnumerableExtensions.FindMatches(first, second, item => item, item => item);
 
-                matches.Should().BeEmpty();
+                matches.ShouldBeEmpty();
             }
 
             [Fact]
@@ -1682,7 +1621,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var matches = EnumerableExtensions.FindMatches(first, second, item => item, item => item);
 
-                first.Should().BeEquivalentTo(matches);
+                first.ShouldBeEquivalentTo(matches);
             }
 
             [Fact]
@@ -1695,7 +1634,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = new[] { 3, 4, 5 };
 
-                expected.Should().BeEquivalentTo(matches);
+                matches.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -1708,8 +1647,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     EnumerableExtensions.HasDistinctGrouping<string, string>(null, item => item);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("source");
             }
 
@@ -1720,7 +1658,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = items.HasDistinctGrouping(item => item);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -1731,8 +1669,16 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = items.HasDistinctGrouping(item => item);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
     }
 }
+
+
+
+
+
+
+
+

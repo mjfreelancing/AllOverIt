@@ -1,6 +1,5 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Formatters.Objects;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Formatters.Objects
 {
@@ -11,13 +10,15 @@ namespace AllOverIt.Tests.Formatters.Objects
         [Fact]
         public void Should_Default_To_No_Collation()
         {
-            _options.CollateValues.Should().BeFalse();
+            _options.CollateValues.ShouldBeFalse();
         }
 
         [Fact]
         public void Should_Default_To_Comma_Separator()
         {
-            _options.Separator.Should().Be(", ");
+            _options.Separator.ShouldBe(", ");
         }
     }
 }
+
+

@@ -1,8 +1,7 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Mapping.Extensions;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Mapping.Tests.Extensions
 {
     public class ObjectMapperExtensionsFixture : FixtureBase
@@ -61,9 +60,9 @@ namespace AllOverIt.Mapping.Tests.Extensions
             {
                 var actual = _mapper.MapMany<DummyTarget>(_sources).ToList();
 
-                actual.Should().NotBeEmpty();
+                actual.ShouldNotBeEmpty();
 
-                actual.Should().BeEquivalentTo(_sources);
+                actual.ShouldBeEquivalentTo(_sources);
             }
         }
 
@@ -98,10 +97,13 @@ namespace AllOverIt.Mapping.Tests.Extensions
             {
                 var actual = _mapper.MapMany<DummySource, DummyTarget>(_sources).ToList();
 
-                actual.Should().NotBeEmpty();
+                actual.ShouldNotBeEmpty();
 
-                actual.Should().BeEquivalentTo(_sources);
+                actual.ShouldBeEquivalentTo(_sources);
             }
         }
     }
 }
+
+
+

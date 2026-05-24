@@ -1,7 +1,6 @@
-﻿using AllOverIt.Events;
+using AllOverIt.Events;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Events
 {
@@ -13,8 +12,7 @@ namespace AllOverIt.Tests.Events
             public void Should_Throw_When_Delegate_Null()
             {
                 Invoking(() => new Subscription(null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("handler");
             }
         }
@@ -30,7 +28,7 @@ namespace AllOverIt.Tests.Events
 
                 var registeredHandler = subscription.GetHandler<int>();
 
-                registeredHandler.Should().BeSameAs(handler);
+                registeredHandler.ShouldBeSameAs(handler);
             }
 
             [Fact]
@@ -42,7 +40,7 @@ namespace AllOverIt.Tests.Events
 
                 var registeredHandler = subscription.GetHandler<int>();
 
-                registeredHandler.Should().BeSameAs(handler);
+                registeredHandler.ShouldBeSameAs(handler);
             }
         }
 
@@ -63,7 +61,7 @@ namespace AllOverIt.Tests.Events
 
                 subscription.Handle(expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -78,3 +76,7 @@ namespace AllOverIt.Tests.Events
         }
     }
 }
+
+
+
+

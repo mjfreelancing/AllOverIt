@@ -5,7 +5,7 @@ using AllOverIt.Evaluator.Variables.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 {
@@ -16,18 +16,14 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Variable_Null()
             {
-                Invoking(() => VariableExtensions.SetVariableRegistry(null, this.CreateStub<IVariableRegistry>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableExtensions.SetVariableRegistry(null, this.CreateStub<IVariableRegistry>()))
                     .WithNamedMessageWhenNull("variable");
             }
 
             [Fact]
             public void Should_Throw_When_Variable_Registryy_Null()
             {
-                Invoking(() => this.CreateStub<IVariable>().SetVariableRegistry(null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => this.CreateStub<IVariable>().SetVariableRegistry(null))
                     .WithNamedMessageWhenNull("variableRegistry");
             }
 
@@ -39,7 +35,7 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 
                 variable.SetVariableRegistry(variableRegistry);
 
-                variable.VariableRegistry.Should().BeSameAs(variableRegistry);
+                variable.VariableRegistry.ShouldBeSameAs(variableRegistry);
             }
         }
 

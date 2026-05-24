@@ -1,4 +1,4 @@
-﻿using AllOverIt.Expressions.Strings;
+using AllOverIt.Expressions.Strings;
 using AllOverIt.Filtering.Operations;
 using AllOverIt.Filtering.Options;
 using AllOverIt.Fixture.Extensions;
@@ -94,3 +94,4 @@ namespace AllOverIt.Filtering.Tests.Operations
         }
     }
 }
+

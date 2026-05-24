@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.ReactiveUI.CommandPipeline;
-using FluentAssertions;
 using ReactiveUI;
 
 namespace AllOverIt.ReactiveUI.Tests.CommandPipeline
@@ -13,12 +12,10 @@ namespace AllOverIt.ReactiveUI.Tests.CommandPipeline
             [Fact]
             public void Should_Throw_When_Command_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new ReactiveCommandPipelineStep<double, string>(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("command");
             }
         }
@@ -37,13 +34,13 @@ namespace AllOverIt.ReactiveUI.Tests.CommandPipeline
 
                 var actual = await step.ExecuteAsync(input, CancellationToken.None);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Fact]
             public async Task Should_Throw_When_Cancelled()
             {
-                await Invoking(async () =>
+                await Should.ThrowAsync<OperationCanceledException>(async () =>
                 {
                     var cts = new CancellationTokenSource();
                     cts.Cancel();
@@ -53,10 +50,14 @@ namespace AllOverIt.ReactiveUI.Tests.CommandPipeline
                     var step = new ReactiveCommandPipelineStep<double, string>(command);
 
                     _ = await step.ExecuteAsync(Create<double>(), cts.Token);
-                })
-                .Should()
-                .ThrowAsync<OperationCanceledException>();
+                });
             }
         }
     }
 }
+
+
+
+
+
+

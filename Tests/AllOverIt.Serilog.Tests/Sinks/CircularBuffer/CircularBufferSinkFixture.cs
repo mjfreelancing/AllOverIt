@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serilog.Extensions;
 using AllOverIt.Serilog.Sinks.CircularBuffer;
@@ -47,35 +47,35 @@ namespace AllOverIt.Serilog.Tests.Sinks.CircularBuffer
 
             logger.Information(messages[0]);
 
-            sink.Length.Should().Be(1);
-            sink.Single().FormattedMessage.Should().Contain(messages[0]);
+            sink.Length.ShouldBe(1);
+            sink.Single().FormattedMessage.ShouldContain(messages[0]);
 
             logger.Information(messages[1]);
 
-            sink.Length.Should().Be(2);
-            sink.Take(1).Single().FormattedMessage.Should().Contain(messages[0]);
-            sink.Skip(1).Take(1).Single().FormattedMessage.Should().Contain(messages[1]);
+            sink.Length.ShouldBe(2);
+            sink.Take(1).Single().FormattedMessage.ShouldContain(messages[0]);
+            sink.Skip(1).Take(1).Single().FormattedMessage.ShouldContain(messages[1]);
 
             logger.Information(messages[2]);
 
-            sink.Length.Should().Be(3);
-            sink.Take(1).Single().FormattedMessage.Should().Contain(messages[0]);
-            sink.Skip(1).Take(1).Single().FormattedMessage.Should().Contain(messages[1]);
-            sink.Skip(2).Take(1).Single().FormattedMessage.Should().Contain(messages[2]);
+            sink.Length.ShouldBe(3);
+            sink.Take(1).Single().FormattedMessage.ShouldContain(messages[0]);
+            sink.Skip(1).Take(1).Single().FormattedMessage.ShouldContain(messages[1]);
+            sink.Skip(2).Take(1).Single().FormattedMessage.ShouldContain(messages[2]);
 
             logger.Information(messages[3]);
 
-            sink.Length.Should().Be(3);
-            sink.Take(1).Single().FormattedMessage.Should().Contain(messages[1]);
-            sink.Skip(1).Take(1).Single().FormattedMessage.Should().Contain(messages[2]);
-            sink.Skip(2).Take(1).Single().FormattedMessage.Should().Contain(messages[3]);
+            sink.Length.ShouldBe(3);
+            sink.Take(1).Single().FormattedMessage.ShouldContain(messages[1]);
+            sink.Skip(1).Take(1).Single().FormattedMessage.ShouldContain(messages[2]);
+            sink.Skip(2).Take(1).Single().FormattedMessage.ShouldContain(messages[3]);
 
             logger.Information(messages[4]);
 
-            sink.Length.Should().Be(3);
-            sink.Take(1).Single().FormattedMessage.Should().Contain(messages[2]);
-            sink.Skip(1).Take(1).Single().FormattedMessage.Should().Contain(messages[3]);
-            sink.Skip(2).Take(1).Single().FormattedMessage.Should().Contain(messages[4]);
+            sink.Length.ShouldBe(3);
+            sink.Take(1).Single().FormattedMessage.ShouldContain(messages[2]);
+            sink.Skip(1).Take(1).Single().FormattedMessage.ShouldContain(messages[3]);
+            sink.Skip(2).Take(1).Single().FormattedMessage.ShouldContain(messages[4]);
         }
     }
 }

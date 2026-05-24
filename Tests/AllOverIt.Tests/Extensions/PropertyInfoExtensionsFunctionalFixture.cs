@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -38,14 +38,14 @@ namespace AllOverIt.Tests.Extensions
             // and the GetPropertyInfo() method below does the same.
             var expectedValues = new[] { nameof(Person.FirstName), nameof(Person.Surname), nameof(Person.Age), nameof(Person.FullName) };
 
-            expectedValues.Should().BeEquivalentTo(valueLookup.Keys);
+            expectedValues.ShouldBeEquivalentTo(valueLookup.Keys);
 
             foreach (var propertyName in valueLookup.Keys)
             {
                 var actual = typeof(Person).GetPropertyInfo(propertyName).GetValue(subject);
                 var expected = valueLookup[propertyName];
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -67,7 +67,14 @@ namespace AllOverIt.Tests.Extensions
                 _ => throw new ArgumentOutOfRangeException(nameof(visibility), visibility, null)
             };
 
-            actual.Should().BeTrue();
+            actual.ShouldBeTrue();
         }
     }
 }
+
+
+
+
+
+
+

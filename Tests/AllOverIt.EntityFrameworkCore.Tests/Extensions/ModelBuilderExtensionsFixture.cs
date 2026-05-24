@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Runtime.CompilerServices;
 using Testcontainers.PostgreSql;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
 {
@@ -540,3 +541,5 @@ namespace AllOverIt.EntityFrameworkCore.Tests.Extensions
         }
     }
 }
+
+

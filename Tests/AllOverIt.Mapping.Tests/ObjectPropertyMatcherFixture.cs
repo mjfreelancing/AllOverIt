@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
-using FluentAssertions;
 
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
 
@@ -53,7 +52,7 @@ namespace AllOverIt.Mapping.Tests
                 var options = Create<PropertyMatcherOptions>();
                 var actual = new ObjectPropertyMatcher(typeof(DummySource1), typeof(DummyTarget), options);
 
-                options.Should().BeSameAs(actual.MatcherOptions);
+                options.ShouldBeSameAs(actual.MatcherOptions);
             }
 
             [Fact]
@@ -78,9 +77,7 @@ namespace AllOverIt.Mapping.Tests
                     (nameof(DummySource2.Prop13), typeof(int), nameof(DummyTarget.Prop13), typeof(DummyEnum))
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actualMatches);
+                actualMatches.ShouldBe(expected);
             }
 
             [Fact]
@@ -101,9 +98,7 @@ namespace AllOverIt.Mapping.Tests
                     (nameof(DummySource2.Prop4), typeof(int), nameof(DummyTarget.Prop4), typeof(int))
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actualMatches);
+                actualMatches.ShouldBe(expected);
             }
 
             [Fact]
@@ -126,9 +121,7 @@ namespace AllOverIt.Mapping.Tests
                     (nameof(DummySource2.Prop12), typeof(DummyEnum), nameof(DummyTarget.Prop12), typeof(int))
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actualMatches);
+                actualMatches.ShouldBe(expected);
             }
 
             [Fact]
@@ -151,9 +144,7 @@ namespace AllOverIt.Mapping.Tests
                     (nameof(DummySource2.Prop12), typeof(DummyEnum), nameof(DummyTarget.Prop12), typeof(int))
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actualMatches);
+                actualMatches.ShouldBe(expected);
             }
 
             [Fact]
@@ -178,9 +169,7 @@ namespace AllOverIt.Mapping.Tests
                     (nameof(DummySource2.Prop12), typeof(DummyEnum), nameof(DummyTarget.Prop5), typeof(int))
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actualMatches);
+                actualMatches.ShouldBe(expected);
             }
 
             [Fact]
@@ -215,16 +204,15 @@ namespace AllOverIt.Mapping.Tests
                 };
 
                 expectedAliases
-                    .Should()
-                    .BeEquivalentTo(actualMatches);
+                    .ShouldBe(actualMatches);
 
                 var value = Create<int>() % 1000 + 1;
 
                 var mapper = new ObjectMapper();
                 var convertedValue = options.GetConvertedValue(mapper, nameof(DummySource2.Prop8), value);
 
-                actualMapper.Should().BeSameAs(mapper);         // Just an additional sanity check
-                convertedValue.Should().Be(value * factor);
+                actualMapper.ShouldBeSameAs(mapper);         // Just an additional sanity check
+                convertedValue.ShouldBe(value * factor);
             }
 
 
@@ -238,3 +226,7 @@ namespace AllOverIt.Mapping.Tests
         }
     }
 }
+
+
+
+

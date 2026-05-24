@@ -1,7 +1,6 @@
-using AllOverIt.Evaluator.Variables;
+﻿using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Evaluator.Tests.Variables
 {
     public class ConstantVariableFixture : FixtureBase
@@ -38,7 +37,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = default(IEnumerable<string>)
                 };
 
-                expected.Should().BeEquivalentTo(_variable, option => option.Excluding(subject => subject.ReferencedVariables));
+                expected.ShouldBeEquivalentTo(_variable, opts => opts.ExcludeMember("ReferencedVariables"));
             }
 
             [Fact]
@@ -56,8 +55,12 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = default(IEnumerable<string>)
                 };
 
-                expected.Should().BeEquivalentTo(_variable, option => option.Excluding(subject => subject.ReferencedVariables));
+                expected.ShouldBeEquivalentTo(_variable, opts => opts.ExcludeMember("ReferencedVariables"));
             }
         }
     }
 }
+
+
+
+

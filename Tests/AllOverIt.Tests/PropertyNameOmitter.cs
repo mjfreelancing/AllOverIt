@@ -1,4 +1,4 @@
-﻿using AutoFixture.Kernel;
+using AutoFixture.Kernel;
 using System.Reflection;
 
 namespace AllOverIt.Tests
@@ -25,3 +25,5 @@ namespace AllOverIt.Tests
         }
     }
 }
+
+

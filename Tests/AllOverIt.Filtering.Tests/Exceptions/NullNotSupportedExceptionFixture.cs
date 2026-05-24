@@ -1,4 +1,4 @@
-﻿using AllOverIt.Filtering.Exceptions;
+using AllOverIt.Filtering.Exceptions;
 using AllOverIt.Fixture;
 
 namespace AllOverIt.Filtering.Tests.Exceptions

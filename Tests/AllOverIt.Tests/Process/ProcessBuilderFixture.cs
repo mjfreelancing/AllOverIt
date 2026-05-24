@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Process;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 using System.Diagnostics;
 
 namespace AllOverIt.Tests.Process
@@ -36,7 +36,10 @@ namespace AllOverIt.Tests.Process
                 ErrorOutputHandler = (DataReceivedEventHandler) default
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            actual.ShouldBeEquivalentTo(expected);
         }
     }
 }
+
+
+

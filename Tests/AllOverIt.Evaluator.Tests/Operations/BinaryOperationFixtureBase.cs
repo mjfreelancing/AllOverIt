@@ -1,7 +1,7 @@
-using AllOverIt.Evaluator.Operations;
+﻿using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
-using FluentAssertions;
 using System.Linq.Expressions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Operations
 {
@@ -20,12 +20,12 @@ namespace AllOverIt.Evaluator.Tests.Operations
             var creator = Operation._creator;
 
             var operation = creator.Invoke(operands);
-            operation.Should().BeOfType(OperatorType);
+            operation.ShouldBeOfType(OperatorType);
 
             var symbol = operation as BinaryOperator;
 
-            symbol!._leftOperand.Should().BeSameAs(operands[0]);
-            symbol._rightOperand.Should().BeSameAs(operands[1]);
+            symbol!._leftOperand.ShouldBeSameAs(operands[0]);
+            symbol._rightOperand.ShouldBeSameAs(operands[1]);
         }
 
         [Fact]

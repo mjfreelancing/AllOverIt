@@ -1,0 +1,660 @@
+Test run for C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\bin\Debug\net10.0\AllOverIt.Shouldly.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+Test run for C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\bin\Debug\net9.0\AllOverIt.Shouldly.Tests.dll (.NETCoreApp,Version=v9.0)
+Test run for C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\bin\Debug\net8.0\AllOverIt.Shouldly.Tests.dll (.NETCoreApp,Version=v8.0)
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.39]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.39]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.39]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.39]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure [FAIL]
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure [62 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Collection mismatch
+
+ShouldBeEquivalentTo failed at '$[0].Id': value mismatch, expected '2' (System...."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 238
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure [2 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Expected difference
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but was e..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 297
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_CustomMessage_Prepended_On_Failure [2 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Step 5 failed
+
+ShouldBeEquivalentTo failed at '$.Id': value mismatch, expected '2' (System.Int32) bu..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 149
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Verify sequences differ
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but w..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 356
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.40]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_Throws_When_Sequences_Match [FAIL]
+[xUnit.net 00:00:00.40]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.40]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.40]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_NullCustomMessage_NoPrefix [FAIL]
+[xUnit.net 00:00:00.40]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.40]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_Throws_When_Sequences_Match [FAIL]
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_Throws_When_Sequences_Match [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"ShouldNotBeEquivalentTo failed: the actual value matched the expected but was expected to differ."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_Throws_When_Sequences_Match() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 121
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Sequence should differ
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but wa..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 341
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Sequence check
+
+ShouldBeEquivalentTo failed at '$[0].Id': value mismatch, expected '2' (System.Int32..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 254
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_NullCustomMessage_NoPrefix [4 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+[xUnit.net 00:00:00.41]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure [FAIL]
+    should start with
+"ShouldMatch failed"
+[xUnit.net 00:00:00.41]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure [FAIL]
+    but was
+[xUnit.net 00:00:00.41]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.41]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_AnyOrder_Throws_When_Sequences_Match [FAIL]
+[xUnit.net 00:00:00.41]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.41]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure [FAIL]
+"ShouldBeEquivalentTo failed at '$.Id': value mismatch, expected '2' (System.Int32) but found '1' (System.Int32)."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_NullCustomMessage_NoPrefix() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 164
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure [< 1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Options check
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but was expecte..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 372
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_Throws_When_Sequences_Match [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"ShouldNotBeEquivalentTo failed: the actual value matched the expected but was expected to differ."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_Throws_When_Sequences_Match() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 36
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Scenario check
+
+ShouldBeEquivalentTo failed at '$.Id': value mismatch, expected '2' (System.Int32) b..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 179
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure [< 1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Pre-configured check
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but was ..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 313
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_CustomMessage_Prepended_On_Failure [< 1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Items should differ
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but was e..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 282
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_AnyOrder_Throws_When_Sequences_Match [4 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"ShouldNotBeEquivalentTo failed: the actual value matched the expected but was expected to differ."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_AnyOrder_Throws_When_Sequences_Match() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 80
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_CustomMessage_Prepended_On_Failure [< 1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Array step failed
+
+ShouldBeEquivalentTo failed at '$[0].Id': value mismatch, expected '2' (System.In..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 223
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure [< 1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Verify order
+
+ShouldBeEquivalentTo failed at '$.Id': value mismatch, expected '2' (System.Int32) but..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 195
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Failed!  - Failed:    16, Passed:    33, Skipped:     0, Total:    49, Duration: 141 ms - AllOverIt.Shouldly.Tests.dll (net10.0)
+[xUnit.net 00:00:00.28]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.28]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.28]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.28]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure [FAIL]
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure [46 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Collection mismatch
+
+ShouldBeEquivalentTo failed at '$[0].Id': value mismatch, expected '2' (System...."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 238
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure [2 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Expected difference
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but was e..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 297
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Step 5 failed
+
+ShouldBeEquivalentTo failed at '$.Id': value mismatch, expected '2' (System.Int32) bu..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 149
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Verify sequences differ
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but w..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 356
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.28]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_Throws_When_Sequences_Match [FAIL]
+[xUnit.net 00:00:00.28]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.29]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.29]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_NullCustomMessage_NoPrefix [FAIL]
+[xUnit.net 00:00:00.29]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.29]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_Throws_When_Sequences_Match [FAIL]
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_Throws_When_Sequences_Match [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"ShouldNotBeEquivalentTo failed: the actual value matched the expected but was expected to differ."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_Throws_When_Sequences_Match() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 121
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Sequence should differ
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but wa..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 341
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Sequence check
+
+ShouldBeEquivalentTo failed at '$[0].Id': value mismatch, expected '2' (System.Int32..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 254
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_NullCustomMessage_NoPrefix [3 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should start with
+"ShouldMatch failed"
+    but was
+"ShouldBeEquivalentTo failed at '$.Id': value mismatch, expected '2' (System.Int32) but found '1' (System.Int32)."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_NullCustomMessage_NoPrefix() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 164
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Options check
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but was expecte..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 372
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_Throws_When_Sequences_Match [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"ShouldNotBeEquivalentTo failed: the actual value matched the expected but was expected to differ."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_Throws_When_Sequences_Match() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 36
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.29]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.30]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.30]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.30]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_AnyOrder_Throws_When_Sequences_Match [FAIL]
+[xUnit.net 00:00:00.31]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.31]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.28]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.29]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.29]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_CustomMessage_Prepended_On_Failure [FAIL]
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure [51 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Collection mismatch
+
+ShouldBeEquivalentTo failed at '$[0].Id': value mismatch, expected '2' (System...."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 238
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Expected difference
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but was e..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 297
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Step 5 failed
+
+ShouldBeEquivalentTo failed at '$.Id': value mismatch, expected '2' (System.Int32) bu..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 149
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.29]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.29]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_Throws_When_Sequences_Match [FAIL]
+[xUnit.net 00:00:00.29]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.29]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.30]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_NullCustomMessage_NoPrefix [FAIL]
+[xUnit.net 00:00:00.30]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.30]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_Throws_When_Sequences_Match [FAIL]
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Verify sequences differ
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but w..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 356
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_Throws_When_Sequences_Match [2 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"ShouldNotBeEquivalentTo failed: the actual value matched the expected but was expected to differ."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_Throws_When_Sequences_Match() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 121
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Sequence should differ
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but wa..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 341
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Sequence check
+
+ShouldBeEquivalentTo failed at '$[0].Id': value mismatch, expected '2' (System.Int32..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 254
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_NullCustomMessage_NoPrefix [4 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should start with
+"ShouldMatch failed"
+    but was
+"ShouldBeEquivalentTo failed at '$.Id': value mismatch, expected '2' (System.Int32) but found '1' (System.Int32)."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_NullCustomMessage_NoPrefix() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 164
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Options check
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but was expecte..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithOptions_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 372
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_Throws_When_Sequences_Match [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"ShouldNotBeEquivalentTo failed: the actual value matched the expected but was expected to differ."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_Throws_When_Sequences_Match() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 36
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.30]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.31]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.31]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_CustomMessage_Prepended_On_Failure [FAIL]
+[xUnit.net 00:00:00.31]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_AnyOrder_Throws_When_Sequences_Match [FAIL]
+[xUnit.net 00:00:00.32]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_CustomMessage_Prepended_On_Failure [FAIL]
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Scenario check
+
+ShouldBeEquivalentTo failed at '$.Id': value mismatch, expected '2' (System.Int32) b..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 179
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Pre-configured check
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but was ..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 313
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_CustomMessage_Prepended_On_Failure [6 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Items should differ
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but was e..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 282
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_AnyOrder_Throws_When_Sequences_Match [2 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"ShouldNotBeEquivalentTo failed: the actual value matched the expected but was expected to differ."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_AnyOrder_Throws_When_Sequences_Match() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 80
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Array step failed
+
+ShouldBeEquivalentTo failed at '$[0].Id': value mismatch, expected '2' (System.In..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 223
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.32]     AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure [FAIL]
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Scenario check
+
+ShouldBeEquivalentTo failed at '$.Id': value mismatch, expected '2' (System.Int32) b..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithAction_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 179
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Pre-configured check
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but was ..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 313
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_CustomMessage_Prepended_On_Failure [6 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"Items should differ
+
+ShouldNotBeEquivalentTo failed: the actual value matched the expected but was e..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Scalar_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 282
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_AnyOrder_Throws_When_Sequences_Match [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldNotMatch failed"
+    but was actually
+"ShouldNotBeEquivalentTo failed: the actual value matched the expected but was expected to differ."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldNotMatch_Sequence_WithAction_AnyOrder_Throws_When_Sequences_Match() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 80
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Array step failed
+
+ShouldBeEquivalentTo failed at '$[0].Id': value mismatch, expected '2' (System.In..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Sequence_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 223
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure [1 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Verify order
+
+ShouldBeEquivalentTo failed at '$.Id': value mismatch, expected '2' (System.Int32) but..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 195
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Failed!  - Failed:    16, Passed:    33, Skipped:     0, Total:    49, Duration: 113 ms - AllOverIt.Shouldly.Tests.dll (net9.0)
+  Failed AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure [2 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : ex.Message
+    should contain (case insensitive comparison)
+"ShouldMatch failed"
+    but was actually
+"Verify order
+
+ShouldBeEquivalentTo failed at '$.Id': value mismatch, expected '2' (System.Int32) but..."
+  Stack Trace:
+     at AllOverIt.Shouldly.Tests.ShouldMatch_Phase6_NewFeaturesFixture.ShouldMatch_Scalar_WithOptions_CustomMessage_Prepended_On_Failure() in C:\Data\Dev\GitHub\mjfreelancing\AllOverIt\Tests\AllOverIt.Shouldly.Tests\ShouldMatch_Phase6_NewFeaturesFixture.cs:line 195
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Failed!  - Failed:    16, Passed:    33, Skipped:     0, Total:    49, Duration: 127 ms - AllOverIt.Shouldly.Tests.dll (net8.0)

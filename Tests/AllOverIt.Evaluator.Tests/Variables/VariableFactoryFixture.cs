@@ -3,8 +3,9 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
+using AllOverIt.Shouldly.Extensions;
 using FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Variables
 {
@@ -28,7 +29,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var registry = _variableFactory.CreateVariableRegistry();
 
-                registry.Should().BeOfType<VariableRegistry>();
+                registry.ShouldBeOfType<VariableRegistry>();
             }
         }
 
@@ -47,7 +48,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var variable = _variableFactory.CreateMutableVariable(_name, _value);
 
-                variable.Should().BeOfType<MutableVariable>();
+                variable.ShouldBeOfType<MutableVariable>();
             }
 
             [Fact]
@@ -62,7 +63,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = Enumerable.Empty<string>()
                 };
 
-                expected.Should().BeEquivalentTo(variable);
+                expected.ShouldBeEquivalentTo(variable);
             }
         }
 
@@ -81,7 +82,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             {
                 var variable = _variableFactory.CreateConstantVariable(_name, _value);
 
-                variable.Should().BeOfType<ConstantVariable>();
+                variable.ShouldBeOfType<ConstantVariable>();
             }
 
             [Fact]
@@ -96,7 +97,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = Enumerable.Empty<string>()
                 };
 
-                expected.Should().BeEquivalentTo(variable);
+                expected.ShouldBeEquivalentTo(variable);
             }
         }
 
@@ -122,7 +123,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = Enumerable.Empty<string>()
                 };
 
-                expected.Should().BeEquivalentTo(variable);
+                expected.ShouldBeEquivalentTo(variable);
             }
         }
 
@@ -156,7 +157,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = Enumerable.Empty<string>()
                 };
 
-                expected.Should().BeEquivalentTo(variable);
+                expected.ShouldBeEquivalentTo(variable);
             }
         }
 
@@ -182,7 +183,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = Enumerable.Empty<string>()
                 };
 
-                expected.Should().BeEquivalentTo(variable);
+                expected.ShouldBeEquivalentTo(variable);
             }
         }
 
@@ -216,7 +217,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = Enumerable.Empty<string>()
                 };
 
-                expected.Should().BeEquivalentTo(variable);
+                expected.ShouldBeEquivalentTo(variable);
             }
         }
 
@@ -252,13 +253,13 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Return_Delegate_Variable()
             {
-                _variable.Should().BeOfType<DelegateVariable>();
+                _variable.ShouldBeOfType<DelegateVariable>();
             }
 
             [Fact]
             public void Should_Have_Name()
             {
-                _variable.Name.Should().Be(_name);
+                _variable.Name.ShouldBe(_name);
             }
 
             [Fact]
@@ -267,7 +268,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 var expected = _values.Sum();
                 var actual = _variable.Value;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -312,7 +313,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 }
 
                 _registryFake
-                  .CallsTo(fake => ((IEnumerable<KeyValuePair<string, IVariable>>) fake).GetEnumerator())
+                  .CallsTo(fake => ((IEnumerable<KeyValuePair<string, IVariable>>)fake).GetEnumerator())
                   .Returns(variableDictionary.GetEnumerator());
 
                 _variable = _variableFactory.CreateAggregateVariable(_name, _registryFake.FakedObject);
@@ -329,22 +330,20 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_VariableRegistry_Null()
             {
-                Invoking(() => _variableFactory.CreateAggregateVariable(Create<string>(), null, new[] { "" }))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _variableFactory.CreateAggregateVariable(Create<string>(), null, new[] { "" }))
                     .WithNamedMessageWhenNull("variableRegistry");
             }
 
             [Fact]
             public void Should_Return_Delegate_Variable()
             {
-                _variable.Should().BeOfType<DelegateVariable>();
+                _variable.ShouldBeOfType<DelegateVariable>();
             }
 
             [Fact]
             public void Should_Have_Name()
             {
-                _variable.Name.Should().Be(_name);
+                _variable.Name.ShouldBe(_name);
             }
 
             [Fact]
@@ -353,7 +352,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                 var expected = _values.Sum();
                 var actual = _variable.Value;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -368,7 +367,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var actual = _variable.Value;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }

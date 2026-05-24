@@ -346,3 +346,5 @@ namespace AllOverIt.Logging.Testing.Tests.Extensions
         }
     }
 }
+
+

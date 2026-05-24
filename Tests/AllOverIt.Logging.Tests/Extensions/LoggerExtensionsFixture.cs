@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Logging.Extensions;
 using AllOverIt.Logging.Testing;
@@ -360,3 +360,5 @@ namespace AllOverIt.Logging.Tests.Extensions
         }
     }
 }
+
+

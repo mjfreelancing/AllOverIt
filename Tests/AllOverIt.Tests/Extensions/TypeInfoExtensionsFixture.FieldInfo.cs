@@ -1,5 +1,7 @@
 ﻿using AllOverIt.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly;
+using AllOverIt.Shouldly.Extensions;
+using System.Linq;
 using System.Reflection;
 
 namespace AllOverIt.Tests.Extensions
@@ -27,7 +29,8 @@ namespace AllOverIt.Tests.Extensions
             {
                 var typeInfo = typeof(FieldSuperClass).GetTypeInfo();
 
-                var actual = TypeInfoExtensions.GetFieldInfo(typeInfo, false);
+                var actual = TypeInfoExtensions.GetFieldInfo(typeInfo, false)
+                    .Select(item => new { item.Name, item.FieldType });
 
                 var expected = new[]
                 {
@@ -38,7 +41,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Field5", FieldType = typeof(double)}
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -46,7 +49,8 @@ namespace AllOverIt.Tests.Extensions
             {
                 var typeInfo = typeof(FieldBaseClass).GetTypeInfo();
 
-                var actual = TypeInfoExtensions.GetFieldInfo(typeInfo, false);
+                var actual = TypeInfoExtensions.GetFieldInfo(typeInfo, false)
+                    .Select(item => new { item.Name, item.FieldType });
 
                 var expected = new[]
                 {
@@ -55,7 +59,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Field5", FieldType = typeof(double)}
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -63,7 +67,8 @@ namespace AllOverIt.Tests.Extensions
             {
                 var typeInfo = typeof(FieldSuperClass).GetTypeInfo();
 
-                var actual = TypeInfoExtensions.GetFieldInfo(typeInfo, true);
+                var actual = TypeInfoExtensions.GetFieldInfo(typeInfo, true)
+                    .Select(item => new { item.Name, item.FieldType });
 
                 var expected = new[]
                 {
@@ -71,7 +76,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Field4", FieldType = typeof(long)}
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
         }
 
@@ -83,11 +88,11 @@ namespace AllOverIt.Tests.Extensions
                 var typeInfo = typeof(FieldSuperClass).GetTypeInfo();
 
                 // cast is required for BeEquivalentTo()
-                var actual = (object) TypeInfoExtensions.GetFieldInfo(typeInfo, "Field4");
+                var actual = TypeInfoExtensions.GetFieldInfo(typeInfo, "Field4");
 
                 var expected = new { Name = "Field4", FieldType = typeof(long) };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.FieldType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -95,11 +100,11 @@ namespace AllOverIt.Tests.Extensions
             {
                 var typeInfo = typeof(FieldBaseClass).GetTypeInfo();
 
-                var actual = (object) TypeInfoExtensions.GetFieldInfo(typeInfo, "Field1");
+                var actual = TypeInfoExtensions.GetFieldInfo(typeInfo, "Field1");
 
                 var expected = new { Name = "Field1", FieldType = typeof(int) };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.FieldType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -109,8 +114,13 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = (object) TypeInfoExtensions.GetFieldInfo(typeInfo, "PropXYZ");
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
         }
     }
 }
+
+
+
+
+

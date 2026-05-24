@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Cryptography.AES;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.Tests.AES
@@ -14,7 +15,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             {
                 var actual = AesUtils.GetLegalKeySizes();
 
-                actual.Should().BeEquivalentTo(new[]
+                actual.ShouldBeEquivalentTo(new[]
                 {
                     new KeySizes(128, 256, 64)
                 });
@@ -34,7 +35,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             {
                 var actual = AesUtils.IsKeySizeValid(keySize);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -48,7 +49,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             {
                 var actual = AesUtils.GenerateKey(keySize);
 
-                actual.Length.Should().Be(keySize / 8);
+                actual.Length.ShouldBe(keySize / 8);
             }
 
             [Fact]
@@ -57,7 +58,7 @@ namespace AllOverIt.Cryptography.Tests.AES
                 var actual1 = AesUtils.GenerateKey(256);
                 var actual2 = AesUtils.GenerateKey(256);
 
-                actual1.Should().NotBeEquivalentTo(actual2);
+                actual1.ShouldNotBe(actual2);
             }
         }
 
@@ -68,7 +69,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             {
                 var actual = AesUtils.GenerateIV();
 
-                actual.Length.Should().Be(16);
+                actual.Length.ShouldBe(16);
             }
 
             [Fact]
@@ -77,7 +78,7 @@ namespace AllOverIt.Cryptography.Tests.AES
                 var actual1 = AesUtils.GenerateIV();
                 var actual2 = AesUtils.GenerateIV();
 
-                actual1.Should().NotBeEquivalentTo(actual2);
+                actual1.ShouldNotBe(actual2);
             }
         }
     }

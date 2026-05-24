@@ -1,6 +1,5 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Validation.Validators;
-using FluentAssertions;
 
 namespace AllOverIt.Validation.Tests.Validators
 {
@@ -14,11 +13,16 @@ namespace AllOverIt.Validation.Tests.Validators
             var typeName = typeof(LessThanOrEqualToContextValidator<,,>).Name;
             var tickIndex = typeName.IndexOf("`", StringComparison.Ordinal);
 
-            tickIndex.Should().BeGreaterThan(-1);
+            tickIndex.ShouldBeGreaterThan(-1);
 
             validator.Name
-                .Should()
-                .Be(typeName[..tickIndex]);
+                 .ShouldBe(typeName[..tickIndex]);
         }
     }
 }
+
+
+
+
+
+

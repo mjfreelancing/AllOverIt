@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serilog.Extensions;
 using AllOverIt.Serilog.Sinks.Observable;
@@ -47,7 +47,7 @@ namespace AllOverIt.Serilog.Tests.Extensions
 
                 var actual1 = provider.GetRequiredService<IObservableSink>();
 
-                actual1.Should().BeOfType<ObservableSink>();
+                actual1.ShouldBeOfType<ObservableSink>();
 
                 var actual2 = provider.GetRequiredService<IObservableSink>();
 
@@ -65,7 +65,7 @@ namespace AllOverIt.Serilog.Tests.Extensions
 
                 var actual1 = provider.GetRequiredService<IObservableSink>();
 
-                actual1.Should().BeOfType<ObservableSink>();
+                actual1.ShouldBeOfType<ObservableSink>();
 
                 var actual2 = provider.GetRequiredService<IObservableSink>();
 

@@ -1,6 +1,6 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Extensions
@@ -35,7 +35,7 @@ namespace AllOverIt.Tests.Extensions
         {
             var actual = GetValue(() => 4);
 
-            actual.Should().Be(4);
+            actual.ShouldBe(4);
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace AllOverIt.Tests.Extensions
 
             var actual = GetValue(() => expected.Property);
 
-            actual.Should().Be(expected.Property);
+            actual.ShouldBe(expected.Property);
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace AllOverIt.Tests.Extensions
 
             var actual = GetValue(() => expected.Field);
 
-            actual.Should().Be(expected.Field);
+            actual.ShouldBe(expected.Field);
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace AllOverIt.Tests.Extensions
 
             var actual = GetValue(() => expected.GetPropertyValue());
 
-            actual.Should().Be(expected.Property);
+            actual.ShouldBe(expected.Property);
         }
 
         [Fact]
@@ -80,13 +80,13 @@ namespace AllOverIt.Tests.Extensions
               .Select(exp => exp.GetValue())
               .AsReadOnlyList();
 
-            members[0].Should().Be(parent);
-            members[1].Should().Be(parent.Child);
-            members[2].Should().Be(parent.Child.Property);
+            members[0].ShouldBe(parent);
+            members[1].ShouldBe(parent.Child);
+            members[2].ShouldBe(parent.Child.Property);
 
             var value = expression.GetValue();
 
-            value.Should().Be(parent.Child.Property);
+            value.ShouldBe(parent.Child.Property);
         }
 
         [Fact]
@@ -101,8 +101,8 @@ namespace AllOverIt.Tests.Extensions
             var name = memberInfo.Name;
             var value = memberInfo.GetValue(parent.Child);
 
-            name.Should().Be(nameof(ChildClass.Property));
-            value.Should().Be(parent.Child.Property);
+            name.ShouldBe(nameof(ChildClass.Property));
+            value.ShouldBe(parent.Child.Property);
         }
 
         [Fact]
@@ -117,8 +117,8 @@ namespace AllOverIt.Tests.Extensions
             var name = memberInfo.Name;
             var value = memberInfo.GetValue(parent.Child);
 
-            name.Should().Be(nameof(ChildClass.Field));
-            value.Should().Be(parent.Child.Field);
+            name.ShouldBe(nameof(ChildClass.Field));
+            value.ShouldBe(parent.Child.Field);
         }
 
         private static int GetValue(Expression<Func<int>> expression)
@@ -129,3 +129,10 @@ namespace AllOverIt.Tests.Extensions
         }
     }
 }
+
+
+
+
+
+
+

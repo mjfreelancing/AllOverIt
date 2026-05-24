@@ -2,8 +2,7 @@
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Tests.Patterns.Specification.Extensions
 {
     public class EnumerableExtensionsFixture : FixtureBase
@@ -26,7 +25,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
 
                     var actual = Enumerable.Range(1, 10).Where(_isEven);
 
-                    expected.Should().BeEquivalentTo(actual);
+                    expected.ShouldBeEquivalentTo(actual);
                 }
             }
 
@@ -39,7 +38,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
                 {
                     var actual = values.Any(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -52,7 +51,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
                 {
                     var actual = values.All(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -65,7 +64,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
                 {
                     var actual = values.Count(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -78,7 +77,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
                 {
                     var actual = values.First(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -91,7 +90,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
                 {
                     var actual = values.FirstOrDefault(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -104,7 +103,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
                 {
                     var actual = values.Last(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -117,7 +116,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
                 {
                     var actual = values.LastOrDefault(_isEven);
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
 
@@ -133,7 +132,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
 
                     var expected = new[] { 5, 6, 7, 8, 9, 10 };
 
-                    expected.Should().BeEquivalentTo(actual);
+                    expected.ShouldBeEquivalentTo(actual);
                 }
             }
 
@@ -149,9 +148,11 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
 
                     var expected = new[] { 1, 2, 3, 4 };
 
-                    expected.Should().BeEquivalentTo(actual);
+                    expected.ShouldBeEquivalentTo(actual);
                 }
             }
         }
     }
 }
+
+

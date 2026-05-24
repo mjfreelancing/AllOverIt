@@ -1,7 +1,6 @@
-﻿using AllOverIt.Aspects;
+using AllOverIt.Aspects;
 using AllOverIt.Assertion;
 using AllOverIt.Fixture;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -197,18 +196,18 @@ namespace AllOverIt.Tests.Aspects
             proxy.SetValue();
 
             // The real service should be called
-            service.SetValueCalled.Should().BeTrue();
+            service.SetValueCalled.ShouldBeTrue();
 
             // But the method interceptor should not be called
-            handler.BeforeHandlerCalled.Should().BeFalse();
-            handler.AfterHandlerCalled.Should().BeFalse();
+            handler.BeforeHandlerCalled.ShouldBeFalse();
+            handler.AfterHandlerCalled.ShouldBeFalse();
 
             _ = proxy.GetValue();
 
             // The real service and the method interceptor should be called
-            service.GetValueCalled.Should().BeTrue();
-            handler.BeforeHandlerCalled.Should().BeTrue();
-            handler.AfterHandlerCalled.Should().BeTrue();
+            service.GetValueCalled.ShouldBeTrue();
+            handler.BeforeHandlerCalled.ShouldBeTrue();
+            handler.AfterHandlerCalled.ShouldBeTrue();
         }
 
         [Fact]
@@ -225,11 +224,10 @@ namespace AllOverIt.Tests.Aspects
             {
                 proxy.GetValue(true);
             })
-            .Should()
-            .Throw<Exception>()
+            .ShouldThrow<Exception>()
             .WithMessage("GetValue has thrown.");
 
-            handler.Exception.Message.Should().Be("GetValue has thrown.");
+            handler.Exception.Message.ShouldBe("GetValue has thrown.");
         }
 
         [Fact]
@@ -245,18 +243,18 @@ namespace AllOverIt.Tests.Aspects
             await proxy.SetValueAsync();
 
             // The real service should be called
-            service.SetValueAsyncCalled.Should().BeTrue();
+            service.SetValueAsyncCalled.ShouldBeTrue();
 
             // But the method interceptor should not be called
-            handler.BeforeHandlerCalled.Should().BeFalse();
-            handler.AfterHandlerCalled.Should().BeFalse();
+            handler.BeforeHandlerCalled.ShouldBeFalse();
+            handler.AfterHandlerCalled.ShouldBeFalse();
 
             _ = await proxy.GetValueAsync();
 
             // The real service and the method interceptor should be called
-            service.GetValueAsyncCalled.Should().BeTrue();
-            handler.BeforeHandlerCalled.Should().BeTrue();
-            handler.AfterHandlerCalled.Should().BeTrue();
+            service.GetValueAsyncCalled.ShouldBeTrue();
+            handler.BeforeHandlerCalled.ShouldBeTrue();
+            handler.AfterHandlerCalled.ShouldBeTrue();
         }
 
         [Fact]
@@ -273,11 +271,10 @@ namespace AllOverIt.Tests.Aspects
             {
                 await proxy.GetValueAsync(true);
             })
-            .Should()
-            .ThrowAsync<Exception>()
+            .ShouldThrowAsync<Exception>()
             .WithMessage("GetValueAsync has thrown.");
 
-            handler.Exception.Message.Should().Be("GetValueAsync has thrown.");
+            handler.Exception.Message.ShouldBe("GetValueAsync has thrown.");
         }
 
         [Fact]
@@ -293,18 +290,18 @@ namespace AllOverIt.Tests.Aspects
             _ = proxy.GetValue();
 
             // The real service should be called
-            service.GetValueCalled.Should().BeTrue();
+            service.GetValueCalled.ShouldBeTrue();
 
             // But the method interceptor should not be called
-            handler.BeforeHandlerCalled.Should().BeFalse();
-            handler.AfterHandlerCalled.Should().BeFalse();
+            handler.BeforeHandlerCalled.ShouldBeFalse();
+            handler.AfterHandlerCalled.ShouldBeFalse();
 
             proxy.SetValue();
 
             // The real service and the method interceptor should be called
-            service.SetValueCalled.Should().BeTrue();
-            handler.BeforeHandlerCalled.Should().BeTrue();
-            handler.AfterHandlerCalled.Should().BeTrue();
+            service.SetValueCalled.ShouldBeTrue();
+            handler.BeforeHandlerCalled.ShouldBeTrue();
+            handler.AfterHandlerCalled.ShouldBeTrue();
         }
 
         [Fact]
@@ -321,11 +318,10 @@ namespace AllOverIt.Tests.Aspects
             {
                 proxy.SetValue(true);
             })
-            .Should()
-            .Throw<Exception>()
+            .ShouldThrow<Exception>()
             .WithMessage("SetValue has thrown.");
 
-            handler.Exception.Message.Should().Be("SetValue has thrown.");
+            handler.Exception.Message.ShouldBe("SetValue has thrown.");
         }
 
         [Fact]
@@ -341,18 +337,18 @@ namespace AllOverIt.Tests.Aspects
             _ = await proxy.GetValueAsync();
 
             // The real service should be called
-            service.GetValueAsyncCalled.Should().BeTrue();
+            service.GetValueAsyncCalled.ShouldBeTrue();
 
             // But the method interceptor should not be called
-            handler.BeforeHandlerCalled.Should().BeFalse();
-            handler.AfterHandlerCalled.Should().BeFalse();
+            handler.BeforeHandlerCalled.ShouldBeFalse();
+            handler.AfterHandlerCalled.ShouldBeFalse();
 
             await proxy.SetValueAsync();
 
             // The real service and the method interceptor should be called
-            service.SetValueAsyncCalled.Should().BeTrue();
-            handler.BeforeHandlerCalled.Should().BeTrue();
-            handler.AfterHandlerCalled.Should().BeTrue();
+            service.SetValueAsyncCalled.ShouldBeTrue();
+            handler.BeforeHandlerCalled.ShouldBeTrue();
+            handler.AfterHandlerCalled.ShouldBeTrue();
         }
 
         [Fact]
@@ -369,11 +365,10 @@ namespace AllOverIt.Tests.Aspects
             {
                 await proxy.SetValueAsync(true);
             })
-            .Should()
-            .ThrowAsync<Exception>()
+            .ShouldThrowAsync<Exception>()
             .WithMessage("SetValueAsync has thrown.");
 
-            handler.Exception.Message.Should().Be("SetValueAsync has thrown.");
+            handler.Exception.Message.ShouldBe("SetValueAsync has thrown.");
         }
 
         private static (DummyService, IDummyService, MethodInterceptor<IDummyService>) CreateMethodInterceptor(Action<IServiceProvider, MethodInterceptor<IDummyService>> configure)
@@ -391,3 +386,6 @@ namespace AllOverIt.Tests.Aspects
         }
     }
 }
+
+
+

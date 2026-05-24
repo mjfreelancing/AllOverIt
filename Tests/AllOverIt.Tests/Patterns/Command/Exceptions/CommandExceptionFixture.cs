@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Patterns.Command.Exceptions;
 
 namespace AllOverIt.Tests.Patterns.Command.Exceptions
@@ -24,3 +24,5 @@ namespace AllOverIt.Tests.Patterns.Command.Exceptions
         }
     }
 }
+
+

@@ -3,10 +3,10 @@ using AllOverIt.Evaluator.Tests.Operations.Dummies;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
+using AllOverIt.Shouldly.Extensions;
 using FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 using System.Linq.Expressions;
-
 namespace AllOverIt.Evaluator.Tests.Operations
 {
     public class ArithmeticOperationBaseFixture : FixtureBase
@@ -18,10 +18,10 @@ namespace AllOverIt.Evaluator.Tests.Operations
             [Fact]
             public void Should_Throw_When_Creator_Null()
             {
-                Invoking(
-                        () => _operation = new DummyArithmeticOperation(Create<int>(), null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() =>
+                        {
+                            _operation = new DummyArithmeticOperation(Create<int>(), null);
+                        })
                     .WithNamedMessageWhenNull("creator");
             }
 
@@ -37,10 +37,10 @@ namespace AllOverIt.Evaluator.Tests.Operations
                 var expected = new
                 {
                     ArgumentCount = argumentCount,
-                    Creator = (Func<Expression[], IOperator>) Creator
+                    Creator = (Func<Expression[], IOperator>)Creator
                 };
 
-                expected.Should().BeEquivalentTo(_operation);
+                expected.ShouldBeEquivalentTo(_operation);
             }
         }
 
@@ -66,10 +66,9 @@ namespace AllOverIt.Evaluator.Tests.Operations
                 _operation = new DummyArithmeticOperation(Create<int>(), creator);
 
                 var result = _operation.GetExpression(new[] { expressionIn });
-                object[] expected = { expressionIn };
 
-                expressionsIn.Should().BeEquivalentTo(expected);
-                result.Should().BeEquivalentTo(expressionOut);
+                expressionsIn.ShouldBe(new[] { expressionIn });
+                result.ShouldBeSameAs(expressionOut);
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Cryptography.AES;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.Tests.AES
@@ -12,24 +12,20 @@ namespace AllOverIt.Cryptography.Tests.AES
             [Fact]
             public void Should_Throw_When_Key_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new AesEncryptor(null, AesUtils.GenerateIV());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("key");
             }
 
             [Fact]
             public void Should_Throw_When_IV_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new AesEncryptor(AesUtils.GenerateKey(256), null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("iv");
             }
         }
@@ -39,12 +35,10 @@ namespace AllOverIt.Cryptography.Tests.AES
             [Fact]
             public void Should_Throw_When_Configuration_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new AesEncryptor((IAesEncryptorConfiguration) null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("configuration");
             }
         }
@@ -86,7 +80,7 @@ namespace AllOverIt.Cryptography.Tests.AES
 
                 var actual = encryptor.GetCipherTextLength(plainTextLength);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -95,14 +89,12 @@ namespace AllOverIt.Cryptography.Tests.AES
             [Fact]
             public void Should_Throw_When_PlainText_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     var encryptor = new AesEncryptor();
 
                     _ = encryptor.Encrypt(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("plainText");
             }
         }
@@ -112,14 +104,12 @@ namespace AllOverIt.Cryptography.Tests.AES
             [Fact]
             public void Should_Throw_When_PlainText_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     var encryptor = new AesEncryptor();
 
                     _ = encryptor.Decrypt(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("cipherText");
             }
         }
@@ -129,28 +119,24 @@ namespace AllOverIt.Cryptography.Tests.AES
             [Fact]
             public void Should_Throw_When_PlainText_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     var encryptor = new AesEncryptor();
 
                     encryptor.Encrypt(null, Stream.Null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("plainTextStream");
             }
 
             [Fact]
             public void Should_Throw_When_CipherText_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     var encryptor = new AesEncryptor();
 
                     encryptor.Encrypt(Stream.Null, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("cipherTextStream");
             }
         }
@@ -160,28 +146,24 @@ namespace AllOverIt.Cryptography.Tests.AES
             [Fact]
             public void Should_Throw_When_PlainText_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     var encryptor = new AesEncryptor();
 
                     encryptor.Decrypt(Stream.Null, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("plainTextStream");
             }
 
             [Fact]
             public void Should_Throw_When_CipherText_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     var encryptor = new AesEncryptor();
 
                     encryptor.Decrypt(null, Stream.Null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("cipherTextStream");
             }
         }
@@ -199,7 +181,7 @@ namespace AllOverIt.Cryptography.Tests.AES
                 var decryptor = new AesEncryptor(encryptor.Configuration.Key, encryptor.Configuration.IV);
                 var actual = decryptor.Decrypt(cipherText);
 
-                actual.Should().BeEquivalentTo(plainText);
+                actual.ShouldBe(plainText);
             }
 
             [Fact]
@@ -215,7 +197,7 @@ namespace AllOverIt.Cryptography.Tests.AES
                 var decryptor = new AesEncryptor(configuration);
                 var actual = decryptor.Decrypt(cipherText);
 
-                actual.Should().BeEquivalentTo(plainText);
+                actual.ShouldBe(plainText);
             }
         }
 
@@ -242,7 +224,7 @@ namespace AllOverIt.Cryptography.Tests.AES
 
                             var actual = actualStream.ToArray();
 
-                            actual.Should().BeEquivalentTo(plainText);
+                            actual.ShouldBe(plainText);
                         }
                     }
                 }
@@ -271,7 +253,7 @@ namespace AllOverIt.Cryptography.Tests.AES
 
                             var actual = actualStream.ToArray();
 
-                            actual.Should().BeEquivalentTo(plainText);
+                            actual.ShouldBe(plainText);
                         }
                     }
                 }

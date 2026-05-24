@@ -1,9 +1,8 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Reflection.Exceptions;
-using FluentAssertions;
 using System.Reflection;
 
 namespace AllOverIt.Tests.Reflection
@@ -40,8 +39,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = FieldHelper.CreateFieldGetter(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("fieldInfo");
             }
 
@@ -58,7 +56,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(expected);
 
-                actual.Should().Be(expected.Field1);
+                actual.ShouldBe(expected.Field1);
             }
 
             [Fact]
@@ -73,7 +71,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(model);
 
-                actual.Should().Be(field2);
+                actual.ShouldBe(field2);
             }
         }
 
@@ -86,8 +84,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = FieldHelper.CreateFieldGetter<DummyClass>((FieldInfo) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("fieldInfo");
             }
 
@@ -104,7 +101,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(expected);
 
-                actual.Should().Be(expected.Field1);
+                actual.ShouldBe(expected.Field1);
             }
 
             [Fact]
@@ -120,7 +117,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(expected);
 
-                actual.Should().Be(expected.Field1);
+                actual.ShouldBe(expected.Field1);
             }
 
             [Fact]
@@ -135,7 +132,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(model);
 
-                actual.Should().Be(field2);
+                actual.ShouldBe(field2);
             }
         }
 
@@ -148,8 +145,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = FieldHelper.CreateFieldGetter<DummyClass>((string) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("fieldName");
             }
 
@@ -165,7 +161,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(expected);
 
-                actual.Should().Be(expected.Field1);
+                actual.ShouldBe(expected.Field1);
             }
 
             [Fact]
@@ -180,7 +176,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(expected);
 
-                actual.Should().Be(expected.Field1);
+                actual.ShouldBe(expected.Field1);
             }
 
             [Fact]
@@ -192,10 +188,13 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = FieldHelper.CreateFieldGetter<DummyClass>(fieldName);
                 })
-                   .Should()
-                   .Throw<ReflectionException>()
+                   .ShouldThrow<ReflectionException>()
                    .WithMessage($"The field {fieldName} on type {typeof(DummyClass).GetFriendlyName()} does not exist.");
             }
         }
     }
 }
+
+
+
+

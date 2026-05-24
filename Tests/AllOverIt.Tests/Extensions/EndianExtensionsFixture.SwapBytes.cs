@@ -1,6 +1,6 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -20,7 +20,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = BitConverter.ToUInt16(reversedBytes.ToArray(), 0);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -38,7 +38,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = BitConverter.ToInt16(reversedBytes.ToArray(), 0);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -56,7 +56,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = BitConverter.ToUInt32(reversedBytes.ToArray(), 0);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -74,7 +74,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = BitConverter.ToInt32(reversedBytes.ToArray(), 0);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -92,7 +92,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = BitConverter.ToUInt64(reversedBytes.ToArray(), 0);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -110,7 +110,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = BitConverter.ToInt64(reversedBytes.ToArray(), 0);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -128,7 +128,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = BitConverter.ToSingle(reversedBytes.ToArray(), 0);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -146,7 +146,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = BitConverter.ToDouble(reversedBytes.ToArray(), 0);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -183,19 +183,25 @@ namespace AllOverIt.Tests.Extensions
                 // flags = bits[3];     // this is validated
 
                 // Byte order would be preserved, but each element will have its bytes reversed
-                actualInts[0].Should().Be(valueInts[0].SwapBytes());
-                actualInts[1].Should().Be(valueInts[1].SwapBytes());
-                actualInts[2].Should().Be(valueInts[2].SwapBytes());
-                actualInts[3].Should().Be(valueInts[3].SwapBytes());
+                actualInts[0].ShouldBe(valueInts[0].SwapBytes());
+                actualInts[1].ShouldBe(valueInts[1].SwapBytes());
+                actualInts[2].ShouldBe(valueInts[2].SwapBytes());
+                actualInts[3].ShouldBe(valueInts[3].SwapBytes());
 
                 // also sanity check the reversal
                 var sanityCheck = BitConverter.IsLittleEndian
                     ? actual.SwapBytes()
                     : actual;
 
-                sanityCheck.Should().Be(value);
-                $"{value}".Should().NotBe($"{actual}");
+                sanityCheck.ShouldBe(value);
+                $"{value}".ShouldNotBe($"{actual}");
             }
         }
     }
 }
+
+
+
+
+
+

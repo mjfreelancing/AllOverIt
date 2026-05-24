@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Collections;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 using System.Collections;
 
 namespace AllOverIt.Tests.Collections
@@ -23,7 +23,7 @@ namespace AllOverIt.Tests.Collections
             public void Should_Be_Empty()
             {
                 var actual = new ReadOnlyCollection<int>();
-                actual.Should().BeEmpty();
+                actual.ShouldBeEmpty();
             }
         }
 
@@ -32,7 +32,7 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Return_Count()
             {
-                _collection.Count.Should().Be(_data.Count);
+                _collection.Count.ShouldBe(_data.Count);
             }
         }
 
@@ -49,7 +49,7 @@ namespace AllOverIt.Tests.Collections
                     results.Add(enumerator.Current);
                 }
 
-                results.Should().BeEquivalentTo(_data);
+                results.ShouldBeEquivalentTo(_data);
             }
 
             [Fact]
@@ -63,14 +63,21 @@ namespace AllOverIt.Tests.Collections
                     results.Add((int) enumerator.Current);
                 }
 
-                results.Should().BeEquivalentTo(_data);
+                results.ShouldBeEquivalentTo(_data);
             }
         }
 
         [Fact]
         public void Should_Be_Immutable()
         {
-            _collection.Should().NotBeAssignableTo<ICollection<int>>();
+            _collection.ShouldNotBeAssignableTo<ICollection<int>>();
         }
     }
 }
+
+
+
+
+
+
+

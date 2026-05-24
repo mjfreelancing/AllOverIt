@@ -1,7 +1,6 @@
-﻿using AllOverIt.CommandLine;
+using AllOverIt.CommandLine;
 using AllOverIt.Fixture;
 using AllOverIt.Tests.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.CommandLine
 {
@@ -31,8 +30,11 @@ namespace AllOverIt.Tests.CommandLine
             {
                 var actual = Argument.Escape(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }
 }
+
+
+

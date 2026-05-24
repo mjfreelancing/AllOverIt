@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -18,8 +18,7 @@ namespace AllOverIt.Tests.Extensions
 
                     ExceptionExtensions.Walk(exception, ex => { });
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
 
             [Fact]
@@ -31,8 +30,7 @@ namespace AllOverIt.Tests.Extensions
 
                     ExceptionExtensions.Walk(exception, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("onException");
             }
 
@@ -46,7 +44,7 @@ namespace AllOverIt.Tests.Extensions
 
                 ExceptionExtensions.Walk(exception, handler, 0);
 
-                messages.Should().BeEquivalentTo(new[] { "0" });
+                messages.ShouldBeEquivalentTo(new[] { "0" });
             }
 
             [Fact]
@@ -61,7 +59,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = Enumerable.Range(0, 11).Select(item => $"{item}");
 
-                messages.Should().BeEquivalentTo(expected);
+                messages.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -77,7 +75,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = Enumerable.Range(0, maxDepth + 1).Select(item => $"{item}");
 
-                messages.Should().BeEquivalentTo(expected);
+                messages.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -121,7 +119,7 @@ namespace AllOverIt.Tests.Extensions
                     "3"
                 };
 
-                messages.Should().BeEquivalentTo(expected);
+                messages.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -161,7 +159,7 @@ namespace AllOverIt.Tests.Extensions
                     "1"
                 };
 
-                messages.Should().BeEquivalentTo(expected);
+                messages.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -185,3 +183,12 @@ namespace AllOverIt.Tests.Extensions
         }
     }
 }
+
+
+
+
+
+
+
+
+

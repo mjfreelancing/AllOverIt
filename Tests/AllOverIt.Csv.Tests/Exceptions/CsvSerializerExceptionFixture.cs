@@ -1,4 +1,4 @@
-﻿using AllOverIt.Csv.Exceptions;
+using AllOverIt.Csv.Exceptions;
 using AllOverIt.Fixture;
 
 namespace AllOverIt.Csv.Tests.Exceptions
@@ -24,3 +24,5 @@ namespace AllOverIt.Csv.Tests.Exceptions
         }
     }
 }
+
+

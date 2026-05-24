@@ -1,6 +1,5 @@
-﻿using AllOverIt.Aspects;
+using AllOverIt.Aspects;
 using AllOverIt.Fixture;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -109,8 +108,7 @@ namespace AllOverIt.Tests.Aspects
                 {
                     _ = CreateDummyInterceptor<DummyInterceptor1>((Action<DummyInterceptor1>) null);
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
 
             [Fact]
@@ -123,7 +121,7 @@ namespace AllOverIt.Tests.Aspects
                     actual = true;
                 });
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -136,7 +134,7 @@ namespace AllOverIt.Tests.Aspects
                     actual = interceptor;
                 });
 
-                actual.Should().BeSameAs(actualInterceptor);
+                actual.ShouldBeSameAs(actualInterceptor);
             }
 
             [Fact]
@@ -146,7 +144,7 @@ namespace AllOverIt.Tests.Aspects
                 {
                 });
 
-                actualInterceptor._serviceInstance.Should().BeOfType<DummyService>();
+                actualInterceptor._serviceInstance.ShouldBeOfType<DummyService>();
             }
         }
 
@@ -171,7 +169,7 @@ namespace AllOverIt.Tests.Aspects
                     actual = provider;
                 });
 
-                actual.Should().BeSameAs(serviceProvider);
+                actual.ShouldBeSameAs(serviceProvider);
             }
 
             [Fact]
@@ -181,8 +179,7 @@ namespace AllOverIt.Tests.Aspects
                 {
                     _ = CreateDummyInterceptor<DummyInterceptor1>(null, (Action<IServiceProvider, DummyInterceptor1>) null);
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
 
             [Fact]
@@ -195,7 +192,7 @@ namespace AllOverIt.Tests.Aspects
                     actual = true;
                 });
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -208,7 +205,7 @@ namespace AllOverIt.Tests.Aspects
                     actual = interceptor;
                 });
 
-                actual.Should().BeSameAs(actualInterceptor);
+                actual.ShouldBeSameAs(actualInterceptor);
             }
 
 
@@ -219,7 +216,7 @@ namespace AllOverIt.Tests.Aspects
                 {
                 });
 
-                actualInterceptor._serviceInstance.Should().BeOfType<DummyService>();
+                actualInterceptor._serviceInstance.ShouldBeOfType<DummyService>();
             }
         }
 
@@ -248,3 +245,6 @@ namespace AllOverIt.Tests.Aspects
         }
     }
 }
+
+
+

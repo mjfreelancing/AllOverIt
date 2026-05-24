@@ -1,5 +1,5 @@
-﻿using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Fixture;
+using Shouldly;
 
 namespace AllOverIt.Reactive.Tests
 {
@@ -132,7 +132,7 @@ namespace AllOverIt.Reactive.Tests
                 _model.Age = Create<int>();
                 _model.PropertyDummy = Create<PropertyDummy>();
 
-                propertiesRaised.Should().BeEquivalentTo(new[]
+                propertiesRaised.ShouldBe(new[]
                 {
                     nameof(ModelDummy.FirstName),
                     nameof(ModelDummy.FullName),
@@ -141,10 +141,10 @@ namespace AllOverIt.Reactive.Tests
                     nameof(ModelDummy.PropertyDummy)
                 });
 
-                _model.FirstNameWasChanged.Should().BeTrue();
-                _model.LastNameWasChanged.Should().BeTrue();
-                _model.AgeWasChanged.Should().BeTrue();
-                _model.PropertyDummyWasChanged.Should().BeTrue();
+                _model.FirstNameWasChanged.ShouldBeTrue();
+                _model.LastNameWasChanged.ShouldBeTrue();
+                _model.AgeWasChanged.ShouldBeTrue();
+                _model.PropertyDummyWasChanged.ShouldBeTrue();
             }
 
             [Fact]
@@ -162,7 +162,7 @@ namespace AllOverIt.Reactive.Tests
                 _model.Age = Create<int>();
                 _model.PropertyDummy = Create<PropertyDummy>();
 
-                propertiesRaised.Should().BeEquivalentTo(new[]
+                propertiesRaised.ShouldBe(new[]
                 {
                     nameof(ModelDummy.FirstName),
                     nameof(ModelDummy.FullName),
@@ -171,10 +171,10 @@ namespace AllOverIt.Reactive.Tests
                     nameof(ModelDummy.PropertyDummy)
                 });
 
-                _model.FirstNameWasChanged.Should().BeTrue();
-                _model.LastNameWasChanged.Should().BeTrue();
-                _model.AgeWasChanged.Should().BeTrue();
-                _model.PropertyDummyWasChanged.Should().BeTrue();
+                _model.FirstNameWasChanged.ShouldBeTrue();
+                _model.LastNameWasChanged.ShouldBeTrue();
+                _model.AgeWasChanged.ShouldBeTrue();
+                _model.PropertyDummyWasChanged.ShouldBeTrue();
             }
 
             [Fact]
@@ -197,12 +197,12 @@ namespace AllOverIt.Reactive.Tests
                 _model.Age = currentAge;
                 _model.PropertyDummy = currentPropertyDummy;
 
-                raised.Should().BeFalse();
+                raised.ShouldBeFalse();
 
-                _model.FirstNameWasChanged.Should().BeFalse();
-                _model.LastNameWasChanged.Should().BeFalse();
-                _model.AgeWasChanged.Should().BeFalse();
-                _model.AgeWasChanged.Should().BeFalse();
+                _model.FirstNameWasChanged.ShouldBeFalse();
+                _model.LastNameWasChanged.ShouldBeFalse();
+                _model.AgeWasChanged.ShouldBeFalse();
+                _model.AgeWasChanged.ShouldBeFalse();
             }
 
             [Fact]
@@ -225,12 +225,12 @@ namespace AllOverIt.Reactive.Tests
                 _model.Age = currentAge;
                 _model.PropertyDummy = currentPropertyDummy;
 
-                raised.Should().BeFalse();
+                raised.ShouldBeFalse();
 
-                _model.FirstNameWasChanged.Should().BeFalse();
-                _model.LastNameWasChanged.Should().BeFalse();
-                _model.AgeWasChanged.Should().BeFalse();
-                _model.AgeWasChanged.Should().BeFalse();
+                _model.FirstNameWasChanged.ShouldBeFalse();
+                _model.LastNameWasChanged.ShouldBeFalse();
+                _model.AgeWasChanged.ShouldBeFalse();
+                _model.AgeWasChanged.ShouldBeFalse();
             }
         }
 
@@ -250,7 +250,7 @@ namespace AllOverIt.Reactive.Tests
 
                 _model.RaisePropertyChangingByName(expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -270,8 +270,10 @@ namespace AllOverIt.Reactive.Tests
 
                 _model.RaisePropertyChangedByName(expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }
 }
+
+

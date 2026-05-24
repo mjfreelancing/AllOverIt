@@ -33,3 +33,5 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
         }
     }
 }
+
+

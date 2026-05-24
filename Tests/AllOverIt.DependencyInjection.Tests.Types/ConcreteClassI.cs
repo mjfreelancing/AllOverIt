@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.DependencyInjection.Tests.Types
+namespace AllOverIt.DependencyInjection.Tests.Types
 {
     public sealed class ConcreteClassI : IBaseInterface3
     {
@@ -10,3 +10,5 @@
         }
     }
 }
+
+

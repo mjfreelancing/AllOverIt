@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.Json.Abstractions.Exceptions;
 using Shouldly;
@@ -232,3 +232,6 @@ namespace AllOverIt.Serialization.Json.Abstractions.Tests
         }
     }
 }
+
+
+

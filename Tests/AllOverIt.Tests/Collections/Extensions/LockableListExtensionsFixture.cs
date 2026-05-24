@@ -3,9 +3,9 @@ using AllOverIt.Collections.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Threading;
-using FluentAssertions;
 using NSubstitute;
 using System.Collections;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Collections.Extensions
 {
@@ -30,8 +30,7 @@ namespace AllOverIt.Tests.Collections.Extensions
                 {
                     LockableListExtensions.Clone((ILockableList<string>) null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("lockableList");
             }
 
@@ -48,7 +47,7 @@ namespace AllOverIt.Tests.Collections.Extensions
             {
                 var actual = _lockableList.Clone();
 
-                actual.Should().BeEquivalentTo(_list, options => options.WithStrictOrdering());
+                actual.ShouldBeEquivalentTo(_list);
             }
         }
 
@@ -122,8 +121,7 @@ namespace AllOverIt.Tests.Collections.Extensions
                 {
                     LockableListExtensions.AddRange((ILockableList<string>) null, []);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("lockableList");
             }
 
@@ -134,8 +132,7 @@ namespace AllOverIt.Tests.Collections.Extensions
                 {
                     LockableListExtensions.AddRange(_lockableList, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("items");
             }
 
@@ -159,8 +156,8 @@ namespace AllOverIt.Tests.Collections.Extensions
 
                 _lockableList.AddRange(list);
 
-                _lockableList.Count.Should().Be(6);
-                _lockableList.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
+                _lockableList.Count.ShouldBe(6);
+                _lockableList.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -185,8 +182,8 @@ namespace AllOverIt.Tests.Collections.Extensions
 
                 lockableList.AddRange(list);
 
-                lockableList.Count.Should().Be(3);
-                lockableList.Should().BeEquivalentTo(list, options => options.WithStrictOrdering());
+                lockableList.Count.ShouldBe(3);
+                lockableList.ShouldBeEquivalentTo(list);
             }
         }
 
@@ -210,3 +207,11 @@ namespace AllOverIt.Tests.Collections.Extensions
         }
     }
 }
+
+
+
+
+
+
+
+

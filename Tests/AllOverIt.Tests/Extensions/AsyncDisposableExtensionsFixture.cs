@@ -3,7 +3,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ResourceInitialization;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -20,8 +20,7 @@ namespace AllOverIt.Tests.Extensions
 
                     _ = AsyncDisposableExtensions.DisposeWith(disposable1, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("disposables");
             }
 
@@ -39,7 +38,7 @@ namespace AllOverIt.Tests.Extensions
 
                 await disposables.DisposeAsync();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -51,7 +50,7 @@ namespace AllOverIt.Tests.Extensions
                 // Normally used as: disposable1.DisposeWith(disposables);
                 var actual = AsyncDisposableExtensions.DisposeWith(disposable1, disposables);
 
-                actual.Should().Be(disposable1);
+                actual.ShouldBe(disposable1);
 
                 // cleanup only
                 await disposables.DisposeAsync();
@@ -67,8 +66,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _ = AsyncDisposableExtensions.DisposeAllAsync(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("disposables");
             }
 
@@ -86,8 +84,16 @@ namespace AllOverIt.Tests.Extensions
 
                 await AsyncDisposableExtensions.DisposeAllAsync(disposables);
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
     }
 }
+
+
+
+
+
+
+
+

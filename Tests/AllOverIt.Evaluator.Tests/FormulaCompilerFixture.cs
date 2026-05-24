@@ -2,7 +2,7 @@
 using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests
 {
@@ -28,28 +28,25 @@ namespace AllOverIt.Evaluator.Tests
             [Fact]
             public void Should_Throw_When_Formula_Null()
             {
-                Invoking(() => _formulaCompiler.Compile(null, _variableRegistry))
-                    .Should()
-                    .Throw<FormatException>()
-                    .WithMessage("The formula is empty.");
+                var exception = Should.Throw<FormatException>(() => _formulaCompiler.Compile(null, _variableRegistry));
+
+                exception.Message.ShouldBe("The formula is empty.");
             }
 
             [Fact]
             public void Should_Throw_When_Formula_Empty()
             {
-                Invoking(() => _formulaCompiler.Compile(string.Empty, _variableRegistry))
-                    .Should()
-                    .Throw<FormatException>()
-                    .WithMessage("The formula is empty.");
+                var exception = Should.Throw<FormatException>(() => _formulaCompiler.Compile(string.Empty, _variableRegistry));
+
+                exception.Message.ShouldBe("The formula is empty.");
             }
 
             [Fact]
             public void Should_Throw_When_Formula_Whitespace()
             {
-                Invoking(() => _formulaCompiler.Compile(" ", _variableRegistry))
-                    .Should()
-                    .Throw<FormatException>()
-                    .WithMessage("The formula is empty.");
+                var exception = Should.Throw<FormatException>(() => _formulaCompiler.Compile(" ", _variableRegistry));
+
+                exception.Message.ShouldBe("The formula is empty.");
             }
 
             [Fact]
@@ -57,9 +54,7 @@ namespace AllOverIt.Evaluator.Tests
             {
                 var compilerResult = _formulaCompiler.Compile("1+2", _variableRegistry);
 
-                ReferenceEquals(compilerResult.VariableRegistry, _variableRegistry)
-                    .Should()
-                    .BeTrue();
+                ReferenceEquals(compilerResult.VariableRegistry, _variableRegistry).ShouldBeTrue();
             }
 
             [Fact]
@@ -67,9 +62,7 @@ namespace AllOverIt.Evaluator.Tests
             {
                 var compilerResult = _formulaCompiler.Compile("x+y", null);
 
-                compilerResult.VariableRegistry
-                    .Should()
-                    .NotBeNull();
+                compilerResult.VariableRegistry.ShouldNotBeNull();
             }
 
             [Fact]
@@ -77,41 +70,41 @@ namespace AllOverIt.Evaluator.Tests
             {
                 var compilerResult = _formulaCompiler.Compile("1+2", null);
 
-                compilerResult.VariableRegistry
-                    .Should()
-                    .BeNull();
+                compilerResult.VariableRegistry.ShouldBeNull();
             }
 
             [Fact]
             public void Should_Throw_When_Invalid_Expression_1()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         var formula = "1d-4a";
 
                         _ = _formulaCompiler.Compile(formula, _variableRegistry);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 2, near '1d'.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("'d' is a variable or method that does not follow an operator, or is an unregistered operator.");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 2, near '1d'.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("'d' is a variable or method that does not follow an operator, or is an unregistered operator.");
             }
 
             [Fact]
             public void Should_Throw_When_Invalid_Expression_2()
             {
-                Invoking(() =>
+                var exception = Should.Throw<FormulaException>(() =>
                     {
                         var formula = "1 4 + 2";
 
                         _ = _formulaCompiler.Compile(formula, _variableRegistry);
-                    })
-                    .Should()
-                    .Throw<FormulaException>()
-                    .WithMessage("Invalid expression. See index 3, near '1 4'.")
-                    .WithInnerException<FormulaException>()
-                    .WithMessage("The number '4' did not follow an operator.");
+                    });
+
+                exception.Message.ShouldBe("Invalid expression. See index 3, near '1 4'.");
+
+                var inner = exception.InnerException.ShouldBeOfType<FormulaException>();
+
+                inner.Message.ShouldBe("The number '4' did not follow an operator.");
             }
 
             [Fact]
@@ -125,7 +118,7 @@ namespace AllOverIt.Evaluator.Tests
 
                 var value = compilerResult.Resolver.Invoke();
 
-                value.Should().Be(expected);
+                value.ShouldBe(expected);
             }
         }
     }

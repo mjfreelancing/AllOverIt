@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
-using FluentAssertions;
 using Microsoft.Reactive.Testing;
 using ReactiveUI;
 using System.Reactive.Concurrency;
@@ -22,13 +21,13 @@ namespace AllOverIt.ReactiveUI.Tests
                 {
                     timer.Configure(totalMilliseconds, updateIntervalMilliseconds);
 
-                    timer.TotalMilliseconds.Should().Be(totalMilliseconds);
-                    timer.TotalTimeSpan.Should().BeCloseTo(TimeSpan.FromMilliseconds(totalMilliseconds), TimeSpan.FromMilliseconds(1));
-                    timer.IsRunning.Should().BeFalse();
+                    timer.TotalMilliseconds.ShouldBe(totalMilliseconds);
+                    timer.TotalTimeSpan.TotalMilliseconds.ShouldBe(totalMilliseconds, 1);
+                    timer.IsRunning.ShouldBeFalse();
 
                     // The timer hasn't started yet
-                    timer.RemainingMilliseconds.Should().Be(0);
-                    timer.RemainingTimeSpan.Should().Be(TimeSpan.FromMilliseconds(0));
+                    timer.RemainingMilliseconds.ShouldBe(0);
+                    timer.RemainingTimeSpan.ShouldBe(TimeSpan.FromMilliseconds(0));
                 }
             }
 
@@ -61,7 +60,7 @@ namespace AllOverIt.ReactiveUI.Tests
 
                     scheduler.AdvanceByMilliseconds(totalMilliseconds * 2);
 
-                    scheduled.Should().BeTrue();
+                    scheduled.ShouldBeTrue();
                 }
             }
 
@@ -77,13 +76,11 @@ namespace AllOverIt.ReactiveUI.Tests
 
                     timer.Start();
 
-                    Invoking(() =>
+                    Should.Throw<InvalidOperationException>(() =>
                     {
                         timer.Configure(totalMilliseconds, updateIntervalMilliseconds);
                     })
-                    .Should()
-                    .Throw<InvalidOperationException>()
-                    .WithMessage("The countdown timer period cannot be modified while executing.");
+                    .Message.ShouldBe("The countdown timer period cannot be modified while executing.");
                 }
             }
         }
@@ -93,22 +90,20 @@ namespace AllOverIt.ReactiveUI.Tests
             [Fact]
             public void Should_Throw_When_Not_Configured()
             {
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                 {
                     using (var timer = new CountdownTimer())
                     {
                         timer.Start();
                     }
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
-                .WithMessage($"The {nameof(ICountdownTimer.Configure)}() method must be called first.");
+                .Message.ShouldBe($"The {nameof(ICountdownTimer.Configure)}() method must be called first.");
             }
 
             [Fact]
             public void Should_Throw_When_Already_Running()
             {
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                 {
                     using (var timer = new CountdownTimer())
                     {
@@ -118,9 +113,7 @@ namespace AllOverIt.ReactiveUI.Tests
                         timer.Start();
                     }
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
-                .WithMessage("The countdown timer is already executing.");
+                .Message.ShouldBe("The countdown timer is already executing.");
             }
 
             [Theory]
@@ -135,17 +128,17 @@ namespace AllOverIt.ReactiveUI.Tests
                 {
                     timer.Configure(totalMilliseconds, updateIntervalMilliseconds);
 
-                    timer.TotalMilliseconds.Should().Be(totalMilliseconds);
-                    timer.TotalTimeSpan.Should().BeCloseTo(TimeSpan.FromMilliseconds(totalMilliseconds), TimeSpan.FromMilliseconds(1));
-                    timer.IsRunning.Should().BeFalse();
+                    timer.TotalMilliseconds.ShouldBe(totalMilliseconds);
+                    timer.TotalTimeSpan.TotalMilliseconds.ShouldBe(totalMilliseconds, 1);
+                    timer.IsRunning.ShouldBeFalse();
 
                     var skipMilliseconds = skipFactor * GetWithinRange(100, 200);
                     timer.Start(skipMilliseconds);
 
                     var remaining = totalMilliseconds - skipMilliseconds;
 
-                    timer.RemainingMilliseconds.Should().Be(remaining);
-                    timer.RemainingTimeSpan.Should().BeCloseTo(TimeSpan.FromMilliseconds(remaining), TimeSpan.FromMilliseconds(1));
+                    timer.RemainingMilliseconds.ShouldBe(remaining);
+                    timer.RemainingTimeSpan.TotalMilliseconds.ShouldBe(remaining, 1);
                 }
             }
 
@@ -187,9 +180,9 @@ namespace AllOverIt.ReactiveUI.Tests
                     timer.WhenAnyValue(vm => vm.RemainingMilliseconds)
                         .Subscribe(value => actualNotifications.Add(value));
 
-                    timer.TotalMilliseconds.Should().Be(totalMilliseconds);
-                    timer.TotalTimeSpan.Should().BeCloseTo(TimeSpan.FromMilliseconds(totalMilliseconds), TimeSpan.FromMilliseconds(1));
-                    timer.IsRunning.Should().BeFalse();
+                    timer.TotalMilliseconds.ShouldBe(totalMilliseconds);
+                    timer.TotalTimeSpan.TotalMilliseconds.ShouldBe(totalMilliseconds, 1);
+                    timer.IsRunning.ShouldBeFalse();
 
                     if (skipTimeMode == 0)
                     {
@@ -200,15 +193,15 @@ namespace AllOverIt.ReactiveUI.Tests
                         timer.Start(TimeSpan.FromMilliseconds(skipMilliseconds));
                     }
 
-                    timer.IsRunning.Should().BeTrue();
+                    timer.IsRunning.ShouldBeTrue();
 
                     scheduler.AdvanceByMilliseconds(totalMilliseconds * 2);
 
-                    timer.RemainingMilliseconds.Should().Be(0);
-                    timer.RemainingTimeSpan.Should().Be(TimeSpan.FromMilliseconds(0));
-                    timer.IsRunning.Should().BeFalse();
+                    timer.RemainingMilliseconds.ShouldBe(0);
+                    timer.RemainingTimeSpan.ShouldBe(TimeSpan.FromMilliseconds(0));
+                    timer.IsRunning.ShouldBeFalse();
 
-                    expectedNotifications.Should().ContainInOrder(actualNotifications);
+                    expectedNotifications.ShouldBe(actualNotifications);
                 }
             }
 
@@ -232,9 +225,9 @@ namespace AllOverIt.ReactiveUI.Tests
                     {
                         timer.Configure(totalMilliseconds, updateIntervalMilliseconds, null, cts.Token);
 
-                        timer.TotalMilliseconds.Should().Be(totalMilliseconds);
-                        timer.TotalTimeSpan.Should().BeCloseTo(TimeSpan.FromMilliseconds(totalMilliseconds), TimeSpan.FromMilliseconds(1));
-                        timer.IsRunning.Should().BeFalse();
+                        timer.TotalMilliseconds.ShouldBe(totalMilliseconds);
+                        timer.TotalTimeSpan.TotalMilliseconds.ShouldBe(totalMilliseconds, 1);
+                        timer.IsRunning.ShouldBeFalse();
 
                         if (skipTimeMode == 0)
                         {
@@ -245,19 +238,19 @@ namespace AllOverIt.ReactiveUI.Tests
                             timer.Start(TimeSpan.FromMilliseconds(skipMilliseconds));
                         }
 
-                        timer.IsRunning.Should().BeTrue();
+                        timer.IsRunning.ShouldBeTrue();
 
                         scheduler.AdvanceByMilliseconds(updateIntervalMilliseconds * 2);
 
-                        timer.RemainingMilliseconds.Should().BeGreaterThan(0);
-                        timer.IsRunning.Should().BeTrue();
+                        timer.RemainingMilliseconds.ShouldBeGreaterThan(0);
+                        timer.IsRunning.ShouldBeTrue();
 
                         cts.Cancel();
 
                         scheduler.AdvanceByMilliseconds(updateIntervalMilliseconds * 2);
 
-                        timer.RemainingMilliseconds.Should().Be(0);
-                        timer.IsRunning.Should().BeFalse();
+                        timer.RemainingMilliseconds.ShouldBe(0);
+                        timer.IsRunning.ShouldBeFalse();
                     }
                 }
             }
@@ -269,19 +262,19 @@ namespace AllOverIt.ReactiveUI.Tests
                 {
                     timer.Configure(Create<double>(), Create<double>());
 
-                    timer.IsRunning.Should().BeFalse();
+                    timer.IsRunning.ShouldBeFalse();
 
                     timer.Start();
 
-                    timer.IsRunning.Should().BeTrue();
+                    timer.IsRunning.ShouldBeTrue();
 
                     timer.Stop();
 
-                    timer.IsRunning.Should().BeFalse();
+                    timer.IsRunning.ShouldBeFalse();
 
                     timer.Start();
 
-                    timer.IsRunning.Should().BeTrue();
+                    timer.IsRunning.ShouldBeTrue();
                 }
             }
 
@@ -293,13 +286,11 @@ namespace AllOverIt.ReactiveUI.Tests
                 timer.Configure(Create<double>(), Create<double>());
                 timer.Dispose();
 
-                Invoking(() =>
+                Should.Throw<ObjectDisposedException>(() =>
                 {
                     timer.Start();
                 })
-                    .Should()
-                    .Throw<ObjectDisposedException>()
-                    .WithMessage("The countdown timer is already disposed.");
+                    .Message.ShouldBe("The countdown timer is already disposed.");
             }
         }
 
@@ -312,12 +303,10 @@ namespace AllOverIt.ReactiveUI.Tests
                 {
                     timer.Configure(Create<double>(), Create<double>());
 
-                    Invoking(() =>
+                    Should.NotThrow(() =>
                     {
                         timer.Stop();
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
                 }
             }
 
@@ -330,11 +319,11 @@ namespace AllOverIt.ReactiveUI.Tests
 
                     timer.Start();
 
-                    timer.IsRunning.Should().BeTrue();
+                    timer.IsRunning.ShouldBeTrue();
 
                     timer.Stop();
 
-                    timer.IsRunning.Should().BeFalse();
+                    timer.IsRunning.ShouldBeFalse();
                 }
             }
         }
@@ -356,11 +345,11 @@ namespace AllOverIt.ReactiveUI.Tests
                             isRunning = value;
                         });
 
-                    isRunning.Should().BeFalse();
+                    isRunning.ShouldBeFalse();
 
                     timer.Start();
 
-                    isRunning.Should().BeTrue();
+                    isRunning.ShouldBeTrue();
                 }
             }
 
@@ -386,9 +375,15 @@ namespace AllOverIt.ReactiveUI.Tests
 
                     scheduler.AdvanceByMilliseconds(totalMilliseconds * 2);
 
-                    completed.Should().BeTrue();
+                    completed.ShouldBeTrue();
                 }
             }
         }
     }
 }
+
+
+
+
+
+

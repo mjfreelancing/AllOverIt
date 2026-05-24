@@ -1,9 +1,9 @@
-using AllOverIt.Evaluator.Operations;
+﻿using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture;
-using FluentAssertions;
 using System.Linq.Expressions;
-
+using Shouldly;
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Evaluator.Tests.Operations
 {
     public abstract class OperationFixtureBase<TOperationType> : FixtureBase
@@ -24,18 +24,18 @@ namespace AllOverIt.Evaluator.Tests.Operations
             // this test is to work around the complexities of validating the result returned from GetExpression()
             // which would either need to be a string comparison of the result, or a decomposition of the Expression
             // which should really be a part of the operator's test.
-            Operation.Should().BeAssignableTo<ArithmeticOperationBase>();
+            Operation.ShouldBeAssignableTo<ArithmeticOperationBase>();
         }
 
         protected void AssertOperationArgumentCount(int count)
         {
-            Operation.Should().BeEquivalentTo(
+            Operation.ShouldBeEquivalentTo(
                 new
                 {
                     ArgumentCount = count,
                     Creator = default(Func<Expression[], IOperator>)
                 },
-                opt => opt.Excluding(o => o.Creator));
+                opts => opts.ExcludeMember("Creator"));
         }
     }
 }

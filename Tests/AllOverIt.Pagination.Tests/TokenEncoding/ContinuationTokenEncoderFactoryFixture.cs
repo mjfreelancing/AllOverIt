@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
-using FluentAssertions;
 
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
@@ -26,8 +25,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = new ContinuationTokenEncoderFactory(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("serializerFactory");
             }
         }
@@ -41,8 +39,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = _continuationTokenEncoderFactory.CreateContinuationTokenEncoder(null, Create<PaginationDirection>(), Create<ContinuationTokenOptions>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("columns");
             }
 
@@ -54,8 +51,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     _ = _continuationTokenEncoderFactory.CreateContinuationTokenEncoder(new List<IColumnDefinition>(), Create<PaginationDirection>(),
                         Create<ContinuationTokenOptions>());
                 })
-                .Should()
-                .Throw<ArgumentException>()
+                .ShouldThrow<ArgumentException>()
                 .WithNamedMessageWhenEmpty("columns");
             }
 
@@ -66,8 +62,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = _continuationTokenEncoderFactory.CreateContinuationTokenEncoder(null, Create<PaginationDirection>(), Create<ContinuationTokenOptions>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("columns");
             }
 
@@ -77,9 +72,13 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 var actual = _continuationTokenEncoderFactory.CreateContinuationTokenEncoder(this.CreateManyStubs<IColumnDefinition>(), Create<PaginationDirection>(),
                     Create<ContinuationTokenOptions>());
 
-                actual.Should().BeOfType<ContinuationTokenEncoder>();
-                actual.Serializer.Should().BeOfType<ContinuationTokenSerializer>();
+                actual.ShouldBeOfType<ContinuationTokenEncoder>();
+                actual.Serializer.ShouldBeOfType<ContinuationTokenSerializer>();
             }
         }
     }
 }
+
+
+
+

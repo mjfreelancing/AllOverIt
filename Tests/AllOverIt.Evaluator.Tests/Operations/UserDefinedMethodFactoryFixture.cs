@@ -1,7 +1,8 @@
-﻿using AllOverIt.Evaluator.Operations;
+using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Tests.Operations.Dummies;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
+using AllOverIt.Fixture.Extensions;
 
 namespace AllOverIt.Evaluator.Tests.Operations
 {
@@ -46,11 +47,11 @@ namespace AllOverIt.Evaluator.Tests.Operations
                 _factory = new UserDefinedMethodFactory();
 
                 // only here to make sure the test cases are updated if a new operation is added
-                _factory.RegisteredMethods.Should().HaveCount(29);
+                _factory.RegisteredMethods.Count().ShouldBe(29);
 
                 var operation = _factory.GetMethod(name);
 
-                operation.Should().BeOfType(operationType);
+                operation.ShouldBeOfType(operationType);
             }
 
             [Fact]
@@ -61,10 +62,10 @@ namespace AllOverIt.Evaluator.Tests.Operations
                 var methodName = Create<string>();
                 _factory.RegisterMethod<LessThanOrEqualOperation>(methodName);
 
-                _factory.RegisteredMethods.Should().HaveCount(30);      // 29 built-in plus 1
+                _factory.RegisteredMethods.Count().ShouldBe(30);      // 29 built-in plus 1
 
-                _factory.RegisteredMethods.Should().Contain(methodName.ToUpperInvariant());
-                _factory.IsRegistered(methodName).Should().BeTrue();    // The method names are added uppercase - use IsRegistered() as another sanity check
+                _factory.RegisteredMethods.ShouldContain(methodName.ToUpperInvariant());
+                _factory.IsRegistered(methodName).ShouldBeTrue();    // The method names are added uppercase - use IsRegistered() as another sanity check
             }
         }
 
@@ -80,7 +81,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
             {
                 var result = _factory.IsRegistered(Create<string>());
 
-                result.Should().BeFalse();
+                result.ShouldBeFalse();
             }
 
             [Fact]
@@ -92,7 +93,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 var result = _factory.IsRegistered(name);
 
-                result.Should().BeTrue();
+                result.ShouldBeTrue();
             }
 
             [Fact]
@@ -104,7 +105,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 var operation = _factory.GetMethod(name);
 
-                operation.Should().BeOfType<DummyArithmeticOperation>();
+                operation.ShouldBeOfType<DummyArithmeticOperation>();
             }
         }
 
@@ -124,7 +125,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 var operation = _factory.GetMethod(name);
 
-                operation.Should().BeOfType<DummyArithmeticOperation>();
+                operation.ShouldBeOfType<DummyArithmeticOperation>();
             }
 
             [Fact]
@@ -136,7 +137,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
 
                 var operation = _factory.GetMethod(name.ToUpper());
 
-                operation.Should().BeOfType<DummyArithmeticOperation>();
+                operation.ShouldBeOfType<DummyArithmeticOperation>();
             }
 
             [Fact]
@@ -144,9 +145,7 @@ namespace AllOverIt.Evaluator.Tests.Operations
             {
                 var name = Create<string>();
 
-                Invoking(() => _factory.GetMethod(name))
-                    .Should()
-                    .Throw<KeyNotFoundException>()
+                Should.Throw<KeyNotFoundException>(() => _factory.GetMethod(name))
                     .WithMessage($"The '{name}' method is not registered with the {nameof(UserDefinedMethodFactory)}.");
             }
         }

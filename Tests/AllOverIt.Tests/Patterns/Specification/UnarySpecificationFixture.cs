@@ -1,6 +1,5 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Specification
 {
@@ -22,15 +21,14 @@ namespace AllOverIt.Tests.Patterns.Specification
                 {
                     _ = new UnarySpecificationDummy(null, _expectedResult);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("specification");
         }
 
         [Fact]
         public void Should_Set_Specification_Member()
         {
-            _specification.Spec.Should().BeSameAs(IsEven);
+            _specification.Spec.ShouldBeSameAs(IsEven);
         }
 
         [Fact]
@@ -40,7 +38,7 @@ namespace AllOverIt.Tests.Patterns.Specification
 
             _specification.IsSatisfiedBy(expected);
 
-            _specification.Candidate.Should().Be(expected);
+            _specification.Candidate.ShouldBe(expected);
         }
 
         [Fact]
@@ -48,7 +46,10 @@ namespace AllOverIt.Tests.Patterns.Specification
         {
             var actual = _specification.IsSatisfiedBy(Create<int>());
 
-            actual.Should().Be(_expectedResult);
+            actual.ShouldBe(_expectedResult);
         }
     }
 }
+
+
+

@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ChainOfResponsibility;
 using AllOverIt.Patterns.ChainOfResponsibility.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 {
@@ -143,8 +142,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                     ChainOfResponsibilityHandlerExtensions.Compose(handlers);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("handlers");
             }
 
@@ -157,8 +155,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                     ChainOfResponsibilityHandlerExtensions.Compose(handlers);
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("handlers");
             }
 
@@ -172,7 +169,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                 var actual = ChainOfResponsibilityHandlerExtensions.Compose(handlers);
 
-                actual.Should().BeSameAs(handler1);
+                actual.ShouldBeSameAs(handler1);
             }
 
             [Fact]
@@ -194,10 +191,9 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
                         .Compose(handlers)
                         .Handle(state);
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
 
-                state.Sequence.Should().Be(2);
+                state.Sequence.ShouldBe(2);
             }
         }
 
@@ -212,8 +208,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                     _ = ChainOfResponsibilityHandlerExtensions.Compose(handlers);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("handlers");
             }
 
@@ -226,8 +221,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                     _ = ChainOfResponsibilityHandlerExtensions.Compose(handlers);
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("handlers");
             }
 
@@ -241,7 +235,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                 var actual = ChainOfResponsibilityHandlerExtensions.Compose(handlers);
 
-                actual.Should().BeSameAs(handler1);
+                actual.ShouldBeSameAs(handler1);
             }
 
             [Fact]
@@ -263,10 +257,9 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
                         .Compose(handlers)
                         .HandleAsync(state, CancellationToken.None);
                 })
-                    .Should()
-                    .NotThrowAsync();
+                    .ShouldNotThrowAsync();
 
-                state.Sequence.Should().Be(2);
+                state.Sequence.ShouldBe(2);
             }
         }
 
@@ -279,8 +272,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
                 {
                     _ = ChainOfResponsibilityHandlerExtensions.Then<DummyState, DummyState>(null, new DummyChainOfResponsibility1());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("first");
             }
 
@@ -291,8 +283,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
                 {
                     _ = ChainOfResponsibilityHandlerExtensions.Then<DummyState, DummyState>(new DummyChainOfResponsibility1(), null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("next");
             }
 
@@ -311,7 +302,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                 var actual = composed.Handle(state);
 
-                actual.ProcessedValue.Should().Be(9);
+                actual.ProcessedValue.ShouldBe(9);
             }
 
             [Fact]
@@ -329,7 +320,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                 var actual = composed.Handle(state);
 
-                actual.ProcessedValue.Should().Be(4);
+                actual.ProcessedValue.ShouldBe(4);
             }
 
             [Fact]
@@ -348,7 +339,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                 var actual = composed.Handle(state);
 
-                actual.ProcessedValue.Should().Be(6);
+                actual.ProcessedValue.ShouldBe(6);
             }
 
             [Fact]
@@ -367,7 +358,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                 var actual = composed.Handle(state);
 
-                actual.ProcessedValue.Should().Be(6);
+                actual.ProcessedValue.ShouldBe(6);
             }
         }
 
@@ -380,8 +371,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
                 {
                     _ = ChainOfResponsibilityHandlerExtensions.Then<DummyState, DummyState>(null, new DummyChainOfResponsibilityAsync1());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("first");
             }
 
@@ -392,8 +382,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
                 {
                     _ = ChainOfResponsibilityHandlerExtensions.Then<DummyState, DummyState>(new DummyChainOfResponsibilityAsync1(), null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("next");
             }
 
@@ -412,7 +401,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                 var actual = await composed.HandleAsync(state, CancellationToken.None);
 
-                actual.ProcessedValue.Should().Be(9);
+                actual.ProcessedValue.ShouldBe(9);
             }
 
             [Fact]
@@ -430,7 +419,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                 var actual = await composed.HandleAsync(state, CancellationToken.None);
 
-                actual.ProcessedValue.Should().Be(4);
+                actual.ProcessedValue.ShouldBe(4);
             }
 
             [Fact]
@@ -449,7 +438,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                 var actual = await composed.HandleAsync(state, CancellationToken.None);
 
-                actual.ProcessedValue.Should().Be(6);
+                actual.ProcessedValue.ShouldBe(6);
             }
 
             [Fact]
@@ -468,8 +457,11 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility.Extensions
 
                 var actual = await composed.HandleAsync(state, CancellationToken.None);
 
-                actual.ProcessedValue.Should().Be(6);
+                actual.ProcessedValue.ShouldBe(6);
             }
         }
     }
 }
+
+
+

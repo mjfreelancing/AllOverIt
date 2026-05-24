@@ -1,6 +1,5 @@
-﻿using AllOverIt.Collections;
+using AllOverIt.Collections;
 using AllOverIt.Fixture;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Collections
 {
@@ -13,7 +12,7 @@ namespace AllOverIt.Tests.Collections
             {
                 var actual = List.EmptyReadOnly<int>();
 
-                actual.Should().BeEmpty();
+                actual.ShouldBeEmpty();
             }
 
             [Fact]
@@ -21,7 +20,7 @@ namespace AllOverIt.Tests.Collections
             {
                 var actual = List.EmptyReadOnly<int>();
 
-                actual.Should().BeAssignableTo<IReadOnlyCollection<int>>();
+                actual.ShouldBeAssignableTo<IReadOnlyCollection<int>>();
             }
 
             [Fact]
@@ -29,8 +28,12 @@ namespace AllOverIt.Tests.Collections
             {
                 var actual = List.EmptyReadOnly<int>();
 
-                actual.Should().NotBeAssignableTo<ICollection<int>>();
+                actual.ShouldNotBeAssignableTo<ICollection<int>>();
             }
         }
     }
 }
+
+
+
+

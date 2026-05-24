@@ -1,4 +1,4 @@
-﻿using AllOverIt.Evaluator.Operations;
+using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
 using System.Linq.Expressions;
 
@@ -22,3 +22,6 @@ namespace AllOverIt.Evaluator.Tests.Operations.Dummies
         }
     }
 }
+
+
+

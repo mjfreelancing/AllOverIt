@@ -8,3 +8,6 @@ namespace AllOverIt.Evaluator.Tests.Operations
         protected override Type OperatorType => typeof(SqrtOperator);
     }
 }
+
+
+

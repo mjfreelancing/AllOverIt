@@ -1,4 +1,5 @@
-using FluentAssertions;
+using Shouldly;
+
 
 namespace AllOverIt.Evaluator.Tests
 {
@@ -32,9 +33,7 @@ namespace AllOverIt.Evaluator.Tests
         public void Should_Not_Throw_When_Divide_By_Zero()
         {
             // The current implementation returns 'Infinity'
-            Invoking(() => AssertFormula($"{Val1} / 0", () => Val1 / 0))
-                .Should()
-                .NotThrow();
+            Should.NotThrow(() => AssertFormula($"{Val1} / 0", () => Val1 / 0));
         }
 
         [Fact]

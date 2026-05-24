@@ -1,8 +1,8 @@
-﻿using AllOverIt.Evaluator.Tests.Operators.Dummies;
+using AllOverIt.Evaluator.Tests.Operators.Dummies;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Evaluator.Tests.Operators
@@ -31,41 +31,29 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_OperatorType_Is_Null()
             {
-                Invoking(() => _operator = new DummyBinaryOperator(null, _leftOperand, _rightOperand))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _operator = new DummyBinaryOperator(null, _leftOperand, _rightOperand))
                     .WithNamedMessageWhenNull("operatorType");
             }
 
             [Fact]
             public void Should_Throw_When_Left_Operand_Is_Null()
             {
-                Invoking(() => _operator = new DummyBinaryOperator(_operatorType, null, _rightOperand))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _operator = new DummyBinaryOperator(_operatorType, null, _rightOperand))
                     .WithNamedMessageWhenNull("leftOperand");
             }
 
             [Fact]
             public void Should_Throw_When_Right_Operand_Is_Null()
             {
-                Invoking(() => _operator = new DummyBinaryOperator(_operatorType, _leftOperand, null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _operator = new DummyBinaryOperator(_operatorType, _leftOperand, null))
                     .WithNamedMessageWhenNull("rightOperand");
             }
 
             [Fact]
             public void Should_Set_Members()
             {
-                var expected = new
-                {
-                    _leftOperand = _leftOperand,
-                    _rightOperand = _rightOperand,
-                    OperatorType = _operatorType
-                };
-
-                expected.Should().BeEquivalentTo(_operator, options => options.IncludingInternalFields());
+                _operator._leftOperand.ShouldBeSameAs(_leftOperand);
+                _operator._rightOperand.ShouldBeSameAs(_rightOperand);
             }
         }
 
@@ -76,7 +64,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             {
                 var actual = _operator.GetExpression();
 
-                actual.Should().BeSameAs(_resultExpression);
+                actual.ShouldBeSameAs(_resultExpression);
             }
         }
     }

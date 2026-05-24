@@ -1,10 +1,9 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Validation.Exceptions;
 using FakeItEasy;
-using FluentAssertions;
 
 namespace AllOverIt.Validation.Tests
 {
@@ -35,13 +34,12 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Throw_When_Registry_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     _validationRegistrar.AutoRegisterValidators(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("validationRegistry");
+                });
+
+                exception.WithNamedMessageWhenNull("validationRegistry");
             }
 
             [Fact]
@@ -57,7 +55,7 @@ namespace AllOverIt.Validation.Tests
                     return false;
                 });
 
-                wasFiltered.Should().BeTrue();
+                wasFiltered.ShouldBeTrue();
             }
 
             [Fact]
@@ -78,9 +76,9 @@ namespace AllOverIt.Validation.Tests
 
                 _validationRegistrar.AutoRegisterValidators(registryFake.FakedObject, null);
 
-                validators.Should().HaveCount(32);      // All non-abstract validators in this assembly
+                validators.Count.ShouldBe(32);      // All non-abstract validators in this assembly
 
-                validators.All(validator => !validator.IsAbstract).Should().BeTrue();
+                validators.All(validator => !validator.IsAbstract).ShouldBeTrue();
             }
 
             [Fact]
@@ -94,15 +92,19 @@ namespace AllOverIt.Validation.Tests
                 });
 
                 // registering the validator a second time will throw an error
-
-                Invoking(() =>
+                var exception = Should.Throw<ValidationRegistryException>(() =>
                 {
                     ((IValidationRegistry)invoker).Register<DummyModel, DummyModelValidator>();
-                })
-                   .Should()
-                   .Throw<ValidationRegistryException>()
-                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+                });
+
+                exception.Message.ShouldBe($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
             }
         }
     }
 }
+
+
+
+
+
+

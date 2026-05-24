@@ -1,6 +1,5 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Specification
 {
@@ -22,8 +21,7 @@ namespace AllOverIt.Tests.Patterns.Specification
                 {
                     _ = new BinarySpecificationDummy(null, IsPositive, _expectedResult);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("leftSpecification");
         }
 
@@ -34,16 +32,15 @@ namespace AllOverIt.Tests.Patterns.Specification
                 {
                     _ = new BinarySpecificationDummy(IsEven, null, _expectedResult);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("rightSpecification");
         }
 
         [Fact]
         public void Should_Set_Specification_Members()
         {
-            _specification.Left.Should().BeSameAs(IsEven);
-            _specification.Right.Should().BeSameAs(IsPositive);
+            _specification.Left.ShouldBeSameAs(IsEven);
+            _specification.Right.ShouldBeSameAs(IsPositive);
         }
 
         [Fact]
@@ -53,7 +50,7 @@ namespace AllOverIt.Tests.Patterns.Specification
 
             _specification.IsSatisfiedBy(expected);
 
-            _specification.Candidate.Should().Be(expected);
+            _specification.Candidate.ShouldBe(expected);
         }
 
         [Fact]
@@ -61,7 +58,10 @@ namespace AllOverIt.Tests.Patterns.Specification
         {
             var actual = _specification.IsSatisfiedBy(Create<int>());
 
-            actual.Should().Be(_expectedResult);
+            actual.ShouldBe(_expectedResult);
         }
     }
 }
+
+
+

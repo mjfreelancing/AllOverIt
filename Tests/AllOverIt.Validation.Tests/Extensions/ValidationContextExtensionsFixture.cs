@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Validation.Extensions;
-using FluentAssertions;
 using FluentValidation;
 
 namespace AllOverIt.Validation.Tests.Extensions
@@ -21,37 +20,31 @@ namespace AllOverIt.Validation.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Context_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     ValidationContextExtensions.SetContextData<DummyModel, string>(null, Create<string>(), Create<string>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("context");
+                });
+                exception.WithNamedMessageWhenNull("context");
             }
 
             [Fact]
             public void Should_Throw_When_Key_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     CreateValidationContext().SetContextData(Create<string>(), null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("key");
+                });
+                exception.WithNamedMessageWhenNull("key");
             }
 
             [Fact]
             public void Should_Throw_When_Key_Empty()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentException>(() =>
                 {
                     CreateValidationContext().SetContextData(Create<string>(), "  ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("key");
+                });
+                exception.WithNamedMessageWhenEmpty("key");
             }
 
             [Fact]
@@ -64,7 +57,7 @@ namespace AllOverIt.Validation.Tests.Extensions
 
                 var actual = context.InstanceToValidate;
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -77,7 +70,7 @@ namespace AllOverIt.Validation.Tests.Extensions
 
                 var actual = context.RootContextData["data"];
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -91,7 +84,7 @@ namespace AllOverIt.Validation.Tests.Extensions
 
                 var actual = context.RootContextData[key];
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -104,7 +97,7 @@ namespace AllOverIt.Validation.Tests.Extensions
 
                 var actual = context.RootContextData["data"];
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -118,7 +111,7 @@ namespace AllOverIt.Validation.Tests.Extensions
 
                 var actual = context.RootContextData[key];
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
 
@@ -127,37 +120,31 @@ namespace AllOverIt.Validation.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Context_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     ValidationContextExtensions.GetContextData<DummyModel, string>(null, Create<string>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("context");
+                });
+                exception.WithNamedMessageWhenNull("context");
             }
 
             [Fact]
             public void Should_Throw_When_Key_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     CreateValidationContext().GetContextData<DummyModel, string>(null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("key");
+                });
+                exception.WithNamedMessageWhenNull("key");
             }
 
             [Fact]
             public void Should_Throw_When_Key_Empty()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentException>(() =>
                 {
                     CreateValidationContext().GetContextData<DummyModel, string>("  ");
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("key");
+                });
+                exception.WithNamedMessageWhenEmpty("key");
             }
 
             [Fact]
@@ -170,7 +157,7 @@ namespace AllOverIt.Validation.Tests.Extensions
 
                 var actual = context.GetContextData<DummyModel, string>();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -184,7 +171,7 @@ namespace AllOverIt.Validation.Tests.Extensions
 
                 var actual = context.GetContextData<DummyModel, string>(key);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -197,7 +184,7 @@ namespace AllOverIt.Validation.Tests.Extensions
 
                 var actual = context.GetContextData<DummyModel, DummyModel>();
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -211,7 +198,7 @@ namespace AllOverIt.Validation.Tests.Extensions
 
                 var actual = context.GetContextData<DummyModel, DummyModel>(key);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
 
@@ -221,3 +208,9 @@ namespace AllOverIt.Validation.Tests.Extensions
         }
     }
 }
+
+
+
+
+
+

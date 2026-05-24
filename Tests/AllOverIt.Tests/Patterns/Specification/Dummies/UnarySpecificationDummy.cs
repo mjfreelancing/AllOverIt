@@ -23,3 +23,5 @@ namespace AllOverIt.Tests.Patterns.Specification.Dummies
         }
     }
 }
+
+

@@ -1,6 +1,6 @@
-﻿using AllOverIt.Assertion;
+using AllOverIt.Assertion;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Tests.Assertion
 {
@@ -13,14 +13,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         string dummy = null;
 
                         _ = Guard.WhenNotNullOrEmpty(dummy, name);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull(name);
             }
 
@@ -31,14 +29,12 @@ namespace AllOverIt.Tests.Assertion
 
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         string dummy = null;
 
                         _ = Guard.WhenNotNullOrEmpty(dummy, name, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull(name, errorMessage);
             }
 
@@ -48,12 +44,10 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         _ = Guard.WhenNotNullOrEmpty(expected, name);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(name);
             }
 
@@ -63,14 +57,12 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var actual = Guard.WhenNotNullOrEmpty(expected, name);
 
-                        actual.Should().Be(expected);
-                    })
-                    .Should()
-                    .NotThrow();
+                        actual.ShouldBe(expected);
+                    });
             }
 
             [Fact]
@@ -81,26 +73,22 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         _ = Guard.WhenNotNullOrEmpty(expected, name, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(name, errorMessage);
             }
 
             [Fact]
             public void Should_Not_Throw()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = Create<string>();
 
                         _ = Guard.WhenNotNullOrEmpty(dummy, Create<string>());
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -108,14 +96,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = Create<string>();
 
                         _ = Guard.WhenNotNullOrEmpty(dummy, Create<string>(), errorMessage);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -125,7 +111,7 @@ namespace AllOverIt.Tests.Assertion
 
                 var actual = Guard.WhenNotNullOrEmpty(expected, Create<string>());
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
 
@@ -136,14 +122,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var name = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         string dummy = null;
 
                         _ = Guard.WhenNotEmpty(dummy, name);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -152,12 +136,10 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         Guard.WhenNotEmpty(expected, name);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(name);
             }
 
@@ -169,26 +151,22 @@ namespace AllOverIt.Tests.Assertion
                 var name = Create<string>();
                 var expected = string.Empty;
 
-                Invoking(() =>
+                Should.Throw<ArgumentException>(() =>
                     {
                         Guard.WhenNotEmpty(expected, name, errorMessage);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
                     .WithNamedMessageWhenEmpty(name, errorMessage);
             }
 
             [Fact]
             public void Should_Not_Throw()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = Create<string>();
 
                         Guard.WhenNotEmpty(dummy, Create<string>());
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -196,14 +174,12 @@ namespace AllOverIt.Tests.Assertion
             {
                 var errorMessage = Create<string>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                     {
                         var dummy = Create<string>();
 
                         Guard.WhenNotEmpty(dummy, Create<string>(), errorMessage);
-                    })
-                    .Should()
-                    .NotThrow();
+                    });
             }
 
             [Fact]
@@ -213,7 +189,7 @@ namespace AllOverIt.Tests.Assertion
 
                 var actual = Guard.WhenNotEmpty(expected, Create<string>());
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
     }

@@ -1,8 +1,8 @@
-using AllOverIt.Evaluator.Operations;
+﻿using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
 using System.Linq.Expressions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Operations
 {
@@ -22,11 +22,11 @@ namespace AllOverIt.Evaluator.Tests.Operations
             var creator = Operation._creator;
 
             var operation = creator.Invoke(new[] { operand });
-            operation.Should().BeOfType(OperatorType);
+            operation.ShouldBeOfType(OperatorType);
 
             var symbol = operation as UnaryOperator;
 
-            symbol!._operand.Should().BeSameAs(operand);
+            symbol!._operand.ShouldBeSameAs(operand);
         }
     }
 }

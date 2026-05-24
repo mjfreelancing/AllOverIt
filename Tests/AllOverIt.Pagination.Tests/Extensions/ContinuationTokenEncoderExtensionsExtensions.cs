@@ -1,10 +1,9 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.Extensions;
 using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
-using FluentAssertions;
 
 namespace AllOverIt.Pagination.Tests.Extensions
 {
@@ -28,8 +27,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 {
                     ContinuationTokenEncoderExtensions.Encode(null, this.CreateStub<IContinuationToken>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("encoder");
             }
 
@@ -40,8 +38,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 {
                     ContinuationTokenEncoderExtensions.Encode(_continuationTokenEncoder, null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("continuationToken");
             }
 
@@ -55,7 +52,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var actual = ContinuationTokenEncoderExtensions.Encode(_continuationTokenEncoder, token);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -68,8 +65,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 {
                     ContinuationTokenEncoderExtensions.Decode(null, Create<string>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("encoder");
             }
 
@@ -80,8 +76,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 {
                     ContinuationTokenEncoderExtensions.Decode(_continuationTokenEncoder, null);
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -94,8 +89,12 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var actual = ContinuationTokenEncoderExtensions.Decode(_continuationTokenEncoder, token);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
     }
 }
+
+
+
+

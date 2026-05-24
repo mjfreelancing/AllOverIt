@@ -1,6 +1,5 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Patterns.ResourceInitialization;
-using FluentAssertions;
 using System.Diagnostics;
 
 namespace AllOverIt.Tests.Patterns.ResourceInitialization
@@ -61,8 +60,11 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                 await Task.Delay(100);
             }
 
-            actual.Should().StartWith($"{title} took ");
-            actual.Should().EndWith("ms");
+            actual.ShouldStartWith($"{title} took ");
+            actual.ShouldEndWith("ms");
         }
     }
 }
+
+
+

@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 using ReactiveUI;
 
 namespace AllOverIt.ReactiveUI.Tests
@@ -146,12 +146,10 @@ namespace AllOverIt.ReactiveUI.Tests
             [Fact]
             public void Should_Throw_When_Model_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new ModelProxyDummy(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("model");
             }
         }
@@ -161,12 +159,10 @@ namespace AllOverIt.ReactiveUI.Tests
             [Fact]
             public void Should_Throw_When_SetValue_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _modelProxy.BadAge = Create<int>();
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("setValue");
             }
 
@@ -185,7 +181,7 @@ namespace AllOverIt.ReactiveUI.Tests
                 _modelProxy.Age = Create<int>();
                 _modelProxy.PropertyDummy = Create<PropertyDummy>();
 
-                propertiesRaised.Should().BeEquivalentTo(new[]
+                propertiesRaised.ShouldBeEquivalentTo(new[]
                 {
                     nameof(ModelProxyDummy.FirstName),
                     nameof(ModelProxyDummy.FullName),
@@ -194,12 +190,12 @@ namespace AllOverIt.ReactiveUI.Tests
                     nameof(ModelProxyDummy.PropertyDummy)
                 });
 
-                _modelProxy.FirstNameWasChanged.Should().BeTrue();
-                _modelProxy.LastNameWasChanged.Should().BeTrue();
-                _modelProxy.AgeWasChanged.Should().BeTrue();
-                _modelProxy.PropertyDummyWasChanged.Should().BeTrue();
+                _modelProxy.FirstNameWasChanged.ShouldBeTrue();
+                _modelProxy.LastNameWasChanged.ShouldBeTrue();
+                _modelProxy.AgeWasChanged.ShouldBeTrue();
+                _modelProxy.PropertyDummyWasChanged.ShouldBeTrue();
 
-                _modelProxy.Should().BeEquivalentTo(_model);
+                _modelProxy.ShouldBeEquivalentTo(_model);
             }
 
             [Fact]
@@ -217,7 +213,7 @@ namespace AllOverIt.ReactiveUI.Tests
                 _modelProxy.Age = Create<int>();
                 _modelProxy.PropertyDummy = Create<PropertyDummy>();
 
-                propertiesRaised.Should().BeEquivalentTo(new[]
+                propertiesRaised.ShouldBeEquivalentTo(new[]
                 {
                     nameof(ModelProxyDummy.FirstName),
                     nameof(ModelProxyDummy.FullName),
@@ -226,12 +222,12 @@ namespace AllOverIt.ReactiveUI.Tests
                     nameof(ModelProxyDummy.PropertyDummy)
                 });
 
-                _modelProxy.FirstNameWasChanged.Should().BeTrue();
-                _modelProxy.LastNameWasChanged.Should().BeTrue();
-                _modelProxy.AgeWasChanged.Should().BeTrue();
-                _modelProxy.PropertyDummyWasChanged.Should().BeTrue();
+                _modelProxy.FirstNameWasChanged.ShouldBeTrue();
+                _modelProxy.LastNameWasChanged.ShouldBeTrue();
+                _modelProxy.AgeWasChanged.ShouldBeTrue();
+                _modelProxy.PropertyDummyWasChanged.ShouldBeTrue();
 
-                _modelProxy.Should().BeEquivalentTo(_model);
+                _modelProxy.ShouldBeEquivalentTo(_model);
             }
 
             [Fact]
@@ -254,14 +250,14 @@ namespace AllOverIt.ReactiveUI.Tests
                 _modelProxy.Age = currentAge;
                 _modelProxy.PropertyDummy = currentPropertyDummy;
 
-                raised.Should().BeFalse();
+                raised.ShouldBeFalse();
 
-                _modelProxy.FirstNameWasChanged.Should().BeFalse();
-                _modelProxy.LastNameWasChanged.Should().BeFalse();
-                _modelProxy.AgeWasChanged.Should().BeFalse();
-                _modelProxy.AgeWasChanged.Should().BeFalse();
+                _modelProxy.FirstNameWasChanged.ShouldBeFalse();
+                _modelProxy.LastNameWasChanged.ShouldBeFalse();
+                _modelProxy.AgeWasChanged.ShouldBeFalse();
+                _modelProxy.AgeWasChanged.ShouldBeFalse();
 
-                _modelProxy.Should().BeEquivalentTo(_model);
+                _modelProxy.ShouldBeEquivalentTo(_model);
             }
 
             [Fact]
@@ -284,14 +280,14 @@ namespace AllOverIt.ReactiveUI.Tests
                 _modelProxy.Age = currentAge;
                 _modelProxy.PropertyDummy = currentPropertyDummy;
 
-                raised.Should().BeFalse();
+                raised.ShouldBeFalse();
 
-                _modelProxy.FirstNameWasChanged.Should().BeFalse();
-                _modelProxy.LastNameWasChanged.Should().BeFalse();
-                _modelProxy.AgeWasChanged.Should().BeFalse();
-                _modelProxy.AgeWasChanged.Should().BeFalse();
+                _modelProxy.FirstNameWasChanged.ShouldBeFalse();
+                _modelProxy.LastNameWasChanged.ShouldBeFalse();
+                _modelProxy.AgeWasChanged.ShouldBeFalse();
+                _modelProxy.AgeWasChanged.ShouldBeFalse();
 
-                _modelProxy.Should().BeEquivalentTo(_model);
+                _modelProxy.ShouldBeEquivalentTo(_model);
             }
         }
 
@@ -311,9 +307,9 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 _modelProxy.RaisePropertyChangingByName(expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
 
-                _modelProxy.Should().BeEquivalentTo(_model);
+                _modelProxy.ShouldBeEquivalentTo(_model);
             }
         }
 
@@ -333,10 +329,17 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 _modelProxy.RaisePropertyChangedByName(expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
 
-                _modelProxy.Should().BeEquivalentTo(_model);
+                _modelProxy.ShouldBeEquivalentTo(_model);
             }
         }
     }
 }
+
+
+
+
+
+
+

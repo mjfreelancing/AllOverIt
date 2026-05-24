@@ -1,10 +1,10 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Serialization.Binary.Readers;
 using AllOverIt.Serialization.Binary.Readers.Extensions;
 using FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Serialization.Binary.Tests.Extensions
 {
@@ -15,24 +15,20 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
             [Fact]
             public void Should_Throw_When_ValueReader_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = EnrichedBinaryValueReaderExtensions.ReadValue<string>(null, this.CreateStub<IEnrichedBinaryReader>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("valueReader");
             }
 
             [Fact]
             public void Should_Throw_When_Reader_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = this.CreateStub<IEnrichedBinaryValueReader>().ReadValue<string>(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("reader");
             }
 
@@ -50,8 +46,10 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
 
                 var actual = valueReaderFake.FakedObject.ReadValue<string>(readerFake);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }
 }
+
+

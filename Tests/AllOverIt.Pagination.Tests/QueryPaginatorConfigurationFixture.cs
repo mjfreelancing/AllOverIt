@@ -1,6 +1,5 @@
 ﻿using AllOverIt.Fixture;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Pagination.Tests
 {
     public class QueryPaginatorConfigurationFixture : FixtureBase
@@ -18,7 +17,11 @@ namespace AllOverIt.Pagination.Tests
                 ContinuationTokenOptions = new ContinuationTokenOptions()
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(actual);
         }
     }
 }
+
+
+
+

@@ -1,7 +1,7 @@
-using AllOverIt.Evaluator.Operations;
+﻿using AllOverIt.Evaluator.Operations;
 using AllOverIt.Evaluator.Operators;
-using FluentAssertions;
 using System.Linq.Expressions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Operations
 {
@@ -21,13 +21,13 @@ namespace AllOverIt.Evaluator.Tests.Operations
             var creator = Operation._creator;
 
             var operation = creator.Invoke(operands);
-            operation.Should().BeOfType(OperatorType);
+            operation.ShouldBeOfType(OperatorType);
 
             var symbol = operation as TernaryOperator;
 
-            symbol!._operand1.Should().BeSameAs(operands[0]);
-            symbol!._operand2.Should().BeSameAs(operands[1]);
-            symbol._operand3.Should().BeSameAs(operands[2]);
+            symbol!._operand1.ShouldBeSameAs(operands[0]);
+            symbol!._operand2.ShouldBeSameAs(operands[1]);
+            symbol._operand3.ShouldBeSameAs(operands[2]);
         }
 
         [Fact]

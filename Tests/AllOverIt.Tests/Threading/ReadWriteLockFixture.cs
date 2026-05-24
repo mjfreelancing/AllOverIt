@@ -1,6 +1,5 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Threading;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Threading
 {
@@ -19,8 +18,7 @@ namespace AllOverIt.Tests.Threading
                 {
                     @lock.EnterReadLock(false);
                 })
-                    .Should()
-                    .Throw<LockRecursionException>()
+                    .ShouldThrow<LockRecursionException>()
                     .WithMessage("Recursive read lock acquisitions not allowed in this mode.");
 
                 @lock.ExitReadLock();
@@ -40,8 +38,7 @@ namespace AllOverIt.Tests.Threading
                 {
                     @lock.EnterReadLock(false);
                 })
-                    .Should()
-                    .Throw<LockRecursionException>()
+                    .ShouldThrow<LockRecursionException>()
                     .WithMessage("Recursive read lock acquisitions not allowed in this mode.");
                 @lock.ExitReadLock();
             }
@@ -56,8 +53,7 @@ namespace AllOverIt.Tests.Threading
                     @lock.EnterReadLock(false);
                     @lock.EnterReadLock(false);
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
 
                 @lock.ExitReadLock();
                 @lock.ExitReadLock();
@@ -78,8 +74,7 @@ namespace AllOverIt.Tests.Threading
                 {
                     @lock.EnterReadLock(false);
                 })
-                    .Should()
-                    .Throw<LockRecursionException>()
+                    .ShouldThrow<LockRecursionException>()
                     .WithMessage("Recursive read lock acquisitions not allowed in this mode.");
 
                 @lock.ExitReadLock();
@@ -108,8 +103,7 @@ namespace AllOverIt.Tests.Threading
                 {
                     @lock.EnterWriteLock();
                 })
-                    .Should()
-                    .Throw<LockRecursionException>()
+                    .ShouldThrow<LockRecursionException>()
                     .WithMessage("Write lock may not be acquired with read lock held.*");
 
                 @lock.ExitReadLock();
@@ -126,7 +120,7 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.NoRecursion);
 
                 var success = @lock.TryEnterReadLock(false, _timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitReadLock();
             }
@@ -137,10 +131,10 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.NoRecursion);
 
                 var success = @lock.TryEnterReadLock(true, _timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 success = @lock.TryEnterWriteLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitWriteLock();
                 @lock.ExitReadLock();
@@ -152,14 +146,13 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.NoRecursion);
 
                 var success = @lock.TryEnterReadLock(false, _timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 Invoking(() =>
                 {
                     @lock.EnterWriteLock();
                 })
-                    .Should()
-                    .Throw<LockRecursionException>()
+                    .ShouldThrow<LockRecursionException>()
                     .WithMessage("Write lock may not be acquired with read lock held.*");
 
                 @lock.ExitReadLock();
@@ -176,7 +169,7 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.NoRecursion);
 
                 var success = @lock.TryEnterReadLock(false, _timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitReadLock();
             }
@@ -187,10 +180,10 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.NoRecursion);
 
                 var success = @lock.TryEnterReadLock(true, _timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 success = @lock.TryEnterWriteLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitWriteLock();
                 @lock.ExitReadLock();
@@ -202,14 +195,13 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.NoRecursion);
 
                 var success = @lock.TryEnterReadLock(false, _timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 Invoking(() =>
                 {
                     @lock.EnterWriteLock();
                 })
-                    .Should()
-                    .Throw<LockRecursionException>()
+                    .ShouldThrow<LockRecursionException>()
                     .WithMessage("Write lock may not be acquired with read lock held.*");
 
                 @lock.ExitReadLock();
@@ -226,7 +218,7 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.NoRecursion);
 
                 var success = @lock.TryEnterUpgradeableReadLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitReadLock();
             }
@@ -237,10 +229,10 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.NoRecursion);
 
                 var success = @lock.TryEnterUpgradeableReadLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 success = @lock.TryEnterWriteLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitWriteLock();
                 @lock.ExitReadLock();
@@ -257,7 +249,7 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.NoRecursion);
 
                 var success = @lock.TryEnterUpgradeableReadLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitReadLock();
             }
@@ -268,10 +260,10 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.NoRecursion);
 
                 var success = @lock.TryEnterUpgradeableReadLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 success = @lock.TryEnterWriteLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitWriteLock();
                 @lock.ExitReadLock();
@@ -289,8 +281,7 @@ namespace AllOverIt.Tests.Threading
                 {
                     @lock.ExitReadLock();
                 })
-                    .Should()
-                    .Throw<SynchronizationLockException>()
+                    .ShouldThrow<SynchronizationLockException>()
                     .WithMessage("The read lock is being released without being held.*");
             }
 
@@ -306,8 +297,7 @@ namespace AllOverIt.Tests.Threading
                     @lock.EnterReadLock(upgradeable);
                     @lock.ExitReadLock();
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
         }
 
@@ -323,8 +313,7 @@ namespace AllOverIt.Tests.Threading
                     @lock.EnterWriteLock();
                     @lock.ExitWriteLock();
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -338,8 +327,7 @@ namespace AllOverIt.Tests.Threading
                 {
                     @lock.EnterWriteLock();
                 })
-                      .Should()
-                      .Throw<LockRecursionException>()
+                      .ShouldThrow<LockRecursionException>()
                       .WithMessage("Recursive write lock acquisitions not allowed in this mode.");
 
                 @lock.ExitWriteLock();
@@ -355,8 +343,7 @@ namespace AllOverIt.Tests.Threading
                     @lock.EnterWriteLock();
                     @lock.EnterWriteLock();
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
 
                 @lock.ExitWriteLock();
                 @lock.ExitWriteLock();
@@ -373,8 +360,7 @@ namespace AllOverIt.Tests.Threading
                 {
                     @lock.EnterWriteLock();
                 })
-                    .Should()
-                    .Throw<LockRecursionException>()
+                    .ShouldThrow<LockRecursionException>()
                     .WithMessage("Write lock may not be acquired with read lock held.*");
 
                 @lock.ExitReadLock();
@@ -390,8 +376,7 @@ namespace AllOverIt.Tests.Threading
                     @lock.EnterReadLock(true);
                     @lock.EnterWriteLock();
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
 
                 @lock.ExitWriteLock();
                 @lock.ExitReadLock();
@@ -408,7 +393,7 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock();
 
                 var success = @lock.TryEnterWriteLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitWriteLock();
             }
@@ -419,14 +404,13 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.NoRecursion);
 
                 var success = @lock.TryEnterWriteLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 Invoking(() =>
                 {
                     @lock.TryEnterWriteLock(_timeout);
                 })
-                            .Should()
-                            .Throw<LockRecursionException>()
+                            .ShouldThrow<LockRecursionException>()
                             .WithMessage("Recursive write lock acquisitions not allowed in this mode.");
 
                 @lock.ExitWriteLock();
@@ -438,10 +422,10 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.SupportsRecursion);
 
                 var success = @lock.TryEnterWriteLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 success = @lock.TryEnterWriteLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitWriteLock();
                 @lock.ExitWriteLock();
@@ -458,7 +442,7 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock();
 
                 var success = @lock.TryEnterWriteLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitWriteLock();
             }
@@ -469,14 +453,13 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.NoRecursion);
 
                 var success = @lock.TryEnterWriteLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 Invoking(() =>
                 {
                     @lock.TryEnterWriteLock(_timeout);
                 })
-                            .Should()
-                            .Throw<LockRecursionException>()
+                            .ShouldThrow<LockRecursionException>()
                             .WithMessage("Recursive write lock acquisitions not allowed in this mode.");
 
                 @lock.ExitWriteLock();
@@ -488,10 +471,10 @@ namespace AllOverIt.Tests.Threading
                 var @lock = new ReadWriteLock(LockRecursionPolicy.SupportsRecursion);
 
                 var success = @lock.TryEnterWriteLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 success = @lock.TryEnterWriteLock(_timeout);
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitWriteLock();
                 @lock.ExitWriteLock();
@@ -509,8 +492,7 @@ namespace AllOverIt.Tests.Threading
                 {
                     @lock.ExitWriteLock();
                 })
-                    .Should()
-                    .Throw<SynchronizationLockException>()
+                    .ShouldThrow<SynchronizationLockException>()
                     .WithMessage("The write lock is being released without being held.*");
             }
 
@@ -526,8 +508,7 @@ namespace AllOverIt.Tests.Threading
                     @lock.EnterWriteLock();
                     @lock.ExitWriteLock();
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
         }
 
@@ -543,9 +524,11 @@ namespace AllOverIt.Tests.Threading
                     @lock.Dispose();
                     @lock.Dispose();
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
     }
 }
+
+
+

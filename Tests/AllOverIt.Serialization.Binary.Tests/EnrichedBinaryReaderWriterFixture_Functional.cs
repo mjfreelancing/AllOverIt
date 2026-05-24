@@ -1,10 +1,12 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.Binary.Exceptions;
 using AllOverIt.Serialization.Binary.Readers;
 using AllOverIt.Serialization.Binary.Readers.Extensions;
 using AllOverIt.Serialization.Binary.Writers;
 using AllOverIt.Serialization.Binary.Writers.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 using System.Collections;
 using System.Text;
 
@@ -318,7 +320,7 @@ namespace AllOverIt.Serialization.Binary.Tests
         [Fact]
         public void Should_Throw_When_Value_Null_Type_Null()
         {
-            Invoking(() =>
+            Should.Throw<BinaryWriterException>(() =>
             {
                 using (var stream = new MemoryStream())
                 {
@@ -327,15 +329,13 @@ namespace AllOverIt.Serialization.Binary.Tests
                     writer.WriteObject(null, null);
                 }
             })
-            .Should()
-            .Throw<BinaryWriterException>()
             .WithMessage("All binary serialized values must be typed or have a non-null value.");
         }
 
         [Fact]
         public void Should_Throw_When_Value_Null_Type_Object()
         {
-            Invoking(() =>
+            Should.Throw<BinaryWriterException>(() =>
             {
                 using (var stream = new MemoryStream())
                 {
@@ -344,8 +344,6 @@ namespace AllOverIt.Serialization.Binary.Tests
                     writer.WriteObject(null, typeof(object));
                 }
             })
-            .Should()
-            .Throw<BinaryWriterException>()
             .WithMessage("All binary serialized values must be typed or have a non-null value.");
         }
 
@@ -392,7 +390,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().BeNull();
+            actual.ShouldBeNull();
         }
 
         [Theory]
@@ -439,7 +437,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().BeEquivalentTo(expected);
+            actual.ShouldBeEquivalentTo(expected);
         }
 
         [Theory]
@@ -486,7 +484,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().BeEquivalentTo(expected);
+            actual.ShouldBeEquivalentTo(expected);
         }
 
         [Fact]
@@ -516,7 +514,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().BeEquivalentTo(expected);
+            actual.ShouldBeEquivalentTo(expected);
         }
 
         [Fact]
@@ -546,7 +544,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().BeEquivalentTo(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -577,7 +575,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().BeEquivalentTo(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -607,7 +605,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().BeEquivalentTo(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -638,7 +636,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().BeEquivalentTo(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -668,7 +666,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -697,7 +695,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().BeEquivalentTo(expected);
+            actual.ShouldBe(expected.Cast<System.Collections.DictionaryEntry>().ToDictionary(e => (string)e.Key, e => (string)e.Value));
         }
 
         private KnownTypes CreateKnownTypes()
@@ -705,7 +703,7 @@ namespace AllOverIt.Serialization.Binary.Tests
             var knownTypes = Create<KnownTypes>();
 
             knownTypes.Strings = new List<string> { null, "a", "", null, "b" };
-            knownTypes.Doubles = knownTypes.Doubles.ToList();               // replace Autofixture type
+            knownTypes.Doubles = knownTypes.Doubles.ToList();       // replace Autofixture type
             knownTypes.NullableInts = new int?[3] { 1, null, 3 };
             knownTypes.EmptyDoubleArray = Array.Empty<double>();
             knownTypes.EmptyDoubles = new List<double>();
@@ -717,3 +715,6 @@ namespace AllOverIt.Serialization.Binary.Tests
         }
     }
 }
+
+
+

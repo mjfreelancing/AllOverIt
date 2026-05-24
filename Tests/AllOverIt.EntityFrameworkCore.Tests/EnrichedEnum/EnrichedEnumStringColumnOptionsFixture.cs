@@ -1,4 +1,4 @@
-﻿using AllOverIt.EntityFrameworkCore.EnrichedEnum;
+using AllOverIt.EntityFrameworkCore.EnrichedEnum;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Assertions;
@@ -33,3 +33,5 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
         }
     }
 }
+
+

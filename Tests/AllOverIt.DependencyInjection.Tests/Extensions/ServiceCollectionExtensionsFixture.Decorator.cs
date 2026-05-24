@@ -1,10 +1,10 @@
-﻿using AllOverIt.Aspects;
+using AllOverIt.Aspects;
 using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.DependencyInjection.Extensions;
 using AllOverIt.DependencyInjection.Tests.Helpers;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -44,13 +44,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [Fact]
             public void Should_Throw_When_ServiceCollection_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = ServiceCollectionExtensions.Decorate<IDummyDecoratorInterface, DummyDecorator3>(null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("serviceCollection");
+                }).WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Fact]
@@ -73,14 +70,14 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 foreach (var instance in instances)
                 {
-                    instance.Should().BeOfType<DummyDecorator3>();
+                    instance.ShouldBeOfType<DummyDecorator3>();
 
                     var decorator = instance as DummyDecorator3;
 
                     decoratedTypes.Add(decorator!.Decorated.GetType());
                 }
 
-                decoratedTypes.Should().BeEquivalentTo(new[] { typeof(DummyDecorator1), typeof(DummyDecorator2) });
+                decoratedTypes.ShouldBe(new[] { typeof(DummyDecorator1), typeof(DummyDecorator2) });
             }
 
             [Theory]
@@ -139,15 +136,12 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [Fact]
             public void Should_Throw_When_No_Interface_Registered()
             {
-                Invoking(() =>
+                Should.Throw<DependencyRegistrationException>(() =>
                 {
                     var services = new ServiceCollection();
 
                     ServiceCollectionExtensions.Decorate<IDummyDecoratorInterface, DummyDecorator3>(services);
-                })
-                .Should()
-                .Throw<DependencyRegistrationException>()
-                .WithMessage($"No registered services found for the type '{typeof(IDummyDecoratorInterface).GetFriendlyName()}'.");
+                }).WithMessage($"No registered services found for the type '{typeof(IDummyDecoratorInterface).GetFriendlyName()}'.");
             }
 
             [Fact]
@@ -166,7 +160,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 var actual = provider.GetRequiredService<IDummyDecoratorInterface>() as DummyDecorator3;
 
-                actual.Decorated.Should().BeSameAs(expected);
+                actual.Decorated.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -183,7 +177,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 var actual = provider.GetRequiredService<IDummyDecoratorInterface>() as DummyDecorator3;
 
-                actual.Decorated.Should().BeOfType<DummyDecorator1>();
+                actual.Decorated.ShouldBeOfType<DummyDecorator1>();
             }
 
         }
@@ -213,13 +207,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
             [Fact]
             public void Should_Throw_When_ServiceCollection_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = ServiceCollectionExtensions.DecorateWithInterceptor<IDummyDecoratorInterface, DummyInterceptor>(null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("serviceCollection");
+                }).WithNamedMessageWhenNull("serviceCollection");
             }
 
             [Fact]
@@ -229,12 +220,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 services.AddSingleton<IDummyDecoratorInterface, DummyDecorator1>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _ = ServiceCollectionExtensions.DecorateWithInterceptor<IDummyDecoratorInterface, DummyInterceptor>(services, null);
-                })
-                .Should()
-                .NotThrow();
+                });
             }
 
             [Fact]
@@ -246,7 +235,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 var actual = ServiceCollectionExtensions.DecorateWithInterceptor<IDummyDecoratorInterface, DummyInterceptor>(services, null);
 
-                actual.Should().BeSameAs(services);
+                actual.ShouldBeSameAs(services);
             }
 
             [Fact]
@@ -267,7 +256,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 _ = provider.GetRequiredService<IDummyDecoratorInterface>();
 
-                actual.Should().BeAssignableTo(typeof(IDummyDecoratorInterface));
+                actual.ShouldBeAssignableTo(typeof(IDummyDecoratorInterface));
             }
 
             [Fact]
@@ -298,7 +287,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 service.SetValue(expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -328,8 +317,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                 service.SetValue(input);
 
-                (service as DummyInterceptor).Actual.Should().Be(expected);
+                (service as DummyInterceptor).Actual.ShouldBe(expected);
             }
         }
     }
 }
+
+

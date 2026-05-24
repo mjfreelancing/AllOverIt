@@ -1,7 +1,6 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Pagination.Tests
 {
@@ -29,8 +28,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     _ = new ColumnDefinition<DummyEntity, int>(null, Create<bool>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("property");
             }
         }
@@ -48,8 +46,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     idPropertyDefinition.ApplyColumnOrderTo(null, Create<PaginationDirection>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("queryable");
             }
 
@@ -77,7 +74,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = query.ToList();
 
-                expected.Should().ContainInOrder(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -94,8 +91,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     idPropertyDefinition.ThenApplyColumnOrderTo(null, Create<PaginationDirection>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("queryable");
             }
 
@@ -140,8 +136,13 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = query.ToList();
 
-                expected.Should().ContainInOrder(actual);
+                expected.ShouldBe(actual);
             }
         }
     }
 }
+
+
+
+
+

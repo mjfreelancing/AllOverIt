@@ -2,8 +2,7 @@
 
 using AllOverIt.Fixture;
 using AllOverIt.Patterns.Result;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Tests.Patterns.Result;
 
 public partial class EnrichedErrorFixture : FixtureBase
@@ -34,7 +33,7 @@ public partial class EnrichedErrorFixture : FixtureBase
                 Description = (string?) null
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(actual);
         }
     }
 
@@ -56,7 +55,7 @@ public partial class EnrichedErrorFixture : FixtureBase
                 Description = description
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(actual);
         }
     }
 
@@ -79,7 +78,9 @@ public partial class EnrichedErrorFixture : FixtureBase
                 Description = description
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(actual);
         }
     }
 }
+
+

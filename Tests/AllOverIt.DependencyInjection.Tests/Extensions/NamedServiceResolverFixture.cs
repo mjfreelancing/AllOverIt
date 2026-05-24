@@ -1,8 +1,8 @@
-﻿using AllOverIt.DependencyInjection.Exceptions;
+using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.DependencyInjection.Tests.Extensions
@@ -66,7 +66,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                     var actual = ((INamedServiceResolver<IDummyInterface>) _serviceResolver).GetRequiredNamedService(name);
 
-                    actual.Should().BeOfType<Dummy1>();
+                    actual.ShouldBeOfType<Dummy1>();
                 }
 
                 [Fact]
@@ -76,13 +76,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                     _registration.Register<Dummy1>(name);
 
-                    Invoking(() =>
-                    {
+                    Should.Throw<DependencyRegistrationException>(() =>
+                {
                         _registration.Register<Dummy1>(name);
-                    })
-                    .Should()
-                    .Throw<DependencyRegistrationException>()
-                    .WithMessage($"The name '{name}' has already been registered against the type '{nameof(Dummy1)}'.");
+                    }).WithMessage($"The name '{name}' has already been registered against the type '{nameof(Dummy1)}'.");
                 }
             }
 
@@ -108,7 +105,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                     var actual = ((INamedServiceResolver<IDummyInterface>) _serviceResolver).GetRequiredNamedService(name);
 
-                    actual.Should().BeOfType<Dummy1>();
+                    actual.ShouldBeOfType<Dummy1>();
                 }
 
                 [Fact]
@@ -116,13 +113,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 {
                     var name = Create<string>();
 
-                    Invoking(() =>
-                    {
+                    Should.Throw<DependencyRegistrationException>(() =>
+                {
                         _registration.Register(name, typeof(Dummy2));
-                    })
-                    .Should()
-                    .Throw<DependencyRegistrationException>()
-                    .WithMessage($"The type '{typeof(Dummy2).GetFriendlyName()}' with name '{name}' does not implement '{nameof(IDummyInterface)}'.");
+                    }).WithMessage($"The type '{typeof(Dummy2).GetFriendlyName()}' with name '{name}' does not implement '{nameof(IDummyInterface)}'.");
                 }
 
                 [Fact]
@@ -132,13 +126,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                     _registration.Register(name, typeof(Dummy1));
 
-                    Invoking(() =>
-                    {
+                    Should.Throw<DependencyRegistrationException>(() =>
+                {
                         _registration.Register(name, typeof(Dummy1));
-                    })
-                    .Should()
-                    .Throw<DependencyRegistrationException>()
-                    .WithMessage($"The name '{name}' has already been registered against the type '{nameof(Dummy1)}'.");
+                    }).WithMessage($"The name '{name}' has already been registered against the type '{nameof(Dummy1)}'.");
                 }
             }
 
@@ -162,7 +153,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
 
                     var actual = ((INamedServiceResolver<IDummyInterface>) _serviceResolver).GetRequiredNamedService(name);
 
-                    actual.Should().BeOfType<Dummy1>();
+                    actual.ShouldBeOfType<Dummy1>();
                 }
 
                 [Fact]
@@ -170,13 +161,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 {
                     var name = Create<string>();
 
-                    Invoking(() =>
-                    {
+                    Should.Throw<DependencyRegistrationException>(() =>
+                {
                         _ = ((INamedServiceResolver<IDummyInterface>) _serviceResolver).GetRequiredNamedService(name);
-                    })
-                    .Should()
-                    .Throw<DependencyRegistrationException>()
-                    .WithMessage($"No service of type {nameof(IDummyInterface)} was found for the name {name}.");
+                    }).WithMessage($"No service of type {nameof(IDummyInterface)} was found for the name {name}.");
                 }
 
                 [Fact]
@@ -194,9 +182,9 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     var actual2 = ((INamedServiceResolver<IDummyInterface>) _serviceResolver).GetRequiredNamedService(name2);
                     var actual3 = ((INamedServiceResolver<IDummyInterface>) _serviceResolver).GetRequiredNamedService(name3);
 
-                    actual1.Should().BeOfType<Dummy1>();
-                    actual2.Should().BeOfType<Dummy1>();
-                    actual3.Should().BeOfType<Dummy3>();
+                    actual1.ShouldBeOfType<Dummy1>();
+                    actual2.ShouldBeOfType<Dummy1>();
+                    actual3.ShouldBeOfType<Dummy3>();
                 }
             }
         }
@@ -210,13 +198,10 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 public void Should_Throw_When_Provider_Null()
                 {
 
-                    Invoking(() =>
-                    {
+                    Should.Throw<ArgumentNullException>(() =>
+                {
                         _ = new NamedServiceResolver(null);
-                    })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("provider");
+                    }).WithNamedMessageWhenNull("provider");
                 }
             }
 
@@ -248,7 +233,7 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                     // Test setup includes registration of INamedServiceResolver<IDummyInterface>
                     var actual = ((INamedServiceResolver) _resolver).GetRequiredNamedService<IDummyInterface>(name);
 
-                    actual.Should().BeOfType<Dummy1>();
+                    actual.ShouldBeOfType<Dummy1>();
                 }
 
                 [Fact]
@@ -256,16 +241,15 @@ namespace AllOverIt.DependencyInjection.Tests.Extensions
                 {
                     var name = Create<string>();
 
-                    Invoking(() =>
-                    {
+                    Should.Throw<DependencyRegistrationException>(() =>
+                {
                         // Test setup includes registration of INamedServiceResolver<IDummyInterface>
                         _ = ((INamedServiceResolver) _resolver).GetRequiredNamedService<IDummyInterface>(name);
-                    })
-                    .Should()
-                    .Throw<DependencyRegistrationException>()
-                    .WithMessage($"No service of type {nameof(IDummyInterface)} was found for the name {name}.");
+                    }).WithMessage($"No service of type {nameof(IDummyInterface)} was found for the name {name}.");
                 }
             }
         }
     }
 }
+
+

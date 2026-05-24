@@ -2,8 +2,8 @@ using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
 using System.Linq.Expressions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
@@ -33,36 +33,30 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Condition_Null()
             {
-                Invoking(() => _operator = new IfOperator(null, this.CreateStub<Expression>(), this.CreateStub<Expression>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _operator = new IfOperator(null, this.CreateStub<Expression>(), this.CreateStub<Expression>()))
                     .WithNamedMessageWhenNull("operand1");
             }
 
             [Fact]
             public void Should_Throw_When_True_Operand_Null()
             {
-                Invoking(() => _operator = new IfOperator(this.CreateStub<Expression>(), null, this.CreateStub<Expression>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _operator = new IfOperator(this.CreateStub<Expression>(), null, this.CreateStub<Expression>()))
                     .WithNamedMessageWhenNull("operand2");
             }
 
             [Fact]
             public void Should_Throw_When_False_Operand_Null()
             {
-                Invoking(() => _operator = new IfOperator(this.CreateStub<Expression>(), this.CreateStub<Expression>(), null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _operator = new IfOperator(this.CreateStub<Expression>(), this.CreateStub<Expression>(), null))
                     .WithNamedMessageWhenNull("operand3");
             }
 
             [Fact]
             public void Should_Set_Members()
             {
-                _operator._operand1.Should().BeSameAs(_conditionOperand);
-                _operator._operand2.Should().BeSameAs(_trueOperand);
-                _operator._operand3.Should().BeSameAs(_falseOperand);
+                _operator._operand1.ShouldBeSameAs(_conditionOperand);
+                _operator._operand2.ShouldBeSameAs(_trueOperand);
+                _operator._operand3.ShouldBeSameAs(_falseOperand);
             }
         }
 
@@ -76,7 +70,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
 
                 var actual = expression.ToString();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }

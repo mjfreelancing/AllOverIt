@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Collections;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 using System.Collections;
 
 namespace AllOverIt.Tests.Collections
@@ -23,7 +23,7 @@ namespace AllOverIt.Tests.Collections
             public void Should_Be_Empty()
             {
                 var actual = new ReadOnlyList<int>();
-                actual.Should().BeEmpty();
+                actual.ShouldBeEmpty();
             }
         }
 
@@ -36,7 +36,7 @@ namespace AllOverIt.Tests.Collections
 
                 var actual = new ReadOnlyList<int>(expected);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -50,7 +50,7 @@ namespace AllOverIt.Tests.Collections
                 var expected = _data[index];
                 var actual = _list[index];
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -59,7 +59,7 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Return_Count()
             {
-                _list.Count.Should().Be(_data.Count);
+                _list.Count.ShouldBe(_data.Count);
             }
         }
 
@@ -76,7 +76,7 @@ namespace AllOverIt.Tests.Collections
                     results.Add(enumerator.Current);
                 }
 
-                results.Should().BeEquivalentTo(_data);
+                results.ShouldBeEquivalentTo(_data);
             }
 
             [Fact]
@@ -91,14 +91,21 @@ namespace AllOverIt.Tests.Collections
                     results.Add(value);
                 }
 
-                results.Should().BeEquivalentTo(_data);
+                results.ShouldBeEquivalentTo(_data);
             }
         }
 
         [Fact]
         public void Should_Be_Immutable()
         {
-            _list.Should().NotBeAssignableTo<ICollection<int>>();
+            _list.ShouldNotBeAssignableTo<ICollection<int>>();
         }
     }
 }
+
+
+
+
+
+
+

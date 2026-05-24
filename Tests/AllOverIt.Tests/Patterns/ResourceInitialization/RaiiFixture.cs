@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ResourceInitialization;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.ResourceInitialization
 {
@@ -18,8 +17,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                         {
                             _ = new Raii(null, () => { });
                         })
-                        .Should()
-                        .Throw<ArgumentNullException>()
+                        .ShouldThrow<ArgumentNullException>()
                         .WithNamedMessageWhenNull("initialize");
                 }
 
@@ -30,8 +28,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                         {
                             _ = new Raii(() => { }, null);
                         })
-                        .Should()
-                        .Throw<ArgumentNullException>()
+                        .ShouldThrow<ArgumentNullException>()
                         .WithNamedMessageWhenNull("cleanup");
                 }
 
@@ -47,7 +44,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
 
                     using (new Raii(Initialize, () => { }))
                     {
-                        initialized.Should().BeTrue();
+                        initialized.ShouldBeTrue();
                     }
                 }
 
@@ -63,7 +60,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
 
                     using (new Raii(() => { }, Cleanup))
                     {
-                        cleanedUp.Should().BeFalse();
+                        cleanedUp.ShouldBeFalse();
                     }
                 }
 
@@ -80,7 +77,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                     using (new Raii(() => { }, Cleanup))
                     { }
 
-                    cleanedUp.Should().BeTrue();
+                    cleanedUp.ShouldBeTrue();
                 }
             }
 
@@ -100,7 +97,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                     {
                     }
 
-                    cleanedUp.Should().BeTrue();
+                    cleanedUp.ShouldBeTrue();
                 }
             }
         }
@@ -116,8 +113,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                         {
                             _ = new Raii<int>(null, _ => { });
                         })
-                        .Should()
-                        .Throw<ArgumentNullException>()
+                        .ShouldThrow<ArgumentNullException>()
                         .WithNamedMessageWhenNull("initialize");
                 }
 
@@ -130,8 +126,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                         {
                             _ = new Raii<int>(() => value, null);
                         })
-                        .Should()
-                        .Throw<ArgumentNullException>()
+                        .ShouldThrow<ArgumentNullException>()
                         .WithNamedMessageWhenNull("cleanup");
                 }
 
@@ -149,7 +144,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
 
                     using (new Raii<int>(Initialize, _ => { }))
                     {
-                        initialized.Should().Be(value);
+                        initialized.ShouldBe(value);
                     }
                 }
 
@@ -165,7 +160,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
 
                     using (var raii = new Raii<int>(Initialize, _ => { }))
                     {
-                        raii.Context.Should().Be(value);
+                        raii.Context.ShouldBe(value);
                     }
                 }
 
@@ -184,7 +179,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                     {
                     }
 
-                    initValue.Should().Be(value);
+                    initValue.ShouldBe(value);
                 }
 
                 [Fact]
@@ -199,7 +194,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
 
                     using (new Raii<int>(Create<int>, Cleanup))
                     {
-                        cleanedUp.Should().BeFalse();
+                        cleanedUp.ShouldBeFalse();
                     }
                 }
 
@@ -217,7 +212,7 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                     {
                     }
 
-                    cleanedUp.Should().BeTrue();
+                    cleanedUp.ShouldBeTrue();
                 }
             }
 
@@ -237,9 +232,12 @@ namespace AllOverIt.Tests.Patterns.ResourceInitialization
                     {
                     }
 
-                    cleanedUp.Should().BeTrue();
+                    cleanedUp.ShouldBeTrue();
                 }
             }
         }
     }
 }
+
+
+

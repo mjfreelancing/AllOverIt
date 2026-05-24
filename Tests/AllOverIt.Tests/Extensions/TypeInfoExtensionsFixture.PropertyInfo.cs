@@ -1,6 +1,8 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly;
+using AllOverIt.Shouldly.Extensions;
+using System.Linq;
 using System.Reflection;
 
 namespace AllOverIt.Tests.Extensions
@@ -27,7 +29,8 @@ namespace AllOverIt.Tests.Extensions
             {
                 var typeInfo = typeof(PropertySuperClass).GetTypeInfo();
 
-                var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, false);
+                var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, false)
+                    .Select(item => new { item.Name, item.PropertyType });
 
                 var expected = new[]
                 {
@@ -37,7 +40,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Prop4", PropertyType = typeof(long)}
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -45,7 +48,8 @@ namespace AllOverIt.Tests.Extensions
             {
                 var typeInfo = typeof(PropertyBaseClass).GetTypeInfo();
 
-                var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, false);
+                var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, false)
+                    .Select(item => new { item.Name, item.PropertyType });
 
                 var expected = new[]
                 {
@@ -54,7 +58,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Prop3", PropertyType = typeof(double)}
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -62,7 +66,8 @@ namespace AllOverIt.Tests.Extensions
             {
                 var typeInfo = typeof(PropertySuperClass).GetTypeInfo();
 
-                var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, true);
+                var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, true)
+                    .Select(item => new { item.Name, item.PropertyType });
 
                 var expected = new[]
                 {
@@ -70,7 +75,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Prop4", PropertyType = typeof(long)}
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
         }
 
@@ -82,11 +87,11 @@ namespace AllOverIt.Tests.Extensions
                 var typeInfo = typeof(PropertySuperClass).GetTypeInfo();
 
                 // cast is required for BeEquivalentTo()
-                var actual = (object) TypeInfoExtensions.GetPropertyInfo(typeInfo, "Prop4");
+                var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, "Prop4");
 
                 var expected = new { Name = "Prop4", PropertyType = typeof(long) };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.PropertyType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -94,11 +99,11 @@ namespace AllOverIt.Tests.Extensions
             {
                 var typeInfo = typeof(PropertyBaseClass).GetTypeInfo();
 
-                var actual = (object) TypeInfoExtensions.GetPropertyInfo(typeInfo, "Prop1");
+                var actual = TypeInfoExtensions.GetPropertyInfo(typeInfo, "Prop1");
 
                 var expected = new { Name = "Prop1", PropertyType = typeof(int) };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.PropertyType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -108,8 +113,15 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = (object) TypeInfoExtensions.GetPropertyInfo(typeInfo, "PropXYZ");
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
         }
     }
 }
+
+
+
+
+
+
+

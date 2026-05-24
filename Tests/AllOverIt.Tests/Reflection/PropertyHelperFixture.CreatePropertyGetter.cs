@@ -1,9 +1,8 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Reflection.Exceptions;
-using FluentAssertions;
 using System.Reflection;
 
 namespace AllOverIt.Tests.Reflection
@@ -72,8 +71,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = PropertyHelper.CreatePropertyGetter(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyInfo");
             }
 
@@ -92,14 +90,14 @@ namespace AllOverIt.Tests.Reflection
                 var getter2 = PropertyHelper.CreatePropertyGetter(prop2Info);
 
                 var actual1 = getter1.Invoke(expected);
-                actual1.Should().Be(expected.Prop1);
+                actual1.ShouldBe(expected.Prop1);
 
                 var actual2 = getter2.Invoke(expected);
-                actual2.Should().BeNull();
+                actual2.ShouldBeNull();
 
                 expected.Prop2 = Create<string>();
                 actual2 = getter2.Invoke(expected);
-                actual2.Should().Be(expected.Prop2);
+                actual2.ShouldBe(expected.Prop2);
             }
 
             [Fact]
@@ -114,7 +112,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(model);
 
-                actual.Should().Be(1);
+                actual.ShouldBe(1);
             }
 
             [Fact]
@@ -125,8 +123,7 @@ namespace AllOverIt.Tests.Reflection
                     var propInfo = typeof(DummySuperClass).GetProperty(nameof(DummySuperClass.Prop5));
                     _ = PropertyHelper.CreatePropertyGetter(propInfo);
                 })
-                  .Should()
-                  .Throw<ReflectionException>()
+                  .ShouldThrow<ReflectionException>()
                   .WithMessage($"The property {nameof(DummySuperClass.Prop5)} on type {nameof(DummySuperClass)} does not have a getter.");
             }
         }
@@ -140,8 +137,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass>((PropertyInfo)null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyInfo");
             }
 
@@ -158,7 +154,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(expected);
 
-                actual.Should().Be(expected.Prop1);
+                actual.ShouldBe(expected.Prop1);
             }
 
             [Fact]
@@ -174,7 +170,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(expected);
 
-                actual.Should().Be(expected.Prop1);
+                actual.ShouldBe(expected.Prop1);
             }
 
             [Fact]
@@ -189,7 +185,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(model);
 
-                actual.Should().Be(1);
+                actual.ShouldBe(1);
             }
 
             [Fact]
@@ -200,8 +196,7 @@ namespace AllOverIt.Tests.Reflection
                     var propInfo = typeof(DummySuperClass).GetProperty(nameof(DummySuperClass.Prop5));
                     _ = PropertyHelper.CreatePropertyGetter<DummySuperClass>(propInfo);
                 })
-                  .Should()
-                  .Throw<ReflectionException>()
+                  .ShouldThrow<ReflectionException>()
                   .WithMessage($"The property {nameof(DummySuperClass.Prop5)} on type {nameof(DummySuperClass)} does not have a getter.");
             }
         }
@@ -215,8 +210,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass>((string)null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyName");
             }
 
@@ -232,7 +226,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(expected);
 
-                actual.Should().Be(expected.Prop1);
+                actual.ShouldBe(expected.Prop1);
             }
 
             [Fact]
@@ -247,7 +241,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(expected);
 
-                actual.Should().Be(expected.Prop1);
+                actual.ShouldBe(expected.Prop1);
             }
 
             [Fact]
@@ -259,8 +253,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass>(propertyName);
                 })
-                   .Should()
-                   .Throw<ReflectionException>()
+                   .ShouldThrow<ReflectionException>()
                    .WithMessage($"The property {propertyName} on type {typeof(DummyBaseClass).GetFriendlyName()} does not exist.");
             }
         }
@@ -274,8 +267,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = PropertyHelper.CreatePropertyGetter<DummyBaseClass, int>((string)null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyName");
             }
 
@@ -291,7 +283,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(expected);
 
-                actual.Should().Be(expected.Prop1);
+                actual.ShouldBe(expected.Prop1);
             }
 
             [Fact]
@@ -306,8 +298,12 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(expected);
 
-                actual.Should().Be(expected.Prop1);
+                actual.ShouldBe(expected.Prop1);
             }
         }
     }
 }
+
+
+
+

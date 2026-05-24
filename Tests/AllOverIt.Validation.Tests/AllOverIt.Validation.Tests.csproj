@@ -7,6 +7,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture.FakeItEasy\AllOverIt.Fixture.FakeItEasy.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
+        <ProjectReference Include="..\..\Source\AllOverIt.Shouldly\AllOverIt.Shouldly.csproj" />
         <ProjectReference Include="..\..\Source\AllOverIt.Validation\AllOverIt.Validation.csproj" />
     </ItemGroup>
 

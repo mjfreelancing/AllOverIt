@@ -6,8 +6,9 @@ using AllOverIt.Serialization.Binary.Tests.FunctionalTypes.Readers;
 using AllOverIt.Serialization.Binary.Tests.FunctionalTypes.Writers;
 using AllOverIt.Serialization.Binary.Writers;
 using AllOverIt.Serialization.Binary.Writers.Extensions;
-using FluentAssertions;
+using Shouldly;
 using System.Text;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Serialization.Binary.Tests
 {
@@ -50,7 +51,13 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().BeEquivalentTo(expected);
+            var actualList = actual.ToList();
+            var expectedList = expected.ToList();
+            actualList.Count.ShouldBe(expectedList.Count);
+            for (var i = 0; i < actualList.Count; i++)
+            {
+                AssertClassroom(actualList[i], expectedList[i]);
+            }
         }
 
         [Fact]
@@ -88,7 +95,7 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().BeEquivalentTo(expected);
+            AssertClassroom((Classroom)actual, expected);
         }
 
         [Fact]
@@ -118,7 +125,25 @@ namespace AllOverIt.Serialization.Binary.Tests
                 }
             }
 
-            actual.Should().BeEquivalentTo(expected);
+            AssertClassroom((Classroom)actual, expected);
+        }
+
+        private static void AssertClassroom(Classroom actual, Classroom expected)
+        {
+            actual.RoomId.ShouldBe(expected.RoomId);
+            actual.Teacher.ShouldBeEquivalentTo(expected.Teacher);
+            var actualStudents = actual.Students.ToList();
+            var expectedStudents = expected.Students.ToList();
+            actualStudents.Count.ShouldBe(expectedStudents.Count);
+            for (var i = 0; i < actualStudents.Count; i++)
+            {
+                actualStudents[i].ShouldBeEquivalentTo(expectedStudents[i]);
+            }
         }
     }
 }
+
+
+
+
+

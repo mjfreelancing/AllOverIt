@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serilog.Sinks.CircularBuffer;
 using FluentAssertions;
@@ -46,7 +46,7 @@ namespace AllOverIt.Serilog.Tests.Extensions
                 var actual = AllOverIt.Serilog.Extensions.LoggerSinkConfigurationExtensions
                     .CircularBuffer(loggerSinkConfiguration, new CircularBufferSinkMessages(1), Create<string>());
 
-                actual.Should().BeOfType<LoggerConfiguration>();
+                actual.ShouldBeOfType<LoggerConfiguration>();
             }
         }
 
@@ -90,7 +90,7 @@ namespace AllOverIt.Serilog.Tests.Extensions
                 var actual = AllOverIt.Serilog.Extensions.LoggerSinkConfigurationExtensions
                     .CircularBuffer(loggerSinkConfiguration, new CircularBufferSinkMessages(1), formatter);
 
-                actual.Should().BeOfType<LoggerConfiguration>();
+                actual.ShouldBeOfType<LoggerConfiguration>();
             }
         }
     }

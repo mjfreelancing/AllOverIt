@@ -1,6 +1,5 @@
-﻿using AllOverIt.Diagnostics.Breadcrumbs;
+using AllOverIt.Diagnostics.Breadcrumbs;
 using AllOverIt.Fixture;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {
@@ -11,8 +10,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
         {
             var instance = GlobalBreadcrumbs.Instance;
 
-            instance.Should().BeAssignableTo<IBreadcrumbs>();
-            instance.Enabled.Should().BeTrue();
+            instance.ShouldBeAssignableTo<IBreadcrumbs>();
+            instance.Enabled.ShouldBeTrue();
         }
 
         [Fact]
@@ -25,7 +24,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
             var instance = GlobalBreadcrumbs.Create(options);
 
-            instance.Enabled.Should().BeFalse();
+            instance.Enabled.ShouldBeFalse();
         }
 
         [Fact]
@@ -34,7 +33,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             var instance1 = GlobalBreadcrumbs.Instance;
             var instance2 = GlobalBreadcrumbs.Instance;
 
-            instance1.Should().BeSameAs(instance2);
+            instance1.ShouldBeSameAs(instance2);
         }
 
         [Fact]
@@ -46,7 +45,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
             var instance2 = GlobalBreadcrumbs.Instance;
 
-            instance1.Should().NotBeSameAs(instance2);
+            instance1.ShouldNotBeSameAs(instance2);
         }
 
         [Fact]
@@ -56,8 +55,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             {
                 GlobalBreadcrumbs.Destroy();
             })
-            .Should()
-            .NotThrow();
+            .ShouldNotThrow();
         }
 
         [Fact]
@@ -70,8 +68,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 GlobalBreadcrumbs.Destroy();
                 GlobalBreadcrumbs.Destroy();
             })
-            .Should()
-            .NotThrow();
+            .ShouldNotThrow();
         }
     }
 }
+
+
+
+

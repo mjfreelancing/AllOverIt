@@ -5,8 +5,7 @@ using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Formatters.Objects.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Tests.Formatters.Objects.Extensions
 {
     public class ObjectPropertyEnumerableOptionsExtensionsFixture : FixtureBase
@@ -40,8 +39,7 @@ namespace AllOverIt.Tests.Formatters.Objects.Extensions
                     {
                         ObjectPropertyEnumerableOptionsExtensions.SetAutoCollatedPaths((ObjectPropertyEnumerableOptions) null, new PropertyNodes<DummyObject>());
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("options");
             }
 
@@ -52,8 +50,7 @@ namespace AllOverIt.Tests.Formatters.Objects.Extensions
                     {
                         ObjectPropertyEnumerableOptionsExtensions.SetAutoCollatedPaths(new ObjectPropertyEnumerableOptions(), null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyNodes");
             }
 
@@ -64,8 +61,7 @@ namespace AllOverIt.Tests.Formatters.Objects.Extensions
                     {
                         ObjectPropertyEnumerableOptionsExtensions.SetAutoCollatedPaths(_options);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("propertyNodes");
             }
 
@@ -80,8 +76,7 @@ namespace AllOverIt.Tests.Formatters.Objects.Extensions
 
                         ObjectPropertyEnumerableOptionsExtensions.SetAutoCollatedPaths(_options, nodes);
                     })
-                    .Should()
-                    .Throw<ObjectPropertyFilterException>()
+                    .ShouldThrow<ObjectPropertyFilterException>()
                     .WithMessage("The leaf property on path 'Prop3' cannot be a class type (ChildObject).");
             }
 
@@ -97,7 +92,7 @@ namespace AllOverIt.Tests.Formatters.Objects.Extensions
 
                 var expected = new[] { "Prop3.Prop4" };
 
-                expected.Should().BeEquivalentTo(_options.AutoCollatedPaths);
+                expected.ShouldBeEquivalentTo(_options.AutoCollatedPaths);
             }
 
             [Fact]
@@ -124,8 +119,11 @@ namespace AllOverIt.Tests.Formatters.Objects.Extensions
 
                 var expected = new[] { "Prop3.Prop4", "Prop5.Prop4", "Prop1", "Prop6" };
 
-                expected.Should().BeEquivalentTo(_options.AutoCollatedPaths);
+                expected.ShouldBeEquivalentTo(_options.AutoCollatedPaths);
             }
         }
     }
 }
+
+
+

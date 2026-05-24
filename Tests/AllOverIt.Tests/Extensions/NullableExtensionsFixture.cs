@@ -1,6 +1,6 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -20,9 +20,17 @@ namespace AllOverIt.Tests.Extensions
 
             var (hasValue, value) = actual;
 
-            hasValue.Should().Be(expected);
-            hasValue.Should().Be(actual.HasValue);
-            value.Should().Be(expected ? actual.Value : default);
+            hasValue.ShouldBe(expected);
+            hasValue.ShouldBe(actual.HasValue);
+            value.ShouldBe(expected ? actual.Value : default);
         }
     }
 }
+
+
+
+
+
+
+
+

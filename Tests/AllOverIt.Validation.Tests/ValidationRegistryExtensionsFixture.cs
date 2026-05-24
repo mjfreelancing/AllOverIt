@@ -1,9 +1,8 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Validation.Exceptions;
 using AllOverIt.Validation.Extensions;
-using FluentAssertions;
 using FluentValidation;
 
 namespace AllOverIt.Validation.Tests
@@ -27,13 +26,12 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Throw_When_ValidationRegistry_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     ValidationRegistryExtensions.AutoRegisterValidators<DummyRegistrar>(null);
-                })
-                   .Should()
-                   .Throw<ArgumentNullException>()
-                   .WithNamedMessageWhenNull("validationRegistry");
+                });
+
+                exception.WithNamedMessageWhenNull("validationRegistry");
             }
 
             [Fact]
@@ -49,7 +47,7 @@ namespace AllOverIt.Validation.Tests
                     return false;
                 });
 
-                wasFiltered.Should().BeTrue();
+                wasFiltered.ShouldBeTrue();
             }
 
             [Fact]
@@ -65,7 +63,7 @@ namespace AllOverIt.Validation.Tests
 
                 var validator = validatorCache[typeof(DummyModel)].Value;
 
-                validator.Should().BeOfType(typeof(DummyModelValidator));
+                validator.ShouldBeOfType(typeof(DummyModelValidator));
             }
 
             [Fact]
@@ -79,14 +77,19 @@ namespace AllOverIt.Validation.Tests
                 });
 
                 // registering the validator a second time will throw an error
-                Invoking(() =>
+                var exception = Should.Throw<ValidationRegistryException>(() =>
                 {
                     ((IValidationRegistry) invoker).Register<DummyModel, DummyModelValidator>();
-                })
-                   .Should()
-                   .Throw<ValidationRegistryException>()
-                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+                });
+
+                exception.Message.ShouldBe($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
             }
         }
     }
 }
+
+
+
+
+
+

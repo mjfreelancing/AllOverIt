@@ -1,9 +1,8 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Patterns.Pipeline;
 using AllOverIt.ReactiveUI.Extensions;
-using FluentAssertions;
 using ReactiveUI;
 
 namespace AllOverIt.ReactiveUI.Tests.Extensions
@@ -15,28 +14,24 @@ namespace AllOverIt.ReactiveUI.Tests.Extensions
             [Fact]
             public void Should_Throw_When_PrevStep_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     var command = ReactiveCommand.Create<double, string>(_ => string.Empty);
 
                     _ = PipelineBuilderAsyncExtensions.Pipe<int, double, string>(null, command);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("prevStep");
             }
 
             [Fact]
             public void Should_Throw_When_Step_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     var prevStep = this.CreateStub<IPipelineBuilderAsync<int, double>>();
 
                     _ = PipelineBuilderAsyncExtensions.Pipe<int, double, string>(prevStep, null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("step");
             }
 
@@ -50,8 +45,14 @@ namespace AllOverIt.ReactiveUI.Tests.Extensions
 
                 var actual = PipelineBuilderAsyncExtensions.Pipe<int, double, string>(prevStep, command);
 
-                actual.Should().BeOfType<PipelineBuilderAsync<int, double, string>>();
+                actual.ShouldBeOfType<PipelineBuilderAsync<int, double, string>>();
             }
         }
     }
 }
+
+
+
+
+
+

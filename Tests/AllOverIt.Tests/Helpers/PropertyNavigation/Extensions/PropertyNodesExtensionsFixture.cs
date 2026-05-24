@@ -2,8 +2,8 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
-using FluentAssertions;
 using System.Linq.Expressions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 {
@@ -42,8 +42,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
                 {
                     _ = PropertyNodesExtensions.Navigate(null, _expression1);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyNodes");
             }
 
@@ -54,8 +53,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
                     {
                         _ = PropertyNodesExtensions.Navigate(_nodes, (Expression<Func<DummyObject, bool>>) null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression");
             }
 
@@ -66,7 +64,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 
                 var actual = PropertyNodesExtensions.Navigate(_nodes, _expression1);
 
-                actual.Nodes.Single().Expression.Should().BeSameAs(expected);
+                actual.Nodes.Single().Expression.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -79,10 +77,10 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 
                 var actual = PropertyNodesExtensions.Navigate(_nodes, expression);
 
-                actual.Nodes.Should().HaveCount(2);
+                actual.Nodes.Count.ShouldBe(2);
 
-                expected0.Member.Name.Should().BeEquivalentTo(actual.Nodes.ElementAt(0).Expression.Member.Name);
-                expected1.Member.Name.Should().BeSameAs(actual.Nodes.ElementAt(1).Expression.Member.Name);
+                expected0.Member.Name.ShouldBeEquivalentTo(actual.Nodes.ElementAt(0).Expression.Member.Name);
+                expected1.Member.Name.ShouldBeSameAs(actual.Nodes.ElementAt(1).Expression.Member.Name);
             }
         }
 
@@ -95,8 +93,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
                     {
                         _ = PropertyNodesExtensions.Navigate(null, _expression2);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyNodes");
             }
 
@@ -107,8 +104,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
                     {
                         _ = PropertyNodesExtensions.Navigate(_nodes, (Expression<Func<DummyObject, IEnumerable<string>>>) null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression");
             }
 
@@ -119,7 +115,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 
                 var actual = PropertyNodesExtensions.Navigate(_nodes, _expression2);
 
-                actual.Nodes.Single().Expression.Should().BeSameAs(expected);
+                actual.Nodes.Single().Expression.ShouldBeSameAs(expected);
             }
         }
 
@@ -134,10 +130,10 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
                     .Navigate(model => model.Prop4)
                     .Nodes;
 
-                nodes.Should().HaveCount(2);
+                nodes.Count.ShouldBe(2);
 
-                nodes.ElementAt(0).Expression.Member.Name.Should().Be(nameof(DummyObject.Prop3));
-                nodes.ElementAt(1).Expression.Member.Name.Should().Be(nameof(DummyObject.ChildObject.Prop4));
+                nodes.ElementAt(0).Expression.Member.Name.ShouldBe(nameof(DummyObject.Prop3));
+                nodes.ElementAt(1).Expression.Member.Name.ShouldBe(nameof(DummyObject.ChildObject.Prop4));
             }
         }
 
@@ -150,8 +146,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
                     {
                         _ = PropertyNodesExtensions.GetFullNodePath(null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyNodes");
             }
 
@@ -164,7 +159,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 
                 var actual = PropertyNodesExtensions.GetFullNodePath(nodes);
 
-                actual.Should().Be(nameof(DummyObject.Prop3));
+                actual.ShouldBe(nameof(DummyObject.Prop3));
             }
 
             [Fact]
@@ -177,7 +172,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 
                 var actual = PropertyNodesExtensions.GetFullNodePath(nodes);
 
-                actual.Should().Be($"{nameof(DummyObject.Prop3)}.{nameof(DummyObject.ChildObject.Prop4)}");
+                actual.ShouldBe($"{nameof(DummyObject.Prop3)}.{nameof(DummyObject.ChildObject.Prop4)}");
             }
 
             [Fact]
@@ -192,8 +187,15 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 
                 var expected = new[] { nameof(DummyObject.Prop3), nameof(DummyObject.ChildObject.Prop4) };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
     }
 }
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
-﻿using AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions;
+using AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2.Extensions
 {
@@ -16,7 +16,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2.Extensions
 
                 var actual = LabelStyleExtensions.AsText(style, indent);
 
-                actual.Should().Be(string.Empty);
+                actual.ShouldBeEmpty();
             }
 
             [Fact]
@@ -33,7 +33,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2.Extensions
 
                 var expected = BuildExpectedStyle(indent, "font-size", style.FontSize.ToString());
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -50,7 +50,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2.Extensions
 
                 var expected = BuildExpectedStyle(indent, "font-color", style.FontColor);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -69,7 +69,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2.Extensions
 
                 var expected = BuildExpectedStyle(indent, "bold", GetBoolString(bold));
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -88,7 +88,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2.Extensions
 
                 var expected = BuildExpectedStyle(indent, "underline", GetBoolString(underline));
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -107,7 +107,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2.Extensions
 
                 var expected = BuildExpectedStyle(indent, "italic", GetBoolString(italic));
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             private static string BuildExpectedStyle(int indent, string attribute, string value)

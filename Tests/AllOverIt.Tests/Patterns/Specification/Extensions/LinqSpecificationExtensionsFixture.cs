@@ -1,5 +1,4 @@
-﻿using AllOverIt.Patterns.Specification.Extensions;
-using FluentAssertions;
+using AllOverIt.Patterns.Specification.Extensions;
 
 namespace AllOverIt.Tests.Patterns.Specification.Extensions
 {
@@ -18,7 +17,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
 
                 var actual = combined.IsSatisfiedBy(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -35,7 +34,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
 
                 var actual = combined.IsSatisfiedBy(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -52,7 +51,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
 
                 var actual = combined.IsSatisfiedBy(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -69,7 +68,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
 
                 var actual = combined.IsSatisfiedBy(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -84,8 +83,10 @@ namespace AllOverIt.Tests.Patterns.Specification.Extensions
 
                 var actual = combined.IsSatisfiedBy(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }
 }
+
+

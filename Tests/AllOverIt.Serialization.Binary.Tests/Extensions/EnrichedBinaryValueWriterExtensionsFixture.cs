@@ -1,10 +1,10 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Serialization.Binary.Writers;
 using AllOverIt.Serialization.Binary.Writers.Extensions;
 using FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Serialization.Binary.Tests.Extensions
 {
@@ -15,48 +15,40 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
             [Fact]
             public void Should_Throw_When_ValueWriter_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     EnrichedBinaryValueWriterExtensions.WriteValue(null, this.CreateStub<IEnrichedBinaryWriter>(), Create<string>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("valueWriter");
             }
 
             [Fact]
             public void Should_Throw_When_Writer_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     EnrichedBinaryValueWriterExtensions.WriteValue(this.CreateStub<IEnrichedBinaryValueWriter>(), null, Create<string>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("writer");
             }
 
             [Fact]
             public void Should_Throw_When_Value_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     EnrichedBinaryValueWriterExtensions.WriteValue(this.CreateStub<IEnrichedBinaryValueWriter>(), this.CreateStub<IEnrichedBinaryWriter>(), (string) null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("value");
             }
 
             [Fact]
             public void Should_Not_Throw_When_Value_Not_Reference_Default()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     EnrichedBinaryValueWriterExtensions.WriteValue(this.CreateStub<IEnrichedBinaryValueWriter>(), this.CreateStub<IEnrichedBinaryWriter>(), (int) default);
-                })
-                .Should()
-                .NotThrow();
+                });
             }
 
             [Fact]
@@ -74,8 +66,10 @@ namespace AllOverIt.Serialization.Binary.Tests.Extensions
 
                 EnrichedBinaryValueWriterExtensions.WriteValue(valueWriterFake.FakedObject, writerFake, expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }
 }
+
+

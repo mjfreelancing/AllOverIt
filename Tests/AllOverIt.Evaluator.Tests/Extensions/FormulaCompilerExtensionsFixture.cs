@@ -3,7 +3,7 @@ using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Extensions
 {
@@ -16,36 +16,32 @@ namespace AllOverIt.Evaluator.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Compiler_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = FormulaCompilerExtensions.GetResult(null, Create<string>());
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("compiler");
+                });
+
+                exception.WithNamedMessageWhenNull("compiler");
             }
 
             [Fact]
             public void Should_Throw_When_Formula_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = FormulaCompilerExtensions.GetResult(_formulaCompiler, null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("formula");
+                });
+
+                exception.WithNamedMessageWhenNull("formula");
             }
 
             [Fact]
             public void Should_Not_Throw_When_VariableRegistry_Null()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _ = FormulaCompilerExtensions.GetResult(_formulaCompiler, "1+1");
-                })
-                .Should()
-                .NotThrow();
+                });
             }
 
             [Fact]
@@ -58,7 +54,7 @@ namespace AllOverIt.Evaluator.Tests.Extensions
 
                 var actual = FormulaCompilerExtensions.GetResult(_formulaCompiler, $"{v1}+{v2}");
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -76,7 +72,7 @@ namespace AllOverIt.Evaluator.Tests.Extensions
 
                 var actual = FormulaCompilerExtensions.GetResult(_formulaCompiler, "v1+v2", variableRegistry);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }

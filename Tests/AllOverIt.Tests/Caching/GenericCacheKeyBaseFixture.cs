@@ -1,6 +1,5 @@
-﻿using AllOverIt.Caching;
+using AllOverIt.Caching;
 using AllOverIt.Fixture;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Caching
 {
@@ -20,9 +19,11 @@ namespace AllOverIt.Tests.Caching
             public void Should_Not_Throw_When_Key_Null()
             {
                 Invoking(() => new CacheKeyDummy(null))
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
         }
     }
 }
+
+
+

@@ -1,9 +1,10 @@
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Serialization.Json.SystemText.Converters;
-using FluentAssertions;
+using Shouldly;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 {
@@ -64,7 +65,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
             [Fact]
             public void Should_Enable_Caching_As_Default()
             {
-                _converterFactory.EnableCaching.Should().BeTrue();
+                _converterFactory.EnableCaching.ShouldBeTrue();
             }
         }
 
@@ -78,7 +79,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
             {
                 var actual = _converterFactory.CanConvert(objectType);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -89,7 +90,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
             {
                 var converter = _converterFactory.CreateConverter(typeof(DummyEnrichedEnum1), new JsonSerializerOptions());
 
-                converter.Should().BeOfType<EnrichedEnumJsonConverter<DummyEnrichedEnum1>>();
+                converter.ShouldBeOfType<EnrichedEnumJsonConverter<DummyEnrichedEnum1>>();
             }
 
             [Fact]
@@ -105,8 +106,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
                 var converter1 = converterFactory.CreateConverter(typeof(DummyEnrichedEnum1), options);
                 var converter2 = converterFactory.CreateConverter(typeof(DummyEnrichedEnum1), options);
 
-                converter1.Should().BeOfType<EnrichedEnumJsonConverter<DummyEnrichedEnum1>>();
-                converter1.Should().NotBeSameAs(converter2);
+                converter1.ShouldBeOfType<EnrichedEnumJsonConverter<DummyEnrichedEnum1>>();
+                converter1.ShouldNotBeSameAs(converter2);
             }
         }
 
@@ -116,7 +117,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 
             public Serialization()
             {
-                var rnd = new Random((int) DateTime.Now.Ticks);
+                var rnd = new Random((int)DateTime.Now.Ticks);
 
                 _dummyValue = new DummyValue
                 {
@@ -137,7 +138,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 
                 var actual = _serializer.SerializeObject(_dummyValue);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -147,8 +148,15 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 
                 var actual = _serializer.DeserializeObject<DummyValue>(value);
 
-                _dummyValue.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(_dummyValue);
             }
         }
     }
 }
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
-using AllOverIt.Evaluator.Variables;
+﻿using AllOverIt.Evaluator.Variables;
 using AllOverIt.Evaluator.Variables.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Helpers
 {
@@ -128,8 +128,10 @@ namespace AllOverIt.Evaluator.Tests.Variables.Helpers
                 var actual = actualResults.Invoke(variable);
                 var expected = testCases[variable];
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBe(expected, ignoreOrder: true);
             }
         }
     }
 }
+
+

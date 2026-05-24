@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Threading;
 using AllOverIt.Threading.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Threading.Extensions
 {
@@ -20,8 +19,7 @@ namespace AllOverIt.Tests.Threading.Extensions
                     {
                         @lock.EnterWriteLock();
                     })
-                   .Should()
-                   .Throw<LockRecursionException>()
+                   .ShouldThrow<LockRecursionException>()
                    .WithMessage("Write lock may not be acquired with read lock held.*");
                 }
             }
@@ -38,8 +36,7 @@ namespace AllOverIt.Tests.Threading.Extensions
                         @lock.EnterWriteLock();
                         @lock.ExitWriteLock();
                     })
-                   .Should()
-                   .NotThrow();
+                   .ShouldNotThrow();
                 }
             }
 
@@ -56,8 +53,7 @@ namespace AllOverIt.Tests.Threading.Extensions
                 {
                     @lock.ExitReadLock();
                 })
-                    .Should()
-                    .Throw<SynchronizationLockException>()
+                    .ShouldThrow<SynchronizationLockException>()
                     .WithMessage("The read lock is being released without being held.*");
             }
         }
@@ -76,8 +72,7 @@ namespace AllOverIt.Tests.Threading.Extensions
                     {
                         @lock.EnterReadLock(false);
                     })
-                        .Should()
-                        .Throw<LockRecursionException>()
+                        .ShouldThrow<LockRecursionException>()
                         .WithMessage("A read lock may not be acquired with the write lock held in this mode.");
                 }
             }
@@ -95,10 +90,12 @@ namespace AllOverIt.Tests.Threading.Extensions
                 {
                     @lock.ExitWriteLock();
                 })
-                    .Should()
-                    .Throw<SynchronizationLockException>()
+                    .ShouldThrow<SynchronizationLockException>()
                     .WithMessage("The write lock is being released without being held.*");
             }
         }
     }
 }
+
+
+

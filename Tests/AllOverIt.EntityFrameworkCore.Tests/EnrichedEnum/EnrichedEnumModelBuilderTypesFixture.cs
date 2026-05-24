@@ -1,4 +1,4 @@
-﻿using AllOverIt.EntityFrameworkCore.EnrichedEnum;
+using AllOverIt.EntityFrameworkCore.EnrichedEnum;
 using AllOverIt.EntityFrameworkCore.ValueConverters;
 using AllOverIt.Fixture;
 using Shouldly;
@@ -20,3 +20,5 @@ namespace AllOverIt.EntityFrameworkCore.Tests.EnrichedEnum
         }
     }
 }
+
+

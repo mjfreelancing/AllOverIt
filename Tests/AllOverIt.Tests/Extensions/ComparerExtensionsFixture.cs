@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -72,8 +72,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _ = ComparerExtensions.Reverse<string>(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("comparer");
             }
 
@@ -88,7 +87,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = values.SelectToList(item => item.First);
 
-                expected.Should().BeInDescendingOrder();
+                expected.ShouldBe(expected.OrderByDescending(item => item).ToList());
             }
 
             [Theory]
@@ -116,7 +115,7 @@ namespace AllOverIt.Tests.Extensions
 
                 values.Sort(DummyFirstComparer.Instance.Reverse());
 
-                values.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
+                values.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -129,8 +128,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _ = ComparerExtensions.Then<DummyString>(null, DummySecondComparer.Instance);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("first");
             }
 
@@ -141,8 +139,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _ = ComparerExtensions.Then<DummyString>(DummyFirstComparer.Instance, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("next");
             }
 
@@ -171,8 +168,17 @@ namespace AllOverIt.Tests.Extensions
 
                 values.Sort(sorter);
 
-                values.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
+                values.ShouldBeEquivalentTo(expected);
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+

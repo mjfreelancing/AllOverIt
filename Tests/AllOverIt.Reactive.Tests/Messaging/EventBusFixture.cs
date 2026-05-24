@@ -1,6 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Reactive.Messaging;
-using FluentAssertions;
+using Shouldly;
 using System.Reactive.Linq;
 
 namespace AllOverIt.Reactive.Tests.Messaging
@@ -25,7 +25,7 @@ namespace AllOverIt.Reactive.Tests.Messaging
                     eventBus.Publish<EventDummy>();
                 }
 
-                received.Should().BeTrue();
+                received.ShouldBeTrue();
             }
         }
 
@@ -44,8 +44,10 @@ namespace AllOverIt.Reactive.Tests.Messaging
                     eventBus.Publish(expected);
                 }
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
     }
 }
+
+

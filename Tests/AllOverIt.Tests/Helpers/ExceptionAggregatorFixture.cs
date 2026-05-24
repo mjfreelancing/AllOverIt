@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Helpers;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Helpers
 {
@@ -14,7 +13,7 @@ namespace AllOverIt.Tests.Helpers
             [Fact]
             public void Should_Have_Empty_Exceptions()
             {
-                _aggregator.Exceptions.Should().BeEmpty();
+                _aggregator.Exceptions.ShouldBeEmpty();
             }
         }
 
@@ -27,8 +26,7 @@ namespace AllOverIt.Tests.Helpers
                 {
                     _aggregator.AddException(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("exception");
             }
 
@@ -41,10 +39,10 @@ namespace AllOverIt.Tests.Helpers
                 _aggregator.AddException(exception1);
                 _aggregator.AddException(exception2);
 
-                _aggregator.Exceptions.Should().HaveCount(2);
+                _aggregator.Exceptions.Count.ShouldBe(2);
 
-                _aggregator.Exceptions.ElementAt(0).Should().BeSameAs(exception1);
-                _aggregator.Exceptions.ElementAt(1).Should().BeSameAs(exception2);
+                _aggregator.Exceptions.ElementAt(0).ShouldBeSameAs(exception1);
+                _aggregator.Exceptions.ElementAt(1).ShouldBeSameAs(exception2);
             }
         }
 
@@ -57,8 +55,7 @@ namespace AllOverIt.Tests.Helpers
                 {
                     _aggregator.ThrowIfAnyExceptions();
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
 
             [Fact]
@@ -78,9 +75,9 @@ namespace AllOverIt.Tests.Helpers
                 }
                 catch (AggregateException exception)
                 {
-                    exception.InnerExceptions.ElementAt(0).Should().BeSameAs(exception1);
-                    exception.InnerExceptions.ElementAt(1).Should().BeSameAs(exception2);
-                    exception.InnerExceptions.ElementAt(2).Should().BeSameAs(exception3);
+                    exception.InnerExceptions.ElementAt(0).ShouldBeSameAs(exception1);
+                    exception.InnerExceptions.ElementAt(1).ShouldBeSameAs(exception2);
+                    exception.InnerExceptions.ElementAt(2).ShouldBeSameAs(exception3);
                 }
             }
 
@@ -101,12 +98,16 @@ namespace AllOverIt.Tests.Helpers
                 }
                 catch (AggregateException exception)
                 {
-                    exception.InnerExceptions.ElementAt(0).Should().BeSameAs(exception1);
-                    exception.InnerExceptions.ElementAt(1).Should().BeSameAs(exception2);
-                    exception.InnerExceptions.ElementAt(2).Should().BeSameAs(exception1);
-                    exception.InnerExceptions.ElementAt(3).Should().BeSameAs(exception2);
+                    exception.InnerExceptions.ElementAt(0).ShouldBeSameAs(exception1);
+                    exception.InnerExceptions.ElementAt(1).ShouldBeSameAs(exception2);
+                    exception.InnerExceptions.ElementAt(2).ShouldBeSameAs(exception1);
+                    exception.InnerExceptions.ElementAt(3).ShouldBeSameAs(exception2);
                 }
             }
         }
     }
 }
+
+
+
+

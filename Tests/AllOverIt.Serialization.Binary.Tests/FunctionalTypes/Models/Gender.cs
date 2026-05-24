@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Serialization.Binary.Tests.FunctionalTypes.Models
+namespace AllOverIt.Serialization.Binary.Tests.FunctionalTypes.Models
 {
     internal enum Gender
     {
@@ -6,3 +6,6 @@
         Female
     }
 }
+
+
+

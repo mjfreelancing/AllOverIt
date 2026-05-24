@@ -1,8 +1,8 @@
 ﻿using AllOverIt.Evaluator.Variables;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 namespace AllOverIt.Evaluator.Tests.Variables
 {
     public class DelegateVariableFixture : FixtureBase
@@ -31,9 +31,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
             [Fact]
             public void Should_Throw_When_Func_Null()
             {
-                Invoking(() => _variable = new DelegateVariable(Create<string>(), (Func<double>) null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _variable = new DelegateVariable(Create<string>(), (Func<double>) null))
                     .WithNamedMessageWhenNull("valueResolver");
             }
 
@@ -48,7 +46,7 @@ namespace AllOverIt.Evaluator.Tests.Variables
                     ReferencedVariables = default(IEnumerable<string>)
                 };
 
-                expected.Should().BeEquivalentTo(_variable, option => option.Excluding(subject => subject.ReferencedVariables));
+                expected.ShouldBeEquivalentTo(_variable, opts => opts.ExcludeMember("ReferencedVariables"));
             }
 
             [Fact]
@@ -64,8 +62,8 @@ namespace AllOverIt.Evaluator.Tests.Variables
 
                 var actual = _variable.Value;
 
-                invoked.Should().BeTrue();
-                actual.Should().Be(_value + 1);
+                invoked.ShouldBeTrue();
+                actual.ShouldBe(_value + 1);
             }
         }
     }

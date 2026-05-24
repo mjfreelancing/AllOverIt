@@ -1,10 +1,11 @@
-﻿using AllOverIt.DependencyInjection.Exceptions;
+using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.DependencyInjection.Tests.Helpers;
 using AllOverIt.DependencyInjection.Tests.TestTypes;
 using AllOverIt.DependencyInjection.Tests.Types;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Fixture.Extensions;
+using Shouldly;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.DependencyInjection.Tests
@@ -34,17 +35,17 @@ namespace AllOverIt.DependencyInjection.Tests
 
             var int1Instance = provider.GetService<IEnumerable<IBaseInterface1>>()!.SelectToArray(item => item.GetType());
 
-            int1Instance.Should().BeEquivalentTo(new[] { typeof(ConcreteClassF), typeof(ConcreteClassG) });
+            int1Instance.ShouldBe(new[] { typeof(ConcreteClassF), typeof(ConcreteClassG) });
 
             var int4Instance = provider.GetService<IEnumerable<IBaseInterface4>>()!.SelectToArray(item => item.GetType());
 
-            int4Instance.Should().BeEquivalentTo(new[] { typeof(ConcreteClassG) });
+            int4Instance.ShouldBe(new[] { typeof(ConcreteClassG) });
         }
 
         [Fact]
         public void Should_Throw_When_Registered_Different_Lifetime()
         {
-            Invoking(() =>
+            Should.Throw<DependencyRegistrationException>(() =>
                 {
                     // IBaseInterface1 will find ConcreteClassF and ConcreteClassG
                     // IBaseInterface4 will find ConcreteClassG and also attempt to register it against IBaseInterface1 (with a different lifetime)
@@ -52,10 +53,7 @@ namespace AllOverIt.DependencyInjection.Tests
                         .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar, IBaseInterface1>(ServiceLifetime.Singleton, _serviceCollection)
                         .AutoRegisterUsingServiceLifetime<LocalDependenciesRegistrar, IBaseInterface4>(ServiceLifetime.Scoped)
                         .BuildServiceProvider();
-                })
-                .Should()
-                .Throw<DependencyRegistrationException>()
-                .WithMessage($"The service type {typeof(IBaseInterface4).GetFriendlyName()} is already registered to the implementation type {typeof(ConcreteClassG).GetFriendlyName()} but has a different lifetime ({ServiceLifetime.Singleton}).");
+                }).WithMessage($"The service type {typeof(IBaseInterface4).GetFriendlyName()} is already registered to the implementation type {typeof(ConcreteClassG).GetFriendlyName()} but has a different lifetime ({ServiceLifetime.Singleton}).");
         }
 
         [Fact]
@@ -113,26 +111,28 @@ namespace AllOverIt.DependencyInjection.Tests
 
             var concrete1 = provider.GetRequiredService<IBaseInterface1>();
 
-            concrete1.Should().BeOfType<ConcreteClassG>();
+            concrete1.ShouldBeOfType<ConcreteClassG>();
 
             var concrete2 = provider.GetRequiredService<IBaseInterface2>();
 
-            concrete2.Should().BeOfType<ConcreteClassG>();
+            concrete2.ShouldBeOfType<ConcreteClassG>();
 
             var concrete3 = provider.GetRequiredService<IBaseInterface4>();
 
-            concrete3.Should().BeOfType<ConcreteClassG>();
+            concrete3.ShouldBeOfType<ConcreteClassG>();
 
             var concrete4 = provider.GetRequiredService<AbstractClassA>();
 
-            concrete4.Should().BeOfType<ConcreteClassG>();
+            concrete4.ShouldBeOfType<ConcreteClassG>();
 
-            concrete1.Should().NotBeSameAs(concrete2);
-            concrete1.Should().NotBeSameAs(concrete3);
-            concrete1.Should().NotBeSameAs(concrete4);
-            concrete2.Should().NotBeSameAs(concrete3);
-            concrete2.Should().NotBeSameAs(concrete4);
-            concrete3.Should().NotBeSameAs(concrete4);
+            concrete1.ShouldNotBeSameAs(concrete2);
+            concrete1.ShouldNotBeSameAs(concrete3);
+            concrete1.ShouldNotBeSameAs(concrete4);
+            concrete2.ShouldNotBeSameAs(concrete3);
+            concrete2.ShouldNotBeSameAs(concrete4);
+            concrete3.ShouldNotBeSameAs(concrete4);
         }
     }
 }
+
+

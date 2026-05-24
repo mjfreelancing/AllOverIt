@@ -3,10 +3,9 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Mapping.Exceptions;
-using FluentAssertions;
 using System.Collections.ObjectModel;
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Mapping.Tests
 {
     public class TypedPropertyMatcherOptionsFixture : FixtureBase
@@ -49,7 +48,7 @@ namespace AllOverIt.Mapping.Tests
                 {
                     _ = new TypedPropertyMatcherOptions<DummySource, DummyTarget>(null);
                 })
-                    .Should()
+                   .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("sourceTargetFactoryRegistration");
             }
@@ -64,7 +63,7 @@ namespace AllOverIt.Mapping.Tests
                     {
                         _typedMatcherOptions.Exclude<int>(null);
                     })
-                    .Should()
+                   .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("sourceExpression");
             }
@@ -76,7 +75,7 @@ namespace AllOverIt.Mapping.Tests
                     {
                         _typedMatcherOptions.Exclude(source => source.Child.Prop1);
                     })
-                    .Should()
+                   .Should()
                     .Throw<ObjectMapperException>()
                     .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
             }
@@ -86,7 +85,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 _typedMatcherOptions.Exclude(source => source.Prop2);
 
-                _typedMatcherOptions.IsExcluded(nameof(DummySource.Prop2)).Should().BeTrue();
+                _typedMatcherOptions.IsExcluded(nameof(DummySource.Prop2)).ShouldBeTrue();
             }
 
             [Fact]
@@ -94,7 +93,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 var actual = _typedMatcherOptions.Exclude(source => source.Prop2);
 
-                actual.Should().Be(_typedMatcherOptions);
+                actual.ShouldBe(_typedMatcherOptions);
             }
         }
 
@@ -107,7 +106,7 @@ namespace AllOverIt.Mapping.Tests
                 {
                     _typedMatcherOptions.ExcludeWhen<int>(null, _ => Create<bool>());
                 })
-                    .Should()
+                   .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("sourceExpression");
             }
@@ -119,7 +118,7 @@ namespace AllOverIt.Mapping.Tests
                 {
                     _typedMatcherOptions.ExcludeWhen(source => source.Child.Prop1, _ => Create<bool>());
                 })
-                    .Should()
+                   .Should()
                     .Throw<ObjectMapperException>()
                     .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
             }
@@ -131,9 +130,9 @@ namespace AllOverIt.Mapping.Tests
 
                 _typedMatcherOptions.ExcludeWhen(source => source.Prop2, predicate);
 
-                _typedMatcherOptions.IsExcludedWhen(nameof(DummySource.Prop2), 1).Should().BeTrue();
-                _typedMatcherOptions.IsExcludedWhen(nameof(DummySource.Prop2), 2).Should().BeFalse();
-                _typedMatcherOptions.IsExcludedWhen(Create<string>(), Create<int>()).Should().BeFalse();
+                _typedMatcherOptions.IsExcludedWhen(nameof(DummySource.Prop2), 1).ShouldBeTrue();
+                _typedMatcherOptions.IsExcludedWhen(nameof(DummySource.Prop2), 2).ShouldBeFalse();
+                _typedMatcherOptions.IsExcludedWhen(Create<string>(), Create<int>()).ShouldBeFalse();
             }
 
             [Fact]
@@ -141,7 +140,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 var actual = _typedMatcherOptions.ExcludeWhen(source => source.Prop2, _ => Create<bool>());
 
-                actual.Should().Be(_typedMatcherOptions);
+                actual.ShouldBe(_typedMatcherOptions);
             }
         }
 
@@ -154,7 +153,7 @@ namespace AllOverIt.Mapping.Tests
                 {
                     _typedMatcherOptions.DeepCopy<int>(null);
                 })
-                    .Should()
+                   .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("sourceExpression");
             }
@@ -166,7 +165,7 @@ namespace AllOverIt.Mapping.Tests
                 {
                     _typedMatcherOptions.DeepCopy(source => source.Child.Prop1);
                 })
-                    .Should()
+                   .Should()
                     .Throw<ObjectMapperException>()
                     .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
             }
@@ -176,7 +175,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 _typedMatcherOptions.DeepCopy(source => source.Child);
 
-                _typedMatcherOptions.IsDeepCopy(nameof(DummySource.Child)).Should().BeTrue();
+                _typedMatcherOptions.IsDeepCopy(nameof(DummySource.Child)).ShouldBeTrue();
             }
 
             [Fact]
@@ -184,7 +183,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 var actual = _typedMatcherOptions.DeepCopy(source => source.Child);
 
-                actual.Should().Be(_typedMatcherOptions);
+                actual.ShouldBe(_typedMatcherOptions);
             }
         }
 
@@ -197,7 +196,7 @@ namespace AllOverIt.Mapping.Tests
                     {
                         _typedMatcherOptions.WithAlias<int, int>(null, target => target.Prop1);
                     })
-                    .Should()
+                   .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("sourceExpression");
             }
@@ -209,7 +208,7 @@ namespace AllOverIt.Mapping.Tests
                     {
                         _typedMatcherOptions.WithAlias<int, int>(source => source.Prop2, null);
                     })
-                    .Should()
+                   .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("targetExpression");
             }
@@ -221,7 +220,7 @@ namespace AllOverIt.Mapping.Tests
                     {
                         _typedMatcherOptions.WithAlias(source => source.Child.Prop1, target => target.Prop2);
                     })
-                    .Should()
+                   .Should()
                     .Throw<ObjectMapperException>()
                     .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
             }
@@ -233,7 +232,7 @@ namespace AllOverIt.Mapping.Tests
                     {
                         _typedMatcherOptions.WithAlias(source => source.Prop1, target => target.Child.Prop1);
                     })
-                    .Should()
+                   .Should()
                     .Throw<ObjectMapperException>()
                     .WithMessage("ObjectMapper do not support nested mappings (target => target.Child.Prop1).");
             }
@@ -243,7 +242,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 _ = _typedMatcherOptions.WithAlias(source => source.Prop3, target => target.Prop2);
 
-                _typedMatcherOptions.GetAliasName(nameof(DummySource.Prop3)).Should().Be(nameof(DummyTarget.Prop2));
+                _typedMatcherOptions.GetAliasName(nameof(DummySource.Prop3)).ShouldBe(nameof(DummyTarget.Prop2));
             }
 
             [Fact]
@@ -251,7 +250,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 _ = _typedMatcherOptions.WithAlias(source => source.Prop1, target => target.Prop3);
 
-                _typedMatcherOptions.GetAliasName(nameof(DummySource.Prop1)).Should().Be(nameof(DummyTarget.Prop3));
+                _typedMatcherOptions.GetAliasName(nameof(DummySource.Prop1)).ShouldBe(nameof(DummyTarget.Prop3));
             }
 
             [Fact]
@@ -259,7 +258,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 var actual = _typedMatcherOptions.WithAlias(source => source.Prop3, target => target.Prop2);
 
-                actual.Should().Be(_typedMatcherOptions);
+                actual.ShouldBe(_typedMatcherOptions);
             }
         }
 
@@ -272,7 +271,7 @@ namespace AllOverIt.Mapping.Tests
                 {
                     _typedMatcherOptions.UseWhenNull<DummyChild, DummyChild>(null, Create<DummyChild>());
                 })
-                    .Should()
+                   .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("sourceExpression");
             }
@@ -284,7 +283,7 @@ namespace AllOverIt.Mapping.Tests
                 {
                     _typedMatcherOptions.UseWhenNull<int?, int?>(source => source.Child.Prop2, Create<int>());
                 })
-                    .Should()
+                   .Should()
                     .Throw<ObjectMapperException>()
                     .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop2).");
             }
@@ -296,7 +295,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = _typedMatcherOptions.UseWhenNull(source => source.Child, replacement);
 
-                _typedMatcherOptions.GetNullReplacement(nameof(DummySource.Child)).Should().BeSameAs(replacement);
+                _typedMatcherOptions.GetNullReplacement(nameof(DummySource.Child)).ShouldBeSameAs(replacement);
             }
 
             [Fact]
@@ -304,7 +303,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 var actual = _typedMatcherOptions.UseWhenNull(source => source.Child, Create<DummyTarget>());
 
-                actual.Should().Be(_typedMatcherOptions);
+                actual.ShouldBe(_typedMatcherOptions);
             }
         }
 
@@ -317,7 +316,7 @@ namespace AllOverIt.Mapping.Tests
                 {
                     _typedMatcherOptions.WithConversion<int>(null, (mapper, value) => value);
                 })
-                    .Should()
+                   .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("sourceExpression");
             }
@@ -329,7 +328,7 @@ namespace AllOverIt.Mapping.Tests
                 {
                     _typedMatcherOptions.WithConversion(source => source.Prop3, null);
                 })
-                    .Should()
+                   .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("converter");
             }
@@ -349,7 +348,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = _typedMatcherOptions.GetConvertedValue(mapper, nameof(DummySource.Prop3), Create<int>());
 
-                actual.Should().BeSameAs(mapper);
+                actual.ShouldBeSameAs(mapper);
             }
 
             [Fact]
@@ -359,7 +358,7 @@ namespace AllOverIt.Mapping.Tests
                     {
                         _typedMatcherOptions.WithConversion(source => source.Child.Prop1, (mapper, val) => val);
                     })
-                    .Should()
+                   .Should()
                     .Throw<ObjectMapperException>()
                     .WithMessage("ObjectMapper do not support nested mappings (source => source.Child.Prop1).");
             }
@@ -374,7 +373,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _typedMatcherOptions.GetConvertedValue(this.CreateStub<IObjectMapper>(), nameof(DummySource.Prop2), value);
 
-                actual.Should().BeEquivalentTo(value * factor);
+                actual.ShouldBeEquivalentTo(value * factor);
             }
 
             [Fact]
@@ -382,7 +381,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 var actual = _typedMatcherOptions.WithConversion(source => source.Prop3, (mapper, value) => value);
 
-                actual.Should().Be(_typedMatcherOptions);
+                actual.ShouldBe(_typedMatcherOptions);
             }
         }
 
@@ -395,7 +394,7 @@ namespace AllOverIt.Mapping.Tests
                 {
                     _typedMatcherOptions.ConstructUsing(null);
                 })
-                    .Should()
+                   .Should()
                     .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("targetFactory");
             }
@@ -424,7 +423,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map<DummyTarget>(source);
 
-                actual.Should().BeSameAs(mapper);
+                actual.ShouldBeSameAs(mapper);
             }
 
             [Fact]
@@ -447,7 +446,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = mapper.Map<DummyObservableCollectionHost>(source);
 
-                actual.Prop1.Should().BeEquivalentTo(expected);
+                actual.Prop1.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -474,7 +473,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = mapper.Map<DummyTarget>(source);
 
-                expected.Should().BeSameAs(actual);
+                expected.ShouldBeSameAs(actual);
             }
 
             [Fact]
@@ -482,8 +481,13 @@ namespace AllOverIt.Mapping.Tests
             {
                 var actual = _typedMatcherOptions.ConstructUsing((mapper, value) => default);
 
-                actual.Should().Be(_typedMatcherOptions);
+                actual.ShouldBe(_typedMatcherOptions);
             }
         }
     }
 }
+
+
+
+
+

@@ -1,4 +1,4 @@
-﻿using AllOverIt.DependencyInjection.Exceptions;
+using AllOverIt.DependencyInjection.Exceptions;
 using AllOverIt.Fixture;
 
 namespace AllOverIt.DependencyInjection.Tests.Exceptions
@@ -24,3 +24,5 @@ namespace AllOverIt.DependencyInjection.Tests.Exceptions
         }
     }
 }
+
+

@@ -1,8 +1,8 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Shouldly.Extensions;
 using AllOverIt.Validation.Exceptions;
 using AllOverIt.Validation.Extensions;
-using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 
@@ -77,16 +77,14 @@ namespace AllOverIt.Validation.Tests
                 RegisterValidator(true);
 
                 _validationRegistry.ContainsModelRegistration<DummyModel>()
-                    .Should()
-                    .BeTrue();
+                    .ShouldBeTrue();
             }
 
             [Fact]
             public void Should_Return_False_For_Non_Registered_Model()
             {
                 _validationRegistry.ContainsModelRegistration<DummyModel>()
-                    .Should()
-                    .BeFalse();
+                    .ShouldBeFalse();
             }
         }
 
@@ -98,16 +96,14 @@ namespace AllOverIt.Validation.Tests
                 RegisterValidator(false);
 
                 _validationRegistry.ContainsModelRegistration(typeof(DummyModel))
-                    .Should()
-                    .BeTrue();
+                    .ShouldBeTrue();
             }
 
             [Fact]
             public void Should_Return_False_For_Non_Registered_Model()
             {
                 _validationRegistry.ContainsModelRegistration(typeof(DummyModel))
-                    .Should()
-                    .BeFalse();
+                    .ShouldBeFalse();
             }
         }
 
@@ -119,13 +115,9 @@ namespace AllOverIt.Validation.Tests
                 _validationRegistry.Register<DummyModel, DummyModelValidator>();
 
                 // registering a second time will fail
-                Invoking(() =>
-                    {
-                        _validationRegistry.Register<DummyModel, DummyModelValidator>();
-                    })
-                   .Should()
-                   .Throw<ValidationRegistryException>()
-                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+                var exception = Should.Throw<ValidationRegistryException>(() => {
+                        _validationRegistry.Register<DummyModel, DummyModelValidator>();});
+                exception.Message.ShouldBe($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
             }
         }
 
@@ -134,37 +126,25 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Throw_When_Not_A_Validator()
             {
-                Invoking(() =>
-                    {
-                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModel));
-                    })
-                   .Should()
-                   .Throw<ValidationRegistryException>()
-                   .WithMessage($"The type '{nameof(DummyModel)}' is not a validator.");
+                var exception = Should.Throw<ValidationRegistryException>(() => {
+                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModel));});
+                exception.Message.ShouldBe($"The type '{nameof(DummyModel)}' is not a validator.");
             }
 
             [Fact]
             public void Should_Throw_When_Cannot_Validate_Model_Type()
             {
-                Invoking(() =>
-                    {
-                        _validationRegistry.Register(typeof(string), typeof(DummyModelValidator));
-                    })
-                   .Should()
-                   .Throw<ValidationRegistryException>()
-                   .WithMessage($"The type '{nameof(DummyModelValidator)}' cannot validate a String type.");
+                var exception = Should.Throw<ValidationRegistryException>(() => {
+                        _validationRegistry.Register(typeof(string), typeof(DummyModelValidator));});
+                exception.Message.ShouldBe($"The type '{nameof(DummyModelValidator)}' cannot validate a String type.");
             }
 
             [Fact]
             public void Should_Throw_When_No_Default_Constructor()
             {
-                Invoking(() =>
-                    {
-                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator2));
-                    })
-                   .Should()
-                   .Throw<ValidationRegistryException>()
-                   .WithMessage($"The type '{nameof(DummyModelValidator2)}' must have a default constructor.");
+                var exception = Should.Throw<ValidationRegistryException>(() => {
+                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator2));});
+                exception.Message.ShouldBe($"The type '{nameof(DummyModelValidator2)}' must have a default constructor.");
             }
 
             [Fact]
@@ -173,13 +153,9 @@ namespace AllOverIt.Validation.Tests
                 _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
 
                 // registering a second time will fail
-                Invoking(() =>
-                    {
-                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));
-                    })
-                   .Should()
-                   .Throw<ValidationRegistryException>()
-                   .WithMessage($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
+                var exception = Should.Throw<ValidationRegistryException>(() => {
+                        _validationRegistry.Register(typeof(DummyModel), typeof(DummyModelValidator));});
+                exception.Message.ShouldBe($"The type '{typeof(DummyModel).GetFriendlyName()}' already has a registered validator.");
             }
         }
 
@@ -196,7 +172,7 @@ namespace AllOverIt.Validation.Tests
 
                 var result = _validationInvoker.Validate(model);
 
-                result.IsValid.Should().BeFalse();
+                result.IsValid.ShouldBeFalse();
 
                 var expected = new[]
                 {
@@ -223,7 +199,7 @@ namespace AllOverIt.Validation.Tests
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
+                result.Errors.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMissingMembers());
             }
         }
 
@@ -240,7 +216,7 @@ namespace AllOverIt.Validation.Tests
 
                 var result = await _validationInvoker.ValidateAsync(model);
 
-                result.IsValid.Should().BeFalse();
+                result.IsValid.ShouldBeFalse();
 
                 var expected = new[]
                 {
@@ -267,7 +243,7 @@ namespace AllOverIt.Validation.Tests
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
+                result.Errors.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMissingMembers());
             }
         }
 
@@ -285,7 +261,7 @@ namespace AllOverIt.Validation.Tests
 
                 var result = _validationInvoker.Validate(model, comparisonContext);
 
-                result.IsValid.Should().BeFalse();
+                result.IsValid.ShouldBeFalse();
 
                 var expected = new[]
                 {
@@ -298,7 +274,7 @@ namespace AllOverIt.Validation.Tests
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
+                result.Errors.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMissingMembers());
             }
         }
 
@@ -316,7 +292,7 @@ namespace AllOverIt.Validation.Tests
 
                 var result = await _validationInvoker.ValidateAsync(model, comparisonContext);
 
-                result.IsValid.Should().BeFalse();
+                result.IsValid.ShouldBeFalse();
 
                 var expected = new[]
                 {
@@ -329,7 +305,7 @@ namespace AllOverIt.Validation.Tests
                     }
                 };
 
-                expected.Should().BeEquivalentTo(result.Errors, option => option.ExcludingMissingMembers());
+                result.Errors.ShouldBeEquivalentTo(expected, opts => opts.ExcludeMissingMembers());
             }
         }
 
@@ -338,13 +314,9 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Throw_When_Validator_Not_Registered()
             {
-                Invoking(() =>
-                {
-                    _validationInvoker.AssertValidation(Create<DummyModel>());
-                })
-                    .Should()
-                    .Throw<InvalidOperationException>()
-                    .WithMessage("The type 'DummyModel' does not have a registered validator.");
+                var exception = Should.Throw<InvalidOperationException>(() => {
+                    _validationInvoker.AssertValidation(Create<DummyModel>());});
+                exception.Message.ShouldBe("The type 'DummyModel' does not have a registered validator.");
             }
 
             [Theory]
@@ -356,13 +328,9 @@ namespace AllOverIt.Validation.Tests
 
                 var model = new DummyModel();
 
-                Invoking(() =>
-                {
-                    _validationInvoker.AssertValidation(model);
-                })
-                .Should()
-                .Throw<ValidationException>()
-                .WithMessage($"Validation failed: {Environment.NewLine}" +
+                var exception = Should.Throw<ValidationException>(() => {
+                    _validationInvoker.AssertValidation(model);});
+                exception.Message.ShouldBe($"Validation failed: {Environment.NewLine}" +
                              $" -- ValueOne: 'ValueOne' requires a valid value. Severity: Error{Environment.NewLine}" +
                              $" -- ValueTwo: 'ValueTwo' should not be empty. Severity: Error{Environment.NewLine}" +
                               " -- ValueThree: 'ValueThree' should not be empty. Severity: Error");
@@ -377,12 +345,10 @@ namespace AllOverIt.Validation.Tests
 
                 var model = Create<DummyModel>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _validationInvoker.AssertValidation(model);
-                })
-                .Should()
-                .NotThrow();
+                });
             }
         }
 
@@ -391,13 +357,9 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public async Task Should_Throw_When_Validator_Not_Registered()
             {
-                await Invoking(async () =>
-                {
-                    await _validationInvoker.AssertValidationAsync(Create<DummyModel>());
-                })
-                    .Should()
-                    .ThrowAsync<InvalidOperationException>()
-                    .WithMessage("The type 'DummyModel' does not have a registered validator.");
+                var exception = await Should.ThrowAsync<InvalidOperationException>(async () => {
+                    await _validationInvoker.AssertValidationAsync(Create<DummyModel>());});
+                exception.Message.ShouldBe("The type 'DummyModel' does not have a registered validator.");
             }
 
             [Theory]
@@ -409,13 +371,9 @@ namespace AllOverIt.Validation.Tests
 
                 var model = new DummyModel();
 
-                await Invoking(async () =>
-                    {
-                        await _validationInvoker.AssertValidationAsync(model);
-                    })
-                    .Should()
-                    .ThrowAsync<ValidationException>()
-                    .WithMessage($"Validation failed: {Environment.NewLine}" +
+                var exception = await Should.ThrowAsync<ValidationException>(async () => {
+                        await _validationInvoker.AssertValidationAsync(model);});
+                exception.Message.ShouldBe($"Validation failed: {Environment.NewLine}" +
                                  $" -- ValueOne: 'ValueOne' requires a valid value. Severity: Error{Environment.NewLine}" +
                                  $" -- ValueTwo: 'ValueTwo' should not be empty. Severity: Error{Environment.NewLine}" +
                                  " -- ValueThree: 'ValueThree' should not be empty. Severity: Error");
@@ -430,12 +388,10 @@ namespace AllOverIt.Validation.Tests
 
                 var model = Create<DummyModel>();
 
-                await Invoking(async () =>
-                    {
-                        await _validationInvoker.AssertValidationAsync(model);
-                    })
-                    .Should()
-                    .NotThrowAsync();
+                await Should.NotThrowAsync(async () =>
+                {
+                    await _validationInvoker.AssertValidationAsync(model);
+                });
             }
         }
 
@@ -444,13 +400,12 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public void Should_Throw_When_Validator_Not_Registered()
             {
-                Invoking(() =>
+                var exception = Should.Throw<InvalidOperationException>(() =>
                 {
                     _validationInvoker.AssertValidation(Create<DummyModel>(), Create<bool>());
-                })
-                    .Should()
-                    .Throw<InvalidOperationException>()
-                    .WithMessage("The type 'DummyModel' does not have a registered validator.");
+                });
+
+                exception.Message.ShouldBe("The type 'DummyModel' does not have a registered validator.");
             }
 
             [Theory]
@@ -464,13 +419,9 @@ namespace AllOverIt.Validation.Tests
                 var context = Create<bool>();
                 model.ValueFour = !context;
 
-                Invoking(() =>
-                {
-                    _validationInvoker.AssertValidation(model, context);
-                })
-               .Should()
-               .Throw<ValidationException>()
-               .WithMessage($"Validation failed: {Environment.NewLine}" +
+                var exception = Should.Throw<ValidationException>(() => {
+                    _validationInvoker.AssertValidation(model, context);});
+                exception.Message.ShouldBe($"Validation failed: {Environment.NewLine}" +
                             $" -- ValueOne: 'ValueOne' requires a valid value. Severity: Error{Environment.NewLine}" +
                             $" -- ValueTwo: 'ValueTwo' should not be empty. Severity: Error{Environment.NewLine}" +
                             $" -- ValueThree: 'ValueThree' should not be empty. Severity: Error{Environment.NewLine}" +
@@ -488,12 +439,10 @@ namespace AllOverIt.Validation.Tests
                 var context = Create<bool>();
                 model.ValueFour = context;
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _validationInvoker.AssertValidation(model, context);
-                })
-               .Should()
-               .NotThrow();
+                });
             }
         }
 
@@ -502,13 +451,12 @@ namespace AllOverIt.Validation.Tests
             [Fact]
             public async Task Should_Throw_When_Validator_Not_Registered()
             {
-                await Invoking(async () =>
+                var exception = await Should.ThrowAsync<InvalidOperationException>(async () =>
                 {
                     await _validationInvoker.AssertValidationAsync(Create<DummyModel>(), Create<bool>());
-                })
-                    .Should()
-                    .ThrowAsync<InvalidOperationException>()
-                    .WithMessage("The type 'DummyModel' does not have a registered validator.");
+                });
+
+                exception.Message.ShouldBe("The type 'DummyModel' does not have a registered validator.");
             }
 
             [Theory]
@@ -522,13 +470,9 @@ namespace AllOverIt.Validation.Tests
                 var context = Create<bool>();
                 model.ValueFour = !context;
 
-                await Invoking(async () =>
-                    {
-                        await _validationInvoker.AssertValidationAsync(model, context);
-                    })
-                    .Should()
-                    .ThrowAsync<ValidationException>()
-                    .WithMessage($"Validation failed: {Environment.NewLine}" +
+                var exception = await Should.ThrowAsync<ValidationException>(async () => {
+                        await _validationInvoker.AssertValidationAsync(model, context);});
+                exception.Message.ShouldBe($"Validation failed: {Environment.NewLine}" +
                                  $" -- ValueOne: 'ValueOne' requires a valid value. Severity: Error{Environment.NewLine}" +
                                  $" -- ValueTwo: 'ValueTwo' should not be empty. Severity: Error{Environment.NewLine}" +
                                  $" -- ValueThree: 'ValueThree' should not be empty. Severity: Error{Environment.NewLine}" +
@@ -546,12 +490,10 @@ namespace AllOverIt.Validation.Tests
                 var context = Create<bool>();
                 model.ValueFour = context;
 
-                await Invoking(async () =>
-                    {
-                        await _validationInvoker.AssertValidationAsync(model, context);
-                    })
-                    .Should()
-                    .NotThrowAsync();
+                await Should.NotThrowAsync(async () =>
+                {
+                    await _validationInvoker.AssertValidationAsync(model, context);
+                });
             }
         }
 
@@ -568,3 +510,12 @@ namespace AllOverIt.Validation.Tests
         }
     }
 }
+
+
+
+
+
+
+
+
+

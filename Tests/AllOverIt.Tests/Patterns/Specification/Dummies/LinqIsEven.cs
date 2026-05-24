@@ -1,4 +1,4 @@
-﻿using AllOverIt.Patterns.Specification;
+using AllOverIt.Patterns.Specification;
 
 namespace AllOverIt.Tests.Patterns.Specification.Dummies
 {
@@ -10,3 +10,5 @@ namespace AllOverIt.Tests.Patterns.Specification.Dummies
         }
     }
 }
+
+

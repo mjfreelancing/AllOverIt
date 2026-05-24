@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serilog.Extensions;
 using AllOverIt.Serilog.Sinks.CircularBuffer;
@@ -59,8 +59,8 @@ namespace AllOverIt.Serilog.Tests.Extensions
 
                 var actual1 = provider.GetRequiredService<ICircularBufferSinkMessages>();
 
-                actual1.Should().BeOfType<CircularBufferSinkMessages>();
-                actual1.Capacity.Should().Be(capacity);
+                actual1.ShouldBeOfType<CircularBufferSinkMessages>();
+                actual1.Capacity.ShouldBe(capacity);
 
                 var actual2 = provider.GetRequiredService<ICircularBufferSinkMessages>();
 
@@ -78,8 +78,8 @@ namespace AllOverIt.Serilog.Tests.Extensions
 
                 var actual1 = provider.GetRequiredService<ICircularBufferSinkMessages>();
 
-                actual1.Should().BeOfType<CircularBufferSinkMessages>();
-                actual1.Capacity.Should().Be(capacity);
+                actual1.ShouldBeOfType<CircularBufferSinkMessages>();
+                actual1.Capacity.ShouldBe(capacity);
 
                 var actual2 = provider.GetRequiredService<ICircularBufferSinkMessages>();
 
@@ -160,8 +160,8 @@ namespace AllOverIt.Serilog.Tests.Extensions
 
                 var actual1 = provider.GetRequiredService<ICircularBufferSinkMessages>();
 
-                actual1.Should().BeOfType<CircularBufferSinkMessages>();
-                actual1.Capacity.Should().Be(capacity);
+                actual1.ShouldBeOfType<CircularBufferSinkMessages>();
+                actual1.Capacity.ShouldBe(capacity);
 
                 var actual2 = provider.GetRequiredService<ICircularBufferSinkMessages>();
 
@@ -179,8 +179,8 @@ namespace AllOverIt.Serilog.Tests.Extensions
 
                 var actual1 = provider.GetRequiredService<ICircularBufferSinkMessages>();
 
-                actual1.Should().BeOfType<CircularBufferSinkMessages>();
-                actual1.Capacity.Should().Be(capacity);
+                actual1.ShouldBeOfType<CircularBufferSinkMessages>();
+                actual1.Capacity.ShouldBe(capacity);
 
                 var actual2 = provider.GetRequiredService<ICircularBufferSinkMessages>();
 

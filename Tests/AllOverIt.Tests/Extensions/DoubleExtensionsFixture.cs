@@ -1,6 +1,6 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -13,7 +13,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = DoubleExtensions.IsZero(0.0d);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -21,7 +21,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = DoubleExtensions.IsZero(1E-7);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -30,7 +30,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = 1E-8;
                 var actual = DoubleExtensions.IsZero(value);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -39,7 +39,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = 1E-6;
                 var actual = DoubleExtensions.IsZero(value);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -48,7 +48,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = -Create<double>() - 0.1d;
                 var actual = DoubleExtensions.IsZero(value);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -57,7 +57,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = -Create<double>() + 0.1d;
                 var actual = DoubleExtensions.IsZero(value);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
         public class IsZero_Epsilon : DoubleExtensionsFixture
@@ -69,7 +69,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = DoubleExtensions.IsZero(0.0d, _epsilon);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -77,7 +77,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = DoubleExtensions.IsZero(_epsilon, _epsilon);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -86,7 +86,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = _epsilon / 10;
                 var actual = DoubleExtensions.IsZero(value, _epsilon);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -95,7 +95,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = _epsilon * 10;
                 var actual = DoubleExtensions.IsZero(value, _epsilon);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -104,7 +104,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = -Create<double>() - 0.1d;
                 var actual = DoubleExtensions.IsZero(value, _epsilon);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -113,7 +113,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = -Create<double>() + 0.1d;
                 var actual = DoubleExtensions.IsZero(value, _epsilon);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -126,7 +126,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = DoubleExtensions.IsEqualTo(val1, val2);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -136,7 +136,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = DoubleExtensions.IsEqualTo(val1, val2);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -146,7 +146,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = DoubleExtensions.IsEqualTo(val1, val2);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -155,7 +155,7 @@ namespace AllOverIt.Tests.Extensions
                 var val = Create<double>();
                 var actual = DoubleExtensions.IsEqualTo(val, val);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -166,7 +166,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = DoubleExtensions.IsEqualTo(val1, val2);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -183,7 +183,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = DoubleExtensions.IsEqualTo(val1, val2, Epsilon);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -193,7 +193,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = DoubleExtensions.IsEqualTo(val1, val2, Epsilon);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -203,7 +203,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = DoubleExtensions.IsEqualTo(val1, val2, Epsilon);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -212,7 +212,7 @@ namespace AllOverIt.Tests.Extensions
                 var val = Create<double>();
                 var actual = DoubleExtensions.IsEqualTo(val, val, Epsilon);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -223,8 +223,15 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = DoubleExtensions.IsEqualTo(val1, val2, Epsilon);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
     }
 }
+
+
+
+
+
+
+

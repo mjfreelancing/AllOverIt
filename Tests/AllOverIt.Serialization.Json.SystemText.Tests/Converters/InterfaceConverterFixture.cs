@@ -1,8 +1,8 @@
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Serialization.Json.SystemText.Converters;
-using FluentAssertions;
 using System.Text.Json;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 {
@@ -40,9 +40,9 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 
             var actual = serializer.DeserializeObject<IDummyType>(dummyValue);
 
-            actual.Should().BeAssignableTo<IDummyType>();
+            actual.ShouldBeAssignableTo<IDummyType>();
 
-            actual.Prop1.Should().Be(value);
+            actual.Prop1.ShouldBe(value);
         }
 
         [Fact]
@@ -66,7 +66,12 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests.Converters
 
             var actual = serializer.DeserializeObject<DummyCollection>(dummyValues);
 
-            actual.Should().BeEquivalentTo(expected);
+            actual.ShouldBeEquivalentTo(expected);
         }
     }
 }
+
+
+
+
+

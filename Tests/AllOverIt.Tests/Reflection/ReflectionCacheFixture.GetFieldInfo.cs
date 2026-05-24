@@ -1,8 +1,10 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Shouldly;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
-using FluentAssertions;
+using System.Linq;
 using System.Reflection;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -39,8 +41,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("fieldName");
             }
 
@@ -51,8 +52,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>(string.Empty);
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("fieldName");
             }
 
@@ -63,15 +63,14 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>("   ");
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("fieldName");
             }
 
             [Fact]
             public void Should_Get_Field_In_Super()
             {
-                var actual = (object) ReflectionCache.GetFieldInfo<DummyFieldSuperClass>("Field4");
+                var actual = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>("Field4");
 
                 var expected = new
                 {
@@ -79,13 +78,13 @@ namespace AllOverIt.Tests.Reflection
                     FieldType = typeof(long)
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.FieldType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
             public void Should_Get_Field_In_Base()
             {
-                var actual = (object) ReflectionCache.GetFieldInfo<DummyFieldSuperClass>("Field2");
+                var actual = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>("Field2");
 
                 var expected = new
                 {
@@ -93,7 +92,7 @@ namespace AllOverIt.Tests.Reflection
                     FieldType = typeof(string)
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.FieldType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -101,7 +100,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = (object) ReflectionCache.GetFieldInfo<DummyFieldSuperClass>("PropXYZ");
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
         }
 
@@ -114,8 +113,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetFieldInfo((Type) null, Create<string>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("type");
             }
 
@@ -126,8 +124,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("fieldName");
             }
 
@@ -138,8 +135,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), string.Empty);
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("fieldName");
             }
 
@@ -150,15 +146,14 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), "   ");
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("fieldName");
             }
 
             [Fact]
             public void Should_Get_Field_In_Super()
             {
-                var actual = (object) ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), "Field4");
+                var actual = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), "Field4");
 
                 var expected = new
                 {
@@ -166,13 +161,13 @@ namespace AllOverIt.Tests.Reflection
                     FieldType = typeof(long)
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.FieldType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
             public void Should_Get_Field_In_Base()
             {
-                var actual = (object) ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), "Field2");
+                var actual = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), "Field2");
 
                 var expected = new
                 {
@@ -180,7 +175,7 @@ namespace AllOverIt.Tests.Reflection
                     FieldType = typeof(string)
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.FieldType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -188,7 +183,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = (object) ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), "PropXYZ");
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
         }
 
@@ -201,8 +196,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetFieldInfo((TypeInfo) null, Create<string>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("typeInfo");
             }
 
@@ -215,8 +209,7 @@ namespace AllOverIt.Tests.Reflection
 
                     _ = ReflectionCache.GetFieldInfo(typeInfo, null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("fieldName");
             }
 
@@ -229,8 +222,7 @@ namespace AllOverIt.Tests.Reflection
 
                     _ = ReflectionCache.GetFieldInfo(typeInfo, string.Empty);
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("fieldName");
             }
 
@@ -243,8 +235,7 @@ namespace AllOverIt.Tests.Reflection
 
                     _ = ReflectionCache.GetFieldInfo(typeInfo, "   ");
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("fieldName");
             }
 
@@ -252,7 +243,7 @@ namespace AllOverIt.Tests.Reflection
             public void Should_Get_Field_In_Super()
             {
                 var typeInfo = typeof(DummyFieldSuperClass).GetTypeInfo();
-                var actual = (object) ReflectionCache.GetFieldInfo(typeInfo, "Field3");
+                var actual = ReflectionCache.GetFieldInfo(typeInfo, "Field3");
 
                 var expected = new
                 {
@@ -260,14 +251,14 @@ namespace AllOverIt.Tests.Reflection
                     FieldType = typeof(bool)
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.FieldType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
             public void Should_Get_Field_In_Base()
             {
                 var typeInfo = typeof(DummyFieldSuperClass).GetTypeInfo();
-                var actual = (object) ReflectionCache.GetFieldInfo(typeInfo, "Field1");
+                var actual = ReflectionCache.GetFieldInfo(typeInfo, "Field1");
 
                 var expected = new
                 {
@@ -275,7 +266,7 @@ namespace AllOverIt.Tests.Reflection
                     FieldType = typeof(int)
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.FieldType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -284,7 +275,7 @@ namespace AllOverIt.Tests.Reflection
                 var typeInfo = typeof(DummyFieldSuperClass).GetTypeInfo();
                 var actual = (object) ReflectionCache.GetFieldInfo(typeInfo, "PropXYZ");
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
         }
 
@@ -293,7 +284,8 @@ namespace AllOverIt.Tests.Reflection
             [Fact]
             public void Should_Use_Default_Binding_Not_Declared_Only()
             {
-                var actual = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>();
+                var actual = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>()
+                    .Select(item => new { item.Name, item.FieldType });
 
                 var expected = new[]
                 {
@@ -314,13 +306,14 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
             public void Should_Use_Default_Binding_Declared_Only()
             {
-                var actual = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>(BindingOptions.Default, true);
+                var actual = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>(BindingOptions.Default, true)
+                    .Select(item => new { item.Name, item.FieldType });
 
                 var expected = new[]
                 {
@@ -336,7 +329,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -346,7 +339,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = ReflectionCache.GetFieldInfo<DummyFieldSuperClass>(binding, false);
 
-                actual.Single(item => item.Name == "Field5").Should().NotBeNull();
+                actual.Single(item => item.Name == "Field5").ShouldNotBeNull();
             }
         }
 
@@ -359,15 +352,15 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetFieldInfo((Type) null, BindingOptions.Default);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("type");
             }
 
             [Fact]
             public void Should_Use_Default_Binding_Not_Declared_Only()
             {
-                var actual = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass));
+                var actual = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass))
+                    .Select(item => new { item.Name, item.FieldType });
 
                 var expected = new[]
                 {
@@ -388,13 +381,14 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
             public void Should_Use_Default_Binding_Declared_Only()
             {
-                var actual = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), BindingOptions.Default, true);
+                var actual = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), BindingOptions.Default, true)
+                    .Select(item => new { item.Name, item.FieldType });
 
                 var expected = new[]
                 {
@@ -410,7 +404,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -420,7 +414,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = ReflectionCache.GetFieldInfo(typeof(DummyFieldSuperClass), binding, false);
 
-                actual.Single(item => item.Name == "Field5").Should().NotBeNull();
+                actual.Single(item => item.Name == "Field5").ShouldNotBeNull();
             }
         }
 
@@ -433,8 +427,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetFieldInfo((TypeInfo) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("typeInfo");
             }
 
@@ -442,7 +435,8 @@ namespace AllOverIt.Tests.Reflection
             public void Should_Get_Declared_Only()
             {
                 var typeInfo = typeof(DummyFieldSuperClass).GetTypeInfo();
-                var actual = ReflectionCache.GetFieldInfo(typeInfo, true);
+                var actual = ReflectionCache.GetFieldInfo(typeInfo, true)
+                    .Select(item => new { item.Name, item.FieldType });
 
                 var expected = new[]
                 {
@@ -463,14 +457,15 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
             public void Should_Get_All_Properties()
             {
                 var typeInfo = typeof(DummyFieldSuperClass).GetTypeInfo();
-                var actual = ReflectionCache.GetFieldInfo(typeInfo, false);
+                var actual = ReflectionCache.GetFieldInfo(typeInfo, false)
+                    .Select(item => new { item.Name, item.FieldType });
 
                 var expected = new[]
                 {
@@ -501,8 +496,20 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

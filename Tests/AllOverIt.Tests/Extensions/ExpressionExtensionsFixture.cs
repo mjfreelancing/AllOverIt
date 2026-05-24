@@ -1,7 +1,8 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly;
+using AllOverIt.Shouldly.Extensions;
 using System.Data;
 using System.Linq.Expressions;
 
@@ -26,8 +27,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Throw_When_Expression_Null()
             {
                 Invoking(() => ExpressionExtensions.GetMemberExpressions(null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("expression");
             }
 
@@ -42,7 +42,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = new[] { "Value", "subject" };
 
-                expected.Should().BeEquivalentTo(actual.Select(item => item.Member.Name));
+                actual.Select(item => item.Member.Name).ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -55,9 +55,9 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ExpressionExtensions.GetMemberExpressions(expression).AsReadOnlyList();
 
-                ExpressionExtensions.GetValue(actual[0]).Should().Be(subject);
-                ExpressionExtensions.GetValue(actual[1]).Should().Be(subject.Child);
-                ExpressionExtensions.GetValue(actual[2]).Should().Be(subject.Child.Value);
+                ExpressionExtensions.GetValue(actual[0]).ShouldBe(subject);
+                ExpressionExtensions.GetValue(actual[1]).ShouldBe(subject.Child);
+                ExpressionExtensions.GetValue(actual[2]).ShouldBe(subject.Child.Value);
             }
         }
 
@@ -69,8 +69,7 @@ namespace AllOverIt.Tests.Extensions
                 var parameter = Expression.Parameter(typeof(DummyPropertyClass), "item");
 
                 Invoking(() => ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyPropertyClass, int>(null, parameter))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("propertyOrFieldExpression");
             }
 
@@ -80,8 +79,7 @@ namespace AllOverIt.Tests.Extensions
                 var parameter = Expression.Parameter(typeof(DummyPropertyClass), "item");
 
                 Invoking(() => ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyPropertyClass, int>(item => item.Value, null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("parameterExpression");
             }
 
@@ -93,7 +91,7 @@ namespace AllOverIt.Tests.Extensions
                 var parameter = Expression.Parameter(typeof(DummyPropertyClass), "item");
                 var memberExpression = ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyPropertyClass, int>(subject => subject.Value, parameter);
 
-                memberExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+                memberExpression.Expression.ShouldBeAssignableTo<ParameterExpression>();
 
                 // Now test by building a predicate that compares against the expected value
                 var predicate = Expression.Equal(memberExpression, Expression.Constant(subject.Value));
@@ -103,13 +101,13 @@ namespace AllOverIt.Tests.Extensions
                 var compiled = lambda.Compile();
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeTrue();
+                compiled.Invoke(subject).ShouldBeTrue();
 
                 // And confirm it fails when the value on the subject is changed
                 subject.Value++;
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeFalse();
+                compiled.Invoke(subject).ShouldBeFalse();
             }
 
             [Fact]
@@ -121,7 +119,7 @@ namespace AllOverIt.Tests.Extensions
                 var memberExpression = ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyNestedClass, int>(subject => subject.Child.Value, parameter);
 
                 var parentExpression = memberExpression.Expression as MemberExpression;
-                parentExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+                parentExpression.Expression.ShouldBeAssignableTo<ParameterExpression>();
 
                 // Now test by building a predicate that compares against the expected value
                 var predicate = Expression.Equal(memberExpression, Expression.Constant(subject.Child.Value));
@@ -131,13 +129,13 @@ namespace AllOverIt.Tests.Extensions
                 var compiled = lambda.Compile();
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeTrue();
+                compiled.Invoke(subject).ShouldBeTrue();
 
                 // And confirm it fails when the value on the subject is changed
                 subject.Child.Value++;
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeFalse();
+                compiled.Invoke(subject).ShouldBeFalse();
             }
 
             [Fact]
@@ -148,7 +146,7 @@ namespace AllOverIt.Tests.Extensions
                 var parameter = Expression.Parameter(typeof(DummyPropertyClass), "item");
                 var memberExpression = ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyPropertyClass, double>(subject => subject.Field, parameter);
 
-                memberExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+                memberExpression.Expression.ShouldBeAssignableTo<ParameterExpression>();
 
                 // Now test by building a predicate that compares against the expected value
                 var predicate = Expression.Equal(memberExpression, Expression.Constant(subject.Field));
@@ -158,13 +156,13 @@ namespace AllOverIt.Tests.Extensions
                 var compiled = lambda.Compile();
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeTrue();
+                compiled.Invoke(subject).ShouldBeTrue();
 
                 // And confirm it fails when the value on the subject is changed
                 subject.Field++;
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeFalse();
+                compiled.Invoke(subject).ShouldBeFalse();
             }
 
             [Fact]
@@ -176,7 +174,7 @@ namespace AllOverIt.Tests.Extensions
                 var memberExpression = ExpressionExtensions.GetPropertyOrFieldExpressionUsingParameter<DummyNestedClass, double>(subject => subject.Child.Field, parameter);
 
                 var parentExpression = memberExpression.Expression as MemberExpression;
-                parentExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+                parentExpression.Expression.ShouldBeAssignableTo<ParameterExpression>();
 
                 // Now test by building a predicate that compares against the expected value
                 var predicate = Expression.Equal(memberExpression, Expression.Constant(subject.Child.Field));
@@ -186,13 +184,13 @@ namespace AllOverIt.Tests.Extensions
                 var compiled = lambda.Compile();
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeTrue();
+                compiled.Invoke(subject).ShouldBeTrue();
 
                 // And confirm it fails when the value on the subject is changed
                 subject.Child.Field++;
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeFalse();
+                compiled.Invoke(subject).ShouldBeFalse();
             }
         }
 
@@ -204,8 +202,7 @@ namespace AllOverIt.Tests.Extensions
                 var parameter = Expression.Parameter(typeof(DummyPropertyClass), "item");
 
                 Invoking(() => ExpressionExtensions.GetParameterPropertyOrFieldExpression<DummyPropertyClass, int>(null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("propertyOrFieldExpression");
             }
 
@@ -216,7 +213,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var memberExpression = ExpressionExtensions.GetParameterPropertyOrFieldExpression<DummyPropertyClass, int>(subject => subject.Value);
 
-                memberExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+                memberExpression.Expression.ShouldBeAssignableTo<ParameterExpression>();
 
                 var parameter = memberExpression.Expression as ParameterExpression;
 
@@ -228,13 +225,13 @@ namespace AllOverIt.Tests.Extensions
                 var compiled = lambda.Compile();
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeTrue();
+                compiled.Invoke(subject).ShouldBeTrue();
 
                 // And confirm it fails when the value on the subject is changed
                 subject.Value++;
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeFalse();
+                compiled.Invoke(subject).ShouldBeFalse();
             }
 
             [Fact]
@@ -245,7 +242,7 @@ namespace AllOverIt.Tests.Extensions
                 var memberExpression = ExpressionExtensions.GetParameterPropertyOrFieldExpression<DummyNestedClass, int>(subject => subject.Child.Value);
 
                 var parentExpression = memberExpression.Expression as MemberExpression;
-                parentExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+                parentExpression.Expression.ShouldBeAssignableTo<ParameterExpression>();
 
                 var parameter = parentExpression.Expression as ParameterExpression;
 
@@ -257,13 +254,13 @@ namespace AllOverIt.Tests.Extensions
                 var compiled = lambda.Compile();
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeTrue();
+                compiled.Invoke(subject).ShouldBeTrue();
 
                 // And confirm it fails when the value on the subject is changed
                 subject.Child.Value++;
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeFalse();
+                compiled.Invoke(subject).ShouldBeFalse();
             }
 
             [Fact]
@@ -273,7 +270,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var memberExpression = ExpressionExtensions.GetParameterPropertyOrFieldExpression<DummyPropertyClass, double>(subject => subject.Field);
 
-                memberExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+                memberExpression.Expression.ShouldBeAssignableTo<ParameterExpression>();
 
                 var parameter = memberExpression.Expression as ParameterExpression;
 
@@ -285,13 +282,13 @@ namespace AllOverIt.Tests.Extensions
                 var compiled = lambda.Compile();
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeTrue();
+                compiled.Invoke(subject).ShouldBeTrue();
 
                 // And confirm it fails when the value on the subject is changed
                 subject.Field++;
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeFalse();
+                compiled.Invoke(subject).ShouldBeFalse();
             }
 
             [Fact]
@@ -302,7 +299,7 @@ namespace AllOverIt.Tests.Extensions
                 var memberExpression = ExpressionExtensions.GetParameterPropertyOrFieldExpression<DummyNestedClass, double>(subject => subject.Child.Field);
 
                 var parentExpression = memberExpression.Expression as MemberExpression;
-                parentExpression.Expression.Should().BeAssignableTo<ParameterExpression>();
+                parentExpression.Expression.ShouldBeAssignableTo<ParameterExpression>();
 
                 var parameter = parentExpression.Expression as ParameterExpression;
 
@@ -314,13 +311,13 @@ namespace AllOverIt.Tests.Extensions
                 var compiled = lambda.Compile();
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeTrue();
+                compiled.Invoke(subject).ShouldBeTrue();
 
                 // And confirm it fails when the value on the subject is changed
                 subject.Child.Field++;
 
                 // And invoke
-                compiled.Invoke(subject).Should().BeFalse();
+                compiled.Invoke(subject).ShouldBeFalse();
             }
         }
 
@@ -330,8 +327,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Throw_When_Expression_Null()
             {
                 Invoking(() => ExpressionExtensions.UnwrapMemberExpression(null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("expression");
             }
 
@@ -345,7 +341,7 @@ namespace AllOverIt.Tests.Extensions
                 var actual = ExpressionExtensions.UnwrapMemberExpression(expression.Body);
                 var expected = expression.Body;
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -358,7 +354,7 @@ namespace AllOverIt.Tests.Extensions
                 var actual = ExpressionExtensions.UnwrapMemberExpression(expression);
                 var expected = expression.Body;
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -368,12 +364,12 @@ namespace AllOverIt.Tests.Extensions
 
                 Expression<Func<int>> expression = () => -subject.Value;
 
-                expression.Body.Should().BeOfType<UnaryExpression>();
+                expression.Body.ShouldBeOfType<UnaryExpression>();
 
                 var actual = ExpressionExtensions.UnwrapMemberExpression(expression);
                 var expected = (expression.Body as UnaryExpression).Operand;
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -381,11 +377,11 @@ namespace AllOverIt.Tests.Extensions
             {
                 Expression<Func<int>> expression = () => 0;
 
-                expression.Body.Should().BeOfType<ConstantExpression>();
+                expression.Body.ShouldBeOfType<ConstantExpression>();
 
                 var actual = ExpressionExtensions.UnwrapMemberExpression(expression);
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
         }
 
@@ -395,8 +391,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Throw_When_Expression_Null()
             {
                 Invoking(() => ExpressionExtensions.GetPropertyOrFieldMemberInfo(null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("expression");
             }
 
@@ -407,13 +402,13 @@ namespace AllOverIt.Tests.Extensions
 
                 Expression<Func<int>> expression = () => -subject.Value;
 
-                expression.Body.Should().BeOfType<UnaryExpression>();
+                expression.Body.ShouldBeOfType<UnaryExpression>();
 
                 var actual = ExpressionExtensions.GetPropertyOrFieldMemberInfo(expression);
 
                 var expected = ((expression.Body as UnaryExpression).Operand as MemberExpression).Member;
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -422,8 +417,7 @@ namespace AllOverIt.Tests.Extensions
                 Expression<Func<int>> expression = () => 0;
 
                 Invoking(() => ExpressionExtensions.GetPropertyOrFieldMemberInfo(expression))
-                  .Should()
-                  .Throw<InvalidOperationException>()
+                  .ShouldThrow<InvalidOperationException>()
                   .WithMessage("Expected a property or field access expression.");
             }
         }
@@ -435,7 +429,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ExpressionExtensions.GetValue(null);
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -445,7 +439,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = expression.Body.GetValue();
 
-                actual.Should().Be(10);
+                actual.ShouldBe(10);
             }
 
             [Fact]
@@ -456,7 +450,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = expression.Body.GetValue();
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -467,7 +461,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = expression.Body.GetValue();
 
-                actual.Should().Be(dummy.Value);
+                actual.ShouldBe(dummy.Value);
             }
 
             [Fact]
@@ -478,7 +472,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = expression.Body.GetValue();
 
-                actual.Should().Be(dummy[1].Value);
+                actual.ShouldBe(dummy[1].Value);
             }
 
             [Fact]
@@ -492,7 +486,7 @@ namespace AllOverIt.Tests.Extensions
                 var actual = expression.Body.GetValue();
                 var expected = val1 + val2;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -504,7 +498,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ExpressionExtensions.GetValue(expression);
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -518,8 +512,7 @@ namespace AllOverIt.Tests.Extensions
                 });
 
                 actual
-                  .Should()
-                  .Throw<ArgumentOutOfRangeException>()
+                  .ShouldThrow<ArgumentOutOfRangeException>()
                   .WithMessage("A ParameterExpression does not have a value (Parameter 'expression')");
             }
 
@@ -529,9 +522,9 @@ namespace AllOverIt.Tests.Extensions
                 var message = Create<string>();
                 Expression<Func<int>> expression = () => GetException(message);
 
-                var actual = Invoking(() => expression.Body.GetValue());
+                var exception = Should.Throw<Exception>(() => expression.Body.GetValue());
 
-                actual.Should().Throw<Exception>().WithMessage(message);
+                exception.Message.ShouldContain(message);
             }
 
             [Fact]
@@ -545,7 +538,7 @@ namespace AllOverIt.Tests.Extensions
                 var actual = expression.Body.GetValue();
                 var expected = new[] { val1, val2 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             private static int GetSum(int val1, int val2)
@@ -569,7 +562,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var converted = valueExpression.CastOrConvertTo(typeof(object));
 
-                converted.Should().BeSameAs(valueExpression);
+                converted.ShouldBeSameAs(valueExpression);
             }
 
             [Fact]
@@ -580,7 +573,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var converted = valueExpression.CastOrConvertTo(typeof(IEnumerable<string>));
 
-                converted.Should().BeSameAs(valueExpression);
+                converted.ShouldBeSameAs(valueExpression);
             }
 
             [Fact]
@@ -591,9 +584,9 @@ namespace AllOverIt.Tests.Extensions
 
                 var converted = valueExpression.CastOrConvertTo(typeof(double)) as UnaryExpression;
 
-                converted.NodeType.Should().Be(ExpressionType.Convert);
-                converted.Operand.Should().Be(valueExpression);
-                converted.Type.Should().Be(typeof(double));
+                converted.NodeType.ShouldBe(ExpressionType.Convert);
+                converted.Operand.ShouldBe(valueExpression);
+                converted.Type.ShouldBe(typeof(double));
             }
 
             [Fact]
@@ -604,9 +597,9 @@ namespace AllOverIt.Tests.Extensions
 
                 var converted = valueExpression.CastOrConvertTo(typeof(string)) as UnaryExpression;
 
-                converted.NodeType.Should().Be(ExpressionType.TypeAs);
-                converted.Operand.Should().Be(valueExpression);
-                converted.Type.Should().Be(typeof(string));
+                converted.NodeType.ShouldBe(ExpressionType.TypeAs);
+                converted.Operand.ShouldBe(valueExpression);
+                converted.Type.ShouldBe(typeof(string));
             }
 
             [Fact]
@@ -616,9 +609,9 @@ namespace AllOverIt.Tests.Extensions
 
                 var converted = itemParam.CastOrConvertTo(typeof(int)) as UnaryExpression;
 
-                converted.NodeType.Should().Be(ExpressionType.Convert);
-                converted.Operand.Should().Be(itemParam);
-                converted.Type.Should().Be(typeof(int));
+                converted.NodeType.ShouldBe(ExpressionType.Convert);
+                converted.Operand.ShouldBe(itemParam);
+                converted.Type.ShouldBe(typeof(int));
             }
 
             [Fact]
@@ -628,10 +621,18 @@ namespace AllOverIt.Tests.Extensions
 
                 var converted = itemParam.CastOrConvertTo(typeof(int?)) as UnaryExpression;
 
-                converted.NodeType.Should().Be(ExpressionType.TypeAs);
-                converted.Operand.Should().Be(itemParam);
-                converted.Type.Should().Be(typeof(int?));
+                converted.NodeType.ShouldBe(ExpressionType.TypeAs);
+                converted.Operand.ShouldBe(itemParam);
+                converted.Type.ShouldBe(typeof(int?));
             }
         }
     }
 }
+
+
+
+
+
+
+
+

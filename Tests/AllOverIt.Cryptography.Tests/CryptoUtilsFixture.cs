@@ -1,5 +1,5 @@
 ﻿using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.Tests
@@ -23,19 +23,19 @@ namespace AllOverIt.Cryptography.Tests
 
                 var legalKeySizes = new[] { keySizes1, keySizes2 };
 
-                legalKeySizes.IsKeySizeValid(minSize1 - 1).Should().BeFalse();
-                legalKeySizes.IsKeySizeValid(minSize1).Should().BeTrue();
-                legalKeySizes.IsKeySizeValid(minSize1 + skipSize).Should().BeTrue();
-                legalKeySizes.IsKeySizeValid(maxSize1).Should().BeTrue();
-                legalKeySizes.IsKeySizeValid(maxSize1 - skipSize).Should().BeTrue();
-                legalKeySizes.IsKeySizeValid(maxSize1 + 1).Should().BeFalse();
+                legalKeySizes.IsKeySizeValid(minSize1 - 1).ShouldBeFalse();
+                legalKeySizes.IsKeySizeValid(minSize1).ShouldBeTrue();
+                legalKeySizes.IsKeySizeValid(minSize1 + skipSize).ShouldBeTrue();
+                legalKeySizes.IsKeySizeValid(maxSize1).ShouldBeTrue();
+                legalKeySizes.IsKeySizeValid(maxSize1 - skipSize).ShouldBeTrue();
+                legalKeySizes.IsKeySizeValid(maxSize1 + 1).ShouldBeFalse();
 
-                legalKeySizes.IsKeySizeValid(minSize2 - 1).Should().BeFalse();
-                legalKeySizes.IsKeySizeValid(minSize2).Should().BeTrue();
-                legalKeySizes.IsKeySizeValid(minSize2 + skipSize).Should().BeTrue();
-                legalKeySizes.IsKeySizeValid(maxSize2).Should().BeTrue();
-                legalKeySizes.IsKeySizeValid(maxSize2 - skipSize).Should().BeTrue();
-                legalKeySizes.IsKeySizeValid(maxSize2 + 1).Should().BeFalse();
+                legalKeySizes.IsKeySizeValid(minSize2 - 1).ShouldBeFalse();
+                legalKeySizes.IsKeySizeValid(minSize2).ShouldBeTrue();
+                legalKeySizes.IsKeySizeValid(minSize2 + skipSize).ShouldBeTrue();
+                legalKeySizes.IsKeySizeValid(maxSize2).ShouldBeTrue();
+                legalKeySizes.IsKeySizeValid(maxSize2 - skipSize).ShouldBeTrue();
+                legalKeySizes.IsKeySizeValid(maxSize2 + 1).ShouldBeFalse();
             }
         }
     }

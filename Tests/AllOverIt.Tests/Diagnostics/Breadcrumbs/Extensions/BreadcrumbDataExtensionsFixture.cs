@@ -1,8 +1,7 @@
-﻿using AllOverIt.Diagnostics.Breadcrumbs;
+using AllOverIt.Diagnostics.Breadcrumbs;
 using AllOverIt.Diagnostics.Breadcrumbs.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
 {
@@ -17,8 +16,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
                 {
                     _ = BreadcrumbDataExtensions.AsMutable(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("breadcrumbData");
             }
 
@@ -27,9 +25,12 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs.Extensions
             {
                 BreadcrumbDataExtensions
                     .AsMutable(Create<BreadcrumbData>())
-                    .Should()
-                    .BeOfType<BreadcrumbDataMutator>();
+                    .ShouldBeOfType<BreadcrumbDataMutator>();
             }
         }
     }
 }
+
+
+
+

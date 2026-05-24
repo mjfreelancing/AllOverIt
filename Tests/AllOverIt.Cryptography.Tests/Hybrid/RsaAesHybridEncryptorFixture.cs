@@ -2,7 +2,7 @@
 using AllOverIt.Cryptography.RSA;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.Tests.Hybrid
@@ -60,12 +60,10 @@ namespace AllOverIt.Cryptography.Tests.Hybrid
             [Fact]
             public void Should_Throw_When_Configuration_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new RsaAesHybridEncryptor(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("configuration");
             }
         }
@@ -75,12 +73,10 @@ namespace AllOverIt.Cryptography.Tests.Hybrid
             [Fact]
             public void Should_Throw_When_PlainText_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = _encryptor.Encrypt(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("plainText");
             }
         }
@@ -90,24 +86,20 @@ namespace AllOverIt.Cryptography.Tests.Hybrid
             [Fact]
             public void Should_Throw_When_PlainText_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _encryptor.Encrypt(null, Stream.Null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("plainTextStream");
             }
 
             [Fact]
             public void Should_Throw_When_CipherText_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _encryptor.Encrypt(Stream.Null, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("cipherTextStream");
             }
         }
@@ -117,12 +109,10 @@ namespace AllOverIt.Cryptography.Tests.Hybrid
             [Fact]
             public void Should_Throw_When_PlainText_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = _decryptor.Decrypt(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("cipherText");
             }
         }
@@ -132,24 +122,20 @@ namespace AllOverIt.Cryptography.Tests.Hybrid
             [Fact]
             public void Should_Throw_When_PlainText_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _decryptor.Decrypt(null, Stream.Null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("cipherTextStream");
             }
 
             [Fact]
             public void Should_Throw_When_CipherText_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _decryptor.Decrypt(Stream.Null, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("plainTextStream");
             }
         }
@@ -166,7 +152,7 @@ namespace AllOverIt.Cryptography.Tests.Hybrid
 
                 var actual = _decryptor.Decrypt(cipherText);
 
-                actual.Should().ContainInOrder(plainText);
+                actual.ShouldBe(plainText);
             }
         }
 
@@ -190,7 +176,7 @@ namespace AllOverIt.Cryptography.Tests.Hybrid
 
                 var actual = plainTextStream.ToArray();
 
-                actual.Should().ContainInOrder(plainText);
+                actual.ShouldBe(plainText);
             }
         }
     }

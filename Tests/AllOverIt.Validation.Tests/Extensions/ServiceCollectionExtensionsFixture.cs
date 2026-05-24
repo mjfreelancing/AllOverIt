@@ -1,8 +1,7 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Validation.Extensions;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.Validation.Tests.Extensions
@@ -25,13 +24,11 @@ namespace AllOverIt.Validation.Tests.Extensions
             [Fact]
             public void Should_Throw_When_ServiceCollection_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = AllOverIt.Validation.Extensions.ServiceCollectionExtensions.AddValidationInvoker(null, null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("services");
+                });
+                exception.WithNamedMessageWhenNull("services");
             }
 
             [Fact]
@@ -44,7 +41,7 @@ namespace AllOverIt.Validation.Tests.Extensions
                     validationRegistry = registry;
                 });
 
-                validationRegistry.Should().NotBeNull();
+                validationRegistry.ShouldNotBeNull();
             }
 
             [Fact]
@@ -56,8 +53,7 @@ namespace AllOverIt.Validation.Tests.Extensions
                     .Where(descriptor => descriptor.ServiceType == typeof(IValidationInvoker))
                     .SingleOrDefault()
                     .Lifetime
-                    .Should()
-                    .Be(ServiceLifetime.Singleton);
+                     .ShouldBe(ServiceLifetime.Singleton);
             }
 
             [Fact]
@@ -65,12 +61,11 @@ namespace AllOverIt.Validation.Tests.Extensions
             {
                 var actual = AllOverIt.Validation.Extensions.ServiceCollectionExtensions.AddValidationInvoker(_services);
 
-                actual.Should().BeOfType(typeof(ValidationInvoker));
+                actual.ShouldBeOfType(typeof(ValidationInvoker));
 
                 actual.GetType()
                     .IsDerivedFrom(typeof(IValidationRegistry))
-                    .Should()
-                    .BeTrue();
+                    .ShouldBeTrue();
             }
         }
 
@@ -79,13 +74,11 @@ namespace AllOverIt.Validation.Tests.Extensions
             [Fact]
             public void Should_Throw_When_ServiceCollection_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = AllOverIt.Validation.Extensions.ServiceCollectionExtensions.AddLifetimeValidationInvoker(null, null);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("services");
+                });
+                exception.WithNamedMessageWhenNull("services");
             }
 
             [Fact]
@@ -98,7 +91,7 @@ namespace AllOverIt.Validation.Tests.Extensions
                     validationRegistry = registry;
                 });
 
-                validationRegistry.Should().NotBeNull();
+                validationRegistry.ShouldNotBeNull();
             }
 
             [Fact]
@@ -110,8 +103,7 @@ namespace AllOverIt.Validation.Tests.Extensions
                     .Where(descriptor => descriptor.ServiceType == typeof(ILifetimeValidationInvoker))
                     .SingleOrDefault()
                     .Lifetime
-                    .Should()
-                    .Be(ServiceLifetime.Singleton);
+                     .ShouldBe(ServiceLifetime.Singleton);
             }
 
             [Fact]
@@ -126,13 +118,11 @@ namespace AllOverIt.Validation.Tests.Extensions
 
                 var invoker = provider.GetRequiredService<ILifetimeValidationInvoker>();
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     // This would throw if the provider was not set
                     invoker.Validate<DummyModel>(Create<DummyModel>());
-                })
-                .Should()
-                .NotThrow();
+                });
             }
 
             [Fact]
@@ -140,12 +130,11 @@ namespace AllOverIt.Validation.Tests.Extensions
             {
                 var actual = AllOverIt.Validation.Extensions.ServiceCollectionExtensions.AddLifetimeValidationInvoker(_services);
 
-                actual.Should().BeOfType(typeof(LifetimeValidationInvoker));
+                actual.ShouldBeOfType(typeof(LifetimeValidationInvoker));
 
                 actual.GetType()
                     .IsDerivedFrom(typeof(ILifetimeValidationRegistry))
-                    .Should()
-                    .BeTrue();
+                    .ShouldBeTrue();
             }
 
             [Fact]
@@ -156,7 +145,7 @@ namespace AllOverIt.Validation.Tests.Extensions
                     registry.RegisterTransient<DummyModel, DummyModelValidator>();
                 });
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     // Make sure the registrations are all valid (such as cannot resolve a
                     // scoped/transient within the singleton invoker).
@@ -170,9 +159,7 @@ namespace AllOverIt.Validation.Tests.Extensions
                             .GetRequiredService<ILifetimeValidationInvoker>()
                             .AssertValidation(model);
                     }
-                })
-                .Should()
-                .NotThrow();
+                });
             }
 
             [Fact]
@@ -183,7 +170,7 @@ namespace AllOverIt.Validation.Tests.Extensions
                     registry.RegisterScoped<DummyModel, DummyModelValidator>();
                 });
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     // Make sure the registrations are all valid (such as cannot resolve a
                     // scoped/transient within the singleton invoker).
@@ -197,9 +184,7 @@ namespace AllOverIt.Validation.Tests.Extensions
                             .GetRequiredService<ILifetimeValidationInvoker>()
                             .AssertValidation(model);
                     }
-                })
-                .Should()
-                .NotThrow();
+                });
             }
 
             [Fact]
@@ -210,7 +195,7 @@ namespace AllOverIt.Validation.Tests.Extensions
                     registry.RegisterSingleton<DummyModel, DummyModelValidator>();
                 });
 
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     // Make sure the registrations are all valid (such as cannot resolve a
                     // scoped/transient within the singleton invoker).
@@ -224,10 +209,13 @@ namespace AllOverIt.Validation.Tests.Extensions
                             .GetRequiredService<ILifetimeValidationInvoker>()
                             .AssertValidation(model);
                     }
-                })
-                .Should()
-                .NotThrow();
+                });
             }
         }
     }
 }
+
+
+
+
+

@@ -1,6 +1,5 @@
 using AllOverIt.Fixture;
 using AllOverIt.Pagination.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Pagination.Tests.Extensions
 {
@@ -15,8 +14,12 @@ namespace AllOverIt.Pagination.Tests.Extensions
             {
                 var actual = PaginationDirectionExtensions.Reverse(direction);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }
 }
+
+
+
+

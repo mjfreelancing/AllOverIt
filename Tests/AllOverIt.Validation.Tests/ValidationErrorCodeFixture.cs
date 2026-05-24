@@ -1,5 +1,5 @@
-﻿using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Fixture;
+using AllOverIt.Shouldly;
 
 namespace AllOverIt.Validation.Tests
 {
@@ -18,8 +18,16 @@ namespace AllOverIt.Validation.Tests
 
             // If this test fails then other tests may need to be added to check all error codes are returned
             expected
-                .Should()
-                .BeEquivalentTo(typeof(ValidationErrorCode).GetEnumNames());
+                .ShouldBe(typeof(ValidationErrorCode).GetEnumNames());
         }
     }
 }
+
+
+
+
+
+
+
+
+

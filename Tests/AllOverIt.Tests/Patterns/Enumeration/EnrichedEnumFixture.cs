@@ -2,9 +2,8 @@
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Patterns.Enumeration.Exceptions;
-using FluentAssertions;
 using System.Runtime.CompilerServices;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Tests.Patterns.Enumeration
 {
     public class EnrichedEnumFixture : FixtureBase
@@ -71,8 +70,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 {
                     _ = DummyBadEnrichedEnum1.NullName;
                 })
-                    .Should()
-                    .Throw<TypeInitializationException>()
+                    .ShouldThrow<TypeInitializationException>()
                     .WithInnerException<ArgumentNullException>()
                     .WithNamedMessageWhenNull("name");
             }
@@ -84,8 +82,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 {
                     _ = DummyBadEnrichedEnum2.EmptyName;
                 })
-                    .Should()
-                    .Throw<TypeInitializationException>()
+                    .ShouldThrow<TypeInitializationException>()
                     .WithInnerException<ArgumentException>()
                     .WithNamedMessageWhenEmpty("name");
             }
@@ -97,8 +94,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 {
                     _ = DummyBadEnrichedEnum3.WhitespaceName;
                 })
-                    .Should()
-                    .Throw<TypeInitializationException>()
+                    .ShouldThrow<TypeInitializationException>()
                     .WithInnerException<ArgumentException>()
                     .WithNamedMessageWhenEmpty("name");
             }
@@ -106,20 +102,20 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Set_Value()
             {
-                DummyEnrichedEnum1.Value1.Value.Should().Be(1);
-                DummyEnrichedEnum1.Value2.Value.Should().Be(2);
+                DummyEnrichedEnum1.Value1.Value.ShouldBe(1);
+                DummyEnrichedEnum1.Value2.Value.ShouldBe(2);
             }
 
             [Fact]
             public void Should_Set_Name_Same_As_Field()
             {
-                DummyEnrichedEnum1.Value1.Name.Should().Be(nameof(DummyEnrichedEnum1.Value1));
+                DummyEnrichedEnum1.Value1.Name.ShouldBe(nameof(DummyEnrichedEnum1.Value1));
             }
 
             [Fact]
             public void Should_Set_Name_As_Specified()
             {
-                DummyEnrichedEnum1.Value2.Name.Should().Be("Value 2");
+                DummyEnrichedEnum1.Value2.Name.ShouldBe("Value 2");
             }
         }
 
@@ -128,8 +124,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Return_Name()
             {
-                DummyEnrichedEnum1.Value1.ToString().Should().Be(DummyEnrichedEnum1.Value1.Name);
-                DummyEnrichedEnum1.Value2.ToString().Should().Be(DummyEnrichedEnum1.Value2.Name);
+                DummyEnrichedEnum1.Value1.ToString().ShouldBe(DummyEnrichedEnum1.Value1.Name);
+                DummyEnrichedEnum1.Value2.ToString().ShouldBe(DummyEnrichedEnum1.Value2.Name);
             }
         }
 
@@ -139,14 +135,14 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             public void Should_Not_Compare()
             {
                 var actual = DummyEnrichedEnum1.Value1.CompareTo(DummyEnrichedEnum1.Value2);
-                actual.Should().NotBe(0);
+                actual.ShouldNotBe(0);
             }
 
             [Fact]
             public void Should_Compare()
             {
                 var actual = DummyEnrichedEnum1.Value2.CompareTo(DummyEnrichedEnum1.Value2);
-                actual.Should().Be(0);
+                actual.ShouldBe(0);
             }
 
             [Fact]
@@ -156,8 +152,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 {
                     DummyEnrichedEnum1.Value2.CompareTo(null);
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
 
@@ -169,7 +164,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 object value1 = DummyEnrichedEnum1.Value1;
                 var actual = DummyEnrichedEnum1.Value1.Equals(value1);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -178,7 +173,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 object nullValue = null;
                 var actual = DummyEnrichedEnum1.Value1.Equals(nullValue);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -187,7 +182,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 object value2 = DummyEnrichedEnum1.Value2;
                 var actual = DummyEnrichedEnum1.Value1.Equals(value2);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -196,7 +191,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 object value1 = DummyEnrichedEnum2.Value1;
                 var actual = DummyEnrichedEnum1.Value1.Equals(value1);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -208,7 +203,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 var value1 = DummyEnrichedEnum1.Value1;
                 var actual = DummyEnrichedEnum1.Value1.Equals(value1);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -217,7 +212,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 DummyEnrichedEnum1 nullValue = null;
                 var actual = DummyEnrichedEnum1.Value1.Equals(nullValue);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -226,7 +221,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 var value2 = DummyEnrichedEnum1.Value2;
                 var actual = DummyEnrichedEnum1.Value1.Equals(value2);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -238,7 +233,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 var expected = 2.GetHashCode();
                 var actual = DummyEnrichedEnum1.Value2.GetHashCode();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -251,7 +246,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
 
                 var expected = new[] { DummyEnrichedEnum1.Value1.Value, DummyEnrichedEnum1.Value2.Value };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
         }
 
@@ -264,7 +259,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
 
                 var expected = new[] { DummyEnrichedEnum1.Value1.Name, DummyEnrichedEnum1.Value2.Name };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
         }
 
@@ -277,7 +272,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
 
                 var expected = new[] { DummyEnrichedEnum1.Value1, DummyEnrichedEnum1.Value2 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
         }
 
@@ -286,8 +281,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Get_From_Number()
             {
-                DummyEnrichedEnum1.From(1).Should().Be(DummyEnrichedEnum1.Value1);
-                DummyEnrichedEnum1.From(2).Should().Be(DummyEnrichedEnum1.Value2);
+                DummyEnrichedEnum1.From(1).ShouldBe(DummyEnrichedEnum1.Value1);
+                DummyEnrichedEnum1.From(2).ShouldBe(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
@@ -297,8 +292,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                     {
                         _ = DummyEnrichedEnum1.From(0);
                     })
-                    .Should()
-                    .Throw<EnrichedEnumException>()
+                    .ShouldThrow<EnrichedEnumException>()
                     .WithMessage("Unable to convert '0' to a DummyEnrichedEnum1.");
             }
         }
@@ -308,16 +302,16 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Get_From_Number_String()
             {
-                DummyEnrichedEnum1.From("1").Should().Be(DummyEnrichedEnum1.Value1);
-                DummyEnrichedEnum1.From("2").Should().Be(DummyEnrichedEnum1.Value2);
+                DummyEnrichedEnum1.From("1").ShouldBe(DummyEnrichedEnum1.Value1);
+                DummyEnrichedEnum1.From("2").ShouldBe(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
             public void Should_Get_From_Name()
             {
-                DummyEnrichedEnum1.From(nameof(DummyEnrichedEnum1.Value1)).Should().Be(DummyEnrichedEnum1.Value1);
-                DummyEnrichedEnum1.From("Value 2").Should().Be(DummyEnrichedEnum1.Value2);
-                DummyEnrichedEnum1.From("VALUE 2").Should().Be(DummyEnrichedEnum1.Value2);
+                DummyEnrichedEnum1.From(nameof(DummyEnrichedEnum1.Value1)).ShouldBe(DummyEnrichedEnum1.Value1);
+                DummyEnrichedEnum1.From("Value 2").ShouldBe(DummyEnrichedEnum1.Value2);
+                DummyEnrichedEnum1.From("VALUE 2").ShouldBe(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
@@ -329,8 +323,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                     {
                         _ = DummyEnrichedEnum1.From(value);
                     })
-                    .Should()
-                    .Throw<EnrichedEnumException>()
+                    .ShouldThrow<EnrichedEnumException>()
                     .WithMessage($"Unable to convert '{value}' to a DummyEnrichedEnum1.");
             }
 
@@ -352,8 +345,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var tryResult = DummyEnrichedEnum1.TryFromValue(1, out var actual);
 
-                tryResult.Should().BeTrue();
-                actual.Should().Be(DummyEnrichedEnum1.Value1);
+                tryResult.ShouldBeTrue();
+                actual.ShouldBe(DummyEnrichedEnum1.Value1);
             }
 
             [Fact]
@@ -361,8 +354,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var tryResult = DummyEnrichedEnum1.TryFromValue(-1, out var actual);
 
-                tryResult.Should().BeFalse();
-                actual.Should().BeNull();
+                tryResult.ShouldBeFalse();
+                actual.ShouldBeNull();
             }
         }
 
@@ -373,8 +366,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var tryResult = DummyEnrichedEnum1.TryFromName("VALUE 2", out var actual);
 
-                tryResult.Should().BeTrue();
-                actual.Should().Be(DummyEnrichedEnum1.Value2);
+                tryResult.ShouldBeTrue();
+                actual.ShouldBe(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
@@ -382,8 +375,8 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var tryResult = DummyEnrichedEnum1.TryFromName(Create<string>(), out var actual);
 
-                tryResult.Should().BeFalse();
-                actual.Should().BeNull();
+                tryResult.ShouldBeFalse();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -402,37 +395,37 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             [Fact]
             public void Should_Convert_From_Value()
             {
-                DummyEnrichedEnum1.TryFromNameOrValue("2", out var enumeration).Should().BeTrue();
+                DummyEnrichedEnum1.TryFromNameOrValue("2", out var enumeration).ShouldBeTrue();
 
-                enumeration.Should().Be(DummyEnrichedEnum1.Value2);
+                enumeration.ShouldBe(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
             public void Should_Convert_From_Name()
             {
-                DummyEnrichedEnum1.TryFromNameOrValue("Value 2", out var enumeration).Should().BeTrue();
+                DummyEnrichedEnum1.TryFromNameOrValue("Value 2", out var enumeration).ShouldBeTrue();
 
-                enumeration.Should().Be(DummyEnrichedEnum1.Value2);
+                enumeration.ShouldBe(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
             public void Should_Convert_From_Name_Case_Insensitive()
             {
-                DummyEnrichedEnum1.TryFromNameOrValue("VaLuE 2", out var enumeration).Should().BeTrue();
+                DummyEnrichedEnum1.TryFromNameOrValue("VaLuE 2", out var enumeration).ShouldBeTrue();
 
-                enumeration.Should().Be(DummyEnrichedEnum1.Value2);
+                enumeration.ShouldBe(DummyEnrichedEnum1.Value2);
             }
 
             [Fact]
             public void Should_Not_Convert_From_Value()
             {
-                DummyEnrichedEnum1.TryFromNameOrValue("3", out _).Should().BeFalse();
+                DummyEnrichedEnum1.TryFromNameOrValue("3", out _).ShouldBeFalse();
             }
 
             [Fact]
             public void Should_Not_Convert_From_Name()
             {
-                DummyEnrichedEnum1.TryFromNameOrValue("Value 1", out _).Should().BeFalse();
+                DummyEnrichedEnum1.TryFromNameOrValue("Value 1", out _).ShouldBeFalse();
             }
 
             [Fact]
@@ -455,7 +448,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.HasValue(value);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -465,7 +458,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.HasValue(value);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -480,7 +473,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.HasName(name);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -488,7 +481,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.HasName(Create<string>());
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -515,14 +508,14 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.HasNameOrValue(name);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
             public void Should_Not_Find_Name_Or_Value()
             {
-                DummyEnrichedEnum1.HasNameOrValue("-1").Should().BeFalse();
-                DummyEnrichedEnum1.HasNameOrValue(Create<string>()).Should().BeFalse();
+                DummyEnrichedEnum1.HasNameOrValue("-1").ShouldBeFalse();
+                DummyEnrichedEnum1.HasNameOrValue(Create<string>()).ShouldBeFalse();
             }
 
             [Fact]
@@ -544,7 +537,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 var value1 = DummyEnrichedEnum1.Value1;
                 var actual = DummyEnrichedEnum1.Value1 == value1;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -553,7 +546,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 DummyEnrichedEnum1 nullValue = null;
                 var actual = DummyEnrichedEnum1.Value1 == nullValue;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -561,7 +554,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.Value1 == DummyEnrichedEnum1.Value2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -573,7 +566,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 var value1 = DummyEnrichedEnum1.Value1;
                 var actual = DummyEnrichedEnum1.Value1 != value1;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -583,7 +576,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
 
                 var actual = DummyEnrichedEnum1.Value1 != nullValue;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -591,7 +584,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.Value1 != DummyEnrichedEnum1.Value2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -602,7 +595,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.Value2 > DummyEnrichedEnum1.Value1;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -610,7 +603,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.Value1 > DummyEnrichedEnum1.Value2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -620,7 +613,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 var actual = DummyEnrichedEnum1.Value1 > DummyEnrichedEnum1.Value1;
 #pragma warning restore CS1718 // Comparison made to same variable
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -630,8 +623,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 {
                     _ = DummyEnrichedEnum1.Value2 > null;
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
 
@@ -642,7 +634,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.Value2 >= DummyEnrichedEnum1.Value1;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -651,7 +643,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 var value2 = DummyEnrichedEnum1.Value2;
                 var actual = DummyEnrichedEnum1.Value2 >= value2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -659,7 +651,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.Value1 >= DummyEnrichedEnum1.Value2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -669,8 +661,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 {
                     _ = DummyEnrichedEnum1.Value2 >= null;
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
 
@@ -681,7 +672,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.Value1 < DummyEnrichedEnum1.Value2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -689,7 +680,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.Value2 < DummyEnrichedEnum1.Value1;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -699,7 +690,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 var actual = DummyEnrichedEnum1.Value2 < DummyEnrichedEnum1.Value2;
 #pragma warning restore CS1718 // Comparison made to same variable
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -709,8 +700,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 {
                     _ = DummyEnrichedEnum1.Value2 < null;
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
 
@@ -721,7 +711,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.Value1 <= DummyEnrichedEnum1.Value2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -730,7 +720,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 var value2 = DummyEnrichedEnum1.Value2;
                 var actual = DummyEnrichedEnum1.Value2 <= value2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -738,7 +728,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var actual = DummyEnrichedEnum1.Value2 <= DummyEnrichedEnum1.Value1;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -748,8 +738,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
                 {
                     _ = DummyEnrichedEnum1.Value2 <= null;
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
 
@@ -760,7 +749,7 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 int value = DummyEnrichedEnum1.Value2;
 
-                value.Should().Be(2);
+                value.ShouldBe(2);
             }
         }
 
@@ -771,8 +760,11 @@ namespace AllOverIt.Tests.Patterns.Enumeration
             {
                 var value = (DummyEnrichedEnum1) 2;
 
-                value.Should().Be(DummyEnrichedEnum1.Value2);
+                value.ShouldBe(DummyEnrichedEnum1.Value2);
             }
         }
     }
 }
+
+
+

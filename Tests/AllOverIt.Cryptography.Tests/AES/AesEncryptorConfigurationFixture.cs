@@ -1,8 +1,9 @@
-using AllOverIt.Cryptography.AES;
+﻿using AllOverIt.Cryptography.AES;
 using AllOverIt.Cryptography.AES.Exceptions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 using System.Security.Cryptography;
 
 namespace AllOverIt.Cryptography.Tests.AES
@@ -38,7 +39,7 @@ namespace AllOverIt.Cryptography.Tests.AES
                     actual.IV
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Theory]
@@ -64,7 +65,7 @@ namespace AllOverIt.Cryptography.Tests.AES
                     actual.IV
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -72,13 +73,13 @@ namespace AllOverIt.Cryptography.Tests.AES
             {
                 var actual1 = new AesEncryptorConfiguration();
 
-                actual1.Key.Should().NotBeEmpty();
-                actual1.IV.Should().NotBeEmpty();
+                actual1.Key.ShouldNotBeEmpty();
+                actual1.IV.ShouldNotBeEmpty();
 
                 var actual2 = new AesEncryptorConfiguration();
 
-                actual1.Key.Should().NotBeEquivalentTo(actual2.Key);
-                actual1.IV.Should().NotBeEquivalentTo(actual2.IV);
+                actual1.Key.ShouldNotBe(actual2.Key);
+                actual1.IV.ShouldNotBe(actual2.IV);
             }
 
         }
@@ -88,12 +89,10 @@ namespace AllOverIt.Cryptography.Tests.AES
             [Fact]
             public void Should_Throw_When_Key_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new AesEncryptorConfiguration(null, _iv);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("key");
             }
 
@@ -102,41 +101,35 @@ namespace AllOverIt.Cryptography.Tests.AES
             {
                 var keySize = AesUtils.GetLegalKeySizes().First().MaxSize / 8 - 1;
 
-                Invoking(() =>
+                Should.Throw<AesException>(() =>
                 {
                     var key = CreateMany<byte>(keySize).ToArray();
 
                     _ = new AesEncryptorConfiguration(key, _iv);
                 })
-                .Should()
-                .Throw<AesException>()
                 .WithMessage($"AES Key size {keySize * 8} is invalid.");
             }
 
             [Fact]
             public void Should_Throw_When_IV_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new AesEncryptorConfiguration(_key, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("iv");
             }
 
             [Fact]
             public void Should_Throw_When_IV_Invalid_Size()
             {
-                Invoking(() =>
+                Should.Throw<AesException>(() =>
                 {
                     // A valid IV is 16 bytes
                     var iv = CreateMany<byte>(15).ToArray();
 
                     _ = new AesEncryptorConfiguration(_key, iv);
                 })
-                .Should()
-                .Throw<AesException>()
                 .WithMessage("The AES Initialization Vector must be 16 bytes.");
             }
 
@@ -156,7 +149,7 @@ namespace AllOverIt.Cryptography.Tests.AES
                     IV = _iv
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -167,13 +160,13 @@ namespace AllOverIt.Cryptography.Tests.AES
 
                 var actual = new AesEncryptorConfiguration(_key, _iv);
 
-                actual.KeySize.Should().NotBe(keySize);
+                actual.KeySize.ShouldNotBe(keySize);
 
                 var key = CreateMany<byte>(keySize / 8).ToArray();
 
                 actual = new AesEncryptorConfiguration(key, _iv);
 
-                actual.KeySize.Should().Be(keySize);
+                actual.KeySize.ShouldBe(keySize);
             }
         }
 
@@ -186,8 +179,8 @@ namespace AllOverIt.Cryptography.Tests.AES
 
                 actual.RegenerateKey();
 
-                actual.Key.Should().NotBeEquivalentTo(_key);
-                actual.IV.Should().BeEquivalentTo(_iv);
+                actual.Key.ShouldNotBe(_key);
+                actual.IV.ShouldBe(_iv);
             }
         }
 
@@ -200,8 +193,8 @@ namespace AllOverIt.Cryptography.Tests.AES
 
                 actual.RegenerateIV();
 
-                actual.Key.Should().BeEquivalentTo(_key);
-                actual.IV.Should().NotBeEquivalentTo(_iv);
+                actual.Key.ShouldBe(_key);
+                actual.IV.ShouldNotBe(_iv);
             }
         }
 
@@ -214,8 +207,8 @@ namespace AllOverIt.Cryptography.Tests.AES
 
                 actual.RegenerateKeyAndIV();
 
-                actual.Key.Should().NotBeEquivalentTo(_key);
-                actual.IV.Should().NotBeEquivalentTo(_iv);
+                actual.Key.ShouldNotBe(_key);
+                actual.IV.ShouldNotBe(_iv);
             }
         }
     }

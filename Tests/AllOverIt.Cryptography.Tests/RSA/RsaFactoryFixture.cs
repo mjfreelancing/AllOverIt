@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Cryptography.RSA;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Cryptography.Tests.RSA
 {
@@ -16,13 +16,13 @@ namespace AllOverIt.Cryptography.Tests.RSA
                 var rsa1 = _rsaFactory.Create();
                 var rsa2 = _rsaFactory.Create();
 
-                rsa1.KeySize.Should().Be(2048);
-                rsa2.KeySize.Should().Be(2048);
+                rsa1.KeySize.ShouldBe(2048);
+                rsa2.KeySize.ShouldBe(2048);
 
                 var xml1 = rsa1.ToXmlString(true);
                 var xml2 = rsa2.ToXmlString(true);
 
-                xml1.Should().NotBe(xml2);
+                xml1.ShouldNotBe(xml2);
             }
         }
 
@@ -36,13 +36,13 @@ namespace AllOverIt.Cryptography.Tests.RSA
                 var rsa1 = _rsaFactory.Create(keySizeBits);
                 var rsa2 = _rsaFactory.Create(keySizeBits);
 
-                rsa1.KeySize.Should().Be(keySizeBits);
-                rsa2.KeySize.Should().Be(keySizeBits);
+                rsa1.KeySize.ShouldBe(keySizeBits);
+                rsa2.KeySize.ShouldBe(keySizeBits);
 
                 var xml1 = rsa1.ToXmlString(true);
                 var xml2 = rsa2.ToXmlString(true);
 
-                xml1.Should().NotBe(xml2);
+                xml1.ShouldNotBe(xml2);
             }
         }
 
@@ -57,13 +57,13 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 var rsa2 = _rsaFactory.Create(parameters);
 
-                rsa1.KeySize.Should().Be(2048);
-                rsa2.KeySize.Should().Be(2048);
+                rsa1.KeySize.ShouldBe(2048);
+                rsa2.KeySize.ShouldBe(2048);
 
                 var xml1 = rsa1.ToXmlString(true);
                 var xml2 = rsa2.ToXmlString(true);
 
-                xml1.Should().Be(xml2);
+                xml1.ShouldBe(xml2);
             }
         }
     }

@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
-using FluentAssertions;
 
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
@@ -19,8 +18,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = _serializerFactory.CreateContinuationTokenSerializer(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("continuationTokenOptions");
             }
 
@@ -31,8 +29,12 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = _serializerFactory.CreateContinuationTokenSerializer(options);
 
-                actual.Should().BeOfType<ContinuationTokenSerializer>();
+                actual.ShouldBeOfType<ContinuationTokenSerializer>();
             }
         }
     }
 }
+
+
+
+

@@ -1,7 +1,8 @@
 ﻿using AllOverIt.EntityFrameworkCore.Diagrams.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Extensions
 {
@@ -14,24 +15,20 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Options_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     EntityOptionsExtensions.SetShapeStyle(null, _ => { });
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("options");
             }
 
             [Fact]
             public void Should_Throw_When_Configure_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     EntityOptionsExtensions.SetShapeStyle(_options, (Action<ShapeStyle>) null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("configure");
             }
 
@@ -49,7 +46,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Extensions
                     style.Opacity = shapeStyle.Opacity;
                 });
 
-                shapeStyle.Should().BeEquivalentTo(_options.ShapeStyle);
+                _options.ShapeStyle.ShouldBeEquivalentTo(shapeStyle);
             }
         }
 
@@ -58,24 +55,20 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Options_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     EntityOptionsExtensions.SetShapeStyle(null, new ShapeStyle());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("options");
             }
 
             [Fact]
             public void Should_Throw_When_LabelStyle_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     EntityOptionsExtensions.SetShapeStyle(_options, (ShapeStyle) null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("shapeStyle");
             }
 
@@ -86,7 +79,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Extensions
 
                 EntityOptionsExtensions.SetShapeStyle(_options, shapeStyle);
 
-                _options.ShapeStyle.Should().BeSameAs(shapeStyle);
+                _options.ShapeStyle.ShouldBeSameAs(shapeStyle);
             }
         }
     }

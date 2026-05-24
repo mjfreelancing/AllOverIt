@@ -2,10 +2,10 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Source\AllOverIt.EntityFrameworkCore\AllOverIt.EntityFrameworkCore.csproj" />
 		<ProjectReference Include="..\..\Source\AllOverIt.Fixture\AllOverIt.Fixture.csproj" />
+		<ProjectReference Include="..\..\Source\AllOverIt.Shouldly\AllOverIt.Shouldly.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Shouldly" Version="4.3.0" />
 		<PackageReference Include="Testcontainers.PostgreSql" Version="4.11.0" />
 	</ItemGroup>
 

@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
-using FluentAssertions;
 using System.Collections;
 
 namespace AllOverIt.Tests.Reflection
@@ -12,7 +11,7 @@ namespace AllOverIt.Tests.Reflection
         [MemberData(nameof(GetTypeDeclarations))]
         public void Should_Have_Expected_Type(Type commonType, Type expected)
         {
-            commonType.Should().BeSameAs(expected);
+            commonType.ShouldBeSameAs(expected);
         }
 
         public static IEnumerable<object[]> GetTypeDeclarations()
@@ -70,3 +69,5 @@ namespace AllOverIt.Tests.Reflection
         }
     }
 }
+
+

@@ -1,6 +1,5 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Formatters.Objects;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Formatters.Objects
 {
@@ -17,7 +16,7 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var sut = new ObjectPropertyFilterDummy();
 
-                sut.OnIncludeProperty().Should().BeTrue();
+                sut.OnIncludeProperty().ShouldBeTrue();
             }
         }
 
@@ -28,8 +27,10 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var sut = new ObjectPropertyFilterDummy();
 
-                sut.OnIncludeValue().Should().BeTrue();
+                sut.OnIncludeValue().ShouldBeTrue();
             }
         }
     }
 }
+
+

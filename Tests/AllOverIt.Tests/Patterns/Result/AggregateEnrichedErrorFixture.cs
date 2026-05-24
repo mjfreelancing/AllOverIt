@@ -3,8 +3,7 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Result;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Tests.Patterns.Result;
 
 public class AggregateEnrichedErrorFixture : FixtureBase
@@ -27,8 +26,7 @@ public class AggregateEnrichedErrorFixture : FixtureBase
             {
                 _ = new AggregateEnrichedError((EnrichedError[]) null!);
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("errors");
         }
 
@@ -39,16 +37,14 @@ public class AggregateEnrichedErrorFixture : FixtureBase
             {
                 _ = new AggregateEnrichedError();
             })
-            .Should()
-            .Throw<ArgumentException>()
+            .ShouldThrow<ArgumentException>()
             .WithNamedMessageWhenEmpty("errors");
 
             Invoking(() =>
             {
                 _ = new AggregateEnrichedError(EmptyErrors);
             })
-            .Should()
-            .Throw<ArgumentException>()
+            .ShouldThrow<ArgumentException>()
             .WithNamedMessageWhenEmpty("errors");
         }
 
@@ -57,7 +53,7 @@ public class AggregateEnrichedErrorFixture : FixtureBase
         {
             var actual = new AggregateEnrichedError(EnrichedErrors);
 
-            actual.Errors.Should().BeEquivalentTo(EnrichedErrors);
+            actual.Errors.ShouldBeEquivalentTo(EnrichedErrors);
         }
     }
 
@@ -70,8 +66,7 @@ public class AggregateEnrichedErrorFixture : FixtureBase
             {
                 _ = new AggregateEnrichedError(default(string)!, (EnrichedError[]) null!);
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("errors");
         }
 
@@ -82,16 +77,14 @@ public class AggregateEnrichedErrorFixture : FixtureBase
             {
                 _ = new AggregateEnrichedError(default(string)!);
             })
-            .Should()
-            .Throw<ArgumentException>()
+            .ShouldThrow<ArgumentException>()
             .WithNamedMessageWhenEmpty("errors");
 
             Invoking(() =>
             {
                 _ = new AggregateEnrichedError(default(string)!, EmptyErrors);
             })
-            .Should()
-            .Throw<ArgumentException>()
+            .ShouldThrow<ArgumentException>()
             .WithNamedMessageWhenEmpty("errors");
         }
 
@@ -100,7 +93,7 @@ public class AggregateEnrichedErrorFixture : FixtureBase
         {
             var actual = new AggregateEnrichedError(default(string)!, EnrichedErrors);
 
-            actual.Errors.Should().BeEquivalentTo(EnrichedErrors);
+            actual.Errors.ShouldBeEquivalentTo(EnrichedErrors);
         }
     }
 
@@ -113,8 +106,7 @@ public class AggregateEnrichedErrorFixture : FixtureBase
             {
                 _ = new AggregateEnrichedError(default(string)!, default(string)!, (EnrichedError[]) null!);
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("errors");
         }
 
@@ -125,16 +117,14 @@ public class AggregateEnrichedErrorFixture : FixtureBase
             {
                 _ = new AggregateEnrichedError(default(string)!, default(string)!);
             })
-            .Should()
-            .Throw<ArgumentException>()
+            .ShouldThrow<ArgumentException>()
             .WithNamedMessageWhenEmpty("errors");
 
             Invoking(() =>
             {
                 _ = new AggregateEnrichedError(default(string)!, default(string)!, EmptyErrors);
             })
-            .Should()
-            .Throw<ArgumentException>()
+            .ShouldThrow<ArgumentException>()
             .WithNamedMessageWhenEmpty("errors");
         }
 
@@ -143,7 +133,7 @@ public class AggregateEnrichedErrorFixture : FixtureBase
         {
             var actual = new AggregateEnrichedError(default(string)!, default(string)!, EnrichedErrors);
 
-            actual.Errors.Should().BeEquivalentTo(EnrichedErrors);
+            actual.Errors.ShouldBeEquivalentTo(EnrichedErrors);
         }
     }
 
@@ -156,8 +146,7 @@ public class AggregateEnrichedErrorFixture : FixtureBase
             {
                 _ = new AggregateEnrichedError(default(string)!, default(string)!, default(string)!, (EnrichedError[]) null!);
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("errors");
         }
 
@@ -168,16 +157,14 @@ public class AggregateEnrichedErrorFixture : FixtureBase
             {
                 _ = new AggregateEnrichedError(default(string)!, default(string)!, default(string)!);
             })
-            .Should()
-            .Throw<ArgumentException>()
+            .ShouldThrow<ArgumentException>()
             .WithNamedMessageWhenEmpty("errors");
 
             Invoking(() =>
             {
                 _ = new AggregateEnrichedError(default(string)!, default(string)!, default(string)!, EmptyErrors);
             })
-            .Should()
-            .Throw<ArgumentException>()
+            .ShouldThrow<ArgumentException>()
             .WithNamedMessageWhenEmpty("errors");
         }
 
@@ -186,7 +173,11 @@ public class AggregateEnrichedErrorFixture : FixtureBase
         {
             var actual = new AggregateEnrichedError(default(string)!, default(string)!, default(string)!, EnrichedErrors);
 
-            actual.Errors.Should().BeEquivalentTo(EnrichedErrors);
+            actual.Errors.ShouldBeEquivalentTo(EnrichedErrors);
         }
     }
 }
+
+
+
+

@@ -1,4 +1,4 @@
-﻿using AllOverIt.Filtering.Extensions;
+using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.Fixture;
 using AllOverIt.Patterns.Specification.Extensions;
@@ -87,3 +87,4 @@ namespace AllOverIt.Filtering.Tests.Extensions
         }
     }
 }
+

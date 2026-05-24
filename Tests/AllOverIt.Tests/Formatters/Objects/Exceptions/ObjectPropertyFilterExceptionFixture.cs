@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Formatters.Objects.Exceptions;
 
 namespace AllOverIt.Tests.Formatters.Objects.Exceptions
@@ -24,3 +24,5 @@ namespace AllOverIt.Tests.Formatters.Objects.Exceptions
         }
     }
 }
+
+

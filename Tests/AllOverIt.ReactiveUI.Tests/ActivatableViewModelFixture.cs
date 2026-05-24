@@ -1,10 +1,9 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 using ReactiveUI;
 using System.Reactive;
 using System.Reactive.Disposables;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.ReactiveUI.Tests
 {
     public class ActivatableViewModelFixture : FixtureBase
@@ -74,7 +73,7 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 viewModel.Activator.Activate();
 
-                isActivated.Should().BeTrue();
+                isActivated.ShouldBeTrue();
             }
         }
 
@@ -91,7 +90,7 @@ namespace AllOverIt.ReactiveUI.Tests
                 {
                 }
 
-                isDeactivated.Should().BeTrue();
+                isDeactivated.ShouldBeTrue();
             }
         }
 
@@ -102,13 +101,11 @@ namespace AllOverIt.ReactiveUI.Tests
             {
                 var viewModel = new ViewModelDummy(null, null);
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                 {
                     _ = viewModel.DoCreateAutoCancellingTokenSource();
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
-                .WithMessage("Cannot create an auto-cancelling token source before activation or after deactivation.");
+                .Message.ShouldBe("Cannot create an auto-cancelling token source before activation or after deactivation.");
             }
 
             [Fact]
@@ -120,13 +117,11 @@ namespace AllOverIt.ReactiveUI.Tests
                 {
                 }
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                 {
                     _ = viewModel.DoCreateAutoCancellingTokenSource();
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
-                .WithMessage("Cannot create an auto-cancelling token source before activation or after deactivation.");
+                .Message.ShouldBe("Cannot create an auto-cancelling token source before activation or after deactivation.");
             }
 
             [Fact]
@@ -142,14 +137,14 @@ namespace AllOverIt.ReactiveUI.Tests
                     cts[1] = viewModel.DoCreateAutoCancellingTokenSource();
                     cts[2] = viewModel.DoCreateAutoCancellingTokenSource();
 
-                    cts[0].IsCancellationRequested.Should().BeFalse();
-                    cts[1].IsCancellationRequested.Should().BeFalse();
-                    cts[2].IsCancellationRequested.Should().BeFalse();
+                    cts[0].IsCancellationRequested.ShouldBeFalse();
+                    cts[1].IsCancellationRequested.ShouldBeFalse();
+                    cts[2].IsCancellationRequested.ShouldBeFalse();
                 }
 
-                cts[0].IsCancellationRequested.Should().BeTrue();
-                cts[1].IsCancellationRequested.Should().BeTrue();
-                cts[2].IsCancellationRequested.Should().BeTrue();
+                cts[0].IsCancellationRequested.ShouldBeTrue();
+                cts[1].IsCancellationRequested.ShouldBeTrue();
+                cts[2].IsCancellationRequested.ShouldBeTrue();
 
                 cts[0].Dispose();
                 cts[1].Dispose();
@@ -164,13 +159,11 @@ namespace AllOverIt.ReactiveUI.Tests
             {
                 var viewModel = new ViewModelDummy(null, null);
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                 {
                     _ = viewModel.DoCreateAutoCancellingTokenSource(CancellationToken.None);
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
-                .WithMessage("Cannot create an auto-cancelling token source before activation or after deactivation.");
+                .Message.ShouldBe("Cannot create an auto-cancelling token source before activation or after deactivation.");
             }
 
             [Fact]
@@ -182,13 +175,11 @@ namespace AllOverIt.ReactiveUI.Tests
                 {
                 }
 
-                Invoking(() =>
+                Should.Throw<InvalidOperationException>(() =>
                 {
                     _ = viewModel.DoCreateAutoCancellingTokenSource(CancellationToken.None);
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
-                .WithMessage("Cannot create an auto-cancelling token source before activation or after deactivation.");
+                .Message.ShouldBe("Cannot create an auto-cancelling token source before activation or after deactivation.");
             }
 
             [Fact]
@@ -208,24 +199,24 @@ namespace AllOverIt.ReactiveUI.Tests
                     cts[1] = viewModel.DoCreateAutoCancellingTokenSource(otherCts2.Token);
                     cts[2] = viewModel.DoCreateAutoCancellingTokenSource(otherCts3.Token);
 
-                    otherCts1.IsCancellationRequested.Should().BeFalse();
-                    otherCts2.IsCancellationRequested.Should().BeFalse();
-                    otherCts3.IsCancellationRequested.Should().BeFalse();
+                    otherCts1.IsCancellationRequested.ShouldBeFalse();
+                    otherCts2.IsCancellationRequested.ShouldBeFalse();
+                    otherCts3.IsCancellationRequested.ShouldBeFalse();
 
-                    cts[0].IsCancellationRequested.Should().BeFalse();
-                    cts[1].IsCancellationRequested.Should().BeFalse();
-                    cts[2].IsCancellationRequested.Should().BeFalse();
+                    cts[0].IsCancellationRequested.ShouldBeFalse();
+                    cts[1].IsCancellationRequested.ShouldBeFalse();
+                    cts[2].IsCancellationRequested.ShouldBeFalse();
                 }
 
                 // These will still be non-cancelled
-                otherCts1.IsCancellationRequested.Should().BeFalse();
-                otherCts2.IsCancellationRequested.Should().BeFalse();
-                otherCts3.IsCancellationRequested.Should().BeFalse();
+                otherCts1.IsCancellationRequested.ShouldBeFalse();
+                otherCts2.IsCancellationRequested.ShouldBeFalse();
+                otherCts3.IsCancellationRequested.ShouldBeFalse();
 
                 // But the linked tokens will be cancelled
-                cts[0].IsCancellationRequested.Should().BeTrue();
-                cts[1].IsCancellationRequested.Should().BeTrue();
-                cts[2].IsCancellationRequested.Should().BeTrue();
+                cts[0].IsCancellationRequested.ShouldBeTrue();
+                cts[1].IsCancellationRequested.ShouldBeTrue();
+                cts[2].IsCancellationRequested.ShouldBeTrue();
 
                 cts[0].Dispose();
                 cts[1].Dispose();
@@ -240,12 +231,10 @@ namespace AllOverIt.ReactiveUI.Tests
             {
                 var viewModel = new ViewModelDummy(null, null);
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = viewModel.DoCreateAutoCancellingCommand((Func<CancellationToken, Task>)null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("action");
             }
 
@@ -266,12 +255,12 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 using (viewModel.Activator.Activate())
                 {
-                    isExecutingList.Should().BeEquivalentTo([false, true], options => options.WithStrictOrdering());
+                    isExecutingList.ShouldBeEquivalentTo([false, true]);
                 }
 
                 await Task.Delay(50); // Give command time to complete after deactivation
 
-                isExecutingList.Should().BeEquivalentTo([false, true, false], options => options.WithStrictOrdering());
+                isExecutingList.ShouldBeEquivalentTo([false, true, false]);
             }
         }
 
@@ -282,12 +271,10 @@ namespace AllOverIt.ReactiveUI.Tests
             {
                 var viewModel = new ViewModelDummy(null, null);
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = viewModel.DoCreateAutoCancellingCommand((Func<CancellationToken, Task<string>>)null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("action");
             }
 
@@ -311,10 +298,10 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 using (viewModel.Activator.Activate())
                 {
-                    isExecutingList.Should().BeEquivalentTo([false, true], options => options.WithStrictOrdering());
+                    isExecutingList.ShouldBeEquivalentTo([false, true]);
                 }
 
-                isExecutingList.Should().BeEquivalentTo([false, true, false], options => options.WithStrictOrdering());
+                isExecutingList.ShouldBeEquivalentTo([false, true, false]);
             }
         }
 
@@ -325,12 +312,10 @@ namespace AllOverIt.ReactiveUI.Tests
             {
                 var viewModel = new ViewModelDummy(null, null);
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = viewModel.DoCreateAutoCancellingCommand<string>((Func<string, CancellationToken, Task>)null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("action");
             }
 
@@ -351,12 +336,12 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 using (viewModel.Activator.Activate())
                 {
-                    isExecutingList.Should().BeEquivalentTo([false, true], options => options.WithStrictOrdering());
+                    isExecutingList.ShouldBeEquivalentTo([false, true]);
                 }
 
                 await Task.Delay(50); // Give command time to complete after deactivation
 
-                isExecutingList.Should().BeEquivalentTo([false, true, false], options => options.WithStrictOrdering());
+                isExecutingList.ShouldBeEquivalentTo([false, true, false]);
             }
         }
 
@@ -367,12 +352,10 @@ namespace AllOverIt.ReactiveUI.Tests
             {
                 var viewModel = new ViewModelDummy(null, null);
 
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = viewModel.DoCreateAutoCancellingCommand<string, int>((Func<string, CancellationToken, Task<int>>)null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("action");
             }
 
@@ -398,13 +381,21 @@ namespace AllOverIt.ReactiveUI.Tests
 
                 using (viewModel.Activator.Activate())
                 {
-                    isExecutingList.Should().BeEquivalentTo([false, true], options => options.WithStrictOrdering());
+                    isExecutingList.ShouldBeEquivalentTo([false, true]);
                 }
 
                 await Task.Delay(50); // Give command time to complete after deactivation
 
-                isExecutingList.Should().BeEquivalentTo([false, true, false], options => options.WithStrictOrdering());
+                isExecutingList.ShouldBeEquivalentTo([false, true, false]);
             }
         }
     }
 }
+
+
+
+
+
+
+
+

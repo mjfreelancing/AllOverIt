@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.IO;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.IO
 {
@@ -56,8 +55,7 @@ namespace AllOverIt.Tests.IO
             public void Should_Throw_When_Relative_Path_Offset_Null()
             {
                 Invoking(() => FileUtils.GetAbsolutePath(Create<string>(), null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("relativePath");
             }
 
@@ -65,16 +63,14 @@ namespace AllOverIt.Tests.IO
             public void Should_Not_Throw_When_Relative_Path_Offset_Empty()
             {
                 Invoking(() => FileUtils.GetAbsolutePath(Create<string>(), string.Empty))
-                  .Should()
-                  .NotThrow();
+                  .ShouldNotThrow();
             }
 
             [Fact]
             public void Should_Not_Throw_When_Relative_Path_Offset_Whitespace()
             {
                 Invoking(() => FileUtils.GetAbsolutePath(Create<string>(), " "))
-                  .Should()
-                  .NotThrow();
+                  .ShouldNotThrow();
             }
 
             [Theory]
@@ -86,7 +82,7 @@ namespace AllOverIt.Tests.IO
             {
                 var actual = FileUtils.GetAbsolutePath(@"C:\a\b\c", relativePath);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -116,8 +112,12 @@ namespace AllOverIt.Tests.IO
             {
                 var actual = FileUtils.GetAbsoluteFileName(@"C:\a\b\c.txt", pathOffset, newName);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }
 }
+
+
+
+

@@ -1,9 +1,8 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
 using FakeItEasy;
-using FluentAssertions;
 using System.IO.Compression;
 
 namespace AllOverIt.Pagination.Tests.TokenEncoding
@@ -48,8 +47,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = new ContinuationTokenCompressor(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("tokenStreamer");
             }
         }
@@ -63,8 +61,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _continuationTokenCompressor.SerializeToStream(null, Stream.Null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("continuationToken");
             }
 
@@ -75,8 +72,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _continuationTokenCompressor.SerializeToStream(this.CreateStub<IContinuationToken>(), null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("stream");
             }
 
@@ -87,8 +83,8 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 _continuationTokenCompressor.SerializeToStream(continuationToken, Stream.Null);
 
-                _continuationTokenStreamer.ContinuationToken.Should().BeSameAs(continuationToken);
-                _continuationTokenStreamer.Stream.Should().BeOfType<DeflateStream>();
+                _continuationTokenStreamer.ContinuationToken.ShouldBeSameAs(continuationToken);
+                _continuationTokenStreamer.Stream.ShouldBeOfType<DeflateStream>();
             }
         }
 
@@ -101,8 +97,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = _continuationTokenCompressor.DeserializeFromStream(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("stream");
             }
 
@@ -111,10 +106,14 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
             {
                 var continuationToken = _continuationTokenCompressor.DeserializeFromStream(Stream.Null);
 
-                continuationToken.Should().NotBeNull();
+                continuationToken.ShouldNotBeNull();
 
-                _continuationTokenStreamer.Stream.Should().BeOfType<DeflateStream>();
+                _continuationTokenStreamer.Stream.ShouldBeOfType<DeflateStream>();
             }
         }
     }
 }
+
+
+
+

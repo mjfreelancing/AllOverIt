@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ChainOfResponsibility;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 {
@@ -52,8 +51,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
                         _ = new ChainOfResponsibilityAsyncComposer<DummyState, DummyState>(handlers);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("handlers");
             }
 
@@ -66,8 +64,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
                         _ = new ChainOfResponsibilityAsyncComposer<DummyState, DummyState>(handlers);
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("handlers");
             }
 
@@ -89,7 +86,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
                 state = await composer.HandleAsync(state, CancellationToken.None);
 
-                state.ProcessedValue.Should().Be(9);
+                state.ProcessedValue.ShouldBe(9);
             }
 
             [Fact]
@@ -110,7 +107,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
                 state = await composer.HandleAsync(state, CancellationToken.None);
 
-                state.ProcessedValue.Should().Be(4);
+                state.ProcessedValue.ShouldBe(4);
             }
 
             [Fact]
@@ -130,7 +127,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
                 state = await composer.HandleAsync(state, CancellationToken.None);
 
-                state.Should().Be(default);
+                state.ShouldBe(default);
             }
 
             [Fact]
@@ -151,7 +148,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
                 state = await composer.HandleAsync(state, CancellationToken.None);
 
-                state.Should().Be(default);
+                state.ShouldBe(default);
             }
 
             [Fact]
@@ -173,10 +170,11 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
                 using var cts = new CancellationTokenSource();
                 cts.Cancel();
 
-                await Invoking(() => composer.HandleAsync(state, cts.Token))
-                    .Should()
-                    .ThrowExactlyAsync<OperationCanceledException>();
+                await Should.ThrowAsync<OperationCanceledException>(() => composer.HandleAsync(state, cts.Token));
             }
         }
     }
 }
+
+
+

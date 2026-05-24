@@ -1,7 +1,6 @@
-﻿using AllOverIt.Expressions.Strings;
+using AllOverIt.Expressions.Strings;
 using AllOverIt.Expressions.Strings.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Expressions.Strings.Extensions
 {
@@ -15,8 +14,7 @@ namespace AllOverIt.Tests.Expressions.Strings.Extensions
             {
                 StringComparisonModeExtensions
                     .GetStringComparison(stringComparisonMode)
-                    .Should()
-                    .Be(stringComparison);
+                    .ShouldBe(stringComparison);
             }
 
             [Theory]
@@ -28,8 +26,7 @@ namespace AllOverIt.Tests.Expressions.Strings.Extensions
                     _ = StringComparisonModeExtensions.GetStringComparison(stringComparisonMode);
 
                 })
-                    .Should()
-                    .Throw<InvalidOperationException>()
+                    .ShouldThrow<InvalidOperationException>()
                     .WithMessage($"The string comparison mode '{stringComparisonMode}' cannot be converted to a {nameof(StringComparison)} value.");
             }
         }
@@ -42,8 +39,7 @@ namespace AllOverIt.Tests.Expressions.Strings.Extensions
             {
                 StringComparisonModeExtensions
                     .IsStringComparison(stringComparisonMode)
-                    .Should()
-                    .Be(isComparison);
+                    .ShouldBe(isComparison);
             }
         }
 
@@ -55,8 +51,7 @@ namespace AllOverIt.Tests.Expressions.Strings.Extensions
             {
                 StringComparisonModeExtensions
                   .IsStringModifier(stringComparisonMode)
-                  .Should()
-                  .Be(isModifier);
+                  .ShouldBe(isModifier);
             }
         }
 
@@ -101,3 +96,6 @@ namespace AllOverIt.Tests.Expressions.Strings.Extensions
         }
     }
 }
+
+
+

@@ -1,8 +1,7 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
 using AllOverIt.Reflection.Exceptions;
-using FluentAssertions;
 using System.Reflection;
 
 namespace AllOverIt.Tests.Reflection
@@ -23,8 +22,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = PropertyHelper.CreatePropertySetter(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyInfo");
             }
 
@@ -42,15 +40,15 @@ namespace AllOverIt.Tests.Reflection
                 var expected1 = Create<int>();
 
                 setter1.Invoke(model, expected1);
-                model.Prop1.Should().Be(expected1);
+                model.Prop1.ShouldBe(expected1);
 
                 var expected2 = Create<string>();
 
                 setter2.Invoke(model, expected2);
-                model.Prop2.Should().Be(expected2);
+                model.Prop2.ShouldBe(expected2);
 
                 setter2.Invoke(model, null);
-                model.Prop2.Should().BeNull();
+                model.Prop2.ShouldBeNull();
             }
 
             [Fact]
@@ -64,7 +62,7 @@ namespace AllOverIt.Tests.Reflection
 
                 setter.Invoke(model, expected);
 
-                model.Prop1.Should().Be(expected);
+                model.Prop1.ShouldBe(expected);
             }
 
             [Fact]
@@ -81,7 +79,7 @@ namespace AllOverIt.Tests.Reflection
 
                 setter.Invoke(model, expected);
 
-                ((DummyStruct)model).Field1.Should().Be(expected);
+                ((DummyStruct)model).Field1.ShouldBe(expected);
             }
 
             [Fact]
@@ -96,7 +94,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = getter.Invoke(model);
 
-                actual.Should().Be(1);
+                actual.ShouldBe(1);
 
                 // now change it
                 var expected = Create<long>();
@@ -106,7 +104,7 @@ namespace AllOverIt.Tests.Reflection
 
                 actual = getter.Invoke(model);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -117,8 +115,7 @@ namespace AllOverIt.Tests.Reflection
                     var propInfo = typeof(DummySuperClass).GetProperty(nameof(DummySuperClass.Prop6));
                     _ = PropertyHelper.CreatePropertySetter(propInfo);
                 })
-                  .Should()
-                  .Throw<ReflectionException>()
+                  .ShouldThrow<ReflectionException>()
                   .WithMessage($"The property {nameof(DummySuperClass.Prop6)} on type {nameof(DummySuperClass)} does not have a setter.");
             }
         }
@@ -132,8 +129,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = PropertyHelper.CreatePropertySetter<DummyBaseClass>((PropertyInfo)null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyInfo");
             }
 
@@ -148,7 +144,7 @@ namespace AllOverIt.Tests.Reflection
 
                 setter.Invoke(model, expected);
 
-                model.Prop1.Should().Be(expected);
+                model.Prop1.ShouldBe(expected);
             }
 
             [Fact]
@@ -162,7 +158,7 @@ namespace AllOverIt.Tests.Reflection
 
                 setter.Invoke(model, expected);
 
-                model.Prop1.Should().Be(expected);
+                model.Prop1.ShouldBe(expected);
             }
 
             // This typed version of CreatePropertySetter() will not work with structs. You can use
@@ -176,8 +172,7 @@ namespace AllOverIt.Tests.Reflection
                     var propInfo = typeof(DummySuperClass).GetProperty(nameof(DummySuperClass.Prop6));
                     _ = PropertyHelper.CreatePropertySetter<DummySuperClass>(propInfo);
                 })
-                  .Should()
-                  .Throw<ReflectionException>()
+                  .ShouldThrow<ReflectionException>()
                   .WithMessage($"The property {nameof(DummySuperClass.Prop6)} on type {nameof(DummySuperClass)} does not have a setter.");
             }
         }
@@ -191,8 +186,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = PropertyHelper.CreatePropertySetter<DummyBaseClass>((string)null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyName");
             }
 
@@ -206,7 +200,7 @@ namespace AllOverIt.Tests.Reflection
 
                 setter.Invoke(model, expected);
 
-                model.Prop1.Should().Be(expected);
+                model.Prop1.ShouldBe(expected);
             }
 
             [Fact]
@@ -219,7 +213,7 @@ namespace AllOverIt.Tests.Reflection
 
                 setter.Invoke(model, expected);
 
-                model.Prop1.Should().Be(expected);
+                model.Prop1.ShouldBe(expected);
             }
 
             // This typed version of CreatePropertySetter() will not work with structs. You can use
@@ -234,8 +228,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = PropertyHelper.CreatePropertySetter<DummyBaseClass>(propertyName);
                 })
-                   .Should()
-                   .Throw<ReflectionException>()
+                   .ShouldThrow<ReflectionException>()
                    .WithMessage($"The property {propertyName} on type {typeof(DummyBaseClass).GetFriendlyName()} does not exist.");
             }
         }
@@ -249,8 +242,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = PropertyHelper.CreatePropertySetter<DummyBaseClass, int>((string)null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyName");
             }
 
@@ -264,7 +256,7 @@ namespace AllOverIt.Tests.Reflection
 
                 setter.Invoke(model, expected);
 
-                model.Prop1.Should().Be(expected);
+                model.Prop1.ShouldBe(expected);
             }
 
             [Fact]
@@ -277,8 +269,12 @@ namespace AllOverIt.Tests.Reflection
 
                 setter.Invoke(model, expected);
 
-                model.Prop1.Should().Be(expected);
+                model.Prop1.ShouldBe(expected);
             }
         }
     }
 }
+
+
+
+

@@ -1,6 +1,5 @@
 using AllOverIt.Fixture;
 using AllOverIt.Helpers;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Helpers
 {
@@ -17,7 +16,7 @@ namespace AllOverIt.Tests.Helpers
 
                 var actual = HashCodeHelper.CalculateHashCode(values);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -31,7 +30,7 @@ namespace AllOverIt.Tests.Helpers
 
                 var actual = HashCodeHelper.CalculateHashCode(allValues);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -46,7 +45,7 @@ namespace AllOverIt.Tests.Helpers
 
                 var actual = HashCodeHelper.CalculateHashCode(values);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -58,7 +57,7 @@ namespace AllOverIt.Tests.Helpers
 
                 var actual = HashCodeHelper.CalculateHashCode(intValues);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -76,3 +75,5 @@ namespace AllOverIt.Tests.Helpers
         }
     }
 }
+
+

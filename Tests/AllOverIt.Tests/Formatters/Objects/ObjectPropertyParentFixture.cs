@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Objects;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Formatters.Objects
 {
@@ -16,8 +15,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {
                         _ = new ObjectPropertyParent(null, Create<string>(), Create<int>());
                     })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -27,8 +25,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {
                         _ = new ObjectPropertyParent(string.Empty, Create<string>(), Create<int>());
                     })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("name");
             }
 
@@ -39,10 +36,13 @@ namespace AllOverIt.Tests.Formatters.Objects
             {
                 var actual = new ObjectPropertyParent(name, value, index);
 
-                actual.Name.Should().Be(name);
-                actual.Value.Should().Be(value);
-                actual.Index.Should().Be(index);
+                actual.Name.ShouldBe(name);
+                actual.Value.ShouldBe(value);
+                actual.Index.ShouldBe(index);
             }
         }
     }
 }
+
+
+

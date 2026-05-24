@@ -5,3 +5,5 @@ namespace AllOverIt.Tests.Patterns.Specification.Dummies
         public int Value1 { get; set; }
     }
 }
+
+

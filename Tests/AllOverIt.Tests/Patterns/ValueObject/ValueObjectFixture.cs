@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Patterns.ValueObject;
 using AllOverIt.Patterns.ValueObject.Exceptions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.ValueObject
 {
@@ -44,7 +43,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
             {
                 var actual = new StringValueObject();
 
-                actual.Value.Should().BeNull();
+                actual.Value.ShouldBeNull();
             }
 
             [Fact]
@@ -54,8 +53,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 {
                     _ = new DisallowPalindromeStringValueObject("aba");
                 })
-                .Should()
-                .Throw<ValueObjectValidationException>()
+                .ShouldThrow<ValueObjectValidationException>()
                 .WithMessage("Invalid value 'aba'.");
             }
 
@@ -66,7 +64,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = new StringValueObject(value);
 
-                actual.Value.Should().Be(value);
+                actual.Value.ShouldBe(value);
             }
         }
 
@@ -81,7 +79,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1.Equals(string2);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -93,7 +91,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1.Equals(string2);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -104,7 +102,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1.Equals(string2);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -116,7 +114,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1.Equals(string2);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -128,7 +126,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1.Equals(string2);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -143,7 +141,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1.Equals(string2);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -154,7 +152,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1.Equals(string2);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -165,7 +163,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1.Equals(string2);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -177,7 +175,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1.Equals(string2);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -190,7 +188,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var string2 = new StringValueObject(Create<string>());
 
                 var actual = string1.CompareTo(string2);
-                actual.Should().NotBe(0);
+                actual.ShouldNotBe(0);
             }
 
             [Fact]
@@ -201,7 +199,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var string2 = new StringValueObject(value);
 
                 var actual = string1.CompareTo(string2);
-                actual.Should().Be(0);
+                actual.ShouldBe(0);
             }
 
             [Fact]
@@ -212,7 +210,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var string2 = new StringValueObject("b");
 
                 var actual = string1.CompareTo(string2);
-                actual.Should().Be(-1);
+                actual.ShouldBe(-1);
             }
 
             [Fact]
@@ -223,7 +221,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var string2 = new StringValueObject("b");
 
                 var actual = string1.CompareTo(string2);
-                actual.Should().Be(-1);
+                actual.ShouldBe(-1);
             }
 
             [Fact]
@@ -234,7 +232,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var string2 = new StringValueObject("a");
 
                 var actual = string1.CompareTo(string2);
-                actual.Should().Be(1);
+                actual.ShouldBe(1);
             }
 
             [Fact]
@@ -245,7 +243,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var string2 = new StringValueObject(null);
 
                 var actual = string1.CompareTo(string2);
-                actual.Should().Be(1);
+                actual.ShouldBe(1);
             }
         }
 
@@ -260,7 +258,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 == string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -271,7 +269,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 is null;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -282,7 +280,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 == string2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -293,7 +291,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 == string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -308,7 +306,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 != string2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -319,7 +317,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 is not null;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -330,7 +328,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 != string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -341,7 +339,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 != string2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -355,7 +353,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 > string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -366,7 +364,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 > string2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -377,7 +375,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 > string2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -388,7 +386,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 > string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -402,7 +400,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 >= string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -413,7 +411,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 >= string2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -424,7 +422,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 >= string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -435,7 +433,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 >= string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -446,7 +444,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 >= string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -460,7 +458,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 < string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -471,7 +469,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 < string2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -482,7 +480,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 < string2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -493,7 +491,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 < string2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -507,7 +505,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 <= string2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -518,7 +516,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 <= string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -529,7 +527,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 <= string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -540,7 +538,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 <= string2;
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -551,7 +549,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1 <= string2;
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -565,7 +563,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var same = string1.Value == string2;
 
-                same.Should().BeTrue();
+                same.ShouldBeTrue();
             }
         }
 
@@ -579,7 +577,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var same = value == string1.Value;
 
-                same.Should().BeTrue();
+                same.ShouldBeTrue();
             }
         }
 
@@ -593,7 +591,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
 
                 var actual = string1.GetHashCode();
 
-                actual.Should().Be(0);
+                actual.ShouldBe(0);
             }
 
             [Fact]
@@ -605,7 +603,7 @@ namespace AllOverIt.Tests.Patterns.ValueObject
                 var expected = value.GetHashCode();
                 var actual = string1.GetHashCode();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -617,3 +615,6 @@ namespace AllOverIt.Tests.Patterns.ValueObject
         }
     }
 }
+
+
+

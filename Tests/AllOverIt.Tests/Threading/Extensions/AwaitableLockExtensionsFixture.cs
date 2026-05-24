@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Threading;
 using AllOverIt.Threading.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Threading.Extensions
 {
@@ -18,7 +17,7 @@ namespace AllOverIt.Tests.Threading.Extensions
                 {
                     var success = await @lock.TryEnterLockAsync(10, CancellationToken.None);
 
-                    success.Should().BeFalse();
+                    success.ShouldBeFalse();
                 }
             }
 
@@ -34,8 +33,7 @@ namespace AllOverIt.Tests.Threading.Extensions
                 {
                     await AwaitableLockExtensions.GetLockAsync(@lock, cts.Token);
                 })
-                    .Should()
-                    .ThrowAsync<TaskCanceledException>();
+                    .ShouldThrowAsync<TaskCanceledException>();
             }
 
             [Fact]
@@ -49,10 +47,13 @@ namespace AllOverIt.Tests.Threading.Extensions
 
                 var success = await @lock.TryEnterLockAsync(10, CancellationToken.None);
 
-                success.Should().BeTrue();
+                success.ShouldBeTrue();
 
                 @lock.ExitLock();
             }
         }
     }
 }
+
+
+

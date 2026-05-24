@@ -1,7 +1,6 @@
-﻿using AllOverIt.Expressions;
+using AllOverIt.Expressions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Expressions
@@ -27,7 +26,7 @@ namespace AllOverIt.Tests.Expressions
 
                 var actual = func.Invoke(subject);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -44,7 +43,7 @@ namespace AllOverIt.Tests.Expressions
 
                 var actual = func.Invoke(subject);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -63,7 +62,7 @@ namespace AllOverIt.Tests.Expressions
 
                 var actual = func.Invoke(subject);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -73,7 +72,7 @@ namespace AllOverIt.Tests.Expressions
 
                 var actual = PredicateBuilder.Where<DummySubject>(expression);
 
-                actual.Should().Be(expression);
+                actual.ShouldBe(expression);
             }
 
             [Theory]
@@ -89,7 +88,7 @@ namespace AllOverIt.Tests.Expressions
 
                 var actual = func.Invoke(subject);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -100,8 +99,7 @@ namespace AllOverIt.Tests.Expressions
             {
                 Invoking(
                     () => PredicateBuilder.Or<DummySubject>(null, model => Create<bool>()))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("leftExpression");
             }
 
@@ -110,8 +108,7 @@ namespace AllOverIt.Tests.Expressions
             {
                 Invoking(
                     () => PredicateBuilder.Or<DummySubject>(model => Create<bool>(), null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("rightExpression");
             }
 
@@ -132,7 +129,7 @@ namespace AllOverIt.Tests.Expressions
 
                 var actual = func.Invoke(subject);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -161,7 +158,7 @@ namespace AllOverIt.Tests.Expressions
 
                 var actual = predicate.Invoke(subject);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -172,8 +169,7 @@ namespace AllOverIt.Tests.Expressions
             {
                 Invoking(
                     () => PredicateBuilder.And<DummySubject>(null, model => Create<bool>()))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("leftExpression");
             }
 
@@ -182,8 +178,7 @@ namespace AllOverIt.Tests.Expressions
             {
                 Invoking(
                     () => PredicateBuilder.And<DummySubject>(model => Create<bool>(), null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("rightExpression");
             }
 
@@ -204,7 +199,7 @@ namespace AllOverIt.Tests.Expressions
 
                 var actual = func.Invoke(subject);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -233,7 +228,7 @@ namespace AllOverIt.Tests.Expressions
 
                 var actual = predicate.Invoke(subject);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -243,8 +238,7 @@ namespace AllOverIt.Tests.Expressions
             public void Should_Throw_When_Expression_Null()
             {
                 Invoking(() => PredicateBuilder.Not<DummySubject>(null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("expression");
             }
 
@@ -263,8 +257,12 @@ namespace AllOverIt.Tests.Expressions
 
                 var actual = func.Invoke(subject);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }
 }
+
+
+
+

@@ -5,12 +5,12 @@ using AllOverIt.Formatters.Objects;
 using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
-using FluentAssertions;
 using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -172,8 +172,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _ = ObjectExtensions.ToPropertyDictionary(null, Create<bool>(), BindingOptions.Instance | BindingOptions.Public);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("instance");
             }
 
@@ -189,7 +188,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.Instance | BindingOptions.Public);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -201,7 +200,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.Instance | BindingOptions.Private);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -215,7 +214,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.Instance | BindingOptions.Protected);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -228,7 +227,7 @@ namespace AllOverIt.Tests.Extensions
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true,
                   BindingOptions.Static | BindingOptions.AllAccessor | BindingOptions.AllVisibility);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -247,7 +246,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true /*, BindingOptions.Default*/);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -270,7 +269,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.All);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -282,7 +281,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, true, BindingOptions.Instance | BindingOptions.Public);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -294,7 +293,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source, false, BindingOptions.Instance | BindingOptions.Public);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -317,9 +316,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.ToPropertyDictionary(source);
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -445,9 +442,7 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop14", $"{dummy.Prop14}"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -467,9 +462,7 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop13", "13"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -485,8 +478,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         _ = dummy1.ToSerializedDictionary();
                     })
-                    .Should()
-                    .Throw<SelfReferenceException>()
+                    .ShouldThrow<SelfReferenceException>()
                     .WithMessage("Self referencing detected at 'Prop2.Prop2.Prop2' of type 'DummyType'.");
             }
 
@@ -535,9 +527,7 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop2.Prop2.Prop14", $"{dummy3.Prop14}"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -566,9 +556,7 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop14", "<null>"}
                 };
 
-                expected
-                   .Should()
-                   .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -601,9 +589,7 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop12", "<empty>"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -640,9 +626,7 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop14", "<null>"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -661,9 +645,7 @@ namespace AllOverIt.Tests.Extensions
                     {keys[2], values[2]}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -686,9 +668,7 @@ namespace AllOverIt.Tests.Extensions
                     { $"{keys[2]}.{dictionary[keys[2]].Keys.ElementAt(1)}", $"{dictionary[keys[2]].Values.ElementAt(1)}" }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -707,9 +687,7 @@ namespace AllOverIt.Tests.Extensions
                     {"[4]", list[4]}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -733,9 +711,7 @@ namespace AllOverIt.Tests.Extensions
                     {$"Prop6.{nameof(DummyType)}`1", "two"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -756,9 +732,7 @@ namespace AllOverIt.Tests.Extensions
                     {$"{typeof(Typed<DummyType>).GetFriendlyName()}`1", "False"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -777,9 +751,7 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop1", "0"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -794,9 +766,7 @@ namespace AllOverIt.Tests.Extensions
                     {"That", "0"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -822,9 +792,7 @@ namespace AllOverIt.Tests.Extensions
                     //{ "list", "System.Collections.Generic.List`1[System.Int32]" }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -851,8 +819,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         _ = root.ToSerializedDictionary();
                     })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -879,9 +846,7 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop2.Prop4[2]", $"{dummy.Prop2.Prop4.ElementAt(2)}"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -934,9 +899,7 @@ namespace AllOverIt.Tests.Extensions
                     //{ "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -990,9 +953,7 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop2.Prop2.Prop14", $"{dummy3.Prop14}"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1010,9 +971,7 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop1", "Included"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1030,9 +989,7 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop14", dummy.Prop14}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1061,9 +1018,7 @@ namespace AllOverIt.Tests.Extensions
                     {"Prop2.Prop14", $"{dummy2.Prop14}"},
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             public class SerializeObjectPropertyFilter : ToSerializedDictionary
@@ -1112,7 +1067,7 @@ namespace AllOverIt.Tests.Extensions
 
                     dummy.ToSerializedDictionary(options, filter);
 
-                    filter.Types.Should().HaveCount(25);
+                    filter.Types.Count.ShouldBe(25);
 
                     // Prop1, Prop2, Prop1, Prop4, , , , Prop5, , , , Prop8, Prop14, Prop4, , , , Prop5, , , , Prop8, Prop12, , Prop14
 
@@ -1138,8 +1093,7 @@ namespace AllOverIt.Tests.Extensions
                     };
 
                     expected
-                        .Should()
-                        .BeEquivalentTo(filter.Types);
+                        .ShouldBeEquivalentTo(filter.Types);
                 }
 
                 [Fact]
@@ -1162,7 +1116,7 @@ namespace AllOverIt.Tests.Extensions
 
                     dummy.ToSerializedDictionary(options, filter);
 
-                    filter.Names.Should().HaveCount(25);
+                    filter.Names.Count.ShouldBe(25);
 
                     var expected = new[]
                     {
@@ -1172,8 +1126,7 @@ namespace AllOverIt.Tests.Extensions
                     };
 
                     expected
-                        .Should()
-                        .BeEquivalentTo(filter.Names);
+                        .ShouldBeEquivalentTo(filter.Names);
                 }
 
                 [Fact]
@@ -1196,7 +1149,7 @@ namespace AllOverIt.Tests.Extensions
 
                     dummy.ToSerializedDictionary(options, filter);
 
-                    filter.Paths.Should().HaveCount(25);
+                    filter.Paths.Count.ShouldBe(25);
 
                     // Prop12 is listed twice because it includes the root property as well as an <empty> value
                     var expected = new[]
@@ -1212,8 +1165,7 @@ namespace AllOverIt.Tests.Extensions
                     };
 
                     expected
-                        .Should()
-                        .BeEquivalentTo(filter.Paths);
+                        .ShouldBeEquivalentTo(filter.Paths);
                 }
 
                 [Fact]
@@ -1236,7 +1188,7 @@ namespace AllOverIt.Tests.Extensions
 
                     dummy.ToSerializedDictionary(options, filter);
 
-                    filter.Indexes.Should().HaveCount(25);
+                    filter.Indexes.Count.ShouldBe(25);
 
                     var expected = new int?[]
                     {
@@ -1245,8 +1197,7 @@ namespace AllOverIt.Tests.Extensions
                     };
 
                     expected
-                        .Should()
-                        .BeEquivalentTo(filter.Indexes);
+                        .ShouldBeEquivalentTo(filter.Indexes);
                 }
             }
         }
@@ -1261,7 +1212,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.GetPropertyValue<int>(nameof(DummyClass.Prop1), BindingFlags.Instance | BindingFlags.Public);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1272,7 +1223,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.GetPropertyValue<int>("Prop2", BindingFlags.Instance | BindingFlags.NonPublic);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1286,8 +1237,7 @@ namespace AllOverIt.Tests.Extensions
 
                       subject.GetPropertyValue<int>(propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
                   })
-                  .Should()
-                  .Throw<MemberAccessException>()
+                  .ShouldThrow<MemberAccessException>()
                   .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
@@ -1302,7 +1252,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.GetPropertyValue(typeof(DummyClass), nameof(DummyClass.Prop1), BindingFlags.Instance | BindingFlags.Public);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1313,7 +1263,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.GetPropertyValue(typeof(DummyClass), "Prop2", BindingFlags.Instance | BindingFlags.NonPublic);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1327,8 +1277,7 @@ namespace AllOverIt.Tests.Extensions
 
                         subject.GetPropertyValue(typeof(DummyClass), propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
                     })
-                    .Should()
-                    .Throw<MemberAccessException>()
+                    .ShouldThrow<MemberAccessException>()
                     .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
@@ -1343,7 +1292,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.GetPropertyValue<int>(nameof(DummyClass.Prop1));
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1354,7 +1303,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.GetPropertyValue<int>("Prop2", BindingOptions.Instance | BindingOptions.Private);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1368,8 +1317,7 @@ namespace AllOverIt.Tests.Extensions
 
                       subject.GetPropertyValue<int>(propertyName, BindingOptions.Instance | BindingOptions.Private);
                   })
-                  .Should()
-                  .Throw<MemberAccessException>()
+                  .ShouldThrow<MemberAccessException>()
                   .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
@@ -1384,7 +1332,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.GetPropertyValue(typeof(DummyClass), nameof(DummyClass.Prop1));
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1395,7 +1343,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.GetPropertyValue(typeof(DummyClass), "Prop2", BindingOptions.Instance | BindingOptions.Private);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1409,8 +1357,7 @@ namespace AllOverIt.Tests.Extensions
 
                         subject.GetPropertyValue(typeof(DummyClass), propertyName, BindingOptions.Instance | BindingOptions.Private);
                     })
-                    .Should()
-                    .Throw<MemberAccessException>()
+                    .ShouldThrow<MemberAccessException>()
                     .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
@@ -1427,7 +1374,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.Prop1;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1440,7 +1387,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.GetProp2();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1454,8 +1401,7 @@ namespace AllOverIt.Tests.Extensions
 
                       subject.SetPropertyValue(propertyName, Create<int>(), BindingFlags.Instance | BindingFlags.NonPublic);
                   })
-                  .Should()
-                  .Throw<MemberAccessException>()
+                  .ShouldThrow<MemberAccessException>()
                   .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
@@ -1472,7 +1418,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.Prop1;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1485,7 +1431,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.GetProp2();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1499,8 +1445,7 @@ namespace AllOverIt.Tests.Extensions
 
                         subject.SetPropertyValue(typeof(DummyClass), propertyName, Create<int>(), BindingFlags.Instance | BindingFlags.NonPublic);
                     })
-                    .Should()
-                    .Throw<MemberAccessException>()
+                    .ShouldThrow<MemberAccessException>()
                     .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
@@ -1517,7 +1462,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.Prop1;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1530,7 +1475,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.GetProp2();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1544,8 +1489,7 @@ namespace AllOverIt.Tests.Extensions
 
                       subject.SetPropertyValue(propertyName, Create<int>(), BindingOptions.Instance | BindingOptions.Private);
                   })
-                  .Should()
-                  .Throw<MemberAccessException>()
+                  .ShouldThrow<MemberAccessException>()
                   .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
@@ -1562,7 +1506,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.Prop1;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1575,7 +1519,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = subject.GetProp2();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1589,8 +1533,7 @@ namespace AllOverIt.Tests.Extensions
 
                         subject.SetPropertyValue(typeof(DummyClass), propertyName, Create<int>(), BindingOptions.Instance | BindingOptions.Private);
                     })
-                    .Should()
-                    .Throw<MemberAccessException>()
+                    .ShouldThrow<MemberAccessException>()
                     .WithMessage($"The property '{propertyName}' was not found.");
             }
         }
@@ -1611,8 +1554,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _ = ObjectExtensions.GetPropertyInfoByPath(null, null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("instance");
             }
 
@@ -1621,7 +1563,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.GetPropertyInfoByPath(_parent, null);
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -1629,7 +1571,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.GetPropertyInfoByPath(_parent, string.Empty);
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -1637,7 +1579,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.GetPropertyInfoByPath(_parent, "  ");
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Theory]
@@ -1647,7 +1589,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.GetPropertyInfoByPath(_parent, propertyPath);
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Theory]
@@ -1666,7 +1608,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.GetPropertyInfoByPath(_parent, propertyPath);
 
-                actual.PropertyInfo.PropertyType.Should().Be(propertyType);
+                actual.PropertyInfo.PropertyType.ShouldBe(propertyType);
             }
         }
 
@@ -1686,8 +1628,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ObjectExtensions.SetPropertyPathValue(null, Create<string>(), Create<int>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("instance");
             }
 
@@ -1700,8 +1641,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ObjectExtensions.SetPropertyPathValue(_parent, propertyPath, Create<int>());
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithMessage($"The path '{propertyPath}' was not found on type '{nameof(PropertyPathParent)}' (Parameter 'propertyPath')");
             }
 
@@ -1716,7 +1656,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4a;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1730,7 +1670,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4a;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1744,7 +1684,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4b;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1758,7 +1698,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4b;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1772,7 +1712,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4c;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1786,7 +1726,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4c;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1800,7 +1740,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4d;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1814,7 +1754,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4d;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1828,13 +1768,13 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4e;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
 
                 ObjectExtensions.SetPropertyPathValue<Guid?>(_parent, "Prop1.Prop2.Prop3.Prop4e", default);
 
                 actual = _parent.Prop1.Prop2.Prop3.Prop4e;
 
-                actual.Should().Be(null);
+                actual.ShouldBe(null);
             }
 
             [Fact]
@@ -1848,7 +1788,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4e;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1862,13 +1802,13 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4f;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
 
                 ObjectExtensions.SetPropertyPathValue<bool?>(_parent, "Prop1.Prop2.Prop3.Prop4f", default);
 
                 actual = _parent.Prop1.Prop2.Prop3.Prop4f;
 
-                actual.Should().Be(null);
+                actual.ShouldBe(null);
             }
 
             [Fact]
@@ -1882,7 +1822,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4f;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1896,13 +1836,13 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4g;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
 
                 ObjectExtensions.SetPropertyPathValue<int?>(_parent, "Prop1.Prop2.Prop3.Prop4g", default);
 
                 actual = _parent.Prop1.Prop2.Prop3.Prop4g;
 
-                actual.Should().Be(null);
+                actual.ShouldBe(null);
             }
 
             [Fact]
@@ -1916,7 +1856,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4g;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -1932,7 +1872,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4h;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
 
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
                 ObjectExtensions.SetPropertyPathValue<string?>(_parent, "Prop1.Prop2.Prop3.Prop4h", default);
@@ -1940,7 +1880,7 @@ namespace AllOverIt.Tests.Extensions
 
                 actual = _parent.Prop1.Prop2.Prop3.Prop4h;
 
-                actual.Should().Be(null);
+                actual.ShouldBe(null);
             }
 
             [Fact]
@@ -1956,7 +1896,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _parent.Prop1.Prop2.Prop3.Prop4h;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -1976,8 +1916,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ObjectExtensions.TrySetPropertyPathValue(null, Create<string>(), Create<int>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("instance");
             }
 
@@ -1986,7 +1925,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, Create<string>(), Create<int>());
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -1998,8 +1937,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4a", expected);
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4a.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4a.ShouldBe(expected);
             }
 
             [Fact]
@@ -2011,8 +1950,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4a", expected.ToString());
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4a.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4a.ShouldBe(expected);
             }
 
             [Fact]
@@ -2024,8 +1963,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4b", expected);
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4b.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4b.ShouldBe(expected);
             }
 
             [Fact]
@@ -2037,8 +1976,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4b", expected.ToString());
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4b.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4b.ShouldBe(expected);
             }
 
             [Fact]
@@ -2050,8 +1989,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4c", expected);
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4c.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4c.ShouldBe(expected);
             }
 
             [Fact]
@@ -2063,8 +2002,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4c", expected.ToString());
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4c.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4c.ShouldBe(expected);
             }
 
             [Fact]
@@ -2076,8 +2015,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4d", expected);
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4d.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4d.ShouldBe(expected);
             }
 
             [Fact]
@@ -2089,8 +2028,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4d", expected.ToString());
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4d.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4d.ShouldBe(expected);
             }
 
             // The tests for SetPropertyPathValue() are a little more exhaustive - they also check for null being set on nullable properties.
@@ -2104,8 +2043,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4e", expected);
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4e.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4e.ShouldBe(expected);
             }
 
             [Fact]
@@ -2117,8 +2056,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4e", expected.ToString());
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4e.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4e.ShouldBe(expected);
             }
 
             [Fact]
@@ -2130,8 +2069,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4f", expected);
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4f.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4f.ShouldBe(expected);
             }
 
             [Fact]
@@ -2143,8 +2082,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4f", expected.ToString());
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4f.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4f.ShouldBe(expected);
             }
 
             [Fact]
@@ -2156,8 +2095,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4g", expected);
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4g.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4g.ShouldBe(expected);
             }
 
             [Fact]
@@ -2169,8 +2108,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4g", expected.ToString());
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4g.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4g.ShouldBe(expected);
             }
 
             [Fact]
@@ -2184,8 +2123,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4h", expected);
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4h.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4h.ShouldBe(expected);
             }
 
             [Fact]
@@ -2199,8 +2138,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.TrySetPropertyPathValue(_parent, "Prop1.Prop2.Prop3.Prop4h", expected.ToString());
 
-                actual.Should().BeTrue();
-                _parent.Prop1.Prop2.Prop3.Prop4h.Should().Be(expected);
+                actual.ShouldBeTrue();
+                _parent.Prop1.Prop2.Prop3.Prop4h.ShouldBe(expected);
             }
         }
 
@@ -2222,7 +2161,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.IsIntegral(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -2242,7 +2181,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<string>((object)null);
 
-                actual.Should().Be(default);
+                actual.ShouldBe(default);
             }
 
             [Fact]
@@ -2250,7 +2189,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<int>((object)null);
 
-                actual.Should().Be(default);
+                actual.ShouldBe(default);
             }
 
             [Fact]
@@ -2259,7 +2198,7 @@ namespace AllOverIt.Tests.Extensions
                 var expected = Create<int>();
                 var actual = ObjectExtensions.As(null, expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2269,7 +2208,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.As<DummyClassBase>(expected);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -2279,7 +2218,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.As<DummyClass>((DummyClassBase)expected);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -2289,7 +2228,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.As<object>(expected);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -2297,15 +2236,14 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<string>(Create<DummyClass>());
 
-                actual.Should().Be(typeof(DummyClass).FullName);
+                actual.ShouldBe(typeof(DummyClass).FullName);
             }
 
             [Fact]
             public void Should_Throw_When_Invalid_Cast()
             {
                 Invoking(() => ObjectExtensions.As<DummyUnrelatedClass>(Create<DummyClass>()))
-                  .Should()
-                  .Throw<InvalidCastException>()
+                  .ShouldThrow<InvalidCastException>()
                   .WithMessage("Unable to cast object of type 'DummyClass' to type 'DummyUnrelatedClass'.");
             }
 
@@ -2320,8 +2258,7 @@ namespace AllOverIt.Tests.Extensions
                 }
 
                 Invoking(() => ObjectExtensions.As<bool>(value))
-                  .Should()
-                  .Throw<ArgumentOutOfRangeException>()
+                  .ShouldThrow<ArgumentOutOfRangeException>()
                   .WithMessage($"Cannot convert integral '{value}' to a Boolean. (Parameter 'instance')");
             }
 
@@ -2336,8 +2273,7 @@ namespace AllOverIt.Tests.Extensions
                 }
 
                 Invoking(() => ObjectExtensions.As<bool>(value))
-                  .Should()
-                  .Throw<ArgumentOutOfRangeException>()
+                  .ShouldThrow<ArgumentOutOfRangeException>()
                   .WithMessage($"Cannot convert integral '{value}' to a Boolean. (Parameter 'instance')");
             }
 
@@ -2349,7 +2285,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.As<String>(value);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Fact]
@@ -2360,7 +2296,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.As<Guid>(value);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
 
             [Theory]
@@ -2371,7 +2307,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<short>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -2382,7 +2318,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<int>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -2393,7 +2329,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<long>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -2407,7 +2343,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<bool>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -2417,7 +2353,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<int>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -2430,7 +2366,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.As<int>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -2443,7 +2379,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.As<short>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -2454,7 +2390,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<DummyEnum>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -2465,7 +2401,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<DummyEnum>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2474,8 +2410,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = Create<int>() + 100;
 
                 Invoking(() => ObjectExtensions.As<DummyEnum>(value))
-                  .Should()
-                  .Throw<ArgumentOutOfRangeException>()
+                  .ShouldThrow<ArgumentOutOfRangeException>()
                   .WithMessage($"Cannot cast '{value}' to a '{nameof(DummyEnum)}' value. (Parameter 'instance')");
             }
 
@@ -2486,7 +2421,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<bool>(expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -2496,7 +2431,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<int>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2505,7 +2440,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = ' ';
                 var actual = ObjectExtensions.As<int>(value);
 
-                actual.Should().Be(32);
+                actual.ShouldBe(32);
             }
 
             [Fact]
@@ -2514,7 +2449,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = 32;
                 var actual = ObjectExtensions.As<char>(value);
 
-                actual.Should().Be(' ');
+                actual.ShouldBe(' ');
             }
 
             [Theory]
@@ -2527,7 +2462,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<string>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -2539,7 +2474,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<bool>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2547,7 +2482,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<int>("100");
 
-                actual.Should().Be(100);
+                actual.ShouldBe(100);
             }
 
             [Fact]
@@ -2556,7 +2491,7 @@ namespace AllOverIt.Tests.Extensions
                 // there is a StringExtensions version, but this should also work
                 var actual = ObjectExtensions.As<DummyEnum>("Dummy2");
 
-                actual.Should().Be(DummyEnum.Dummy2);
+                actual.ShouldBe(DummyEnum.Dummy2);
             }
 
             [Fact]
@@ -2566,7 +2501,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.As<string>(value);
 
-                actual.Should().Be(DummyTypeConverter.ExpectedValue);
+                actual.ShouldBe(DummyTypeConverter.ExpectedValue);
             }
 
             [Fact]
@@ -2574,7 +2509,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.As<DummyTypeToBeConverted>(DummyTypeConverter.ExpectedValue);
 
-                actual.Should().BeOfType<DummyTypeToBeConverted>();
+                actual.ShouldBeOfType<DummyTypeToBeConverted>();
             }
         }
 
@@ -2587,7 +2522,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.AsNullable<int>(value);
 
-                actual.Should().Be(null);
+                actual.ShouldBe(null);
             }
 
             [Fact]
@@ -2597,7 +2532,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.AsNullable<int>(value);
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -2607,7 +2542,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.AsNullable((int?)null, expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -2617,7 +2552,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = ObjectExtensions.AsNullable<bool>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2628,7 +2563,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.AsNullable<Guid>(value);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -2641,7 +2576,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.DefaultHashCodeBindings;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -2656,7 +2591,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.CalculateHashCode(subject);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2671,7 +2606,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.CalculateHashCode(subject);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2688,7 +2623,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.CalculateHashCode(subject);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2714,7 +2649,7 @@ namespace AllOverIt.Tests.Extensions
                     ObjectExtensions.DefaultHashCodeBindings = oldBindings;
                 }
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2735,8 +2670,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.CalculateHashCode(subject);
 
-                expected1.Should().NotBe(expected2);
-                actual.Should().Be(expected1);
+                expected1.ShouldNotBe(expected2);
+                actual.ShouldBe(expected1);
             }
 
             [Fact]
@@ -2748,7 +2683,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.CalculateHashCode(subject, new[] { "Prop1" }, null);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2760,7 +2695,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.CalculateHashCode(subject, new[] { "Prop1", "Prop4", "Prop5" }, new[] { "Prop4" });
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2772,7 +2707,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.CalculateHashCode(subject, new[] { "Prop1", "Prop4", "Prop5" }, new[] { "Prop99" });
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2785,7 +2720,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.CalculateHashCode(subject, null, new[] { "Prop1", "Prop4", "Prop5" });
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2797,7 +2732,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.CalculateHashCode(subject, new[] { "Prop1", "Prop44", "Prop55" }, null);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -2812,7 +2747,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.CalculateHashCode(subject, model => model.Prop1, model => model.Prop5);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -2824,7 +2759,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.CalculateHashCode(subject, model => model.Prop1, model => model.GetProp2(), model => model.Prop5);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -2837,7 +2772,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.IsEnrichedEnum();
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -2847,7 +2782,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.IsEnrichedEnum();
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -2857,7 +2792,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = dummy.IsEnrichedEnum();
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -2872,7 +2807,7 @@ namespace AllOverIt.Tests.Extensions
                     .GetObjectElements((object)expected)
                     .Cast<int>();
 
-                actual.Should().ContainInOrder(expected);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -2902,3 +2837,11 @@ namespace AllOverIt.Tests.Extensions
         }
     }
 }
+
+
+
+
+
+
+
+

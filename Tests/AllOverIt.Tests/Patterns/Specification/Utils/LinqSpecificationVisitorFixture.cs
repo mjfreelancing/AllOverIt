@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Utils;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Specification.Utils
 {
@@ -102,8 +101,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                     _ = _visitor.AsQueryString(specification);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("specification");
             }
 
@@ -116,7 +114,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value1 == {value})");
+                actual.ShouldBe($"(Value1 == {value})");
             }
 
             [Fact]
@@ -128,7 +126,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value1 != {value})");
+                actual.ShouldBe($"(Value1 != {value})");
             }
 
             [Fact]
@@ -140,7 +138,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value1 > {value})");
+                actual.ShouldBe($"(Value1 > {value})");
             }
 
             [Fact]
@@ -152,7 +150,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value1 >= {value})");
+                actual.ShouldBe($"(Value1 >= {value})");
             }
 
             [Fact]
@@ -164,7 +162,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value1 < {value})");
+                actual.ShouldBe($"(Value1 < {value})");
             }
 
             [Fact]
@@ -176,7 +174,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value1 <= {value})");
+                actual.ShouldBe($"(Value1 <= {value})");
             }
 
             [Fact]
@@ -189,7 +187,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"((Value1 <= {value1}) AND (Value2 >= {value2}))");
+                actual.ShouldBe($"((Value1 <= {value1}) AND (Value2 >= {value2}))");
             }
 
             [Fact]
@@ -201,7 +199,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value3 == '{value}')");
+                actual.ShouldBe($"(Value3 == '{value}')");
             }
 
             [Fact]
@@ -214,7 +212,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value5 == {value})");
+                actual.ShouldBe($"(Value5 == {value})");
             }
 
             [Fact]
@@ -226,7 +224,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"({string.Join(", ", values)}).Contains(Value1)");
+                actual.ShouldBe($"({string.Join(", ", values)}).Contains(Value1)");
             }
 
             [Fact]
@@ -239,7 +237,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"'{value1}'.ToLower().StartsWith('{value2}')");
+                actual.ShouldBe($"'{value1}'.ToLower().StartsWith('{value2}')");
             }
 
             [Fact]
@@ -252,7 +250,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Compare('{value1}', '{value2}') == 0)");
+                actual.ShouldBe($"(Compare('{value1}', '{value2}') == 0)");
             }
 
             [Fact]
@@ -262,7 +260,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be("(Value1 == 99)");
+                actual.ShouldBe("(Value1 == 99)");
             }
 
             [Fact]
@@ -274,7 +272,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value4 == '{value:yyyy-MM-ddTHH:mm:ss.fffZ}')");
+                actual.ShouldBe($"(Value4 == '{value:yyyy-MM-ddTHH:mm:ss.fffZ}')");
             }
 
             [Fact]
@@ -286,7 +284,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value6 == '{value:yyyy-MM-ddTHH:mm:ss.fffZ}')");
+                actual.ShouldBe($"(Value6 == '{value:yyyy-MM-ddTHH:mm:ss.fffZ}')");
             }
 
             [Fact]
@@ -302,7 +300,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(Value6 == '{value.Value}')");
+                actual.ShouldBe($"(Value6 == '{value.Value}')");
             }
 
             [Fact]
@@ -315,7 +313,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"NOT (((Value1 <= {value1}) AND (Value2 >= {value2})))");
+                actual.ShouldBe($"NOT (((Value1 <= {value1}) AND (Value2 >= {value2})))");
             }
 
             [Fact]
@@ -329,7 +327,7 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"((Value3 == '{value3}') AND NOT (((Value1 <= {value1}) AND (Value2 >= {value2}))))");
+                actual.ShouldBe($"((Value3 == '{value3}') AND NOT (((Value1 <= {value1}) AND (Value2 >= {value2}))))");
             }
 
             [Fact]
@@ -343,8 +341,11 @@ namespace AllOverIt.Tests.Patterns.Specification.Utils
 
                 var actual = _visitor.AsQueryString(specification);
 
-                actual.Should().Be($"(((Value1 <= {value1}) AND (Value2 >= {value2})) OR (Value3 != '{value3}'))");
+                actual.ShouldBe($"(((Value1 <= {value1}) AND (Value2 >= {value2})) OR (Value3 != '{value3}'))");
             }
         }
     }
 }
+
+
+

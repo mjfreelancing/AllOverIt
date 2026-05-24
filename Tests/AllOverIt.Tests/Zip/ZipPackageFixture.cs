@@ -1,9 +1,9 @@
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Zip;
-using FluentAssertions;
 using System.IO.Compression;
 using System.Text;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Zip
 {
@@ -22,8 +22,7 @@ namespace AllOverIt.Tests.Zip
             public void Should_Throw_When_Accessing_Content_Before_Complete()
             {
                 Invoking(() => _ = _zipPackage.Content)
-                    .Should()
-                    .Throw<InvalidOperationException>()
+                    .ShouldThrow<InvalidOperationException>()
                     .WithMessage("The archive must be completed to access the stream.");
             }
         }
@@ -34,8 +33,7 @@ namespace AllOverIt.Tests.Zip
             public async Task Should_Throw_When_EntryName_Null()
             {
                 await Invoking(async () => await _zipPackage.AddEntryAsync(null!, GetRandomContent(), CancellationToken.None))
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
+                    .ShouldThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("entryName");
             }
 
@@ -43,8 +41,7 @@ namespace AllOverIt.Tests.Zip
             public async Task Should_Throw_When_EntryName_Empty()
             {
                 await Invoking(async () => await _zipPackage.AddEntryAsync(string.Empty, GetRandomContent(), CancellationToken.None))
-                    .Should()
-                    .ThrowAsync<ArgumentException>()
+                    .ShouldThrowAsync<ArgumentException>()
                     .WithNamedMessageWhenEmpty("entryName");
             }
 
@@ -52,8 +49,7 @@ namespace AllOverIt.Tests.Zip
             public async Task Should_Throw_When_EntryName_Whitespace()
             {
                 await Invoking(async () => await _zipPackage.AddEntryAsync("   ", GetRandomContent(), CancellationToken.None))
-                    .Should()
-                    .ThrowAsync<ArgumentException>()
+                    .ShouldThrowAsync<ArgumentException>()
                     .WithNamedMessageWhenEmpty("entryName");
             }
 
@@ -73,8 +69,8 @@ namespace AllOverIt.Tests.Zip
                 memoryStream.Position = 0;
 
                 using var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read);
-                archive.Entries.Should().HaveCount(1);
-                archive.Entries[0].Name.Should().Be(entryName);
+                archive.Entries.Count.ShouldBe(1);
+                archive.Entries[0].Name.ShouldBe(entryName);
             }
 
             [Fact]
@@ -99,9 +95,9 @@ namespace AllOverIt.Tests.Zip
                 memoryStream.Position = 0;
 
                 using var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read);
-                archive.Entries.Should().HaveCount(2);
-                archive.Entries[0].Name.Should().Be(entry1Name);
-                archive.Entries[1].Name.Should().Be(entry2Name);
+                archive.Entries.Count.ShouldBe(2);
+                archive.Entries[0].Name.ShouldBe(entry1Name);
+                archive.Entries[1].Name.ShouldBe(entry2Name);
             }
 
             [Fact]
@@ -119,9 +115,9 @@ namespace AllOverIt.Tests.Zip
                 memoryStream.Position = 0;
 
                 using var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read);
-                archive.Entries.Should().HaveCount(1);
-                archive.Entries[0].Name.Should().Be(entryName);
-                archive.Entries[0].Length.Should().Be(0);
+                archive.Entries.Count.ShouldBe(1);
+                archive.Entries[0].Name.ShouldBe(entryName);
+                archive.Entries[0].Length.ShouldBe(0);
             }
 
             [Fact]
@@ -133,8 +129,7 @@ namespace AllOverIt.Tests.Zip
                 _zipPackage.Dispose();
 
                 await Invoking(async () => await _zipPackage.AddEntryAsync(entryName, content, CancellationToken.None))
-                    .Should()
-                    .ThrowAsync<InvalidOperationException>()
+                    .ShouldThrowAsync<InvalidOperationException>()
                     .WithMessage("The archive has already been disposed.");
             }
 
@@ -147,8 +142,7 @@ namespace AllOverIt.Tests.Zip
                 _zipPackage.Complete();
 
                 await Invoking(async () => await _zipPackage.AddEntryAsync(entryName, content, CancellationToken.None))
-                    .Should()
-                    .ThrowAsync<InvalidOperationException>()
+                    .ShouldThrowAsync<InvalidOperationException>()
                     .WithMessage("The archive has already been disposed.");
             }
 
@@ -162,8 +156,7 @@ namespace AllOverIt.Tests.Zip
                 cancellationTokenSource.Cancel();
 
                 await Invoking(async () => await _zipPackage.AddEntryAsync(entryName, content, cancellationTokenSource.Token))
-                    .Should()
-                    .ThrowAsync<OperationCanceledException>();
+                    .ShouldThrowAsync<OperationCanceledException>();
             }
         }
 
@@ -173,8 +166,7 @@ namespace AllOverIt.Tests.Zip
             public void Should_Complete_Successfully()
             {
                 Invoking(() => _zipPackage.Complete())
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -183,11 +175,10 @@ namespace AllOverIt.Tests.Zip
                 _zipPackage.Complete();
 
                 Invoking(() => _ = _zipPackage.Content)
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
 
-                _zipPackage.Content.Should().NotBeNull();
-                _zipPackage.Content.Should().BeOfType<MemoryStream>();
+                _zipPackage.Content.ShouldNotBeNull();
+                _zipPackage.Content.ShouldBeOfType<MemoryStream>();
             }
 
             [Fact]
@@ -196,8 +187,7 @@ namespace AllOverIt.Tests.Zip
                 _zipPackage.Complete();
 
                 Invoking(() => _zipPackage.Complete())
-                    .Should()
-                    .Throw<InvalidOperationException>()
+                    .ShouldThrow<InvalidOperationException>()
                     .WithMessage("The archive has already been completed.");
             }
 
@@ -207,8 +197,7 @@ namespace AllOverIt.Tests.Zip
                 _zipPackage.Dispose();
 
                 Invoking(() => _zipPackage.Complete())
-                    .Should()
-                    .Throw<InvalidOperationException>()
+                    .ShouldThrow<InvalidOperationException>()
                     .WithMessage("The archive stream has been disposed.");
             }
 
@@ -228,16 +217,16 @@ namespace AllOverIt.Tests.Zip
                 memoryStream.Position = 0;
 
                 using var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read);
-                archive.Entries.Should().HaveCount(1);
+                archive.Entries.Count.ShouldBe(1);
 
                 var entry = archive.Entries[0];
-                entry.Name.Should().Be(entryName);
+                entry.Name.ShouldBe(entryName);
 
                 using var entryStream = entry.Open();
                 using var reader = new StreamReader(entryStream);
                 var readContent = await reader.ReadToEndAsync();
 
-                readContent.Should().Be(contentText);
+                readContent.ShouldBe(contentText);
             }
 
             [Fact]
@@ -245,7 +234,7 @@ namespace AllOverIt.Tests.Zip
             {
                 _zipPackage.Complete();
 
-                _zipPackage.Content.Position.Should().Be(0);
+                _zipPackage.Content.Position.ShouldBe(0);
             }
         }
 
@@ -259,7 +248,7 @@ namespace AllOverIt.Tests.Zip
                 var content1 = _zipPackage.Content;
                 var content2 = _zipPackage.Content;
 
-                content1.Should().BeSameAs(content2);
+                content1.ShouldBeSameAs(content2);
             }
 
             [Fact]
@@ -267,7 +256,7 @@ namespace AllOverIt.Tests.Zip
             {
                 _zipPackage.Complete();
 
-                _zipPackage.Content.Should().BeOfType<MemoryStream>();
+                _zipPackage.Content.ShouldBeOfType<MemoryStream>();
             }
         }
 
@@ -277,8 +266,7 @@ namespace AllOverIt.Tests.Zip
             public void Should_Dispose_Successfully()
             {
                 Invoking(() => _zipPackage.Dispose())
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -287,8 +275,7 @@ namespace AllOverIt.Tests.Zip
                 _zipPackage.Dispose();
 
                 Invoking(() => _zipPackage.Dispose())
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -297,8 +284,7 @@ namespace AllOverIt.Tests.Zip
                 _zipPackage.Dispose();
 
                 Invoking(() => _ = _zipPackage.Content)
-                    .Should()
-                    .Throw<InvalidOperationException>()
+                    .ShouldThrow<InvalidOperationException>()
                     .WithMessage("The archive stream has been disposed.");
             }
 
@@ -311,8 +297,7 @@ namespace AllOverIt.Tests.Zip
                 _zipPackage.Dispose();
 
                 await Invoking(async () => await _zipPackage.AddEntryAsync(entryName, content, CancellationToken.None))
-                    .Should()
-                    .ThrowAsync<InvalidOperationException>()
+                    .ShouldThrowAsync<InvalidOperationException>()
                     .WithMessage("The archive has already been disposed.");
             }
         }
@@ -346,7 +331,7 @@ namespace AllOverIt.Tests.Zip
                 memoryStream.Position = 0;
 
                 using var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read);
-                archive.Entries.Should().HaveCount(3);
+                archive.Entries.Count.ShouldBe(3);
 
                 // Verify each entry
                 var readmeEntry = archive.Entries.First(e => e.Name == "readme.txt");
@@ -354,7 +339,7 @@ namespace AllOverIt.Tests.Zip
                 using (var reader = new StreamReader(readmeStream))
                 {
                     var content = await reader.ReadToEndAsync();
-                    content.Should().Be("This is a readme file");
+                    content.ShouldBe("This is a readme file");
                 }
 
                 var jsonEntry = archive.Entries.First(e => e.Name == "data.json");
@@ -362,11 +347,11 @@ namespace AllOverIt.Tests.Zip
                 using (var reader = new StreamReader(jsonStream))
                 {
                     var content = await reader.ReadToEndAsync();
-                    content.Should().Be("{\"id\": 1, \"name\": \"test\"}");
+                    content.ShouldBe("{\"id\": 1, \"name\": \"test\"}");
                 }
 
                 var emptyEntry = archive.Entries.First(e => e.Name == "empty.txt");
-                emptyEntry.Length.Should().Be(0);
+                emptyEntry.Length.ShouldBe(0);
             }
 
             [Fact]
@@ -389,17 +374,17 @@ namespace AllOverIt.Tests.Zip
                 memoryStream.Position = 0;
 
                 using var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read);
-                archive.Entries.Should().HaveCount(1);
+                archive.Entries.Count.ShouldBe(1);
 
                 var entry = archive.Entries[0];
-                entry.Name.Should().Be("large_file.bin");
+                entry.Name.ShouldBe("large_file.bin");
 
                 using var entryStream = entry.Open();
                 using var outputStream = new MemoryStream();
                 await entryStream.CopyToAsync(outputStream);
 
                 var extractedContent = outputStream.ToArray();
-                extractedContent.Should().BeEquivalentTo(largeContent);
+                extractedContent.ShouldBeEquivalentTo(largeContent);
             }
 
             [Fact]
@@ -428,11 +413,11 @@ namespace AllOverIt.Tests.Zip
                 memoryStream.Position = 0;
 
                 using var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read);
-                archive.Entries.Should().HaveCount(specialEntries.Length);
+                archive.Entries.Count.ShouldBe(specialEntries.Length);
 
                 foreach (var expectedEntry in specialEntries)
                 {
-                    archive.Entries.Should().Contain(e => e.FullName == expectedEntry);
+                    archive.Entries.ShouldContain(e => e.FullName == expectedEntry);
                 }
             }
         }
@@ -443,3 +428,10 @@ namespace AllOverIt.Tests.Zip
         }
     }
 }
+
+
+
+
+
+
+

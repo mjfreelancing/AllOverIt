@@ -2,8 +2,8 @@
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 using System.Collections;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {
@@ -14,7 +14,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             [Fact]
             public void Should_Be_Empty()
             {
-                CreateBreadcrumbs().Count.Should().Be(0);
+                CreateBreadcrumbs().Count.ShouldBe(0);
             }
 
             [Theory]
@@ -35,7 +35,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                         breadcrumbs.Add(breadcrumb);
                     });
 
-                breadcrumbs.Count.Should().Be(expected);
+                breadcrumbs.Count.ShouldBe(expected);
             }
         }
 
@@ -48,7 +48,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
                 var expected = new BreadcrumbsOptions();
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -58,8 +58,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 {
                     _ = new AllOverIt.Diagnostics.Breadcrumbs.Breadcrumbs(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("options");
             }
         }
@@ -78,7 +77,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
                 var actual = breadcrumbs.ToList();
 
-                actual.Single().Should().BeSameAs(breadcrumb);
+                actual.Single().ShouldBeSameAs(breadcrumb);
             }
 
             [Theory]
@@ -94,7 +93,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
                 var actual = breadcrumbs.ToList();
 
-                actual.Should().BeEmpty();
+                actual.ShouldBeEmpty();
             }
         }
 
@@ -111,8 +110,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 {
                     breadcrumbs.Add(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("breadcrumb");
             }
 
@@ -145,7 +143,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                     });
                 }
 
-                breadcrumbData.Should().BeEquivalentTo(breadcrumbs);
+                breadcrumbData.ShouldBeEquivalentTo(breadcrumbs);
             }
 
             [Theory]
@@ -180,8 +178,8 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 var expected = breadcrumbData.Skip(90);
                 var actual = breadcrumbs.ToList();
 
-                actual.Count.Should().Be(10);
-                expected.Should().BeEquivalentTo(actual);
+                actual.Count.ShouldBe(10);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -198,11 +196,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
                 breadcrumbs.Add(breadcrumb);
 
-                breadcrumbs.Should().HaveCount(1);
+                breadcrumbs.Count.ShouldBe(1);
 
                 breadcrumbs.Clear();
 
-                breadcrumbs.Should().BeEmpty();
+                breadcrumbs.ShouldBeEmpty();
             }
 
             [Theory]
@@ -216,7 +214,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 await Task.Delay(100);
 
                 breadcrumbs.Clear();
-                breadcrumbs.StartTimestamp.Should().Be(originalTimestamp);
+                breadcrumbs.StartTimestamp.ShouldBe(originalTimestamp);
             }
         }
 
@@ -232,11 +230,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
                 breadcrumbs.Add(breadcrumb);
 
-                breadcrumbs.Should().HaveCount(1);
+                breadcrumbs.Count.ShouldBe(1);
 
                 breadcrumbs.Reset();
 
-                breadcrumbs.Should().BeEmpty();
+                breadcrumbs.ShouldBeEmpty();
             }
 
             [Theory]
@@ -250,7 +248,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 await Task.Delay(100);
 
                 breadcrumbs.Reset();
-                breadcrumbs.StartTimestamp.Should().NotBe(originalTimestamp);
+                breadcrumbs.StartTimestamp.ShouldNotBe(originalTimestamp);
             }
         }
 
@@ -268,7 +266,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                     count++;
                 }
 
-                count.Should().Be(0);
+                count.ShouldBe(0);
             }
 
             [Fact]
@@ -349,8 +347,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 };
 
                 expected
-                    .Should()
-                    .BeEquivalentTo(
+                    .ShouldMatch(
                         actual,
                         options => options
                             .Excluding(model => model.Timestamp)
@@ -374,7 +371,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                     count++;
                 }
 
-                count.Should().Be(0);
+                count.ShouldBe(0);
             }
 
             [Fact]
@@ -457,8 +454,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
                 };
 
                 expected
-                    .Should()
-                    .BeEquivalentTo(
+                    .ShouldMatch(
                         actual,
                         options => options
                             .Excluding(model => model.Timestamp)
@@ -479,3 +475,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
         }
     }
 }
+
+
+
+
+
+
+
+

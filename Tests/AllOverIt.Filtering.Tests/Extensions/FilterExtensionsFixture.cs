@@ -1,4 +1,4 @@
-﻿using AllOverIt.Filtering.Extensions;
+using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
@@ -46,14 +46,14 @@ namespace AllOverIt.Filtering.Tests.Extensions
             {
                 var filter = new DummyFilter();
 
-                filter.Prop1.In.Value.Should().BeNull();
-                filter.Prop2.In.Value.Should().BeNull();
+                filter.Prop1.In.Value.ShouldBeNull();
+                filter.Prop2.In.Value.ShouldBeNull();
 
                 var actual1 = FilterExtensions.HasValue(filter.Prop1.In);
                 var actual2 = FilterExtensions.HasValue(filter.Prop2.In);
 
-                actual1.Should().BeFalse();
-                actual2.Should().BeFalse();
+                actual1.ShouldBeFalse();
+                actual2.ShouldBeFalse();
             }
 
             [Fact]
@@ -77,8 +77,8 @@ namespace AllOverIt.Filtering.Tests.Extensions
                 var actual1 = FilterExtensions.HasValue(filter.Prop1.In);
                 var actual2 = FilterExtensions.HasValue(filter.Prop2.In);
 
-                actual1.Should().BeFalse();
-                actual2.Should().BeFalse();
+                actual1.ShouldBeFalse();
+                actual2.ShouldBeFalse();
             }
 
             [Fact]
@@ -102,8 +102,8 @@ namespace AllOverIt.Filtering.Tests.Extensions
                 var actual1 = FilterExtensions.HasValue(filter.Prop1.In);
                 var actual2 = FilterExtensions.HasValue(filter.Prop2.In);
 
-                actual1.Should().BeTrue();
-                actual2.Should().BeTrue();
+                actual1.ShouldBeTrue();
+                actual2.ShouldBeTrue();
             }
         }
 
@@ -126,11 +126,11 @@ namespace AllOverIt.Filtering.Tests.Extensions
             {
                 var filter = new DummyFilter();
 
-                filter.Prop2.StartsWith.Value.Should().BeNull();
+                filter.Prop2.StartsWith.Value.ShouldBeNull();
 
                 var actual = FilterExtensions.HasValue(filter.Prop2.StartsWith);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -148,7 +148,7 @@ namespace AllOverIt.Filtering.Tests.Extensions
 
                 var actual = FilterExtensions.HasValue(filter.Prop2.StartsWith);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -164,7 +164,7 @@ namespace AllOverIt.Filtering.Tests.Extensions
 
                 var actual = FilterExtensions.HasValue(filter.Prop2.StartsWith);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -180,7 +180,7 @@ namespace AllOverIt.Filtering.Tests.Extensions
 
                 var actual = FilterExtensions.HasValue(filter.Prop2.StartsWith);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -203,11 +203,11 @@ namespace AllOverIt.Filtering.Tests.Extensions
             {
                 var filter = new DummyFilter();
 
-                filter.Prop1.EqualTo.Value.Should().BeNull();
+                filter.Prop1.EqualTo.Value.ShouldBeNull();
 
                 var actual = FilterExtensions.HasValue(filter.Prop1.EqualTo);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -223,8 +223,9 @@ namespace AllOverIt.Filtering.Tests.Extensions
 
                 var actual = FilterExtensions.HasValue(filter.Prop1.EqualTo);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
     }
 }
+

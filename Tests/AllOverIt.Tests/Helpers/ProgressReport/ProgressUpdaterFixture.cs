@@ -1,8 +1,7 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Helpers.ProgressReport;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Tests.Helpers.ProgressReport
 {
     public class ProgressUpdaterFixture : FixtureBase
@@ -16,8 +15,7 @@ namespace AllOverIt.Tests.Helpers.ProgressReport
                 {
                     _ = ProgressUpdater.Create(Create<int>(), 1, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("notifier");
             }
 
@@ -27,20 +25,20 @@ namespace AllOverIt.Tests.Helpers.ProgressReport
             [InlineData(1, true)]
             public void Should_Have_A_Valid_Total(int total, bool expected)
             {
-                var assertion = Invoking(() =>
-                {
-                    _ = ProgressUpdater.Create(total, 1, _ => { });
-                })
-                .Should();
-
                 if (expected)
                 {
-                    _ = assertion.NotThrow();
+                    Should.NotThrow(() =>
+                    {
+                        _ = ProgressUpdater.Create(total, 1, _ => { });
+                    });
                 }
                 else
                 {
-                    _ = assertion
-                        .Throw<ArgumentOutOfRangeException>()
+                    _ = Should
+                        .Throw<ArgumentOutOfRangeException>(() =>
+                        {
+                            _ = ProgressUpdater.Create(total, 1, _ => { });
+                        })
                         .WithMessage("The total count must be greater than zero. (Parameter 'total')");
                 }
             }
@@ -53,20 +51,20 @@ namespace AllOverIt.Tests.Helpers.ProgressReport
             [InlineData(101, false)]
             public void Should_Have_A_Valid_Increment(int increment, bool expected)
             {
-                var assertion = Invoking(() =>
-                {
-                    _ = ProgressUpdater.Create(Create<int>(), increment, _ => { });
-                })
-                .Should();
-
                 if (expected)
                 {
-                    _ = assertion.NotThrow();
+                    Should.NotThrow(() =>
+                    {
+                        _ = ProgressUpdater.Create(Create<int>(), increment, _ => { });
+                    });
                 }
                 else
                 {
-                    _ = assertion
-                        .Throw<ArgumentOutOfRangeException>()
+                    _ = Should
+                        .Throw<ArgumentOutOfRangeException>(() =>
+                        {
+                            _ = ProgressUpdater.Create(Create<int>(), increment, _ => { });
+                        })
                         .WithMessage("The reporting increment must have a value between 1 and 100. (Parameter 'incrementToReport')");
                 }
             }
@@ -96,7 +94,7 @@ namespace AllOverIt.Tests.Helpers.ProgressReport
                     updater.Invoke(_ => string.Empty);
                 }
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -118,8 +116,12 @@ namespace AllOverIt.Tests.Helpers.ProgressReport
 
                 string[] expected = ["", "", "a", "b", "b", "", "", "c", "c", "c"];
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
     }
 }
+
+
+
+

@@ -1,7 +1,7 @@
 ﻿using AllOverIt.EntityFrameworkCore.Diagrams.D2.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2.Extensions
 {
@@ -12,12 +12,10 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2.Extensions
             [Fact]
             public void Should_Throw_When_String_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = StringExtensions.D2EscapeString(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("value");
             }
 
@@ -25,12 +23,10 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2.Extensions
             [Fact]
             public void Should_Not_Throw_When_String_Empty()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _ = StringExtensions.D2EscapeString(string.Empty);
-                })
-                .Should()
-                .NotThrow();
+                });
             }
 
             [Theory]
@@ -47,7 +43,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2.Extensions
 
                 var actual = StringExtensions.D2EscapeString(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Diagnostics.Breadcrumbs;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {
@@ -14,7 +14,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
             var breacrumbs = factory.CreateBreadcrumbs() as AllOverIt.Diagnostics.Breadcrumbs.Breadcrumbs;
 
-            breacrumbs.Options.Should().BeEquivalentTo(new BreadcrumbsOptions());
+            breacrumbs.Options.ShouldBeEquivalentTo(new BreadcrumbsOptions());
         }
 
         [Fact]
@@ -24,8 +24,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             {
                 _ = new BreadcrumbsFactory(null);
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("options");
         }
 
@@ -37,7 +36,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
             var breacrumbs = factory.CreateBreadcrumbs() as AllOverIt.Diagnostics.Breadcrumbs.Breadcrumbs;
 
-            breacrumbs.Options.Should().BeSameAs(options);
+            breacrumbs.Options.ShouldBeSameAs(options);
         }
 
         [Fact]
@@ -47,7 +46,15 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
             var breacrumbs = factory.CreateBreadcrumbs();
 
-            breacrumbs.Should().BeOfType<AllOverIt.Diagnostics.Breadcrumbs.Breadcrumbs>();
+            breacrumbs.ShouldBeOfType<AllOverIt.Diagnostics.Breadcrumbs.Breadcrumbs>();
         }
     }
 }
+
+
+
+
+
+
+
+

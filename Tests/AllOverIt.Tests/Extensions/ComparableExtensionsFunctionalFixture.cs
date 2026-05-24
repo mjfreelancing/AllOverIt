@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Extensions
@@ -43,7 +43,7 @@ namespace AllOverIt.Tests.Extensions
 
             var expected = Enumerable.Range(51, 50).AsReadOnlyList();
 
-            expected.Should().BeEquivalentTo(actual);
+            actual.ShouldBeEquivalentTo(expected);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace AllOverIt.Tests.Extensions
 
             var filtered = numbers.AsQueryable().Where(inRange).AsReadOnlyList();
 
-            expected.Should().BeEquivalentTo(filtered);
+            expected.ShouldBeEquivalentTo(filtered);
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace AllOverIt.Tests.Extensions
                 new Person("Adam", "Murphy")
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            actual.ShouldBeEquivalentTo(expected);
         }
 
         [Fact]
@@ -119,7 +119,14 @@ namespace AllOverIt.Tests.Extensions
                 new Person("Paul", "Nielson")
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            actual.ShouldBeEquivalentTo(expected);
         }
     }
 }
+
+
+
+
+
+
+

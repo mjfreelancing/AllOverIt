@@ -1,6 +1,5 @@
-﻿using AllOverIt.Patterns.Specification;
+using AllOverIt.Patterns.Specification;
 using AllOverIt.Patterns.Specification.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Specification
 {
@@ -17,7 +16,7 @@ namespace AllOverIt.Tests.Patterns.Specification
 
             var actual = combined.IsSatisfiedBy(value);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Theory]
@@ -35,7 +34,9 @@ namespace AllOverIt.Tests.Patterns.Specification
 
             var actual = combined.IsSatisfiedBy(value);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
     }
 }
+
+

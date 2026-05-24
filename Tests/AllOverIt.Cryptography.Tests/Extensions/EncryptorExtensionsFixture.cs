@@ -4,7 +4,7 @@ using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Cryptography.Tests.Extensions
 {
@@ -17,24 +17,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.EncryptStreamToBytes(null, Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_PlainTextStream_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.EncryptStreamToBytes(A.Fake<IStreamEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("plainTextStream");
                 }
             }
@@ -44,36 +40,30 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.DecryptBytesToStream(null, CreateRandomBytes(), Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_CipherTextBytes_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.DecryptBytesToStream(A.Fake<IStreamEncryptor>(), null, Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("cipherTextBytes");
                 }
 
                 [Fact]
                 public void Should_Throw_When_PlainTextStream_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.DecryptBytesToStream(A.Fake<IStreamEncryptor>(), CreateRandomBytes(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("plainTextStream");
                 }
             }
@@ -93,7 +83,7 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                     {
                         aes.DecryptBytesToStream(cipherText, plainTextStream);
 
-                        plainTextStream.ToArray().Should().BeEquivalentTo(sourceBytes);
+                        plainTextStream.ToArray().ShouldBe(sourceBytes);
                     }
                 }
             }
@@ -106,24 +96,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.EncryptStreamToBase64(null, Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_PlainTextStream_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.EncryptStreamToBase64(A.Fake<IStreamEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("plainTextStream");
                 }
             }
@@ -133,36 +119,30 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.DecryptBase64ToStream(null, CreateRandomBase64(), Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_CipherTextBase64_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.DecryptBase64ToStream(A.Fake<IStreamEncryptor>(), null, Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("cipherTextBase64");
                 }
 
                 [Fact]
                 public void Should_Throw_When_PlainTextStream_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.DecryptBase64ToStream(A.Fake<IStreamEncryptor>(), CreateRandomBase64(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("plainTextStream");
                 }
             }
@@ -178,13 +158,13 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 {
                     var cipherText = aes.EncryptStreamToBase64(sourceStream);
 
-                    IsValidBase64(cipherText).Should().BeTrue();
+                    IsValidBase64(cipherText).ShouldBeTrue();
 
                     using (var plainTextStream = new MemoryStream())
                     {
                         aes.DecryptBase64ToStream(cipherText, plainTextStream);
 
-                        plainTextStream.ToArray().Should().BeEquivalentTo(sourceBytes);
+                        plainTextStream.ToArray().ShouldBe(sourceBytes);
                     }
                 }
             }
@@ -197,24 +177,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.EncryptBytesToBase64(null, CreateRandomBytes());
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_PlainTextBytes_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.EncryptBytesToBase64(A.Fake<IEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("plainTextBytes");
                 }
             }
@@ -224,24 +200,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.DecryptBase64ToBytes(null, CreateRandomBase64());
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_CipherTextBase64_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.DecryptBase64ToBytes(A.Fake<IEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("cipherTextBase64");
                 }
             }
@@ -255,11 +227,11 @@ namespace AllOverIt.Cryptography.Tests.Extensions
 
                 var cipherText = aes.EncryptBytesToBase64(sourceBytes);
 
-                IsValidBase64(cipherText).Should().BeTrue();
+                IsValidBase64(cipherText).ShouldBeTrue();
 
                 var plainTextBytes = aes.DecryptBase64ToBytes(cipherText);
 
-                plainTextBytes.Should().BeEquivalentTo(sourceBytes);
+                plainTextBytes.ShouldBe(sourceBytes);
             }
         }
 
@@ -270,36 +242,30 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptBytesToStream(null, CreateRandomBytes(), Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_PlainTextBytes_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptBytesToStream(A.Fake<IStreamEncryptor>(), null, Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("plainTextBytes");
                 }
 
                 [Fact]
                 public void Should_Throw_When_CipherTextStream_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptBytesToStream(A.Fake<IStreamEncryptor>(), CreateRandomBytes(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("cipherTextStream");
                 }
             }
@@ -309,24 +275,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.DecryptStreamToBytes(null, Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_CipherTextStream_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.DecryptStreamToBytes(A.Fake<IStreamEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("cipherTextStream");
                 }
             }
@@ -346,7 +308,7 @@ namespace AllOverIt.Cryptography.Tests.Extensions
 
                     var plainTextBytes = aes.DecryptStreamToBytes(cipherTextStream);
 
-                    plainTextBytes.ToArray().Should().BeEquivalentTo(sourceBytes);
+                    plainTextBytes.ToArray().ShouldBe(sourceBytes);
                 }
             }
         }
@@ -358,24 +320,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptPlainTextToBytes(null, Create<string>());
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_PlainText_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptPlainTextToBytes(A.Fake<IEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("plainText");
                 }
             }
@@ -385,24 +343,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.DecryptBytesToPlainText(null, CreateRandomBytes());
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_CipherTextBytes_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.DecryptBytesToPlainText(A.Fake<IEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("cipherTextBytes");
                 }
             }
@@ -418,7 +372,7 @@ namespace AllOverIt.Cryptography.Tests.Extensions
 
                 var plainTextString = aes.DecryptBytesToPlainText(cipherTextBytes);
 
-                plainTextString.Should().BeEquivalentTo(sourceString);
+                plainTextString.ShouldBe(sourceString);
             }
         }
 
@@ -429,24 +383,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptPlainTextToBase64(null, Create<string>());
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_PlainText_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptPlainTextToBase64(A.Fake<IEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("plainText");
                 }
             }
@@ -456,24 +406,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.DecryptBase64ToPlainText(null, CreateRandomBase64());
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_CipherTextBytes_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.DecryptBase64ToPlainText(A.Fake<IEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("cipherTextBase64");
                 }
             }
@@ -487,11 +433,11 @@ namespace AllOverIt.Cryptography.Tests.Extensions
 
                 var cipherTextString = aes.EncryptPlainTextToBase64(sourceString);
 
-                IsValidBase64(cipherTextString).Should().BeTrue();
+                IsValidBase64(cipherTextString).ShouldBeTrue();
 
                 var plainTextString = aes.DecryptBase64ToPlainText(cipherTextString);
 
-                plainTextString.Should().BeEquivalentTo(sourceString);
+                plainTextString.ShouldBe(sourceString);
             }
         }
 
@@ -502,36 +448,30 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptPlainTextToStream(null, Create<string>(), Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_PlainTextString_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptPlainTextToStream(A.Fake<IStreamEncryptor>(), null, Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("plainText");
                 }
 
                 [Fact]
                 public void Should_Throw_When_CipherTextStream_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptPlainTextToStream(A.Fake<IStreamEncryptor>(), Create<string>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("cipherTextStream");
                 }
             }
@@ -541,24 +481,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.DecryptStreamToPlainText(null, Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_CipherTextStream_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.DecryptStreamToPlainText(A.Fake<IStreamEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("cipherTextStream");
                 }
             }
@@ -578,7 +514,7 @@ namespace AllOverIt.Cryptography.Tests.Extensions
 
                     var plainTextString = aes.DecryptStreamToPlainText(cipherTextStream);
 
-                    plainTextString.Should().BeEquivalentTo(sourceString);
+                    plainTextString.ShouldBe(sourceString);
                 }
             }
         }
@@ -590,24 +526,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.EncryptBase64ToBytes(null, CreateRandomBase64());
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_PlainTextBase64_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.EncryptBase64ToBytes(A.Fake<IEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("plainTextBase64");
                 }
             }
@@ -617,24 +549,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.DecryptBytesToBase64(null, CreateRandomBytes());
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_CipherTextBytes_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.DecryptBytesToBase64(A.Fake<IEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("cipherTextBytes");
                 }
             }
@@ -650,7 +578,7 @@ namespace AllOverIt.Cryptography.Tests.Extensions
 
                 var cipherText = aes.DecryptBytesToBase64(cipherTextBytes);
 
-                cipherText.Should().BeEquivalentTo(sourceBase64);
+                cipherText.ShouldBe(sourceBase64);
             }
         }
 
@@ -661,36 +589,30 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptBase64ToStream(null, Create<string>(), Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_PlainTextBase64String_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptBase64ToStream(A.Fake<IStreamEncryptor>(), null, Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("plainTextBase64");
                 }
 
                 [Fact]
                 public void Should_Throw_When_CipherTextStream_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         EncryptorExtensions.EncryptBase64ToStream(A.Fake<IStreamEncryptor>(), Create<string>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("cipherTextStream");
                 }
             }
@@ -700,24 +622,20 @@ namespace AllOverIt.Cryptography.Tests.Extensions
                 [Fact]
                 public void Should_Throw_When_Encryptor_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.DecryptStreamToBase64(null, Stream.Null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("encryptor");
                 }
 
                 [Fact]
                 public void Should_Throw_When_CipherTextStream_Null()
                 {
-                    Invoking(() =>
+                    Should.Throw<ArgumentNullException>(() =>
                     {
                         _ = EncryptorExtensions.DecryptStreamToBase64(A.Fake<IStreamEncryptor>(), null);
                     })
-                   .Should()
-                   .Throw<ArgumentNullException>()
                    .WithNamedMessageWhenNull("cipherTextStream");
                 }
             }
@@ -737,7 +655,7 @@ namespace AllOverIt.Cryptography.Tests.Extensions
 
                     var plainTextBase64 = aes.DecryptStreamToBase64(cipherTextStream);
 
-                    plainTextBase64.Should().BeEquivalentTo(sourceBase64);
+                    plainTextBase64.ShouldBe(sourceBase64);
                 }
             }
         }

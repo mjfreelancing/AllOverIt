@@ -4,8 +4,7 @@ using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
 using AllOverIt.Serialization.Binary.Readers;
 using FakeItEasy;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
     public class ContinuationTokenReaderFixture : FixtureBase
@@ -29,8 +28,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = _tokenReader.ReadValue(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("reader");
             }
 
@@ -59,8 +57,12 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = _tokenReader.ReadValue(_binaryReader.FakedObject);
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
     }
 }
+
+
+
+

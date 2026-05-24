@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Serialization.Binary.Tests.FunctionalTypes.Models
+namespace AllOverIt.Serialization.Binary.Tests.FunctionalTypes.Models
 {
     internal sealed class Classroom
     {
@@ -7,3 +7,6 @@
         public IEnumerable<Student> Students { get; init; }
     }
 }
+
+
+

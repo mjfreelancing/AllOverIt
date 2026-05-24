@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Pipeline;
 using AllOverIt.ReactiveUI.CommandPipeline;
-using FluentAssertions;
 using ReactiveUI;
 
 namespace AllOverIt.ReactiveUI.Tests.CommandPipeline
@@ -14,12 +13,10 @@ namespace AllOverIt.ReactiveUI.Tests.CommandPipeline
             [Fact]
             public void Should_Throw_When_Command_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = ReactiveCommandPipelineBuilder.Pipe<double, string>(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("command");
             }
 
@@ -30,8 +27,14 @@ namespace AllOverIt.ReactiveUI.Tests.CommandPipeline
 
                 var actual = ReactiveCommandPipelineBuilder.Pipe<double, string>(command);
 
-                actual.Should().BeOfType<PipelineBuilderAsync<double, string>>();
+                actual.ShouldBeOfType<PipelineBuilderAsync<double, string>>();
             }
         }
     }
 }
+
+
+
+
+
+

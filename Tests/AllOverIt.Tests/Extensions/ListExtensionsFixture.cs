@@ -1,8 +1,8 @@
 ﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 using System.ComponentModel;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Extensions
 {
@@ -17,8 +17,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ListExtensions.FirstElement((IReadOnlyList<int>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("list");
             }
 
@@ -29,8 +28,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ListExtensions.FirstElement(Array.Empty<int>().AsReadOnlyList());
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("list");
             }
 
@@ -43,7 +41,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = items.FirstElement();
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -56,8 +54,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ListExtensions.LastElement((IReadOnlyList<int>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("list");
             }
 
@@ -68,8 +65,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ListExtensions.LastElement(Array.Empty<int>().AsReadOnlyList());
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("list");
             }
 
@@ -82,7 +78,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ListExtensions.LastElement(items);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -95,8 +91,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ListExtensions.FirstElement((IList<int>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("list");
             }
 
@@ -107,8 +102,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ListExtensions.FirstElement((IList<int>) new List<int>());
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("list");
             }
 
@@ -121,7 +115,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = items.FirstElement();
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -134,8 +128,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ListExtensions.LastElement((IList<int>) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("list");
             }
 
@@ -146,8 +139,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ListExtensions.LastElement((IList<int>) new List<int>());
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("list");
             }
 
@@ -160,7 +152,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = items.LastElement();
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -173,8 +165,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ListExtensions.AddMany((IList<int>) null, CreateMany<int>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("list");
             }
 
@@ -185,8 +176,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ListExtensions.AddMany(new List<int>(), CreateMany<int>());
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -196,8 +186,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ListExtensions.AddMany(new List<int>(), null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("items");
             }
 
@@ -208,8 +197,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ListExtensions.AddMany(CreateMany<int>().AsList(), Array.Empty<int>());
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -222,7 +210,7 @@ namespace AllOverIt.Tests.Extensions
 
                 list.AddMany(items);
 
-                list.Should().BeEquivalentTo(expected);
+                list.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -236,8 +224,16 @@ namespace AllOverIt.Tests.Extensions
 
                 list.AddMany(items);
 
-                list.Should().BeEquivalentTo(expected);
+                list.ShouldBeEquivalentTo(expected);
             }
         }
     }
 }
+
+
+
+
+
+
+
+

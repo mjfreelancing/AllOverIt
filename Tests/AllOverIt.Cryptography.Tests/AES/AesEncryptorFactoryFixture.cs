@@ -1,6 +1,6 @@
 ﻿using AllOverIt.Cryptography.AES;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Cryptography.Tests.AES
 {
@@ -15,7 +15,7 @@ namespace AllOverIt.Cryptography.Tests.AES
             {
                 var actual = _factory.Create();
 
-                actual.Should().BeOfType<AesEncryptor>();
+                actual.ShouldBeOfType<AesEncryptor>();
             }
         }
 
@@ -29,9 +29,9 @@ namespace AllOverIt.Cryptography.Tests.AES
 
                 var actual = _factory.Create(key, iv);
 
-                actual.Should().BeOfType<AesEncryptor>();
-                actual.Configuration.Key.Should().BeEquivalentTo(key);
-                actual.Configuration.IV.Should().BeEquivalentTo(iv);
+                actual.ShouldBeOfType<AesEncryptor>();
+                actual.Configuration.Key.ShouldBe(key);
+                actual.Configuration.IV.ShouldBe(iv);
             }
         }
     }

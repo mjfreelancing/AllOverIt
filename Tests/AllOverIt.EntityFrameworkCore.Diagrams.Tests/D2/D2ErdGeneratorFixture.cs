@@ -1,12 +1,12 @@
 ﻿using AllOverIt.EntityFrameworkCore.Diagrams.D2;
 using AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes;
 using AllOverIt.EntityFrameworkCore.Diagrams.Tests.TestTypes.Entities;
-using FluentAssertions;
-using TestUtils;
+using AllOverIt.Fixture;
+using Shouldly;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2
 {
-    public class D2ErdGeneratorFixture : NSubstituteFixtureBase
+    public class D2ErdGeneratorFixture : FixtureBase
     {
         [Fact]
         public void Should_Create_Default_Diagram()
@@ -247,7 +247,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.D2
 
             var actual = erdFormatter.Generate(dbContext).Trim();
 
-            actual.Should().Be(expected.Trim());
+            actual.ShouldBe(expected.Trim());
         }
     }
 }

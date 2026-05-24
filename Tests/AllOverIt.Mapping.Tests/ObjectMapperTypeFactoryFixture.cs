@@ -1,6 +1,5 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
 
@@ -57,8 +56,8 @@ namespace AllOverIt.Mapping.Tests
 
                 var success = _factory.TryGet(typeof(DummySource2), typeof(DummyTarget), out var actual);
 
-                success.Should().BeTrue();
-                factory.Should().BeSameAs(actual);
+                success.ShouldBeTrue();
+                factory.ShouldBeSameAs(actual);
             }
         }
 
@@ -97,8 +96,8 @@ namespace AllOverIt.Mapping.Tests
 
                 var success = _factory.TryGet(typeof(DummySource2), typeof(DummyTarget), out var actual);
 
-                success.Should().BeTrue();
-                factory.Should().BeSameAs(actual);
+                success.ShouldBeTrue();
+                factory.ShouldBeSameAs(actual);
             }
 
             [Fact]
@@ -106,8 +105,8 @@ namespace AllOverIt.Mapping.Tests
             {
                 var success = _factory.TryGet(typeof(DummySource2), typeof(DummyTarget), out var actual);
 
-                success.Should().BeFalse();
-                actual.Should().BeNull();
+                success.ShouldBeFalse();
+                actual.ShouldBeNull();
             }
         }
 
@@ -144,7 +143,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _factory.GetOrAdd(typeof(DummyTarget), factory);
 
-                factory.Should().BeSameAs(actual);
+                factory.ShouldBeSameAs(actual);
             }
         }
 
@@ -185,8 +184,11 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = factory.Invoke();
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
     }
 }
+
+
+

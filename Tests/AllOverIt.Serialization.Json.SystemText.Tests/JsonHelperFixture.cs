@@ -1,11 +1,11 @@
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serialization.Json.Abstractions.Exceptions;
 using AllOverIt.Serialization.Json.SystemText.Converters;
-using FluentAssertions;
 using System.Data;
 using System.Text.Json;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests
 {
@@ -178,24 +178,21 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Throw_When_Value_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new JsonHelper((object) null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("value");
+                });
+
+                exception.WithNamedMessageWhenNull("value");
             }
 
             [Fact]
             public void Should_Not_Throw_When_Options_Null()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _ = new JsonHelper(_value, null);
-                })
-                    .Should()
-                    .NotThrow();
+                });
             }
         }
 
@@ -214,12 +211,10 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Not_Throw_When_Settings_Null()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _ = new JsonHelper("{}", null);
-                })
-                    .Should()
-                    .NotThrow();
+                });
             }
         }
 
@@ -278,8 +273,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     _ => throw new InvalidExpressionException($"Unexpected property name {propName}")
                 };
 
-                actual.Should().BeTrue();
-                value.Should().BeEquivalentTo(expected);
+                actual.ShouldBeTrue();
+                value.ShouldBeEquivalentTo(expected);
             }
 
             [Theory]
@@ -291,7 +286,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.TryGetValue(Create<string>(), out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -303,7 +298,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 _ = jsonHelper.TryGetValue(Create<string>(), out var value);
 
-                value.Should().Be(default);
+                value.ShouldBe(default);
             }
         }
 
@@ -347,7 +342,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     _ => throw new InvalidExpressionException($"Unexpected property name {propName}")
                 };
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -357,14 +352,13 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             {
                 var propName = Create<string>();
 
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
                     _ = jsonHelper.GetValue(propName);
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage($"The property {propName} was not found.");
+                });
+
+                exception.Message.ShouldBe($"The property {propName} was not found.");
             }
         }
 
@@ -394,8 +388,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetValue<string>("Prop1", out var value)
                     : jsonHelper.TryGetValue("Prop1", out value);
 
-                actual.Should().BeTrue();
-                value.Should().Be($"{_prop1}");
+                actual.ShouldBeTrue();
+                value.ShouldBe($"{_prop1}");
             }
 
             [Theory]
@@ -411,8 +405,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetValue<Guid>("Prop1", out var value)
                     : jsonHelper.TryGetValue("prop1", out value);
 
-                actual.Should().BeTrue();
-                value.Should().Be(_prop1);
+                actual.ShouldBeTrue();
+                value.ShouldBe(_prop1);
             }
 
             [Theory]
@@ -428,8 +422,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetValue<string>("Prop7", out var value)
                     : jsonHelper.TryGetValue("prop7", out value);
 
-                actual.Should().BeTrue();
-                value.Should().Be(_prop7);
+                actual.ShouldBeTrue();
+                value.ShouldBe(_prop7);
             }
 
             [Theory]
@@ -445,8 +439,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetValue<double>("Prop8", out var value)
                     : jsonHelper.TryGetValue("prop8", out value);
 
-                actual.Should().BeTrue();
-                value.Should().Be(_prop8);
+                actual.ShouldBeTrue();
+                value.ShouldBe(_prop8);
             }
 
             [Theory]
@@ -462,8 +456,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetValue<DateTime>("Prop9", out var value)
                     : jsonHelper.TryGetValue("prop9", out value);
 
-                actual.Should().BeTrue();
-                value.Should().Be(_prop9);
+                actual.ShouldBeTrue();
+                value.ShouldBe(_prop9);
             }
 
             [Theory]
@@ -475,7 +469,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.TryGetValue<int>(Create<string>(), out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -487,7 +481,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 _ = jsonHelper.TryGetValue<int>(Create<string>(), out var value);
 
-                value.Should().Be(default);
+                value.ShouldBe(default);
             }
         }
 
@@ -517,7 +511,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.GetValue<string>("Prop1")
                     : jsonHelper.GetValue<string>("prop1");
 
-                actual.Should().Be($"{_prop1}");
+                actual.ShouldBe($"{_prop1}");
             }
 
             [Theory]
@@ -533,7 +527,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.GetValue<Guid>("Prop1")
                     : jsonHelper.GetValue<Guid>("prop1");
 
-                actual.Should().Be(_prop1);
+                actual.ShouldBe(_prop1);
             }
 
             [Theory]
@@ -549,7 +543,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.GetValue<string>("Prop7")
                     : jsonHelper.GetValue<string>("prop7");
 
-                actual.Should().Be(_prop7);
+                actual.ShouldBe(_prop7);
             }
 
             [Theory]
@@ -565,7 +559,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.GetValue<double>("Prop8")
                     : jsonHelper.GetValue<double>("prop8");
 
-                actual.Should().Be(_prop8);
+                actual.ShouldBe(_prop8);
             }
 
             [Theory]
@@ -581,7 +575,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.GetValue<DateTime>("Prop9")
                     : jsonHelper.GetValue<DateTime>("prop9");
 
-                actual.Should().Be(_prop9);
+                actual.ShouldBe(_prop9);
             }
 
             [Theory]
@@ -591,14 +585,13 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             {
                 var propName = Create<string>();
 
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
                     _ = jsonHelper.GetValue<int>(propName);
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage($"The property {propName} was not found.");
+                });
+
+                exception.Message.ShouldBe($"The property {propName} was not found.");
             }
         }
 
@@ -628,8 +621,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetValues<string>("Prop13", out var values)
                     : jsonHelper.TryGetValues("Prop13", out values);
 
-                actual.Should().BeTrue();
-                values.Should().BeEquivalentTo(_prop13.Select(item => $"{item}"));
+                actual.ShouldBeTrue();
+                values.ShouldBeEquivalentTo(_prop13.Select(item => $"{item}"));
             }
 
             [Theory]
@@ -645,8 +638,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetValues<Guid>("Prop13", out var value)
                     : jsonHelper.TryGetValues("prop13", out value);
 
-                actual.Should().BeTrue();
-                value.Should().BeEquivalentTo(_prop13);
+                actual.ShouldBeTrue();
+                value.ShouldBeEquivalentTo(_prop13);
             }
 
             [Theory]
@@ -662,8 +655,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetValues<string>("Prop12", out var values)
                     : jsonHelper.TryGetValues("prop12", out values);
 
-                actual.Should().BeTrue();
-                values.Should().BeEquivalentTo(_prop12);
+                actual.ShouldBeTrue();
+                values.ShouldBeEquivalentTo(_prop12);
             }
 
             [Theory]
@@ -679,8 +672,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetValues<int>("Prop11", out var value)
                     : jsonHelper.TryGetValues("prop11", out value);
 
-                actual.Should().BeTrue();
-                value.Should().BeEquivalentTo(_prop11);
+                actual.ShouldBeTrue();
+                value.ShouldBeEquivalentTo(_prop11);
             }
 
             [Theory]
@@ -692,7 +685,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.TryGetValues<int>(Create<string>(), out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -704,7 +697,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 _ = jsonHelper.TryGetValues<int>(Create<string>(), out var value);
 
-                value.Should().BeNull();
+                value.ShouldBeNull();
             }
         }
 
@@ -734,7 +727,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.GetValues<string>("Prop13")
                     : jsonHelper.GetValues<string>("prop13");
 
-                actual.Should().BeEquivalentTo(_prop13.Select(item => $"{item}"));
+                actual.ShouldBeEquivalentTo(_prop13.Select(item => $"{item}"));
             }
 
             [Theory]
@@ -750,7 +743,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.GetValues<Guid>("Prop13")
                     : jsonHelper.GetValues<Guid>("prop13");
 
-                actual.Should().BeEquivalentTo(_prop13);
+                actual.ShouldBeEquivalentTo(_prop13);
             }
 
             [Theory]
@@ -766,7 +759,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.GetValues<string>("Prop12")
                     : jsonHelper.GetValues<string>("prop12");
 
-                actual.Should().BeEquivalentTo(_prop12);
+                actual.ShouldBeEquivalentTo(_prop12);
             }
 
             [Theory]
@@ -782,7 +775,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.GetValues<int>("Prop11")
                     : jsonHelper.GetValues<int>("prop11");
 
-                actual.Should().BeEquivalentTo(_prop11);
+                actual.ShouldBeEquivalentTo(_prop11);
             }
 
             [Theory]
@@ -792,14 +785,13 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             {
                 var propName = Create<string>();
 
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
                     _ = jsonHelper.GetValues<int>(propName);
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage($"The property {propName} was not found.");
+                });
+
+                exception.Message.ShouldBe($"The property {propName} was not found.");
             }
         }
 
@@ -808,27 +800,25 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Throw_When_PropertyNames_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.TryGetDescendantElement(null!, out _);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("propertyNames");
+                });
+
+                exception.WithNamedMessageWhenNull("propertyNames");
             }
 
             [Fact]
             public void Should_Throw_When_PropertyNames_Empty()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.TryGetDescendantElement([], out _);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("propertyNames");
+                });
+
+                exception.WithNamedMessageWhenEmpty("propertyNames");
             }
 
             [Theory]
@@ -840,7 +830,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.TryGetDescendantElement(["Prop16", "Prop17", "Prop18", "Prop18"], out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -853,7 +843,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                 // Prop19 is a leaf node
                 var actual = jsonHelper.TryGetDescendantElement(["Prop16", "Prop17", "Prop18", "Prop19"], out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -866,7 +856,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                 // Prop19 is a leaf node
                 _ = jsonHelper.TryGetDescendantElement(["Prop16", "Prop17", "Prop18", "Prop19"], out var element);
 
-                element.Should().BeNull();
+                element.ShouldBeNull();
             }
 
             [Theory]
@@ -879,9 +869,9 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                 // Prop19 is a leaf node
                 var actual = jsonHelper.TryGetDescendantElement(["Prop16", "Prop17", "Prop18"], out var element);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
 
-                element.Should().BeEquivalentTo(new Dictionary<string, object>()
+                element.ShouldBeEquivalentTo(new Dictionary<string, object>()
                 {
                     { "Prop19", _prop9 }
                 });
@@ -893,27 +883,25 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Throw_When_PropertyNames_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.GetDescendantElement(null!);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("propertyNames");
+                });
+
+                exception.WithNamedMessageWhenNull("propertyNames");
             }
 
             [Fact]
             public void Should_Throw_When_PropertyNames_Empty()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.GetDescendantElement([]);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithNamedMessageWhenEmpty("propertyNames");
+                });
+
+                exception.WithNamedMessageWhenEmpty("propertyNames");
             }
 
             [Theory]
@@ -921,14 +909,13 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [InlineData(false)]
             public void Should_Throw_When_Element_Not_Found(bool useObject)
             {
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
                     _ = jsonHelper.GetDescendantElement(["Prop16", "Prop17", "Prop18", "Prop18"]);
-                })
-                   .Should()
-                   .Throw<JsonHelperException>()
-                   .WithMessage($"The element Prop16.Prop17.Prop18.Prop18 was not found.");
+                });
+
+                exception.Message.ShouldBe("The element Prop16.Prop17.Prop18.Prop18 was not found.");
             }
 
             [Theory]
@@ -936,16 +923,15 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [InlineData(false)]
             public void Should_Throw_When_Element_Not_Object(bool useObject)
             {
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
 
                     // Prop19 is a leaf node
                     _ = jsonHelper.GetDescendantElement(["Prop16", "Prop17", "Prop18", "Prop19"]);
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage($"The element Prop16.Prop17.Prop18.Prop19 was not found.");
+                });
+
+                exception.Message.ShouldBe("The element Prop16.Prop17.Prop18.Prop19 was not found.");
             }
 
             [Theory]
@@ -958,7 +944,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                 // Prop19 is a leaf node
                 var actual = jsonHelper.GetDescendantElement(["Prop16", "Prop17", "Prop18"]);
 
-                actual.Should().BeEquivalentTo(new Dictionary<string, object>()
+                actual.ShouldBeEquivalentTo(new Dictionary<string, object>()
                 {
                     { "Prop19", _prop9 }
                 });
@@ -970,27 +956,25 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Throw_When_PropertyNames_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.TryGetDescendantValue(null!, out _);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("propertyNames");
+                });
+
+                exception.WithNamedMessageWhenNull("propertyNames");
             }
 
             [Fact]
             public void Should_Throw_When_One_Property_Name()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.TryGetDescendantValue([Create<string>()], out _);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithMessage("Expected at least two property names. (Parameter 'propertyNames')");
+                });
+
+                exception.Message.ShouldBe("Expected at least two property names. (Parameter 'propertyNames')");
             }
 
             [Theory]
@@ -1002,7 +986,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.TryGetDescendantValue([Create<string>(), Create<string>()], out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -1014,7 +998,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 _ = jsonHelper.TryGetDescendantValue([Create<string>(), Create<string>()], out var element);
 
-                element.Should().BeNull();
+                element.ShouldBeNull();
             }
 
             [Theory]
@@ -1026,9 +1010,9 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.TryGetDescendantValue(["Prop16", "Prop17", "Prop18", "Prop19"], out var element);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
 
-                element.Should().Be(_prop9);
+                element.ShouldBe(_prop9);
             }
         }
 
@@ -1037,27 +1021,25 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Throw_When_PropertyNames_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.GetDescendantValue(null!);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("propertyNames");
+                });
+
+                exception.WithNamedMessageWhenNull("propertyNames");
             }
 
             [Fact]
             public void Should_Throw_When_One_Property_Name()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.GetDescendantValue([Create<string>()]);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithMessage("Expected at least two property names. (Parameter 'propertyNames')");
+                });
+
+                exception.Message.ShouldBe("Expected at least two property names. (Parameter 'propertyNames')");
             }
 
             [Theory]
@@ -1065,15 +1047,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [InlineData(false)]
             public void Should_Throw_When_Property_Not_Found(bool useObject)
             {
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
 
                     _ = jsonHelper.GetDescendantValue(["Prop16", "Prop17", "Prop18", "Prop18"]);
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage($"The property Prop16.Prop17.Prop18.Prop18 was not found.");
+                });
+
+                exception.Message.ShouldBe("The property Prop16.Prop17.Prop18.Prop18 was not found.");
             }
 
             [Theory]
@@ -1085,7 +1066,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.GetDescendantValue(["Prop16", "Prop17", "Prop18", "Prop19"]);
 
-                actual.Should().Be(_prop9);
+                actual.ShouldBe(_prop9);
             }
         }
 
@@ -1094,27 +1075,25 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Throw_When_PropertyNames_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.TryGetDescendantValue<DateTime>(null!, out _);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("propertyNames");
+                });
+
+                exception.WithNamedMessageWhenNull("propertyNames");
             }
 
             [Fact]
             public void Should_Throw_When_One_Property_Name()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.TryGetDescendantValue<DateTime>([Create<string>()], out _);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithMessage("Expected at least two property names. (Parameter 'propertyNames')");
+                });
+
+                exception.Message.ShouldBe("Expected at least two property names. (Parameter 'propertyNames')");
             }
 
             [Theory]
@@ -1126,7 +1105,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.TryGetDescendantValue<DateTime>([Create<string>(), Create<string>()], out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -1138,7 +1117,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 _ = jsonHelper.TryGetDescendantValue<DateTime?>([Create<string>(), Create<string>()], out var element);
 
-                element.Should().BeNull();
+                element.ShouldBeNull();
             }
 
             [Theory]
@@ -1150,9 +1129,9 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.TryGetDescendantValue<DateTime>(["Prop16", "Prop17", "Prop18", "Prop19"], out var element);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
 
-                element.Should().Be(_prop9);
+                element.ShouldBe(_prop9);
             }
         }
 
@@ -1161,27 +1140,25 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Throw_When_PropertyNames_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.GetDescendantValue<DateTime>(null!);
-                })
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithNamedMessageWhenNull("propertyNames");
+                });
+
+                exception.WithNamedMessageWhenNull("propertyNames");
             }
 
             [Fact]
             public void Should_Throw_When_One_Property_Name()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.GetDescendantValue<DateTime>([Create<string>()]);
-                })
-                .Should()
-                .Throw<ArgumentException>()
-                .WithMessage("Expected at least two property names. (Parameter 'propertyNames')");
+                });
+
+                exception.Message.ShouldBe("Expected at least two property names. (Parameter 'propertyNames')");
             }
 
             [Theory]
@@ -1189,15 +1166,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [InlineData(false)]
             public void Should_Throw_When_Property_Not_Found(bool useObject)
             {
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
 
                     _ = jsonHelper.GetDescendantValue<DateTime>(["Prop16", "Prop17", "Prop18", "Prop18"]);
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage($"The property Prop16.Prop17.Prop18.Prop18 was not found.");
+                });
+
+                exception.Message.ShouldBe("The property Prop16.Prop17.Prop18.Prop18 was not found.");
             }
 
             [Theory]
@@ -1209,7 +1185,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.GetDescendantValue<DateTime>(["Prop16", "Prop17", "Prop18", "Prop19"]);
 
-                actual.Should().Be(_prop9);
+                actual.ShouldBe(_prop9);
             }
         }
 
@@ -1235,7 +1211,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.TryGetObjectArray(Create<string>(), out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -1247,7 +1223,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 _ = jsonHelper.TryGetObjectArray(Create<string>(), out var array);
 
-                array.Should().BeNull();
+                array.ShouldBeNull();
             }
 
             [Theory]
@@ -1257,13 +1233,12 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     _ = jsonHelper.TryGetObjectArray("Prop1", out _);
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage("The property Prop1 is not an array type.");
+                });
+
+                exception.Message.ShouldBe("The property Prop1 is not an array type.");
             }
 
             [Theory]
@@ -1273,13 +1248,12 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     _ = jsonHelper.TryGetObjectArray("Prop3", out _);
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage("The property Prop3 is not an array of objects.");
+                });
+
+                exception.Message.ShouldBe("The property Prop3 is not an array of objects.");
             }
 
             [Theory]
@@ -1295,18 +1269,18 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetObjectArray("Prop10", out var array)
                     : jsonHelper.TryGetObjectArray("prop10", out array);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
 
                 var arrayItems = array.ToList();
 
-                arrayItems.Should().HaveCount(3);
+                arrayItems.Count.ShouldBe(3);
 
                 for (var idx = 0; idx < 3; idx++)
                 {
                     var item = arrayItems.ElementAt(idx);
                     var expectedValue = _prop6.ElementAt(idx);
 
-                    item.GetValue("Prop11").Should().Be(expectedValue);
+                    item.GetValue("Prop11").ShouldBe(expectedValue);
                 }
             }
         }
@@ -1332,13 +1306,12 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                 var jsonHelper = CreateJsonHelper(useObject);
                 var propName = Create<string>();
 
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     _ = jsonHelper.GetObjectArray(propName);
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage($"The property {propName} was not found.");
+                });
+
+                exception.Message.ShouldBe($"The property {propName} was not found.");
             }
 
             [Theory]
@@ -1348,13 +1321,12 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     _ = jsonHelper.GetObjectArray("Prop1");
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage("The property Prop1 is not an array type.");
+                });
+
+                exception.Message.ShouldBe("The property Prop1 is not an array type.");
             }
 
             [Theory]
@@ -1364,13 +1336,12 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             {
                 var jsonHelper = CreateJsonHelper(useObject);
 
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     _ = jsonHelper.GetObjectArray("Prop3");
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage("The property Prop3 is not an array of objects.");
+                });
+
+                exception.Message.ShouldBe("The property Prop3 is not an array of objects.");
             }
 
             [Theory]
@@ -1388,14 +1359,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var arrayItems = array.ToList();
 
-                arrayItems.Should().HaveCount(3);
+                arrayItems.Count.ShouldBe(3);
 
                 for (var idx = 0; idx < 3; idx++)
                 {
                     var item = arrayItems.ElementAt(idx);
                     var expectedValue = _prop6.ElementAt(idx);
 
-                    item.GetValue("Prop11").Should().Be(expectedValue);
+                    item.GetValue("Prop11").ShouldBe(expectedValue);
                 }
             }
         }
@@ -1437,7 +1408,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetObjectArrayValues<string>("Prop10", "Prop11", out _)
                     : jsonHelper.TryGetObjectArrayValues<string>("prop10", "prop11", out _);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1445,15 +1416,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [InlineData(false)]
             public void Should_Throw_When_Object_Array_Property_Is_Not_An_Array(bool useObject)
             {
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
 
                     _ = jsonHelper.TryGetObjectArrayValues<string>("Prop1", "Prop11", out _);
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage("The property Prop1 is not an array type.");
+                });
+
+                exception.Message.ShouldBe("The property Prop1 is not an array type.");
             }
 
             [Theory]
@@ -1469,7 +1439,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetObjectArrayValues<string>("Prop10", "Prop11", out var arrayValues)
                     : jsonHelper.TryGetObjectArrayValues("prop10", "prop11", out arrayValues);
 
-                arrayValues.Should().BeEquivalentTo(_prop6);
+                arrayValues.ShouldBeEquivalentTo(_prop6);
             }
 
             [Theory]
@@ -1481,7 +1451,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 _ = jsonHelper.TryGetObjectArrayValues<string>("Prop10", "Prop1", out var arrayValues);
 
-                arrayValues.Should().BeNull();
+                arrayValues.ShouldBeNull();
             }
         }
 
@@ -1514,15 +1484,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [InlineData(false)]
             public void Should_Throw_When_Object_Array_Property_Is_Not_An_Array(bool useObject)
             {
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
 
                     _ = jsonHelper.GetObjectArrayValues<string>("Prop1", "Prop11");
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage("The property Prop1 is not an array type.");
+                });
+
+                exception.Message.ShouldBe("The property Prop1 is not an array type.");
             }
 
             [Theory]
@@ -1530,15 +1499,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [InlineData(false)]
             public void Should_Throw_When_Property_Not_Found(bool useObject)
             {
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
 
                     _ = jsonHelper.GetObjectArrayValues<string>("Prop10", "Prop1");
-                })
-                   .Should()
-                   .Throw<JsonHelperException>()
-                   .WithMessage("The property Prop10.Prop1 was not found.");
+                });
+
+                exception.Message.ShouldBe("The property Prop10.Prop1 was not found.");
             }
 
             [Theory]
@@ -1554,7 +1522,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.GetObjectArrayValues<string>("Prop10", "Prop11")
                     : jsonHelper.GetObjectArrayValues<string>("prop10", "prop11");
 
-                arrayValues.Should().BeEquivalentTo(_prop6);
+                arrayValues.ShouldBeEquivalentTo(_prop6);
             }
         }
 
@@ -1563,27 +1531,25 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Throw_When_ArrayPropertyNames_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.TryGetDescendantObjectArray(null, out _);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyNames");
+                });
+
+                exception.WithNamedMessageWhenNull("arrayPropertyNames");
             }
 
             [Fact]
             public void Should_Throw_When_ArrayPropertyNames_Empty()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.TryGetDescendantObjectArray(Array.Empty<string>(), out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyNames");
+                });
+
+                exception.WithNamedMessageWhenEmpty("arrayPropertyNames");
             }
 
             [Theory]
@@ -1599,7 +1565,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     ? jsonHelper.TryGetDescendantObjectArray(new[] { "Prop10" }, out _)
                     : jsonHelper.TryGetDescendantObjectArray(new[] { "prop10" }, out _);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1607,15 +1573,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [InlineData(false)]
             public void Should_Throw_When_Descendant_Object_Array_Property_Is_Not_An_Array(bool useObject)
             {
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
 
                     _ = jsonHelper.TryGetDescendantObjectArray(new[] { "Prop1" }, out _);
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage("The property Prop1 is not an array type.");
+                });
+
+                exception.Message.ShouldBe("The property Prop1 is not an array type.");
             }
 
             [Theory]
@@ -1633,7 +1598,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var arrayItems = array.ToList();
 
-                arrayItems.Should().HaveCount(6);
+                arrayItems.Count.ShouldBe(6);
 
                 for (var idx = 0; idx < 6; idx++)
                 {
@@ -1655,7 +1620,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                         }
                     };
 
-                    expected.Should().BeEquivalentTo(element);
+                    expected.ShouldBeEquivalentTo(element);
                 }
             }
 
@@ -1668,7 +1633,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.TryGetDescendantObjectArray(new[] { "Prop0" }, out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -1680,7 +1645,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 _ = jsonHelper.TryGetDescendantObjectArray(new[] { "Prop0" }, out var array);
 
-                array.Should().BeNull();
+                array.ShouldBeNull();
             }
         }
 
@@ -1689,27 +1654,25 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Throw_When_ArrayPropertyNames_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.GetDescendantObjectArray(null);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyNames");
+                });
+
+                exception.WithNamedMessageWhenNull("arrayPropertyNames");
             }
 
             [Fact]
             public void Should_Throw_When_ArrayPropertyNames_Empty()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.GetDescendantObjectArray(Array.Empty<string>());
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyNames");
+                });
+
+                exception.WithNamedMessageWhenEmpty("arrayPropertyNames");
             }
 
             [Theory]
@@ -1717,15 +1680,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [InlineData(false)]
             public void Should_Throw_When_Descendant_Object_Array_Property_Is_Not_An_Array(bool useObject)
             {
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
 
                     _ = jsonHelper.GetDescendantObjectArray(new[] { "Prop1" });
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage("The property Prop1 is not an array type.");
+                });
+
+                exception.Message.ShouldBe("The property Prop1 is not an array type.");
             }
 
             [Theory]
@@ -1743,7 +1705,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var arrayItems = array.ToList();
 
-                arrayItems.Should().HaveCount(6);
+                arrayItems.Count.ShouldBe(6);
 
                 for (var idx = 0; idx < 6; idx++)
                 {
@@ -1765,7 +1727,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                         }
                     };
 
-                    expected.Should().BeEquivalentTo(element);
+                    expected.ShouldBeEquivalentTo(element);
                 }
             }
 
@@ -1774,15 +1736,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [InlineData(false)]
             public void Should_Throw_When_Property_Not_Found(bool useObject)
             {
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
 
                     var array = jsonHelper.GetDescendantObjectArray(new[] { "Prop0" });
-                })
-                   .Should()
-                   .Throw<JsonHelperException>()
-                   .WithMessage("The property Prop0 was not found.");
+                });
+
+                exception.Message.ShouldBe("The property Prop0 was not found.");
             }
         }
 
@@ -1791,27 +1752,25 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Throw_When_ArrayPropertyNames_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(null, Create<string>(), out _);
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyNames");
+                });
+
+                exception.WithNamedMessageWhenNull("arrayPropertyNames");
             }
 
             [Fact]
             public void Should_Throw_When_ArrayPropertyNames_Empty()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(Array.Empty<string>(), Create<string>(), out _);
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyNames");
+                });
+
+                exception.WithNamedMessageWhenEmpty("arrayPropertyNames");
             }
 
             [Fact]
@@ -1830,15 +1789,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [InlineData(false)]
             public void Should_Throw_When_Descendant_Object_Array_Property_Is_Not_An_Array(bool useObject)
             {
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
 
                     _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(new[] { "Prop1" }, Create<string>(), out _);
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage("The property Prop1 is not an array type.");
+                });
+
+                exception.Message.ShouldBe("The property Prop1 is not an array type.");
             }
 
             [Theory]
@@ -1858,7 +1816,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var expected = _prop2.Concat(_prop2.Select(item => item * 2));
 
-                arrayItems.Should().BeEquivalentTo(expected);
+                arrayItems.ShouldBeEquivalentTo(expected);
             }
 
             [Theory]
@@ -1870,7 +1828,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = jsonHelper.TryGetDescendantObjectArrayValues<int>(new[] { "Prop0" }, "Value", out _);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -1882,7 +1840,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 _ = jsonHelper.TryGetDescendantObjectArrayValues<int>(new[] { "Prop0" }, "Value", out var array);
 
-                array.Should().BeNull();
+                array.ShouldBeNull();
             }
         }
 
@@ -1891,27 +1849,25 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Throw_When_ArrayPropertyNames_Null()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentNullException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.GetDescendantObjectArrayValues<int>(null, Create<string>());
-                })
-                    .Should()
-                    .Throw<ArgumentNullException>()
-                    .WithNamedMessageWhenNull("arrayPropertyNames");
+                });
+
+                exception.WithNamedMessageWhenNull("arrayPropertyNames");
             }
 
             [Fact]
             public void Should_Throw_When_ArrayPropertyNames_Empty()
             {
-                Invoking(() =>
+                var exception = Should.Throw<ArgumentException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(true);
                     _ = jsonHelper.GetDescendantObjectArrayValues<int>(Array.Empty<string>(), Create<string>());
-                })
-                    .Should()
-                    .Throw<ArgumentException>()
-                    .WithNamedMessageWhenEmpty("arrayPropertyNames");
+                });
+
+                exception.WithNamedMessageWhenEmpty("arrayPropertyNames");
             }
 
             [Fact]
@@ -1930,15 +1886,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [InlineData(false)]
             public void Should_Throw_When_Descendant_Object_Array_Property_Is_Not_An_Array(bool useObject)
             {
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
 
                     _ = jsonHelper.GetDescendantObjectArrayValues<int>(new[] { "Prop1" }, Create<string>());
-                })
-                    .Should()
-                    .Throw<JsonHelperException>()
-                    .WithMessage("The property Prop1 is not an array type.");
+                });
+
+                exception.Message.ShouldBe("The property Prop1 is not an array type.");
             }
 
             [Theory]
@@ -1958,7 +1913,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var expected = _prop2.Concat(_prop2.Select(item => item * 2));
 
-                arrayItems.Should().BeEquivalentTo(expected);
+                arrayItems.ShouldBeEquivalentTo(expected);
             }
 
             [Theory]
@@ -1968,15 +1923,14 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             {
                 var childPropName = Create<string>();
 
-                Invoking(() =>
+                var exception = Should.Throw<JsonHelperException>(() =>
                 {
                     var jsonHelper = CreateJsonHelper(useObject);
 
                     var array = jsonHelper.GetDescendantObjectArrayValues<int>(new[] { "Prop0", "Prop1" }, childPropName);
-                })
-                   .Should()
-                   .Throw<JsonHelperException>()
-                   .WithMessage($"The property Prop0.Prop1.{childPropName} was not found.");
+                });
+
+                exception.Message.ShouldBe($"The property Prop0.Prop1.{childPropName} was not found.");
             }
         }
 
@@ -1999,3 +1953,6 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
         }
     }
 }
+
+
+

@@ -1,8 +1,8 @@
 using AllOverIt.Evaluator.Tests.Operators.Dummies;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 using System.Linq.Expressions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
@@ -24,9 +24,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Operand_Null()
             {
-                Invoking(() => _operator = new DummyOperator(null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _operator = new DummyOperator(null))
                     .WithNamedMessageWhenNull("operatorType");
             }
         }
@@ -41,7 +39,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
 
                 var actual = expression.ToString();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }

@@ -1,6 +1,5 @@
-﻿using AllOverIt.Aspects;
+using AllOverIt.Aspects;
 using AllOverIt.Fixture;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Aspects
 {
@@ -20,11 +19,11 @@ namespace AllOverIt.Tests.Aspects
             var expected = Create<int>();
             var state = new DummyState();
 
-            state.GetResult().Should().BeNull();
+            state.GetResult().ShouldBeNull();
 
             state.SetResult(expected);
 
-            state.GetResult().Should().Be(expected);
+            state.GetResult().ShouldBe(expected);
         }
 
         [Fact]
@@ -33,11 +32,11 @@ namespace AllOverIt.Tests.Aspects
             var expected = Create<string>();
             var state = new DummyStringState();
 
-            state.GetResult().Should().BeNull();
+            state.GetResult().ShouldBeNull();
 
             state.SetResult(expected);
 
-            state.GetResult<string>().Should().Be(expected);
+            state.GetResult<string>().ShouldBe(expected);
         }
 
         [Fact]
@@ -46,11 +45,13 @@ namespace AllOverIt.Tests.Aspects
             var expected = Create<string>();
             var state = new DummyStringState();
 
-            state.GetResult().Should().BeNull();
+            state.GetResult().ShouldBeNull();
 
             state.Result = expected;
 
-            state.Result.Should().Be(expected);
+            state.Result.ShouldBe(expected);
         }
     }
 }
+
+

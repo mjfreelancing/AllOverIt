@@ -4,7 +4,7 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 {
@@ -24,18 +24,14 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Registry_Null()
             {
-                Invoking(() => VariableRegistryExtensions.Add(null, _variable))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.Add(null, _variable))
                     .WithNamedMessageWhenNull("registry");
             }
 
             [Fact]
             public void Should_Throw_When_Variable_Null()
             {
-                Invoking(() => _registryFake.FakedObject.Add((IVariable) null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _registryFake.FakedObject.Add((IVariable) null))
                     .WithNamedMessageWhenNull("variable");
             }
 
@@ -55,27 +51,21 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Registry_Null()
             {
-                Invoking(() => VariableRegistryExtensions.Add(null, new[] { _variable }))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.Add(null, new[] { _variable }))
                     .WithNamedMessageWhenNull("registry");
             }
 
             [Fact]
             public void Should_Throw_When_Variables_Null()
             {
-                Invoking(() => VariableRegistryExtensions.Add(_registryFake.FakedObject, (IVariable[]) null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.Add(_registryFake.FakedObject, (IVariable[]) null))
                     .WithNamedMessageWhenNull("variables");
             }
 
             [Fact]
             public void Should_Throw_When_Variables_Empty()
             {
-                Invoking(() => VariableRegistryExtensions.Add(_registryFake.FakedObject, Enumerable.Empty<IVariable>().ToArray()))
-                    .Should()
-                    .Throw<ArgumentException>()
+                Should.Throw<ArgumentException>(() => VariableRegistryExtensions.Add(_registryFake.FakedObject, Enumerable.Empty<IVariable>().ToArray()))
                     .WithNamedMessageWhenEmpty("variables");
             }
 
@@ -100,18 +90,14 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Registry_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddConstantVariable(null, Create<string>(), Create<double>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddConstantVariable(null, Create<string>(), Create<double>()))
                     .WithNamedMessageWhenNull("registry");
             }
 
             [Fact]
             public void Should_Throw_When_Name_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddConstantVariable(_registryFake.FakedObject, null, default))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddConstantVariable(_registryFake.FakedObject, null, default))
                     .WithNamedMessageWhenNull("name");
             }
 
@@ -128,10 +114,10 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 
                 VariableRegistryExtensions.AddConstantVariable(_registryFake.FakedObject, name, value);
 
-                actual.Should().BeOfType<ConstantVariable>();
+                actual.ShouldBeOfType<ConstantVariable>();
 
-                actual.Name.Should().Be(name);
-                actual.Value.Should().Be(value);
+                actual.Name.ShouldBe(name);
+                actual.Value.ShouldBe(value);
             }
         }
 
@@ -140,18 +126,14 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Registry_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddMutableVariable(null, Create<string>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddMutableVariable(null, Create<string>()))
                     .WithNamedMessageWhenNull("registry");
             }
 
             [Fact]
             public void Should_Throw_When_Name_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddMutableVariable(_registryFake.FakedObject, null, default))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddMutableVariable(_registryFake.FakedObject, null, default))
                     .WithNamedMessageWhenNull("name");
             }
 
@@ -168,10 +150,10 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 
                 VariableRegistryExtensions.AddMutableVariable(_registryFake.FakedObject, name, value);
 
-                actual.Should().BeOfType<MutableVariable>();
+                actual.ShouldBeOfType<MutableVariable>();
 
-                actual.Name.Should().Be(name);
-                actual.Value.Should().Be(value);
+                actual.Name.ShouldBe(name);
+                actual.Value.ShouldBe(value);
             }
         }
 
@@ -180,27 +162,21 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Registry_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddDelegateVariable(null, Create<string>(), () => Create<double>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddDelegateVariable(null, Create<string>(), () => Create<double>()))
                     .WithNamedMessageWhenNull("registry");
             }
 
             [Fact]
             public void Should_Throw_When_Name_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddDelegateVariable(_registryFake.FakedObject, null, () => Create<double>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddDelegateVariable(_registryFake.FakedObject, null, () => Create<double>()))
                     .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
             public void Should_Throw_When_Resolver_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddDelegateVariable(_registryFake.FakedObject, Create<string>(), (Func<double>) null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddDelegateVariable(_registryFake.FakedObject, Create<string>(), (Func<double>) null))
                     .WithNamedMessageWhenNull("valueResolver");
             }
 
@@ -218,10 +194,10 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 
                 VariableRegistryExtensions.AddDelegateVariable(_registryFake.FakedObject, name, () => value);
 
-                actual.Should().BeOfType<DelegateVariable>();
+                actual.ShouldBeOfType<DelegateVariable>();
 
-                actual.Name.Should().Be(name);
-                actual.Value.Should().Be(value);
+                actual.Name.ShouldBe(name);
+                actual.Value.ShouldBe(value);
             }
         }
 
@@ -232,27 +208,21 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Registry_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddDelegateVariable(null, Create<string>(), _formulaCompilerResult))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddDelegateVariable(null, Create<string>(), _formulaCompilerResult))
                     .WithNamedMessageWhenNull("registry");
             }
 
             [Fact]
             public void Should_Throw_When_Name_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddDelegateVariable(_registryFake.FakedObject, null, _formulaCompilerResult))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddDelegateVariable(_registryFake.FakedObject, null, _formulaCompilerResult))
                     .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
             public void Should_Throw_When_FormulaCompilerResult_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddDelegateVariable(_registryFake.FakedObject, Create<string>(), (FormulaCompilerResult) null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddDelegateVariable(_registryFake.FakedObject, Create<string>(), (FormulaCompilerResult) null))
                     .WithNamedMessageWhenNull("formulaCompilerResult");
             }
 
@@ -272,10 +242,10 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 
                 VariableRegistryExtensions.AddDelegateVariable(_registryFake.FakedObject, name, compilerResult);
 
-                actual.Should().BeOfType<DelegateVariable>();
+                actual.ShouldBeOfType<DelegateVariable>();
 
-                actual.Name.Should().Be(name);
-                actual.Value.Should().Be(value);
+                actual.Name.ShouldBe(name);
+                actual.Value.ShouldBe(value);
             }
         }
 
@@ -284,27 +254,21 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Registry_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddLazyVariable(null, Create<string>(), () => Create<double>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddLazyVariable(null, Create<string>(), () => Create<double>()))
                     .WithNamedMessageWhenNull("registry");
             }
 
             [Fact]
             public void Should_Throw_When_Name_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddLazyVariable(_registryFake.FakedObject, null, () => Create<double>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddLazyVariable(_registryFake.FakedObject, null, () => Create<double>()))
                     .WithNamedMessageWhenNull("name");
             }
 
             [Fact]
             public void Should_Throw_When_Resolver_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddLazyVariable(_registryFake.FakedObject, Create<string>(), (Func<double>) null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddLazyVariable(_registryFake.FakedObject, Create<string>(), (Func<double>) null))
                     .WithNamedMessageWhenNull("valueResolver");
             }
 
@@ -322,10 +286,10 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 
                 VariableRegistryExtensions.AddLazyVariable(_registryFake.FakedObject, name, () => value);
 
-                actual.Should().BeOfType<LazyVariable>();
+                actual.ShouldBeOfType<LazyVariable>();
 
-                actual.Name.Should().Be(name);
-                actual.Value.Should().Be(value);
+                actual.Name.ShouldBe(name);
+                actual.Value.ShouldBe(value);
             }
         }
 
@@ -334,18 +298,14 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
             [Fact]
             public void Should_Throw_When_Registry_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddLazyVariable(null, Create<string>(), (FormulaCompilerResult) null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddLazyVariable(null, Create<string>(), (FormulaCompilerResult) null))
                     .WithNamedMessageWhenNull("registry");
             }
 
             [Fact]
             public void Should_Throw_When_Name_Null()
             {
-                Invoking(() => VariableRegistryExtensions.AddLazyVariable(_registryFake.FakedObject, null, (FormulaCompilerResult) null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => VariableRegistryExtensions.AddLazyVariable(_registryFake.FakedObject, null, (FormulaCompilerResult) null))
                     .WithNamedMessageWhenNull("name");
             }
 
@@ -365,10 +325,10 @@ namespace AllOverIt.Evaluator.Tests.Variables.Extensions
 
                 VariableRegistryExtensions.AddLazyVariable(_registryFake.FakedObject, name, compilerResult);
 
-                actual.Should().BeOfType<LazyVariable>();
+                actual.ShouldBeOfType<LazyVariable>();
 
-                actual.Name.Should().Be(name);
-                actual.Value.Should().Be(value);
+                actual.Name.ShouldBe(name);
+                actual.Value.ShouldBe(value);
             }
         }
     }

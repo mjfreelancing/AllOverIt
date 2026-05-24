@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Pagination.Exceptions;
 
 namespace AllOverIt.Pagination.Tests.Exceptions
@@ -24,3 +24,7 @@ namespace AllOverIt.Pagination.Tests.Exceptions
         }
     }
 }
+
+
+
+

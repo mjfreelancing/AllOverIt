@@ -1,9 +1,8 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pagination.Exceptions;
 using AllOverIt.Pagination.TokenEncoding;
-using FluentAssertions;
 
 namespace AllOverIt.Pagination.Tests
 {
@@ -64,8 +63,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     _ = new QueryPaginator<DummyEntity>(null, Create<QueryPaginatorConfiguration>(), _continuationTokenEncoderFactory);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("query");
             }
 
@@ -76,7 +74,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var paginator = new QueryPaginator<DummyEntity>(query, Create<QueryPaginatorConfiguration>(), _continuationTokenEncoderFactory);
 
-                paginator.BaseQuery.Should().BeSameAs(query);
+                paginator.BaseQuery.ShouldBeSameAs(query);
             }
 
             [Fact]
@@ -86,8 +84,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     _ = new QueryPaginator<DummyEntity>(Array.Empty<DummyEntity>().AsQueryable(), null, _continuationTokenEncoderFactory);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("configuration");
             }
 
@@ -98,8 +95,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     _ = new QueryPaginator<DummyEntity>(Array.Empty<DummyEntity>().AsQueryable(), Create<QueryPaginatorConfiguration>(), null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("continuationTokenEncoderFactory");
             }
         }
@@ -113,8 +109,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     _ = QueryPaginator<DummyEntity>.Create(null, Create<QueryPaginatorConfiguration>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("query");
             }
 
@@ -125,7 +120,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var paginator = QueryPaginator<DummyEntity>.Create(query, Create<QueryPaginatorConfiguration>());
 
-                paginator.BaseQuery.Should().BeSameAs(query);
+                paginator.BaseQuery.ShouldBeSameAs(query);
             }
 
             [Fact]
@@ -135,8 +130,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     _ = QueryPaginator<DummyEntity>.Create(Array.Empty<DummyEntity>().AsQueryable(), null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("configuration");
             }
 
@@ -147,7 +141,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var paginator = QueryPaginator<DummyEntity>.Create(query, Create<QueryPaginatorConfiguration>());
 
-                paginator.Should().BeOfType<QueryPaginator<DummyEntity>>();
+                paginator.ShouldBeOfType<QueryPaginator<DummyEntity>>();
             }
         }
 
@@ -165,7 +159,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.GetQueryDirection(null);
 
-                actual.Should().Be(PaginationDirection.Forward);
+                actual.ShouldBe(PaginationDirection.Forward);
             }
 
             [Fact]
@@ -180,7 +174,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.GetQueryDirection(string.Empty);
 
-                actual.Should().Be(PaginationDirection.Forward);
+                actual.ShouldBe(PaginationDirection.Forward);
             }
 
             [Fact]
@@ -195,7 +189,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.GetQueryDirection("  ");
 
-                actual.Should().Be(PaginationDirection.Forward);
+                actual.ShouldBe(PaginationDirection.Forward);
             }
 
             [Fact]
@@ -213,7 +207,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.GetQueryDirection(null);
 
-                actual.Should().Be(PaginationDirection.Backward);
+                actual.ShouldBe(PaginationDirection.Backward);
             }
 
             [Fact]
@@ -231,7 +225,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.GetQueryDirection(string.Empty);
 
-                actual.Should().Be(PaginationDirection.Backward);
+                actual.ShouldBe(PaginationDirection.Backward);
             }
 
             [Fact]
@@ -249,7 +243,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.GetQueryDirection("  ");
 
-                actual.Should().Be(PaginationDirection.Backward);
+                actual.ShouldBe(PaginationDirection.Backward);
             }
 
             [Fact]
@@ -273,7 +267,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.GetQueryDirection(token);
 
-                actual.Should().Be(PaginationDirection.Forward);
+                actual.ShouldBe(PaginationDirection.Forward);
             }
 
             [Fact]
@@ -297,7 +291,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.GetQueryDirection(token);
 
-                actual.Should().Be(PaginationDirection.Backward);
+                actual.ShouldBe(PaginationDirection.Backward);
             }
 
             [Fact]
@@ -321,7 +315,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.GetQueryDirection(token);
 
-                actual.Should().Be(PaginationDirection.Backward);
+                actual.ShouldBe(PaginationDirection.Backward);
             }
 
             [Fact]
@@ -345,7 +339,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.GetQueryDirection(token);
 
-                actual.Should().Be(PaginationDirection.Forward);
+                actual.ShouldBe(PaginationDirection.Forward);
             }
         }
 
@@ -361,8 +355,7 @@ namespace AllOverIt.Pagination.Tests
                     _ = new QueryPaginator<DummyEntity>(query, Create<QueryPaginatorConfiguration>(), _continuationTokenEncoderFactory)
                         .ColumnAscending<DummyEntity>(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression");
             }
 
@@ -375,7 +368,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = expected.ColumnAscending(entity => entity.FirstName);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -389,8 +382,7 @@ namespace AllOverIt.Pagination.Tests
                 query = paginator.GetPageQuery();
 
                 query.ToString()
-                    .Should()
-                    .Contain(".OrderBy(entity => entity.FirstName)");
+                    .ShouldContain(".OrderBy(entity => entity.FirstName)");
             }
 
             [Fact]
@@ -410,8 +402,7 @@ namespace AllOverIt.Pagination.Tests
                 query = paginator.GetPageQuery();
 
                 query.ToString()
-                    .Should()
-                    .Contain($".OrderByDescending(entity => entity.FirstName).Take({config.PageSize}).Reverse()");
+                    .ShouldContain($".OrderByDescending(entity => entity.FirstName).Take({config.PageSize}).Reverse()");
             }
 
             [Fact]
@@ -428,8 +419,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     paginator.ColumnAscending(entity => entity.Id);
                 })
-                .Should()
-                .Throw<PaginationException>()
+                .ShouldThrow<PaginationException>()
                 .WithMessage("Additional columns cannot be added once pagination has begun.");
             }
 
@@ -443,8 +433,7 @@ namespace AllOverIt.Pagination.Tests
                     _ = new QueryPaginator<DummyEntity>(query, Create<QueryPaginatorConfiguration>(), _continuationTokenEncoderFactory)
                         .ColumnAscending(entity => entity.Age);
                 })
-                .Should()
-                .Throw<PaginationException>()
+                .ShouldThrow<PaginationException>()
                 .WithMessage("Paginated queries do not support fields.");
             }
         }
@@ -461,8 +450,7 @@ namespace AllOverIt.Pagination.Tests
                     _ = new QueryPaginator<DummyEntity>(query, Create<QueryPaginatorConfiguration>(), _continuationTokenEncoderFactory)
                         .ColumnDescending<DummyEntity>(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("expression");
             }
 
@@ -475,7 +463,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = expected.ColumnDescending(entity => entity.FirstName);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -489,8 +477,7 @@ namespace AllOverIt.Pagination.Tests
                 query = paginator.GetPageQuery();
 
                 query.ToString()
-                    .Should()
-                    .Contain(".OrderByDescending(entity => entity.FirstName)");
+                    .ShouldContain(".OrderByDescending(entity => entity.FirstName)");
             }
 
             [Fact]
@@ -510,8 +497,7 @@ namespace AllOverIt.Pagination.Tests
                 query = paginator.GetPageQuery();
 
                 query.ToString()
-                    .Should()
-                    .Contain($".OrderBy(entity => entity.FirstName).Take({config.PageSize}).Reverse()");
+                    .ShouldContain($".OrderBy(entity => entity.FirstName).Take({config.PageSize}).Reverse()");
             }
 
             [Fact]
@@ -528,8 +514,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     paginator.ColumnDescending(entity => entity.Id);
                 })
-                .Should()
-                .Throw<PaginationException>()
+                .ShouldThrow<PaginationException>()
                 .WithMessage("Additional columns cannot be added once pagination has begun.");
             }
 
@@ -543,8 +528,7 @@ namespace AllOverIt.Pagination.Tests
                     _ = new QueryPaginator<DummyEntity>(query, Create<QueryPaginatorConfiguration>(), _continuationTokenEncoderFactory)
                         .ColumnDescending(entity => entity.Age);
                 })
-                .Should()
-                .Throw<PaginationException>()
+                .ShouldThrow<PaginationException>()
                 .WithMessage("Paginated queries do not support fields.");
             }
         }
@@ -569,8 +553,7 @@ namespace AllOverIt.Pagination.Tests
 
                     _ = paginator.GetPageQuery();
                 })
-                   .Should()
-                   .Throw<PaginationException>()
+                   .ShouldThrow<PaginationException>()
                    .WithMessage("At least one column must be defined for pagination.");
             }
 
@@ -591,8 +574,7 @@ namespace AllOverIt.Pagination.Tests
                 query = paginator.GetPageQuery();
 
                 query.ToString()
-                    .Should()
-                    .EndWith($".OrderBy(entity => entity.FirstName).Take({config.PageSize})");
+                    .ShouldEndWith($".OrderBy(entity => entity.FirstName).Take({config.PageSize})");
             }
 
             [Fact]
@@ -612,8 +594,7 @@ namespace AllOverIt.Pagination.Tests
                 query = paginator.GetPageQuery();
 
                 query.ToString()
-                    .Should()
-                    .EndWith($".OrderBy(entity => entity.FirstName).Take({config.PageSize}).Reverse()");
+                    .ShouldEndWith($".OrderBy(entity => entity.FirstName).Take({config.PageSize}).Reverse()");
             }
 
             [Fact]
@@ -633,8 +614,7 @@ namespace AllOverIt.Pagination.Tests
                 query = paginator.GetPageQuery();
 
                 query.ToString()
-                    .Should()
-                    .EndWith($".OrderByDescending(entity => entity.FirstName).Take({config.PageSize}).Reverse()");
+                    .ShouldEndWith($".OrderByDescending(entity => entity.FirstName).Take({config.PageSize}).Reverse()");
             }
 
             [Fact]
@@ -654,8 +634,7 @@ namespace AllOverIt.Pagination.Tests
                 query = paginator.GetPageQuery();
 
                 query.ToString()
-                    .Should()
-                    .EndWith($".OrderByDescending(entity => entity.FirstName).Take({config.PageSize})");
+                    .ShouldEndWith($".OrderByDescending(entity => entity.FirstName).Take({config.PageSize})");
             }
 
             [Fact]
@@ -679,7 +658,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page2 = paginator.GetPageQuery(token).ToList();
 
-                page2.SequenceEqual(p2).Should().BeTrue();
+                page2.SequenceEqual(p2).ShouldBeTrue();
             }
 
             [Fact]
@@ -703,7 +682,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page2 = paginator.GetPageQuery(token).ToList();
 
-                page2.SequenceEqual(p3).Should().BeTrue();
+                page2.SequenceEqual(p3).ShouldBeTrue();
             }
 
             [Fact]
@@ -727,7 +706,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page2 = paginator.GetPageQuery(token).ToList();
 
-                page2.SequenceEqual(p3.Reverse()).Should().BeTrue();
+                page2.SequenceEqual(p3.Reverse()).ShouldBeTrue();
             }
 
             [Fact]
@@ -751,7 +730,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page2 = paginator.GetPageQuery(token).ToList();
 
-                page2.SequenceEqual(p2.Reverse()).Should().BeTrue();
+                page2.SequenceEqual(p2.Reverse()).ShouldBeTrue();
             }
 
             [Fact]
@@ -778,7 +757,7 @@ namespace AllOverIt.Pagination.Tests
                 token = paginator.TokenEncoder.EncodePreviousPage(page);
                 page = paginator.GetPageQuery(token).ToList();
 
-                page.SequenceEqual(p2).Should().BeTrue();
+                page.SequenceEqual(p2).ShouldBeTrue();
             }
 
             [Fact]
@@ -805,7 +784,7 @@ namespace AllOverIt.Pagination.Tests
                 token = paginator.TokenEncoder.EncodePreviousPage(page);
                 page = paginator.GetPageQuery(token).ToList();
 
-                page.SequenceEqual(p3).Should().BeTrue();
+                page.SequenceEqual(p3).ShouldBeTrue();
             }
 
             [Fact]
@@ -832,7 +811,7 @@ namespace AllOverIt.Pagination.Tests
                 token = paginator.TokenEncoder.EncodePreviousPage(page);
                 page = paginator.GetPageQuery(token).ToList();
 
-                page.SequenceEqual(p3.Reverse()).Should().BeTrue();
+                page.SequenceEqual(p3.Reverse()).ShouldBeTrue();
             }
 
             [Fact]
@@ -859,7 +838,7 @@ namespace AllOverIt.Pagination.Tests
                 token = paginator.TokenEncoder.EncodePreviousPage(page);
                 page = paginator.GetPageQuery(token).ToList();
 
-                page.SequenceEqual(p2.Reverse()).Should().BeTrue();
+                page.SequenceEqual(p2.Reverse()).ShouldBeTrue();
             }
 
             [Theory]
@@ -904,7 +883,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page2 = paginator.GetPageQuery(token).ToList();
 
-                page2.SequenceEqual(p2).Should().BeTrue();
+                page2.SequenceEqual(p2).ShouldBeTrue();
             }
 
             [Fact]
@@ -938,7 +917,7 @@ namespace AllOverIt.Pagination.Tests
                 // Make sure the values in the token are decoded correctly.
                 var page2 = nullablePaginator.GetPageQuery(token).ToList();
 
-                page2.SequenceEqual(p2).Should().BeTrue();
+                page2.SequenceEqual(p2).ShouldBeTrue();
             }
         }
 
@@ -957,8 +936,7 @@ namespace AllOverIt.Pagination.Tests
 
                     _ = paginator.GetPreviousPageQuery(null);
                 })
-                   .Should()
-                   .Throw<PaginationException>()
+                   .ShouldThrow<PaginationException>()
                    .WithMessage("At least one column must be defined for pagination.");
             }
 
@@ -979,7 +957,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page = paginator.GetPreviousPageQuery(null).ToList();
 
-                page.SequenceEqual(p4).Should().BeTrue();
+                page.SequenceEqual(p4).ShouldBeTrue();
             }
 
             [Fact]
@@ -999,7 +977,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page = paginator.GetPreviousPageQuery(null).ToList();
 
-                page.SequenceEqual(p1).Should().BeTrue();
+                page.SequenceEqual(p1).ShouldBeTrue();
             }
 
             [Fact]
@@ -1019,7 +997,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page = paginator.GetPreviousPageQuery(null).ToList();
 
-                page.SequenceEqual(p1.Reverse()).Should().BeTrue();
+                page.SequenceEqual(p1.Reverse()).ShouldBeTrue();
             }
 
             [Fact]
@@ -1039,7 +1017,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page = paginator.GetPreviousPageQuery(null).ToList();
 
-                page.SequenceEqual(p4.Reverse()).Should().BeTrue();
+                page.SequenceEqual(p4.Reverse()).ShouldBeTrue();
             }
 
             [Fact]
@@ -1065,7 +1043,7 @@ namespace AllOverIt.Pagination.Tests
 
                 page = paginator.GetPreviousPageQuery(page.First()).ToList();
 
-                page.SequenceEqual(p2).Should().BeTrue();
+                page.SequenceEqual(p2).ShouldBeTrue();
             }
 
             [Fact]
@@ -1091,7 +1069,7 @@ namespace AllOverIt.Pagination.Tests
 
                 page = paginator.GetPreviousPageQuery(page.Last()).ToList();
 
-                page.SequenceEqual(p3).Should().BeTrue();
+                page.SequenceEqual(p3).ShouldBeTrue();
             }
 
             [Fact]
@@ -1117,7 +1095,7 @@ namespace AllOverIt.Pagination.Tests
 
                 page = paginator.GetPreviousPageQuery(page.First()).ToList();
 
-                page.SequenceEqual(p3.Reverse()).Should().BeTrue();
+                page.SequenceEqual(p3.Reverse()).ShouldBeTrue();
             }
 
             [Fact]
@@ -1143,7 +1121,7 @@ namespace AllOverIt.Pagination.Tests
 
                 page = paginator.GetPreviousPageQuery(page.Last()).ToList();
 
-                page.SequenceEqual(p2.Reverse()).Should().BeTrue();
+                page.SequenceEqual(p2.Reverse()).ShouldBeTrue();
             }
 
             [Theory]
@@ -1188,7 +1166,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page2 = paginator.GetPageQuery(token).ToList();
 
-                page2.SequenceEqual(p2).Should().BeTrue();
+                page2.SequenceEqual(p2).ShouldBeTrue();
             }
         }
 
@@ -1207,8 +1185,7 @@ namespace AllOverIt.Pagination.Tests
 
                     _ = paginator.GetNextPageQuery(null);
                 })
-                   .Should()
-                   .Throw<PaginationException>()
+                   .ShouldThrow<PaginationException>()
                    .WithMessage("At least one column must be defined for pagination.");
             }
 
@@ -1229,7 +1206,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page = paginator.GetNextPageQuery(null).ToList();
 
-                page.SequenceEqual(p1).Should().BeTrue();
+                page.SequenceEqual(p1).ShouldBeTrue();
             }
 
             [Fact]
@@ -1249,7 +1226,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page = paginator.GetNextPageQuery(null).ToList();
 
-                page.SequenceEqual(p4).Should().BeTrue();
+                page.SequenceEqual(p4).ShouldBeTrue();
             }
 
             [Fact]
@@ -1269,7 +1246,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page = paginator.GetNextPageQuery(null).ToList();
 
-                page.SequenceEqual(p4.Reverse()).Should().BeTrue();
+                page.SequenceEqual(p4.Reverse()).ShouldBeTrue();
             }
 
             [Fact]
@@ -1289,7 +1266,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page = paginator.GetNextPageQuery(null).ToList();
 
-                page.SequenceEqual(p1.Reverse()).Should().BeTrue();
+                page.SequenceEqual(p1.Reverse()).ShouldBeTrue();
             }
 
             [Fact]
@@ -1311,7 +1288,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page2 = paginator.GetNextPageQuery(page1.Last()).ToList();
 
-                page2.SequenceEqual(p2).Should().BeTrue();
+                page2.SequenceEqual(p2).ShouldBeTrue();
             }
 
             [Fact]
@@ -1333,7 +1310,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page2 = paginator.GetNextPageQuery(page1.First()).ToList();
 
-                page2.SequenceEqual(p3).Should().BeTrue();
+                page2.SequenceEqual(p3).ShouldBeTrue();
             }
 
             [Fact]
@@ -1355,7 +1332,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page2 = paginator.GetNextPageQuery(page1.Last()).ToList();
 
-                page2.SequenceEqual(p3.Reverse()).Should().BeTrue();
+                page2.SequenceEqual(p3.Reverse()).ShouldBeTrue();
             }
 
             [Fact]
@@ -1377,7 +1354,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var page2 = paginator.GetNextPageQuery(page1.First()).ToList();
 
-                page2.SequenceEqual(p2.Reverse()).Should().BeTrue();
+                page2.SequenceEqual(p2.Reverse()).ShouldBeTrue();
             }
         }
 
@@ -1400,8 +1377,7 @@ namespace AllOverIt.Pagination.Tests
 
                     _ = paginator.HasPreviousPage(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("reference");
             }
 
@@ -1418,8 +1394,7 @@ namespace AllOverIt.Pagination.Tests
 
                     _ = paginator.HasPreviousPage(Create<DummyEntity>());
                 })
-                   .Should()
-                   .Throw<PaginationException>()
+                   .ShouldThrow<PaginationException>()
                    .WithMessage("At least one column must be defined for pagination.");
             }
 
@@ -1441,7 +1416,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.HasPreviousPage(p1.First());
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -1462,7 +1437,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.HasPreviousPage(p1.Skip(1).First());
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -1488,8 +1463,7 @@ namespace AllOverIt.Pagination.Tests
                         (queryable, expression, cancellationToken) => Task.FromResult(false),
                         CancellationToken.None);
                 })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
+                    .ShouldThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("reference");
             }
 
@@ -1509,8 +1483,7 @@ namespace AllOverIt.Pagination.Tests
                         (queryable, expression, cancellationToken) => Task.FromResult(false),
                         CancellationToken.None);
                 })
-                   .Should()
-                   .ThrowAsync<PaginationException>()
+                   .ShouldThrowAsync<PaginationException>()
                    .WithMessage("At least one column must be defined for pagination.");
             }
 
@@ -1533,7 +1506,7 @@ namespace AllOverIt.Pagination.Tests
                     (queryable, expression, cancellationToken) => Task.FromResult(false),
                     CancellationToken.None);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -1555,7 +1528,7 @@ namespace AllOverIt.Pagination.Tests
                     (queryable, expression, cancellationToken) => Task.FromResult(true),
                     CancellationToken.None);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -1578,8 +1551,7 @@ namespace AllOverIt.Pagination.Tests
 
                     _ = paginator.HasNextPage(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("reference");
             }
 
@@ -1596,8 +1568,7 @@ namespace AllOverIt.Pagination.Tests
 
                     _ = paginator.HasNextPage(Create<DummyEntity>());
                 })
-                   .Should()
-                   .Throw<PaginationException>()
+                   .ShouldThrow<PaginationException>()
                    .WithMessage("At least one column must be defined for pagination.");
             }
 
@@ -1619,7 +1590,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.HasNextPage(p4.Last());
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -1640,7 +1611,7 @@ namespace AllOverIt.Pagination.Tests
 
                 var actual = paginator.HasNextPage(p4.Skip(1).First());
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -1666,8 +1637,7 @@ namespace AllOverIt.Pagination.Tests
                         (queryable, expression, cancellationToken) => Task.FromResult(false),
                         CancellationToken.None);
                 })
-                    .Should()
-                    .ThrowAsync<ArgumentNullException>()
+                    .ShouldThrowAsync<ArgumentNullException>()
                     .WithNamedMessageWhenNull("reference");
             }
 
@@ -1687,8 +1657,7 @@ namespace AllOverIt.Pagination.Tests
                         (queryable, expression, cancellationToken) => Task.FromResult(false),
                         CancellationToken.None);
                 })
-                   .Should()
-                   .ThrowAsync<PaginationException>()
+                   .ShouldThrowAsync<PaginationException>()
                    .WithMessage("At least one column must be defined for pagination.");
             }
 
@@ -1711,7 +1680,7 @@ namespace AllOverIt.Pagination.Tests
                     (queryable, expression, cancellationToken) => Task.FromResult(false),
                     CancellationToken.None);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -1733,7 +1702,7 @@ namespace AllOverIt.Pagination.Tests
                     (queryable, expression, cancellationToken) => Task.FromResult(true),
                     CancellationToken.None);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -1768,7 +1737,7 @@ namespace AllOverIt.Pagination.Tests
                 results = query.ToList();
 
                 // Should only be the last page left
-                results.SequenceEqual(expected).Should().BeTrue();
+                results.SequenceEqual(expected).ShouldBeTrue();
             }
         }
 
@@ -1798,3 +1767,7 @@ namespace AllOverIt.Pagination.Tests
         }
     }
 }
+
+
+
+

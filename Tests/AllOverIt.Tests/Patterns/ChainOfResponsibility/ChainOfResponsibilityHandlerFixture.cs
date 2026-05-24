@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.ChainOfResponsibility;
 using AllOverIt.Patterns.ChainOfResponsibility.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 {
@@ -53,8 +52,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
                         sut.SetNext(null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("handler");
             }
 
@@ -66,7 +64,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
                 var actual = sut1.SetNext(sut2);
 
-                actual.Should().Be(sut2);
+                actual.ShouldBe(sut2);
             }
         }
 
@@ -84,7 +82,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
                 var actual = sut.Handle(state);
 
-                actual.Should().Be(default);
+                actual.ShouldBe(default);
             }
 
             [Fact]
@@ -102,7 +100,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
                 state = handler.Handle(state);
 
-                state.ProcessedValue.Should().Be(9);
+                state.ProcessedValue.ShouldBe(9);
             }
 
             [Fact]
@@ -120,7 +118,7 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
                 state = handler.Handle(state);
 
-                state.ProcessedValue.Should().Be(4);
+                state.ProcessedValue.ShouldBe(4);
             }
 
             [Fact]
@@ -138,8 +136,11 @@ namespace AllOverIt.Tests.Patterns.ChainOfResponsibility
 
                 state = handler.Handle(state);
 
-                state.Should().Be(null);
+                state.ShouldBe(null);
             }
         }
     }
 }
+
+
+

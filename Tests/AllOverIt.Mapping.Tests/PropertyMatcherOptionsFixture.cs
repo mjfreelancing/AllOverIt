@@ -1,9 +1,8 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
-using FluentAssertions;
 using System.Reflection;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Mapping.Tests
 {
     public class PropertyMatcherOptionsFixture : FixtureBase
@@ -27,7 +26,7 @@ namespace AllOverIt.Mapping.Tests
                     Filter = (Func<PropertyInfo, bool>) null
                 };
 
-                expected.Should().BeEquivalentTo(_options);
+                expected.ShouldBeEquivalentTo(_options);
             }
         }
 
@@ -63,7 +62,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _options.Exclude(names);
 
-                _options.IsExcluded(names[1]).Should().BeTrue();
+                _options.IsExcluded(names[1]).ShouldBeTrue();
             }
 
             [Fact]
@@ -73,7 +72,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _options.Exclude(names);
 
-                actual.Should().Be(_options);
+                actual.ShouldBe(_options);
             }
         }
 
@@ -97,9 +96,9 @@ namespace AllOverIt.Mapping.Tests
 
                 _options.ExcludeWhen(name, predicate);
 
-                _options.IsExcludedWhen(name, 1).Should().BeTrue();
-                _options.IsExcludedWhen(name, 2).Should().BeFalse();
-                _options.IsExcludedWhen(Create<string>(), Create<int>()).Should().BeFalse();
+                _options.IsExcludedWhen(name, 1).ShouldBeTrue();
+                _options.IsExcludedWhen(name, 2).ShouldBeFalse();
+                _options.IsExcludedWhen(Create<string>(), Create<int>()).ShouldBeFalse();
             }
 
             [Fact]
@@ -109,7 +108,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _options.ExcludeWhen(name, _ => Create<bool>());
 
-                actual.Should().Be(_options);
+                actual.ShouldBe(_options);
             }
         }
 
@@ -145,7 +144,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _options.DeepCopy(name);
 
-                _options.IsDeepCopy(name).Should().BeTrue();
+                _options.IsDeepCopy(name).ShouldBeTrue();
             }
 
             [Fact]
@@ -155,7 +154,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _options.DeepCopy(names);
 
-                actual.Should().Be(_options);
+                actual.ShouldBe(_options);
             }
         }
 
@@ -189,7 +188,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = _options.WithAlias(source, target);
 
-                _options.GetAliasName(source).Should().Be(target);
+                _options.GetAliasName(source).ShouldBe(target);
             }
 
             [Fact]
@@ -200,7 +199,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _options.WithAlias(source, target);
 
-                actual.Should().Be(_options);
+                actual.ShouldBe(_options);
             }
         }
 
@@ -236,7 +235,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _options.GetNullReplacement(sourceName);
 
-                actual.Should().Be(replacement);
+                actual.ShouldBe(replacement);
             }
 
             [Fact]
@@ -244,7 +243,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 var actual = _options.UseWhenNull(Create<string>(), new { });
 
-                actual.Should().Be(_options);
+                actual.ShouldBe(_options);
             }
         }
 
@@ -277,7 +276,7 @@ namespace AllOverIt.Mapping.Tests
 
                 _ = _options.GetConvertedValue(mapper, propName, Create<int>());
 
-                actual.Should().BeSameAs(mapper);
+                actual.ShouldBeSameAs(mapper);
             }
 
             [Fact]
@@ -315,7 +314,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _options.GetConvertedValue(mapper, sourceName, value);
 
-                actual.Should().BeEquivalentTo(value * factor);
+                actual.ShouldBeEquivalentTo(value * factor);
             }
 
             [Fact]
@@ -323,7 +322,7 @@ namespace AllOverIt.Mapping.Tests
             {
                 var actual = _options.WithConversion(Create<string>(), (mapper, value) => value);
 
-                actual.Should().Be(_options);
+                actual.ShouldBe(_options);
             }
         }
 
@@ -350,7 +349,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _options.IsExcluded(sourceName);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -362,7 +361,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _options.IsExcluded(sourceName);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -388,7 +387,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _options.GetAliasName(sourceName);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -398,7 +397,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _options.GetAliasName(sourceName);
 
-                actual.Should().Be(sourceName);
+                actual.ShouldBe(sourceName);
             }
         }
 
@@ -444,7 +443,7 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _options.GetConvertedValue(mapper, sourceName, value);
 
-                actual.Should().Be(value * factor);
+                actual.ShouldBe(value * factor);
             }
 
             [Fact]
@@ -456,8 +455,11 @@ namespace AllOverIt.Mapping.Tests
 
                 var actual = _options.GetConvertedValue(mapper, Create<string>(), value);
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
         }
     }
 }
+
+
+

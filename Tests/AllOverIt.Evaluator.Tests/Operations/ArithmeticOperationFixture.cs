@@ -3,9 +3,9 @@ using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 using System.Linq.Expressions;
-
 namespace AllOverIt.Evaluator.Tests.Operations
 {
     public class ArithmeticOperationFixture : FixtureBase
@@ -17,10 +17,10 @@ namespace AllOverIt.Evaluator.Tests.Operations
             [Fact]
             public void Should_Throw_When_Creator_Null()
             {
-                Invoking(
-                        () => _operation = new ArithmeticOperation(Create<int>(), Create<int>(), null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() =>
+                        {
+                            _operation = new ArithmeticOperation(Create<int>(), Create<int>(), null);
+                        })
                     .WithNamedMessageWhenNull("creator");
             }
 
@@ -38,10 +38,10 @@ namespace AllOverIt.Evaluator.Tests.Operations
                 {
                     Precedence = precedence,
                     ArgumentCount = argumentCount,
-                    Creator = (Func<Expression[], IOperator>) Creator
+                    Creator = (Func<Expression[], IOperator>)Creator
                 };
 
-                expected.Should().BeEquivalentTo(_operation);
+                expected.ShouldBeEquivalentTo(_operation);
             }
         }
     }

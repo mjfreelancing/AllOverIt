@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Helpers.PropertyNavigation;
 using AllOverIt.Helpers.PropertyNavigation.Extensions;
-using FluentAssertions;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
@@ -25,8 +24,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 
                         _ = PropertyNodeExtensions.Name(node);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("node");
             }
 
@@ -42,8 +40,11 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation.Extensions
 
                 var actual = PropertyNodeExtensions.Name(node);
 
-                actual.Should().Be(nameof(DummyObject.Prop1));
+                actual.ShouldBe(nameof(DummyObject.Prop1));
             }
         }
     }
 }
+
+
+

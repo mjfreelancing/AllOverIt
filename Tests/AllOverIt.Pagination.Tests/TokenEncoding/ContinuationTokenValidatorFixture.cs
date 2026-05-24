@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
-using FluentAssertions;
 
 namespace AllOverIt.Pagination.Tests.TokenEncoding
 {
@@ -17,8 +16,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 {
                     _ = new ContinuationTokenValidator(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("serializerFactory");
             }
         }
@@ -33,8 +31,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                     var validator = new ContinuationTokenValidator(this.CreateStub<IContinuationTokenSerializerFactory>());
                     validator.IsValidToken(Create<string>(), null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("tokenOptions");
             }
 
@@ -44,7 +41,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
                 var validator = new ContinuationTokenValidator(this.CreateStub<IContinuationTokenSerializerFactory>());
                 var actual = validator.IsValidToken(Create<string>(), this.CreateStub<IContinuationTokenOptions>());
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -79,7 +76,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = validator.IsValidToken(token, options);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -106,7 +103,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = validator.IsValidToken($"12{token}34", options);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -117,7 +114,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = validator.IsValidToken(null, this.CreateStub<IContinuationTokenOptions>());
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -128,7 +125,7 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = validator.IsValidToken(string.Empty, this.CreateStub<IContinuationTokenOptions>());
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -139,8 +136,12 @@ namespace AllOverIt.Pagination.Tests.TokenEncoding
 
                 var actual = validator.IsValidToken(" ", this.CreateStub<IContinuationTokenOptions>());
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
     }
 }
+
+
+
+

@@ -1,8 +1,10 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Shouldly;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
-using FluentAssertions;
+using System.Linq;
 using System.Reflection;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -76,8 +78,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyName");
             }
 
@@ -88,8 +89,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>(string.Empty);
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("propertyName");
             }
 
@@ -100,15 +100,14 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>("   ");
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("propertyName");
             }
 
             [Fact]
             public void Should_Get_Property_In_Super()
             {
-                var actual = (object) ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>("Prop3");
+                var actual = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>("Prop3");
 
                 var expected = new
                 {
@@ -116,13 +115,13 @@ namespace AllOverIt.Tests.Reflection
                     PropertyType = typeof(double)
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.PropertyType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
             public void Should_Get_Property_In_Base()
             {
-                var actual = (object) ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>("Prop1");
+                var actual = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>("Prop1");
 
                 var expected = new
                 {
@@ -130,7 +129,7 @@ namespace AllOverIt.Tests.Reflection
                     PropertyType = typeof(int)
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.PropertyType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -138,7 +137,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = (object) ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>("PropXYZ");
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
         }
 
@@ -151,8 +150,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetPropertyInfo((Type) null, Create<string>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("type");
             }
 
@@ -163,8 +161,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyName");
             }
 
@@ -175,8 +172,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), string.Empty);
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("propertyName");
             }
 
@@ -187,15 +183,14 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), "   ");
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("propertyName");
             }
 
             [Fact]
             public void Should_Get_Property_In_Super()
             {
-                var actual = (object) ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), "Prop3");
+                var actual = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), "Prop3");
 
                 var expected = new
                 {
@@ -203,13 +198,13 @@ namespace AllOverIt.Tests.Reflection
                     PropertyType = typeof(double)
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.PropertyType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
             public void Should_Get_Property_In_Base()
             {
-                var actual = (object) ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), "Prop1");
+                var actual = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), "Prop1");
 
                 var expected = new
                 {
@@ -217,7 +212,7 @@ namespace AllOverIt.Tests.Reflection
                     PropertyType = typeof(int)
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.PropertyType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -225,7 +220,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = (object) ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), "PropXYZ");
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
         }
 
@@ -238,8 +233,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetPropertyInfo((TypeInfo) null, Create<string>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("typeInfo");
             }
 
@@ -252,8 +246,7 @@ namespace AllOverIt.Tests.Reflection
 
                     _ = ReflectionCache.GetPropertyInfo(typeInfo, null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("propertyName");
             }
 
@@ -266,8 +259,7 @@ namespace AllOverIt.Tests.Reflection
 
                     _ = ReflectionCache.GetPropertyInfo(typeInfo, string.Empty);
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("propertyName");
             }
 
@@ -280,8 +272,7 @@ namespace AllOverIt.Tests.Reflection
 
                     _ = ReflectionCache.GetPropertyInfo(typeInfo, "   ");
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("propertyName");
             }
 
@@ -289,7 +280,7 @@ namespace AllOverIt.Tests.Reflection
             public void Should_Get_Property_In_Super()
             {
                 var typeInfo = typeof(DummyPropertyMethodSuperClass).GetTypeInfo();
-                var actual = (object) ReflectionCache.GetPropertyInfo(typeInfo, "Prop3");
+                var actual = ReflectionCache.GetPropertyInfo(typeInfo, "Prop3");
 
                 var expected = new
                 {
@@ -297,14 +288,14 @@ namespace AllOverIt.Tests.Reflection
                     PropertyType = typeof(double)
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.PropertyType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
             public void Should_Get_Property_In_Base()
             {
                 var typeInfo = typeof(DummyPropertyMethodSuperClass).GetTypeInfo();
-                var actual = (object) ReflectionCache.GetPropertyInfo(typeInfo, "Prop1");
+                var actual = ReflectionCache.GetPropertyInfo(typeInfo, "Prop1");
 
                 var expected = new
                 {
@@ -312,7 +303,7 @@ namespace AllOverIt.Tests.Reflection
                     PropertyType = typeof(int)
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.PropertyType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -321,7 +312,7 @@ namespace AllOverIt.Tests.Reflection
                 var typeInfo = typeof(DummyPropertyMethodSuperClass).GetTypeInfo();
                 var actual = (object) ReflectionCache.GetPropertyInfo(typeInfo, "PropXYZ");
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
         }
 
@@ -330,7 +321,8 @@ namespace AllOverIt.Tests.Reflection
             [Fact]
             public void Should_Use_Default_Binding_Not_Declared_Only()
             {
-                var actual = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>();
+                var actual = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>()
+                    .Select(item => new { item.Name, item.PropertyType });
 
                 var expected = new[]
                 {
@@ -356,13 +348,14 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
             public void Should_Use_Default_Binding_Declared_Only()
             {
-                var actual = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>(BindingOptions.Default, true);
+                var actual = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>(BindingOptions.Default, true)
+                    .Select(item => new { item.Name, item.PropertyType });
 
                 var expected = new[]
                 {
@@ -378,7 +371,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -388,7 +381,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = ReflectionCache.GetPropertyInfo<DummyPropertyMethodSuperClass>(binding, false);
 
-                actual.Single(item => item.Name == "Prop4").Should().NotBeNull();
+                actual.Single(item => item.Name == "Prop4").ShouldNotBeNull();
             }
         }
 
@@ -401,15 +394,15 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetPropertyInfo((Type) null, BindingOptions.Default);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("type");
             }
 
             [Fact]
             public void Should_Use_Default_Binding_Not_Declared_Only()
             {
-                var actual = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass));
+                var actual = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass))
+                    .Select(item => new { item.Name, item.PropertyType });
 
                 var expected = new[]
                 {
@@ -435,13 +428,14 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
             public void Should_Use_Default_Binding_Declared_Only()
             {
-                var actual = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), BindingOptions.Default, true);
+                var actual = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), BindingOptions.Default, true)
+                    .Select(item => new { item.Name, item.PropertyType });
 
                 var expected = new[]
                 {
@@ -457,7 +451,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -467,7 +461,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var actual = ReflectionCache.GetPropertyInfo(typeof(DummyPropertyMethodSuperClass), binding, false);
 
-                actual.Single(item => item.Name == "Prop4").Should().NotBeNull();
+                actual.Single(item => item.Name == "Prop4").ShouldNotBeNull();
             }
         }
 
@@ -480,8 +474,7 @@ namespace AllOverIt.Tests.Reflection
                 {
                     _ = ReflectionCache.GetPropertyInfo((TypeInfo) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("typeInfo");
             }
 
@@ -489,7 +482,8 @@ namespace AllOverIt.Tests.Reflection
             public void Should_Get_Declared_Only()
             {
                 var typeInfo = typeof(DummyPropertyMethodSuperClass).GetTypeInfo();
-                var actual = ReflectionCache.GetPropertyInfo(typeInfo, true);
+                var actual = ReflectionCache.GetPropertyInfo(typeInfo, true)
+                    .Select(item => new { item.Name, item.PropertyType });
 
                 var expected = new[]
                 {
@@ -515,14 +509,15 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
             public void Should_Get_All_Properties()
             {
                 var typeInfo = typeof(DummyPropertyMethodSuperClass).GetTypeInfo();
-                var actual = ReflectionCache.GetPropertyInfo(typeInfo, false);
+                var actual = ReflectionCache.GetPropertyInfo(typeInfo, false)
+                    .Select(item => new { item.Name, item.PropertyType });
 
                 var expected = new[]
                 {
@@ -558,8 +553,20 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

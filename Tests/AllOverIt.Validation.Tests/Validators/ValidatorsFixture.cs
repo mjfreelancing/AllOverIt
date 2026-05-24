@@ -1,5 +1,4 @@
-﻿using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Fixture;
 using FluentValidation;
 using FluentValidation.Results;
 
@@ -77,12 +76,11 @@ namespace AllOverIt.Validation.Tests.Validators
 
                 var result = validator.Validate(model);
 
-                result.IsValid.Should().BeFalse();
+                result.IsValid.ShouldBeFalse();
 
                 result.Errors.Single()
                     .ErrorMessage
-                    .Should()
-                    .Be("'ANameThatCanBeSplit' must be equal to 'True'.");
+                     .ShouldBe("'ANameThatCanBeSplit' must be equal to 'True'.");
             }
 
             [Fact]
@@ -100,13 +98,11 @@ namespace AllOverIt.Validation.Tests.Validators
 
                 error
                     .PropertyName
-                    .Should()
-                    .Be(propertyName);
+                     .ShouldBe(propertyName);
 
                 error
                     .ErrorMessage
-                    .Should()
-                    .Be(errorMessage);
+                     .ShouldBe(errorMessage);
             }
 
             // Not running this test as parallel execution can cause other tests to fail. Not concerned with
@@ -127,7 +123,7 @@ namespace AllOverIt.Validation.Tests.Validators
 
             //        var result = validator.Validate(model);
 
-            //        result.IsValid.Should().BeFalse();
+            //        result.IsValid.ShouldBeFalse();
 
             //        result.Errors.Single()
             //            .ErrorMessage
@@ -142,3 +138,9 @@ namespace AllOverIt.Validation.Tests.Validators
         }
     }
 }
+
+
+
+
+
+

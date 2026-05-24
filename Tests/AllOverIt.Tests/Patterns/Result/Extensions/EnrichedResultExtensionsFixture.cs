@@ -1,10 +1,9 @@
-﻿#nullable enable
+#nullable enable
 
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Result;
 using AllOverIt.Patterns.Result.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.Result.Extensions;
 
@@ -27,8 +26,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     result => result,
                     result => result);
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("result");
         }
 
@@ -42,8 +40,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     null!,
                     result => result);
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("onSuccess");
         }
 
@@ -57,8 +54,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     result => result,
                     null!);
             })
-           .Should()
-           .Throw<ArgumentNullException>()
+           .ShouldThrow<ArgumentNullException>()
            .WithNamedMessageWhenNull("onFail");
         }
 
@@ -79,7 +75,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                 },
                 result => result);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -99,7 +95,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     return expected;
                 });
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
     }
 
@@ -112,8 +108,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
             {
                 _ = EnrichedResultExtensions.Match<int>(null!, result => result, result => result);
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("result");
         }
 
@@ -124,8 +119,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
             {
                 _ = EnrichedResultExtensions.Match<int>(_successInt, null!, result => result);
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("onSuccess");
         }
 
@@ -136,8 +130,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
             {
                 _ = EnrichedResultExtensions.Match<int>(_failInt, result => result, null!);
             })
-           .Should()
-           .Throw<ArgumentNullException>()
+           .ShouldThrow<ArgumentNullException>()
            .WithNamedMessageWhenNull("onFail");
         }
 
@@ -154,7 +147,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                 },
                 result => result);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -170,7 +163,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     return expected;
                 });
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
     }
 
@@ -186,8 +179,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     result => EnrichedResult.Success<double>(result.Value),
                     result => EnrichedResult.Fail<double>());
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("result");
         }
 
@@ -201,8 +193,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     null!,
                     result => EnrichedResult.Fail<double>());
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("onSuccess");
         }
 
@@ -216,8 +207,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     result => EnrichedResult.Success<double>(result.Value),
                     null!);
             })
-           .Should()
-           .Throw<ArgumentNullException>()
+           .ShouldThrow<ArgumentNullException>()
            .WithNamedMessageWhenNull("onFail");
         }
 
@@ -234,7 +224,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                 },
                 result => EnrichedResult.Fail<double>());
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -250,7 +240,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     return expected;
                 });
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
     }
 
@@ -266,8 +256,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     result => { },
                     result => { });
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("result");
         }
 
@@ -281,8 +270,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     null!,
                     result => { });
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("onSuccess");
         }
 
@@ -296,8 +284,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     result => { },
                     null!);
             })
-           .Should()
-           .Throw<ArgumentNullException>()
+           .ShouldThrow<ArgumentNullException>()
            .WithNamedMessageWhenNull("onFail");
         }
 
@@ -314,7 +301,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                 },
                 result => { });
 
-            invoked.Should().BeTrue();
+            invoked.ShouldBeTrue();
         }
 
         [Fact]
@@ -330,7 +317,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     invoked = true;
                 });
 
-            invoked.Should().BeTrue();
+            invoked.ShouldBeTrue();
         }
     }
 
@@ -346,8 +333,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     result => { },
                     result => { });
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("result");
         }
 
@@ -361,8 +347,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     null!,
                     result => { });
             })
-            .Should()
-            .Throw<ArgumentNullException>()
+            .ShouldThrow<ArgumentNullException>()
             .WithNamedMessageWhenNull("onSuccess");
         }
 
@@ -376,8 +361,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     result => { },
                     null!);
             })
-           .Should()
-           .Throw<ArgumentNullException>()
+           .ShouldThrow<ArgumentNullException>()
            .WithNamedMessageWhenNull("onFail");
         }
 
@@ -394,7 +378,7 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                 },
                 result => { });
 
-            invoked.Should().BeTrue();
+            invoked.ShouldBeTrue();
         }
 
         [Fact]
@@ -410,7 +394,11 @@ public class EnrichedResultExtensionsFixture : FixtureBase
                     invoked = true;
                 });
 
-            invoked.Should().BeTrue();
+            invoked.ShouldBeTrue();
         }
     }
 }
+
+
+
+

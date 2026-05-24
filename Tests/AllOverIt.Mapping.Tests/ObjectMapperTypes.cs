@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 
 namespace AllOverIt.Mapping.Tests
 {
@@ -199,3 +199,5 @@ namespace AllOverIt.Mapping.Tests
         }
     }
 }
+
+

@@ -1,6 +1,5 @@
-﻿using AllOverIt.Aspects;
+using AllOverIt.Aspects;
 using AllOverIt.Fixture;
-using FluentAssertions;
 using System.Reflection;
 
 namespace AllOverIt.Tests.Aspects
@@ -210,10 +209,10 @@ namespace AllOverIt.Tests.Aspects
 
             var actual = proxiedService.GetValue(value, false);
 
-            actualInterceptor._state.BeforeValue.Should().Be(expectedBefore);
-            actualInterceptor._state.Fault.Should().BeNull();
+            actualInterceptor._state.BeforeValue.ShouldBe(expectedBefore);
+            actualInterceptor._state.Fault.ShouldBeNull();
 
-            actual.Should().Be(value);
+            actual.ShouldBe(value);
         }
 
         [Theory]
@@ -233,10 +232,10 @@ namespace AllOverIt.Tests.Aspects
 
             var actual = await proxiedService.GetValueAsync(value, false);
 
-            actualInterceptor._state.BeforeValue.Should().Be(expectedBefore);
-            actualInterceptor._state.Fault.Should().BeNull();
+            actualInterceptor._state.BeforeValue.ShouldBe(expectedBefore);
+            actualInterceptor._state.Fault.ShouldBeNull();
 
-            actual.Should().Be(value);
+            actual.ShouldBe(value);
         }
 
         [Fact]
@@ -249,7 +248,7 @@ namespace AllOverIt.Tests.Aspects
 
             var actual = proxiedService.GetValue(input, false);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -262,7 +261,7 @@ namespace AllOverIt.Tests.Aspects
 
             var actual = await proxiedService.GetValueAsync(input, false);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -280,7 +279,7 @@ namespace AllOverIt.Tests.Aspects
 
             var actual = proxiedService.GetValue(value, false);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -298,7 +297,7 @@ namespace AllOverIt.Tests.Aspects
 
             var actual = await proxiedService.GetValueAsync(value, false);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -311,8 +310,8 @@ namespace AllOverIt.Tests.Aspects
 
             var actual = proxiedService.GetValue(value, false);
 
-            actualInterceptor._state.Fault.Should().BeNull();
-            actual.Should().Be(value);
+            actualInterceptor._state.Fault.ShouldBeNull();
+            actual.ShouldBe(value);
         }
 
         [Fact]
@@ -325,8 +324,8 @@ namespace AllOverIt.Tests.Aspects
 
             var actual = await proxiedService.GetValueAsync(value, false);
 
-            actualInterceptor._state.Fault.Should().BeNull();
-            actual.Should().Be(value);
+            actualInterceptor._state.Fault.ShouldBeNull();
+            actual.ShouldBe(value);
         }
 
         [Theory]
@@ -346,10 +345,10 @@ namespace AllOverIt.Tests.Aspects
 
             var actual = proxiedService.GetValue(value, false);
 
-            actualInterceptor._state.AfterValue.Should().Be(expectedAfter);
-            actualInterceptor._state.Fault.Should().BeNull();
+            actualInterceptor._state.AfterValue.ShouldBe(expectedAfter);
+            actualInterceptor._state.Fault.ShouldBeNull();
 
-            actual.Should().Be(value);
+            actual.ShouldBe(value);
         }
 
         [Theory]
@@ -369,10 +368,10 @@ namespace AllOverIt.Tests.Aspects
 
             var actual = await proxiedService.GetValueAsync(value, false);
 
-            actualInterceptor._state.AfterValue.Should().Be(expectedAfter);
-            actualInterceptor._state.Fault.Should().BeNull();
+            actualInterceptor._state.AfterValue.ShouldBe(expectedAfter);
+            actualInterceptor._state.Fault.ShouldBeNull();
 
-            actual.Should().Be(value);
+            actual.ShouldBe(value);
         }
 
         [Fact]
@@ -390,7 +389,7 @@ namespace AllOverIt.Tests.Aspects
 
             var actual = proxiedService.GetValue(value, false);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -408,7 +407,7 @@ namespace AllOverIt.Tests.Aspects
 
             var actual = await proxiedService.GetValueAsync(value, false);
 
-            actual.Should().Be(expected);
+            actual.ShouldBe(expected);
         }
 
         [Fact]
@@ -424,7 +423,7 @@ namespace AllOverIt.Tests.Aspects
             }
             catch (Exception exception)
             {
-                exception.Message.Should().Be("Dummy Exception");
+                exception.Message.ShouldBe("Dummy Exception");
             }
         }
 
@@ -441,8 +440,8 @@ namespace AllOverIt.Tests.Aspects
             }
             catch (Exception exception)
             {
-                exception.Message.Should().Be("Dummy Exception");
-                actualInterceptor._state.Fault.Should().BeSameAs(exception);
+                exception.Message.ShouldBe("Dummy Exception");
+                actualInterceptor._state.Fault.ShouldBeSameAs(exception);
             }
         }
 
@@ -462,8 +461,8 @@ namespace AllOverIt.Tests.Aspects
             }
             catch (Exception exception)
             {
-                exception.Message.Should().Be("Dummy Exception");
-                actualInterceptor._state.Fault.Should().BeSameAs(exception);
+                exception.Message.ShouldBe("Dummy Exception");
+                actualInterceptor._state.Fault.ShouldBeSameAs(exception);
             }
         }
 
@@ -472,15 +471,15 @@ namespace AllOverIt.Tests.Aspects
         {
             var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor4>();
 
-            actualInterceptor.BeforeArgs.Should().BeNull();
-            actualInterceptor.AfterArgs.Should().BeNull();
+            actualInterceptor.BeforeArgs.ShouldBeNull();
+            actualInterceptor.AfterArgs.ShouldBeNull();
 
             var expected = Create<string>();
 
             proxiedService.SetValue(expected);
 
-            actualInterceptor.BeforeArgs.Should().Be(expected);
-            actualInterceptor.AfterArgs.Should().Be(expected);
+            actualInterceptor.BeforeArgs.ShouldBe(expected);
+            actualInterceptor.AfterArgs.ShouldBe(expected);
         }
 
         [Fact]
@@ -488,15 +487,15 @@ namespace AllOverIt.Tests.Aspects
         {
             var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor4>();
 
-            actualInterceptor.BeforeArgs.Should().BeNull();
-            actualInterceptor.AfterArgs.Should().BeNull();
+            actualInterceptor.BeforeArgs.ShouldBeNull();
+            actualInterceptor.AfterArgs.ShouldBeNull();
 
             var expected = Create<string>();
 
             await proxiedService.SetValueAsync(expected);
 
-            actualInterceptor.BeforeArgs.Should().Be(expected);
-            actualInterceptor.AfterArgs.Should().Be(expected);
+            actualInterceptor.BeforeArgs.ShouldBe(expected);
+            actualInterceptor.AfterArgs.ShouldBe(expected);
         }
 
         [Fact]
@@ -504,13 +503,13 @@ namespace AllOverIt.Tests.Aspects
         {
             var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor5>();
 
-            actualInterceptor.BeforeArgs.Should().BeNull();
-            actualInterceptor.AfterArgs.Should().BeNull();
+            actualInterceptor.BeforeArgs.ShouldBeNull();
+            actualInterceptor.AfterArgs.ShouldBeNull();
 
             proxiedService.SetValue(Create<string>());
 
-            actualInterceptor.BeforeArgs.Should().BeNull();
-            actualInterceptor.AfterArgs.Should().BeNull();
+            actualInterceptor.BeforeArgs.ShouldBeNull();
+            actualInterceptor.AfterArgs.ShouldBeNull();
         }
 
         [Fact]
@@ -518,13 +517,13 @@ namespace AllOverIt.Tests.Aspects
         {
             var (proxiedService, actualInterceptor) = CreateDummyInterceptor<DummyInterceptor5>();
 
-            actualInterceptor.BeforeArgs.Should().BeNull();
-            actualInterceptor.AfterArgs.Should().BeNull();
+            actualInterceptor.BeforeArgs.ShouldBeNull();
+            actualInterceptor.AfterArgs.ShouldBeNull();
 
             await proxiedService.SetValueAsync(Create<string>());
 
-            actualInterceptor.BeforeArgs.Should().BeNull();
-            actualInterceptor.AfterArgs.Should().BeNull();
+            actualInterceptor.BeforeArgs.ShouldBeNull();
+            actualInterceptor.AfterArgs.ShouldBeNull();
         }
 
         private static (IDummyService, TInterceptor) CreateDummyInterceptor<TInterceptor>(Action<TInterceptor> configure = default)
@@ -541,3 +540,5 @@ namespace AllOverIt.Tests.Aspects
         }
     }
 }
+
+

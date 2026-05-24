@@ -1,7 +1,8 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Formatters.Objects;
 using AllOverIt.Reflection;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 
 namespace AllOverIt.Tests.Formatters.Objects
 {
@@ -29,7 +30,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     BindingOptions = BindingOptions.Default,
                     EnumerableOptions = new ObjectPropertyEnumerableOptions(),
                     RootValueOptions = new ObjectPropertyRootValueOptions(),
-                    Filter = (ObjectPropertyFilter) null,
+                    Filter = (ObjectPropertyFilter)null,
                     IncludeNulls = false,
                     IncludeEmptyCollections = false,
                     NullValueOutput = "<null>",
@@ -37,8 +38,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 };
 
                 expected
-                    .Should()
-                    .BeEquivalentTo(_options);
+                    .ShouldBeEquivalentTo(_options);
             }
         }
 
@@ -47,11 +47,11 @@ namespace AllOverIt.Tests.Formatters.Objects
             [Fact]
             public void Should_Clear_Ignored_Types()
             {
-                _options.IgnoredTypes.Count().Should().Be(2);
+                _options.IgnoredTypes.Count().ShouldBe(2);
 
                 _options.ClearIgnoredTypes();
 
-                _options.IgnoredTypes.Count().Should().Be(0);
+                _options.IgnoredTypes.Count().ShouldBe(0);
             }
         }
 
@@ -60,7 +60,7 @@ namespace AllOverIt.Tests.Formatters.Objects
             [Fact]
             public void Should_Add_To_Ignored_Types()
             {
-                _options.IgnoredTypes.Count().Should().Be(2);
+                _options.IgnoredTypes.Count().ShouldBe(2);
 
                 _options.AddIgnoredTypes(typeof(string), typeof(int));
 
@@ -70,9 +70,15 @@ namespace AllOverIt.Tests.Formatters.Objects
                 };
 
                 expected
-                    .Should()
-                    .BeEquivalentTo(_options.IgnoredTypes);
+                    .ShouldBeEquivalentTo(_options.IgnoredTypes);
             }
         }
     }
 }
+
+
+
+
+
+
+

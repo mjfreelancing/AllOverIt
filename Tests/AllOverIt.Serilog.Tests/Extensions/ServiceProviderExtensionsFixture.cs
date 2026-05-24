@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serilog.Extensions;
 using AllOverIt.Serilog.Sinks.CircularBuffer;
@@ -34,9 +34,9 @@ namespace AllOverIt.Serilog.Tests.Extensions
 
             var actual = ServiceProviderExtensions.GetCircularBufferSinkMessages(provider);
 
-            actual.Should().BeOfType<CircularBufferSinkMessages>();
+            actual.ShouldBeOfType<CircularBufferSinkMessages>();
 
-            actual.Capacity.Should().Be(bufferSize);
+            actual.Capacity.ShouldBe(bufferSize);
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace AllOverIt.Serilog.Tests.Extensions
 
             var actual = ServiceProviderExtensions.GetObservableSink(provider);
 
-            actual.Should().BeOfType<ObservableSink>();
+            actual.ShouldBeOfType<ObservableSink>();
         }
     }
 }

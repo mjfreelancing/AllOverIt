@@ -1,9 +1,8 @@
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Pagination.Extensions;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Pagination.Tests.Extensions
 {
     public class ColumnItemExtensionsFixture : FixtureBase
@@ -23,8 +22,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 {
                     _ = ColumnItemExtensions.GetColumnValues(null, new { });
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("columns");
             }
 
@@ -37,8 +35,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 {
                     _ = ColumnItemExtensions.GetColumnValues(columns, new { });
                 })
-                    .Should()
-                    .Throw<ArgumentException>()
+                    .ShouldThrow<ArgumentException>()
                     .WithNamedMessageWhenEmpty("columns");
             }
 
@@ -54,8 +51,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
                 {
                     _ = ColumnItemExtensions.GetColumnValues(columns, null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("reference");
             }
 
@@ -76,8 +72,12 @@ namespace AllOverIt.Pagination.Tests.Extensions
                     entity.Id
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBeEquivalentTo(actual);
             }
         }
     }
 }
+
+
+
+

@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Mapping.Exceptions;
 
 namespace AllOverIt.Mapping.Tests.Exceptions
@@ -24,3 +24,5 @@ namespace AllOverIt.Mapping.Tests.Exceptions
         }
     }
 }
+
+

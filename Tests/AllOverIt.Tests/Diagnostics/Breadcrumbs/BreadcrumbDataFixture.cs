@@ -1,7 +1,7 @@
 ﻿using AllOverIt.Diagnostics.Breadcrumbs;
 using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 {
@@ -12,9 +12,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
         {
             var data = new BreadcrumbData();
 
-            data.Timestamp
-                .Should()
-                .BeCloseTo(DateTime.Now, TimeSpan.FromMilliseconds(20));
+            data.Timestamp.ShouldBe(DateTime.Now, TimeSpan.FromMilliseconds(20));
         }
 
         [Fact]
@@ -23,8 +21,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
             var data = new BreadcrumbData();
 
             data.TimestampUtc
-                .Should()
-                .Be(data.Timestamp.ToUniversalTime());
+                .ShouldBe(data.Timestamp.ToUniversalTime());
         }
 
         [Fact]
@@ -36,7 +33,7 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
             var values = data.Select(item => item.Counter).Distinct();
 
-            values.Should().HaveCount(100);
+            values.Count().ShouldBe(100);
         }
 
         [Fact]
@@ -53,7 +50,11 @@ namespace AllOverIt.Tests.Diagnostics.Breadcrumbs
 
             var values = data.Select(item => item.Counter).Distinct();
 
-            values.Should().HaveCount(100);
+            values.Count().ShouldBe(100);
         }
     }
 }
+
+
+
+

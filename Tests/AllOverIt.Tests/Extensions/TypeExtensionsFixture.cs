@@ -3,7 +3,8 @@ using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Reflection;
-using FluentAssertions;
+using AllOverIt.Shouldly;
+using AllOverIt.Shouldly.Extensions;
 using System.Collections;
 using System.Runtime.CompilerServices;
 
@@ -104,21 +105,21 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Get_Property_In_Super()
             {
-                var actual = (object) AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "Prop3");
+                var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "Prop3");
 
                 var expected = new { Name = "Prop3", PropertyType = typeof(double) };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.PropertyType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
             public void Should_Get_Property_In_Base()
             {
-                var actual = (object) AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "Prop1");
+                var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "Prop1");
 
                 var expected = new { Name = "Prop1", PropertyType = typeof(int) };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.PropertyType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -126,7 +127,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = (object) AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), "PropXYZ");
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
         }
 
@@ -146,7 +147,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Prop3", PropertyType = typeof(double)}
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -158,7 +159,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = new[] { new { Name = "Prop3", PropertyType = typeof(double) } };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -168,7 +169,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = AllOverIt.Extensions.TypeExtensions.GetPropertyInfo(typeof(PropertySuperClass), binding, false);
 
-                actual.Single(item => item.Name == "Prop4").Should().NotBeNull();
+                actual.Single(item => item.Name == "Prop4").ShouldNotBeNull();
             }
 
             [Fact]
@@ -180,9 +181,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = new[] { "Prop1", "Prop2", "Prop3", "Prop4", "Prop5" };
 
-                expected
-                  .Should()
-                  .BeEquivalentTo(actual.Select(item => item.Name));
+                                actual.Select(item => item.Name)
+                                    .ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -192,9 +192,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = new[] { "Prop1", "Prop2", "Prop3" };
 
-                expected
-                  .Should()
-                  .BeEquivalentTo(actual.Select(item => item.Name));
+                                actual.Select(item => item.Name)
+                                    .ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -205,9 +204,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = new[] { "Prop4", "Prop5" };
 
-                expected
-                  .Should()
-                  .BeEquivalentTo(actual.Select(item => item.Name));
+                                actual.Select(item => item.Name)
+                                    .ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
         }
 
@@ -216,21 +214,21 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Get_Field_In_Super()
             {
-                var actual = (object) AllOverIt.Extensions.TypeExtensions.GetFieldInfo(typeof(FieldSuperClass), "Field4");
+                var actual = AllOverIt.Extensions.TypeExtensions.GetFieldInfo(typeof(FieldSuperClass), "Field4");
 
                 var expected = new { Name = "Field4", FieldType = typeof(double) };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.FieldType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
             public void Should_Get_Field_In_Base()
             {
-                var actual = (object) AllOverIt.Extensions.TypeExtensions.GetFieldInfo(typeof(FieldSuperClass), "Field1");
+                var actual = AllOverIt.Extensions.TypeExtensions.GetFieldInfo(typeof(FieldSuperClass), "Field1");
 
                 var expected = new { Name = "Field1", FieldType = typeof(int) };
 
-                actual.Should().BeEquivalentTo(expected);
+                new { actual.Name, actual.FieldType }.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -238,7 +236,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = (object) AllOverIt.Extensions.TypeExtensions.GetFieldInfo(typeof(FieldSuperClass), "PropXYZ");
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
         }
 
@@ -258,7 +256,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Field5", FieldType = typeof(string)}
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -273,7 +271,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Field5", FieldType = typeof(string)}
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -283,7 +281,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = AllOverIt.Extensions.TypeExtensions.GetFieldInfo(typeof(FieldSuperClass), binding, false);
 
-                actual.Single(item => item.Name == "Field3").Should().NotBeNull();
+                actual.Single(item => item.Name == "Field3").ShouldNotBeNull();
             }
 
             [Fact]
@@ -295,9 +293,8 @@ namespace AllOverIt.Tests.Extensions
 
                 var expected = new[] { "Field1", "Field2", "Field3", "Field4", "Field5" };
 
-                expected
-                  .Should()
-                  .BeEquivalentTo(actual.Select(item => item.Name));
+                                actual.Select(item => item.Name)
+                                    .ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
         }
 
@@ -325,7 +322,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Method3", DeclaringType = typeof(PropertySuperClass)}
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -345,7 +342,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Method3", DeclaringType = typeof(PropertySuperClass)}
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -366,7 +363,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Method2", DeclaringType = typeof(PropertyBaseClass)}
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -390,7 +387,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Method4", DeclaringType = typeof(PropertySuperClass)}
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -414,7 +411,7 @@ namespace AllOverIt.Tests.Extensions
                     new {Name = "Method4", DeclaringType = typeof(PropertySuperClass)}
                 };
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
         }
 
@@ -425,7 +422,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(PropertySuperClass), Create<string>());
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -433,7 +430,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(PropertySuperClass), "Method4");
 
-                actual.Should().NotBeNull();
+                actual.ShouldNotBeNull();
 
                 // make sure the correct overload was chosen
                 var expected = Create<int>();
@@ -441,7 +438,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var value = actual.Invoke(dummy, null);
 
-                value.Should().Be(expected);
+                value.ShouldBe(expected);
             }
         }
 
@@ -452,7 +449,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(PropertySuperClass), Create<string>(), Type.EmptyTypes);
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -460,7 +457,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(PropertySuperClass), "Method4", Type.EmptyTypes);
 
-                actual.Should().NotBeNull();
+                actual.ShouldNotBeNull();
 
                 // make sure the correct overload was chosen
                 var expected = Create<int>();
@@ -468,7 +465,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var value = actual.Invoke(dummy, null);
 
-                value.Should().Be(expected);
+                value.ShouldBe(expected);
             }
 
             [Fact]
@@ -476,7 +473,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetMethodInfo(typeof(PropertySuperClass), "Method4", new[] { typeof(int) });
 
-                actual.Should().NotBeNull();
+                actual.ShouldNotBeNull();
 
                 // make sure the correct overload was chosen
                 var expected = Create<int>();
@@ -484,7 +481,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var value = actual.Invoke(dummy, new object[] { expected });
 
-                value.Should().Be(expected);
+                value.ShouldBe(expected);
             }
         }
 
@@ -497,19 +494,19 @@ namespace AllOverIt.Tests.Extensions
             [Fact]
             public void Should_Return_True_When_A_Record()
             {
-                typeof(DummyRecord).IsRecordType().Should().BeTrue();
+                typeof(DummyRecord).IsRecordType().ShouldBeTrue();
             }
 
             [Fact]
             public void Should_Return_False_When_A_Class()
             {
-                typeof(DummyClass).IsRecordType().Should().BeFalse();
+                typeof(DummyClass).IsRecordType().ShouldBeFalse();
             }
 
             [Fact]
             public void Should_Return_False_When_A_Struct()
             {
-                typeof(DummyStruct).IsRecordType().Should().BeFalse();
+                typeof(DummyStruct).IsRecordType().ShouldBeFalse();
             }
         }
 
@@ -527,7 +524,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.IsIntegralType(type);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -545,7 +542,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.IsFloatingType(type);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -560,7 +557,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.IsEnumerableType(type, true);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -572,7 +569,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.IsEnumerableType(type, false);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -587,7 +584,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = enumerableType.GetEnumerableElementType();
 
-                expectedType.Should().BeSameAs(actual);
+                expectedType.ShouldBeSameAs(actual);
             }
 
             [Theory]
@@ -598,8 +595,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _ = type.GetEnumerableElementType();
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
+                .ShouldThrow<InvalidOperationException>()
                 .WithMessage($"{type.GetFriendlyName()} is not an {nameof(IEnumerable)}.");
             }
 
@@ -611,8 +607,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _ = type.GetEnumerableElementType();
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
+                .ShouldThrow<InvalidOperationException>()
                 .WithMessage($"{type.GetFriendlyName()} is not an {nameof(IEnumerable)} with one generic argument.");
             }
         }
@@ -629,7 +624,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.IsGenericEnumerableType(type);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -648,8 +643,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         AllOverIt.Extensions.TypeExtensions.IsSubClassOfRawGeneric(null, typeof(object));
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("type");
             }
 
@@ -660,8 +654,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         AllOverIt.Extensions.TypeExtensions.IsSubClassOfRawGeneric(typeof(object), null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("fromType");
             }
 
@@ -673,7 +666,7 @@ namespace AllOverIt.Tests.Extensions
             [InlineData(typeof(Derived3), typeof(Derived<int, double>), false)]     // Bound generic
             public void Should_Return_Expected_Result(Type type, Type generic, bool expected)
             {
-                type.IsSubClassOfRawGeneric(generic).Should().Be(expected);
+                type.IsSubClassOfRawGeneric(generic).ShouldBe(expected);
             }
         }
 
@@ -698,8 +691,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         AllOverIt.Extensions.TypeExtensions.IsDerivedFrom(null, typeof(object));
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("type");
             }
 
@@ -710,8 +702,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         AllOverIt.Extensions.TypeExtensions.IsDerivedFrom(typeof(object), null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("fromType");
             }
 
@@ -738,8 +729,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Return_Expected_Result(Type derivedType, Type baseType, bool expected)
             {
                 AllOverIt.Extensions.TypeExtensions.IsDerivedFrom(derivedType, baseType)
-                    .Should()
-                    .Be(expected);
+                    .ShouldBe(expected);
             }
         }
 
@@ -757,7 +747,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.IsNullableType(type);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -780,7 +770,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(List<int>), typeof(IEnumerable<>));
 
-                actual.Should().BeSameAs(typeof(IEnumerable<int>));
+                actual.ShouldBeSameAs(typeof(IEnumerable<int>));
             }
 
             [Fact]
@@ -788,7 +778,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyList), typeof(List<>));
 
-                actual.Should().BeSameAs(typeof(List<int>));
+                actual.ShouldBeSameAs(typeof(List<int>));
             }
 
             [Fact]
@@ -796,7 +786,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyParentList), typeof(List<>));
 
-                actual.Should().BeSameAs(typeof(List<int>));
+                actual.ShouldBeSameAs(typeof(List<int>));
             }
 
             [Fact]
@@ -804,7 +794,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyList), typeof(IEnumerable<>));
 
-                actual.Should().BeSameAs(typeof(IEnumerable<int>));
+                actual.ShouldBeSameAs(typeof(IEnumerable<int>));
             }
 
             [Fact]
@@ -812,7 +802,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyParentList), typeof(IEnumerable<>));
 
-                actual.Should().BeSameAs(typeof(IEnumerable<int>));
+                actual.ShouldBeSameAs(typeof(IEnumerable<int>));
             }
 
             [Fact]
@@ -820,7 +810,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyDictionary), typeof(Dictionary<,>));
 
-                actual.Should().BeSameAs(typeof(Dictionary<int, DummyList>));
+                actual.ShouldBeSameAs(typeof(Dictionary<int, DummyList>));
             }
 
             [Fact]
@@ -828,7 +818,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyDictionary), typeof(IDictionary<,>));
 
-                actual.Should().BeSameAs(typeof(IDictionary<int, DummyList>));
+                actual.ShouldBeSameAs(typeof(IDictionary<int, DummyList>));
             }
 
             [Fact]
@@ -836,7 +826,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetBaseGenericTypeDefinition(typeof(DummyDictionary), typeof(IEnumerable<>));
 
-                actual.Should().BeSameAs(typeof(IEnumerable<KeyValuePair<int, DummyList>>));
+                actual.ShouldBeSameAs(typeof(IEnumerable<KeyValuePair<int, DummyList>>));
             }
         }
 
@@ -858,7 +848,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetFriendlyName(type);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -877,7 +867,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetFriendlyName(type, true);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -888,7 +878,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = typeof(PropertySuperClass).IsEnrichedEnum();
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Fact]
@@ -896,7 +886,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = typeof(DummyEnrichedEnum).IsEnrichedEnum();
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Fact]
@@ -904,7 +894,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = typeof(SuperEnrichedEnumDummy).IsEnrichedEnum();
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -938,7 +928,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetStaticMethod(typeof(StaticMethodClass), Create<string>());
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -946,7 +936,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetStaticMethod(typeof(StaticMethodClass), nameof(StaticMethodClass.Method1));
 
-                actual.Name.Should().Be(nameof(StaticMethodClass.Method1));
+                actual.Name.ShouldBe(nameof(StaticMethodClass.Method1));
             }
 
             [Fact]
@@ -954,7 +944,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetStaticMethod(typeof(StaticMethodClass), "Method2");
 
-                actual.Name.Should().Be("Method2");
+                actual.Name.ShouldBe("Method2");
             }
 
             [Fact]
@@ -962,7 +952,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetStaticMethod(typeof(StaticMethodClass), nameof(StaticMethodClass.Method3));
 
-                actual.Name.Should().Be(nameof(StaticMethodClass.Method3));
+                actual.Name.ShouldBe(nameof(StaticMethodClass.Method3));
             }
         }
 
@@ -996,7 +986,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetInstanceMethod(typeof(InstanceMethodClass), Create<string>());
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -1004,7 +994,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetInstanceMethod(typeof(InstanceMethodClass), nameof(InstanceMethodClass.Method1));
 
-                actual.Name.Should().Be(nameof(InstanceMethodClass.Method1));
+                actual.Name.ShouldBe(nameof(InstanceMethodClass.Method1));
             }
 
             [Fact]
@@ -1012,7 +1002,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetInstanceMethod(typeof(InstanceMethodClass), "Method2");
 
-                actual.Name.Should().Be("Method2");
+                actual.Name.ShouldBe("Method2");
             }
 
             [Fact]
@@ -1020,7 +1010,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.GetInstanceMethod(typeof(InstanceMethodClass), nameof(InstanceMethodClass.Method3));
 
-                actual.Name.Should().Be(nameof(InstanceMethodClass.Method3));
+                actual.Name.ShouldBe(nameof(InstanceMethodClass.Method3));
             }
         }
 
@@ -1032,8 +1022,17 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = AllOverIt.Extensions.TypeExtensions.CreateListOf(typeof(string));
 
-                actual.Should().BeOfType<List<string>>();
+                actual.ShouldBeOfType<List<string>>();
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+

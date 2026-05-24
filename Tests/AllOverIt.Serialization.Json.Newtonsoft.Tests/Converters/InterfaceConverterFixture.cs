@@ -1,8 +1,8 @@
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
-using FluentAssertions;
 using Newtonsoft.Json;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 {
@@ -30,7 +30,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
         {
             var converter = new InterfaceConverter<IDummyType, DummyType>();
 
-            converter.CanWrite.Should().BeFalse();
+            converter.CanWrite.ShouldBeFalse();
         }
 
         [Fact]
@@ -48,8 +48,8 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 
             var actual = serializer.DeserializeObject<IDummyType>(dummyValue);
 
-            actual.Should().BeOfType<DummyType>();
-            actual.Prop1.Should().Be(value);
+            actual.ShouldBeOfType<DummyType>();
+            actual.Prop1.ShouldBe(value);
         }
 
         [Fact]
@@ -73,7 +73,12 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 
             var actual = serializer.DeserializeObject<DummyCollection>(dummyValues);
 
-            actual.Should().BeEquivalentTo(expected);
+            actual.ShouldBeEquivalentTo(expected);
         }
     }
 }
+
+
+
+
+

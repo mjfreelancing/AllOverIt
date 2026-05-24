@@ -1,7 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reactive.Extensions;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.Reactive.Tests.Extensions
 {
@@ -32,24 +32,20 @@ namespace AllOverIt.Reactive.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Source_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     PropertyNotifyExtensions.WhenPropertyChanging<ModelDummy, string>(null, model => model.Name);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("source");
             }
 
             [Fact]
             public void Should_Throw_When_Expression_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     PropertyNotifyExtensions.WhenPropertyChanging<ModelDummy, string>(_model, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("propertyExpression");
             }
 
@@ -67,7 +63,7 @@ namespace AllOverIt.Reactive.Tests.Extensions
                 {
                     _model.Name = Create<string>();
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
         }
@@ -77,24 +73,20 @@ namespace AllOverIt.Reactive.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Source_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     PropertyNotifyExtensions.WhenPropertyChanged<ModelDummy, string>(null, model => model.Name);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("source");
             }
 
             [Fact]
             public void Should_Throw_When_Expression_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     PropertyNotifyExtensions.WhenPropertyChanged<ModelDummy, string>(_model, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("propertyExpression");
             }
 
@@ -112,9 +104,11 @@ namespace AllOverIt.Reactive.Tests.Extensions
                 {
                     _model.Name = expected;
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
         }
     }
 }
+
+

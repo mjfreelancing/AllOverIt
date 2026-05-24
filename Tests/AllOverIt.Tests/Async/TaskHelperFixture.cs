@@ -1,6 +1,5 @@
-﻿using AllOverIt.Async;
+using AllOverIt.Async;
 using AllOverIt.Fixture;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Async
 {
@@ -19,8 +18,8 @@ namespace AllOverIt.Tests.Async
 
                 var (actual1, actual2) = await TaskHelper.WhenAll(task1, task2);
 
-                actual1.Should().Be(value1);
-                actual2.Should().Be(value2);
+                actual1.ShouldBe(value1);
+                actual2.ShouldBe(value2);
             }
 
             [Fact]
@@ -36,9 +35,9 @@ namespace AllOverIt.Tests.Async
 
                 var (actual1, actual2, actual3) = await TaskHelper.WhenAll(task1, task2, task3);
 
-                actual1.Should().Be(value1);
-                actual2.Should().Be(value2);
-                actual3.Should().Be(value3);
+                actual1.ShouldBe(value1);
+                actual2.ShouldBe(value2);
+                actual3.ShouldBe(value3);
             }
 
             [Fact]
@@ -56,10 +55,10 @@ namespace AllOverIt.Tests.Async
 
                 var (actual1, actual2, actual3, actual4) = await TaskHelper.WhenAll(task1, task2, task3, task4);
 
-                actual1.Should().Be(value1);
-                actual2.Should().Be(value2);
-                actual3.Should().Be(value3);
-                actual4.Should().Be(value4);
+                actual1.ShouldBe(value1);
+                actual2.ShouldBe(value2);
+                actual3.ShouldBe(value3);
+                actual4.ShouldBe(value4);
             }
 
             [Fact]
@@ -79,11 +78,11 @@ namespace AllOverIt.Tests.Async
 
                 var (actual1, actual2, actual3, actual4, actual5) = await TaskHelper.WhenAll(task1, task2, task3, task4, task5);
 
-                actual1.Should().Be(value1);
-                actual2.Should().Be(value2);
-                actual3.Should().Be(value3);
-                actual4.Should().Be(value4);
-                actual5.Should().Be(value5);
+                actual1.ShouldBe(value1);
+                actual2.ShouldBe(value2);
+                actual3.ShouldBe(value3);
+                actual4.ShouldBe(value4);
+                actual5.ShouldBe(value5);
             }
 
             [Fact]
@@ -108,12 +107,12 @@ namespace AllOverIt.Tests.Async
                     .WhenAll(task1, task2, task3, task4, task5, task6)
                     ;
 
-                actual1.Should().Be(value1);
-                actual2.Should().Be(value2);
-                actual3.Should().Be(value3);
-                actual4.Should().Be(value4);
-                actual5.Should().Be(value5);
-                actual6.Should().Be(value6);
+                actual1.ShouldBe(value1);
+                actual2.ShouldBe(value2);
+                actual3.ShouldBe(value3);
+                actual4.ShouldBe(value4);
+                actual5.ShouldBe(value5);
+                actual6.ShouldBe(value6);
             }
 
             [Fact]
@@ -140,13 +139,13 @@ namespace AllOverIt.Tests.Async
                     .WhenAll(task1, task2, task3, task4, task5, task6, task7)
                     ;
 
-                actual1.Should().Be(value1);
-                actual2.Should().Be(value2);
-                actual3.Should().Be(value3);
-                actual4.Should().Be(value4);
-                actual5.Should().Be(value5);
-                actual6.Should().Be(value6);
-                actual7.Should().Be(value7);
+                actual1.ShouldBe(value1);
+                actual2.ShouldBe(value2);
+                actual3.ShouldBe(value3);
+                actual4.ShouldBe(value4);
+                actual5.ShouldBe(value5);
+                actual6.ShouldBe(value6);
+                actual7.ShouldBe(value7);
             }
 
             [Fact]
@@ -175,14 +174,14 @@ namespace AllOverIt.Tests.Async
                     .WhenAll(task1, task2, task3, task4, task5, task6, task7, task8)
                     ;
 
-                actual1.Should().Be(value1);
-                actual2.Should().Be(value2);
-                actual3.Should().Be(value3);
-                actual4.Should().Be(value4);
-                actual5.Should().Be(value5);
-                actual6.Should().Be(value6);
-                actual7.Should().Be(value7);
-                actual8.Should().Be(value8);
+                actual1.ShouldBe(value1);
+                actual2.ShouldBe(value2);
+                actual3.ShouldBe(value3);
+                actual4.ShouldBe(value4);
+                actual5.ShouldBe(value5);
+                actual6.ShouldBe(value6);
+                actual7.ShouldBe(value7);
+                actual8.ShouldBe(value8);
             }
 
             [Fact]
@@ -213,15 +212,15 @@ namespace AllOverIt.Tests.Async
                     .WhenAll(task1, task2, task3, task4, task5, task6, task7, task8, task9)
                     ;
 
-                actual1.Should().Be(value1);
-                actual2.Should().Be(value2);
-                actual3.Should().Be(value3);
-                actual4.Should().Be(value4);
-                actual5.Should().Be(value5);
-                actual6.Should().Be(value6);
-                actual7.Should().Be(value7);
-                actual8.Should().Be(value8);
-                actual9.Should().Be(value9);
+                actual1.ShouldBe(value1);
+                actual2.ShouldBe(value2);
+                actual3.ShouldBe(value3);
+                actual4.ShouldBe(value4);
+                actual5.ShouldBe(value5);
+                actual6.ShouldBe(value6);
+                actual7.ShouldBe(value7);
+                actual8.ShouldBe(value8);
+                actual9.ShouldBe(value9);
             }
 
             [Fact]
@@ -254,17 +253,19 @@ namespace AllOverIt.Tests.Async
                     .WhenAll(task1, task2, task3, task4, task5, task6, task7, task8, task9, task10)
                     ;
 
-                actual1.Should().Be(value1);
-                actual2.Should().Be(value2);
-                actual3.Should().Be(value3);
-                actual4.Should().Be(value4);
-                actual5.Should().Be(value5);
-                actual6.Should().Be(value6);
-                actual7.Should().Be(value7);
-                actual8.Should().Be(value8);
-                actual9.Should().Be(value9);
-                actual10.Should().Be(value10);
+                actual1.ShouldBe(value1);
+                actual2.ShouldBe(value2);
+                actual3.ShouldBe(value3);
+                actual4.ShouldBe(value4);
+                actual5.ShouldBe(value5);
+                actual6.ShouldBe(value6);
+                actual7.ShouldBe(value7);
+                actual8.ShouldBe(value8);
+                actual9.ShouldBe(value9);
+                actual10.ShouldBe(value10);
             }
         }
     }
 }
+
+

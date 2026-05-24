@@ -1,9 +1,9 @@
-﻿using AllOverIt.Evaluator.Operators;
+using AllOverIt.Evaluator.Operators;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
 using System.Linq.Expressions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests.Operators
 {
@@ -29,26 +29,22 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Left_Operand_Null()
             {
-                Invoking(() => _operator = new AddOperator(null, this.CreateStub<Expression>()))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _operator = new AddOperator(null, this.CreateStub<Expression>()))
                     .WithNamedMessageWhenNull("leftOperand");
             }
 
             [Fact]
             public void Should_Throw_When_Right_Operand_Null()
             {
-                Invoking(() => _operator = new AddOperator(this.CreateStub<Expression>(), null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => _operator = new AddOperator(this.CreateStub<Expression>(), null))
                     .WithNamedMessageWhenNull("rightOperand");
             }
 
             [Fact]
             public void Should_Set_Members()
             {
-                _operator._leftOperand.Should().BeSameAs(_leftOperand);
-                _operator._rightOperand.Should().BeSameAs(_rightOperand);
+                _operator._leftOperand.ShouldBeSameAs(_leftOperand);
+                _operator._rightOperand.ShouldBeSameAs(_rightOperand);
             }
         }
 
@@ -62,7 +58,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
 
                 var actual = expression.ToString();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
     }

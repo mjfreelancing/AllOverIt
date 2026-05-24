@@ -1,7 +1,6 @@
-﻿using AllOverIt.Expressions.Strings;
+using AllOverIt.Expressions.Strings;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Expressions.Strings
@@ -18,8 +17,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                     _ = StringComparisonUtils.CreateCompareCallExpression(null, Expression.Constant(Create<string>()), StringComparison.OrdinalIgnoreCase);
 
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value1");
             }
 
@@ -30,8 +28,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateCompareCallExpression(Expression.Constant(Create<string>()), null, StringComparison.OrdinalIgnoreCase);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value2");
             }
 
@@ -42,8 +39,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateCompareCallExpression(Expression.Constant(Create<string>()), Expression.Constant(Create<string>()), (StringComparison?) null);
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Theory]
@@ -66,7 +62,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                 var actual = Expression.Lambda<Func<int>>(expression).Compile().Invoke();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -80,8 +76,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                     _ = StringComparisonUtils.CreateCompareCallExpression(null, Expression.Constant(Create<string>()), StringComparisonMode.None);
 
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value1");
             }
 
@@ -92,8 +87,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateCompareCallExpression(Expression.Constant(Create<string>()), null, StringComparisonMode.None);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value2");
             }
 
@@ -104,8 +98,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateCompareCallExpression(Expression.Constant(Create<string>()), Expression.Constant(Create<string>()), (StringComparisonMode) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("stringComparisonMode");
             }
 
@@ -132,7 +125,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                 var actual = Expression.Lambda<Func<int>>(expression).Compile().Invoke();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -147,8 +140,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                     _ = StringComparisonUtils.CreateCompareCallExpression(exp1, exp2, StringComparisonMode.ToLower);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithMessage($"Expected a non-null expression value. (Parameter '{parameterName}')");
             }
         }
@@ -163,8 +155,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                     _ = StringComparisonUtils.CreateContainsCallExpression(null, Expression.Constant(Create<string>()), StringComparison.OrdinalIgnoreCase);
 
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("instance");
             }
 
@@ -175,8 +166,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateContainsCallExpression(Expression.Constant(Create<string>()), null, StringComparison.OrdinalIgnoreCase);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
             }
 
@@ -187,8 +177,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateContainsCallExpression(Expression.Constant(Create<string>()), Expression.Constant(Create<string>()), (StringComparison?) null);
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Theory]
@@ -205,7 +194,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                 var actual = Expression.Lambda<Func<bool>>(expression).Compile().Invoke();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -220,8 +209,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                     _ = StringComparisonUtils.CreateContainsCallExpression(exp1, exp2, StringComparison.OrdinalIgnoreCase);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithMessage($"Expected a non-null expression value. (Parameter '{parameterName}')");
             }
         }
@@ -236,8 +224,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                     _ = StringComparisonUtils.CreateContainsCallExpression(null, Expression.Constant(Create<string>()), StringComparisonMode.None);
 
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("instance");
             }
 
@@ -248,8 +235,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateContainsCallExpression(Expression.Constant(Create<string>()), null, StringComparisonMode.None);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
             }
 
@@ -260,8 +246,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateContainsCallExpression(Expression.Constant(Create<string>()), Expression.Constant(Create<string>()), (StringComparisonMode) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("stringComparisonMode");
             }
 
@@ -280,7 +265,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                 var actual = Expression.Lambda<Func<bool>>(expression).Compile().Invoke();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -295,8 +280,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                     _ = StringComparisonUtils.CreateContainsCallExpression(exp1, exp2, StringComparisonMode.InvariantCultureIgnoreCase);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithMessage($"Expected a non-null expression value. (Parameter '{parameterName}')");
             }
         }
@@ -311,8 +295,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                     _ = StringComparisonUtils.CreateStartsWithCallExpression(null, Expression.Constant(Create<string>()), StringComparison.OrdinalIgnoreCase);
 
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("instance");
             }
 
@@ -323,8 +306,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateStartsWithCallExpression(Expression.Constant(Create<string>()), null, StringComparison.OrdinalIgnoreCase);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
             }
 
@@ -335,8 +317,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateStartsWithCallExpression(Expression.Constant(Create<string>()), Expression.Constant(Create<string>()), (StringComparison?) null);
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Theory]
@@ -353,7 +334,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                 var actual = Expression.Lambda<Func<bool>>(expression).Compile().Invoke();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -368,8 +349,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                     _ = StringComparisonUtils.CreateStartsWithCallExpression(exp1, exp2, StringComparison.OrdinalIgnoreCase);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithMessage($"Expected a non-null expression value. (Parameter '{parameterName}')");
             }
         }
@@ -384,8 +364,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                     _ = StringComparisonUtils.CreateStartsWithCallExpression(null, Expression.Constant(Create<string>()), StringComparisonMode.None);
 
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("instance");
             }
 
@@ -396,8 +375,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateStartsWithCallExpression(Expression.Constant(Create<string>()), null, StringComparisonMode.None);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
             }
 
@@ -408,8 +386,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateStartsWithCallExpression(Expression.Constant(Create<string>()), Expression.Constant(Create<string>()), (StringComparisonMode) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("stringComparisonMode");
             }
 
@@ -428,7 +405,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                 var actual = Expression.Lambda<Func<bool>>(expression).Compile().Invoke();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -443,8 +420,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                     _ = StringComparisonUtils.CreateStartsWithCallExpression(exp1, exp2, StringComparisonMode.InvariantCultureIgnoreCase);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithMessage($"Expected a non-null expression value. (Parameter '{parameterName}')");
             }
         }
@@ -459,8 +435,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                     _ = StringComparisonUtils.CreateEndsWithCallExpression(null, Expression.Constant(Create<string>()), StringComparison.OrdinalIgnoreCase);
 
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("instance");
             }
 
@@ -471,8 +446,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateEndsWithCallExpression(Expression.Constant(Create<string>()), null, StringComparison.OrdinalIgnoreCase);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
             }
 
@@ -483,8 +457,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateEndsWithCallExpression(Expression.Constant(Create<string>()), Expression.Constant(Create<string>()), (StringComparison?) null);
                 })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Theory]
@@ -501,7 +474,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                 var actual = Expression.Lambda<Func<bool>>(expression).Compile().Invoke();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -516,8 +489,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                     _ = StringComparisonUtils.CreateEndsWithCallExpression(exp1, exp2, StringComparison.OrdinalIgnoreCase);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithMessage($"Expected a non-null expression value. (Parameter '{parameterName}')");
             }
         }
@@ -532,8 +504,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                     _ = StringComparisonUtils.CreateEndsWithCallExpression(null, Expression.Constant(Create<string>()), StringComparisonMode.None);
 
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("instance");
             }
 
@@ -544,8 +515,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateEndsWithCallExpression(Expression.Constant(Create<string>()), null, StringComparisonMode.None);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
             }
 
@@ -556,8 +526,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                 {
                     _ = StringComparisonUtils.CreateEndsWithCallExpression(Expression.Constant(Create<string>()), Expression.Constant(Create<string>()), (StringComparisonMode) null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("stringComparisonMode");
             }
 
@@ -576,7 +545,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                 var actual = Expression.Lambda<Func<bool>>(expression).Compile().Invoke();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -591,8 +560,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                     _ = StringComparisonUtils.CreateEndsWithCallExpression(exp1, exp2, StringComparisonMode.InvariantCultureIgnoreCase);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithMessage($"Expected a non-null expression value. (Parameter '{parameterName}')");
             }
         }
@@ -607,8 +575,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                     _ = StringComparisonUtils.CreateToLowerCallExpression(null);
 
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
             }
 
@@ -622,7 +589,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                 var actual = Expression.Lambda<Func<string>>(methodCallExpression).Compile().Invoke();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -634,8 +601,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                     _ = StringComparisonUtils.CreateToLowerCallExpression(expression);
                 })
-               .Should()
-               .Throw<ArgumentNullException>()
+               .ShouldThrow<ArgumentNullException>()
                .WithMessage($"Expected a non-null expression value. (Parameter 'value')");
             }
         }
@@ -650,8 +616,7 @@ namespace AllOverIt.Tests.Expressions.Strings
                     _ = StringComparisonUtils.CreateToLowerCallExpression(null);
 
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
             }
 
@@ -665,7 +630,7 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                 var actual = Expression.Lambda<Func<string>>(expression).Compile().Invoke();
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -677,10 +642,12 @@ namespace AllOverIt.Tests.Expressions.Strings
 
                     _ = StringComparisonUtils.CreateToUpperCallExpression(expression);
                 })
-               .Should()
-               .Throw<ArgumentNullException>()
+               .ShouldThrow<ArgumentNullException>()
                .WithMessage($"Expected a non-null expression value. (Parameter 'value')");
             }
         }
     }
 }
+
+
+

@@ -2,9 +2,9 @@
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Threading;
-using FluentAssertions;
 using NSubstitute;
 using System.Collections;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Collections
 {
@@ -29,8 +29,7 @@ namespace AllOverIt.Tests.Collections
                 {
                     _ = new LockableList<string>(null, Create<bool>());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("list");
             }
         }
@@ -52,7 +51,7 @@ namespace AllOverIt.Tests.Collections
                 {
                     var actual = _lockableList[1];
 
-                    actual.Should().Be(_list[1]);
+                    actual.ShouldBe(_list[1]);
                 }
             }
 
@@ -75,7 +74,7 @@ namespace AllOverIt.Tests.Collections
 
                     var actual = _lockableList[1];
 
-                    actual.Should().Be(expected);
+                    actual.ShouldBe(expected);
                 }
             }
         }
@@ -95,7 +94,7 @@ namespace AllOverIt.Tests.Collections
             {
                 var actual = _lockableList.Count;
 
-                actual.Should().Be(_list.Count);
+                actual.ShouldBe(_list.Count);
             }
         }
 
@@ -114,7 +113,7 @@ namespace AllOverIt.Tests.Collections
             {
                 var actual = _lockableList.IsReadOnly;
 
-                actual.Should().Be(_list.IsReadOnly);
+                actual.ShouldBe(_list.IsReadOnly);
             }
         }
 
@@ -138,7 +137,7 @@ namespace AllOverIt.Tests.Collections
 
                 _lockableList.Add(item);
 
-                _lockableList.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
+                _lockableList.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -155,11 +154,11 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Clear()
             {
-                _lockableList.Should().HaveCount(3);
+                _lockableList.Count.ShouldBe(3);
 
                 _lockableList.Clear();
 
-                _lockableList.Should().BeEmpty();
+                _lockableList.ShouldBeEmpty();
             }
         }
 
@@ -176,9 +175,9 @@ namespace AllOverIt.Tests.Collections
             [Fact]
             public void Should_Contain()
             {
-                _lockableList.Contains(Create<string>()).Should().BeFalse();
+                _lockableList.Contains(Create<string>()).ShouldBeFalse();
 
-                _lockableList.Contains(_list[1]).Should().BeTrue();
+                _lockableList.Contains(_list[1]).ShouldBeTrue();
             }
         }
 
@@ -201,7 +200,7 @@ namespace AllOverIt.Tests.Collections
 
                 _lockableList.CopyTo(array, 0);
 
-                array.Should().BeEquivalentTo(array, options => options.WithStrictOrdering());
+                array.ShouldBeEquivalentTo(array);
             }
         }
 
@@ -224,11 +223,11 @@ namespace AllOverIt.Tests.Collections
 
                 while (enumerator.MoveNext())
                 {
-                    enumerator.Current.Should().Be(_list[index++]);
+                    enumerator.Current.ShouldBe(_list[index++]);
                     count++;
                 }
 
-                count.Should().Be(3);
+                count.ShouldBe(3);
             }
 
             [Fact]
@@ -243,14 +242,14 @@ namespace AllOverIt.Tests.Collections
 
                     while (enumerator.MoveNext())
                     {
-                        enumerator.Current.Should().Be(_list[index++]);
+                        enumerator.Current.ShouldBe(_list[index++]);
                         count++;
                     }
 
                     enumerator.Reset();
                 }
 
-                count.Should().Be(6);
+                count.ShouldBe(6);
             }
 
             [Fact]
@@ -262,11 +261,11 @@ namespace AllOverIt.Tests.Collections
 
                 while (enumerator.MoveNext())
                 {
-                    ((string) enumerator.Current).Should().Be(_list[index++]);
+                    ((string) enumerator.Current).ShouldBe(_list[index++]);
                     count++;
                 }
 
-                count.Should().Be(3);
+                count.ShouldBe(3);
             }
 
             [Fact]
@@ -281,14 +280,14 @@ namespace AllOverIt.Tests.Collections
 
                     while (enumerator.MoveNext())
                     {
-                        ((string) enumerator.Current).Should().Be(_list[index++]);
+                        ((string) enumerator.Current).ShouldBe(_list[index++]);
                         count++;
                     }
 
                     enumerator.Reset();
                 }
 
-                count.Should().Be(6);
+                count.ShouldBe(6);
             }
         }
 
@@ -307,7 +306,7 @@ namespace AllOverIt.Tests.Collections
             {
                 var actual = _lockableList.IndexOf(_list[1]);
 
-                actual.Should().Be(1);
+                actual.ShouldBe(1);
             }
         }
 
@@ -331,7 +330,7 @@ namespace AllOverIt.Tests.Collections
 
                 _lockableList.Insert(0, item);
 
-                _lockableList.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
+                _lockableList.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -355,7 +354,7 @@ namespace AllOverIt.Tests.Collections
 
                 _lockableList.Remove(item);
 
-                _lockableList.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
+                _lockableList.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -379,7 +378,7 @@ namespace AllOverIt.Tests.Collections
 
                 _lockableList.RemoveAt(1);
 
-                _lockableList.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
+                _lockableList.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -413,7 +412,7 @@ namespace AllOverIt.Tests.Collections
                 {
                 }
 
-                isDisposed.Should().BeTrue();
+                isDisposed.ShouldBeTrue();
             }
         }
 
@@ -460,7 +459,7 @@ namespace AllOverIt.Tests.Collections
                     }
                 }
 
-                _list[1].Should().Be(item);
+                _list[1].ShouldBe(item);
             }
         }
 
@@ -483,3 +482,11 @@ namespace AllOverIt.Tests.Collections
         }
     }
 }
+
+
+
+
+
+
+
+

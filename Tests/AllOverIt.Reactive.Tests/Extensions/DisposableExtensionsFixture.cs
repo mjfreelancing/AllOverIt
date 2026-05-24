@@ -1,6 +1,6 @@
 using AllOverIt.Fixture;
 using AllOverIt.Reactive.Extensions;
-using FluentAssertions;
+using Shouldly;
 using System.Reactive.Disposables;
 
 namespace AllOverIt.Reactive.Tests.Extensions
@@ -45,8 +45,10 @@ namespace AllOverIt.Reactive.Tests.Extensions
                     new DummyDisposable(guid).DisposeUsing(disposables);
                 }
 
-                Counter[guid].Should().Be(3);
+                Counter[guid].ShouldBe(3);
             }
         }
     }
 }
+
+

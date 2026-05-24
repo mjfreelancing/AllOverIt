@@ -1,4 +1,4 @@
-﻿using AllOverIt.Expressions.Strings;
+using AllOverIt.Expressions.Strings;
 using AllOverIt.Filtering.Builders;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.Filtering.Options;
@@ -115,7 +115,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = filterBuilder.Current;
 
-                actual.Should().BeAssignableTo<ILogicalFilterBuilder<DummyClass, DummyFilter>>();
+                actual.ShouldBeAssignableTo<ILogicalFilterBuilder<DummyClass, DummyFilter>>();
             }
         }
 
@@ -209,7 +209,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -238,7 +238,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
 
                 // Now confirm the filter is ignored
                 _filter.Prop3.EqualTo.Value = null;
@@ -251,7 +251,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -309,7 +309,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -338,7 +338,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
 
                 // Now confirm the filter is ignored
                 _filter.Prop2.In.Value = null;
@@ -351,7 +351,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -382,14 +382,14 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
 
                 // and confirm
                 model.Prop2 = _filter.Prop2.NotEqualTo.Value;
 
                 actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -420,14 +420,14 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
 
                 // and confirm
                 model.Prop2 = _filter.Prop2.NotEqualTo.Value;
 
                 actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -473,7 +473,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification2.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
         }
 
@@ -503,7 +503,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -532,7 +532,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
 
                 // Now confirm the filter is ignored
                 _filter.Prop1.In.Value = null;
@@ -545,7 +545,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -576,14 +576,14 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
 
                 // and confirm
                 model.Prop2 = _filter.Prop2.NotEqualTo.Value;
 
                 actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
 
             [Theory]
@@ -614,14 +614,14 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
 
                 // and confirm
                 model.Prop2 = _filter.Prop2.NotEqualTo.Value;
 
                 actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -681,7 +681,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -710,7 +710,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -741,7 +741,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -772,7 +772,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -804,7 +804,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();       // the builder has completely ignored both filters, so everything should return true
+                actual.ShouldBeTrue();       // the builder has completely ignored both filters, so everything should return true
             }
         }
 
@@ -864,7 +864,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -893,7 +893,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -924,7 +924,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -955,7 +955,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -989,7 +989,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();       // the builder has completely ignored both nullable filters, so everything should return true
+                actual.ShouldBeTrue();       // the builder has completely ignored both nullable filters, so everything should return true
             }
         }
 
@@ -1037,13 +1037,13 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification2.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
 
                 model.Prop1 = _filter.Prop1.NotEqualTo.Value.Value;
 
                 actual = specification2.IsSatisfiedBy(model);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -1075,7 +1075,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1104,7 +1104,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1135,7 +1135,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1166,7 +1166,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1200,7 +1200,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();       // the builder has completely ignored both nullable filters, so everything should return true
+                actual.ShouldBeTrue();       // the builder has completely ignored both nullable filters, so everything should return true
             }
         }
 
@@ -1260,7 +1260,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1289,7 +1289,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1320,7 +1320,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1351,7 +1351,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1383,7 +1383,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();       // the builder has completely ignored both filters, so everything should return true
+                actual.ShouldBeTrue();       // the builder has completely ignored both filters, so everything should return true
             }
         }
 
@@ -1443,7 +1443,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1472,7 +1472,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1503,7 +1503,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1534,7 +1534,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1568,7 +1568,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();       // the builder has completely ignored both nullable filters, so everything should return true
+                actual.ShouldBeTrue();       // the builder has completely ignored both nullable filters, so everything should return true
             }
         }
 
@@ -1616,14 +1616,14 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification2.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
 
                 model.Prop1 = _filter.Prop1.NotEqualTo.Value.Value;
                 model.Prop2 = -model.Prop2;
 
                 actual = specification2.IsSatisfiedBy(model);
 
-                actual.Should().BeFalse();
+                actual.ShouldBeFalse();
             }
         }
 
@@ -1655,7 +1655,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1684,7 +1684,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1715,7 +1715,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1746,7 +1746,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();
+                actual.ShouldBeTrue();
             }
 
             [Theory]
@@ -1780,7 +1780,7 @@ namespace AllOverIt.Filtering.Tests.Builders
 
                 var actual = specification.IsSatisfiedBy(model);
 
-                actual.Should().BeTrue();       // the builder has completely ignored both nullable filters, so everything should return true
+                actual.ShouldBeTrue();       // the builder has completely ignored both nullable filters, so everything should return true
             }
         }
 
@@ -1809,3 +1809,4 @@ namespace AllOverIt.Filtering.Tests.Builders
         }
     }
 }
+

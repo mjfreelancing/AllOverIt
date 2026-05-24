@@ -1,6 +1,5 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Helpers.PropertyNavigation;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Helpers.PropertyNavigation
 {
@@ -17,7 +16,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation
             {
                 var actual = PropertyNavigator.For<DummyObject>();
 
-                actual.Should().BeAssignableTo<IPropertyNodes<DummyObject>>();
+                actual.ShouldBeAssignableTo<IPropertyNodes<DummyObject>>();
             }
 
             [Fact]
@@ -25,7 +24,7 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation
             {
                 var actual = PropertyNavigator.For<DummyObject>();
 
-                actual.ObjectType.Should().Be(typeof(DummyObject));
+                actual.ObjectType.ShouldBe(typeof(DummyObject));
             }
 
             [Fact]
@@ -33,8 +32,10 @@ namespace AllOverIt.Tests.Helpers.PropertyNavigation
             {
                 var actual = PropertyNavigator.For<DummyObject>();
 
-                actual.Nodes.Should().BeEmpty();
+                actual.Nodes.ShouldBeEmpty();
             }
         }
     }
 }
+
+

@@ -1,13 +1,14 @@
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Serialization.Json.Abstractions;
 using AllOverIt.Serialization.Json.SystemText.Converters;
-using FluentAssertions;
+using Shouldly;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Serialization.Json.SystemText.Tests
 {
@@ -41,9 +42,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             {
                 var serializer = new SystemTextJsonSerializer(null);
 
-                serializer.Options
-                    .Should()
-                    .BeEquivalentTo(new JsonSerializerOptions());
+                serializer.Options.ShouldBeEquivalentTo(new JsonSerializerOptions());
             }
 
             [Fact]
@@ -52,9 +51,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                 var options = new JsonSerializerOptions();
                 var serializer = new SystemTextJsonSerializer(options);
 
-                serializer.Options
-                    .Should()
-                    .Be(options);
+                serializer.Options.ShouldBe(options);
             }
         }
 
@@ -63,12 +60,10 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
             [Fact]
             public void Should_Throw_When_Configuration_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                     {
                         _serializer.Configure(null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
                     .WithNamedMessageWhenNull("configuration");
             }
 
@@ -88,12 +83,11 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                 {
                     _serializer.Options
                         .PropertyNamingPolicy
-                        .Should()
-                        .BeSameAs(JsonNamingPolicy.CamelCase);
+                        .ShouldBeSameAs(JsonNamingPolicy.CamelCase);
                 }
                 else
                 {
-                    _serializer.Options.PropertyNamingPolicy.Should().BeNull();
+                    _serializer.Options.PropertyNamingPolicy.ShouldBeNull();
                 }
             }
 
@@ -110,8 +104,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                 _serializer.Configure(config);
 
                 _serializer.Options.PropertyNameCaseInsensitive
-                    .Should()
-                    .Be(!useCaseSensitive);
+                    .ShouldBe(!useCaseSensitive);
             }
 
             [Fact]
@@ -126,7 +119,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var hasFactory = serializer.Options.Converters.SingleOrDefault(converter => converter.GetType() == typeof(EnrichedEnumJsonConverterFactory));
 
-                hasFactory.Should().NotBeNull();
+                hasFactory.ShouldNotBeNull();
             }
 
             [Fact]
@@ -141,7 +134,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var hasFactory = serializer.Options.Converters.SingleOrDefault(converter => converter.GetType() == typeof(EnrichedEnumJsonConverterFactory));
 
-                hasFactory.Should().NotBeNull();
+                hasFactory.ShouldNotBeNull();
 
                 serializer.Configure(new JsonSerializerConfiguration
                 {
@@ -150,7 +143,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 hasFactory = serializer.Options.Converters.SingleOrDefault(converter => converter.GetType() == typeof(EnrichedEnumJsonConverterFactory));
 
-                hasFactory.Should().BeNull();
+                hasFactory.ShouldBeNull();
             }
         }
 
@@ -165,9 +158,9 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                 // Child2 will be included by default
                 var actual = _serializer.SerializeObject(value);
 
-                var expected = $@"{{""prop1"":{value.Prop1},""prop2"":""{value.Prop2}"",""child1"":{{""prop1"":{value.Child1.Prop1},""prop2"":""{value.Child1.Prop2}""}},""child2"":null}}";
+                var expected = $@"{{""Prop1"":{value.Prop1},""Prop2"":""{value.Prop2}"",""Child1"":{{""Prop1"":{value.Child1.Prop1},""Prop2"":""{value.Child1.Prop2}""}},""Child2"":null}}";
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBe(actual);
             }
 
             [Fact]
@@ -187,9 +180,9 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = serializer.SerializeObject(value);
 
-                var expected = $@"{{""prop1"":{value.Prop1},""prop2"":""{value.Prop2}""}}";
+                var expected = $@"{{""Prop1"":{value.Prop1},""Prop2"":""{value.Prop2}""}}";
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -204,7 +197,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var expected = Encoding.UTF8.GetBytes(_serializer.SerializeObject(value));
 
-                expected.Should().BeEquivalentTo(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -220,7 +213,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = _serializer.DeserializeObject<DummyType>(value);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -242,8 +235,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                 var actual = serializer.DeserializeObject<DummyType>(value);
 
-                actual.Prop1.Should().Be(0);
-                actual.Prop1.Should().NotBe(expected.Prop1);
+                actual.Prop1.ShouldBe(0);
+                actual.Prop1.ShouldNotBe(expected.Prop1);
             }
         }
 
@@ -261,7 +254,7 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                 {
                     var actual = await _serializer.DeserializeObjectAsync<DummyType>(stream, CancellationToken.None);
 
-                    expected.Should().BeEquivalentTo(actual);
+                    actual.ShouldBeEquivalentTo(expected);
                 }
             }
 
@@ -286,8 +279,8 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
 
                     var actual = await serializer.DeserializeObjectAsync<DummyType>(stream, CancellationToken.None);
 
-                    actual.Prop1.Should().Be(0);
-                    actual.Prop1.Should().NotBe(expected.Prop1);
+                    actual.Prop1.ShouldBe(0);
+                    actual.Prop1.ShouldNotBe(expected.Prop1);
                 }
             }
 
@@ -304,12 +297,10 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                     var cts = new CancellationTokenSource();
                     cts.Cancel();
 
-                    await Invoking(async () =>
+                    await Should.ThrowAsync<OperationCanceledException>(async () =>
                         {
                             _ = await _serializer.DeserializeObjectAsync<DummyType>(stream, cts.Token);
-                        })
-                        .Should()
-                        .ThrowAsync<OperationCanceledException>();
+                        });
                 }
             }
         }
@@ -356,19 +347,28 @@ namespace AllOverIt.Serialization.Json.SystemText.Tests
                 });
 
                 var actual = serializer.SerializeObject(value);
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBe(expected);
 
                 var deserialized = new DummyWithEnum();
-                deserialized.Prop1.Should().BeNull();
-                deserialized.Prop2.Should().BeNull();
-                deserialized.Prop3.Should().BeNull();
+                deserialized.Prop1.ShouldBeNull();
+                deserialized.Prop2.ShouldBeNull();
+                deserialized.Prop3.ShouldBeNull();
 
                 deserialized = serializer.DeserializeObject<DummyWithEnum>(actual);
 
-                deserialized.Prop1.Should().BeSameAs(DummyEnrichedEnum.Value1);
-                deserialized.Prop2.Should().BeSameAs(DummyEnrichedEnum.Value2);
-                deserialized.Prop3.Should().BeSameAs(DummyEnrichedEnum.Value3);
+                deserialized.Prop1.ShouldBeSameAs(DummyEnrichedEnum.Value1);
+                deserialized.Prop2.ShouldBeSameAs(DummyEnrichedEnum.Value2);
+                deserialized.Prop3.ShouldBeSameAs(DummyEnrichedEnum.Value3);
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+

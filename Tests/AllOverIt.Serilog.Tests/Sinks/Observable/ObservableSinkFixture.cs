@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Serilog.Extensions;
 using AllOverIt.Serilog.Sinks.Observable;
@@ -16,19 +16,19 @@ namespace AllOverIt.Serilog.Tests.Sinks.Observable
             [Fact]
             public void Should_Have_Expected_Count()
             {
-                _observableSink.Count.Should().Be(0);
+                _observableSink.Count.ShouldBe(0);
 
                 var subscription1 = _observableSink.Subscribe();
-                _observableSink.Count.Should().Be(1);
+                _observableSink.Count.ShouldBe(1);
 
                 var subscription2 = _observableSink.Subscribe();
-                _observableSink.Count.Should().Be(2);
+                _observableSink.Count.ShouldBe(2);
 
                 subscription2.Dispose();
-                _observableSink.Count.Should().Be(1);
+                _observableSink.Count.ShouldBe(1);
 
                 subscription1.Dispose();
-                _observableSink.Count.Should().Be(0);
+                _observableSink.Count.ShouldBe(0);
             }
         }
 
@@ -62,7 +62,7 @@ namespace AllOverIt.Serilog.Tests.Sinks.Observable
 
                 logger.Information(message);
 
-                actual.Should().Be(message);
+                actual.ShouldBe(message);
             }
 
             [Fact]
@@ -81,7 +81,7 @@ namespace AllOverIt.Serilog.Tests.Sinks.Observable
 
                 logger.Information(message);
 
-                actual.Should().Be(message);
+                actual.ShouldBe(message);
 
                 subscriber.Dispose();
 
@@ -89,7 +89,7 @@ namespace AllOverIt.Serilog.Tests.Sinks.Observable
 
                 logger.Information(Create<string>());
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -122,8 +122,8 @@ namespace AllOverIt.Serilog.Tests.Sinks.Observable
                 logger.Information(Create<string>());
                 logger.Information(Create<string>());
 
-                received1.Should().HaveCount(2);
-                received2.Should().HaveCount(2);
+                received1.Count.ShouldBe(2);
+                received2.Count.ShouldBe(2);
 
                 received1.Should().BeEquivalentTo(received2, options => options.WithStrictOrdering());
 
@@ -133,8 +133,8 @@ namespace AllOverIt.Serilog.Tests.Sinks.Observable
                 logger.Information(Create<string>());
                 logger.Information(Create<string>());
 
-                received1.Should().HaveCount(2);
-                received2.Should().HaveCount(2);
+                received1.Count.ShouldBe(2);
+                received2.Count.ShouldBe(2);
             }
 
             [Fact]
@@ -147,7 +147,7 @@ namespace AllOverIt.Serilog.Tests.Sinks.Observable
 
                 _observableSink.Dispose();
 
-                completed.Should().BeTrue();
+                completed.ShouldBeTrue();
             }
 
             [Fact]
@@ -200,7 +200,7 @@ namespace AllOverIt.Serilog.Tests.Sinks.Observable
                     logger.Information(message);
                 }
 
-                receivedCount.Should().Be(5);
+                receivedCount.ShouldBe(5);
             }
 
             [Fact]

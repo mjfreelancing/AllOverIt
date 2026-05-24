@@ -4,9 +4,8 @@ using AllOverIt.Evaluator.Tests.Operators.Dummies;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
+using Shouldly;
 using System.Linq.Expressions;
-
 namespace AllOverIt.Evaluator.Tests.Operators
 {
     public class OperatorBaseFixture : FixtureBase
@@ -29,27 +28,21 @@ namespace AllOverIt.Evaluator.Tests.Operators
             [Fact]
             public void Should_Throw_When_Expressions_Null()
             {
-                Invoking(() => OperatorBase.Create(null, _creator))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => { _ = OperatorBase.Create(null, _creator); })
                     .WithNamedMessageWhenNull("expressions");
             }
 
             [Fact]
             public void Should_Throw_When_Expressions_Empty()
             {
-                Invoking(() => OperatorBase.Create(Array.Empty<Expression>(), _creator))
-                    .Should()
-                    .Throw<ArgumentException>()
+                Should.Throw<ArgumentException>(() => { _ = OperatorBase.Create(Array.Empty<Expression>(), _creator); })
                     .WithNamedMessageWhenEmpty("expressions");
             }
 
             [Fact]
             public void Should_Throw_When_Creator_Null()
             {
-                Invoking(() => OperatorBase.Create(new[] { _expression1 }, (Func<Expression[], DummyOperatorBase1>) null))
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                Should.Throw<ArgumentNullException>(() => { _ = OperatorBase.Create(new[] { _expression1 }, (Func<Expression[], DummyOperatorBase1>) null); })
                     .WithNamedMessageWhenNull("creator");
             }
 
@@ -58,26 +51,20 @@ namespace AllOverIt.Evaluator.Tests.Operators
             {
                 DummyOperatorBase2 Creator(Expression[] e) => Create<DummyOperatorBase2>();
 
-                Invoking(() => OperatorBase.Create(new[] { _expression1 }, Creator))
-                    .Should()
-                    .Throw<InvalidOperationException>()
+                Should.Throw<InvalidOperationException>(() => { _ = OperatorBase.Create(new[] { _expression1 }, Creator); })
                     .WithMessage("Sequence contains more than one element");
             }
 
             [Fact]
             public void Should_Not_Throw_When_Correct_Constructor_Argument_Count()
             {
-                Invoking(() => OperatorBase.Create(new[] { _expression1, _expression2 }, _creator))
-                    .Should()
-                    .NotThrow();
+                Should.NotThrow(() => { _ = OperatorBase.Create(new[] { _expression1, _expression2 }, _creator); });
             }
 
             [Fact]
             public void Should_Not_Throw_When_Constructors_Has_Incorrect_Argument_Count()
             {
-                Invoking(() => OperatorBase.Create(new[] { _expression1 }, _creator))
-                    .Should()
-                    .Throw<OperatorException>()
+                Should.Throw<OperatorException>(() => { _ = OperatorBase.Create(new[] { _expression1 }, _creator); })
                     .WithMessage("Invalid number of arguments. 2 expressions expected, 1 provided.");
             }
 
@@ -96,7 +83,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
 
                 var expected = new[] { _expression1, _expression2 };
 
-                expected.Should().BeEquivalentTo(expressions);
+                expressions.ShouldBe(expected);
             }
 
             [Fact]
@@ -104,7 +91,7 @@ namespace AllOverIt.Evaluator.Tests.Operators
             {
                 var actual = OperatorBase.Create(new[] { _expression1, _expression2 }, _creator);
 
-                actual.Should().BeSameAs(_operator);
+                actual.ShouldBeSameAs(_operator);
             }
         }
     }

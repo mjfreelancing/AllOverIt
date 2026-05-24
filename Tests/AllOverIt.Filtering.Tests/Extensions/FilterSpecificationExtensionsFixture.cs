@@ -1,4 +1,4 @@
-﻿using AllOverIt.Filtering.Builders;
+using AllOverIt.Filtering.Builders;
 using AllOverIt.Filtering.Extensions;
 using AllOverIt.Filtering.Filters;
 using AllOverIt.Filtering.Options;
@@ -92,7 +92,8 @@ namespace AllOverIt.Filtering.Tests.Extensions
             // Resulting in: (((1 OR 2) AND 3) AND 4)
             var expected = $"((({step1} OR {step2}) AND {step3}) AND {step4})";
 
-            queryString.Should().Be(expected);
+            queryString.ShouldBe(expected);
         }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿using AllOverIt.Expressions.Strings;
+using AllOverIt.Expressions.Strings;
 using AllOverIt.Filtering.Exceptions;
 using AllOverIt.Filtering.Operations;
 using AllOverIt.Filtering.Options;
@@ -76,3 +76,4 @@ namespace AllOverIt.Filtering.Tests.Operations
         }
     }
 }
+

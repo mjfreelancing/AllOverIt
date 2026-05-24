@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AllOverIt.Serilog.Tests.Extensions

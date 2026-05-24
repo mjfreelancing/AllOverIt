@@ -1,9 +1,8 @@
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Pagination.Extensions;
 using AllOverIt.Pagination.TokenEncoding;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Pagination.Tests.Extensions
 {
     public class QueryPaginatorExtensionsFixture : FixtureBase
@@ -81,7 +80,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_By_Two_Columns_Forward_From_Start()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -103,7 +102,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_By_Two_Columns_Backward_From_End()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -128,7 +127,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_By_Three_Columns_Forward_From_Start()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -151,7 +150,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_By_Three_Columns_Backward_From_End()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -177,7 +176,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_By_Three_Columns_Forward_From_Start()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -201,7 +200,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_By_Three_Columns_Backward_From_End()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -228,7 +227,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Forward_From_Start()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -253,7 +252,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Backward_From_End()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -281,7 +280,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Forward_From_Start()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -308,7 +307,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Backward_From_End()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -338,7 +337,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Forward_From_Start()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -360,7 +359,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Backward_From_End()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -385,7 +384,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Forward_From_Start()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -408,7 +407,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Backward_From_End()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -434,7 +433,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Forward_From_Start()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -458,7 +457,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Backward_From_End()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -485,7 +484,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Forward_From_Start()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -511,7 +510,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Backward_From_End()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -540,7 +539,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Forward_From_Start()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -567,7 +566,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Order_Columns_Backward_From_End()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 2;
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -597,7 +596,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Get_First_Page()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 3;     // Should get page counts of 9, 9, 9, 2
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -613,7 +612,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var actual = QueryPaginatorExtensions.GetPageResults(paginator, null);
 
-                actual.Should().BeEquivalentTo(new
+                actual.ShouldBeEquivalentTo(new
                 {
                     Results = page1,
                     TotalCount = _entities.Count,
@@ -626,7 +625,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Not_Have_Next_Or_Previous_Page()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count;
 
                 var paginator = CreatePaginator(pageSize, PaginationDirection.Forward)
@@ -638,7 +637,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var actual = QueryPaginatorExtensions.GetPageResults(paginator, null);
 
-                actual.Should().BeEquivalentTo(new
+                actual.ShouldBeEquivalentTo(new
                 {
                     Results = expectedQuery.ToList(),
                     TotalCount = _entities.Count,
@@ -651,7 +650,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Get_Next_Page()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 3;     // Should get page counts of 9, 9, 9, 2
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -671,7 +670,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var actual = QueryPaginatorExtensions.GetPageResults(paginator, continuationToken);
 
-                actual.Should().BeEquivalentTo(new
+                actual.ShouldBeEquivalentTo(new
                 {
                     Results = page2,
                     TotalCount = _entities.Count,
@@ -684,7 +683,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Get_Last_Page()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 3;     // Should get page counts of 9, 9, 9, 2
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -700,7 +699,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var actual = QueryPaginatorExtensions.GetPageResults(paginator, null);
 
-                actual.Should().BeEquivalentTo(new
+                actual.ShouldBeEquivalentTo(new
                 {
                     Results = page1,
                     TotalCount = _entities.Count,
@@ -713,7 +712,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Get_Previous_Page()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 3;     // Should get page counts of 9, 9, 9, 2
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -733,7 +732,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
                 var actual = QueryPaginatorExtensions.GetPageResults(paginator, continuationToken);
 
-                actual.Should().BeEquivalentTo(new
+                actual.ShouldBeEquivalentTo(new
                 {
                     Results = page2,
                     TotalCount = _entities.Count,
@@ -749,7 +748,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
             [Fact]
             public void Should_Navigate_Pages_Forward()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 3;     // Should get page counts of 9, 9, 9, 2
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, true);
@@ -762,32 +761,32 @@ namespace AllOverIt.Pagination.Tests.Extensions
                     .ThenBy(item => item.Id);
 
                 var page1 = AssertPagedData(paginator, 1, skipSteps, expectedQuery, null);
-                paginator.HasPreviousPage(page1.First()).Should().BeFalse();
-                paginator.HasNextPage(page1.Last()).Should().BeTrue();
+                paginator.HasPreviousPage(page1.First()).ShouldBeFalse();
+                paginator.HasNextPage(page1.Last()).ShouldBeTrue();
 
                 var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 var page2 = AssertPagedData(paginator, 2, skipSteps, expectedQuery, continuationToken);
-                paginator.HasPreviousPage(page2.First()).Should().BeTrue();
-                paginator.HasNextPage(page2.Last()).Should().BeTrue();
+                paginator.HasPreviousPage(page2.First()).ShouldBeTrue();
+                paginator.HasNextPage(page2.Last()).ShouldBeTrue();
 
                 continuationToken = paginator.TokenEncoder.EncodeNextPage(page2);
 
                 var page3 = AssertPagedData(paginator, 3, skipSteps, expectedQuery, continuationToken);
-                paginator.HasPreviousPage(page3.First()).Should().BeTrue();
-                paginator.HasNextPage(page3.Last()).Should().BeTrue();
+                paginator.HasPreviousPage(page3.First()).ShouldBeTrue();
+                paginator.HasNextPage(page3.Last()).ShouldBeTrue();
 
                 continuationToken = paginator.TokenEncoder.EncodeNextPage(page3);
 
                 var page4 = AssertPagedData(paginator, 4, skipSteps, expectedQuery, continuationToken);
-                paginator.HasPreviousPage(page4.First()).Should().BeTrue();
-                paginator.HasNextPage(page4.Last()).Should().BeFalse();
+                paginator.HasPreviousPage(page4.First()).ShouldBeTrue();
+                paginator.HasNextPage(page4.Last()).ShouldBeFalse();
             }
 
             [Fact]
             public void Should_Navigate_Pages_Reverse()
             {
-                _entities.Count.Should().Be(29);
+                _entities.Count.ShouldBe(29);
                 var pageSize = _entities.Count / 3;     // Should get page counts of 9, 9, 9, 2
 
                 var skipSteps = GetSkipSteps(_entities.Count, pageSize, false);
@@ -800,26 +799,26 @@ namespace AllOverIt.Pagination.Tests.Extensions
                     .ThenByDescending(item => item.Id);
 
                 var page1 = AssertPagedData(paginator, 1, skipSteps, expectedQuery, null);
-                paginator.HasPreviousPage(page1.Last()).Should().BeFalse();
-                paginator.HasNextPage(page1.First()).Should().BeTrue();
+                paginator.HasPreviousPage(page1.Last()).ShouldBeFalse();
+                paginator.HasNextPage(page1.First()).ShouldBeTrue();
 
                 var continuationToken = paginator.TokenEncoder.EncodeNextPage(page1);
 
                 var page2 = AssertPagedData(paginator, 2, skipSteps, expectedQuery, continuationToken);
-                paginator.HasPreviousPage(page2.Last()).Should().BeTrue();
-                paginator.HasNextPage(page2.First()).Should().BeTrue();
+                paginator.HasPreviousPage(page2.Last()).ShouldBeTrue();
+                paginator.HasNextPage(page2.First()).ShouldBeTrue();
 
                 continuationToken = paginator.TokenEncoder.EncodeNextPage(page2);
 
                 var page3 = AssertPagedData(paginator, 3, skipSteps, expectedQuery, continuationToken);
-                paginator.HasPreviousPage(page3.Last()).Should().BeTrue();
-                paginator.HasNextPage(page3.First()).Should().BeTrue();
+                paginator.HasPreviousPage(page3.Last()).ShouldBeTrue();
+                paginator.HasNextPage(page3.First()).ShouldBeTrue();
 
                 continuationToken = paginator.TokenEncoder.EncodeNextPage(page3);
 
                 var page4 = AssertPagedData(paginator, 4, skipSteps, expectedQuery, continuationToken);
-                paginator.HasPreviousPage(page4.Last()).Should().BeTrue();
-                paginator.HasNextPage(page4.First()).Should().BeFalse();
+                paginator.HasPreviousPage(page4.Last()).ShouldBeTrue();
+                paginator.HasNextPage(page4.First()).ShouldBeFalse();
             }
         }
 
@@ -844,7 +843,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
 
             var expectedData = expectedQuery.Skip(skipSteps[page - 1].Skip).Take(skipSteps[page - 1].Take).ToList();
 
-            expectedData.Should().ContainInOrder(actualData);
+            expectedData.ShouldBeEquivalentTo(actualData);
 
             return actualData;
         }
@@ -887,3 +886,7 @@ namespace AllOverIt.Pagination.Tests.Extensions
         }
     }
 }
+
+
+
+

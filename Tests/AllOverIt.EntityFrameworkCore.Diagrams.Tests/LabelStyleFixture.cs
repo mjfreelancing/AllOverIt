@@ -1,5 +1,5 @@
 ﻿using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 {
@@ -12,7 +12,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
             {
                 var actual = new LabelStyle();
 
-                actual.IsDefault().Should().BeTrue();
+                actual.IsDefault().ShouldBeTrue();
             }
 
             [Fact]
@@ -20,7 +20,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
             {
                 var actual = Create<LabelStyle>();
 
-                actual.IsDefault().Should().BeFalse();
+                actual.IsDefault().ShouldBeFalse();
             }
         }
     }

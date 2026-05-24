@@ -1,7 +1,6 @@
-﻿using AllOverIt.Async;
+using AllOverIt.Async;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Async
 {
@@ -16,8 +15,7 @@ namespace AllOverIt.Tests.Async
                 {
                     _ = new BackgroundTask(null, CancellationToken.None);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("action");
             }
 
@@ -34,8 +32,7 @@ namespace AllOverIt.Tests.Async
                 {
                     await backgroundTask;
                 })
-                 .Should()
-                 .ThrowAsync<TaskCanceledException>();
+                 .ShouldThrowAsync<TaskCanceledException>();
             }
         }
 
@@ -48,8 +45,7 @@ namespace AllOverIt.Tests.Async
                 {
                     _ = new BackgroundTask(null, edi => true, CancellationToken.None);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("action");
             }
 
@@ -60,8 +56,7 @@ namespace AllOverIt.Tests.Async
                 {
                     _ = new BackgroundTask(token => Task.CompletedTask, null, CancellationToken.None);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("exceptionHandler");
             }
 
@@ -82,8 +77,7 @@ namespace AllOverIt.Tests.Async
                 {
                     await backgroundTask;
                 })
-                .Should()
-                .ThrowAsync<TaskCanceledException>();
+                .ShouldThrowAsync<TaskCanceledException>();
             }
 
             [Fact]
@@ -113,8 +107,7 @@ namespace AllOverIt.Tests.Async
                 {
                     await backgroundTask;
                 })
-                .Should()
-                .NotThrowAsync();
+                .ShouldNotThrowAsync();
             }
 
             [Fact]
@@ -134,10 +127,9 @@ namespace AllOverIt.Tests.Async
                 {
                     await backgroundTask;
                 })
-                .Should()
-                .NotThrowAsync();
+                .ShouldNotThrowAsync();
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -157,11 +149,10 @@ namespace AllOverIt.Tests.Async
                 {
                     await backgroundTask;
                 })
-                 .Should()
-                 .ThrowAsync<Exception>()
+                 .ShouldThrowAsync<Exception>()
                  .WithMessage(expected.Message);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
 
@@ -174,8 +165,7 @@ namespace AllOverIt.Tests.Async
                 {
                     _ = new BackgroundTask(null, TaskCreationOptions.None, TaskScheduler.Current, CancellationToken.None);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("action");
             }
 
@@ -186,8 +176,7 @@ namespace AllOverIt.Tests.Async
                 {
                     _ = new BackgroundTask(token => Task.CompletedTask, TaskCreationOptions.None, null, CancellationToken.None);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("scheduler");
             }
 
@@ -204,8 +193,7 @@ namespace AllOverIt.Tests.Async
                 {
                     await backgroundTask;
                 })
-                 .Should()
-                 .ThrowAsync<TaskCanceledException>();
+                 .ShouldThrowAsync<TaskCanceledException>();
             }
         }
 
@@ -218,8 +206,7 @@ namespace AllOverIt.Tests.Async
                 {
                     _ = new BackgroundTask(null, TaskCreationOptions.None, TaskScheduler.Current, edi => true, CancellationToken.None);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("action");
             }
 
@@ -230,8 +217,7 @@ namespace AllOverIt.Tests.Async
                 {
                     _ = new BackgroundTask(token => Task.CompletedTask, TaskCreationOptions.None, null, edi => true, CancellationToken.None);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("scheduler");
             }
 
@@ -242,8 +228,7 @@ namespace AllOverIt.Tests.Async
                 {
                     _ = new BackgroundTask(token => Task.CompletedTask, TaskCreationOptions.None, TaskScheduler.Current, null, CancellationToken.None);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("exceptionHandler");
             }
 
@@ -269,8 +254,7 @@ namespace AllOverIt.Tests.Async
                         await backgroundTask;
                     });
                 })
-                .Should()
-                .ThrowAsync<TaskCanceledException>();
+                .ShouldThrowAsync<TaskCanceledException>();
             }
 
             [Fact]
@@ -295,8 +279,7 @@ namespace AllOverIt.Tests.Async
                         await backgroundTask;
                     });
                 })
-                .Should()
-                .NotThrowAsync();
+                .ShouldNotThrowAsync();
             }
 
             [Fact]
@@ -316,10 +299,9 @@ namespace AllOverIt.Tests.Async
                 {
                     await backgroundTask;
                 })
-                 .Should()
-                 .NotThrowAsync();
+                 .ShouldNotThrowAsync();
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -339,11 +321,10 @@ namespace AllOverIt.Tests.Async
                 {
                     await backgroundTask;
                 })
-                 .Should()
-                 .ThrowAsync<Exception>()
+                 .ShouldThrowAsync<Exception>()
                  .WithMessage(expected.Message);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
         }
 
@@ -360,10 +341,9 @@ namespace AllOverIt.Tests.Async
 
                     actual = (Task) backgroundTask;
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
         }
 
@@ -378,8 +358,7 @@ namespace AllOverIt.Tests.Async
 
                     backgroundTask.GetAwaiter().GetResult();
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
 
@@ -413,7 +392,7 @@ namespace AllOverIt.Tests.Async
                 // Disposing will not allow the TaskCancelledException to propagate
                 await backgroundTask.DisposeAsync();
 
-                cancelled.Should().BeTrue();
+                cancelled.ShouldBeTrue();
             }
 
             [Fact]
@@ -429,8 +408,7 @@ namespace AllOverIt.Tests.Async
                 {
                     await backgroundTask.DisposeAsync();
                 })
-               .Should()
-               .NotThrowAsync();
+               .ShouldNotThrowAsync();
             }
 
             [Fact]
@@ -450,8 +428,11 @@ namespace AllOverIt.Tests.Async
 
                 await backgroundTask.DisposeAsync();
 
-                handled.Should().BeFalse();
+                handled.ShouldBeFalse();
             }
         }
     }
 }
+
+
+

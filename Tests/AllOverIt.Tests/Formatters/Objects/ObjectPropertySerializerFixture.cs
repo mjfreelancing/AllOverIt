@@ -4,8 +4,8 @@ using AllOverIt.Fixture.Extensions;
 using AllOverIt.Formatters.Objects;
 using AllOverIt.Formatters.Objects.Exceptions;
 using AllOverIt.Reflection;
-using FluentAssertions;
 using System.Collections;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Formatters.Objects
 {
@@ -168,8 +168,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 var helper = new ObjectPropertySerializer();
 
                 expected
-                    .Should()
-                    .BeEquivalentTo(helper.Options.IgnoredTypes);
+                    .ShouldBeEquivalentTo(helper.Options.IgnoredTypes);
             }
         }
 
@@ -198,8 +197,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 };
 
                 expected
-                    .Should()
-                    .BeEquivalentTo(helper.Options);
+                    .ShouldBeEquivalentTo(helper.Options);
             }
 
             [Fact]
@@ -209,8 +207,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 {
                     _ = new ObjectPropertySerializer(null, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("options");
             }
 
@@ -255,8 +252,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 };
 
                 expected
-                    .Should()
-                    .BeEquivalentTo(helper.Options);
+                    .ShouldBeEquivalentTo(helper.Options);
             }
         }
 
@@ -271,8 +267,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 {
                     _ = serializer.SerializeToDictionary(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("instance");
             }
 
@@ -290,7 +285,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"_", $"{instance}"}
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -310,9 +305,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"[4]", list[4]}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -333,9 +326,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"[]", string.Join("-", list)}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -347,7 +338,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                 var actual = serializer.SerializeToDictionary(expected);
 
-                actual.Should().BeSameAs(expected);
+                actual.ShouldBeSameAs(expected);
             }
 
             [Fact]
@@ -371,9 +362,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop14", $"{dummy.Prop14}"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -391,9 +380,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop13", "13"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -411,8 +398,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {
                         _ = serializer.SerializeToDictionary(dummy1);
                     })
-                    .Should()
-                    .Throw<SelfReferenceException>()
+                    .ShouldThrow<SelfReferenceException>()
                     .WithMessage("Self referencing detected at 'Prop2.Prop2.Prop2' of type 'DummyType'.");
             }
 
@@ -439,9 +425,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop4[2]", $"{dummy.Prop4.ElementAt(2)}"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -466,9 +450,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     { "Prop4", $"{dummy.Prop4.ElementAt(0)}, {dummy.Prop4.ElementAt(1)}, {dummy.Prop4.ElementAt(2)}" }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -498,9 +480,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     { "Prop2.Prop4[2]", $"{dummy.Prop2.Prop4.ElementAt(2)}" }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -525,9 +505,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     { "Prop8", $"{dummy.Prop8}" }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -561,9 +539,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     { "Prop14", $"{dummy.Prop14}" }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -590,9 +566,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     { "Prop2.Prop4", $"{dummy.Prop2.Prop4.ElementAt(0)}, {dummy.Prop2.Prop4.ElementAt(1)}, {dummy.Prop2.Prop4.ElementAt(2)}" }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -603,8 +577,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 var filter = new DummyNestedParentFilter(false);
 
                 filter.EnumerableOptions.AutoCollatedPaths
-                    .Should()
-                    .BeNull();
+                    .ShouldBeNull();
 
                 var serializer = GetSerializer(filter);
 
@@ -623,9 +596,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Children[2].Info[2].TopNumbers", string.Join(", ", dummy.Children.ElementAt(2).Info.ElementAt(2).TopNumbers)}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -637,8 +608,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 var filter = new DummyNestedParentFilter(true);
 
                 filter.EnumerableOptions.AutoCollatedPaths
-                    .Should()
-                    .NotBeNullOrEmpty();
+                    .ShouldNotBeNullOrEmpty();
 
                 var serializer = GetSerializer(filter);
 
@@ -657,9 +627,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Children[2].Info[2].TopNumbers", string.Join(", ", dummy.Children.ElementAt(2).Info.ElementAt(2).TopNumbers)}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -671,8 +639,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                 var filter = new DummyNestedParentFilter(true);
 
                 filter.EnumerableOptions.AutoCollatedPaths
-                    .Should()
-                    .NotBeNullOrEmpty();
+                    .ShouldNotBeNullOrEmpty();
 
                 var serializer = GetSerializer(filter);
 
@@ -694,9 +661,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Numbers", string.Join(", ", dummy.Numbers)}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -720,9 +685,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"TopNumbers", string.Join(separator, dummy.TopNumbers)}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -776,9 +739,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Children[1].Info[1].TopNumbers", string.Join(", ", dummy.Children.ElementAt(1).Info.ElementAt(1).TopNumbers)}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -809,9 +770,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop5", $"{data.Prop5.ElementAt(0)}, {data.Prop5.ElementAt(1)}"},
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -845,9 +804,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop5[0].Prop1", $"{data.Prop5.ElementAt(0).Prop1}"},
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -874,9 +831,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Root[0].Prop1", data.Root.ElementAt(0).Prop1}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -925,9 +880,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop2.Prop2.Prop14", $"{dummy3.Prop14}"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -954,9 +907,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop14", "<null>"}
                 };
 
-                expected
-                   .Should()
-                   .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -989,9 +940,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop14", "<empty>"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1026,9 +975,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop14", "<null>"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1048,9 +995,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {keys[2], values[2]}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1074,9 +1019,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     { $"{keys[2]}.{dictionary[keys[2]].Keys.ElementAt(1)}", $"{dictionary[keys[2]].Values.ElementAt(1)}" }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1101,9 +1044,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {$"Prop6.{nameof(DummyType)}`1", "two"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1125,9 +1066,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {$"{typeof(Typed<DummyType>).GetFriendlyName()}`1", "False"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1147,9 +1086,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop1", "0"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1165,9 +1102,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"That", "0"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1194,9 +1129,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     //{ "list", "System.Collections.Generic.List`1[System.Int32]" }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1225,8 +1158,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {
                         _ = serializer.SerializeToDictionary(root);
                     })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -1253,9 +1185,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop2.Prop4[2]", $"{dummy.Prop2.Prop4.ElementAt(2)}"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1309,9 +1239,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     //{ "Prop2.Prop2.Prop14", $"{dummy3.Prop14}" }
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1366,9 +1294,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop2.Prop2.Prop14", $"{dummy3.Prop14}"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1387,9 +1313,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop1", "Included"}
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -1419,9 +1343,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     {"Prop2.Prop14", $"{dummy2.Prop14}"},
                 };
 
-                expected
-                    .Should()
-                    .BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             public class SerializeObjectPropertyFilter : SerializeToDictionary
@@ -1471,7 +1393,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                     _ = serializer.SerializeToDictionary(dummy);
 
-                    filter.Types.Should().HaveCount(25);
+                    filter.Types.Count.ShouldBe(25);
 
                     // Prop1, Prop2, Prop1, Prop4, , , , Prop5, , , , Prop8, Prop14, Prop4, , , , Prop5, , , , Prop8, Prop12, , Prop14
 
@@ -1497,8 +1419,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     };
 
                     expected
-                        .Should()
-                        .BeEquivalentTo(filter.Types);
+                        .ShouldBeEquivalentTo(filter.Types);
                 }
 
                 [Fact]
@@ -1520,7 +1441,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                     _ = serializer.SerializeToDictionary(dummy);
 
-                    filter.Names.Should().HaveCount(25);
+                    filter.Names.Count.ShouldBe(25);
 
                     var expected = new string[]
                     {
@@ -1530,8 +1451,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     };
 
                     expected
-                        .Should()
-                        .BeEquivalentTo(filter.Names);
+                        .ShouldBeEquivalentTo(filter.Names);
                 }
 
                 [Fact]
@@ -1553,7 +1473,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                     _ = serializer.SerializeToDictionary(dummy);
 
-                    filter.Paths.Should().HaveCount(25);
+                    filter.Paths.Count.ShouldBe(25);
 
                     // Prop12 is listed twice because it includes the root property as well as an <empty> value
                     var expected = new[]
@@ -1569,8 +1489,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     };
 
                     expected
-                        .Should()
-                        .BeEquivalentTo(filter.Paths);
+                        .ShouldBeEquivalentTo(filter.Paths);
                 }
 
                 [Fact]
@@ -1592,7 +1511,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                     _ = serializer.SerializeToDictionary(dummy);
 
-                    filter.PropertyPaths.Should().HaveCount(25);
+                    filter.PropertyPaths.Count.ShouldBe(25);
 
                     // Prop12 is listed twice because it includes the root property as well as an <empty> value.
                     // The multiples of several paths is due to iterating over a collection or dictionary.
@@ -1605,8 +1524,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     };
 
                     expected
-                        .Should()
-                        .BeEquivalentTo(filter.PropertyPaths);
+                        .ShouldBeEquivalentTo(filter.PropertyPaths);
                 }
 
                 [Fact]
@@ -1628,7 +1546,7 @@ namespace AllOverIt.Tests.Formatters.Objects
 
                     _ = serializer.SerializeToDictionary(dummy);
 
-                    filter.Indexes.Should().HaveCount(25);
+                    filter.Indexes.Count.ShouldBe(25);
 
                     var expectedIndexes = new int?[]
                     {
@@ -1637,8 +1555,7 @@ namespace AllOverIt.Tests.Formatters.Objects
                     };
 
                     expectedIndexes
-                        .Should()
-                        .BeEquivalentTo(filter.Indexes);
+                        .ShouldBeEquivalentTo(filter.Indexes);
                 }
             }
 
@@ -1649,3 +1566,10 @@ namespace AllOverIt.Tests.Formatters.Objects
         }
     }
 }
+
+
+
+
+
+
+

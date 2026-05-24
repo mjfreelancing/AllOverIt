@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Serialization.Binary.Exceptions;
 
 namespace AllOverIt.Serialization.Binary.Tests.Exceptions
@@ -24,3 +24,5 @@ namespace AllOverIt.Serialization.Binary.Tests.Exceptions
         }
     }
 }
+
+

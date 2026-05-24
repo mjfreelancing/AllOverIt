@@ -1,4 +1,4 @@
-﻿using AllOverIt.Filtering.Filters;
+using AllOverIt.Filtering.Filters;
 using AllOverIt.Fixture;
 using FluentAssertions;
 
@@ -13,7 +13,7 @@ namespace AllOverIt.Filtering.Tests.Filters
             {
                 var actual = new NotContains();
 
-                actual.Value.Should().Be(default);
+                actual.Value.ShouldBe(default);
             }
         }
 
@@ -26,7 +26,7 @@ namespace AllOverIt.Filtering.Tests.Filters
 
                 var actual = new NotContains(value);
 
-                actual.Value.Should().Be(value);
+                actual.Value.ShouldBe(value);
             }
         }
 
@@ -39,7 +39,7 @@ namespace AllOverIt.Filtering.Tests.Filters
 
                 var actual = (string) value;
 
-                actual.Should().Be(value.Value);
+                actual.ShouldBe(value.Value);
             }
         }
 
@@ -52,8 +52,9 @@ namespace AllOverIt.Filtering.Tests.Filters
 
                 var actual = (NotContains) value;
 
-                actual.Value.Should().Be(value);
+                actual.Value.ShouldBe(value);
             }
         }
     }
 }
+

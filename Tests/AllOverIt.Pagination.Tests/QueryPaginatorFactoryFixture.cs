@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Fixture.FakeItEasy;
 using AllOverIt.Pagination.TokenEncoding;
-using FluentAssertions;
 
 namespace AllOverIt.Pagination.Tests
 {
@@ -28,8 +27,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     _ = new QueryPaginatorFactory(null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("continuationTokenEncoderFactory");
             }
         }
@@ -43,8 +41,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     _ = _factory.CreatePaginator<DummyEntity>(null, Create<QueryPaginatorConfiguration>());
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("query");
             }
 
@@ -55,8 +52,7 @@ namespace AllOverIt.Pagination.Tests
                 {
                     _ = _factory.CreatePaginator<DummyEntity>(Array.Empty<DummyEntity>().AsQueryable(), null);
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("configuration");
             }
 
@@ -68,8 +64,12 @@ namespace AllOverIt.Pagination.Tests
 
                 var paginator = _factory.CreatePaginator<DummyEntity>(query, config);
 
-                paginator.Should().BeAssignableTo<IQueryPaginator<DummyEntity>>();
+                paginator.ShouldBeAssignableTo<IQueryPaginator<DummyEntity>>();
             }
         }
     }
 }
+
+
+
+

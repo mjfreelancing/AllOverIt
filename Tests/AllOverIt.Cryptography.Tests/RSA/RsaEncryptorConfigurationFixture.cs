@@ -2,7 +2,8 @@
 using AllOverIt.Cryptography.RSA;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 using System.Security.Cryptography;
 
 using RSAAlgorithm = System.Security.Cryptography.RSA;
@@ -18,9 +19,9 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 var actual = new RsaEncryptorConfiguration();
 
-                actual.Padding.Should().Be(RSAEncryptionPadding.OaepSHA256);
-                actual.Keys.PublicKey.Should().NotBeEmpty();
-                actual.Keys.PrivateKey.Should().NotBeEmpty();
+                actual.Padding.ShouldBe(RSAEncryptionPadding.OaepSHA256);
+                actual.Keys.PublicKey.ShouldNotBeEmpty();
+                actual.Keys.PrivateKey.ShouldNotBeEmpty();
             }
 
             [Fact]
@@ -29,7 +30,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
                 var config1 = new RsaEncryptorConfiguration();
                 var config2 = new RsaEncryptorConfiguration();
 
-                config1.Keys.Should().NotBeEquivalentTo(config2.Keys);
+                config1.Keys.PublicKey.ShouldNotBe(config2.Keys.PublicKey);
             }
         }
 
@@ -40,24 +41,20 @@ namespace AllOverIt.Cryptography.Tests.RSA
             [Fact]
             public void Should_Throw_When_PublicKey_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new RsaEncryptorConfiguration(null, _rsaKeyPair.PrivateKey);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("publicKey");
             }
 
             [Fact]
             public void Should_Throw_When_PrivateKey_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new RsaEncryptorConfiguration(_rsaKeyPair.PublicKey, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("privateKey");
             }
 
@@ -66,8 +63,8 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 var encryptor = new RsaEncryptorConfiguration(_rsaKeyPair.PublicKey, _rsaKeyPair.PrivateKey);
 
-                encryptor.Keys.PublicKey.Should().BeEquivalentTo(_rsaKeyPair.PublicKey);
-                encryptor.Keys.PrivateKey.Should().BeEquivalentTo(_rsaKeyPair.PrivateKey);
+                encryptor.Keys.PublicKey.ShouldBe(_rsaKeyPair.PublicKey);
+                encryptor.Keys.PrivateKey.ShouldBe(_rsaKeyPair.PrivateKey);
             }
         }
 
@@ -87,24 +84,20 @@ namespace AllOverIt.Cryptography.Tests.RSA
             [Fact]
             public void Should_Throw_When_PublicKey_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new RsaEncryptorConfiguration(null, _privateKeyBase64);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("publicKeyBase64");
             }
 
             [Fact]
             public void Should_Throw_When_PrivateKey_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new RsaEncryptorConfiguration(_publicKeyBase64, null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("privateKeyBase64");
             }
 
@@ -113,8 +106,8 @@ namespace AllOverIt.Cryptography.Tests.RSA
             {
                 var encryptor = new RsaEncryptorConfiguration(_publicKeyBase64, _privateKeyBase64);
 
-                encryptor.Keys.PublicKey.Should().BeEquivalentTo(_rsaKeyPair.PublicKey);
-                encryptor.Keys.PrivateKey.Should().BeEquivalentTo(_rsaKeyPair.PrivateKey);
+                encryptor.Keys.PublicKey.ShouldBe(_rsaKeyPair.PublicKey);
+                encryptor.Keys.PrivateKey.ShouldBe(_rsaKeyPair.PrivateKey);
             }
         }
 
@@ -130,8 +123,8 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 var rsaKeyPair = new RsaKeyPair(rsa);
 
-                encryptor.Keys.PublicKey.Should().BeEquivalentTo(rsaKeyPair.PublicKey);
-                encryptor.Keys.PrivateKey.Should().BeEquivalentTo(rsaKeyPair.PrivateKey);
+                encryptor.Keys.PublicKey.ShouldBe(rsaKeyPair.PublicKey);
+                encryptor.Keys.PrivateKey.ShouldBe(rsaKeyPair.PrivateKey);
             }
         }
 
@@ -140,12 +133,10 @@ namespace AllOverIt.Cryptography.Tests.RSA
             [Fact]
             public void Should_Throw_When_RSAKeyPair_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     _ = new RsaEncryptorConfiguration(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("rsaKeyPair");
             }
 
@@ -156,7 +147,7 @@ namespace AllOverIt.Cryptography.Tests.RSA
 
                 var config = new RsaEncryptorConfiguration(rsaKeys);
 
-                config.Keys.Should().BeEquivalentTo(rsaKeys);
+                config.Keys.ShouldBeEquivalentTo(rsaKeys);
             }
         }
     }

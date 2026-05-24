@@ -1,6 +1,6 @@
 using AllOverIt.EntityFrameworkCore.Diagrams.D2;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using Shouldly;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
 {
@@ -13,7 +13,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
             {
                 var actual = ErdGenerator.Create<D2ErdGenerator>(options => { });
 
-                actual.Should().BeOfType<D2ErdGenerator>();
+                actual.ShouldBeOfType<D2ErdGenerator>();
             }
 
             [Fact]
@@ -26,18 +26,16 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests
                     actual = options;
                 });
 
-                actual.Should().BeOfType<ErdOptions>();
+                actual.ShouldBeOfType<ErdOptions>();
             }
 
             [Fact]
             public void Should_Not_Throw_When_Configure_Null()
             {
-                Invoking(() =>
+                Should.NotThrow(() =>
                 {
                     _ = ErdGenerator.Create<D2ErdGenerator>(null);
-                })
-                .Should()
-                .NotThrow();
+                });
             }
         }
     }

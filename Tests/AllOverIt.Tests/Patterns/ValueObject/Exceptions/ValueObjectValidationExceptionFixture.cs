@@ -1,6 +1,5 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Patterns.ValueObject.Exceptions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Patterns.ValueObject.Exceptions
 {
@@ -26,8 +25,10 @@ namespace AllOverIt.Tests.Patterns.ValueObject.Exceptions
 
             var exception = new ValueObjectValidationException(attemptedValue, message);
 
-            exception.AttemptedValue.Should().BeSameAs(attemptedValue);
-            exception.Message.Should().Be(message);
+            exception.AttemptedValue.ShouldBeSameAs(attemptedValue);
+            exception.Message.ShouldBe(message);
         }
     }
 }
+
+

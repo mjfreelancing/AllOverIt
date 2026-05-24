@@ -1,8 +1,7 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Process;
 using AllOverIt.Process.Extensions;
-using FluentAssertions;
 using System.Diagnostics;
 
 namespace AllOverIt.Tests.Process
@@ -30,13 +29,13 @@ namespace AllOverIt.Tests.Process
             [Fact]
             public void Should_Have_Populated_Properties()
             {
-                _sut.ProcessFileName.Should().NotBeNull();
-                _sut.WorkingDirectory.Should().NotBeNull();
-                _sut.Arguments.Should().NotBeNull();
-                _sut.Timeout.Should().NotBe(default);
-                _sut.EnvironmentVariables.Should().NotBeNull();
-                _sut.StandardOutputHandler.Should().NotBeNull();
-                _sut.ErrorOutputHandler.Should().NotBeNull();
+                _sut.ProcessFileName.ShouldNotBeNull();
+                _sut.WorkingDirectory.ShouldNotBeNull();
+                _sut.Arguments.ShouldNotBeNull();
+                _sut.Timeout.ShouldNotBe(default);
+                _sut.EnvironmentVariables.ShouldNotBeNull();
+                _sut.StandardOutputHandler.ShouldNotBeNull();
+                _sut.ErrorOutputHandler.ShouldNotBeNull();
             }
         }
 
@@ -49,8 +48,7 @@ namespace AllOverIt.Tests.Process
                 {
                     _ = new ProcessExecutorOptions(null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("processFileName");
             }
 
@@ -63,7 +61,7 @@ namespace AllOverIt.Tests.Process
 
                 var actual = options.ProcessFileName;
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -84,3 +82,6 @@ namespace AllOverIt.Tests.Process
         }
     }
 }
+
+
+

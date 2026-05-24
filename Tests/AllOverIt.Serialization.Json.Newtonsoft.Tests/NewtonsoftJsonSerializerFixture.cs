@@ -1,14 +1,14 @@
-using AllOverIt.Fixture;
+﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Patterns.Enumeration;
 using AllOverIt.Serialization.Json.Abstractions;
 using AllOverIt.Serialization.Json.Abstractions.Exceptions;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
-using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Runtime.CompilerServices;
 using System.Text;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 {
@@ -45,8 +45,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
                 var expected = new JsonSerializerSettings();
 
                 expected
-                    .Should()
-                    .BeEquivalentTo(serializer.Settings);
+                    .ShouldBeEquivalentTo(serializer.Settings);
             }
 
             [Fact]
@@ -56,8 +55,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
                 var serializer = new NewtonsoftJsonSerializer(settings);
 
                 serializer.Settings
-                    .Should()
-                    .Be(settings);
+                    .ShouldBeSameAs(settings);
             }
         }
 
@@ -70,8 +68,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
                     {
                         _serializer.Configure(null);
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("configuration");
             }
 
@@ -90,12 +87,11 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
                 if (useCamelCase)
                 {
                     _serializer.Settings.ContractResolver
-                        .Should()
-                        .BeEquivalentTo(new CamelCasePropertyNamesContractResolver());
+                        .ShouldBeOfType<CamelCasePropertyNamesContractResolver>();
                 }
                 else
                 {
-                    _serializer.Settings.ContractResolver.Should().BeNull();
+                    _serializer.Settings.ContractResolver.ShouldBeNull();
                 }
             }
 
@@ -111,8 +107,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 
                         _serializer.Configure(config);
                     })
-                    .Should()
-                    .Throw<SerializerConfigurationException>()
+                    .ShouldThrow<SerializerConfigurationException>()
                     .WithMessage("Newtonsoft requires a custom converter to support case sensitivity.");
             }
 
@@ -126,7 +121,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 
                 var hasFactory = _serializer.Settings.Converters.SingleOrDefault(converter => converter.GetType() == typeof(EnrichedEnumJsonConverterFactory));
 
-                hasFactory.Should().NotBeNull();
+                hasFactory.ShouldNotBeNull();
             }
 
             [Fact]
@@ -141,7 +136,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 
                 var hasFactory = serializer.Settings.Converters.SingleOrDefault(converter => converter.GetType() == typeof(EnrichedEnumJsonConverterFactory));
 
-                hasFactory.Should().NotBeNull();
+                hasFactory.ShouldNotBeNull();
 
                 serializer.Configure(new JsonSerializerConfiguration
                 {
@@ -150,7 +145,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 
                 hasFactory = serializer.Settings.Converters.SingleOrDefault(converter => converter.GetType() == typeof(EnrichedEnumJsonConverterFactory));
 
-                hasFactory.Should().BeNull();
+                hasFactory.ShouldBeNull();
             }
         }
 
@@ -167,7 +162,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 
                 var expected = $@"{{""propOne"":{value.PropOne},""prop2"":""{value.Prop2}"",""child1"":{{""prop1"":{value.Child1.Prop1},""prop2"":""{value.Child1.Prop2}""}},""child2"":null}}";
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -188,7 +183,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 
                 var expected = $@"{{""propOne"":{value.PropOne},""prop2"":""{value.Prop2}""}}";
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -203,7 +198,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 
                 var expected = Encoding.UTF8.GetBytes(_serializer.SerializeObject(value));
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -219,7 +214,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 
                 var actual = _serializer.DeserializeObject<DummyType>(value);
 
-                expected.Should().BeEquivalentTo(actual);
+                actual.ShouldBeEquivalentTo(expected);
             }
 
             [Fact]
@@ -244,8 +239,8 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 
                 var actual = serializer.DeserializeObject<DummyType>(value);
 
-                actual.PropOne.Should().Be(0);
-                actual.PropOne.Should().NotBe(expected.PropOne);
+                actual.PropOne.ShouldBe(0);
+                actual.PropOne.ShouldNotBe(expected.PropOne);
             }
         }
 
@@ -263,7 +258,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
                 {
                     var actual = await _serializer.DeserializeObjectAsync<DummyType>(stream, CancellationToken.None);
 
-                    expected.Should().BeEquivalentTo(actual);
+                    actual.ShouldBeEquivalentTo(expected);
                 }
             }
 
@@ -291,8 +286,8 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
 
                     var actual = await serializer.DeserializeObjectAsync<DummyType>(stream, CancellationToken.None);
 
-                    actual.PropOne.Should().Be(0);
-                    actual.PropOne.Should().NotBe(expected.PropOne);
+                    actual.PropOne.ShouldBe(0);
+                    actual.PropOne.ShouldNotBe(expected.PropOne);
                 }
             }
 
@@ -313,8 +308,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
                         {
                             _ = await _serializer.DeserializeObjectAsync<DummyType>(stream, cts.Token);
                         })
-                        .Should()
-                        .ThrowAsync<OperationCanceledException>();
+                        .ShouldThrowAsync<OperationCanceledException>();
                 }
             }
         }
@@ -360,19 +354,21 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests
                 });
 
                 var actual = serializer.SerializeObject(value);
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected);
 
                 var deserialized = new DummyWithEnum();
-                deserialized.Prop1.Should().BeNull();
-                deserialized.Prop2.Should().BeNull();
-                deserialized.Prop3.Should().BeNull();
+                deserialized.Prop1.ShouldBeNull();
+                deserialized.Prop2.ShouldBeNull();
+                deserialized.Prop3.ShouldBeNull();
 
                 deserialized = serializer.DeserializeObject<DummyWithEnum>(actual);
 
-                deserialized.Prop1.Should().BeSameAs(DummyEnrichedEnum.Value1);
-                deserialized.Prop2.Should().BeSameAs(DummyEnrichedEnum.Value2);
-                deserialized.Prop3.Should().BeSameAs(DummyEnrichedEnum.Value3);
+                deserialized.Prop1.ShouldBeSameAs(DummyEnrichedEnum.Value1);
+                deserialized.Prop2.ShouldBeSameAs(DummyEnrichedEnum.Value2);
+                deserialized.Prop3.ShouldBeSameAs(DummyEnrichedEnum.Value3);
             }
         }
     }
 }
+
+

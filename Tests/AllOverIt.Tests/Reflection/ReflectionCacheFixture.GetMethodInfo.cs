@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Fixture;
+using AllOverIt.Shouldly;
 using AllOverIt.Reflection;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Tests.Reflection
 {
@@ -37,7 +38,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -60,7 +61,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -88,7 +89,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -116,7 +117,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -144,7 +145,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
         }
 
@@ -179,7 +180,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -202,7 +203,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -230,7 +231,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -258,7 +259,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
 
             [Fact]
@@ -286,7 +287,7 @@ namespace AllOverIt.Tests.Reflection
                     }
                 };
 
-                actual.Should().BeEquivalentTo(expected);
+                actual.ShouldBeEquivalentTo(expected, options => options.SequenceOrdering = SequenceOrdering.AnyOrder);
             }
         }
 
@@ -297,7 +298,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionCache.GetMethodInfo<DummyPropertyMethodSuperClass>(Create<string>());
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -305,7 +306,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionCache.GetMethodInfo<DummyPropertyMethodSuperClass>("Method5");
 
-                actual.Should().NotBeNull();
+                actual.ShouldNotBeNull();
 
                 // make sure the correct overload was chosen
                 var expected = Create<int>();
@@ -313,7 +314,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var value = actual.Invoke(dummy, null);
 
-                value.Should().Be(expected);
+                value.ShouldBe(expected);
             }
         }
 
@@ -324,7 +325,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionCache.GetMethodInfo(typeof(DummyPropertyMethodSuperClass), Create<string>());
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -332,7 +333,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionCache.GetMethodInfo(typeof(DummyPropertyMethodSuperClass), "Method5");
 
-                actual.Should().NotBeNull();
+                actual.ShouldNotBeNull();
 
                 // make sure the correct overload was chosen
                 var expected = Create<int>();
@@ -340,7 +341,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var value = actual.Invoke(dummy, null);
 
-                value.Should().Be(expected);
+                value.ShouldBe(expected);
             }
         }
 
@@ -351,7 +352,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionCache.GetMethodInfo<DummyPropertyMethodSuperClass>(Create<string>(), Type.EmptyTypes);
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -359,7 +360,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionCache.GetMethodInfo<DummyPropertyMethodSuperClass>("Method5", Type.EmptyTypes);
 
-                actual.Should().NotBeNull();
+                actual.ShouldNotBeNull();
 
                 // make sure the correct overload was chosen
                 var expected = Create<int>();
@@ -367,7 +368,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var value = actual.Invoke(dummy, null);
 
-                value.Should().Be(expected);
+                value.ShouldBe(expected);
             }
 
             [Fact]
@@ -375,7 +376,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionCache.GetMethodInfo<DummyPropertyMethodSuperClass>("Method6", new[] { typeof(int) });
 
-                actual.Should().NotBeNull();
+                actual.ShouldNotBeNull();
 
                 // make sure the correct overload was chosen
                 var expected = Create<int>();
@@ -383,7 +384,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var value = actual.Invoke(dummy, new object[] { expected });
 
-                value.Should().Be(expected);
+                value.ShouldBe(expected);
             }
         }
 
@@ -394,7 +395,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionCache.GetMethodInfo(typeof(DummyPropertyMethodSuperClass), Create<string>(), Type.EmptyTypes);
 
-                actual.Should().BeNull();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -402,7 +403,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionCache.GetMethodInfo(typeof(DummyPropertyMethodSuperClass), "Method5", Type.EmptyTypes);
 
-                actual.Should().NotBeNull();
+                actual.ShouldNotBeNull();
 
                 // make sure the correct overload was chosen
                 var expected = Create<int>();
@@ -410,7 +411,7 @@ namespace AllOverIt.Tests.Reflection
 
                 var value = actual.Invoke(dummy, null);
 
-                value.Should().Be(expected);
+                value.ShouldBe(expected);
             }
 
             [Fact]
@@ -418,7 +419,7 @@ namespace AllOverIt.Tests.Reflection
             {
                 var actual = ReflectionCache.GetMethodInfo(typeof(DummyPropertyMethodSuperClass), "Method6", new[] { typeof(int) });
 
-                actual.Should().NotBeNull();
+                actual.ShouldNotBeNull();
 
                 // make sure the correct overload was chosen
                 var expected = Create<int>();
@@ -426,8 +427,18 @@ namespace AllOverIt.Tests.Reflection
 
                 var value = actual.Invoke(dummy, new object[] { expected });
 
-                value.Should().Be(expected);
+                value.ShouldBe(expected);
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

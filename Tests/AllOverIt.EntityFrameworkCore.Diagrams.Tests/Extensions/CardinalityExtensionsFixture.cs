@@ -1,7 +1,8 @@
 ﻿using AllOverIt.EntityFrameworkCore.Diagrams.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 
 namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Extensions
 {
@@ -14,24 +15,20 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Cardinality_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     CardinalityExtensions.SetLabelStyle(null, _ => { });
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("cardinality");
             }
 
             [Fact]
             public void Should_Throw_When_Configure_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     CardinalityExtensions.SetLabelStyle(_cardinality, (Action<LabelStyle>) null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("configure");
             }
 
@@ -50,7 +47,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Extensions
                     style.Underline = labelStyle.Underline;
                 });
 
-                labelStyle.Should().BeEquivalentTo(_cardinality.LabelStyle);
+                _cardinality.LabelStyle.ShouldBeEquivalentTo(labelStyle);
             }
         }
 
@@ -59,24 +56,20 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Extensions
             [Fact]
             public void Should_Throw_When_Cardinality_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     CardinalityExtensions.SetLabelStyle(null, new LabelStyle());
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("cardinality");
             }
 
             [Fact]
             public void Should_Throw_When_LabelStyle_Null()
             {
-                Invoking(() =>
+                Should.Throw<ArgumentNullException>(() =>
                 {
                     CardinalityExtensions.SetLabelStyle(_cardinality, (LabelStyle) null);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
                 .WithNamedMessageWhenNull("labelStyle");
             }
 
@@ -87,7 +80,7 @@ namespace AllOverIt.EntityFrameworkCore.Diagrams.Tests.Extensions
 
                 CardinalityExtensions.SetLabelStyle(_cardinality, labelStyle);
 
-                _cardinality.LabelStyle.Should().BeSameAs(labelStyle);
+                _cardinality.LabelStyle.ShouldBeSameAs(labelStyle);
             }
         }
     }

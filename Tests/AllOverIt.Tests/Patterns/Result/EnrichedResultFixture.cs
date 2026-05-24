@@ -2,8 +2,7 @@
 
 using AllOverIt.Fixture;
 using AllOverIt.Patterns.Result;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Tests.Patterns.Result;
 
 public partial class EnrichedResultFixture : FixtureBase
@@ -24,7 +23,7 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var result = EnrichedResult.Success();
 
-            result.IsSuccess.Should().BeTrue();
+            result.IsSuccess.ShouldBeTrue();
         }
 
         [Fact]
@@ -32,7 +31,7 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var result = EnrichedResult.Fail();
 
-            result.IsSuccess.Should().BeFalse();
+            result.IsSuccess.ShouldBeFalse();
         }
     }
 
@@ -43,7 +42,7 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var result = EnrichedResult.Fail();
 
-            result.IsFail.Should().BeTrue();
+            result.IsFail.ShouldBeTrue();
         }
 
         [Fact]
@@ -51,7 +50,7 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var result = EnrichedResult.Success();
 
-            result.IsFail.Should().BeFalse();
+            result.IsFail.ShouldBeFalse();
         }
     }
 
@@ -66,8 +65,7 @@ public partial class EnrichedResultFixture : FixtureBase
             {
                 _ = actual.Error;
             })
-            .Should()
-            .Throw<InvalidOperationException>()
+            .ShouldThrow<InvalidOperationException>()
             .WithMessage("The result has no error.");
         }
 
@@ -80,8 +78,7 @@ public partial class EnrichedResultFixture : FixtureBase
             {
                 _ = actual.Error;
             })
-            .Should()
-            .NotThrow();
+            .ShouldNotThrow();
         }
     }
 
@@ -92,7 +89,7 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var actual = EnrichedResult.Success();
 
-            actual.Should().BeOfType<EnrichedResult>();
+            actual.ShouldBeOfType<EnrichedResult>();
 
             var expected = new
             {
@@ -102,7 +99,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Error since it will throw when there is no error.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Error));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Error"));
         }
     }
 
@@ -113,7 +110,7 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var actual = EnrichedResult.Success<int>();
 
-            actual.Should().BeOfType<EnrichedResult<int>>();
+            actual.ShouldBeOfType<EnrichedResult<int>>();
 
             var expected = new
             {
@@ -124,7 +121,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Error since it will throw when there is no error.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Error));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Error"));
         }
 
         [Fact]
@@ -132,7 +129,7 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var actual = EnrichedResult.Success<int?>();
 
-            actual.Should().BeOfType<EnrichedResult<int?>>();
+            actual.ShouldBeOfType<EnrichedResult<int?>>();
 
             var expected = new
             {
@@ -143,7 +140,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Error since it will throw when there is no error.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Error));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Error"));
         }
 
         [Fact]
@@ -151,7 +148,7 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var actual = EnrichedResult.Success<string>();
 
-            actual.Should().BeOfType<EnrichedResult<string>>();
+            actual.ShouldBeOfType<EnrichedResult<string>>();
 
             var expected = new
             {
@@ -162,7 +159,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Error since it will throw when there is no error.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Error));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Error"));
         }
     }
 
@@ -175,7 +172,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Success(value);
 
-            actual.Should().BeOfType<EnrichedResult<int>>();
+            actual.ShouldBeOfType<EnrichedResult<int>>();
 
             var expected = new
             {
@@ -186,7 +183,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Error since it will throw when there is no error.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Error));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Error"));
         }
 
         [Fact]
@@ -196,7 +193,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Success(value);
 
-            actual.Should().BeOfType<EnrichedResult<int?>>();
+            actual.ShouldBeOfType<EnrichedResult<int?>>();
 
             var expected = new
             {
@@ -207,7 +204,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Error since it will throw when there is no error.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Error));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Error"));
         }
 
         [Fact]
@@ -217,7 +214,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Success(value);
 
-            actual.Should().BeOfType<EnrichedResult<string>>();
+            actual.ShouldBeOfType<EnrichedResult<string>>();
 
             var expected = new
             {
@@ -228,7 +225,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Error since it will throw when there is no error.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Error));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Error"));
         }
 
         [Fact]
@@ -238,15 +235,15 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Success(value);
 
-            actual.Value.Should().Be(value);
+            actual.Value.ShouldBe(value);
 
             value = Create<string>();
 
-            actual.Value.Should().NotBe(value);
+            actual.Value.ShouldNotBe(value);
 
             actual.Value = value;
 
-            actual.Value.Should().Be(value);
+            actual.Value.ShouldBe(value);
         }
     }
 
@@ -257,7 +254,7 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var actual = EnrichedResult.Fail((EnrichedError?) null);
 
-            actual.Should().BeOfType<EnrichedResult>();
+            actual.ShouldBeOfType<EnrichedResult>();
 
             var expected = new
             {
@@ -267,7 +264,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Value since it will throw when there is no result.
-            expected.Should().BeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(actual);
         }
 
         [Fact]
@@ -276,7 +273,7 @@ public partial class EnrichedResultFixture : FixtureBase
             var error = new EnrichedError();
             var actual = EnrichedResult.Fail(error);
 
-            actual.Should().BeOfType<EnrichedResult>();
+            actual.ShouldBeOfType<EnrichedResult>();
 
             var expected = new
             {
@@ -286,7 +283,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Value since it will throw when there is no result.
-            expected.Should().BeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(actual);
         }
     }
 
@@ -297,7 +294,7 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var actual = EnrichedResult.Fail<int>();
 
-            actual.Should().BeOfType<EnrichedResult<int>>();
+            actual.ShouldBeOfType<EnrichedResult<int>>();
 
             var expected = new
             {
@@ -308,7 +305,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Value since it will throw when there is no result.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -316,7 +313,7 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var actual = EnrichedResult.Fail<int?>();
 
-            actual.Should().BeOfType<EnrichedResult<int?>>();
+            actual.ShouldBeOfType<EnrichedResult<int?>>();
 
             var expected = new
             {
@@ -328,7 +325,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Error since it will throw when there is no error.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -336,7 +333,7 @@ public partial class EnrichedResultFixture : FixtureBase
         {
             var actual = EnrichedResult.Fail<string>();
 
-            actual.Should().BeOfType<EnrichedResult<string>>();
+            actual.ShouldBeOfType<EnrichedResult<string>>();
 
             var expected = new
             {
@@ -348,7 +345,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Error since it will throw when there is no error.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
     }
 
@@ -361,7 +358,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int>(error);
 
-            actual.Should().BeOfType<EnrichedResult<int>>();
+            actual.ShouldBeOfType<EnrichedResult<int>>();
 
             var expected = new
             {
@@ -372,7 +369,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Value since it will throw when there is no result.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -382,7 +379,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int?>(error);
 
-            actual.Should().BeOfType<EnrichedResult<int?>>();
+            actual.ShouldBeOfType<EnrichedResult<int?>>();
 
             var expected = new
             {
@@ -393,7 +390,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Value since it will throw when there is no result.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -403,7 +400,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<string>(error);
 
-            actual.Should().BeOfType<EnrichedResult<string>>();
+            actual.ShouldBeOfType<EnrichedResult<string>>();
 
             var expected = new
             {
@@ -414,7 +411,7 @@ public partial class EnrichedResultFixture : FixtureBase
             };
 
             // Have to exclude Value since it will throw when there is no result.
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -424,15 +421,15 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<string>(error);
 
-            actual.Error.Should().Be(error);
+            actual.Error.ShouldBe(error);
 
             error = new EnrichedError();
 
-            actual.Error.Should().NotBe(error);
+            actual.Error.ShouldNotBe(error);
 
             actual.Error = error;
 
-            actual.Error.Should().Be(error);
+            actual.Error.ShouldBe(error);
         }
     }
 
@@ -445,7 +442,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail(description);
 
-            actual.Error.Should().BeOfType<EnrichedError>();
+            actual.Error.ShouldBeOfType<EnrichedError>();
 
             var expected = new
             {
@@ -459,7 +456,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(actual);
         }
     }
 
@@ -473,7 +470,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail(type, description);
 
-            actual.Error.Should().BeOfType<EnrichedError>();
+            actual.Error.ShouldBeOfType<EnrichedError>();
 
             var expected = new
             {
@@ -487,7 +484,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(actual);
         }
     }
 
@@ -502,7 +499,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail(type, code, description);
 
-            actual.Error.Should().BeOfType<EnrichedError>();
+            actual.Error.ShouldBeOfType<EnrichedError>();
 
             var expected = new
             {
@@ -516,7 +513,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(actual);
         }
     }
 
@@ -529,9 +526,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int>(description);
 
-            actual.Should().BeOfType<EnrichedResult<int>>();
+            actual.ShouldBeOfType<EnrichedResult<int>>();
 
-            actual.Error.Should().BeOfType<EnrichedError>();
+            actual.Error.ShouldBeOfType<EnrichedError>();
 
             var expected = new
             {
@@ -545,7 +542,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -555,9 +552,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int?>(description);
 
-            actual.Should().BeOfType<EnrichedResult<int?>>();
+            actual.ShouldBeOfType<EnrichedResult<int?>>();
 
-            actual.Error.Should().BeOfType<EnrichedError>();
+            actual.Error.ShouldBeOfType<EnrichedError>();
 
             var expected = new
             {
@@ -571,7 +568,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -581,9 +578,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<string>(description);
 
-            actual.Should().BeOfType<EnrichedResult<string>>();
+            actual.ShouldBeOfType<EnrichedResult<string>>();
 
-            actual.Error.Should().BeOfType<EnrichedError>();
+            actual.Error.ShouldBeOfType<EnrichedError>();
 
             var expected = new
             {
@@ -597,7 +594,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
     }
 
@@ -611,9 +608,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int>(type, description);
 
-            actual.Should().BeOfType<EnrichedResult<int>>();
+            actual.ShouldBeOfType<EnrichedResult<int>>();
 
-            actual.Error.Should().BeOfType<EnrichedError>();
+            actual.Error.ShouldBeOfType<EnrichedError>();
 
             var expected = new
             {
@@ -627,7 +624,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -638,9 +635,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int?>(type, description);
 
-            actual.Should().BeOfType<EnrichedResult<int?>>();
+            actual.ShouldBeOfType<EnrichedResult<int?>>();
 
-            actual.Error.Should().BeOfType<EnrichedError>();
+            actual.Error.ShouldBeOfType<EnrichedError>();
 
             var expected = new
             {
@@ -654,7 +651,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -665,9 +662,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<string>(type, description);
 
-            actual.Should().BeOfType<EnrichedResult<string>>();
+            actual.ShouldBeOfType<EnrichedResult<string>>();
 
-            actual.Error.Should().BeOfType<EnrichedError>();
+            actual.Error.ShouldBeOfType<EnrichedError>();
 
             var expected = new
             {
@@ -681,7 +678,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
     }
 
@@ -696,9 +693,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int>(type, code, description);
 
-            actual.Should().BeOfType<EnrichedResult<int>>();
+            actual.ShouldBeOfType<EnrichedResult<int>>();
 
-            actual.Error.Should().BeOfType<EnrichedError>();
+            actual.Error.ShouldBeOfType<EnrichedError>();
 
             var expected = new
             {
@@ -712,7 +709,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -724,9 +721,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int?>(type, code, description);
 
-            actual.Should().BeOfType<EnrichedResult<int?>>();
+            actual.ShouldBeOfType<EnrichedResult<int?>>();
 
-            actual.Error.Should().BeOfType<EnrichedError>();
+            actual.Error.ShouldBeOfType<EnrichedError>();
 
             var expected = new
             {
@@ -740,7 +737,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -752,9 +749,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<string>(type, code, description);
 
-            actual.Should().BeOfType<EnrichedResult<string>>();
+            actual.ShouldBeOfType<EnrichedResult<string>>();
 
-            actual.Error.Should().BeOfType<EnrichedError>();
+            actual.Error.ShouldBeOfType<EnrichedError>();
 
             var expected = new
             {
@@ -768,7 +765,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
     }
 
@@ -781,7 +778,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<DummyErrorType>(errorType);
 
-            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+            actual.Error.ShouldBeOfType<EnrichedError<DummyErrorType>>();
 
             var expected = new
             {
@@ -796,7 +793,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(actual);
         }
     }
 
@@ -810,7 +807,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<DummyErrorType>(errorType, description);
 
-            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+            actual.Error.ShouldBeOfType<EnrichedError<DummyErrorType>>();
 
             var expected = new
             {
@@ -825,7 +822,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(actual);
         }
     }
 
@@ -840,7 +837,7 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<DummyErrorType>(errorType, code, description);
 
-            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+            actual.Error.ShouldBeOfType<EnrichedError<DummyErrorType>>();
 
             var expected = new
             {
@@ -855,7 +852,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual);
+            expected.ShouldBeEquivalentTo(actual);
         }
     }
 
@@ -868,9 +865,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int, DummyErrorType>(errorType);
 
-            actual.Should().BeOfType<EnrichedResult<int>>();
+            actual.ShouldBeOfType<EnrichedResult<int>>();
 
-            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+            actual.Error.ShouldBeOfType<EnrichedError<DummyErrorType>>();
 
             var expected = new
             {
@@ -885,7 +882,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -895,9 +892,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int?, DummyErrorType>(errorType);
 
-            actual.Should().BeOfType<EnrichedResult<int?>>();
+            actual.ShouldBeOfType<EnrichedResult<int?>>();
 
-            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+            actual.Error.ShouldBeOfType<EnrichedError<DummyErrorType>>();
 
             var expected = new
             {
@@ -912,7 +909,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -922,9 +919,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<string, DummyErrorType>(errorType);
 
-            actual.Should().BeOfType<EnrichedResult<string>>();
+            actual.ShouldBeOfType<EnrichedResult<string>>();
 
-            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+            actual.Error.ShouldBeOfType<EnrichedError<DummyErrorType>>();
 
             var expected = new
             {
@@ -939,7 +936,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
     }
 
@@ -953,9 +950,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int, DummyErrorType>(errorType, description);
 
-            actual.Should().BeOfType<EnrichedResult<int>>();
+            actual.ShouldBeOfType<EnrichedResult<int>>();
 
-            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+            actual.Error.ShouldBeOfType<EnrichedError<DummyErrorType>>();
 
             var expected = new
             {
@@ -970,7 +967,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -981,9 +978,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int?, DummyErrorType>(errorType, description);
 
-            actual.Should().BeOfType<EnrichedResult<int?>>();
+            actual.ShouldBeOfType<EnrichedResult<int?>>();
 
-            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+            actual.Error.ShouldBeOfType<EnrichedError<DummyErrorType>>();
 
             var expected = new
             {
@@ -998,7 +995,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -1009,9 +1006,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<string, DummyErrorType>(errorType, description);
 
-            actual.Should().BeOfType<EnrichedResult<string>>();
+            actual.ShouldBeOfType<EnrichedResult<string>>();
 
-            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+            actual.Error.ShouldBeOfType<EnrichedError<DummyErrorType>>();
 
             var expected = new
             {
@@ -1026,7 +1023,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
     }
 
@@ -1041,9 +1038,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int, DummyErrorType>(errorType, code, description);
 
-            actual.Should().BeOfType<EnrichedResult<int>>();
+            actual.ShouldBeOfType<EnrichedResult<int>>();
 
-            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+            actual.Error.ShouldBeOfType<EnrichedError<DummyErrorType>>();
 
             var expected = new
             {
@@ -1058,7 +1055,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -1070,9 +1067,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<int?, DummyErrorType>(errorType, code, description);
 
-            actual.Should().BeOfType<EnrichedResult<int?>>();
+            actual.ShouldBeOfType<EnrichedResult<int?>>();
 
-            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+            actual.Error.ShouldBeOfType<EnrichedError<DummyErrorType>>();
 
             var expected = new
             {
@@ -1087,7 +1084,7 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
 
         [Fact]
@@ -1099,9 +1096,9 @@ public partial class EnrichedResultFixture : FixtureBase
 
             var actual = EnrichedResult.Fail<string, DummyErrorType>(errorType, code, description);
 
-            actual.Should().BeOfType<EnrichedResult<string>>();
+            actual.ShouldBeOfType<EnrichedResult<string>>();
 
-            actual.Error.Should().BeOfType<EnrichedError<DummyErrorType>>();
+            actual.Error.ShouldBeOfType<EnrichedError<DummyErrorType>>();
 
             var expected = new
             {
@@ -1116,7 +1113,11 @@ public partial class EnrichedResultFixture : FixtureBase
                 }
             };
 
-            expected.Should().BeEquivalentTo(actual, options => options.Excluding(result => result.Value));
+            expected.ShouldBeEquivalentTo(actual, opts => opts.ExcludeMember("Value"));
         }
     }
 }
+
+
+
+

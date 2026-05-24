@@ -1,4 +1,4 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using Shouldly;
@@ -286,3 +286,5 @@ namespace AllOverIt.Logging.Testing.Tests
         }
     }
 }
+
+

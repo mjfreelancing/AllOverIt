@@ -1,7 +1,6 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Reflection;
-using FluentAssertions;
 using System.Reflection;
 
 namespace AllOverIt.Tests.Extensions
@@ -30,8 +29,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ObjectExtensions.InvokeMethod((DummyInvokeClass) null, nameof(DummyInvokeClass.Method1), [Create<int>()], BindingOptions.Default);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("instance");
             }
 
@@ -42,8 +40,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _dummyClass.InvokeMethod(null, [Create<int>()], BindingOptions.Default);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("methodName");
             }
 
@@ -54,8 +51,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _dummyClass.InvokeMethod(string.Empty, [Create<int>()], BindingOptions.Default);
                 })
-                .Should()
-                .Throw<ArgumentException>()
+                .ShouldThrow<ArgumentException>()
                 .WithNamedMessageWhenEmpty("methodName");
             }
 
@@ -66,8 +62,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _dummyClass.InvokeMethod("   ", [Create<int>()], BindingOptions.Default);
                 })
-                .Should()
-                .Throw<ArgumentException>()
+                .ShouldThrow<ArgumentException>()
                 .WithNamedMessageWhenEmpty("methodName");
             }
 
@@ -78,7 +73,7 @@ namespace AllOverIt.Tests.Extensions
 
                 _dummyClass.InvokeMethod(nameof(DummyInvokeClass.Method1), [expected], BindingOptions.Default);
 
-                _dummyClass.Arg.Should().Be(expected);
+                _dummyClass.Arg.ShouldBe(expected);
             }
 
             [Fact]
@@ -88,7 +83,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _dummyClass.InvokeMethod(nameof(DummyInvokeClass.Method1), [expected], BindingOptions.Default);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -98,7 +93,7 @@ namespace AllOverIt.Tests.Extensions
 
                 _dummyClass.InvokeMethod("Method2", [expected], BindingOptions.Instance | BindingOptions.Private);
 
-                _dummyClass.Arg.Should().Be(expected);
+                _dummyClass.Arg.ShouldBe(expected);
             }
         }
 
@@ -111,8 +106,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ObjectExtensions.InvokeMethod(typeof(DummyInvokeClass), (Type) null, nameof(DummyInvokeClass.Method1), [Create<int>()], BindingOptions.Default);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("instanceType");
             }
 
@@ -123,8 +117,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _dummyClass.InvokeMethod(typeof(DummyInvokeClass), null, [Create<int>()], BindingOptions.Default);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("methodName");
             }
 
@@ -135,8 +128,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _dummyClass.InvokeMethod(typeof(DummyInvokeClass), string.Empty, [Create<int>()], BindingOptions.Default);
                 })
-                .Should()
-                .Throw<ArgumentException>()
+                .ShouldThrow<ArgumentException>()
                 .WithNamedMessageWhenEmpty("methodName");
             }
 
@@ -147,8 +139,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _dummyClass.InvokeMethod(typeof(DummyInvokeClass), "   ", [Create<int>()], BindingOptions.Default);
                 })
-                .Should()
-                .Throw<ArgumentException>()
+                .ShouldThrow<ArgumentException>()
                 .WithNamedMessageWhenEmpty("methodName");
             }
 
@@ -159,7 +150,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.InvokeMethod(null, typeof(DummyInvokeClass), nameof(DummyInvokeClass.Method4), [expected], BindingOptions.Default);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -169,7 +160,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _dummyClass.InvokeMethod(typeof(DummyInvokeClass), nameof(DummyInvokeClass.Method1), [expected], BindingOptions.Default);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -179,7 +170,7 @@ namespace AllOverIt.Tests.Extensions
 
                 _dummyClass.InvokeMethod(typeof(DummyInvokeClass), nameof(DummyInvokeClass.Method1), [expected], BindingOptions.Default);
 
-                _dummyClass.Arg.Should().Be(expected);
+                _dummyClass.Arg.ShouldBe(expected);
             }
 
             [Fact]
@@ -189,7 +180,7 @@ namespace AllOverIt.Tests.Extensions
 
                 _dummyClass.InvokeMethod(typeof(DummyInvokeClass), "Method2", [expected], BindingOptions.Instance | BindingOptions.Private);
 
-                _dummyClass.Arg.Should().Be(expected);
+                _dummyClass.Arg.ShouldBe(expected);
             }
         }
 
@@ -202,8 +193,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     ObjectExtensions.InvokeMethod(typeof(DummyInvokeClass), (Type) null, nameof(DummyInvokeClass.Method1), [typeof(int)], [Create<int>()]);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("instanceType");
             }
 
@@ -214,8 +204,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _dummyClass.InvokeMethod(typeof(DummyInvokeClass), null, [typeof(int)], [Create<int>()]);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("methodName");
             }
 
@@ -226,8 +215,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _dummyClass.InvokeMethod(typeof(DummyInvokeClass), string.Empty, [typeof(int)], [Create<int>()]);
                 })
-                .Should()
-                .Throw<ArgumentException>()
+                .ShouldThrow<ArgumentException>()
                 .WithNamedMessageWhenEmpty("methodName");
             }
 
@@ -238,8 +226,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _dummyClass.InvokeMethod(typeof(DummyInvokeClass), "   ", [typeof(int)], [Create<int>()]);
                 })
-                .Should()
-                .Throw<ArgumentException>()
+                .ShouldThrow<ArgumentException>()
                 .WithNamedMessageWhenEmpty("methodName");
             }
 
@@ -250,7 +237,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.InvokeMethod(null, typeof(DummyInvokeClass), nameof(DummyInvokeClass.Method4), [typeof(int)], [expected]);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -260,7 +247,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _dummyClass.InvokeMethod(typeof(DummyInvokeClass), nameof(DummyInvokeClass.Method1), [typeof(int)], [expected]);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -270,7 +257,7 @@ namespace AllOverIt.Tests.Extensions
 
                 _dummyClass.InvokeMethod(typeof(DummyInvokeClass), "Method3", [typeof(int), typeof(string)], [expected, Create<string>()]);
 
-                _dummyClass.Arg.Should().Be(expected);
+                _dummyClass.Arg.ShouldBe(expected);
             }
 
             [Fact]
@@ -280,7 +267,7 @@ namespace AllOverIt.Tests.Extensions
 
                 _dummyClass.InvokeMethod(typeof(DummyInvokeClass), "Method3", [typeof(int), typeof(string), typeof(bool)], [expected, Create<string>(), Create<bool>()]);
 
-                _dummyClass.Arg.Should().Be(expected);
+                _dummyClass.Arg.ShouldBe(expected);
             }
 
             [Fact]
@@ -293,8 +280,7 @@ namespace AllOverIt.Tests.Extensions
                     _dummyClass.InvokeMethod(typeof(DummyInvokeClass), methodName, Type.EmptyTypes, null);
 
                 })
-                .Should()
-                .Throw<ArgumentException>()
+                .ShouldThrow<ArgumentException>()
                 .WithMessage($"The {methodName} method was not found on type {typeof(DummyInvokeClass).GetFriendlyName()}. (Parameter '{nameof(methodName)}')");
             }
         }
@@ -308,8 +294,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     _dummyClass.InvokeMethod(null, [Create<int>()]);
                 })
-                .Should()
-                .Throw<ArgumentNullException>()
+                .ShouldThrow<ArgumentNullException>()
                 .WithNamedMessageWhenNull("methodInfo");
             }
 
@@ -322,7 +307,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = ObjectExtensions.InvokeMethod(null, methodInfo, [expected]);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -334,7 +319,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = _dummyClass.InvokeMethod(methodInfo, [expected]);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -346,7 +331,7 @@ namespace AllOverIt.Tests.Extensions
 
                 _dummyClass.InvokeMethod(methodInfo, [expected, Create<string>()]);
 
-                _dummyClass.Arg.Should().Be(expected);
+                _dummyClass.Arg.ShouldBe(expected);
             }
 
             [Fact]
@@ -358,8 +343,13 @@ namespace AllOverIt.Tests.Extensions
 
                 _dummyClass.InvokeMethod(methodInfo, [expected, Create<string>(), Create<bool>()]);
 
-                _dummyClass.Arg.Should().Be(expected);
+                _dummyClass.Arg.ShouldBe(expected);
             }
         }
     }
 }
+
+
+
+
+

@@ -1,6 +1,6 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
-using FluentAssertions;
+using AllOverIt.Shouldly;
 using System.Linq.Expressions;
 
 namespace AllOverIt.Tests.Extensions
@@ -77,8 +77,8 @@ namespace AllOverIt.Tests.Extensions
 
                 MemberInfoExtensions.SetValue(memberInfo, superClass, value);
 
-                name.Should().Be(nameof(DummySuperClass.Prop3));
-                value.Should().Be(superClass.Prop3);
+                name.ShouldBe(nameof(DummySuperClass.Prop3));
+                value.ShouldBe(superClass.Prop3);
             }
 
             [Fact]
@@ -95,8 +95,8 @@ namespace AllOverIt.Tests.Extensions
 
                 MemberInfoExtensions.SetValue(memberInfo, superClass, value);
 
-                name.Should().Be(nameof(DummySuperClass.Field5));
-                value.Should().Be(superClass.Field5);
+                name.ShouldBe(nameof(DummySuperClass.Field5));
+                value.ShouldBe(superClass.Field5);
             }
 
             [Fact]
@@ -108,8 +108,7 @@ namespace AllOverIt.Tests.Extensions
 
                     MemberInfoExtensions.SetValue(memberInfo, new { }, null);
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
+                .ShouldThrow<InvalidOperationException>()
                 .WithMessage("Expected memberInfo to be a property or field.");
             }
         }
@@ -128,8 +127,8 @@ namespace AllOverIt.Tests.Extensions
                 var name = memberInfo.Name;
                 var value = MemberInfoExtensions.GetValue(memberInfo, superClass);
 
-                name.Should().Be(nameof(DummySuperClass.Prop3));
-                value.Should().Be(superClass.Prop3);
+                name.ShouldBe(nameof(DummySuperClass.Prop3));
+                value.ShouldBe(superClass.Prop3);
             }
 
             [Fact]
@@ -144,8 +143,8 @@ namespace AllOverIt.Tests.Extensions
                 var name = memberInfo.Name;
                 var value = MemberInfoExtensions.GetValue(memberInfo, superClass);
 
-                name.Should().Be(nameof(DummySuperClass.Field5));
-                value.Should().Be(superClass.Field5);
+                name.ShouldBe(nameof(DummySuperClass.Field5));
+                value.ShouldBe(superClass.Field5);
             }
 
             [Fact]
@@ -160,8 +159,8 @@ namespace AllOverIt.Tests.Extensions
                 var name = memberInfo.Name;
                 var value = MemberInfoExtensions.GetValue(memberInfo, parentClass.SuperClass);
 
-                name.Should().Be(nameof(DummySuperClass.Prop2));
-                value.Should().Be(parentClass.SuperClass.Prop2);
+                name.ShouldBe(nameof(DummySuperClass.Prop2));
+                value.ShouldBe(parentClass.SuperClass.Prop2);
             }
 
             [Fact]
@@ -173,8 +172,7 @@ namespace AllOverIt.Tests.Extensions
 
                     MemberInfoExtensions.GetValue(memberInfo, new { });
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
+                .ShouldThrow<InvalidOperationException>()
                 .WithMessage("Expected memberInfo to be a property or field.");
             }
         }
@@ -193,8 +191,8 @@ namespace AllOverIt.Tests.Extensions
                 var name = memberInfo.Name;
                 var propType = MemberInfoExtensions.GetMemberType(memberInfo);
 
-                name.Should().Be(nameof(DummySuperClass.Prop2));
-                propType.Should().Be(parentClass.SuperClass.Prop2.GetType());
+                name.ShouldBe(nameof(DummySuperClass.Prop2));
+                propType.ShouldBe(parentClass.SuperClass.Prop2.GetType());
             }
 
             [Fact]
@@ -209,8 +207,8 @@ namespace AllOverIt.Tests.Extensions
                 var name = memberInfo.Name;
                 var fieldType = MemberInfoExtensions.GetMemberType(memberInfo);
 
-                name.Should().Be(nameof(DummySuperClass.Field5));
-                fieldType.Should().Be(parentClass.SuperClass.Field5.GetType());
+                name.ShouldBe(nameof(DummySuperClass.Field5));
+                fieldType.ShouldBe(parentClass.SuperClass.Field5.GetType());
             }
 
             [Fact]
@@ -220,7 +218,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var returnType = MemberInfoExtensions.GetMemberType(methodInfo);
 
-                returnType.Should().Be(typeof(double));
+                returnType.ShouldBe(typeof(double));
             }
 
             [Fact]
@@ -232,10 +230,18 @@ namespace AllOverIt.Tests.Extensions
 
                     MemberInfoExtensions.GetMemberType(memberInfo);
                 })
-                .Should()
-                .Throw<InvalidOperationException>()
+                .ShouldThrow<InvalidOperationException>()
                 .WithMessage("Expected memberInfo to be a property, field, or method.");
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+

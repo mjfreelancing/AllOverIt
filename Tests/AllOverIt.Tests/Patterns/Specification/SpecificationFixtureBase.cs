@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Patterns.Specification;
 using AllOverIt.Tests.Patterns.Specification.Dummies;
 
@@ -16,3 +16,5 @@ namespace AllOverIt.Tests.Patterns.Specification
         }
     }
 }
+
+

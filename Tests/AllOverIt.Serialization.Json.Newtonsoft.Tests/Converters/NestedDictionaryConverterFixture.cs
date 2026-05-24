@@ -1,9 +1,9 @@
-using AllOverIt.Extensions;
+﻿using AllOverIt.Extensions;
 using AllOverIt.Fixture;
 using AllOverIt.Serialization.Json.Newtonsoft.Converters;
-using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using AllOverIt.Shouldly.Extensions;
 
 namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 {
@@ -28,7 +28,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 
                 var actual = _converter.CanConvert(type);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -77,7 +77,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
 
                 var actual = _serializer.DeserializeObject<DummyDictionary>(value);
 
-                expected.Should().BeEquivalentTo(actual.Prop);
+                expected.ShouldBeEquivalentTo(actual.Prop);
             }
         }
 
@@ -134,7 +134,7 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
                     ? $@"{{""Prop"":{{""Prop1"":{prop1},""Prop2"":{{""Value"":""{prop2.Value}"",""DayOfWeek"":""{prop2.DayOfWeek}"",""Numbers"":[{string.Join(',', prop2.Numbers)}],""NullValue"":null}},""Prop3"":{{""Value1"":{{""Value"":""{prop2.Value}"",""DayOfWeek"":""{prop2.DayOfWeek}"",""Numbers"":[{string.Join(',', prop2.Numbers)}],""NullValue"":null}},""Value2"":{prop1}}}}}}}"
                     : $@"{{""prop"":{{""prop1"":{prop1},""prop2"":{{""value"":""{prop2.Value}"",""dayOfWeek"":""{prop2.DayOfWeek}"",""numbers"":[{string.Join(',', prop2.Numbers)}],""nullvalue"":null}},""prop3"":{{""value1"":{{""value"":""{prop2.Value}"",""dayOfWeek"":""{prop2.DayOfWeek}"",""numbers"":[{string.Join(',', prop2.Numbers)}],""nullvalue"":null}},""value2"":{prop1}}}}}}}";
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -252,13 +252,11 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
                     { nameof(DummyModel.Prop10), deserializedProp11[nameof(DummyModel.Prop10)].AsNullable<int>() },
                 };
 
-                actual.Should().BeEquivalentTo(nested, options =>
+                actual.ShouldBeEquivalentTo(nested, options =>
                 {
-                    options.Using<float>(ctx => ctx.Subject.Should().BeApproximately(ctx.Expectation, 0.00000001f)).WhenTypeIs<float>();
-                    options.Using<double>(ctx => ctx.Subject.Should().BeApproximately(ctx.Expectation, 0.00000001d)).WhenTypeIs<double>();
-                    options.Using<decimal>(ctx => ctx.Subject.Should().BeApproximately(ctx.Expectation, 0.00000001m)).WhenTypeIs<decimal>();
-
-                    return options;
+                    options.FloatTolerance = 0.00000001f;
+                    options.DoubleTolerance = 0.00000001d;
+                    options.DecimalTolerance = 0.00000001m;
                 });
             }
         }
@@ -277,3 +275,8 @@ namespace AllOverIt.Serialization.Json.Newtonsoft.Tests.Converters
         }
     }
 }
+
+
+
+
+

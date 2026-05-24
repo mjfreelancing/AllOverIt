@@ -1,6 +1,7 @@
 ﻿using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
+using AllOverIt.Shouldly.Extensions;
+using Shouldly;
 
 namespace AllOverIt.Evaluator.Tests
 {
@@ -11,18 +12,14 @@ namespace AllOverIt.Evaluator.Tests
         [Fact]
         public void Should_Throw_When_Predicate_Null()
         {
-            Invoking(() => _context = new FormulaTokenProcessorContext(null, (p1, p2) => true))
-                .Should()
-                .Throw<ArgumentNullException>()
+            Should.Throw<ArgumentNullException>(() => _context = new FormulaTokenProcessorContext(null, (p1, p2) => true))
                 .WithNamedMessageWhenNull("predicate");
         }
 
         [Fact]
         public void Should_Throw_When_Processor_Null()
         {
-            Invoking(() => _context = new FormulaTokenProcessorContext((p1, p2) => true, null))
-                .Should()
-                .Throw<ArgumentNullException>()
+            Should.Throw<ArgumentNullException>(() => _context = new FormulaTokenProcessorContext((p1, p2) => true, null))
                 .WithNamedMessageWhenNull("processor");
         }
 
@@ -40,7 +37,7 @@ namespace AllOverIt.Evaluator.Tests
                 Processor = func2
             };
 
-            expected.Should().BeEquivalentTo(_context);
+            expected.ShouldBeEquivalentTo(_context);
         }
     }
 }

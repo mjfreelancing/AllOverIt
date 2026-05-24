@@ -1,7 +1,7 @@
-﻿using AllOverIt.Extensions;
+using AllOverIt.Extensions;
 using AllOverIt.Fixture;
+using AllOverIt.Shouldly;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 using System.Collections;
 using System.Globalization;
 using System.Text;
@@ -24,7 +24,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = StringExtensions.As(null, defaultValue);
 
-                actual.Should().Be(defaultValue);
+                actual.ShouldBe(defaultValue);
             }
 
             [Fact]
@@ -34,7 +34,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = StringExtensions.As("  ", defaultValue);
 
-                actual.Should().Be(defaultValue);
+                actual.ShouldBe(defaultValue);
             }
 
             [Fact]
@@ -44,7 +44,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = StringExtensions.As(string.Empty, defaultValue);
 
-                actual.Should().Be(defaultValue);
+                actual.ShouldBe(defaultValue);
             }
 
             [Fact]
@@ -54,8 +54,7 @@ namespace AllOverIt.Tests.Extensions
 
                 Invoking(
                     () => StringExtensions.As(value, Create<int>()))
-                  .Should()
-                  .Throw<ArgumentException>()
+                  .ShouldThrow<ArgumentException>()
                   .WithMessage($"No converter exists for type 'Int32' when value = '{value}'.");
             }
 
@@ -66,7 +65,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = StringExtensions.As($"{value}", Create<int>());
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -76,7 +75,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = StringExtensions.As($"{value}", Create<double>());
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Theory]
@@ -92,7 +91,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = StringExtensions.As(value, Create<bool>());
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -106,7 +105,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = StringExtensions.As<DummyEnum>(value, defaultValue);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -128,7 +127,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = StringExtensions.As<NumberStyles>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -139,7 +138,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = StringExtensions.As<DummyEnum>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -150,7 +149,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = StringExtensions.As<Guid>(value);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -161,7 +160,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = StringExtensions.AsNullable<int>(null);
 
-                actual.Should().NotHaveValue();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -169,7 +168,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = StringExtensions.AsNullable<int>("  ");
 
-                actual.Should().NotHaveValue();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -177,7 +176,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = StringExtensions.AsNullable<int>(string.Empty);
 
-                actual.Should().NotHaveValue();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -185,7 +184,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = StringExtensions.AsNullable<int>(Create<string>());
 
-                actual.Should().NotHaveValue();
+                actual.ShouldBeNull();
             }
 
             [Fact]
@@ -195,7 +194,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = StringExtensions.AsNullable<int>($"{value}");
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Fact]
@@ -205,7 +204,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = StringExtensions.AsNullable<double>($"{value}");
 
-                actual.Should().Be(value);
+                actual.ShouldBe(value);
             }
 
             [Theory]
@@ -219,7 +218,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = StringExtensions.AsNullable<bool>($"{value}");
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -230,7 +229,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = StringExtensions.AsNullable<DummyEnum>($"{value}");
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Theory]
@@ -241,7 +240,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = StringExtensions.AsNullable<DummyEnum>(value);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -252,7 +251,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = StringExtensions.AsNullable<Guid>(value);
 
-                expected.Should().Be(actual);
+                expected.ShouldBe(actual);
             }
         }
 
@@ -275,14 +274,14 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Create<string>();
 
-                actual.IsNullOrEmpty().Should().BeFalse();
+                actual.IsNullOrEmpty().ShouldBeFalse();
             }
 
             [Theory]
             [ClassData(typeof(EmptyStrings))]
             public void Should_Return_True(string actual)
             {
-                actual.IsNullOrEmpty().Should().BeTrue();
+                actual.IsNullOrEmpty().ShouldBeTrue();
             }
         }
 
@@ -305,14 +304,14 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Create<string>();
 
-                actual.IsNotNullOrEmpty().Should().BeTrue();
+                actual.IsNotNullOrEmpty().ShouldBeTrue();
             }
 
             [Theory]
             [ClassData(typeof(EmptyStrings))]
             public void Should_Return_False(string actual)
             {
-                actual.IsNotNullOrEmpty().Should().BeFalse();
+                actual.IsNotNullOrEmpty().ShouldBeFalse();
             }
         }
 
@@ -334,7 +333,7 @@ namespace AllOverIt.Tests.Extensions
             {
                 string actual = null;
 
-                actual.IsEmpty().Should().BeFalse();
+                actual.IsEmpty().ShouldBeFalse();
             }
 
             [Fact]
@@ -342,14 +341,14 @@ namespace AllOverIt.Tests.Extensions
             {
                 var actual = Create<string>();
 
-                actual.IsEmpty().Should().BeFalse();
+                actual.IsEmpty().ShouldBeFalse();
             }
 
             [Theory]
             [ClassData(typeof(EmptyStrings))]
             public void Should_Return_True(string actual)
             {
-                actual.IsEmpty().Should().BeTrue();
+                actual.IsEmpty().ShouldBeTrue();
             }
         }
 
@@ -364,8 +363,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         value.ToBase64();
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
             }
 
@@ -375,8 +373,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = string.Empty;
 
                 value.ToBase64()
-                    .Should()
-                    .Be(string.Empty);
+                    .ShouldBe(string.Empty);
             }
 
             [Theory]
@@ -384,8 +381,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Convert_From_Known_Phrase(string phrase, string base64)
             {
                 phrase.ToBase64()
-                    .Should()
-                    .Be(base64);
+                    .ShouldBe(base64);
             }
         }
 
@@ -400,8 +396,7 @@ namespace AllOverIt.Tests.Extensions
                     {
                         value.FromBase64();
                     })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
             }
 
@@ -411,8 +406,7 @@ namespace AllOverIt.Tests.Extensions
                 var value = string.Empty;
 
                 value.FromBase64()
-                    .Should()
-                    .Be(string.Empty);
+                    .ShouldBe(string.Empty);
             }
 
             [Theory]
@@ -420,8 +414,7 @@ namespace AllOverIt.Tests.Extensions
             public void Should_Convert_To_Known_Phrase(string phrase, string base64)
             {
                 base64.FromBase64()
-                    .Should()
-                    .Be(phrase);
+                    .ShouldBe(phrase);
             }
         }
 
@@ -436,8 +429,7 @@ namespace AllOverIt.Tests.Extensions
                 {
                     value.ToMemoryStream();
                 })
-                    .Should()
-                    .Throw<ArgumentNullException>()
+                    .ShouldThrow<ArgumentNullException>()
                     .WithNamedMessageWhenNull("value");
             }
 
@@ -448,8 +440,7 @@ namespace AllOverIt.Tests.Extensions
 
                 value.ToMemoryStream()
                     .Length
-                    .Should()
-                    .Be(0);
+                    .ShouldBe(0);
             }
 
             [Fact]
@@ -461,7 +452,7 @@ namespace AllOverIt.Tests.Extensions
 
                 var actual = Encoding.UTF8.GetString(stream.ToArray());
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
         }
 
@@ -474,3 +465,12 @@ namespace AllOverIt.Tests.Extensions
             };
     }
 }
+
+
+
+
+
+
+
+
+

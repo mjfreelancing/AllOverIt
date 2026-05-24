@@ -1,7 +1,6 @@
-﻿using AllOverIt.Events;
+using AllOverIt.Events;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
-using FluentAssertions;
 
 namespace AllOverIt.Tests.Events
 {
@@ -32,8 +31,7 @@ namespace AllOverIt.Tests.Events
             public void Should_Throw_When_Delegate_Null()
             {
                 Invoking(() => new WeakSubscription(null))
-                  .Should()
-                  .Throw<ArgumentNullException>()
+                  .ShouldThrow<ArgumentNullException>()
                   .WithNamedMessageWhenNull("handler");
             }
         }
@@ -58,7 +56,7 @@ namespace AllOverIt.Tests.Events
 
                 registeredHandler.Invoke(expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -76,7 +74,7 @@ namespace AllOverIt.Tests.Events
 
                 var registeredHandler = subscription.GetHandler<int>();
 
-                registeredHandler.Should().BeNull();
+                registeredHandler.ShouldBeNull();
             }
 
             [Fact]
@@ -94,7 +92,7 @@ namespace AllOverIt.Tests.Events
                 HandlerDummy.ActualValue = -expected;
                 registeredHandler.Invoke(expected);
 
-                HandlerDummy.ActualValue.Should().Be(expected);
+                HandlerDummy.ActualValue.ShouldBe(expected);
             }
         }
 
@@ -115,7 +113,7 @@ namespace AllOverIt.Tests.Events
 
                 subscription.Handle(expected);
 
-                actual.Should().Be(expected);
+                actual.ShouldBe(expected);
             }
 
             [Fact]
@@ -131,8 +129,7 @@ namespace AllOverIt.Tests.Events
 
                     subscription.Handle(string.Empty);
                 })
-                .Should()
-                .Throw<InvalidCastException>();
+                .ShouldThrow<InvalidCastException>();
             }
 
             [Fact]
@@ -156,9 +153,12 @@ namespace AllOverIt.Tests.Events
                     // Other tests for GetHandler() prove the handler is returned as null.
                     subscription.Handle<int>(value);
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
     }
 }
+
+
+
+

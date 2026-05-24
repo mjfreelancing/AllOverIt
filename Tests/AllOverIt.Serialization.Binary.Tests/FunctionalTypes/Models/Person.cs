@@ -1,4 +1,4 @@
-﻿namespace AllOverIt.Serialization.Binary.Tests.FunctionalTypes.Models
+namespace AllOverIt.Serialization.Binary.Tests.FunctionalTypes.Models
 {
     internal abstract class Person
     {
@@ -8,3 +8,6 @@
         public int? Age { get; init; }
     }
 }
+
+
+

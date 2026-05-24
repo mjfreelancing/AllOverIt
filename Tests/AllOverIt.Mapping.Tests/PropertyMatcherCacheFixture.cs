@@ -1,7 +1,6 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using AllOverIt.Fixture.Extensions;
 using AllOverIt.Mapping.Exceptions;
-using FluentAssertions;
 
 using static AllOverIt.Mapping.Tests.ObjectMapperTypes;
 
@@ -55,14 +54,14 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Create_Mapper_With_Options()
             {
-                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out _).Should().BeFalse();
+                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out _).ShouldBeFalse();
 
                 var matcherOptions = Create<PropertyMatcherOptions>();
 
                 var actual = _cache.CreateMapper(typeof(DummySource2), typeof(DummyTarget), matcherOptions);
 
-                actual.Should().NotBeNull();
-                actual.MatcherOptions.Should().BeSameAs(matcherOptions);
+                actual.ShouldNotBeNull();
+                actual.MatcherOptions.ShouldBeSameAs(matcherOptions);
             }
         }
 
@@ -91,24 +90,24 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Get_Existing_Mapper()
             {
-                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out _).Should().BeFalse();
+                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out _).ShouldBeFalse();
 
                 var createdMapper = _cache.GetOrCreateMapper(typeof(DummySource2), typeof(DummyTarget));
 
                 var actual = _cache.GetOrCreateMapper(typeof(DummySource2), typeof(DummyTarget));
 
-                createdMapper.Should().BeSameAs(actual);
+                createdMapper.ShouldBeSameAs(actual);
             }
 
             [Fact]
             public void Should_Create_Mapper_With_Default_Options()
             {
-                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out _).Should().BeFalse();
+                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out _).ShouldBeFalse();
 
                 var actual = _cache.GetOrCreateMapper(typeof(DummySource2), typeof(DummyTarget));
 
-                actual.Should().NotBeNull();
-                actual.MatcherOptions.Should().BeSameAs(PropertyMatcherOptions.None);
+                actual.ShouldNotBeNull();
+                actual.MatcherOptions.ShouldBeSameAs(PropertyMatcherOptions.None);
             }
         }
 
@@ -137,17 +136,20 @@ namespace AllOverIt.Mapping.Tests
             [Fact]
             public void Should_Get_Mapper_With_Default_Options()
             {
-                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out _).Should().BeFalse();
+                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out _).ShouldBeFalse();
 
                 var matcherOptions = Create<PropertyMatcherOptions>();
 
                 _ = _cache.CreateMapper(typeof(DummySource2), typeof(DummyTarget), matcherOptions);
 
-                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var actual).Should().BeTrue();
+                _cache.TryGetMapper(typeof(DummySource2), typeof(DummyTarget), out var actual).ShouldBeTrue();
 
-                actual.Should().NotBeNull();
-                actual.MatcherOptions.Should().BeSameAs(matcherOptions);
+                actual.ShouldNotBeNull();
+                actual.MatcherOptions.ShouldBeSameAs(matcherOptions);
             }
         }
     }
 }
+
+
+

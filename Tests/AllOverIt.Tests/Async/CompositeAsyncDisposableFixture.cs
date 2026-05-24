@@ -1,8 +1,7 @@
 ﻿using AllOverIt.Async;
 using AllOverIt.Fixture;
 using AllOverIt.Fixture.FakeItEasy;
-using FluentAssertions;
-
+using AllOverIt.Shouldly.Extensions;
 namespace AllOverIt.Tests.Async
 {
     public class CompositeAsyncDisposableFixture : FixtureBase
@@ -21,8 +20,7 @@ namespace AllOverIt.Tests.Async
                     {
                         _ = new CompositeAsyncDisposable();
                     })
-                    .Should()
-                    .NotThrow();
+                    .ShouldNotThrow();
             }
 
             [Fact]
@@ -47,8 +45,8 @@ namespace AllOverIt.Tests.Async
                 {
                 }
 
-                disposableFakes.Count.Should().NotBe(0);
-                count.Should().Be(disposableFakes.Count);
+                disposableFakes.Count.ShouldNotBe(0);
+                count.ShouldBe(disposableFakes.Count);
             }
         }
 
@@ -62,7 +60,7 @@ namespace AllOverIt.Tests.Async
 
                 var composite = new CompositeAsyncDisposable(expected);
 
-                composite.Disposables.Should().BeEquivalentTo(expected);
+                composite.Disposables.ShouldBeEquivalentTo(expected);
             }
         }
 
@@ -86,8 +84,8 @@ namespace AllOverIt.Tests.Async
                 var sut = new CompositeAsyncDisposable(disposables);
                 sut.Dispose();
 
-                disposableFakes.Count.Should().NotBe(0);
-                count.Should().Be(disposableFakes.Count);
+                disposableFakes.Count.ShouldNotBe(0);
+                count.ShouldBe(disposableFakes.Count);
             }
 
             [Fact]
@@ -103,8 +101,7 @@ namespace AllOverIt.Tests.Async
                 {
                     sut.Dispose();
                 })
-                .Should()
-                .NotThrow();
+                .ShouldNotThrow();
             }
         }
 
@@ -128,8 +125,8 @@ namespace AllOverIt.Tests.Async
                 var sut = new CompositeAsyncDisposable(disposables);
                 await sut.DisposeAsync();
 
-                disposableFakes.Count.Should().NotBe(0);
-                count.Should().Be(disposableFakes.Count);
+                disposableFakes.Count.ShouldNotBe(0);
+                count.ShouldBe(disposableFakes.Count);
             }
 
             [Fact]
@@ -145,9 +142,11 @@ namespace AllOverIt.Tests.Async
                 {
                     await sut.DisposeAsync();
                 })
-                .Should()
-                .NotThrowAsync();
+                .ShouldNotThrowAsync();
             }
         }
     }
 }
+
+
+

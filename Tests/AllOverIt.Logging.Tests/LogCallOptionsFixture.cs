@@ -1,4 +1,4 @@
-﻿using AllOverIt.Fixture;
+using AllOverIt.Fixture;
 using Shouldly;
 
 internal sealed class DummyClassNoNamespace
@@ -304,3 +304,5 @@ namespace AllOverIt.Logging.Tests
         }
     }
 }
+
+
