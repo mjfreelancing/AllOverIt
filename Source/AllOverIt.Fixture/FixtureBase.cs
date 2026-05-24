@@ -2,6 +2,7 @@
 using AllOverIt.Fixture.Exceptions;
 using AllOverIt.Patterns.Enumeration;
 using AutoFixture;
+using AutoFixture.AutoNSubstitute;
 using Shouldly;
 
 namespace AllOverIt.Fixture
@@ -23,6 +24,11 @@ namespace AllOverIt.Fixture
         internal FixtureBase(IFixture fixture)
         {
             Fixture = fixture;
+
+            // Configure AutoFixture to use NSubstitute for creating mocks/substitutes of interfaces and abstract classes,
+            // and to automatically generate delegates when they are needed by the fixture.
+            var customization = new AutoNSubstituteCustomization { GenerateDelegates = true };
+            Fixture.Customize(customization);
 
 #if NET8_0_OR_GREATER
             _random = Random.Shared;
@@ -61,16 +67,6 @@ namespace AllOverIt.Fixture
             Customize(customization);
         }
 
-        /// <summary>Provides the ability to invoke an action so it can be chained with test assertions.</summary>
-        /// <param name="action">The action to be invoked.</param>
-        /// <returns>The same action passed to the method.</returns>
-        protected static Action Invoking(Action action)
-        {
-            ArgumentNullException.ThrowIfNull(action);
-
-            return action;
-        }
-
         /// <summary>Provides an <c>Action</c> a <see cref="string"/> value that is <see langword="null"/>, <c>String.Empty</c>, and some whitespace
         /// for the purpose of asserting an argument will throw an <see cref="ArgumentNullException"/> or <see cref="ArgumentException"/> as expected.</summary>
         /// <param name="action">The action to be invoked.</param>
@@ -104,17 +100,6 @@ namespace AllOverIt.Fixture
 
             var whiteSpaceException = await Should.ThrowAsync<ArgumentException>(() => action.Invoke("  "));
             whiteSpaceException.Message.ShouldBe($"{errorMessage ?? "The argument cannot be empty."} (Parameter '{name}')");
-        }
-
-        /// <summary>Provides the ability to invoke an action that returns a result.</summary>
-        /// <typeparam name="TResult">The result type returned by the Func.</typeparam>
-        /// <param name="action">The action to be invoked.</param>
-        /// <returns>The result of the invoked action.</returns>
-        protected static Func<TResult> Invoking<TResult>(Func<TResult> action)
-        {
-            ArgumentNullException.ThrowIfNull(action);
-
-            return action;
         }
 
         /// <summary>Injects a specific instance of a specified type that will be resolved as a shared (single) instance.</summary>

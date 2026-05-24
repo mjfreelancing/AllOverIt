@@ -222,6 +222,7 @@
     <Project Path="Source/AllOverIt.Serialization.Json.Newtonsoft/AllOverIt.Serialization.Json.Newtonsoft.csproj" />
     <Project Path="Source/AllOverIt.Serialization.Json.SystemText/AllOverIt.Serialization.Json.SystemText.csproj" />
     <Project Path="Source/AllOverIt.Serilog/AllOverIt.Serilog.csproj" />
+    <Project Path="Source/AllOverIt.Shouldly/AllOverIt.Shouldly.csproj" Id="43bdc690-4983-473e-bc04-265bde360864" />
     <Project Path="Source/AllOverIt.Validation.Options/AllOverIt.Validation.Options.csproj" />
     <Project Path="Source/AllOverIt.Validation/AllOverIt.Validation.csproj" />
     <Project Path="Source/AllOverIt.Wpf.Controls/AllOverIt.Wpf.Controls.csproj" />
@@ -252,8 +253,9 @@
     <Project Path="Tests/AllOverIt.Serialization.Json.Newtonsoft.Tests/AllOverIt.Serialization.Json.Newtonsoft.Tests.csproj" />
     <Project Path="Tests/AllOverIt.Serialization.Json.SystemText.Tests/AllOverIt.Serialization.Json.SystemText.Tests.csproj" />
     <Project Path="Tests/AllOverIt.Serilog.Tests/AllOverIt.Serilog.Tests.csproj" />
+    <Project Path="Tests/AllOverIt.Shouldly.Tests/AllOverIt.Shouldly.Tests.csproj" Id="9c72e592-ac8d-4981-9d78-99ad6ac4acdb" />
     <Project Path="Tests/AllOverIt.Tests/AllOverIt.Tests.csproj" />
     <Project Path="Tests/AllOverIt.Validation.Tests/AllOverIt.Validation.Tests.csproj" />
-    <Project Path="Tests/TestUtils/TestUtils.csproj" />
+    <Project Path="Tests/_shouldly_eval/_shouldly_eval.csproj" />
   </Folder>
 </Solution>
