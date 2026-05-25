@@ -90,8 +90,8 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var expected = Create<DummyMessage>();
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -134,8 +134,8 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var expected = Create<DummyMessage>();
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -181,8 +181,8 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var expected = Create<DummyMessage>();
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -247,10 +247,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var pipeName = Create<string>();
             var serializer = new NamedPipeSerializer<DummyMessage>();
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -301,10 +301,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var pipeName = Create<string>();
             var serializer = new NamedPipeSerializer<DummyMessage>();
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -323,7 +323,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     await WaitOrThrowAsync(signal2);
 
-                    await Task.Delay(100);
+                    await WaitUntilAsync(() => server._connections.Count == 1 && server._connections.Single().IsConnected);
 
                     server._connections.Single().IsConnected.Should().BeTrue();
 
@@ -331,7 +331,7 @@ namespace AllOverIt.Pipes.Tests.Named
 
                     await WaitOrThrowAsync(signal4);    // wait for the client to disconnect
 
-                    await Task.Delay(100);
+                    await WaitUntilAsync(() => server._connections.Count == 0);
 
                     server._connections.Count.Should().Be(0);
                 }
@@ -362,10 +362,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new DummyBadSerializer(PipeDirection.Out);
             Exception actual = null;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -429,9 +429,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new DummyBadSerializer(PipeDirection.In);
             Exception actual = null;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -503,10 +503,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var pipeName = Create<string>();
             var serializer = new NamedPipeSerializer<DummyMessage>();
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -563,10 +563,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var pipeName = Create<string>();
             var serializer = new NamedPipeSerializer<DummyMessage>();
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -629,10 +629,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = Create<DummyMessage>();
             DummyMessage actual = null;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -700,11 +700,11 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = Create<DummyMessage>();
             string actual = null;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
-            var signal5 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
+            using var signal5 = new SemaphoreSlim(0);
 
             void Client_OnMessageReceived(object sender, NamedPipeConnectionMessageEventArgs<DummyMessage, INamedPipeClientConnection<DummyMessage>> eventArgs)
             {
@@ -827,10 +827,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = Create<DummyMessage>();
             DummyMessage actual = null;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -924,9 +924,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var actual = false;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -977,10 +977,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var actual = false;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1037,10 +1037,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var actual = false;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1105,10 +1105,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = new Exception();
             Exception actual = null;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1180,10 +1180,10 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = new Exception();
             Exception actual = null;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1248,9 +1248,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var actual = false;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1300,9 +1300,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = new Exception();
             Exception actual = null;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1361,9 +1361,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var actual = false;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1414,9 +1414,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var serializer = new NamedPipeSerializer<DummyMessage>();
             var actual = false;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1477,11 +1477,11 @@ namespace AllOverIt.Pipes.Tests.Named
             DummyMessage actual = null;
             var counter = 0;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
-            var signal4 = new SemaphoreSlim(0);
-            var signal5 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
+            using var signal4 = new SemaphoreSlim(0);
+            using var signal5 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1557,9 +1557,9 @@ namespace AllOverIt.Pipes.Tests.Named
             var expected = new Exception();
             Exception actual = null;
 
-            var signal1 = new SemaphoreSlim(0);
-            var signal2 = new SemaphoreSlim(0);
-            var signal3 = new SemaphoreSlim(0);
+            using var signal1 = new SemaphoreSlim(0);
+            using var signal2 = new SemaphoreSlim(0);
+            using var signal3 = new SemaphoreSlim(0);
 
             var serverTask = Task.Factory.StartNew(async () =>
             {
@@ -1638,6 +1638,21 @@ namespace AllOverIt.Pipes.Tests.Named
             if (!success)
             {
                 throw new InvalidOperationException($"Signal timed out for {caller} on line {lineNumber} in file {filePath}.");
+            }
+        }
+
+        private async Task WaitUntilAsync(Func<bool> condition, int timeoutMs = 5000, int pollMs = 25, [CallerMemberName] string caller = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            var started = Environment.TickCount64;
+
+            while (!condition())
+            {
+                if (Environment.TickCount64 - started > timeoutMs)
+                {
+                    throw new InvalidOperationException($"Condition timed out for {caller} on line {lineNumber} in file {filePath}.");
+                }
+
+                await Task.Delay(pollMs);
             }
         }
     }
