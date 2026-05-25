@@ -153,8 +153,7 @@ namespace AllOverIt.Tests.Async
             [Fact]
             public async Task Should_Invoke_Action_With_RepeatDelay()
             {
-                var resetEvent = new ManualResetEventSlim();
-
+                using var semaphore = new SemaphoreSlim(0);
                 using var cts = new CancellationTokenSource();
 
                 var invokedCount = 0;
@@ -168,10 +167,7 @@ namespace AllOverIt.Tests.Async
                         cts.Cancel();
                     }
 
-                    if (!resetEvent.IsSet)
-                    {
-                        resetEvent.Set();
-                    }
+                    semaphore.Release();
 
                     return Task.CompletedTask;
                 }
@@ -184,20 +180,25 @@ namespace AllOverIt.Tests.Async
 
                 var task = RepeatingTask.StartAsync(DoAction, options, cts.Token);
 
-                // Give the background task time to actually start
-                resetEvent.Wait();
+                // Wait for the first invocation
+                await semaphore.WaitAsync();
 
                 invokedCount.Should().Be(1);
 
+                // Give the worker a moment to schedule the repeat delay before advancing fake time
+                await Task.Delay(50);
+
                 _timeProviderFake.Advance(_delayTimeSpan - TimeSpan.FromSeconds(1));
 
-                await Task.Delay(100);      // Allow time for the callback to invoke
-
+                // Should not advance yet - still waiting
                 invokedCount.Should().Be(1);
 
                 _timeProviderFake.Advance(TimeSpan.FromSeconds(1));
 
-                await Task.Delay(100);      // Allow time for the callback to invoke
+                // Wait for the second invocation with timeout
+                var waited = await semaphore.WaitAsync(TimeSpan.FromSeconds(5));
+
+                waited.Should().BeTrue("the second invocation should complete within timeout");
 
                 invokedCount.Should().Be(2);
 
@@ -207,6 +208,7 @@ namespace AllOverIt.Tests.Async
             [Fact]
             public async Task Should_Invoke_Action_With_Initial_Delay()
             {
+                using var semaphore = new SemaphoreSlim(0);
                 using var cancellationToken = new CancellationTokenSource();
 
                 var invokedCount = 0;
@@ -220,6 +222,8 @@ namespace AllOverIt.Tests.Async
                         cancellationToken.Cancel();
                     }
 
+                    semaphore.Release();
+
                     return Task.CompletedTask;
                 }
 
@@ -232,26 +236,37 @@ namespace AllOverIt.Tests.Async
 
                 var task = RepeatingTask.StartAsync(DoAction, options, cancellationToken.Token);
 
-                // Give the background task time to actually start
+                // Give the background task time to actually start (but not invoke yet due to initial delay)
                 await Task.Delay(100);
 
                 invokedCount.Should().Be(0);
 
                 _timeProviderFake.Advance(_delayTimeSpan);
 
-                await Task.Delay(100);      // Allow time for the callback to invoke
-
+                // Still should not have invoked - needs 2x delay
                 invokedCount.Should().Be(0);
 
                 _timeProviderFake.Advance(_delayTimeSpan);
 
-                await Task.Delay(100);      // Allow time for the callback to invoke
+                // Give the worker a moment to process timer completion
+                await Task.Delay(50);
+
+                // Wait for the first invocation with timeout
+                var waited1 = await semaphore.WaitAsync(TimeSpan.FromSeconds(5));
+
+                waited1.Should().BeTrue("the first invocation should complete within timeout");
 
                 invokedCount.Should().Be(1);
 
                 _timeProviderFake.Advance(_delayTimeSpan);
 
-                await Task.Delay(100);      // Allow time for the callback to invoke
+                // Give the worker a moment to process timer completion
+                await Task.Delay(50);
+
+                // Wait for the second invocation with timeout
+                var waited2 = await semaphore.WaitAsync(TimeSpan.FromSeconds(5));
+
+                waited2.Should().BeTrue("the second invocation should complete within timeout");
 
                 invokedCount.Should().Be(2);
 
@@ -346,8 +361,7 @@ namespace AllOverIt.Tests.Async
             [Fact]
             public async Task Should_Invoke_Action_Until_Cancelled()
             {
-                var resetEvent = new ManualResetEventSlim();
-
+                using var semaphore = new SemaphoreSlim(0);
                 using var cts = new CancellationTokenSource();
 
                 var invokedCount = 0;
@@ -361,10 +375,7 @@ namespace AllOverIt.Tests.Async
                         cts.Cancel();
                     }
 
-                    if (!resetEvent.IsSet)
-                    {
-                        resetEvent.Set();
-                    }
+                    semaphore.Release();
                 }
 
                 var options = new RepeatingTaskOptions
@@ -375,24 +386,19 @@ namespace AllOverIt.Tests.Async
 
                 var task = RepeatingTask.StartAsync(DoAction, options, cts.Token);
 
-                // Give the background task time to actually start
-                resetEvent.Wait();
+                // Wait for the first invocation
+                await semaphore.WaitAsync();
 
                 invokedCount.Should().Be(1);
 
                 _timeProviderFake.Advance(_delayTimeSpan);
 
-                await Task.Delay(100);      // Allow time for the callback to invoke
+                // Wait for the second invocation with timeout to prevent hanging
+                var waited = await semaphore.WaitAsync(TimeSpan.FromSeconds(5));
+
+                waited.Should().BeTrue("the second invocation should complete within timeout");
 
                 invokedCount.Should().Be(2);
-
-                _timeProviderFake.Advance(_delayTimeSpan);
-
-                await Task.Delay(100);      // Allow time for the callback to invoke
-
-                invokedCount.Should().Be(2);
-
-                _timeProviderFake.Advance(_delayTimeSpan);
 
                 await task;
 
@@ -402,8 +408,7 @@ namespace AllOverIt.Tests.Async
             [Fact]
             public async Task Should_Invoke_Action_With_RepeatDelay()
             {
-                var resetEvent = new ManualResetEventSlim();
-
+                using var semaphore = new SemaphoreSlim(0);
                 using var cts = new CancellationTokenSource();
 
                 var invokedCount = 0;
@@ -417,10 +422,7 @@ namespace AllOverIt.Tests.Async
                         cts.Cancel();
                     }
 
-                    if (!resetEvent.IsSet)
-                    {
-                        resetEvent.Set();
-                    }
+                    semaphore.Release();
                 }
 
                 var options = new RepeatingTaskOptions
@@ -431,20 +433,25 @@ namespace AllOverIt.Tests.Async
 
                 var task = RepeatingTask.StartAsync(DoAction, options, cts.Token);
 
-                // Give the background task time to actually start
-                resetEvent.Wait();
+                // Wait for the first invocation
+                await semaphore.WaitAsync();
 
                 invokedCount.Should().Be(1);
 
+                // Give the worker a moment to schedule the repeat delay before advancing fake time
+                await Task.Delay(50);
+
                 _timeProviderFake.Advance(_delayTimeSpan - TimeSpan.FromSeconds(1));
 
-                await Task.Delay(100);      // Allow time for the callback to invoke
-
+                // Should not advance yet - still waiting
                 invokedCount.Should().Be(1);
 
                 _timeProviderFake.Advance(TimeSpan.FromSeconds(1));
 
-                await Task.Delay(100);      // Allow time for the callback to invoke
+                // Wait for the second invocation with timeout
+                var waited = await semaphore.WaitAsync(TimeSpan.FromSeconds(5));
+
+                waited.Should().BeTrue("the second invocation should complete within timeout");
 
                 invokedCount.Should().Be(2);
 
@@ -454,6 +461,7 @@ namespace AllOverIt.Tests.Async
             [Fact]
             public async Task Should_Invoke_Action_With_Initial_Delay()
             {
+                using var semaphore = new SemaphoreSlim(0);
                 using var cancellationToken = new CancellationTokenSource();
 
                 var invokedCount = 0;
@@ -466,6 +474,8 @@ namespace AllOverIt.Tests.Async
                     {
                         cancellationToken.Cancel();
                     }
+
+                    semaphore.Release();
                 }
 
                 var options = new RepeatingTaskOptions
@@ -477,26 +487,37 @@ namespace AllOverIt.Tests.Async
 
                 var task = RepeatingTask.StartAsync(DoAction, options, cancellationToken.Token);
 
-                // Give the background task time to actually start
+                // Give the background task time to actually start (but not invoke yet due to initial delay)
                 await Task.Delay(100);
 
                 invokedCount.Should().Be(0);
 
                 _timeProviderFake.Advance(_delayTimeSpan);
 
-                await Task.Delay(100);      // Allow time for the callback to invoke
-
+                // Still should not have invoked - needs 2x delay
                 invokedCount.Should().Be(0);
 
                 _timeProviderFake.Advance(_delayTimeSpan);
 
-                await Task.Delay(100);      // Allow time for the callback to invoke
+                // Give the worker a moment to process timer completion
+                await Task.Delay(50);
+
+                // Wait for the first invocation with timeout
+                var waited1 = await semaphore.WaitAsync(TimeSpan.FromSeconds(5));
+
+                waited1.Should().BeTrue("the first invocation should complete within timeout");
 
                 invokedCount.Should().Be(1);
 
                 _timeProviderFake.Advance(_delayTimeSpan);
 
-                await Task.Delay(100);      // Allow time for the callback to invoke
+                // Give the worker a moment to process timer completion
+                await Task.Delay(50);
+
+                // Wait for the second invocation with timeout
+                var waited2 = await semaphore.WaitAsync(TimeSpan.FromSeconds(5));
+
+                waited2.Should().BeTrue("the second invocation should complete within timeout");
 
                 invokedCount.Should().Be(2);
 

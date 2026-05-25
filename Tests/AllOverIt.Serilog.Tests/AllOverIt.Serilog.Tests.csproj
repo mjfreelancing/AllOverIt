@@ -6,10 +6,6 @@
     </ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Reactive" Version="6.1.0" />
+		<PackageReference Include="System.Reactive" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.0.1" />
-	</ItemGroup>	
 </Project>

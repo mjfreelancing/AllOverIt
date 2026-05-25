@@ -1,0 +1,91 @@
+<Project>
+    <!--
+        PROBLEM
+        =======
+        When a NuGet package project uses <ProjectReference> to reference a sibling package
+        (another project in this solution that also produces a NuGet package), the SDK
+        automatically generates a <dependency> entry in the .nuspec file using the exact
+        version of the referenced project, e.g.:
+
+            <dependency id="AllOverIt" version="9.2.1" />
+
+        NuGet interprets a bare version like "9.2.1" as a minimum version constraint
+        (>= 9.2.1), with NO upper bound. This means NuGet could resolve the dependency
+        to a future major version (e.g., 10.0.0) that may contain breaking changes.
+
+        GOAL
+        ====
+        For a suite of packages that are always versioned and released together, the
+        dependency version range should be:
+
+            [currentVersion, nextMajorVersion)
+
+        For example, if the current version is 9.2.1, the desired NuGet version range is:
+
+            [9.2.1, 10)     meaning: >= 9.2.1 AND < 10.0.0
+
+        This ensures consumers are protected from accidentally resolving a dependency
+        to a future major version with potentially breaking changes.
+
+        SOLUTION
+        ========
+        The MSBuild pack pipeline (part of the NuGet SDK, NuGet.Build.Tasks.Pack.targets)
+        processes ProjectReference items in a target called _GetProjectReferenceVersions,
+        which retrieves the version from each referenced project and stores the results
+        in an item group called _ProjectReferencesWithVersions. These items have a
+        PackageVersion metadata value (e.g., "9.2.1") that gets written into the .nuspec.
+
+        By adding a target that runs AFTER _GetProjectReferenceVersions and BEFORE
+        GenerateNuspec, we can intercept and rewrite the PackageVersion metadata to use
+        the bounded version range format before the .nuspec file is created.
+
+        The next major version upper bound is computed automatically from $(Version) so
+        no manual tracking is needed as the version changes over time.
+
+        NOTE
+        ====
+        _ProjectReferencesWithVersions is an internal NuGet SDK item group (indicated by
+        the leading underscore). Internal names are not part of the public contract and
+        could theoretically change in a future NuGet SDK release, though this specific
+        item group has been stable across many SDK versions. If a future SDK update
+        breaks this, the symptom will be that the generated .nuspec reverts to using
+        only the minimum version (no upper bound) rather than a build failure.
+
+        IMPLEMENTATION DETAIL
+        =====================
+        The _GetProjectVersion target (in NuGet.Build.Tasks.Pack.targets) returns
+        _ProjectPathWithVersion items where:
+          - Identity  = the full .csproj file path of the referenced project
+          - %(ProjectVersion) = the version string (e.g., "9.2.1")
+
+        These are collected as _ProjectReferencesWithVersions by the parent MSBuild task.
+        GenerateNuspec reads %(ProjectVersion) from these items to write the dependency
+        version into the .nuspec. The metadata name is ProjectVersion, not PackageVersion.
+    -->
+
+    <Target Name="SetSiblingPackageVersionRanges"
+            AfterTargets="_GetProjectReferenceVersions"
+            BeforeTargets="GenerateNuspec">
+
+        <!-- Compute the next major version number to use as the exclusive upper bound.
+             E.g., Version = "9.2.1" => _CurrentMajor = 9 => _NextMajor = 10 -->
+        <PropertyGroup>
+            <_CurrentMajor>$([System.Version]::Parse($(Version)).Major)</_CurrentMajor>
+            <_NextMajor>$([MSBuild]::Add($(_CurrentMajor), 1))</_NextMajor>
+        </PropertyGroup>
+
+        <!-- For every ProjectReference that points to an AllOverIt sibling package,
+             replace the exact version with a bounded range [currentVersion, nextMajor).
+             Identity is the full .csproj path of the referenced project, which contains
+             "AllOverIt" for all sibling packages in this suite.
+             %(ProjectVersion) is the metadata field read by GenerateNuspec. -->
+        <ItemGroup>
+            <_ProjectReferencesWithVersions
+                Update="@(_ProjectReferencesWithVersions)"
+                Condition="$([System.String]::new('%(Identity)').Contains('AllOverIt'))"
+                ProjectVersion="[$(Version), $(_NextMajor))" />
+        </ItemGroup>
+
+    </Target>
+
+</Project>

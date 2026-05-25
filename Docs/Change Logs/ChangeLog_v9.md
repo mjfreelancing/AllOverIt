@@ -1,4 +1,15 @@
-﻿#  Version 9.2.0
+﻿#  Version 9.2.1
+## 25 May 2026
+
+# Maintenance update
+* Package updates and convert projects to use Central Package Management (https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management)
+  Used the utility at https://github.com/Vannevelj/directory-packages-props-converter for a quick head start (I had to manually deal with version conditionals)
+* Published nugets will not set explicit upper version limit as less than next major version number.
+
+---
+
+
+#  Version 9.2.0
 ## 25 Apr 2026
 
 # Maintenance update
