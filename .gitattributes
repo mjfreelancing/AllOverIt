@@ -1,0 +1,6 @@
+# Enforce consistent line endings across platforms.
+# Keep repository text files as CRLF for this codebase.
+* text=auto eol=crlf
+
+# Shell scripts should remain LF for POSIX environments.
+*.sh text eol=lf
