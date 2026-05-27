@@ -1,0 +1,28 @@
+direction: left
+
+aoi: AllOverIt
+aoi.alloverit-reactiveui: AllOverIt.ReactiveUI
+microsoft-extensions-dependencyinjection-abstractions_10-0-8: Microsoft.Extensions.DependencyInjection.Abstractions\nv10.0.8
+microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.fill: "#ADD8E6"
+microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions_10-0-8 <- aoi.alloverit-reactiveui
+reactiveui_23-2-27: ReactiveUI\nv23.2.27
+reactiveui_23-2-27.style.fill: "#ADD8E6"
+reactiveui_23-2-27.style.opacity: 0.8
+reactiveui_23-2-27 <- aoi.alloverit-reactiveui
+dynamicdata_9-4-31: DynamicData\nv9.4.31
+dynamicdata_9-4-31.style.fill: "#FFEC96"
+dynamicdata_9-4-31.style.opacity: 0.8
+dynamicdata_9-4-31 <- reactiveui_23-2-27
+splat_19-3-1: Splat\nv19.3.1
+splat_19-3-1.style.fill: "#FFEC96"
+splat_19-3-1.style.opacity: 0.8
+splat_19-3-1 <- reactiveui_23-2-27
+system-reactive_6-1-0: System.Reactive\nv6.1.0
+system-reactive_6-1-0.style.fill: "#FFEC96"
+system-reactive_6-1-0.style.opacity: 0.8
+system-reactive_6-1-0 <- reactiveui_23-2-27
+aoi.alloverit: AllOverIt
+aoi.alloverit <- aoi.alloverit-reactiveui
+aoi.alloverit-assertion: AllOverIt.Assertion
+aoi.alloverit-assertion <- aoi.alloverit
