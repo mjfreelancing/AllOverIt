@@ -2,7 +2,7 @@
 
 ## AllOverIt
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -16,7 +16,7 @@
 
 ## AllOverIt.AspNetCore
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -32,7 +32,7 @@
 
 ## AllOverIt.Assertion
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -46,7 +46,7 @@
 
 ## AllOverIt.Aws.AppSync.Client
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -55,9 +55,8 @@
 * AllOverIt.Reactive
 * AllOverIt.Serialization.Json.Abstractions
 * Microsoft.Extensions.Configuration.Abstractions v9.0.10
-* Microsoft.Extensions.DependencyInjection v10.0.7
-* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.7
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.10
+* Microsoft.Extensions.DependencyInjection v10.0.8
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.8
 * Microsoft.Extensions.Diagnostics v9.0.10
 * Microsoft.Extensions.Http v9.0.10
 * Microsoft.Extensions.Logging v9.0.10
@@ -73,7 +72,7 @@
 
 ## AllOverIt.Aws.Cdk.AppSync
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -81,14 +80,10 @@
 * AllOverIt.Assertion
 * Amazon.CDK.Asset.AwsCliV1 v2.2.273
 * Amazon.CDK.Asset.NodeProxyAgentV6 v2.1.1
-* Amazon.CDK.CloudAssembly.Schema v53.18.0
-* Amazon.CDK.Lib v2.110.0
-* Amazon.CDK.Lib v2.251.0
-* Amazon.JSII.Runtime v1.117.0
-* Amazon.JSII.Runtime v1.127.0
-* Amazon.JSII.Runtime v1.128.0
+* Amazon.CDK.CloudAssembly.Schema v53.25.0
+* Amazon.CDK.Lib v2.257.0
+* Amazon.JSII.Runtime v1.132.0
 * Cdklabs.AwsCdkAppsyncUtils v0.0.858
-* Constructs v10.0.5
 * Constructs v10.5.0
 * Microsoft.Extensions.DependencyInjection v9.0.1
 * Microsoft.Extensions.Logging v9.0.1
@@ -103,7 +98,7 @@
 
 ## AllOverIt.Cryptography
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -118,7 +113,7 @@
 
 ## AllOverIt.Csv
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -134,13 +129,13 @@
 
 ## AllOverIt.DependencyInjection
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.7
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.8
 
 <br>
 
@@ -150,17 +145,17 @@
 
 ## AllOverIt.EntityFrameworkCore
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.EntityFrameworkCore v10.0.7
-* Microsoft.EntityFrameworkCore.Relational v10.0.7
-* Microsoft.Extensions.Caching.Memory v10.0.7
-* Microsoft.Extensions.Configuration.Abstractions v10.0.7
-* Microsoft.Extensions.Logging v10.0.7
+* Microsoft.EntityFrameworkCore v10.0.8
+* Microsoft.EntityFrameworkCore.Relational v10.0.8
+* Microsoft.Extensions.Caching.Memory v10.0.8
+* Microsoft.Extensions.Configuration.Abstractions v10.0.8
+* Microsoft.Extensions.Logging v10.0.8
 
 <br>
 
@@ -170,17 +165,17 @@
 
 ## AllOverIt.EntityFrameworkCore.Diagrams
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.EntityFrameworkCore v10.0.7
-* Microsoft.EntityFrameworkCore.Relational v10.0.7
-* Microsoft.Extensions.Caching.Memory v10.0.7
-* Microsoft.Extensions.Configuration.Abstractions v10.0.7
-* Microsoft.Extensions.Logging v10.0.7
+* Microsoft.EntityFrameworkCore v10.0.8
+* Microsoft.EntityFrameworkCore.Relational v10.0.8
+* Microsoft.Extensions.Caching.Memory v10.0.8
+* Microsoft.Extensions.Configuration.Abstractions v10.0.8
+* Microsoft.Extensions.Logging v10.0.8
 
 <br>
 
@@ -190,7 +185,7 @@
 
 ## AllOverIt.EntityFrameworkCore.Pagination
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -199,12 +194,12 @@
 * AllOverIt.EntityFrameworkCore
 * AllOverIt.Pagination
 * AllOverIt.Serialization.Binary
-* Microsoft.EntityFrameworkCore v10.0.7
-* Microsoft.EntityFrameworkCore.Relational v10.0.7
-* Microsoft.Extensions.Caching.Memory v10.0.7
-* Microsoft.Extensions.Configuration.Abstractions v10.0.7
-* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.7
-* Microsoft.Extensions.Logging v10.0.7
+* Microsoft.EntityFrameworkCore v10.0.8
+* Microsoft.EntityFrameworkCore.Relational v10.0.8
+* Microsoft.Extensions.Caching.Memory v10.0.8
+* Microsoft.Extensions.Configuration.Abstractions v10.0.8
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.8
+* Microsoft.Extensions.Logging v10.0.8
 
 <br>
 
@@ -214,7 +209,7 @@
 
 ## AllOverIt.Evaluator
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -229,7 +224,7 @@
 
 ## AllOverIt.Filtering
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -244,7 +239,7 @@
 
 ## AllOverIt.Fixture
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -255,7 +250,6 @@
 * Fare v2.1.1
 * FluentAssertions v7.1.0
 * NSubstitute v5.3.0
-* System.ComponentModel.Annotations v4.3.0
 * System.Configuration.ConfigurationManager v6.0.0
 
 <br>
@@ -266,7 +260,7 @@
 
 ## AllOverIt.Fixture.FakeItEasy
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -276,12 +270,10 @@
 * AutoFixture v4.18.1
 * AutoFixture.AutoFakeItEasy v4.18.1
 * Castle.Core v5.1.1
-* FakeItEasy v4.9.0
 * FakeItEasy v8.3.0
 * Fare v2.1.1
 * FluentAssertions v7.1.0
 * NSubstitute v5.3.0
-* System.ComponentModel.Annotations v4.3.0
 * System.Configuration.ConfigurationManager v6.0.0
 
 <br>
@@ -292,7 +284,7 @@
 
 ## AllOverIt.GenericHost
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -330,15 +322,14 @@
 
 ## AllOverIt.Logging
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.7
-* Microsoft.Extensions.Logging.Abstractions v10.0.7
-* System.Diagnostics.DiagnosticSource v10.0.7
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.8
+* Microsoft.Extensions.Logging.Abstractions v10.0.8
 
 <br>
 
@@ -348,7 +339,7 @@
 
 ## AllOverIt.Logging.Testing
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -357,11 +348,10 @@
 * AllOverIt.Logging
 * Castle.Core v5.1.1
 * FluentAssertions v7.1.0
-* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.7
-* Microsoft.Extensions.Logging.Abstractions v10.0.7
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.8
+* Microsoft.Extensions.Logging.Abstractions v10.0.8
 * NSubstitute v5.3.0
 * System.Configuration.ConfigurationManager v6.0.0
-* System.Diagnostics.DiagnosticSource v10.0.7
 
 <br>
 
@@ -371,7 +361,7 @@
 
 ## AllOverIt.Mapping
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -386,14 +376,14 @@
 
 ## AllOverIt.Pagination
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
 * AllOverIt
 * AllOverIt.Assertion
 * AllOverIt.Serialization.Binary
-* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.7
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.8
 
 <br>
 
@@ -403,7 +393,7 @@
 
 ## AllOverIt.Pipes
 
-![](https://img.shields.io/badge/.NET-9.0--windows-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0--windows-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0--windows-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
 
 ### Dependencies
 
@@ -421,7 +411,7 @@
 
 ## AllOverIt.Reactive
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -437,15 +427,15 @@
 
 ## AllOverIt.ReactiveUI
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
 * AllOverIt
 * AllOverIt.Assertion
 * DynamicData v9.4.31
-* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.7
-* ReactiveUI v23.2.1
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.8
+* ReactiveUI v23.2.27
 * Splat v19.3.1
 * System.Reactive v6.1.0
 
@@ -457,7 +447,7 @@
 
 ## AllOverIt.ReactiveUI.Wpf
 
-![](https://img.shields.io/badge/.NET-9.0--windows-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0--windows-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0--windows-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
 
 ### Dependencies
 
@@ -465,9 +455,9 @@
 * AllOverIt.Assertion
 * AllOverIt.ReactiveUI
 * DynamicData v9.4.31
-* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.7
-* ReactiveUI v23.2.1
-* ReactiveUI.WPF v23.2.1
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.8
+* ReactiveUI v23.2.27
+* ReactiveUI.WPF v23.2.27
 * Splat v19.3.1
 * System.Reactive v6.1.0
 
@@ -479,7 +469,7 @@
 
 ## AllOverIt.Serialization.Binary
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -494,7 +484,7 @@
 
 ## AllOverIt.Serialization.Json.Abstractions
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -509,7 +499,7 @@
 
 ## AllOverIt.Serialization.Json.Newtonsoft
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -526,7 +516,7 @@
 
 ## AllOverIt.Serialization.Json.SystemText
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -542,21 +532,18 @@
 
 ## AllOverIt.Serilog
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
 * AllOverIt
 * AllOverIt.Assertion
-* Microsoft.Extensions.Configuration.Abstractions v10.0.7
-* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.0
-* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.7
-* Microsoft.Extensions.Diagnostics.Abstractions v10.0.7
-* Microsoft.Extensions.FileProviders.Abstractions v10.0.7
-* Microsoft.Extensions.Hosting.Abstractions v10.0.0
-* Microsoft.Extensions.Hosting.Abstractions v10.0.7
-* Microsoft.Extensions.Logging.Abstractions v10.0.0
-* Microsoft.Extensions.Logging.Abstractions v10.0.7
+* Microsoft.Extensions.Configuration.Abstractions v10.0.8
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.8
+* Microsoft.Extensions.Diagnostics.Abstractions v10.0.8
+* Microsoft.Extensions.FileProviders.Abstractions v10.0.8
+* Microsoft.Extensions.Hosting.Abstractions v10.0.8
+* Microsoft.Extensions.Logging.Abstractions v10.0.8
 * Serilog v4.3.0
 * Serilog.Extensions.Hosting v10.0.0
 * Serilog.Extensions.Logging v10.0.0
@@ -569,14 +556,14 @@
 
 ## AllOverIt.Validation
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
 * AllOverIt
 * AllOverIt.Assertion
 * FluentValidation v12.1.1
-* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.7
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.8
 
 <br>
 
@@ -586,7 +573,7 @@
 
 ## AllOverIt.Validation.Options
 
-![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -594,8 +581,7 @@
 * AllOverIt.Assertion
 * AllOverIt.Validation
 * FluentValidation v12.1.1
-* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.7
-* Microsoft.Extensions.DependencyInjection.Abstractions v9.0.10
+* Microsoft.Extensions.DependencyInjection.Abstractions v10.0.8
 * Microsoft.Extensions.Options v9.0.10
 * Microsoft.Extensions.Primitives v9.0.10
 
@@ -607,7 +593,7 @@
 
 ## AllOverIt.Wpf
 
-![](https://img.shields.io/badge/.NET-9.0--windows-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0--windows-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0--windows-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
 
 ### Dependencies
 
@@ -622,7 +608,7 @@
 
 ## AllOverIt.Wpf.Controls
 
-![](https://img.shields.io/badge/.NET-9.0--windows-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0--windows-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0--windows-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
 
 ### Dependencies
 
