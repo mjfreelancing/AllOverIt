@@ -3,43 +3,46 @@ direction: left
 aoi: AllOverIt
 aoi.alloverit-fixture-fakeiteasy: AllOverIt.Fixture.FakeItEasy
 autofixture-autofakeiteasy_4-18-1: AutoFixture.AutoFakeItEasy\nv4.18.1
-autofixture-autofakeiteasy_4-18-1.style.fill: "#ADD8E6"
-autofixture-autofakeiteasy_4-18-1.style.opacity: 0.8
-autofixture-autofakeiteasy_4-18-1 <- aoi.alloverit-fixture-fakeiteasy
 autofixture_4-18-1: AutoFixture\nv4.18.1
-autofixture_4-18-1.style.opacity: 0.8
-autofixture_4-18-1.style.fill: "#ADD8E6"
-autofixture_4-18-1 <- autofixture-autofakeiteasy_4-18-1
 fakeiteasy_8-3-0: FakeItEasy\nv8.3.0
-fakeiteasy_8-3-0.style.opacity: 0.8
-fakeiteasy_8-3-0.style.fill: "#ADD8E6"
+castle-core_5-1-1: Castle.Core\nv5.1.1
+aoi.alloverit-fixture: AllOverIt.Fixture
+fare_2-1-1: Fare\nv2.1.1
+fluentassertions_7-1-0: FluentAssertions\nv7.1.0
+system-configuration-configurationmanager_6-0-0: System.Configuration.ConfigurationManager\nv6.0.0
+nsubstitute_5-3-0: NSubstitute\nv5.3.0
+aoi.alloverit: AllOverIt
+aoi.alloverit-assertion: AllOverIt.Assertion
+autofixture-autofakeiteasy_4-18-1 <- aoi.alloverit-fixture-fakeiteasy
+autofixture_4-18-1 <- autofixture-autofakeiteasy_4-18-1
 fakeiteasy_8-3-0 <- autofixture-autofakeiteasy_4-18-1
 fakeiteasy_8-3-0 <- aoi.alloverit-fixture-fakeiteasy
-castle-core_5-1-1: Castle.Core\nv5.1.1
-castle-core_5-1-1.style.fill: "#FFEC96"
-castle-core_5-1-1.style.opacity: 0.8
 castle-core_5-1-1 <- fakeiteasy_8-3-0
-aoi.alloverit-fixture: AllOverIt.Fixture
 aoi.alloverit-fixture <- aoi.alloverit-fixture-fakeiteasy
 autofixture_4-18-1 <- aoi.alloverit-fixture
-fare_2-1-1: Fare\nv2.1.1
-fare_2-1-1.style.fill: "#FFEC96"
-fare_2-1-1.style.opacity: 0.8
 fare_2-1-1 <- autofixture_4-18-1
-fluentassertions_7-1-0: FluentAssertions\nv7.1.0
-fluentassertions_7-1-0.style.fill: "#ADD8E6"
-fluentassertions_7-1-0.style.opacity: 0.8
 fluentassertions_7-1-0 <- aoi.alloverit-fixture
-system-configuration-configurationmanager_6-0-0: System.Configuration.ConfigurationManager\nv6.0.0
-system-configuration-configurationmanager_6-0-0.style.fill: "#FFEC96"
-system-configuration-configurationmanager_6-0-0.style.opacity: 0.8
 system-configuration-configurationmanager_6-0-0 <- fluentassertions_7-1-0
-nsubstitute_5-3-0: NSubstitute\nv5.3.0
-nsubstitute_5-3-0.style.fill: "#ADD8E6"
-nsubstitute_5-3-0.style.opacity: 0.8
 nsubstitute_5-3-0 <- aoi.alloverit-fixture
 castle-core_5-1-1 <- nsubstitute_5-3-0
-aoi.alloverit: AllOverIt
 aoi.alloverit <- aoi.alloverit-fixture
-aoi.alloverit-assertion: AllOverIt.Assertion
 aoi.alloverit-assertion <- aoi.alloverit
+autofixture-autofakeiteasy_4-18-1.style.fill: "#ADD8E6"
+autofixture-autofakeiteasy_4-18-1.style.opacity: 0.8
+autofixture_4-18-1.style.fill: "#ADD8E6"
+autofixture_4-18-1.style.opacity: 0.8
+fakeiteasy_8-3-0.style.fill: "#ADD8E6"
+fakeiteasy_8-3-0.style.opacity: 0.8
+castle-core_5-1-1.style.fill: "#FFEC96"
+castle-core_5-1-1.style.opacity: 0.8
+fare_2-1-1.style.fill: "#FFEC96"
+fare_2-1-1.style.opacity: 0.8
+fluentassertions_7-1-0.style.fill: "#ADD8E6"
+fluentassertions_7-1-0.style.opacity: 0.8
+system-configuration-configurationmanager_6-0-0.style.fill: "#FFEC96"
+system-configuration-configurationmanager_6-0-0.style.opacity: 0.8
+nsubstitute_5-3-0.style.fill: "#ADD8E6"
+nsubstitute_5-3-0.style.opacity: 0.8
+aoi.style.fill: "#E7EBFC"
+aoi.style.opacity: 1
+

@@ -1,0 +1,9 @@
+flowchart LR
+  alloverit-aspnetcore["AllOverIt.AspNetCore"]
+  microsoft-aspnetcore-app["Microsoft.AspNetCore.App"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-aspnetcore --> microsoft-aspnetcore-app
+  alloverit-aspnetcore --> alloverit
+  alloverit --> alloverit-assertion
+  style microsoft-aspnetcore-app fill:#ECCBC0,opacity:0.8

@@ -1,0 +1,14 @@
+flowchart LR
+  alloverit-pipes["AllOverIt.Pipes"]
+  alloverit-serialization-binary["AllOverIt.Serialization.Binary"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-reactive["AllOverIt.Reactive"]
+  system-reactive_6-1-0["System.Reactive<br>v6.1.0"]
+  alloverit-pipes --> alloverit-serialization-binary
+  alloverit-serialization-binary --> alloverit
+  alloverit --> alloverit-assertion
+  alloverit-pipes --> alloverit-reactive
+  alloverit-reactive --> system-reactive_6-1-0
+  alloverit-reactive --> alloverit
+  style system-reactive_6-1-0 fill:#ADD8E6,opacity:0.8

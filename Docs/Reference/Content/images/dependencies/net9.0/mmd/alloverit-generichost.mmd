@@ -1,0 +1,75 @@
+flowchart LR
+  alloverit-generichost["AllOverIt.GenericHost"]
+  microsoft-extensions-hosting_9-0-10["Microsoft.Extensions.Hosting<br>v9.0.10"]
+  microsoft-extensions-configuration_9-0-10["Microsoft.Extensions.Configuration<br>v9.0.10"]
+  microsoft-extensions-configuration-abstractions_9-0-10["Microsoft.Extensions.Configuration.Abstractions<br>v9.0.10"]
+  microsoft-extensions-configuration-binder_9-0-10["Microsoft.Extensions.Configuration.Binder<br>v9.0.10"]
+  microsoft-extensions-configuration-commandline_9-0-10["Microsoft.Extensions.Configuration.CommandLine<br>v9.0.10"]
+  microsoft-extensions-configuration-environmentvariables_9-0-10["Microsoft.Extensions.Configuration.EnvironmentVariables<br>v9.0.10"]
+  microsoft-extensions-configuration-fileextensions_9-0-10["Microsoft.Extensions.Configuration.FileExtensions<br>v9.0.10"]
+  microsoft-extensions-configuration-json_9-0-10["Microsoft.Extensions.Configuration.Json<br>v9.0.10"]
+  microsoft-extensions-configuration-usersecrets_9-0-10["Microsoft.Extensions.Configuration.UserSecrets<br>v9.0.10"]
+  microsoft-extensions-dependencyinjection_9-0-10["Microsoft.Extensions.DependencyInjection<br>v9.0.10"]
+  microsoft-extensions-dependencyinjection-abstractions_9-0-10["Microsoft.Extensions.DependencyInjection.Abstractions<br>v9.0.10"]
+  microsoft-extensions-diagnostics_9-0-10["Microsoft.Extensions.Diagnostics<br>v9.0.10"]
+  microsoft-extensions-fileproviders-abstractions_9-0-10["Microsoft.Extensions.FileProviders.Abstractions<br>v9.0.10"]
+  microsoft-extensions-fileproviders-physical_9-0-10["Microsoft.Extensions.FileProviders.Physical<br>v9.0.10"]
+  microsoft-extensions-hosting-abstractions_9-0-10["Microsoft.Extensions.Hosting.Abstractions<br>v9.0.10"]
+  microsoft-extensions-logging_9-0-10["Microsoft.Extensions.Logging<br>v9.0.10"]
+  microsoft-extensions-logging-abstractions_9-0-10["Microsoft.Extensions.Logging.Abstractions<br>v9.0.10"]
+  microsoft-extensions-logging-configuration_9-0-10["Microsoft.Extensions.Logging.Configuration<br>v9.0.10"]
+  microsoft-extensions-logging-console_9-0-10["Microsoft.Extensions.Logging.Console<br>v9.0.10"]
+  microsoft-extensions-logging-debug_9-0-10["Microsoft.Extensions.Logging.Debug<br>v9.0.10"]
+  microsoft-extensions-logging-eventlog_9-0-10["Microsoft.Extensions.Logging.EventLog<br>v9.0.10"]
+  microsoft-extensions-logging-eventsource_9-0-10["Microsoft.Extensions.Logging.EventSource<br>v9.0.10"]
+  microsoft-extensions-options_9-0-10["Microsoft.Extensions.Options<br>v9.0.10"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-generichost --> microsoft-extensions-hosting_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-configuration_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-configuration-abstractions_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-configuration-binder_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-configuration-commandline_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-configuration-environmentvariables_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-configuration-fileextensions_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-configuration-json_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-configuration-usersecrets_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-dependencyinjection_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-dependencyinjection-abstractions_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-diagnostics_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-fileproviders-abstractions_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-fileproviders-physical_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-hosting-abstractions_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-logging_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-logging-abstractions_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-logging-configuration_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-logging-console_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-logging-debug_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-logging-eventlog_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-logging-eventsource_9-0-10
+  microsoft-extensions-hosting_9-0-10 --> microsoft-extensions-options_9-0-10
+  alloverit-generichost --> alloverit
+  alloverit --> alloverit-assertion
+  style microsoft-extensions-hosting_9-0-10 fill:#ADD8E6,opacity:0.8
+  style microsoft-extensions-configuration_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-configuration-abstractions_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-configuration-binder_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-configuration-commandline_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-configuration-environmentvariables_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-configuration-fileextensions_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-configuration-json_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-configuration-usersecrets_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-dependencyinjection_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-dependencyinjection-abstractions_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-diagnostics_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-fileproviders-abstractions_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-fileproviders-physical_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-hosting-abstractions_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging-abstractions_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging-configuration_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging-console_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging-debug_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging-eventlog_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging-eventsource_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-options_9-0-10 fill:#FFEC96,opacity:0.8

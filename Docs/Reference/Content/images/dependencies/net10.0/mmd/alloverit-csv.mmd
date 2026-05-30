@@ -1,0 +1,9 @@
+flowchart LR
+  alloverit-csv["AllOverIt.Csv"]
+  csvhelper_33-1-0["CsvHelper<br>v33.1.0"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-csv --> csvhelper_33-1-0
+  alloverit-csv --> alloverit
+  alloverit --> alloverit-assertion
+  style csvhelper_33-1-0 fill:#ADD8E6,opacity:0.8

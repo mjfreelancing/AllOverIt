@@ -1,0 +1,8 @@
+flowchart LR
+  alloverit-serialization-json-systemtext["AllOverIt.Serialization.Json.SystemText"]
+  alloverit-serialization-json-abstractions["AllOverIt.Serialization.Json.Abstractions"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-serialization-json-systemtext --> alloverit-serialization-json-abstractions
+  alloverit-serialization-json-abstractions --> alloverit
+  alloverit --> alloverit-assertion

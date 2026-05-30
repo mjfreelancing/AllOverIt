@@ -3,48 +3,51 @@ direction: left
 aoi: AllOverIt
 aoi.alloverit-aws-appsync-client: AllOverIt.Aws.AppSync.Client
 microsoft-extensions-dependencyinjection_10-0-8: Microsoft.Extensions.DependencyInjection\nv10.0.8
-microsoft-extensions-dependencyinjection_10-0-8.style.fill: "#ADD8E6"
-microsoft-extensions-dependencyinjection_10-0-8.style.opacity: 0.8
-microsoft-extensions-dependencyinjection_10-0-8 <- aoi.alloverit-aws-appsync-client
 microsoft-extensions-dependencyinjection-abstractions_10-0-8: Microsoft.Extensions.DependencyInjection.Abstractions\nv10.0.8
-microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.fill: "#FFEC96"
-microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.opacity: 0.8
-microsoft-extensions-dependencyinjection-abstractions_10-0-8 <- microsoft-extensions-dependencyinjection_10-0-8
 microsoft-extensions-http_9-0-10: Microsoft.Extensions.Http\nv9.0.10
-microsoft-extensions-http_9-0-10.style.fill: "#ADD8E6"
-microsoft-extensions-http_9-0-10.style.opacity: 0.8
-microsoft-extensions-http_9-0-10 <- aoi.alloverit-aws-appsync-client
 microsoft-extensions-configuration-abstractions_9-0-10: Microsoft.Extensions.Configuration.Abstractions\nv9.0.10
-microsoft-extensions-configuration-abstractions_9-0-10.style.fill: "#FFEC96"
-microsoft-extensions-configuration-abstractions_9-0-10.style.opacity: 0.8
+microsoft-extensions-diagnostics_9-0-10: Microsoft.Extensions.Diagnostics\nv9.0.10
+microsoft-extensions-logging_9-0-10: Microsoft.Extensions.Logging\nv9.0.10
+microsoft-extensions-logging-abstractions_9-0-10: Microsoft.Extensions.Logging.Abstractions\nv9.0.10
+microsoft-extensions-options_9-0-10: Microsoft.Extensions.Options\nv9.0.10
+aoi.alloverit-reactive: AllOverIt.Reactive
+system-reactive_6-1-0: System.Reactive\nv6.1.0
+aoi.alloverit: AllOverIt
+aoi.alloverit-assertion: AllOverIt.Assertion
+aoi.alloverit-serialization-json-abstractions: AllOverIt.Serialization.Json.Abstractions
+microsoft-extensions-dependencyinjection_10-0-8 <- aoi.alloverit-aws-appsync-client
+microsoft-extensions-dependencyinjection-abstractions_10-0-8 <- microsoft-extensions-dependencyinjection_10-0-8
+microsoft-extensions-http_9-0-10 <- aoi.alloverit-aws-appsync-client
 microsoft-extensions-configuration-abstractions_9-0-10 <- microsoft-extensions-http_9-0-10
 microsoft-extensions-dependencyinjection-abstractions_10-0-8 <- microsoft-extensions-http_9-0-10
-microsoft-extensions-diagnostics_9-0-10: Microsoft.Extensions.Diagnostics\nv9.0.10
-microsoft-extensions-diagnostics_9-0-10.style.fill: "#FFEC96"
-microsoft-extensions-diagnostics_9-0-10.style.opacity: 0.8
 microsoft-extensions-diagnostics_9-0-10 <- microsoft-extensions-http_9-0-10
-microsoft-extensions-logging_9-0-10: Microsoft.Extensions.Logging\nv9.0.10
-microsoft-extensions-logging_9-0-10.style.fill: "#FFEC96"
-microsoft-extensions-logging_9-0-10.style.opacity: 0.8
 microsoft-extensions-logging_9-0-10 <- microsoft-extensions-http_9-0-10
-microsoft-extensions-logging-abstractions_9-0-10: Microsoft.Extensions.Logging.Abstractions\nv9.0.10
-microsoft-extensions-logging-abstractions_9-0-10.style.fill: "#FFEC96"
-microsoft-extensions-logging-abstractions_9-0-10.style.opacity: 0.8
 microsoft-extensions-logging-abstractions_9-0-10 <- microsoft-extensions-http_9-0-10
-microsoft-extensions-options_9-0-10: Microsoft.Extensions.Options\nv9.0.10
-microsoft-extensions-options_9-0-10.style.fill: "#FFEC96"
-microsoft-extensions-options_9-0-10.style.opacity: 0.8
 microsoft-extensions-options_9-0-10 <- microsoft-extensions-http_9-0-10
-aoi.alloverit-reactive: AllOverIt.Reactive
 aoi.alloverit-reactive <- aoi.alloverit-aws-appsync-client
-system-reactive_6-1-0: System.Reactive\nv6.1.0
-system-reactive_6-1-0.style.fill: "#ADD8E6"
-system-reactive_6-1-0.style.opacity: 0.8
 system-reactive_6-1-0 <- aoi.alloverit-reactive
-aoi.alloverit: AllOverIt
 aoi.alloverit <- aoi.alloverit-reactive
-aoi.alloverit-assertion: AllOverIt.Assertion
 aoi.alloverit-assertion <- aoi.alloverit
-aoi.alloverit-serialization-json-abstractions: AllOverIt.Serialization.Json.Abstractions
 aoi.alloverit-serialization-json-abstractions <- aoi.alloverit-aws-appsync-client
 aoi.alloverit <- aoi.alloverit-serialization-json-abstractions
+microsoft-extensions-dependencyinjection_10-0-8.style.fill: "#ADD8E6"
+microsoft-extensions-dependencyinjection_10-0-8.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.fill: "#FFEC96"
+microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.opacity: 0.8
+microsoft-extensions-http_9-0-10.style.fill: "#ADD8E6"
+microsoft-extensions-http_9-0-10.style.opacity: 0.8
+microsoft-extensions-configuration-abstractions_9-0-10.style.fill: "#FFEC96"
+microsoft-extensions-configuration-abstractions_9-0-10.style.opacity: 0.8
+microsoft-extensions-diagnostics_9-0-10.style.fill: "#FFEC96"
+microsoft-extensions-diagnostics_9-0-10.style.opacity: 0.8
+microsoft-extensions-logging_9-0-10.style.fill: "#FFEC96"
+microsoft-extensions-logging_9-0-10.style.opacity: 0.8
+microsoft-extensions-logging-abstractions_9-0-10.style.fill: "#FFEC96"
+microsoft-extensions-logging-abstractions_9-0-10.style.opacity: 0.8
+microsoft-extensions-options_9-0-10.style.fill: "#FFEC96"
+microsoft-extensions-options_9-0-10.style.opacity: 0.8
+system-reactive_6-1-0.style.fill: "#ADD8E6"
+system-reactive_6-1-0.style.opacity: 0.8
+aoi.style.fill: "#E7EBFC"
+aoi.style.opacity: 1
+

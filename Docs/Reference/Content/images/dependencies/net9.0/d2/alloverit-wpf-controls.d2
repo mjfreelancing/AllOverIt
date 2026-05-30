@@ -3,10 +3,13 @@ direction: left
 aoi: AllOverIt
 aoi.alloverit-wpf-controls: AllOverIt.Wpf.Controls
 microsoft-xaml-behaviors-wpf_1-1-142: Microsoft.Xaml.Behaviors.Wpf\nv1.1.142
+aoi.alloverit: AllOverIt
+aoi.alloverit-assertion: AllOverIt.Assertion
+microsoft-xaml-behaviors-wpf_1-1-142 <- aoi.alloverit-wpf-controls
+aoi.alloverit <- aoi.alloverit-wpf-controls
+aoi.alloverit-assertion <- aoi.alloverit
 microsoft-xaml-behaviors-wpf_1-1-142.style.fill: "#ADD8E6"
 microsoft-xaml-behaviors-wpf_1-1-142.style.opacity: 0.8
-microsoft-xaml-behaviors-wpf_1-1-142 <- aoi.alloverit-wpf-controls
-aoi.alloverit: AllOverIt
-aoi.alloverit <- aoi.alloverit-wpf-controls
-aoi.alloverit-assertion: AllOverIt.Assertion
-aoi.alloverit-assertion <- aoi.alloverit
+aoi.style.fill: "#E7EBFC"
+aoi.style.opacity: 1
+

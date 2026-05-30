@@ -1,0 +1,11 @@
+flowchart LR
+  alloverit-serialization-json-newtonsoft["AllOverIt.Serialization.Json.Newtonsoft"]
+  newtonsoft-json_13-0-4["Newtonsoft.Json<br>v13.0.4"]
+  alloverit-serialization-json-abstractions["AllOverIt.Serialization.Json.Abstractions"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-serialization-json-newtonsoft --> newtonsoft-json_13-0-4
+  alloverit-serialization-json-newtonsoft --> alloverit-serialization-json-abstractions
+  alloverit-serialization-json-abstractions --> alloverit
+  alloverit --> alloverit-assertion
+  style newtonsoft-json_13-0-4 fill:#ADD8E6,opacity:0.8

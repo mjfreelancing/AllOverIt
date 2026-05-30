@@ -1,0 +1,24 @@
+flowchart LR
+  alloverit-fixture["AllOverIt.Fixture"]
+  autofixture_4-18-1["AutoFixture<br>v4.18.1"]
+  fare_2-1-1["Fare<br>v2.1.1"]
+  fluentassertions_7-1-0["FluentAssertions<br>v7.1.0"]
+  system-configuration-configurationmanager_6-0-0["System.Configuration.ConfigurationManager<br>v6.0.0"]
+  nsubstitute_5-3-0["NSubstitute<br>v5.3.0"]
+  castle-core_5-1-1["Castle.Core<br>v5.1.1"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-fixture --> autofixture_4-18-1
+  autofixture_4-18-1 --> fare_2-1-1
+  alloverit-fixture --> fluentassertions_7-1-0
+  fluentassertions_7-1-0 --> system-configuration-configurationmanager_6-0-0
+  alloverit-fixture --> nsubstitute_5-3-0
+  nsubstitute_5-3-0 --> castle-core_5-1-1
+  alloverit-fixture --> alloverit
+  alloverit --> alloverit-assertion
+  style autofixture_4-18-1 fill:#ADD8E6,opacity:0.8
+  style fare_2-1-1 fill:#FFEC96,opacity:0.8
+  style fluentassertions_7-1-0 fill:#ADD8E6,opacity:0.8
+  style system-configuration-configurationmanager_6-0-0 fill:#FFEC96,opacity:0.8
+  style nsubstitute_5-3-0 fill:#ADD8E6,opacity:0.8
+  style castle-core_5-1-1 fill:#FFEC96,opacity:0.8

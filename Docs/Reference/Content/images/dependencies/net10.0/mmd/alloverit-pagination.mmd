@@ -1,0 +1,11 @@
+flowchart LR
+  alloverit-pagination["AllOverIt.Pagination"]
+  microsoft-extensions-dependencyinjection-abstractions_10-0-8["Microsoft.Extensions.DependencyInjection.Abstractions<br>v10.0.8"]
+  alloverit-serialization-binary["AllOverIt.Serialization.Binary"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-pagination --> microsoft-extensions-dependencyinjection-abstractions_10-0-8
+  alloverit-pagination --> alloverit-serialization-binary
+  alloverit-serialization-binary --> alloverit
+  alloverit --> alloverit-assertion
+  style microsoft-extensions-dependencyinjection-abstractions_10-0-8 fill:#ADD8E6,opacity:0.8

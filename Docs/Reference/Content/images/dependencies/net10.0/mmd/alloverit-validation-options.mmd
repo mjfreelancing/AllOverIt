@@ -1,0 +1,21 @@
+flowchart LR
+  alloverit-validation-options["AllOverIt.Validation.Options"]
+  microsoft-extensions-options_9-0-10["Microsoft.Extensions.Options<br>v9.0.10"]
+  microsoft-extensions-dependencyinjection-abstractions_10-0-8["Microsoft.Extensions.DependencyInjection.Abstractions<br>v10.0.8"]
+  microsoft-extensions-primitives_9-0-10["Microsoft.Extensions.Primitives<br>v9.0.10"]
+  alloverit-validation["AllOverIt.Validation"]
+  fluentvalidation_12-1-1["FluentValidation<br>v12.1.1"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-validation-options --> microsoft-extensions-options_9-0-10
+  microsoft-extensions-options_9-0-10 --> microsoft-extensions-dependencyinjection-abstractions_10-0-8
+  microsoft-extensions-options_9-0-10 --> microsoft-extensions-primitives_9-0-10
+  alloverit-validation-options --> alloverit-validation
+  alloverit-validation --> fluentvalidation_12-1-1
+  alloverit-validation --> microsoft-extensions-dependencyinjection-abstractions_10-0-8
+  alloverit-validation --> alloverit
+  alloverit --> alloverit-assertion
+  style microsoft-extensions-options_9-0-10 fill:#ADD8E6,opacity:0.8
+  style microsoft-extensions-dependencyinjection-abstractions_10-0-8 fill:#ADD8E6,opacity:0.8
+  style microsoft-extensions-primitives_9-0-10 fill:#FFEC96,opacity:0.8
+  style fluentvalidation_12-1-1 fill:#ADD8E6,opacity:0.8

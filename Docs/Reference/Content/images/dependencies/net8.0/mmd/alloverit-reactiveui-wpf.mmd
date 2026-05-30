@@ -1,0 +1,30 @@
+flowchart LR
+  alloverit-reactiveui-wpf["AllOverIt.ReactiveUI.Wpf"]
+  reactiveui-wpf_23-2-27["ReactiveUI.WPF<br>v23.2.27"]
+  dynamicdata_9-4-31["DynamicData<br>v9.4.31"]
+  reactiveui_23-2-27["ReactiveUI<br>v23.2.27"]
+  splat_19-3-1["Splat<br>v19.3.1"]
+  system-reactive_6-1-0["System.Reactive<br>v6.1.0"]
+  alloverit-reactiveui["AllOverIt.ReactiveUI"]
+  microsoft-extensions-dependencyinjection-abstractions_10-0-8["Microsoft.Extensions.DependencyInjection.Abstractions<br>v10.0.8"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-reactiveui-wpf --> reactiveui-wpf_23-2-27
+  reactiveui-wpf_23-2-27 --> dynamicdata_9-4-31
+  reactiveui-wpf_23-2-27 --> reactiveui_23-2-27
+  reactiveui-wpf_23-2-27 --> splat_19-3-1
+  reactiveui-wpf_23-2-27 --> system-reactive_6-1-0
+  alloverit-reactiveui-wpf --> alloverit-reactiveui
+  alloverit-reactiveui --> microsoft-extensions-dependencyinjection-abstractions_10-0-8
+  alloverit-reactiveui --> reactiveui_23-2-27
+  reactiveui_23-2-27 --> dynamicdata_9-4-31
+  reactiveui_23-2-27 --> splat_19-3-1
+  reactiveui_23-2-27 --> system-reactive_6-1-0
+  alloverit-reactiveui --> alloverit
+  alloverit --> alloverit-assertion
+  style reactiveui-wpf_23-2-27 fill:#ADD8E6,opacity:0.8
+  style dynamicdata_9-4-31 fill:#FFEC96,opacity:0.8
+  style reactiveui_23-2-27 fill:#ADD8E6,opacity:0.8
+  style splat_19-3-1 fill:#FFEC96,opacity:0.8
+  style system-reactive_6-1-0 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-dependencyinjection-abstractions_10-0-8 fill:#ADD8E6,opacity:0.8

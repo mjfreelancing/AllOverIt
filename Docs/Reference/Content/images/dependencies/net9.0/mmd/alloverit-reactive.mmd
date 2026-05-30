@@ -1,0 +1,9 @@
+flowchart LR
+  alloverit-reactive["AllOverIt.Reactive"]
+  system-reactive_6-1-0["System.Reactive<br>v6.1.0"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-reactive --> system-reactive_6-1-0
+  alloverit-reactive --> alloverit
+  alloverit --> alloverit-assertion
+  style system-reactive_6-1-0 fill:#ADD8E6,opacity:0.8
