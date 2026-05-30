@@ -2,10 +2,14 @@ direction: left
 
 aoi: AllOverIt
 aoi.alloverit-aspnetcore: AllOverIt.AspNetCore
+microsoft-aspnetcore-app: Microsoft.AspNetCore.App
+aoi.alloverit: AllOverIt
+aoi.alloverit-assertion: AllOverIt.Assertion
 microsoft-aspnetcore-app <- aoi.alloverit-aspnetcore
+aoi.alloverit <- aoi.alloverit-aspnetcore
+aoi.alloverit-assertion <- aoi.alloverit
 microsoft-aspnetcore-app.style.fill: "#ECCBC0"
 microsoft-aspnetcore-app.style.opacity: 0.8
-aoi.alloverit: AllOverIt
-aoi.alloverit <- aoi.alloverit-aspnetcore
-aoi.alloverit-assertion: AllOverIt.Assertion
-aoi.alloverit-assertion <- aoi.alloverit
+aoi.style.fill: "#E7EBFC"
+aoi.style.opacity: 1
+

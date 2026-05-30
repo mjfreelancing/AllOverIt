@@ -1,0 +1,43 @@
+flowchart LR
+  alloverit-aws-cdk-appsync["AllOverIt.Aws.Cdk.AppSync"]
+  amazon-cdk-lib_2-257-0["Amazon.CDK.Lib<br>v2.257.0"]
+  amazon-cdk-asset-awscliv1_2-2-273["Amazon.CDK.Asset.AwsCliV1<br>v2.2.273"]
+  amazon-cdk-asset-nodeproxyagentv6_2-1-1["Amazon.CDK.Asset.NodeProxyAgentV6<br>v2.1.1"]
+  amazon-cdk-cloudassembly-schema_53-25-0["Amazon.CDK.CloudAssembly.Schema<br>v53.25.0"]
+  amazon-jsii-runtime_1-132-0["Amazon.JSII.Runtime<br>v1.132.0"]
+  constructs_10-5-0["Constructs<br>v10.5.0"]
+  microsoft-extensions-dependencyinjection_9-0-1["Microsoft.Extensions.DependencyInjection<br>v9.0.1"]
+  microsoft-extensions-logging_9-0-1["Microsoft.Extensions.Logging<br>v9.0.1"]
+  microsoft-extensions-logging-console_9-0-1["Microsoft.Extensions.Logging.Console<br>v9.0.1"]
+  newtonsoft-json_13-0-3["Newtonsoft.Json<br>v13.0.3"]
+  cdklabs-awscdkappsyncutils_0-0-858["Cdklabs.AwsCdkAppsyncUtils<br>v0.0.858"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-aws-cdk-appsync --> amazon-cdk-lib_2-257-0
+  amazon-cdk-lib_2-257-0 --> amazon-cdk-asset-awscliv1_2-2-273
+  amazon-cdk-lib_2-257-0 --> amazon-cdk-asset-nodeproxyagentv6_2-1-1
+  amazon-cdk-lib_2-257-0 --> amazon-cdk-cloudassembly-schema_53-25-0
+  amazon-cdk-lib_2-257-0 --> amazon-jsii-runtime_1-132-0
+  amazon-cdk-lib_2-257-0 --> constructs_10-5-0
+  alloverit-aws-cdk-appsync --> amazon-jsii-runtime_1-132-0
+  amazon-jsii-runtime_1-132-0 --> microsoft-extensions-dependencyinjection_9-0-1
+  amazon-jsii-runtime_1-132-0 --> microsoft-extensions-logging_9-0-1
+  amazon-jsii-runtime_1-132-0 --> microsoft-extensions-logging-console_9-0-1
+  amazon-jsii-runtime_1-132-0 --> newtonsoft-json_13-0-3
+  alloverit-aws-cdk-appsync --> cdklabs-awscdkappsyncutils_0-0-858
+  cdklabs-awscdkappsyncutils_0-0-858 --> amazon-cdk-lib_2-257-0
+  cdklabs-awscdkappsyncutils_0-0-858 --> amazon-jsii-runtime_1-132-0
+  cdklabs-awscdkappsyncutils_0-0-858 --> constructs_10-5-0
+  alloverit-aws-cdk-appsync --> alloverit
+  alloverit --> alloverit-assertion
+  style amazon-cdk-lib_2-257-0 fill:#ADD8E6,opacity:0.8
+  style amazon-cdk-asset-awscliv1_2-2-273 fill:#FFEC96,opacity:0.8
+  style amazon-cdk-asset-nodeproxyagentv6_2-1-1 fill:#FFEC96,opacity:0.8
+  style amazon-cdk-cloudassembly-schema_53-25-0 fill:#FFEC96,opacity:0.8
+  style amazon-jsii-runtime_1-132-0 fill:#ADD8E6,opacity:0.8
+  style constructs_10-5-0 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-dependencyinjection_9-0-1 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging_9-0-1 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging-console_9-0-1 fill:#FFEC96,opacity:0.8
+  style newtonsoft-json_13-0-3 fill:#FFEC96,opacity:0.8
+  style cdklabs-awscdkappsyncutils_0-0-858 fill:#ADD8E6,opacity:0.8

@@ -3,37 +3,40 @@ direction: left
 aoi: AllOverIt
 aoi.alloverit-logging-testing: AllOverIt.Logging.Testing
 fluentassertions_7-1-0: FluentAssertions\nv7.1.0
-fluentassertions_7-1-0.style.fill: "#ADD8E6"
-fluentassertions_7-1-0.style.opacity: 0.8
-fluentassertions_7-1-0 <- aoi.alloverit-logging-testing
 system-configuration-configurationmanager_6-0-0: System.Configuration.ConfigurationManager\nv6.0.0
-system-configuration-configurationmanager_6-0-0.style.fill: "#FFEC96"
-system-configuration-configurationmanager_6-0-0.style.opacity: 0.8
-system-configuration-configurationmanager_6-0-0 <- fluentassertions_7-1-0
 microsoft-extensions-logging-abstractions_10-0-8: Microsoft.Extensions.Logging.Abstractions\nv10.0.8
-microsoft-extensions-logging-abstractions_10-0-8.style.fill: "#ADD8E6"
-microsoft-extensions-logging-abstractions_10-0-8.style.opacity: 0.8
-microsoft-extensions-logging-abstractions_10-0-8 <- aoi.alloverit-logging-testing
 microsoft-extensions-dependencyinjection-abstractions_10-0-8: Microsoft.Extensions.DependencyInjection.Abstractions\nv10.0.8
-microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.fill: "#FFEC96"
-microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.opacity: 0.8
-microsoft-extensions-dependencyinjection-abstractions_10-0-8 <- microsoft-extensions-logging-abstractions_10-0-8
 system-diagnostics-diagnosticsource_10-0-8: System.Diagnostics.DiagnosticSource\nv10.0.8
-system-diagnostics-diagnosticsource_10-0-8.style.fill: "#FFEC96"
-system-diagnostics-diagnosticsource_10-0-8.style.opacity: 0.8
-system-diagnostics-diagnosticsource_10-0-8 <- microsoft-extensions-logging-abstractions_10-0-8
 nsubstitute_5-3-0: NSubstitute\nv5.3.0
-nsubstitute_5-3-0.style.fill: "#ADD8E6"
-nsubstitute_5-3-0.style.opacity: 0.8
-nsubstitute_5-3-0 <- aoi.alloverit-logging-testing
 castle-core_5-1-1: Castle.Core\nv5.1.1
-castle-core_5-1-1.style.fill: "#FFEC96"
-castle-core_5-1-1.style.opacity: 0.8
-castle-core_5-1-1 <- nsubstitute_5-3-0
 aoi.alloverit-logging: AllOverIt.Logging
+aoi.alloverit: AllOverIt
+aoi.alloverit-assertion: AllOverIt.Assertion
+fluentassertions_7-1-0 <- aoi.alloverit-logging-testing
+system-configuration-configurationmanager_6-0-0 <- fluentassertions_7-1-0
+microsoft-extensions-logging-abstractions_10-0-8 <- aoi.alloverit-logging-testing
+microsoft-extensions-dependencyinjection-abstractions_10-0-8 <- microsoft-extensions-logging-abstractions_10-0-8
+system-diagnostics-diagnosticsource_10-0-8 <- microsoft-extensions-logging-abstractions_10-0-8
+nsubstitute_5-3-0 <- aoi.alloverit-logging-testing
+castle-core_5-1-1 <- nsubstitute_5-3-0
 aoi.alloverit-logging <- aoi.alloverit-logging-testing
 microsoft-extensions-logging-abstractions_10-0-8 <- aoi.alloverit-logging
-aoi.alloverit: AllOverIt
 aoi.alloverit <- aoi.alloverit-logging
-aoi.alloverit-assertion: AllOverIt.Assertion
 aoi.alloverit-assertion <- aoi.alloverit
+fluentassertions_7-1-0.style.fill: "#ADD8E6"
+fluentassertions_7-1-0.style.opacity: 0.8
+system-configuration-configurationmanager_6-0-0.style.fill: "#FFEC96"
+system-configuration-configurationmanager_6-0-0.style.opacity: 0.8
+microsoft-extensions-logging-abstractions_10-0-8.style.fill: "#ADD8E6"
+microsoft-extensions-logging-abstractions_10-0-8.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.fill: "#FFEC96"
+microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.opacity: 0.8
+system-diagnostics-diagnosticsource_10-0-8.style.fill: "#FFEC96"
+system-diagnostics-diagnosticsource_10-0-8.style.opacity: 0.8
+nsubstitute_5-3-0.style.fill: "#ADD8E6"
+nsubstitute_5-3-0.style.opacity: 0.8
+castle-core_5-1-1.style.fill: "#FFEC96"
+castle-core_5-1-1.style.opacity: 0.8
+aoi.style.fill: "#E7EBFC"
+aoi.style.opacity: 1
+

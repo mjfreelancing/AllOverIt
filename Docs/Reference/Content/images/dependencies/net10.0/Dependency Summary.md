@@ -2,7 +2,7 @@
 
 ## AllOverIt
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -16,7 +16,7 @@
 
 ## AllOverIt.AspNetCore
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -32,7 +32,7 @@
 
 ## AllOverIt.Assertion
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -46,7 +46,7 @@
 
 ## AllOverIt.Aws.AppSync.Client
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -72,7 +72,7 @@
 
 ## AllOverIt.Aws.Cdk.AppSync
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -98,7 +98,7 @@
 
 ## AllOverIt.Cryptography
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -113,7 +113,7 @@
 
 ## AllOverIt.Csv
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -129,7 +129,7 @@
 
 ## AllOverIt.DependencyInjection
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -145,7 +145,7 @@
 
 ## AllOverIt.EntityFrameworkCore
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -165,7 +165,7 @@
 
 ## AllOverIt.EntityFrameworkCore.Diagrams
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -185,7 +185,7 @@
 
 ## AllOverIt.EntityFrameworkCore.Pagination
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -209,7 +209,7 @@
 
 ## AllOverIt.Evaluator
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -224,7 +224,7 @@
 
 ## AllOverIt.Filtering
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -239,7 +239,7 @@
 
 ## AllOverIt.Fixture
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -260,7 +260,7 @@
 
 ## AllOverIt.Fixture.FakeItEasy
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -284,7 +284,7 @@
 
 ## AllOverIt.GenericHost
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -322,7 +322,7 @@
 
 ## AllOverIt.Logging
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -339,7 +339,7 @@
 
 ## AllOverIt.Logging.Testing
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -361,7 +361,7 @@
 
 ## AllOverIt.Mapping
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -376,7 +376,7 @@
 
 ## AllOverIt.Pagination
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -393,7 +393,7 @@
 
 ## AllOverIt.Pipes
 
-![](https://img.shields.io/badge/.NET-10.0--windows-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0--windows-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0--windows-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0--windows-C56EE0.svg)
 
 ### Dependencies
 
@@ -411,7 +411,7 @@
 
 ## AllOverIt.Reactive
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -427,7 +427,7 @@
 
 ## AllOverIt.ReactiveUI
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -447,7 +447,7 @@
 
 ## AllOverIt.ReactiveUI.Wpf
 
-![](https://img.shields.io/badge/.NET-10.0--windows-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0--windows-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0--windows-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0--windows-C56EE0.svg)
 
 ### Dependencies
 
@@ -469,7 +469,7 @@
 
 ## AllOverIt.Serialization.Binary
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -484,7 +484,7 @@
 
 ## AllOverIt.Serialization.Json.Abstractions
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -499,7 +499,7 @@
 
 ## AllOverIt.Serialization.Json.Newtonsoft
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -516,7 +516,7 @@
 
 ## AllOverIt.Serialization.Json.SystemText
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -532,7 +532,7 @@
 
 ## AllOverIt.Serilog
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -556,7 +556,7 @@
 
 ## AllOverIt.Validation
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -573,7 +573,7 @@
 
 ## AllOverIt.Validation.Options
 
-![](https://img.shields.io/badge/.NET-10.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
 
 ### Dependencies
 
@@ -593,7 +593,7 @@
 
 ## AllOverIt.Wpf
 
-![](https://img.shields.io/badge/.NET-10.0--windows-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0--windows-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0--windows-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0--windows-C56EE0.svg)
 
 ### Dependencies
 
@@ -608,7 +608,7 @@
 
 ## AllOverIt.Wpf.Controls
 
-![](https://img.shields.io/badge/.NET-10.0--windows-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0--windows-FFC33C.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-C56EE0.svg)
+![](https://img.shields.io/badge/.NET-10.0--windows-55A9EE.svg) ![](https://img.shields.io/badge/.NET-8.0--windows-6EBE50.svg) ![](https://img.shields.io/badge/.NET-9.0--windows-C56EE0.svg)
 
 ### Dependencies
 

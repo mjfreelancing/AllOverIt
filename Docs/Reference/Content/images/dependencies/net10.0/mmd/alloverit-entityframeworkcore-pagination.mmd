@@ -1,0 +1,31 @@
+flowchart LR
+  alloverit-entityframeworkcore-pagination["AllOverIt.EntityFrameworkCore.Pagination"]
+  alloverit-entityframeworkcore["AllOverIt.EntityFrameworkCore"]
+  microsoft-entityframeworkcore-relational_10-0-8["Microsoft.EntityFrameworkCore.Relational<br>v10.0.8"]
+  microsoft-entityframeworkcore_10-0-8["Microsoft.EntityFrameworkCore<br>v10.0.8"]
+  microsoft-extensions-caching-memory_10-0-8["Microsoft.Extensions.Caching.Memory<br>v10.0.8"]
+  microsoft-extensions-configuration-abstractions_10-0-8["Microsoft.Extensions.Configuration.Abstractions<br>v10.0.8"]
+  microsoft-extensions-logging_10-0-8["Microsoft.Extensions.Logging<br>v10.0.8"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-pagination["AllOverIt.Pagination"]
+  microsoft-extensions-dependencyinjection-abstractions_10-0-8["Microsoft.Extensions.DependencyInjection.Abstractions<br>v10.0.8"]
+  alloverit-serialization-binary["AllOverIt.Serialization.Binary"]
+  alloverit-entityframeworkcore-pagination --> alloverit-entityframeworkcore
+  alloverit-entityframeworkcore --> microsoft-entityframeworkcore-relational_10-0-8
+  microsoft-entityframeworkcore-relational_10-0-8 --> microsoft-entityframeworkcore_10-0-8
+  microsoft-entityframeworkcore-relational_10-0-8 --> microsoft-extensions-caching-memory_10-0-8
+  microsoft-entityframeworkcore-relational_10-0-8 --> microsoft-extensions-configuration-abstractions_10-0-8
+  microsoft-entityframeworkcore-relational_10-0-8 --> microsoft-extensions-logging_10-0-8
+  alloverit-entityframeworkcore --> alloverit
+  alloverit --> alloverit-assertion
+  alloverit-entityframeworkcore-pagination --> alloverit-pagination
+  alloverit-pagination --> microsoft-extensions-dependencyinjection-abstractions_10-0-8
+  alloverit-pagination --> alloverit-serialization-binary
+  alloverit-serialization-binary --> alloverit
+  style microsoft-entityframeworkcore-relational_10-0-8 fill:#ADD8E6,opacity:0.8
+  style microsoft-entityframeworkcore_10-0-8 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-caching-memory_10-0-8 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-configuration-abstractions_10-0-8 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging_10-0-8 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-dependencyinjection-abstractions_10-0-8 fill:#ADD8E6,opacity:0.8

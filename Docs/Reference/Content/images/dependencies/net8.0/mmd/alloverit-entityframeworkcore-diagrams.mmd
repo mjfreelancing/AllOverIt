@@ -1,0 +1,21 @@
+flowchart LR
+  alloverit-entityframeworkcore-diagrams["AllOverIt.EntityFrameworkCore.Diagrams"]
+  microsoft-entityframeworkcore-relational_9-0-11["Microsoft.EntityFrameworkCore.Relational<br>v9.0.11"]
+  microsoft-entityframeworkcore_9-0-11["Microsoft.EntityFrameworkCore<br>v9.0.11"]
+  microsoft-extensions-caching-memory_9-0-11["Microsoft.Extensions.Caching.Memory<br>v9.0.11"]
+  microsoft-extensions-configuration-abstractions_9-0-11["Microsoft.Extensions.Configuration.Abstractions<br>v9.0.11"]
+  microsoft-extensions-logging_9-0-11["Microsoft.Extensions.Logging<br>v9.0.11"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-entityframeworkcore-diagrams --> microsoft-entityframeworkcore-relational_9-0-11
+  microsoft-entityframeworkcore-relational_9-0-11 --> microsoft-entityframeworkcore_9-0-11
+  microsoft-entityframeworkcore-relational_9-0-11 --> microsoft-extensions-caching-memory_9-0-11
+  microsoft-entityframeworkcore-relational_9-0-11 --> microsoft-extensions-configuration-abstractions_9-0-11
+  microsoft-entityframeworkcore-relational_9-0-11 --> microsoft-extensions-logging_9-0-11
+  alloverit-entityframeworkcore-diagrams --> alloverit
+  alloverit --> alloverit-assertion
+  style microsoft-entityframeworkcore-relational_9-0-11 fill:#ADD8E6,opacity:0.8
+  style microsoft-entityframeworkcore_9-0-11 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-caching-memory_9-0-11 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-configuration-abstractions_9-0-11 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging_9-0-11 fill:#FFEC96,opacity:0.8

@@ -3,37 +3,40 @@ direction: left
 aoi: AllOverIt
 aoi.alloverit-entityframeworkcore-pagination: AllOverIt.EntityFrameworkCore.Pagination
 aoi.alloverit-entityframeworkcore: AllOverIt.EntityFrameworkCore
-aoi.alloverit-entityframeworkcore <- aoi.alloverit-entityframeworkcore-pagination
 microsoft-entityframeworkcore-relational_10-0-8: Microsoft.EntityFrameworkCore.Relational\nv10.0.8
-microsoft-entityframeworkcore-relational_10-0-8.style.fill: "#ADD8E6"
-microsoft-entityframeworkcore-relational_10-0-8.style.opacity: 0.8
-microsoft-entityframeworkcore-relational_10-0-8 <- aoi.alloverit-entityframeworkcore
 microsoft-entityframeworkcore_10-0-8: Microsoft.EntityFrameworkCore\nv10.0.8
-microsoft-entityframeworkcore_10-0-8.style.fill: "#FFEC96"
-microsoft-entityframeworkcore_10-0-8.style.opacity: 0.8
-microsoft-entityframeworkcore_10-0-8 <- microsoft-entityframeworkcore-relational_10-0-8
 microsoft-extensions-caching-memory_10-0-8: Microsoft.Extensions.Caching.Memory\nv10.0.8
-microsoft-extensions-caching-memory_10-0-8.style.fill: "#FFEC96"
-microsoft-extensions-caching-memory_10-0-8.style.opacity: 0.8
-microsoft-extensions-caching-memory_10-0-8 <- microsoft-entityframeworkcore-relational_10-0-8
 microsoft-extensions-configuration-abstractions_10-0-8: Microsoft.Extensions.Configuration.Abstractions\nv10.0.8
-microsoft-extensions-configuration-abstractions_10-0-8.style.fill: "#FFEC96"
-microsoft-extensions-configuration-abstractions_10-0-8.style.opacity: 0.8
-microsoft-extensions-configuration-abstractions_10-0-8 <- microsoft-entityframeworkcore-relational_10-0-8
 microsoft-extensions-logging_10-0-8: Microsoft.Extensions.Logging\nv10.0.8
-microsoft-extensions-logging_10-0-8.style.fill: "#FFEC96"
-microsoft-extensions-logging_10-0-8.style.opacity: 0.8
-microsoft-extensions-logging_10-0-8 <- microsoft-entityframeworkcore-relational_10-0-8
 aoi.alloverit: AllOverIt
-aoi.alloverit <- aoi.alloverit-entityframeworkcore
 aoi.alloverit-assertion: AllOverIt.Assertion
-aoi.alloverit-assertion <- aoi.alloverit
 aoi.alloverit-pagination: AllOverIt.Pagination
-aoi.alloverit-pagination <- aoi.alloverit-entityframeworkcore-pagination
 microsoft-extensions-dependencyinjection-abstractions_10-0-8: Microsoft.Extensions.DependencyInjection.Abstractions\nv10.0.8
-microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.fill: "#ADD8E6"
-microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.opacity: 0.8
-microsoft-extensions-dependencyinjection-abstractions_10-0-8 <- aoi.alloverit-pagination
 aoi.alloverit-serialization-binary: AllOverIt.Serialization.Binary
+aoi.alloverit-entityframeworkcore <- aoi.alloverit-entityframeworkcore-pagination
+microsoft-entityframeworkcore-relational_10-0-8 <- aoi.alloverit-entityframeworkcore
+microsoft-entityframeworkcore_10-0-8 <- microsoft-entityframeworkcore-relational_10-0-8
+microsoft-extensions-caching-memory_10-0-8 <- microsoft-entityframeworkcore-relational_10-0-8
+microsoft-extensions-configuration-abstractions_10-0-8 <- microsoft-entityframeworkcore-relational_10-0-8
+microsoft-extensions-logging_10-0-8 <- microsoft-entityframeworkcore-relational_10-0-8
+aoi.alloverit <- aoi.alloverit-entityframeworkcore
+aoi.alloverit-assertion <- aoi.alloverit
+aoi.alloverit-pagination <- aoi.alloverit-entityframeworkcore-pagination
+microsoft-extensions-dependencyinjection-abstractions_10-0-8 <- aoi.alloverit-pagination
 aoi.alloverit-serialization-binary <- aoi.alloverit-pagination
 aoi.alloverit <- aoi.alloverit-serialization-binary
+microsoft-entityframeworkcore-relational_10-0-8.style.fill: "#ADD8E6"
+microsoft-entityframeworkcore-relational_10-0-8.style.opacity: 0.8
+microsoft-entityframeworkcore_10-0-8.style.fill: "#FFEC96"
+microsoft-entityframeworkcore_10-0-8.style.opacity: 0.8
+microsoft-extensions-caching-memory_10-0-8.style.fill: "#FFEC96"
+microsoft-extensions-caching-memory_10-0-8.style.opacity: 0.8
+microsoft-extensions-configuration-abstractions_10-0-8.style.fill: "#FFEC96"
+microsoft-extensions-configuration-abstractions_10-0-8.style.opacity: 0.8
+microsoft-extensions-logging_10-0-8.style.fill: "#FFEC96"
+microsoft-extensions-logging_10-0-8.style.opacity: 0.8
+microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.fill: "#ADD8E6"
+microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.opacity: 0.8
+aoi.style.fill: "#E7EBFC"
+aoi.style.opacity: 1
+

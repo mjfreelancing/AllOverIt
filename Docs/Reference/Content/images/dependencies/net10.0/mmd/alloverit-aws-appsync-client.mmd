@@ -1,0 +1,39 @@
+flowchart LR
+  alloverit-aws-appsync-client["AllOverIt.Aws.AppSync.Client"]
+  microsoft-extensions-dependencyinjection_10-0-8["Microsoft.Extensions.DependencyInjection<br>v10.0.8"]
+  microsoft-extensions-dependencyinjection-abstractions_10-0-8["Microsoft.Extensions.DependencyInjection.Abstractions<br>v10.0.8"]
+  microsoft-extensions-http_9-0-10["Microsoft.Extensions.Http<br>v9.0.10"]
+  microsoft-extensions-configuration-abstractions_9-0-10["Microsoft.Extensions.Configuration.Abstractions<br>v9.0.10"]
+  microsoft-extensions-diagnostics_9-0-10["Microsoft.Extensions.Diagnostics<br>v9.0.10"]
+  microsoft-extensions-logging_9-0-10["Microsoft.Extensions.Logging<br>v9.0.10"]
+  microsoft-extensions-logging-abstractions_9-0-10["Microsoft.Extensions.Logging.Abstractions<br>v9.0.10"]
+  microsoft-extensions-options_9-0-10["Microsoft.Extensions.Options<br>v9.0.10"]
+  alloverit-reactive["AllOverIt.Reactive"]
+  system-reactive_6-1-0["System.Reactive<br>v6.1.0"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-serialization-json-abstractions["AllOverIt.Serialization.Json.Abstractions"]
+  alloverit-aws-appsync-client --> microsoft-extensions-dependencyinjection_10-0-8
+  microsoft-extensions-dependencyinjection_10-0-8 --> microsoft-extensions-dependencyinjection-abstractions_10-0-8
+  alloverit-aws-appsync-client --> microsoft-extensions-http_9-0-10
+  microsoft-extensions-http_9-0-10 --> microsoft-extensions-configuration-abstractions_9-0-10
+  microsoft-extensions-http_9-0-10 --> microsoft-extensions-dependencyinjection-abstractions_10-0-8
+  microsoft-extensions-http_9-0-10 --> microsoft-extensions-diagnostics_9-0-10
+  microsoft-extensions-http_9-0-10 --> microsoft-extensions-logging_9-0-10
+  microsoft-extensions-http_9-0-10 --> microsoft-extensions-logging-abstractions_9-0-10
+  microsoft-extensions-http_9-0-10 --> microsoft-extensions-options_9-0-10
+  alloverit-aws-appsync-client --> alloverit-reactive
+  alloverit-reactive --> system-reactive_6-1-0
+  alloverit-reactive --> alloverit
+  alloverit --> alloverit-assertion
+  alloverit-aws-appsync-client --> alloverit-serialization-json-abstractions
+  alloverit-serialization-json-abstractions --> alloverit
+  style microsoft-extensions-dependencyinjection_10-0-8 fill:#ADD8E6,opacity:0.8
+  style microsoft-extensions-dependencyinjection-abstractions_10-0-8 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-http_9-0-10 fill:#ADD8E6,opacity:0.8
+  style microsoft-extensions-configuration-abstractions_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-diagnostics_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-logging-abstractions_9-0-10 fill:#FFEC96,opacity:0.8
+  style microsoft-extensions-options_9-0-10 fill:#FFEC96,opacity:0.8
+  style system-reactive_6-1-0 fill:#ADD8E6,opacity:0.8

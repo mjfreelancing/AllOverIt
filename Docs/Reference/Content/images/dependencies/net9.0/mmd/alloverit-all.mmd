@@ -1,0 +1,69 @@
+flowchart LR
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-aspnetcore["AllOverIt.AspNetCore"]
+  alloverit-aws-appsync-client["AllOverIt.Aws.AppSync.Client"]
+  alloverit-reactive["AllOverIt.Reactive"]
+  alloverit-serialization-json-abstractions["AllOverIt.Serialization.Json.Abstractions"]
+  alloverit-aws-cdk-appsync["AllOverIt.Aws.Cdk.AppSync"]
+  alloverit-cryptography["AllOverIt.Cryptography"]
+  alloverit-csv["AllOverIt.Csv"]
+  alloverit-dependencyinjection["AllOverIt.DependencyInjection"]
+  alloverit-entityframeworkcore["AllOverIt.EntityFrameworkCore"]
+  alloverit-entityframeworkcore-diagrams["AllOverIt.EntityFrameworkCore.Diagrams"]
+  alloverit-entityframeworkcore-pagination["AllOverIt.EntityFrameworkCore.Pagination"]
+  alloverit-pagination["AllOverIt.Pagination"]
+  alloverit-serialization-binary["AllOverIt.Serialization.Binary"]
+  alloverit-evaluator["AllOverIt.Evaluator"]
+  alloverit-filtering["AllOverIt.Filtering"]
+  alloverit-fixture["AllOverIt.Fixture"]
+  alloverit-fixture-fakeiteasy["AllOverIt.Fixture.FakeItEasy"]
+  alloverit-generichost["AllOverIt.GenericHost"]
+  alloverit-logging["AllOverIt.Logging"]
+  alloverit-logging-testing["AllOverIt.Logging.Testing"]
+  alloverit-mapping["AllOverIt.Mapping"]
+  alloverit-pipes["AllOverIt.Pipes"]
+  alloverit-reactiveui["AllOverIt.ReactiveUI"]
+  alloverit-reactiveui-wpf["AllOverIt.ReactiveUI.Wpf"]
+  alloverit-serialization-json-newtonsoft["AllOverIt.Serialization.Json.Newtonsoft"]
+  alloverit-serialization-json-systemtext["AllOverIt.Serialization.Json.SystemText"]
+  alloverit-serilog["AllOverIt.Serilog"]
+  alloverit-validation["AllOverIt.Validation"]
+  alloverit-validation-options["AllOverIt.Validation.Options"]
+  alloverit-wpf["AllOverIt.Wpf"]
+  alloverit-wpf-controls["AllOverIt.Wpf.Controls"]
+  alloverit --> alloverit-assertion
+  alloverit-aspnetcore --> alloverit
+  alloverit-aws-appsync-client --> alloverit-reactive
+  alloverit-reactive --> alloverit
+  alloverit-aws-appsync-client --> alloverit-serialization-json-abstractions
+  alloverit-serialization-json-abstractions --> alloverit
+  alloverit-aws-cdk-appsync --> alloverit
+  alloverit-cryptography --> alloverit
+  alloverit-csv --> alloverit
+  alloverit-dependencyinjection --> alloverit
+  alloverit-entityframeworkcore --> alloverit
+  alloverit-entityframeworkcore-diagrams --> alloverit
+  alloverit-entityframeworkcore-pagination --> alloverit-entityframeworkcore
+  alloverit-entityframeworkcore-pagination --> alloverit-pagination
+  alloverit-pagination --> alloverit-serialization-binary
+  alloverit-serialization-binary --> alloverit
+  alloverit-evaluator --> alloverit
+  alloverit-filtering --> alloverit
+  alloverit-fixture --> alloverit
+  alloverit-fixture-fakeiteasy --> alloverit-fixture
+  alloverit-generichost --> alloverit
+  alloverit-logging --> alloverit
+  alloverit-logging-testing --> alloverit-logging
+  alloverit-mapping --> alloverit
+  alloverit-pipes --> alloverit-serialization-binary
+  alloverit-pipes --> alloverit-reactive
+  alloverit-reactiveui --> alloverit
+  alloverit-reactiveui-wpf --> alloverit-reactiveui
+  alloverit-serialization-json-newtonsoft --> alloverit-serialization-json-abstractions
+  alloverit-serialization-json-systemtext --> alloverit-serialization-json-abstractions
+  alloverit-serilog --> alloverit
+  alloverit-validation --> alloverit
+  alloverit-validation-options --> alloverit-validation
+  alloverit-wpf --> alloverit
+  alloverit-wpf-controls --> alloverit

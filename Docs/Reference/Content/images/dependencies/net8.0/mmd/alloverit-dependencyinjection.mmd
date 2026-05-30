@@ -1,0 +1,9 @@
+flowchart LR
+  alloverit-dependencyinjection["AllOverIt.DependencyInjection"]
+  microsoft-extensions-dependencyinjection-abstractions_10-0-8["Microsoft.Extensions.DependencyInjection.Abstractions<br>v10.0.8"]
+  alloverit["AllOverIt"]
+  alloverit-assertion["AllOverIt.Assertion"]
+  alloverit-dependencyinjection --> microsoft-extensions-dependencyinjection-abstractions_10-0-8
+  alloverit-dependencyinjection --> alloverit
+  alloverit --> alloverit-assertion
+  style microsoft-extensions-dependencyinjection-abstractions_10-0-8 fill:#ADD8E6,opacity:0.8

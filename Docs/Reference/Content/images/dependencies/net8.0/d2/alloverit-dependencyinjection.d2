@@ -3,10 +3,13 @@ direction: left
 aoi: AllOverIt
 aoi.alloverit-dependencyinjection: AllOverIt.DependencyInjection
 microsoft-extensions-dependencyinjection-abstractions_10-0-8: Microsoft.Extensions.DependencyInjection.Abstractions\nv10.0.8
+aoi.alloverit: AllOverIt
+aoi.alloverit-assertion: AllOverIt.Assertion
+microsoft-extensions-dependencyinjection-abstractions_10-0-8 <- aoi.alloverit-dependencyinjection
+aoi.alloverit <- aoi.alloverit-dependencyinjection
+aoi.alloverit-assertion <- aoi.alloverit
 microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.fill: "#ADD8E6"
 microsoft-extensions-dependencyinjection-abstractions_10-0-8.style.opacity: 0.8
-microsoft-extensions-dependencyinjection-abstractions_10-0-8 <- aoi.alloverit-dependencyinjection
-aoi.alloverit: AllOverIt
-aoi.alloverit <- aoi.alloverit-dependencyinjection
-aoi.alloverit-assertion: AllOverIt.Assertion
-aoi.alloverit-assertion <- aoi.alloverit
+aoi.style.fill: "#E7EBFC"
+aoi.style.opacity: 1
+
