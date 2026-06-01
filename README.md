@@ -1,17 +1,28 @@
 # Overview
+
 **AllOverIt** began as a single nuget package of the same name in 2015. Since then, the library has broadened and deepened in functionality, resulting in a comprehensive set of dedicated nuget packages that encompass a number of different domains.
 
 Refer to the [Change Log](./Docs/Change%20Logs/ChangeLog_v9.md) for an overview of what has recently changed.
 
 Refer to the online [Documentation](https://alloverit.mjfreelancing.com) for comprehensive usage information.
 
+## Source-Derived Package Capability Index
+
+The package capability index used by coding agents is generated from current source code and demo projects.
+
+- Agent index: [`.github/ai-context/README.md`](./.github/ai-context/README.md)
+- Package manifest: [`.github/ai-context/package-manifest.json`](./.github/ai-context/package-manifest.json)
+- Package details: [`.github/ai-context/packages`](./.github/ai-context/packages)
+- Copilot routing instructions: [`.github/copilot-instructions.md`](./.github/copilot-instructions.md)
+- Regenerate command: `./_build/generate-agent-docs.ps1`
+
 A summary for each of the available packages is provided below.
 
 ## AllOverIt
+
 This general-purpose package contains a diverse range of classes and utility functions, intended to tackle a wide array of commonly encountered issues.
 
 Key areas of concern include threading, tasks, generic caching, event (message) aggregation, expression and reflection utilities, plugin contexts, enriched enums, pipelines, value objects, specifications, and dozens of extensions.
-
 
 ![](https://img.shields.io/badge/.NET-10.0-55A9EE.svg)
 ![](https://img.shields.io/badge/.NET-9.0-C56EE0.svg)
@@ -21,7 +32,6 @@ Key areas of concern include threading, tasks, generic caching, event (message) 
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt?color=FFC33C)](https://www.nuget.org/packages/AllOverIt/absoluteLatest/)
 
 ---
-
 
 ## AllOverIt.AspNetCore
 
@@ -36,7 +46,6 @@ This package provides useful ASP.NET Core utilities such as custom model binding
 
 ---
 
-
 ## AllOverIt.Assertion
 
 This package contains a useful collection of pre- and post-condition assertion extension methods, and a fluent-like approach to throwing exceptions based on a given condition or custom predicate.
@@ -49,7 +58,6 @@ This package contains a useful collection of pre- and post-condition assertion e
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Assertion?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Assertion/absoluteLatest/)
 
 ---
-
 
 ## AllOverIt.Aws.AppSync.Client
 
@@ -64,7 +72,6 @@ This package contains AWS AppSync GraphQL and Subscription clients with support 
 
 ---
 
-
 ## AllOverIt.Aws.Cdk.AppSync
 
 This package greatly simplifies the generation of AWS Graphql schemas, including their associated mapping and resolver configuration, using a code-first approach.
@@ -77,7 +84,6 @@ This package greatly simplifies the generation of AWS Graphql schemas, including
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Aws.Cdk.AppSync?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Aws.Cdk.AppSync/absoluteLatest/)
 
 ---
-
 
 ## AllOverIt.Cryptography
 
@@ -92,7 +98,6 @@ This package provides byte-array and stream-based interfaces for encryption algo
 
 ---
 
-
 ## AllOverIt.Csv
 
 Using [CsvHelper](https://joshclose.github.io/CsvHelper) to perform the actual writing of CSV content, this package provides a configuration based serializer that can export data using a model with fixed columns as well as dynamic columns derived from complex or array type properties.
@@ -105,7 +110,6 @@ Using [CsvHelper](https://joshclose.github.io/CsvHelper) to perform the actual w
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Csv?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Csv/absoluteLatest/)
 
 ---
-
 
 ## AllOverIt.DependencyInjection
 
@@ -120,7 +124,6 @@ This package provides useful dependency injection related utilities such as regi
 
 ---
 
-
 ## AllOverIt.EntityFrameworkCore
 
 This package provides EntityFramework Core utilities such as a database migration helper and a value converter for **AllOverIt** based enriched enum types.
@@ -133,7 +136,6 @@ This package provides EntityFramework Core utilities such as a database migratio
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.EntityFrameworkCore?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.EntityFrameworkCore/absoluteLatest/)
 
 ---
-
 
 ## AllOverIt.EntityFrameworkCore.Diagrams
 
@@ -148,7 +150,6 @@ In conjunction with [D2](https://d2lang.com/), this package will generate entity
 
 ---
 
-
 ## AllOverIt.EntityFrameworkCore.Pagination
 
 Using **AllOverIt.Pagination** as the basis for advanced keyset-based pagination, this package provides additional extensions for use with EntityFramework Core.
@@ -162,7 +163,6 @@ Using **AllOverIt.Pagination** as the basis for advanced keyset-based pagination
 
 ---
 
-
 ## AllOverIt.Evaluator
 
 This package contains a highly-extendable mathematical expression compiler and evaluator that includes constant, mutable, delegate, and lazily evaluated variables, offers implicit and explicit variable lookup, and supports custom arithmetic operators and operations.
@@ -175,7 +175,6 @@ This package contains a highly-extendable mathematical expression compiler and e
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Evaluator?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Evaluator/absoluteLatest/)
 
 ---
-
 
 ## AllOverIt.Filtering
 
@@ -192,7 +191,6 @@ It's also possible to create a custom predicate based on a Specification and the
 
 ---
 
-
 ## AllOverIt.Fixture
 
 This package contains a base fixture class with numerous helper methods to assist with scaffolding unit tests. Utilizes [AutoFixture](https://github.com/AutoFixture/AutoFixture) to do most of the hard work.
@@ -205,7 +203,6 @@ This package contains a base fixture class with numerous helper methods to assis
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Fixture?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Fixture/absoluteLatest/)
 
 ---
-
 
 ## AllOverIt.Fixture.FakeItEasy
 
@@ -220,7 +217,6 @@ This package extends **AllOverIt.Fixture** to support [FakeItEasy](https://fakei
 
 ---
 
-
 ## AllOverIt.GenericHost
 
 This package contains generic host helpers and convenience methods for setting up console applications that support dependency injection.
@@ -234,7 +230,6 @@ This package contains generic host helpers and convenience methods for setting u
 
 ---
 
-
 ## AllOverIt.Logging
 
 This package contains extension methods to provide additional logging functionality.
@@ -246,7 +241,6 @@ This package contains extension methods to provide additional logging functional
 [![NuGet](https://img.shields.io/nuget/v/AllOverIt.Logging?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Logging/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Logging?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Logging/absoluteLatest/)
 
-
 ## AllOverIt.Logging.Testing
 
 This package contains helper methods that assist with asserting logger calls.
@@ -257,7 +251,6 @@ This package contains helper methods that assist with asserting logger calls.
 
 [![NuGet](https://img.shields.io/nuget/v/AllOverIt.Logging.Testing?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Logging.Testing/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Logging.Testing?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Logging.Testing/absoluteLatest/)
-
 
 ## AllOverIt.Mapping
 
@@ -271,7 +264,6 @@ This package contains an object mapper that is mostly configuration free, but al
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Mapping?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Mapping/absoluteLatest/)
 
 ---
-
 
 ## AllOverIt.Pagination
 
@@ -288,7 +280,6 @@ Each page of results includes a 'continuation token' for the current, next, and 
 
 ---
 
-
 ## AllOverIt.Pipes
 
 This package provides support for communication over anonymous pipes using [StreamReader](https://learn.microsoft.com/en-us/dotnet/api/system.io.streamreader) and [StreamWriter](https://learn.microsoft.com/en-us/dotnet/api/system.io.streamwriter), and strongly-typed message-based communication over named pipes using a binary serializer.
@@ -304,7 +295,6 @@ The named pipes can use the binary serializer from **AllOverIt.Serialization.Bin
 
 ---
 
-
 ## AllOverIt.Reactive
 
 This package contains utility extensions for use with [System.Reactive](https://github.com/dotnet/reactive).
@@ -317,7 +307,6 @@ This package contains utility extensions for use with [System.Reactive](https://
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Reactive?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Reactive/absoluteLatest/)
 
 ---
-
 
 ## AllOverIt.ReactiveUI
 
@@ -332,7 +321,6 @@ This package contains utility extensions for use with [ReactiveUI](https://githu
 
 ---
 
-
 ## AllOverIt.ReactiveUI.Wpf
 
 This package contains utility extensions for use with [ReactiveUI](https://github.com/reactiveui/ReactiveUI) and WPF.
@@ -345,7 +333,6 @@ This package contains utility extensions for use with [ReactiveUI](https://githu
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.ReactiveUI.Wpf?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.ReactiveUI/absoluteLatest/)
 
 ---
-
 
 ## AllOverIt.Serialization.Binary
 
@@ -360,7 +347,6 @@ This package provides enhanced support for binary serialization. Complex object 
 
 ---
 
-
 ## AllOverIt.Serialization.Json.Abstractions
 
 This package contains JSON serialization abstractions.
@@ -373,7 +359,6 @@ This package contains JSON serialization abstractions.
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Serialization.Json.Abstractions?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Serialization.Json.Abstractions/absoluteLatest/)
 
 ---
-
 
 ## AllOverIt.Serialization.Json.NewtonSoft
 
@@ -388,7 +373,6 @@ This package contains a wrapper for [Newtonsoft](https://www.newtonsoft.com/json
 
 ---
 
-
 ## AllOverIt.Serialization.Json.SystemText
 
 This package contains a wrapper for [System.Text](https://learn.microsoft.com/en-us/dotnet/api/system.text.json) JSON serialization based on **AllOverIt.Serialization.Json.Abstractions**.
@@ -402,7 +386,6 @@ This package contains a wrapper for [System.Text](https://learn.microsoft.com/en
 
 ---
 
-
 ## AllOverIt.Serilog
 
 This package contains general-purpose Serilog sinks and enrichers.
@@ -413,7 +396,6 @@ This package contains general-purpose Serilog sinks and enrichers.
 
 [![NuGet](https://img.shields.io/nuget/v/AllOverIt.Serilog?label=Stable&color=E3505C)](https://www.nuget.org/packages/AllOverIt.Serilog/absoluteLatest/)
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Serilog?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Serilog/absoluteLatest/)
-
 
 ## AllOverIt.Validation
 
@@ -432,7 +414,6 @@ Also available is a validation registrar that makes it possible to auto-register
 
 ---
 
-
 ## AllOverIt.Validation.Options
 
 This package contains [Microsoft.Extensions.Options](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.options) validation using [FluentValidation](https://docs.fluentvalidation.net/en/latest/).
@@ -445,7 +426,6 @@ This package contains [Microsoft.Extensions.Options](https://learn.microsoft.com
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Validation.Options?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Validation.Options/absoluteLatest/)
 
 ---
-
 
 ## AllOverIt.Wpf
 
@@ -460,7 +440,6 @@ This package contains general purpose WPF utilities.
 
 ---
 
-
 ## AllOverIt.Wpf.Controls
 
 This package contains useful WPF controls.
@@ -473,4 +452,3 @@ This package contains useful WPF controls.
 [![NuGet](https://img.shields.io/nuget/dt/AllOverIt.Wpf.Controls?color=FFC33C)](https://www.nuget.org/packages/AllOverIt.Wpf.Controls/absoluteLatest/)
 
 ---
-

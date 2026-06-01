@@ -60,7 +60,9 @@ artifacts/
 *.nuget.targets
 
 
-_build
+_build/*
+!_build/generate-agent-docs.ps1
+!_build/sync-copilot-ai-pack.ps1
 Demos/AllOverIt.Aws.Cdk.AppSync/cdk.out
 TestCoverage
 TestResults

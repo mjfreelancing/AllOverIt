@@ -1,0 +1,704 @@
+[
+  {
+    "Package": "AllOverIt",
+    "Project": "Source/AllOverIt/AllOverIt.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains a diverse range of classes and utility functions, intended to tackle a wide array of commonly encountered issues. Key areas of concern include threading, tasks, generic caching, event (message) aggregation, expression and reflection utilities, plugin contexts, enriched enums, pipelines, value objects, specifications, and dozens of extensions.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Async",
+      "Threading",
+      "Diagnostics",
+      "Patterns",
+      "IO",
+      "Reflection",
+      "Process",
+      "Collections",
+      "Caching",
+      "Conversions"
+    ],
+    "DependsOn": [
+      "AllOverIt.Assertion"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt/Aspects/InterceptorDemo/InterceptorDemo.csproj",
+      "Demos/AllOverIt/Async/BackgroundTaskDemo/BackgroundTaskDemo.csproj",
+      "Demos/AllOverIt/Async/RepeatingTaskDemo/RepeatingTaskDemo.csproj",
+      "Demos/AllOverIt/Caching/GenericCacheDemo/GenericCacheDemo.csproj",
+      "Demos/AllOverIt/Diagnostics/DiagnosticsDemo/DiagnosticsDemo.csproj",
+      "Demos/AllOverIt/Events/EventAggregatorDemo/EventAggregatorDemo.csproj",
+      "Demos/AllOverIt/Formatters/SerializeObjectPropertiesDemo/SerializeObjectPropertiesDemo.csproj",
+      "Demos/AllOverIt/Helpers/PropertyNavigationDemo/PropertyNavigationDemo.csproj",
+      "Demos/AllOverIt/IO/DirectorySearchDemo/DirectorySearchDemo.csproj",
+      "Demos/AllOverIt/IO/FileSearchDemo/FileSearchDemo.csproj",
+      "Demos/AllOverIt/Parallel/SelectAsParallelDemo/SelectAsParallelDemo.csproj",
+      "Demos/AllOverIt/Patterns/ChainOfResponsibilityAsyncDemo/ChainOfResponsibilityAsyncDemo.csproj",
+      "Demos/AllOverIt/Patterns/ChainOfResponsibilityDemo/ChainOfResponsibilityDemo.csproj",
+      "Demos/AllOverIt/Patterns/CommandDemo/CommandDemo.csproj",
+      "Demos/AllOverIt/Patterns/EnumerationDemo/EnumerationDemo.csproj",
+      "Demos/AllOverIt/Patterns/LinqSpecificationDemo/LinqSpecificationDemo.csproj",
+      "Demos/AllOverIt/Patterns/PipelineAsyncDemo/PipelineAsyncDemo.csproj",
+      "Demos/AllOverIt/Patterns/PipelineDemo/PipelineDemo.csproj",
+      "Demos/AllOverIt/Patterns/PipelineParallelDemo/PipelineParallelDemo.csproj",
+      "Demos/AllOverIt/Patterns/ResultOrErrorDemo/ResultOrErrorDemo.csproj",
+      "Demos/AllOverIt/Patterns/SpecificationDemo/SpecificationDemo.csproj",
+      "Demos/AllOverIt/Patterns/ValueObjectDemo/ValueObjectDemo.csproj",
+      "Demos/AllOverIt/Plugin/StartupHook/GCCollectorStartupHook/GCCollectorStartupHook.csproj",
+      "Demos/AllOverIt/Plugin/StartupHook/GCCollectorStartupHookProxy/GCCollectorStartupHookProxy.csproj",
+      "Demos/AllOverIt/Plugin/StartupHook/StartupHookDemo/StartupHookDemo.csproj",
+      "Demos/AllOverIt/Process/ExecuteProcessAndWaitDemo/ExecuteProcessAndWaitDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit.md"
+  },
+  {
+    "Package": "AllOverIt.AspNetCore",
+    "Project": "Source/AllOverIt.AspNetCore/AllOverIt.AspNetCore.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package provides useful ASP.NET Core utilities such as custom model binding for AllOverIt based enriched enum types and arrays of values in a query string.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "AspNetCore"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.AspNetCore/EnrichedEnumModelBindingDemo/EnrichedEnumModelBindingDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-aspnetcore.md"
+  },
+  {
+    "Package": "AllOverIt.Assertion",
+    "Project": "Source/AllOverIt.Assertion/AllOverIt.Assertion.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains a useful collection of pre and post condition assertion extension methods and a fluent-like approach to throwing exceptions based on a given condition or custom predicate.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Asssertion",
+      "Guard"
+    ],
+    "DependsOn": [],
+    "DemoProjects": [],
+    "Doc": ".github/ai-context/packages/alloverit-assertion.md"
+  },
+  {
+    "Package": "AllOverIt.Aws.AppSync.Client",
+    "Project": "Source/AllOverIt.Aws.AppSync.Client/AllOverIt.Aws.AppSync.Client.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains AWS AppSync GraphQL and Subscription clients with support for serialization using Newtonsoft or System.Text, including serialization of AllOverIt based enriched enums.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "AWS",
+      "Amazon",
+      "AppSync",
+      "Graphql"
+    ],
+    "DependsOn": [
+      "AllOverIt.Reactive",
+      "AllOverIt.Serialization.Json.Abstractions"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Aws.AppSync.Client/AppSyncSubscriptionDemo/AppSyncSubscriptionDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-aws-appsync-client.md"
+  },
+  {
+    "Package": "AllOverIt.Aws.Cdk.AppSync",
+    "Project": "Source/AllOverIt.Aws.Cdk.AppSync/AllOverIt.Aws.Cdk.AppSync.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package greatly simplifies the generation of AWS Graphql schemas, including their associated resolver handler configuration, using a code-first approach.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "AWS",
+      "Amazon",
+      "AppSync",
+      "CDK",
+      "Graphql"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Aws.Cdk.AppSync/GraphqlSchema/GraphqlSchema.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-aws-cdk-appsync.md"
+  },
+  {
+    "Package": "AllOverIt.Cryptography",
+    "Project": "Source/AllOverIt.Cryptography/AllOverIt.Cryptography.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package provides byte-array and stream-based interfaces for encryption algorithms such as AES, RSA and an RSA-AES hybrid. It also includes useful extension methods that greatly simplifies the encryption and decryption between byte-arrays, streams, plain text and base64 encoded versions of plain text and cipher text.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Cryptography",
+      "Encryption",
+      "Decryption",
+      "Hash",
+      "Signing"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Cryptography/AESEncryptionDemo/AESEncryptionDemo.csproj",
+      "Demos/AllOverIt.Cryptography/RsaAesHybridEncryptionDemo/RsaAesHybridEncryptionDemo.csproj",
+      "Demos/AllOverIt.Cryptography/RSAEncryptionDemo/RSAEncryptionDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-cryptography.md"
+  },
+  {
+    "Package": "AllOverIt.Csv",
+    "Project": "Source/AllOverIt.Csv/AllOverIt.Csv.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "Using CsvHelper to perform the actual writing of CSV content, this package provides a configuration based serializer that can export data using a model with fixed columns as well as dynamic columns derived from complex or array type properties.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "CSV",
+      "Export"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Csv/CsvExporterDemo/CsvExporterDemo.csproj",
+      "Demos/AllOverIt.Csv/CsvSerializerDemo/CsvSerializerDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-csv.md"
+  },
+  {
+    "Package": "AllOverIt.DependencyInjection",
+    "Project": "Source/AllOverIt.DependencyInjection/AllOverIt.DependencyInjection.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package provides useful dependency injection related utilities such as registering and resolving 'named' services, auto service discovery and registration via a service registrar, and service decoration.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "DependencyInjection"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.DependencyInjection/AutoRegistrationDemo/AutoRegistrationDemo.csproj",
+      "Demos/AllOverIt.DependencyInjection/ExternalDependencies/ExternalDependencies.csproj",
+      "Demos/AllOverIt.DependencyInjection/NamedDependenciesDemo/NamedDependenciesDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-dependencyinjection.md"
+  },
+  {
+    "Package": "AllOverIt.EntityFrameworkCore",
+    "Project": "Source/AllOverIt.EntityFrameworkCore/AllOverIt.EntityFrameworkCore.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package provides EntityFramework Core utilities such as a database migration helper and a value converter for AllOverIt based enriched enums.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Query",
+      "EntityFramework"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.EntityFrameworkCore/EFEnumerationDemo/EFEnumerationDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-entityframeworkcore.md"
+  },
+  {
+    "Package": "AllOverIt.EntityFrameworkCore.Diagrams",
+    "Project": "Source/AllOverIt.EntityFrameworkCore.Diagrams/AllOverIt.EntityFrameworkCore.Diagrams.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "In conjunction with D2, this package will generate entity relationship diagrams for an EntityFramework Core DbContext.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Query",
+      "EntityFramework",
+      "D2",
+      "Diagrams"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.EntityFrameworkCore.Diagrams/D2ErdDiagramDemo/D2ErdDiagramDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-entityframeworkcore-diagrams.md"
+  },
+  {
+    "Package": "AllOverIt.EntityFrameworkCore.Pagination",
+    "Project": "Source/AllOverIt.EntityFrameworkCore.Pagination/AllOverIt.EntityFrameworkCore.Pagination.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "Using AllOverIt.Pagination as the basis for advanced keyset-based pagination, this package provides additional extensions for use with EntityFramework Core.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Query",
+      "EntityFramework",
+      "Pagination",
+      "KeySet"
+    ],
+    "DependsOn": [
+      "AllOverIt.EntityFrameworkCore",
+      "AllOverIt.Pagination"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.EntityFrameworkCore.Pagination/PaginationConsoleDemo/PaginationConsoleDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-entityframeworkcore-pagination.md"
+  },
+  {
+    "Package": "AllOverIt.Evaluator",
+    "Project": "Source/AllOverIt.Evaluator/AllOverIt.Evaluator.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains a highly-extendable mathematical expression compiler and evaluator that includes constant, mutable, delegate, and lazily evaluated variables, offers implicit and explicit variable lookup, and supports custom arithmetic operators and operations.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Formula",
+      "Mathematical",
+      "Compiler",
+      "Evaluator"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Evaluator/BasicEvaluationDemo/BasicEvaluationDemo.csproj",
+      "Demos/AllOverIt.Evaluator/CustomOperationDemo/CustomOperationDemo.csproj",
+      "Demos/AllOverIt.Evaluator/DelegateEvaluationDemo/DelegateEvaluationDemo.csproj",
+      "Demos/AllOverIt.Evaluator/MixedEvaluationDemo/MixedEvaluationDemo.csproj",
+      "Demos/AllOverIt.Evaluator/ParallelEvaluationDemo/ParallelEvaluationDemo.csproj",
+      "Demos/AllOverIt.Evaluator/VariableEvaluationDemo/VariableEvaluationDemo.csproj",
+      "Demos/AllOverIt.Evaluator/VariableLookupDemo/VariableLookupDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-evaluator.md"
+  },
+  {
+    "Package": "AllOverIt.Filtering",
+    "Project": "Source/AllOverIt.Filtering/AllOverIt.Filtering.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package adds comprehensive filtering support to any IQueryable with built-in provision for operations such as Contains, StartsWith, EndsWith, In, NotIn, EqualTo, NotEqualTo, GreaterThan, LessThan, GreaterThanOrEqual, and LessThanOrEqual. It's also possible to create a custom predicate based on a Specification and there are options such as ignoring default (null) filter values and parameterizing query inputs that makes it ideal for use with EntityFramework Core.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Query",
+      "Filtering"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Filtering/FilteringDemo/FilteringDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-filtering.md"
+  },
+  {
+    "Package": "AllOverIt.Fixture",
+    "Project": "Source/AllOverIt.Fixture/AllOverIt.Fixture.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains a base fixture class with numerous helper methods to assist with scaffolding unit tests.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "UnitTesting",
+      "Fakes",
+      "Faking",
+      "Mocks",
+      "Mocking",
+      "Stubs",
+      "Stubbing",
+      "TDD",
+      "BDD",
+      "NUnit"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [],
+    "Doc": ".github/ai-context/packages/alloverit-fixture.md"
+  },
+  {
+    "Package": "AllOverIt.Fixture.FakeItEasy",
+    "Project": "Source/AllOverIt.Fixture.FakeItEasy/AllOverIt.Fixture.FakeItEasy.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package extends AllOverIt.Fixture to support FakeItEasy integration.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "UnitTesting",
+      "Fakes",
+      "Faking",
+      "Mocks",
+      "Mocking",
+      "Stubs",
+      "Stubbing",
+      "TDD",
+      "BDD",
+      "NUnit",
+      "FakeItEasy"
+    ],
+    "DependsOn": [
+      "AllOverIt.Fixture"
+    ],
+    "DemoProjects": [],
+    "Doc": ".github/ai-context/packages/alloverit-fixture-fakeiteasy.md"
+  },
+  {
+    "Package": "AllOverIt.GenericHost",
+    "Project": "Source/AllOverIt.GenericHost/AllOverIt.GenericHost.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains generic host helpers and convenience methods for setting up console applications that support dependency injection.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "GenericHost"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.GenericHost/HostedConsoleAppDemo/HostedConsoleAppDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-generichost.md"
+  },
+  {
+    "Package": "AllOverIt.Logging",
+    "Project": "Source/AllOverIt.Logging/AllOverIt.Logging.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains extension methods to provide additional logging functionality.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "GenericHost"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Logging/ConsoleLoggingDemo/ConsoleLoggingDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-logging.md"
+  },
+  {
+    "Package": "AllOverIt.Logging.Testing",
+    "Project": "Source/AllOverIt.Logging.Testing/AllOverIt.Logging.Testing.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains helper methods that assist with asserting logger calls.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Testing",
+      "Logging"
+    ],
+    "DependsOn": [
+      "AllOverIt.Logging"
+    ],
+    "DemoProjects": [],
+    "Doc": ".github/ai-context/packages/alloverit-logging-testing.md"
+  },
+  {
+    "Package": "AllOverIt.Mapping",
+    "Project": "Source/AllOverIt.Mapping/AllOverIt.Mapping.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains an object mapper that is mostly configuration free but also capable of property exclusion, aliasing, null replacement, value conversion, and deep copying.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Mapping"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Mapping/DtoMappingDemo/DtoMappingDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-mapping.md"
+  },
+  {
+    "Package": "AllOverIt.Pagination",
+    "Project": "Source/AllOverIt.Pagination/AllOverIt.Pagination.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "An advanced keyset-based pagination package that uses a fluent-style builder to create queries that cater for forward and backward navigation for any given deterministic base query. Each page of results includes a 'continuation token' for the current, next, and previous page. These tokens can be used at a later time to navigate to the same location within the dataset, thereby somewhat overcoming the inability of random access traditionally associated with keyset-based navigation.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Query",
+      "Pagination",
+      "KeySet"
+    ],
+    "DependsOn": [
+      "AllOverIt.Serialization.Binary"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Pagination/MemoryPaginationDemo/MemoryPaginationDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-pagination.md"
+  },
+  {
+    "Package": "AllOverIt.Pipes",
+    "Project": "Source/AllOverIt.Pipes/AllOverIt.Pipes.csproj",
+    "TargetFrameworks": "net10.0-windows;net9.0-windows10.0.19041;net9.0-windows10.0.17763;net8.0-windows10.0.19041;net8.0-windows10.0.17763",
+    "Description": "This package provides support for communication over anonymous pipes using StreamReader and StreamWriter, and strongly-typed message-based communication over named pipes using a binary serializer. The named pipes can use the binary serializer from AllOverIt.Serialization.Binary or you can create your own.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Async",
+      "Threading",
+      "IO",
+      "Pipes",
+      "NamedPipes"
+    ],
+    "DependsOn": [
+      "AllOverIt.Reactive",
+      "AllOverIt.Serialization.Binary"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Pipes/Anonymous/AnonymousPipeClientDemo/AnonymousPipeClientDemo.csproj",
+      "Demos/AllOverIt.Pipes/Anonymous/AnonymousPipeServerDemo/AnonymousPipeServerDemo.csproj",
+      "Demos/AllOverIt.Pipes/NamedPipes/NamedPipeClientDemo/NamedPipeClientDemo.csproj",
+      "Demos/AllOverIt.Pipes/NamedPipes/NamedPipeServerDemo/NamedPipeServerDemo.csproj",
+      "Demos/AllOverIt.Pipes/NamedPipes/NamedPipeTypes/NamedPipeTypes.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-pipes.md"
+  },
+  {
+    "Package": "AllOverIt.Reactive",
+    "Project": "Source/AllOverIt.Reactive/AllOverIt.Reactive.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains utility extensions for use with System.Reactive.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Reactive"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Reactive/ObservableDemo/ObservableDemo.csproj",
+      "Demos/AllOverIt.Reactive/SubscribedEventsDemo/SubscribedEventsDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-reactive.md"
+  },
+  {
+    "Package": "AllOverIt.ReactiveUI",
+    "Project": "Source/AllOverIt.ReactiveUI/AllOverIt.ReactiveUI.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains utility extensions for use with ReactiveUI.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Reactive",
+      "ReactiveUI"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.ReactiveUI/CommandPipelineDemo/CommandPipelineDemo.csproj",
+      "Demos/AllOverIt.ReactiveUI/CountdownTimerAppDemo/CountdownTimerAppDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-reactiveui.md"
+  },
+  {
+    "Package": "AllOverIt.ReactiveUI.Wpf",
+    "Project": "Source/AllOverIt.ReactiveUI.Wpf/AllOverIt.ReactiveUI.Wpf.csproj",
+    "TargetFrameworks": "net10.0-windows10.0.19041;net9.0-windows10.0.19041;net8.0-windows10.0.19041",
+    "Description": "This package contains utility extensions for use with ReactiveUI and WPF.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Reactive",
+      "ReactiveUI",
+      "WPF"
+    ],
+    "DependsOn": [
+      "AllOverIt.ReactiveUI"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.ReactiveUI.Wpf/ViewRegistryDemo/ViewRegistryDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-reactiveui-wpf.md"
+  },
+  {
+    "Package": "AllOverIt.Serialization.Binary",
+    "Project": "Source/AllOverIt.Serialization.Binary/AllOverIt.Serialization.Binary.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package provides enhanced support for binary serialization. Complex object graphs, lists, dictionaries and nullable values can all be dynamically serialized using reflection-based readers and writers or, for greater performance, a custom serializer per object within the graph.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Binary",
+      "Serialization",
+      "Deserialization"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Serialization.Binary/BinarySerializationDemo/BinarySerializationDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-serialization-binary.md"
+  },
+  {
+    "Package": "AllOverIt.Serialization.Json.Abstractions",
+    "Project": "Source/AllOverIt.Serialization.Json.Abstractions/AllOverIt.Serialization.Json.Abstractions.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains JSON serialization abstractions.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Serialization",
+      "Deserialization",
+      "JSON"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [],
+    "Doc": ".github/ai-context/packages/alloverit-serialization-json-abstractions.md"
+  },
+  {
+    "Package": "AllOverIt.Serialization.Json.Newtonsoft",
+    "Project": "Source/AllOverIt.Serialization.Json.Newtonsoft/AllOverIt.Serialization.Json.Newtonsoft.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains a wrapper for Newtonsoft.Json serialization based on AllOverIt.Serialization.Json.Abstractions.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Serialization",
+      "Deserialization",
+      "JSON",
+      "Newtonsoft"
+    ],
+    "DependsOn": [
+      "AllOverIt.Serialization.Json.Abstractions"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Serialization.Json.Newtonsoft/InterfaceDeserializationDemo/InterfaceDeserializationDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-serialization-json-newtonsoft.md"
+  },
+  {
+    "Package": "AllOverIt.Serialization.Json.SystemText",
+    "Project": "Source/AllOverIt.Serialization.Json.SystemText/AllOverIt.Serialization.Json.SystemText.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains a wrapper for System.Text.Json serialization based on AllOverIt.Serialization.Json.Abstractions.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Serialization",
+      "Deserialization",
+      "JSON",
+      "SystemText"
+    ],
+    "DependsOn": [
+      "AllOverIt.Serialization.Json.Abstractions"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Serialization.Json.SystemText/InterfaceDeserializationDemo/InterfaceDeserializationDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-serialization-json-systemtext.md"
+  },
+  {
+    "Package": "AllOverIt.Serilog",
+    "Project": "Source/AllOverIt.Serilog/AllOverIt.Serilog.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains general-purpose Serilog sinks and enrichers.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Serilog",
+      "Logging",
+      "Sink",
+      "Enricher"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Serilog/CircularBufferSinkDemo/CircularBufferSinkDemo.csproj",
+      "Demos/AllOverIt.Serilog/ObservableSinkDemo/ObservableSinkDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-serilog.md"
+  },
+  {
+    "Package": "AllOverIt.Validation",
+    "Project": "Source/AllOverIt.Validation/AllOverIt.Validation.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains additional validators and extensions for use with FluentValidation. It includes an invoker that will select, and invoke, a registered validator based on a provided model. Synchronous and Asynchronous validation is supported, along with extensions that make it easier to pass context information into a validator to keep it stateless. Also available is a validation registrar that makes it possible to auto-register all validators within the same assembly. Validators can also be filtered based on a predicate.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Serialization",
+      "Deserialization",
+      "JSON",
+      "Validation"
+    ],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Validation/BasicValidationDemo/BasicValidationDemo.csproj",
+      "Demos/AllOverIt.Validation/ValidationInvokerDemo/ValidationInvokerDemo.csproj",
+      "Demos/AllOverIt.Validation/ValidationViaDependencyInjectionDemo/ValidationViaDependencyInjectionDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-validation.md"
+  },
+  {
+    "Package": "AllOverIt.Validation.Options",
+    "Project": "Source/AllOverIt.Validation.Options/AllOverIt.Validation.Options.csproj",
+    "TargetFrameworks": "net10.0;net9.0;net8.0",
+    "Description": "This package contains Microsoft.Extensions.Options validation using FluentValidation.",
+    "Tags": [
+      "AllOverIt",
+      "Utilities",
+      "Validation"
+    ],
+    "DependsOn": [
+      "AllOverIt.Validation"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Validation.Options/OptionsValidationDemo/OptionsValidationDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-validation-options.md"
+  },
+  {
+    "Package": "AllOverIt.Wpf",
+    "Project": "Source/AllOverIt.Wpf/AllOverIt.Wpf.csproj",
+    "TargetFrameworks": "net10.0-windows;net9.0-windows10.0.19041;net9.0-windows10.0.17763;net8.0-windows10.0.19041;net8.0-windows10.0.17763",
+    "Description": "This package contains general purpose WPF utilities.",
+    "Tags": [],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Wpf/ThreadBindingDemo/ThreadBindingDemo.csproj",
+      "Demos/AllOverIt.Wpf/WindowWrapperDemo/WindowWrapperDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-wpf.md"
+  },
+  {
+    "Package": "AllOverIt.Wpf.Controls",
+    "Project": "Source/AllOverIt.Wpf.Controls/AllOverIt.Wpf.Controls.csproj",
+    "TargetFrameworks": "net10.0-windows;net9.0-windows10.0.19041;net9.0-windows10.0.17763;net8.0-windows10.0.19041;net8.0-windows10.0.17763",
+    "Description": "This package contains useful WPF controls.",
+    "Tags": [],
+    "DependsOn": [
+      "AllOverIt"
+    ],
+    "DemoProjects": [
+      "Demos/AllOverIt.Wpf.Controls/ExecuteCommandOnEnterKeyBehavior/ExecuteCommandOnEnterKeyBehavior.csproj",
+      "Demos/AllOverIt.Wpf.Controls/PreviewTextBoxDemo/PreviewTextBoxDemo.csproj"
+    ],
+    "Doc": ".github/ai-context/packages/alloverit-wpf-controls.md"
+  }
+]
