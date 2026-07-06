@@ -187,12 +187,12 @@
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
-    <File Path="Directory.Packages.props" />
     <File Path="Docs/Change Logs/ChangeLog_v9.md" />
     <File Path="LICENSE.md" />
     <File Path="README.md" />
   </Folder>
   <Folder Name="/Source/">
+    <File Path="Directory.Packages.props" />
     <File Path="Source/Directory.Build.props" />
     <Project Path="Source/AllOverIt.AspNetCore/AllOverIt.AspNetCore.csproj" />
     <Project Path="Source/AllOverIt.Assertion/AllOverIt.Assertion.csproj" />
