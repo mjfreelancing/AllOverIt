@@ -1,9 +1,19 @@
-﻿#  Version 9.2.1
+﻿#  Version 9.3.0
+## 06 Jul 2026
+
+# Maintenance update
+* Package updates to allow minor version updates to be applied to consuming applications.
+
+---
+
+
+#  Version 9.2.1
 ## 25 May 2026
 
 # Maintenance update
 * Package updates and convert projects to use Central Package Management (https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management)
-  Used the utility at https://github.com/Vannevelj/directory-packages-props-converter for a quick head start (I had to manually deal with version conditionals)
+  Used the utility at https://github.com/Vannevelj/directory-packages-props-converter for a quick head start (I had to manually deal with version conditionals).
+  Edit: Have since started using https://github.com/Webreaper/CentralisedPackageConverter as it dealt with conditionals.
 * Published nugets will not set explicit upper version limit as less than next major version number.
 
 ---
