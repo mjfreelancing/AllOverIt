@@ -95,7 +95,7 @@
       "alloverit": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt.Assertion": "[9.3.0, )"
+          "AllOverIt.Assertion": "[9.3.1, )"
         }
       },
       "alloverit.assertion": {
@@ -104,7 +104,7 @@
       "alloverit.aws.cdk.appsync": {
         "type": "Project",
         "dependencies": {
-          "AllOverIt": "[9.3.0, )",
+          "AllOverIt": "[9.3.1, )",
           "Amazon.CDK.Lib": "[2.261.0, 3.0.0)",
           "Amazon.JSII.Runtime": "[1.138.0, 2.0.0)",
           "Cdklabs.AwsCdkAppsyncUtils": "[0.0.858, 1.0.0)"
@@ -148,7 +148,7 @@
       },
       "Microsoft.Extensions.Configuration": {
         "type": "CentralTransitive",
-        "requested": "[9.0.10, 10.0.0)",
+        "requested": "[10.0.9, 11.0.0)",
         "resolved": "9.0.1",
         "contentHash": "VuthqFS+ju6vT8W4wevdhEFiRi1trvQtkzWLonApfF5USVzzDcTBoY3F24WvN/tffLSrycArVfX1bThm/9xY2A==",
         "dependencies": {
@@ -182,7 +182,7 @@
       },
       "Microsoft.Extensions.Logging.Console": {
         "type": "CentralTransitive",
-        "requested": "[9.0.10, 10.0.0)",
+        "requested": "[10.0.9, 11.0.0)",
         "resolved": "9.0.1",
         "contentHash": "YUzguHYlWfp4upfYlpVe3dnY59P25wc+/YLJ9/NQcblT3EvAB1CObQulClll7NtnFbbx4Js0a0UfyS8SbRsWXQ==",
         "dependencies": {
@@ -195,7 +195,7 @@
       },
       "Microsoft.Extensions.Options": {
         "type": "CentralTransitive",
-        "requested": "[9.0.10, 10.0.0)",
+        "requested": "[10.0.9, 11.0.0)",
         "resolved": "9.0.1",
         "contentHash": "nggoNKnWcsBIAaOWHA+53XZWrslC7aGeok+aR+epDPRy7HI7GwMnGZE8yEsL2Onw7kMOHVHwKcsDls1INkNUJQ==",
         "dependencies": {
