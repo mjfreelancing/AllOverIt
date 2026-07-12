@@ -1,4 +1,13 @@
-﻿#  Version 9.3.1
+﻿#  Version 9.3.2
+## 12 Jul 2026
+
+# Bug Fix
+* Changed ProcessExecutor so OperationCsnceledException is thrown as-is and not converted to a TimeoutException
+
+---
+
+
+#  Version 9.3.1
 ## 06 Jul 2026
 
 # Maintenance update
