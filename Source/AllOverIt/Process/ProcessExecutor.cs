@@ -105,7 +105,7 @@ namespace AllOverIt.Process
 
             try
             {
-                var milliseconds = (int) _options.Timeout.TotalMilliseconds;
+                var milliseconds = (int)_options.Timeout.TotalMilliseconds;
 
                 // Cater for an explicit timeout for the scenario where the provided cancellationToken does not have an associated timeout (via a CancellationTokenSource)
                 if (milliseconds != 0)        // -1 means indefinite
@@ -123,8 +123,7 @@ namespace AllOverIt.Process
             catch (OperationCanceledException)
             {
                 KillProcess();
-
-                throw new TimeoutException("Process wait timeout expired.");
+                throw;
             }
             catch (Exception exception)
             {
