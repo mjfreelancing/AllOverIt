@@ -39,7 +39,13 @@ namespace HostedConsoleAppDemo
             {
                 _logger.LogInformation("Background Worker: {DateTimeOffset}", DateTimeOffset.Now);
 
-                await Task.Delay(1000, cancellationToken);
+                try
+                {
+                    await Task.Delay(1000, cancellationToken);
+                }
+                catch (OperationCanceledException)
+                {
+                }
             }
         }
 

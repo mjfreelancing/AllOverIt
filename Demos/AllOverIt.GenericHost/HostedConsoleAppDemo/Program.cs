@@ -16,6 +16,9 @@ namespace HostedConsoleAppDemo
                 .ConfigureServices(services =>
                 {
                     services.AddHostedService<ConsoleBackgroundWorker>();
+
+                    // If not provided, IOptions<ConsoleHostOptions> will automatically default to 5 seconds
+                    services.Configure<ConsoleHostOptions>(options => options.ShutdownWaitTimeout = TimeSpan.FromSeconds(10));
                 })
 
                 .RunConsoleAsync(options => options.SuppressStatusMessages = true);
