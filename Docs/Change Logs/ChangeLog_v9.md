@@ -1,4 +1,32 @@
-﻿#  Version 9.3.2
+﻿#  Version 9.4.0
+## 17 Aug 2026
+
+# AllOverIt
+* ProcessExecutor will now only attempt to kill a process if it has not exited following a OperationCanceledException
+
+# AllOverIt.GenericHost
+* [Breaking] `IConsoleApp` now exposes `UserCancelled` and `CancelledExitCode`. Direct implementers
+  must add them; derive from `ConsoleAppBase` to get the defaults.
+* Added `UserCancelled` (set on Ctrl+C / Ctrl+Break / SIGINT; not SIGTERM; backed by a volatile field)
+  to `ConsoleAppBase` and `IConsoleApp` so an application can detect a user-requested shutdown.
+* Added `CancelledExitCode` (default -2) to `ConsoleAppBase` and `IConsoleApp` - the exit code reported
+  when the user cancels and the application did not set an `ExitCode`.
+* Fixed an exit-code race in `HostedConsoleService`: `StopAsync` now waits (bounded) for the console
+  application to finish unwinding before reading its exit code, so a Ctrl+C mid-run no longer exits 0
+  and discards the application's own exit code. The wait period is configurable via
+  `IOptions<ConsoleHostOptions>` (`ShutdownWaitTimeout`, default 5 seconds).
+* When the user cancels and the application does not set an exit code, the host now reports
+  `CancelledExitCode` (-2) instead of the success default (0).
+* `HostedConsoleService` now hands the console application a token linked against `ApplicationStopping`
+  (held for the whole command), so the `StartAsync` cancellation token actually cancels on
+  Ctrl+C/SIGTERM instead of the frozen host startup token. Applications no longer need their own
+  `ApplicationStopping`-linked token workaround.
+* Added `ConsoleHostOptions` (`ShutdownWaitTimeout`, default 5 seconds) to configure the shutdown wait.
+
+---
+
+
+#  Version 9.3.2
 ## 12 Jul 2026
 
 # Bug Fix
