@@ -19,7 +19,10 @@ namespace HostedConsoleAppDemo
             _logger.LogInformation("StartAsync");
 
             // providing an initial delay so the background worker can show it is alive
-            await Task.Delay(3000, cancellationToken);
+            if (!await WaitCompletedAsync(cancellationToken))
+            {
+                return;
+            }
 
             Console.WriteLine();
             Console.WriteLine("ENVIRONMENT VARIABLES");
@@ -35,7 +38,10 @@ namespace HostedConsoleAppDemo
             Console.WriteLine();
 
             // providing another delay so the background worker can show it is still alive
-            await Task.Delay(3000, cancellationToken);
+            if (!await WaitCompletedAsync(cancellationToken))
+            {
+                return;
+            }
 
             ExitCode = 0;
 
@@ -43,19 +49,47 @@ namespace HostedConsoleAppDemo
             Console.WriteLine("All Over It (the background worker will continue until a key is pressed).");
             Console.WriteLine();
 
-            Console.ReadKey();
+            // Wait for a key press, but stop immediately on shutdown (e.g. Ctrl+C) instead of blocking in a
+            // synchronous Console.ReadKey() that ignores the cancellation token - otherwise the host's bounded
+            // shutdown wait would time out before the app can exit.
+            var keyPressTask = Task.Run(() => Console.ReadKey());
+            var shutdownTask = Task.Delay(Timeout.InfiniteTimeSpan, cancellationToken);
+
+            await Task.WhenAny(keyPressTask, shutdownTask);
         }
 
         public override void OnStopping()
         {
-            // The logger is not available at this point
-            Console.WriteLine("=> App is stopping");
+            _logger.LogInformation("=> App is stopping");
         }
 
         public override void OnStopped()
         {
-            // The logger is not available at this point
-            Console.WriteLine("=> App is stopped");
+            if (UserCancelled)
+            {
+                _logger.LogWarning("The application was cancelled via CTRL+C");
+            }
+
+            _logger.LogInformation("=> App is stopped");
+        }
+
+        private async Task<bool> WaitCompletedAsync(CancellationToken cancellationToken)
+        {
+            if (UserCancelled)
+            {
+                return false;
+            }
+
+            try
+            {
+                await Task.Delay(3000, cancellationToken);
+                return true;
+            }
+            catch (OperationCanceledException)
+            {
+                ExitCode = -2;
+                return false;
+            }
         }
     }
 }

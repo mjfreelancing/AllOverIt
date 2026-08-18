@@ -122,8 +122,15 @@ namespace AllOverIt.Process
             }
             catch (OperationCanceledException)
             {
-                KillProcess();
-                throw;
+                // Process.WaitForExitAsync can throw OperationCanceledException from
+                // WaitUntilOutputEOF even when no cancellation was requested (the output/error
+                // stream EOF tasks can enter a cancelled state). When the process has already
+                // exited, treat this as a normal completion so the exit code is preserved.
+                if (!_process.HasExited)
+                {
+                    KillProcess();
+                    throw;
+                }
             }
             catch (Exception exception)
             {
